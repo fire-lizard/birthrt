@@ -36,4 +36,3 @@ void LogFlush ( void );
 
 #endif
 #endif
-
