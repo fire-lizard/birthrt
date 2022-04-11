@@ -76,4 +76,4 @@ add_executable (Birthrt "2DMOUSE.C" "2DMOUSE.H" "ABILITY.CPP" "ABILITY.HXX" "ACT
 "SOLAUDIO/AUDIODIR.HPP" "SOLAUDIO/CUSTMSYS.CPP" "SOLAUDIO/Custmsys.hpp" "SOLAUDIO/Dsound.cpp" 
 "SOLAUDIO/DSOUND.HPP" "SOLAUDIO/FATAL.CPP" "SOLAUDIO/INTRPTW.CPP" "SOLAUDIO/INTRPTW.HPP")
 include_directories("C:/dx5sdk/sdk/inc" "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.19041.0\\um")
-# TODO: Добавьте тесты и целевые объекты, если это необходимо.
+target_link_libraries(Birthrt "C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.19041.0\\um\\x64\\winmm.lib")

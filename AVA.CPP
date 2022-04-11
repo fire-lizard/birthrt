@@ -483,5 +483,3 @@ LONG AVA_FILE::mfWriteTextData (FILE *fp)
 
 
 #endif
-
-

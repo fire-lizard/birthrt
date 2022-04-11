@@ -34,6 +34,7 @@
 #include "../machint.h"
 #include "../engine.h"
 #include "../player.hxx"
+#include "../menu.h"
 #include "ddrawpro.h"
 
 

@@ -771,6 +771,3 @@ void SCENE_MGR::mfRequestNewScene(char * cpSceneFile,
 		SCENE_MGR::fFadeToNextScene = SCENE_MGR::FADE_OUT;
 }
 /*	======================================================================== */
-
-
-
