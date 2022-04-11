@@ -35,8 +35,7 @@
    Global Variables
    ------------------------------------------------------------------------ */
 // Incorporates tables 3 p.21 & 9 p.28 AD&D Handbook
-// TODO: (fire lizard) uncomment
-const CONSTITUTION::CONSTITUTION_ITEM CONSTITUTION::pConstitutionTable[100] = {};/* = {
+const CONSTITUTION::CONSTITUTION_ITEM CONSTITUTION::pConstitutionTable[] = {
 // Hitpt Adjustment, System Shock, Reserection , Poison Save, Regeneration,  Saving bonus
 	{  0, 0,   0,   0,  0, NO_REGENERATION, 0},		// This allows direct index by rating 
 	{ -3, 0,  25,  30, -2, NO_REGENERATION, 0},		//  1 (Rating)
@@ -64,5 +63,5 @@ const CONSTITUTION::CONSTITUTION_ITEM CONSTITUTION::pConstitutionTable[100] = {}
 	{  2, 6,  99, 100,  3, 3, 5},					// 23
 	{  2, 7,  99, 100,  3, 2, 5},					// 24
 	{  2, 7,  99, 100,  4, 1, 5}					// 25
-};*/
+};
 

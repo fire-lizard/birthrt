@@ -104,6 +104,19 @@ public:
 	class WEAPON_ITEM {
 	public:
 		friend class WEAPON_INFO;
+		WEAPON_ITEM(GAME_STRING fName, SIZE fSize, STYLE fStyle, SBYTE fbSpeed, DICE fSmallCreatureDamageDice, DICE fLargeCreatureDamageDice, SBYTE fsRacesAvailable[RACE_INFO::RACE_MAX_NUMBER])
+		{
+			this->fName = fName;
+			this->fSize = fSize;
+			this->fStyle = fStyle;
+			this->fbSpeed = fbSpeed;
+			this->fSmallCreatureDamageDice = fSmallCreatureDamageDice;
+			this->fLargeCreatureDamageDice = fLargeCreatureDamageDice;
+			for (int index = 0; index < RACE_INFO::RACE_MAX_NUMBER; index++)
+			{
+				this->fsRacesAvailable[index] = fsRacesAvailable[index];
+			}
+		}
 	private:
 		GAME_STRING   fName;
 		SIZE	   fSize;

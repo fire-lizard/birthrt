@@ -29,6 +29,16 @@ public:
 	class CONSTITUTION_ITEM {
 	public:
 		friend class CONSTITUTION;
+		CONSTITUTION_ITEM(SBYTE sbHitPointAdjust, SBYTE sbWarriorHitAdjBonus, SBYTE sbSystemShock, SBYTE sbResurrectionSurvival, SBYTE sbPoisonSave, SBYTE sbRegeneration, SBYTE sbSavingThrowBonus)
+		{
+			this->sbHitPointAdjust = sbHitPointAdjust;
+			this->sbWarriorHitAdjBonus = sbWarriorHitAdjBonus;
+			this->sbSystemShock = sbSystemShock;
+			this->sbResurrectionSurvival = sbResurrectionSurvival;
+			this->sbPoisonSave = sbPoisonSave;
+			this->sbRegeneration = sbRegeneration;
+			this->sbSavingThrowBonus = sbSavingThrowBonus;
+		}
 	private:
 		SBYTE	sbHitPointAdjust;
 		SBYTE	sbWarriorHitAdjBonus;	// Use Warrior Hit Points if a Warrior.

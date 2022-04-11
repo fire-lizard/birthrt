@@ -110,8 +110,7 @@ static FIGHT_SEQUENCE::ATTACK_MODE HellHound[] = {
 	  FIGHT_SEQUENCE::ATM_LOOP
 };
 
-// TODO: (fire lizard) uncomment
-FIGHT_SEQUENCE::FIGHT_SEQUENCE_DATA FIGHT_SEQUENCE::fFightSequenceData[(LAST_GAME_AVATAR - FIRST_GAME_THING) + 1];/* = {
+FIGHT_SEQUENCE::FIGHT_SEQUENCE_DATA FIGHT_SEQUENCE::fFightSequenceData[(LAST_GAME_AVATAR - FIRST_GAME_THING) + 1] = {
  // Weak Attack,	Attack Sequence.
 	  {Weak_Defensive,   			Defensive},				// 	15 Gargoyle
 	  {Weak_Defensive,   			Defensive},				// 	16 Troop Gargoyle
@@ -248,4 +247,4 @@ FIGHT_SEQUENCE::FIGHT_SEQUENCE_DATA FIGHT_SEQUENCE::fFightSequenceData[(LAST_GAM
 	  {Weak_Defensive,  			Defensive},				// 147 Infantry Intro
 	  {Weak_Defensive,  			Defensive},				// 148 Royal Guard Intro
 	  {Weak_Defensive,  			Defensive} 				// 149 Lord Throne
-};*/
+};

@@ -33,8 +33,7 @@
    Global Variables
    ------------------------------------------------------------------------ */
 
-// TODO: (fire lizard) uncomment
-GAME_TTYPE::GAME_ITEM const GAME_TTYPE::game_ttypes[100]={};/* = {
+GAME_TTYPE::GAME_ITEM const GAME_TTYPE::game_ttypes[] = {
  {{"------",	NOLOW,				NOBUMP},						0, 	0, 	NOSOUND, 							STR_NULL}, 	   		//    0 	(nothing)
  {{"------",	NOLOW,				NOBUMP},						0, 	0, 	NOSOUND, 							STR_NULL}, 	   		//    1 	(nothing)
  {{"------",	NOLOW,				NOBUMP},						0, 	0, 	NOSOUND, 							STR_NULL}, 	   		//    2 	(nothing)
@@ -795,7 +794,7 @@ GAME_TTYPE::GAME_ITEM const GAME_TTYPE::game_ttypes[100]={};/* = {
 
 
 
- };*/
+ };
 
 
 /* ========================================================================

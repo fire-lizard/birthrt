@@ -37,8 +37,7 @@
    ------------------------------------------------------------------------ */
 
 // Table 2 p. 20 AD&D Handbook
-// TODO: (fire lizard) uncomment
-const DEXTERITY::DEXTERITY_ITEM DEXTERITY::pDexterityTable[100] = {};/*{
+const DEXTERITY::DEXTERITY_ITEM DEXTERITY::pDexterityTable[] = {
 // Reaction Adjust, Missle Attack, Defensive Adjustment
 	{ 0,  0,  0},		// So that you can use the rating as an index
 	{-6, -6,  5},		//  1 (Rating)
@@ -66,4 +65,4 @@ const DEXTERITY::DEXTERITY_ITEM DEXTERITY::pDexterityTable[100] = {};/*{
 	{ 4,  4, -5},		// 23
 	{ 5,  5, -6},		// 24
 	{ 5,  5, -6}		// 25
-};*/
+};

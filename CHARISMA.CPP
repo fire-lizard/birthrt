@@ -36,8 +36,7 @@
    ------------------------------------------------------------------------ */
 
 // Table 6 p.25 from AD&D Handbook
-// TODO: (fire lizard) uncomment
-const CHARISMA::CHARISMA_ITEM CHARISMA::pCharismaTable[100] = {};/*{
+const CHARISMA::CHARISMA_ITEM CHARISMA::pCharismaTable[] = {
 // Henchman, Loyality Base, Reaction Adjustment
 	{  0,  0,  0},		// Used so that a player's rating provides a direct index.
 	{  0, -8, -7},		//  1 (Rating)
@@ -65,4 +64,4 @@ const CHARISMA::CHARISMA_ITEM CHARISMA::pCharismaTable[100] = {};/*{
 	{ 40, 18, 12},		// 23
 	{ 45, 20, 13},		// 24
 	{ 50, 20, 14}		// 25
-};*/
+};

@@ -32,6 +32,15 @@ public:
 	class WISDOM_ITEM {
 	public:
 		friend class WISDOM;
+		WISDOM_ITEM(SBYTE sbMagicalDefenseAdjust, SBYTE sbBonusSpells[SPELL_INFO::MAX_PR_LEVELS + 1], SBYTE sbChanceOfSpellFailure)
+		{
+			this->sbMagicalDefenseAdjust = sbMagicalDefenseAdjust;
+			this->sbChanceOfSpellFailure = sbChanceOfSpellFailure;
+			for (int index = 0; index < SPELL_INFO::MAX_PR_LEVELS + 1; index++)
+			{
+				this->sbBonusSpells[index] = sbBonusSpells[index];
+			}
+		}
 	private:
 		SBYTE	sbMagicalDefenseAdjust;
 		SBYTE	sbBonusSpells[SPELL_INFO::MAX_PR_LEVELS+1];	// Only Priests can have these

@@ -35,9 +35,8 @@
    Global Variables
    ------------------------------------------------------------------------ */
 
-	// Basic values from Table 1 p 19 of the AD&D Player Handbook.
-// TODO: (fire lizard) uncomment
-const STRENGTH::STRENGTH_ITEM STRENGTH::pStrengthTable[100] = {};/*{
+// Basic values from Table 1 p 19 of the AD&D Player Handbook.
+const STRENGTH::STRENGTH_ITEM STRENGTH::pStrengthTable[] = {
 // Hit Prob, Damage Adjust, Weight, Max Press, Bend Bars, Open doors.
 	{  0,  0,   0,   0,  0, {  0,  0}},	// Used so that rating is a direct index
 	{ -5, -4,   1,   3,  0, {  1,  0}},		//  1 (Rating)
@@ -73,7 +72,7 @@ const STRENGTH::STRENGTH_ITEM STRENGTH::pStrengthTable[100] = {};/*{
 	{  5, 11, 935,1130, 90, { 18, 16}},		// 23
 	{  6, 12,1235,1440, 95, { 19, 17}},		// 24
 	{  7, 14,1535,1750, 99, { 19, 18}}		// 25
-};*/
+};
 
 SBYTE strength_percentile[] =
 {

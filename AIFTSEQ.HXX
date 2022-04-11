@@ -53,6 +53,11 @@ public:
 	class FIGHT_SEQUENCE_DATA {
 	public:
 		friend class FIGHT_SEQUENCE;
+		FIGHT_SEQUENCE_DATA(ATTACK_MODE WeakSeq, ATTACK_MODE* AttackSeq)
+		{
+			this->WeakSeq = WeakSeq;
+			this->AttackSeq = AttackSeq;
+		}
 	
 	protected:
 	private:

@@ -27,6 +27,12 @@ public:
 	class CHARISMA_ITEM {
 	public:
 		friend class CHARISMA;
+		CHARISMA_ITEM(SBYTE sbMaxNumOfHenchmen, SBYTE sbLoyalityBase, SBYTE sbReactionAdjustment)
+		{
+			this->sbMaxNumOfHenchmen = sbMaxNumOfHenchmen;
+			this->sbLoyalityBase = sbLoyalityBase;
+			this->sbReactionAdjustment = sbReactionAdjustment;
+		}
 	private:
 		SBYTE	sbMaxNumOfHenchmen;
 		SBYTE	sbLoyalityBase;		

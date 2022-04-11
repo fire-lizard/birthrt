@@ -54,7 +54,6 @@
 #include "winsys\mulplay.hxx"
 #endif
 
-// TODO: (fire lizard) have to include it here
 #define F_OK 0
 
 /* ------------------------------------------------------------------------

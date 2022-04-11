@@ -38,6 +38,15 @@ public:
 	class STRENGTH_ITEM {
 	public:
 		friend class STRENGTH;
+		STRENGTH_ITEM(SBYTE bHitProbablity, SBYTE bDamageAdjust, SHORT sWeightAllowance, SHORT sMaxPressure, SBYTE bBend_Lift, DOORS dDoor)
+		{
+			this->bHitProbablity = bHitProbablity;
+			this->bDamageAdjust = bDamageAdjust;
+			this->sWeightAllowance = sWeightAllowance;
+			this->sMaxPressure = sMaxPressure;
+			this->bBend_Lift = bBend_Lift;
+			this->dDoor = dDoor;
+		}
 	private:
 		SBYTE	bHitProbablity;
 		SBYTE	bDamageAdjust;

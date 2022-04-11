@@ -36,8 +36,7 @@
    ------------------------------------------------------------------------ */
 
 #if 01
-// TODO: (fire lizard) uncomment
-const APPEARANCE_INFO::APPEARANCE_ITEM APPEARANCE_INFO::fpAppearanceInfoTable[100]={};/*
+const APPEARANCE_INFO::APPEARANCE_ITEM APPEARANCE_INFO::fpAppearanceInfoTable[]
  = {
 //  THINGTYPE
 	LORD_FEMALE_1,
@@ -75,7 +74,7 @@ const APPEARANCE_INFO::APPEARANCE_ITEM APPEARANCE_INFO::fpAppearanceInfoTable[10
 	GORGON,
 	MANSLAYER,
 	SPIDER_KING,
-};*/
+};
 
 APPEARANCE_INFO::TYPE APPEARANCE_INFO::IndexFromType (THINGTYPE iType)
 {

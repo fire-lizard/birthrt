@@ -36,8 +36,7 @@
    ------------------------------------------------------------------------ */
 
 // Table 4 p.22 AD&D Handbook
-// TODO: (fire lizard) uncomment
-const INTELLIGENCE::INTELLIGENCE_ITEM INTELLIGENCE::pIntelligenceTable[100] = {};/*{
+const INTELLIGENCE::INTELLIGENCE_ITEM INTELLIGENCE::pIntelligenceTable[] = {
 // # of Lang, Spell Level, Chance to Learn Spell, Max Number of Spells, illusion Immunity
 	{  0, 0,   0,  0, 0},			// Allows direct index by rating
 	{  0, 0,   0,  0, 0},			//  1 (Rating)
@@ -65,5 +64,5 @@ const INTELLIGENCE::INTELLIGENCE_ITEM INTELLIGENCE::pIntelligenceTable[100] = {}
 	{ 12, 9,  99, ALL_SPELLS, 0},	// 23
 	{ 15, 9, 100, ALL_SPELLS, 0},	// 24
 	{ 20, 9, 100, ALL_SPELLS, 0},	// 25
-};*/
+};
 

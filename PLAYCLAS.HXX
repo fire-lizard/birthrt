@@ -80,6 +80,11 @@ public:
 	class PLAYER_CLASS_ITEM {
 	public:
 		friend class PLAYER_CLASS_INFO;
+		PLAYER_CLASS_ITEM(GAME_STRING ClassName, const CLASS_HIT_DICE_TABLE *HitDiceTable)
+		{
+			this->ClassName = ClassName;
+			this->HitDiceTable = HitDiceTable;
+		}
 	private:
 		GAME_STRING  ClassName;
 		CLASS_HIT_DICE_TABLE  const *HitDiceTable;

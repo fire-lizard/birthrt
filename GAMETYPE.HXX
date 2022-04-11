@@ -96,6 +96,14 @@ public:
 	class GAME_ITEM {
 	public:
 		friend class GAME_TTYPE;
+		GAME_ITEM(TTYPE fttype, UBYTE fwalkRate, UBYTE fmarchRate, SOUND_TYPES fsoundType, GAME_STRING fdescription)
+		{
+			this->fttype = fttype;
+			this->fwalkRate = fwalkRate;
+			this->fmarchRate = fmarchRate;
+			this->fsoundType = fsoundType;
+			this->fdescription = fdescription;
+		}
 	private:
 		// TTYPE Must be the first object in this class.
 		TTYPE		  		fttype;

@@ -167,8 +167,7 @@ static PLAYER_CLASS_LIMITS const PlayerClassLimitTable = {
 	{  7,  0,  7,  8,            0,        0, UNRESTRICTED,            0}		// Halfling
 };
 
-// TODO: (fire lizard) uncomment
-PLAYER_CLASS_INFO::PLAYER_CLASS_ITEM const PLAYER_CLASS_INFO::pPlayerClassInfoTable[100] = {};/*= {
+PLAYER_CLASS_INFO::PLAYER_CLASS_ITEM const PLAYER_CLASS_INFO::pPlayerClassInfoTable[] = {
 	{STR_CLASS_FIGHTER,	 	FighterHitDiceTable},
 	{STR_CLASS_PALADIN, 	FighterHitDiceTable},
 	{STR_CLASS_RANGER, 		FighterHitDiceTable},
@@ -177,7 +176,7 @@ PLAYER_CLASS_INFO::PLAYER_CLASS_ITEM const PLAYER_CLASS_INFO::pPlayerClassInfoTa
 	{STR_CLASS_MAGICIAN,	WizardHitDiceTable},	// Doesn't say but since Magicians are specialized Wizards...
 	{STR_CLASS_THIEF,		RogueHitDiceTable},
 	{STR_CLASS_BARD,		RogueHitDiceTable}
-};	*/
+};	
 
 
 class CLASS_ABILITY {

@@ -30,6 +30,14 @@ public:
 	class INTELLIGENCE_ITEM {
 	public:
 		friend class INTELLIGENCE;
+		INTELLIGENCE_ITEM(SBYTE sbNumOfLanguages, SBYTE sbSpellLevel, SBYTE sbChanceToLearnSpell, SBYTE sbMaxNumberOfSpells, SBYTE sbIllusionImmunity)
+		{
+			this->sbNumOfLanguages = sbNumOfLanguages;
+			this->sbSpellLevel = sbSpellLevel;
+			this->sbChanceToLearnSpell = sbChanceToLearnSpell;
+			this->sbMaxNumberOfSpells = sbMaxNumberOfSpells;
+			this->sbIllusionImmunity = sbIllusionImmunity;
+		}
 	private:
 		SBYTE	sbNumOfLanguages;
 		SBYTE	sbSpellLevel;

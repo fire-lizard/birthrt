@@ -68,6 +68,7 @@ public:
 	class APPEARANCE_ITEM {
 	public:
 		friend class APPEARANCE_INFO;
+		APPEARANCE_ITEM(THINGTYPE fGameType) { this->fGameType = fGameType; }
 	private:
 		THINGTYPE	fGameType;				// index to game_ttypes array
 	};

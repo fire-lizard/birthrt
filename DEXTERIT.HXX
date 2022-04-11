@@ -27,6 +27,12 @@ public:
 	class DEXTERITY_ITEM {
 	public:
 		friend class DEXTERITY;
+		DEXTERITY_ITEM(SBYTE sbReactionAdjust, SBYTE sbMissileAttackAdjust, SBYTE sbDefensiveAdjust)
+		{
+			this->sbReactionAdjust = sbReactionAdjust;
+			this->sbMissileAttackAdjust = sbMissileAttackAdjust;
+			this->sbDefensiveAdjust = sbDefensiveAdjust;
+		}
 	private:
 		SBYTE	sbReactionAdjust;
 		SBYTE	sbMissileAttackAdjust;

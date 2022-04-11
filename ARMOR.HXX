@@ -66,6 +66,19 @@ public:
 	class ARMOR_ITEM {
 	public:
 		friend class ARMOR_INFO;
+		ARMOR_ITEM(GAME_STRING fName, SBYTE fbArmorClass, SBYTE fbModifiers[WEAPON_INFO::MAX_WEAPON_STYLES], SBYTE fbRacesAvailable[RACE_INFO::RACE_MAX_NUMBER])
+		{
+			this->fName = fName;
+			this->fbArmorClass = fbArmorClass;
+			for (int index = 0; index < WEAPON_INFO::MAX_WEAPON_STYLES; index++)
+			{
+				this->fbModifiers[index] = fbModifiers[index];
+			}
+			for (int index = 0; index < RACE_INFO::RACE_MAX_NUMBER; index++)
+			{
+				this->fbRacesAvailable[index] = fbRacesAvailable[index];
+			}
+		}
 	private:
 		GAME_STRING fName;
 		SBYTE	fbArmorClass;
@@ -98,6 +111,16 @@ public:
 
 	class SHIELD_ITEM {
 	public:
+		SHIELD_ITEM(char *fcpName, SBYTE fbMeleeAttackModifier, SBYTE fbMissleAttackModifier, SBYTE fbRacesAvailable[RACE_INFO::RACE_MAX_NUMBER])
+		{
+			this->fcpName = fcpName;
+			this->fbMeleeAttackModifier = fbMeleeAttackModifier;
+			this->fbMissleAttackModifier = fbMissleAttackModifier;
+			for (int index = 0; index < RACE_INFO::RACE_MAX_NUMBER; index++)
+			{
+				this->fbRacesAvailable[index] = fbRacesAvailable[index];
+			}
+		}
 		friend class SHIELD_INFO;
 	private:
 		char *	fcpName;
