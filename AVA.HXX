@@ -74,7 +74,7 @@ public:
 	LONG			mfWriteTextData (FILE *fp);
 
 	// Get member variables.
-	inline THINGTYPE	mfGetThingType () const;
+	/*inline THINGTYPE	mfGetThingType() const;
 	inline LONG			mfGetStrength () const;
 	inline LONG			mfGetDexterity () const;
 	inline LONG			mfGetConstitution () const;
@@ -152,14 +152,13 @@ public:
 	// Get/set realm name (just for printing in the dialog for
 	// user's convenient reference).
 	inline void			mfSetRealmName (char * szName);
-	inline char *		mfGetRealmName ();
+	inline char *		mfGetRealmName ();*/
 
 
 // ---------------------------------------------------------------------------
 // "GET" functions.
 
-// TODO: (fire lizard) uncomment
-/*inline THINGTYPE AVA_FILE::mfGetThingType() const
+inline THINGTYPE AVA_FILE::mfGetThingType() const
 {
 	return fThingType;
 }
@@ -541,7 +540,7 @@ inline LONG	AVA_FILE::mfGetBardLevel ()
 		level2 = m_level2;
 
 	return MAX (level1, level2);
-}*/
+}
 
 };
 

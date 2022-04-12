@@ -216,76 +216,6 @@ LONG lines_intersect(LONG x1,LONG y1,LONG x2,LONG y2,LONG x3,LONG y3,LONG x4,LON
 
 
 
-// ---------------------------------------------------------------------------
-LONG ccw (LONG x0, LONG y0, LONG x1, LONG y1, LONG x2, LONG y2)
-{
-// JPC
-// Sedgewick's algorithm for determining whether you have to move
-// counterclockwise to go from point 0 to point 1 to point 2.
-// Returns:
-//    1 if you go counterclockwise
-//   -1 if you go clockwise
-// If points are collinear, return
-//   -1 if p0 is in the middle
-//    0 if p2 is in the middle
-//    1 if p1 is in the middle
-// ---------------------------------------------------------------------------
-
-   LONG        dx1;
-   LONG        dx2;
-   LONG        dy1;
-   LONG        dy2;
-
-   dx1 = x1 - x0;
-   dy1 = y1 - y0;
-   dx2 = x2 - x0;
-   dy2 = y2 - y0;
-
-   // Compare the slopes; multiply each side by dx1 * dx2 to avoid
-   // an embarrassing division by 0.  This multiplication also fixes
-   // the problems with negative deltas.
-   if (dx1 * dy2 > dy1 * dx2)
-      return 1;
-   if (dx1 * dy2 < dy1 * dx2)
-      return -1;
-
-   // If we get this far, the slopes are the same, so the lines are
-   // collinear, so check which point is in the middle.
-   if (dx1 * dx2 < 0 || dy1 * dy2 < 0)
-      return -1;                       // p0 is in the middle
-   if (dx1 * dx1 + dy1 * dy1 < dx2 * dx2 + dy2 * dy2)
-      return 1;                        // p1 is in the middle
-   return 0;                           // p2 is in the middle
-}
-
-
-// ---------------------------------------------------------------------------
-LONG lines_intersect (LONG x0, LONG y0, LONG x1, LONG y1, LONG x2, LONG y2, LONG x3, LONG y3)
-{
-// JPC
-// Lines intersect if endpoints of line 1 are on opposite sides of line 2
-// AND endpoints of line 2 are on opposite sides of line 1.
-// ---------------------------------------------------------------------------
-
-   LONG        r1;
-   LONG        r2;
-
-   r1 = ccw (x0, y0, x1, y1, x2, y2);
-   r2 = ccw (x0, y0, x1, y1, x3, y3);
-   // GWP r3 = ccw (x2, y2, x3, y3, x0, y0);
-   // GWP r4 = ccw (x2, y2, x3, y3, x1, y1);
-   // GWP return r1 * r2 <= 0 && r3 * r4 <= 0;
-   if (r1 * r2 <= 0)
-   {
-	   LONG        r3;
-	   LONG        r4;
-	   
-	   r3 = ccw (x2, y2, x3, y3, x0, y0);
-	   r4 = ccw (x2, y2, x3, y3, x1, y1);
-	   return (r3 * r4 <= 0);
-   }
-   return 0;
-}
 
 
 
@@ -363,6 +293,3 @@ p->y = y1 + (num+offset) / f;				/* intersection y */
 return DO_INTERSECT;
 }
 #endif
-
-
-
