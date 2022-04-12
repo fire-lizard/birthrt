@@ -45,9 +45,6 @@ extern BOOL fLogComment;
 extern void RandomLogComment ( char * szString );
 extern "C" void RandomLogPrefix ( char * szString );
 
-
-extern "C" SHORT print_textf_(LONG x, LONG y, LONG color, const char *format, ...);
-
 extern void ReconstructMap(void);
 extern void UpdateHoldingFlag (void);
 
@@ -2090,7 +2087,7 @@ void PaintReportMenu (LONG MenuCombo, LONG)
 		add_region(X, Y, W, H-20, 0, DoNothing, 0, 0, 0, -1);
 		Y += 14;
 		X += 20;
-		Y += print_textf_(X, Y, DKBROWN, "^fsans10.pcx^c60^xm160^jcDungeon Master Toolkit");
+		Y += print_textf(X, Y, DKBROWN, "^fsans10.pcx^c60^xm160^jcDungeon Master Toolkit");
 		Y += 2;
 		for (i=1; i<LAND_REALM_COUNT; i++)
 		{
@@ -2103,13 +2100,13 @@ void PaintReportMenu (LONG MenuCombo, LONG)
 				)
 			{
 				if (realm[i].mfIsPlayable())
-					print_textf_(X, Y, DKBROWN, "^fsans8.pcx%s^fsans5.pcx^B110,0,60,5,`,%ld,%ld,1,0,%ldPLAYER|^B180,0,60,5,`,%ld,%ld,2,0,%ldDM CONTROL|^B250,0,60,5,`,%ld,%ld,3,0,%ldCOMPUTER|",
+					print_textf(X, Y, DKBROWN, "^fsans8.pcx%s^fsans5.pcx^B110,0,60,5,`,%ld,%ld,1,0,%ldPLAYER|^B180,0,60,5,`,%ld,%ld,2,0,%ldDM CONTROL|^B250,0,60,5,`,%ld,%ld,3,0,%ldCOMPUTER|",
 						realm[i].mfGetName(),
 						(LONG) WhoControls, i, (realm[i].mfIsPlayerCtrl() && !realm[i].mfIsDMCtrl()),
 						(LONG) WhoControls, i, realm[i].mfIsDMCtrl(),
 						(LONG) WhoControls, i, (!realm[i].mfIsPlayerCtrl() && !realm[i].mfIsDMCtrl()) );
 				else
-					print_textf_(X, Y, DKBROWN, "^fsans8.pcx%s^fsans5.pcx^c210^x140^xcNOT AVAIL|^c128^B180,0,60,5,`,%ld,%ld,2,0,%ldDM CONTROL|^B250,0,60,5,`,%ld,%ld,3,0,%ldCOMPUTER|",
+					print_textf(X, Y, DKBROWN, "^fsans8.pcx%s^fsans5.pcx^c210^x140^xcNOT AVAIL|^c128^B180,0,60,5,`,%ld,%ld,2,0,%ldDM CONTROL|^B250,0,60,5,`,%ld,%ld,3,0,%ldCOMPUTER|",
 						realm[i].mfGetName(),
 						(LONG) WhoControls, i, realm[i].mfIsDMCtrl(),
 						(LONG) WhoControls, i, (!realm[i].mfIsPlayerCtrl() && !realm[i].mfIsDMCtrl()) );
@@ -2117,9 +2114,9 @@ void PaintReportMenu (LONG MenuCombo, LONG)
 			}
 		}
 		Y = top + H - 37;
-		Y += print_textf_(X, Y, DKBROWN, "^fsans5.pcx^w330SELECT ^c60PLAYER^c0 TO PLAY THAT REALM, ^c60DM CONTROL^c0 FOR UNLIMITED CONTROL OF A REALM, OR ^c60COMPUTER^c0 FOR AUTOMATIC OPERATION.");
+		Y += print_textf(X, Y, DKBROWN, "^fsans5.pcx^w330SELECT ^c60PLAYER^c0 TO PLAY THAT REALM, ^c60DM CONTROL^c0 FOR UNLIMITED CONTROL OF A REALM, OR ^c60COMPUTER^c0 FOR AUTOMATIC OPERATION.");
 		Y = top + H - 18;
-		print_textf_(X, Y, DKBROWN, "^fsans8.pcx^B130,0,60,10,`,0,0,0,0,0DONE|");
+		print_textf(X, Y, DKBROWN, "^fsans8.pcx^B130,0,60,10,`,0,0,0,0,0DONE|");
 		goto DoTutorial;
 	}
 
@@ -3097,4 +3094,3 @@ done:
 }
 
 /* ======================================================================== */
-

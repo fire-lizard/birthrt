@@ -44,11 +44,9 @@ static char		help_header[40];
    Extern Variables
    ------------------------------------------------------------------------ */
 
-extern "C" {
 extern LONG last_print_offset;		// how far the gprint_text got
 extern LONG last_font_used;			// the font when it quit
 extern LONG desired_context_number;	// set this; becomes zero when found
-}
 
 /* ------------------------------------------------------------------------
    Internal Prototypes

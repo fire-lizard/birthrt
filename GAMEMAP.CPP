@@ -184,7 +184,6 @@ extern BOOL fLogComment;
 /* ------------------------------------------------------------------------
 	Prototypes
 	------------------------------------------------------------------------ */
-extern "C" {
 extern void SysHideCursor (void);
 extern void SysShowCursor (void);
 extern void SysForceCursor (void);
@@ -192,12 +191,10 @@ extern SHORT LastRegionX (void);
 extern SHORT LastRegionY (void);
 extern LONG CountRegions (void);
 extern void dashedline(LONG x0, LONG y0, LONG x1, LONG y1, LONG color1 ,LONG color2);
-}
 extern BOOL RegentDeathTest (void);
 
 extern void RandomLogComment ( char * szString );
 extern void LogFlush ( void );
-extern SHORT print_textf_(LONG x, LONG y, LONG color, const char *format, ...);
 
 #if defined(_JUNEDEMO)
 void ShowAdScreen(SHORT);
@@ -5740,7 +5737,7 @@ BOOL UpdateDataArea (void)
 		print_textf(8, 1, DKBROWN, "^X%03d^F08^N%s", xs, realm[HomeRealm].mfGetName());
 
 		if (realm[HomeRealm].mfIsDMCtrl())
-			print_textf_(395, 5, DKBROWN, "^ftimes30.pcx^xc^c122^t1DM CONTROLLED");
+			print_textf(395, 5, DKBROWN, "^ftimes30.pcx^xc^c122^t1DM CONTROLLED");
 
 		UpdateActionHeader(-1);
 
@@ -5926,7 +5923,7 @@ BOOL UpdateDataArea (void)
 			print_textf(10, 5, DKBROWN, "^X%03d^F08^N%s", xs, realm[HomeRealm].mfGetName());
 
 			if (realm[HomeRealm].mfIsDMCtrl())
-				print_textf_(395, 5, DKBROWN, "^ftimes30.pcx^xc^c122^t1DM CONTROLLED");
+				print_textf(395, 5, DKBROWN, "^ftimes30.pcx^xc^c122^t1DM CONTROLLED");
 
 			// print regent name
 			print_textf(10, y-3, 60, "^F02^l142%s", pRegent->mfGetname());

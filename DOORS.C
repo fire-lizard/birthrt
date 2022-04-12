@@ -45,6 +45,7 @@
 
 extern BOOL fSpellKnocking;
 
+extern BOOL DoesPlayerHaveItem(THINGTYPE t);	// in INVNTORY.CPP
 
 typedef struct
 {
@@ -182,7 +183,6 @@ int giString[] = {
 /* ------------------------------------------------------------------------
    Prototypes
    ------------------------------------------------------------------------ */
-BOOL DoesPlayerHaveItem(THINGTYPE t);	// in INVNTORY.CPP
 static LONG GetHighestCeilingHeight (LONG iSector);
 void TitledMessage (char* t,char* m1); // in TMSGBOX.CPP
 static void DoorKeyAdvise (LONG special);
@@ -2610,5 +2610,3 @@ void DoorInfo (LONG special)
 
 // ---------------------------------------------------------------------------
 // ---------------------------------------------------------------------------
-
-

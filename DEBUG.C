@@ -21,8 +21,7 @@
 // GWP The macro defines in debug.h toast the compile.
 //#include "debug.h"
 #include "system.h"
-
-void fatal_error(const char *format, ...); // in MACHINE.C
+#include "machine.h"
 
 //---- global only used by this module
 
@@ -221,5 +220,3 @@ void ErrorMessage (const char *format, ...)
 
 #endif   // _WINDOWS
 // Debug.c
-
-

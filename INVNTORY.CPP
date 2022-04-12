@@ -109,9 +109,6 @@ UBYTE const InventoryNode::fWorn=0x02;
 UBYTE const InventoryNode::fIgnorable=0x04;
 UBYTE const InventoryNode::fHidden=0x08;
 
-extern BOOL fDomainTurn;
-extern BOOL fQuietItems;
-
 extern SHORT BARelicFound;			// from practice.cpp
 
 extern void VictoryScreen(PFVLL,PFVLL);
@@ -123,12 +120,9 @@ extern BOOL fStartMultiGame;
    Description - C callable func to determine if the player has an object
    Returns     - void
    ======================================================================== */
-extern "C"
-{
 BOOL DoesPlayerHaveItem(THINGTYPE t)
 {
 	return ADVENTURER::mfDoesAdventureTeamHave(t);
-}
 }
 
 

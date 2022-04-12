@@ -53,9 +53,7 @@
 #endif
 
 
-extern "C" {
 extern LONG CountRegions (void);
-}
 
 /* ------------------------------------------------------------------------
    Notes

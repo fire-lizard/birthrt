@@ -47,7 +47,7 @@
 #include "Main.hxx"
 
 #ifdef _WINDOWS
-	extern "C" BOOL fQuitting;					// [d1-07-97 JPC] defined in WINSYS\MACHINE.C
+	extern BOOL fQuitting;					// [d1-07-97 JPC] defined in WINSYS\MACHINE.C
 #endif
 
 

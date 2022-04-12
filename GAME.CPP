@@ -162,17 +162,12 @@ extern void PlayGorgon(LONG arg,LONG);
 // used in gamemap.cpp
 BOOL			fAutoMode = FALSE;
 
-extern "C" {
 BOOL fAIAnimate = TRUE;
-//BOOL fPause;
-
-extern char CDDrive[4];
 
 extern int iChatKey;
 char		pwad[40] = "";
 char		pInitScene[9] = "worldmap";
 void SetRedrawMainMapLevel (void);
-}
 
 //SHORT hPlayerStats = fERROR;
 

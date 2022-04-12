@@ -27,15 +27,11 @@
 
 
 
-extern BOOL fQuietItems;
-
 // from aibtlcap.cpp
 extern BOOL fBtlTurnUndead;
 
 //this is for the spell Knock.  it is externed in doors.c
-extern "C"{
 BOOL fSpellKnocking=FALSE;
-}
 
 LONG ItemEffects::Jump(LONG Combo,LONG Arg,LONG Action)
 {

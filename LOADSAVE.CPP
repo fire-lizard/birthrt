@@ -103,18 +103,10 @@ static LONG localShow;
 extern "C" LONG print_global[];
 extern LONG SaveMenuSize;
 extern LONG LoadMenuSize;
-extern "C" int iChatKey;
-extern SHORT fRoundOver;			/* gamemap.cpp */
-extern LONG global_action_turn;		/* mapai.cpp */
+extern int iChatKey;
 extern SHORT oldAction;				/* actnmenu.cpp */
 extern BOOL char_selected;
 extern LONG cheated;				/* how many times player has cheated */
-
-extern SHORT usedFreeAction;		/* actnmenu.cpp */
-extern SHORT usedFreeForge;
-extern SHORT usedFreeMagic;
-extern SHORT usedFreeAgitate;
-extern SHORT usedFreeSpy;
 
 extern BOOL fPlayerNeverDeclaredWar;
 
@@ -122,11 +114,6 @@ extern BOOL fPlayerNeverDeclaredWar;
 #define BEFORE_LTACTION			0
 
 // extern LONG mode_save;		/* gamemap.cpp */
-extern SHORT fFinalRoll;	/* gamemap.cpp */
-extern BOOL fUpdateDataArea;/* gamemap.cpp */
-extern BOOL fDoActionIcon;
-extern BOOL fHeldAction;
-extern SHORT fLTAction;
 extern LONG new_treasury;
 extern LONG iGorgonPlot;	/* gamemap.cpp */
 extern LONG iGorgonAlly;	/* gamemap.cpp */

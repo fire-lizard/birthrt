@@ -148,7 +148,6 @@ void TitledMessageBox::PrintMessage(LONG mc,LONG)
 #endif
 }
 
-extern "C"
 void TitledMessage (char* t,char* m1)
 {
 // [d9-16-96 JPC] Added for access from C.

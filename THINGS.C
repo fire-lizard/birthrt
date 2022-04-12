@@ -3536,7 +3536,7 @@ exit:
 /* =======================================================================
 	NextAnimFrame - Advance to next frame of flic
 	======================================================================= */
-SHORT NextAnimFrame (SHORT iAnim, SHORT sequence, SHORT rotation, UBYTE * pCtrl, SHORT frame)
+SHORT NextAnimFrame (SHORT iAnim, USHORT sequence, USHORT rotation, UBYTE * pCtrl, SHORT frame)
 {
 	ANIMPTR			pAnim = 0;
 	FLICHEADPTR		pHead = 0;
