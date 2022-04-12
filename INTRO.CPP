@@ -149,6 +149,7 @@ void DoIntro(void)
 	}
 }
 #endif
+#if 0
 /* ========================================================================
    Function    - PlayIntro
    Description - show the intro sequence
@@ -160,7 +161,6 @@ void PlayIntro()
    sprintf(fn, "%s\\%s.flc", PATH, NAME);	
    PlayFlic(fn, 0);
 }
-#if 0
 /* =======================================================================
 	Load FLC format files
 	======================================================================= */
@@ -363,4 +363,3 @@ SHORT OpenIntro (SHORT iAnim, CSTRPTR szFileName, SHORT Type, BOOL *ffirst, BOOL
 }
 
 #endif
-

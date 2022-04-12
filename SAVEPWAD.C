@@ -328,7 +328,7 @@ TEXTURE textures[MAX_TEXTURES];
 
 
 // ---------------------------------------------------------------------------
-BOOL GetFileName (HWND i_hwnd, LPCSTR i_szDirName, LPCSTR i_szFilter, LPCSTR i_szExt,
+/*BOOL GetFileName(HWND i_hwnd, LPCSTR i_szDirName, LPCSTR i_szFilter, LPCSTR i_szExt,
    LPSTR o_szReturnName, LPSTR o_szReturnTitle, DWORD i_dwflags, int openOrSave)
 {
 // [d5-10-96 17:41 JPC]
@@ -367,7 +367,7 @@ BOOL GetFileName (HWND i_hwnd, LPCSTR i_szDirName, LPCSTR i_szFilter, LPCSTR i_s
    ofn.lpstrFileTitle = o_szReturnTitle;
    ofn.nMaxFileTitle = _MAX_PATH;      // not sizeof(o_szReturnTitle);
    ofn.lpstrInitialDir = i_szDirName;
-   ofn.Flags = /* OFN_SHOWHELP | */ OFN_HIDEREADONLY | i_dwflags;
+   ofn.Flags = OFN_HIDEREADONLY | i_dwflags;
    ofn.lpstrDefExt = i_szExt;
 
    if (openOrSave == GFN_OPEN)
@@ -379,7 +379,7 @@ BOOL GetFileName (HWND i_hwnd, LPCSTR i_szDirName, LPCSTR i_szFilter, LPCSTR i_s
       fatal_error ("Could not restore old working directory");
 
    return retval;
-}
+}*/
 
 // ---------------------------------------------------------------------------
 // ---------------------------------------------------------------------------
