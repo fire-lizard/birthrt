@@ -7,7 +7,7 @@
 //
 //--------------------------------------------------------------------------------
 
-BOOL fSound;
+extern BOOL fSound;
 BOOL fMusic;
 extern BOOL fHighRes;
 extern BOOL fAIAutoRes;

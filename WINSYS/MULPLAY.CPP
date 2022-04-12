@@ -113,7 +113,6 @@ extern float RealmAIVersionNumber;
 extern "C" void SetRedrawMainMapLevel (void);
 
 extern "C" void RandomLogComment ( char * szString );
-#include "dbstring.cpp"
 
 #ifdef _WINDOWS
 extern "C" HWND hwndApp;
@@ -215,6 +214,59 @@ float	MasterRealmAIVersionNumber;
 
 int iOnSeed = 0;
 
+CSTRPTR	debug_realm_names[] = {
+"chaos",
+"Aerenwe",
+"Alamie",
+"Anuire",
+"Avanil",
+"Baruk-Azhik",
+"Boeruine",
+"Brosengae",
+"Cariele",
+"Chimaeron",
+"Coeranys",
+"Dhoesone",
+"Diemed",
+"Elinie",
+"Endier",
+"Five Peaks",
+"Ghoere",
+"Gorgon's Crown",
+"Ilien",
+"Markazor",
+"Medoere",
+"Mhoried",
+"Mieres",
+"Chaos",
+"Mur-Kilad",
+"Osoerde",
+"Rhuobhe",
+"Roesone",
+"Sielwode",
+"Spiderfell",
+"Taeghas",
+"Talinie",
+"Thurazor",
+"Tuarhievel",
+"Tuornen",
+"Import and Export",
+"Impregnable Heart",
+"S. Anuire Shipping",
+"High Mage Aelies",
+"Port of Call Exchg.",
+"Orth. Imp. Temple",
+"Wizard Hermedhie",
+"Jewel of Sarimie",
+"Temple of Cuiraecen",
+"Upper Anuire Traders",
+"Haelyn's Aegis",
+"Militant Order",
+"Points East Trading",
+"Second Swamp Mage",
+"N. Reformed Church",
+"Wizard Eyeless One",
+"Ruarch Rockhammer" };
 
 // -----------------------------------------------------------------
 //
