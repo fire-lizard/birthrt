@@ -2474,11 +2474,9 @@ void DrawLeyLines (void)
 	Description -
 	Returns	- void
 	======================================================================== */
-extern "C" {
 void SetRedrawMainMapLevel (void)
 {
 	fRedrawAll = TRUE;
-}
 }
 
 /* ========================================================================
@@ -7640,13 +7638,11 @@ void SuspendTimeLimit (void)
 		lSuspendedTimeLimitAdjustment = get_time();
 }
 
-extern "C" {
 void ResumeTimeLimit (void)
 {
 	if (lSuspendedTimeLimitAdjustment)
 		WaitingWhen += get_time() - lSuspendedTimeLimitAdjustment;
 	lSuspendedTimeLimitAdjustment = 0;
-}
 }
 
 /* ========================================================================

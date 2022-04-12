@@ -119,9 +119,7 @@ void BroadcastAllienceTable ( void );
 void DoMultiplayerDataIntegrityCheck (void);
 #endif
 
-extern "C" {
 extern void SysForceCursor (void);
-}
 
 extern void RandomLogComment ( char * szString );
 extern "C" void RandomLogPrefix ( char * szString );

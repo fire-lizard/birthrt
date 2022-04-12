@@ -197,7 +197,6 @@ void QuestItemFoundProc(LONG MenuCombo,LONG b)
 	RunMenus();
 }
 
-extern "C"
 LONG GetLevelFiendIndex(void)
 {
 	POINT ReturnMe;

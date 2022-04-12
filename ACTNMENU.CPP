@@ -121,10 +121,10 @@ extern void GainRealmExp(LONG RegentIndex, const LONG ExpAmount,
 					const BOOL CanGainLevelNow, const BOOL fSend);
 
 extern "C" void DrawLittleButton (LONG x, LONG y, LONG w, LONG h, LONG pushFlag);
-extern "C" void ResumeTimeLimit (void);
+extern void ResumeTimeLimit (void);
 extern void RandomLogComment ( char * szString );
 extern "C" void RandomLogPrefix ( char * szString );
-extern "C" void SetRedrawMainMapLevel (void);
+extern void SetRedrawMainMapLevel (void);
 
 /* ------------------------------------------------------------------------
    Global Variables

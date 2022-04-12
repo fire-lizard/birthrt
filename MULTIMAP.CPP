@@ -72,9 +72,7 @@ extern BOOL fLogComment;
    Prototypes
    ------------------------------------------------------------------------ */
 
-extern "C" {
 void SetRedrawMainMapLevel (void);
-}
 
 extern void RandomLogComment ( char * szString );
 

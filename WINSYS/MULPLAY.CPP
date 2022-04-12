@@ -110,7 +110,7 @@ extern void ShowMPOver(LONG, LONG);
 
 extern float RealmAIVersionNumber;
 
-extern "C" void SetRedrawMainMapLevel (void);
+extern void SetRedrawMainMapLevel (void);
 
 extern void RandomLogComment ( char * szString );
 

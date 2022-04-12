@@ -136,8 +136,8 @@ void AddFlicSound(LONG whichFrame, LONG whichSound);
 void ClearFlicSound(void);
 void NewIntro (void);
 
+void SetRedrawMainMapLevel(void);
 extern "C" {
-void SetRedrawMainMapLevel (void);
 void AskQuitSysProc(LONG MenuCombo, LONG button);
 void ScaleBitmap_fine (SHORT x, SHORT y, SHORT iBitm, SHORT bx, SHORT by, SHORT w, SHORT h, LONG scale);
 void inc_lens (LONG, LONG);
@@ -152,7 +152,6 @@ LONG AverageTicksPerFrame (void);
 /* ------------------------------------------------------------------------
 	Global Variables
 	------------------------------------------------------------------------ */
-extern "C" {
 extern SHORT sMenusUp;
 extern PTR GDIscreen;
 extern LONG tot_thing_spans;
@@ -173,9 +172,6 @@ extern COLORSPEC CurPal[256];
 //GEH this will go away later...
 char InstallPath[256];
 
-// GEH this should go into system.h
-extern BOOL		fMinMemory ;
-
 #if defined(_WINDOWS)
 extern HWND	hwndApp;
 extern SHORT sDrawType;   // 5 SEP 96 CAM
@@ -185,14 +181,11 @@ extern BOOL  fStartSIGS;
 // for critical errors due to CD removed
 BOOL fGraphInitialized = FALSE;
 BOOL fIsFadedOut = FALSE;
-}
 
 extern SHORT fFadedOut;
 extern LONG cheated;
 
 SHORT	gUnitStackSize = 15;
-
-extern BOOL	fChatLineOn;
 
 SHORT InstallationType;
 char CDDrive[4];
@@ -294,11 +287,8 @@ void PrintLocationInfo(void)
 // GWP It crashes in direct draw and switching back out.
 // CAM Not any more!
 #if defined (_WINDOWS)
-extern "C"
-{
 extern LONG lSavedX;
 extern LONG lSavedY;
-}
 void ToggleDirectDraw(LONG, LONG)
 {
 

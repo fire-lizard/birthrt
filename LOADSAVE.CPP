@@ -152,9 +152,7 @@ extern void InitDomainTurn (LONG);
 extern void NewGameConfirmed2(BOOL fMulti);
 extern void AdjustName (LONG _realm);
 
-extern "C" {
-	void SetRedrawMainMapLevel (void);
-}
+extern void SetRedrawMainMapLevel (void);
 extern void RandomLogComment ( char * szString );
 
 /* ------------------------------------------------------------------------

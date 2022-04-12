@@ -376,9 +376,7 @@ void AdventurePrep(void);
 //void DoNPCAdmin(void);
 
 
-extern "C" {
 void SetRedrawMainMapLevel (void);
-}
 
 void WriteOptionSettings(void);
 

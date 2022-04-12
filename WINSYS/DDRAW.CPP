@@ -29,8 +29,8 @@ typedef struct pal
   WORD NumberOfEntries;
   PALETTEENTRY aEntries[256];
 } pal;
-extern pal LogicalPalette;
 }
+extern pal LogicalPalette;
 
 
 

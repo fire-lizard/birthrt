@@ -182,9 +182,7 @@ void DescribeHistory(void);
 
 // this is stupid that I have to do this and that
 // it is not part of some include file!
-extern "C" {
 void SetRedrawMainMapLevel (void);
-}
 
 #if defined(_JUNEDEMO)
 extern void ShowAdScreen(SHORT);

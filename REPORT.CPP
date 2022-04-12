@@ -453,7 +453,7 @@ static void PaintInvestitureReport(LONG X, LONG Y, LONG W, LONG H);
 UBYTE ReactionAndStatusColor(LONG Realm1, LONG Realm2);
 void NewTutorial (BOOL);
 void SuspendTimeLimit (void);
-extern "C" void ResumeTimeLimit (void);
+extern void ResumeTimeLimit (void);
 
 static	long lReportTimeout = 0;
 
@@ -475,9 +475,7 @@ DEFINE_STATIC_VECTOR_DATA_S(int,iAdvButtonStr,13) = {
 };
 DEFINE_STATIC_VECTOR_CLASS(int, iAdvButtonStr);
 
-extern "C" {
 void SetRedrawMainMapLevel (void);
-}
 
 DEFINE_STATIC_VECTOR_DATA_S(CSTRPTR,szAdvisorPort,12) = {
 	"h01", "h02", "h03", "h04",

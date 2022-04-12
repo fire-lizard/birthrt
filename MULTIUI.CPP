@@ -52,9 +52,9 @@ extern BOOL fLogComment;
 
 void InitDomainTurn(LONG);
 
-extern "C" {
 void SetRedrawMainMapLevel (void);
-void MainLoop (void);
+extern "C" {
+	void MainLoop (void);
 }
 
 extern SHORT	fFadedOut;

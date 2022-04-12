@@ -132,7 +132,7 @@ static void PaintHello( LONG MenuCombo, LONG );
 void NextHelpKeys(LONG, LONG);
 
 
-extern "C" { void SetRedrawMainMapLevel (void); }
+extern void SetRedrawMainMapLevel (void);
 
 #if defined(_DEBUG)
 extern BOOL fWonGame;
