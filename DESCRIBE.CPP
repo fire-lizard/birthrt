@@ -52,7 +52,7 @@
 /* ------------------------------------------------------------------------
    Global Variables
    ------------------------------------------------------------------------ */
-extern "C" extern LONG		GameSpecificGlobal_type;
+extern LONG		GameSpecificGlobal_type;
    
 static SHORT screennum = 0;
 static SHORT screenend = 0;

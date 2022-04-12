@@ -10,11 +10,13 @@
 #include <windows.h>
 #include "Registry.h"
 
+#include "../player.hxx"
+
 #define VAR_DWORD  1  // ( unsigned long )
 #define VAR_BOOL   2  // ( int ) 
 #define VAR_USHORT 3  // ( unsigned short )
 #define VAR_SZ     4  // ( string )
-extern 	BOOL fAIAutoRes;
+
 typedef struct
 {
 	char		szName[20];		//---- Name of registry varible

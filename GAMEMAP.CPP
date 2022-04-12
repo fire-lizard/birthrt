@@ -193,9 +193,9 @@ extern void dashedline(LONG x0, LONG y0, LONG x1, LONG y1, LONG color1 ,LONG col
 }
 extern BOOL RegentDeathTest (void);
 
-extern "C" void RandomLogComment ( char * szString );
-extern "C" void LogFlush ( void );
-extern "C" SHORT print_textf_(LONG x, LONG y, LONG color, const char *format, ...);
+extern void RandomLogComment ( char * szString );
+extern void LogFlush ( void );
+extern SHORT print_textf_(LONG x, LONG y, LONG color, const char *format, ...);
 
 #if defined(_JUNEDEMO)
 void ShowAdScreen(SHORT);
@@ -1266,7 +1266,6 @@ extern int		iTTimeLimit;
 
 extern SHORT   ChatDisplaySize;
 
-extern "C" {
 extern BOOL		fAutoRestoreCursor;
 extern SHORT	sMenusUp;
 extern BOOL		fMenuClosed;
@@ -1287,7 +1286,6 @@ extern SHORT	cntSaveBkgnd;
 #ifdef _WINDOWS
 extern BOOL fStartSIGS;
 #endif
-}
 
 static	SHORT	sCommandBattle = 0;
 BOOL	fCommandBattleLoop;

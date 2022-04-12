@@ -124,13 +124,11 @@ extern LONG		iSiteChosen;
 
 extern BOOL fTutorialSelected;	// from gamemap.cpp
 
-extern "C" {
 extern LONG		GameSpecificGlobal_type;
 extern LONG		GameSpecificGlobal_x;
 extern LONG		GameSpecificGlobal_y;
 extern LONG		GameSpecificGlobal_w;
 extern LONG		GameSpecificGlobal_h;
-}
 
 /* ------------------------------------------------------------------------
    Prototypes

@@ -6,10 +6,6 @@
 //
 //------------------------------------------------------------------------------
 
-#if defined (__cplusplus)
-extern "C" {
-#endif
-
 int WaveOpenFile( char          *pszFileName,
                   HMMIO         *phmmioIn,
                   WAVEFORMATEX  **ppwfxInfo,
@@ -26,8 +22,4 @@ int WaveStartDataRead( HMMIO       *phmmioIn,
                        MMCKINFO    *pckInRIFF );
 
 
-#if defined (__cplusplus)
-}
-
 // wave.h
-#endif

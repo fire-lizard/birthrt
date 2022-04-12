@@ -73,9 +73,9 @@ extern BOOL  fRedrawAll;
 
 extern BOOL	fWonGame;
 
-extern "C" LONG numrands;
+extern LONG numrands;
 
-extern "C" unsigned long lastrand;
+extern unsigned long lastrand;
 
 
 extern DIFFICULTY game_difficulty;

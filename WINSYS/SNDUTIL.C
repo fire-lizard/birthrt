@@ -21,6 +21,7 @@
 #include "SndUtil.h"
 #include "SWinUtil.h"
 
+extern BOOL fSound;
 
 typedef struct
 {

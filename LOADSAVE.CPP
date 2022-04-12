@@ -23,7 +23,6 @@
 #include "typedefs.h"
 #include <sys\types.h>
 #include <direct.h>
-//#include <assert.h>
 
 #include "actnmenu.hxx"
 #include "charsel.hxx"

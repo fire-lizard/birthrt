@@ -134,7 +134,7 @@ void LogFlush ( void )
 
 /* ======================================================================== */
 
-unsigned long lograndom ( char * szFileName, int iLineNumber )
+unsigned long lograndom ( char * szFileName, SHORT iLineNumber )
 {
 	lastrand = rand();
 

@@ -257,5 +257,3 @@ DEFINE_MATRIX_CLASS_S(UBYTE, RealmStatus, REALM::REALM_COUNT, LAND_REALM_COUNT);
 char RealmNameBuffer[REALM::REALM_COUNT][22];
 
 /*	======================================================================== */
-
-

@@ -120,7 +120,7 @@ extern void GainRealmExp(LONG RegentIndex, const LONG ExpAmount,
 
 extern "C" void DrawLittleButton (LONG x, LONG y, LONG w, LONG h, LONG pushFlag);
 extern "C" void ResumeTimeLimit (void);
-extern "C" void RandomLogComment ( char * szString );
+extern void RandomLogComment ( char * szString );
 extern "C" void RandomLogPrefix ( char * szString );
 extern "C" void SetRedrawMainMapLevel (void);
 

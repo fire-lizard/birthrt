@@ -17,10 +17,6 @@
 #ifdef _WINDOWS
 #ifdef _DEBUG
 
-#if defined (__cplusplus)
-extern "C" {
-#endif
-
 unsigned long lograndom( char *FileName, SHORT LineNum );
 #define rand() lograndom(__FILE__,__LINE__)
 
@@ -30,9 +26,6 @@ void RandomLogClose ( void );
 
 void LogFlush ( void );
 
-#if defined (__cplusplus)
-}
-#endif
 
 #endif
 #endif

@@ -123,7 +123,7 @@ extern "C" {
 extern void SysForceCursor (void);
 }
 
-extern "C" void RandomLogComment ( char * szString );
+extern void RandomLogComment ( char * szString );
 extern "C" void RandomLogPrefix ( char * szString );
 
 
@@ -7054,6 +7054,3 @@ void BroadcastAllienceTable ( void )
 }
 #endif
 /* ======================================================================== */
-
-
-
