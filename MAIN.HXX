@@ -33,10 +33,6 @@ extern SHORT	gUnitStackSize;
 void toggleminiview(LONG);
 void AddGameKeys(void);
 
-#if defined (__cplusplus)
-extern "C" {
-#endif
-
 /* from main.cpp */
 void ShowMainMenu(LONG, LONG);
 void HideMainMenu(LONG, LONG);
@@ -46,9 +42,4 @@ void DirectDrawPreFrame		( void );
 void DirectDrawSaveScreen	( void );
 void AddGlobalKeys(void);
 
-#if defined (__cplusplus)
-}
 #endif
-
-#endif
-

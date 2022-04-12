@@ -100,7 +100,7 @@ static LONG localShow;
 /* ------------------------------------------------------------------------
    Extern Variables
    ------------------------------------------------------------------------ */
-extern "C" LONG print_global[];
+extern LONG print_global[];
 extern LONG SaveMenuSize;
 extern LONG LoadMenuSize;
 extern int iChatKey;
@@ -154,9 +154,8 @@ extern void AdjustName (LONG _realm);
 
 extern "C" {
 	void SetRedrawMainMapLevel (void);
-
-	void RandomLogComment ( char * szString );
 }
+extern void RandomLogComment ( char * szString );
 
 /* ------------------------------------------------------------------------
    Code

@@ -230,8 +230,6 @@ static UBYTE	lighten[256] = {
 /*	228,*/229,230,231,232,232,233,234,235,236,236,237,238,239,240,240,241,242,243,244,244,245,246,247,247,
 /*	248,*/249,250,251,252,253,254,255 };
 
-extern UBYTE	antia_table[];
-
 /* =======================================================================
    Function    - SaveVideoSet, RestoreVideoSet
    Description - saves and restores the view size & position

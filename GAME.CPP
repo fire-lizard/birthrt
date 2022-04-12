@@ -3541,7 +3541,6 @@ void PaintHello( LONG MenuCombo, LONG )
 	gprint_text(X,Y,"^F01Hello World!", BLACK);
 }
 
-extern "C" {
 /* ========================================================================
    Function    - LoadingSceneProc
    Description -
@@ -3597,6 +3596,4 @@ void SetLoadingProgress( LONG Percent )
 {
 	gLoadingPercent = Percent;
 }
-
-}; // extern "C"
 

@@ -354,7 +354,7 @@ void ToggleDirectDraw(LONG, LONG)
 
 
 
-extern "C" void DirectDrawPreFrame( void )
+extern void DirectDrawPreFrame( void )
 {
 	fDrawing = TRUE;
 	if ( sDrawMode == iGDI )
@@ -514,7 +514,6 @@ static void machine_post_frame()
 	Description - Main loop for the game, called once per frame
 	Returns     -
 	======================================================================== */
-extern "C" {
 void MainLoop(void)
 {
 	
@@ -728,8 +727,6 @@ void MainLoop(void)
 	fInfoOnlyDomainUI = FALSE;			// set to TRUE in multiui.cpp
 }
 
-} // extern "C"
-
 /* ========================================================================
 	Function    - MenuLoop
 	Description - a game loop with no render
@@ -798,9 +795,6 @@ void MenuLoop()
 
 }
 
-//void DoIntro(void);
-
-extern "C" {
 /* ========================================================================
 	Function    - GameMain
 	Description - called once at start of game
@@ -1108,8 +1102,6 @@ void CPPQuitSys(LONG, LONG)
 	}
 #endif
 }
-
-} // extern "C"
 
 /* ========================================================================
 
@@ -1959,9 +1951,6 @@ void CoverResetSound( LONG, LONG )
 	Description - add the global keys ( always work )
 	Returns     -
    ======================================================================== */
-#if defined(__cplusplus)
-extern "C" {
-#endif
 void AddGlobalKeys(void)
 {
 
@@ -1976,9 +1965,6 @@ void AddGlobalKeys(void)
 
 	add_key(KEY_F8, CoverResetSound, 0, 0);        // [d7-02-96 JPC]
 }
-#if defined(__cplusplus)
-}
-#endif
 /*===============================================================================
 function CheckTheCDMusic  (actually, CD or .wav music)
 purpose  if the music is done, start a frame counter to wait a while before starting it again.

@@ -15,8 +15,9 @@ typedef struct {
 	SHORT		lores_index;
 } FONT_DATA;
 
-extern FONT_DATA font_info[];
 };
+
+extern FONT_DATA font_info[];
 
 void ListBox::Init(SHORT hThis,Rect& box,Rect& scrUp,Rect& scrDn,SHORT LineHeight,SHORT font,SHORT EntryBlock,SHORT LineChars, PFVL Callback)
 {

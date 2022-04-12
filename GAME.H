@@ -309,7 +309,6 @@ void SystemHelp( CHAR *, CHAR *, LONG, PFVLL, LONG );
 
 
 #if defined(__cplusplus)
-extern "C" {
 #endif
 void init_game(void);
 
@@ -366,9 +365,5 @@ void SystemHelpCover3(LONG, LONG);
 void SystemHelpPaintProc( LONG, LONG );
 
 #if defined(__cplusplus)
-}
 #endif
 #endif // _GAME_H
-
-
-
