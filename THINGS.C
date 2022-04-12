@@ -48,6 +48,8 @@
 #include "thingtyp.h"
 
 extern BOOL fBattleCombat;
+extern LONG clip_line(POINT* a, POINT* b);
+extern UBYTE				shade_table[];
 
 #define QUIETDEGRADE 1
 

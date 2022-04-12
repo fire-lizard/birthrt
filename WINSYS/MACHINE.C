@@ -79,13 +79,9 @@ int ShutdownRedBook(void);
 LONG WindowWidth = MAX_VIEW_WIDTH;
 LONG WindowHeight = MAX_VIEW_HEIGHT;
 
-extern LONG tot_thing_spans;
 extern LONG need_cursor_draw;
 extern HPALETTE hpalApp;
 extern char	*GDIscreen;
-extern BOOL fMusic;
-extern BOOL fHighRes;
-//extern BOOL fAIAutoRes;
 extern HKEY hKeyBirthright;
 
 BOOL JustLoadWad=FALSE;

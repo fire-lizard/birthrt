@@ -227,9 +227,7 @@ static BOOL		fBtlChat = FALSE;
 extern SHORT   ChatDisplaySize;
 static BOOL		LastChatDisplaySize = ChatDisplaySize;
 
-extern "C" {
 BOOL	fBattleCombat = FALSE;
-}
 
 BOOL		fBattleStarted = FALSE;
 

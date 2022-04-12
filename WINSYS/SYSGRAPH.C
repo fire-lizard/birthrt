@@ -97,7 +97,6 @@ pal LogicalPalette =
 
 extern HDC gdcScreen;
 extern HWND hwndApp;
-extern BOOL fHighRes;
 extern HMENU hMenuInit;
 
 // globals for screen window width and height from machine.c

@@ -97,13 +97,7 @@
 #endif
 
 
-#if defined (__cplusplus)
-extern "C" {
-#endif
 extern BOOL fBattleCombat;
-#if defined (__cplusplus)
-}
-#endif
 
 extern BOOL fPreparingSpells;
 

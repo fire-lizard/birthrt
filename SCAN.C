@@ -41,7 +41,7 @@
    Description - ???
    Returns     - void
    ======================================================================== */
-void scan_line (POINT *a, POINT *b, LONG * array)
+void scan_line (POINT * a, POINT * b, LONG * array)
 {
 	LONG d,x,y,ax,ay,sx,sy,dx,dy;
 	LONG x0,y0,x1,y1;
@@ -109,4 +109,3 @@ void scan_line (POINT *a, POINT *b, LONG * array)
 	if (x>=0 && x<MAX_VIEW_WIDTH)
 		array[x]=y;
 }
-

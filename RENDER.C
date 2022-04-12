@@ -46,6 +46,10 @@
 #include "special.h"
 #include "colors.h"
 
+extern void scan_line(POINT* a, POINT* b, LONG* array);
+extern LONG clip_line(POINT* a, POINT* b);
+extern UBYTE				shade_table[];
+
 /* ------------------------------------------------------------------------
    Notes
    ------------------------------------------------------------------------ */

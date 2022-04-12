@@ -51,7 +51,7 @@
                  this fn, call the rotate fns first on the points.
    Returns     - whether or not it it is visible. (ie intersects.)
    ======================================================================== */
-LONG clip_line (POINT *a, POINT *b)
+LONG clip_line (POINT * a, POINT * b)
 {
  LONG  x1, y1, x2, y2;
  LONG  code1, code2;

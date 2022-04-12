@@ -385,12 +385,6 @@ extern BOOL		fBtlMagicResult;	// battle card result set in Inventory Menu
 
 extern BOOL		fBattleStarted;		// is a battle officially under way
 
-#if defined (__cplusplus)
-extern "C" {
-#endif
 extern BOOL		fBattleCombat;		// tell the world if were on the field
-#if defined (__cplusplus)
-}
-#endif
 
 #endif

@@ -29,13 +29,6 @@
 
 /* divide a 32bit fixed pt by 2^n */
 #ifdef _WINDOWS
-#if defined(__cplusplus)
-extern "C" {
-#endif
-extern BOOL fHighRes;
-#if defined(__cplusplus)
-}
-#endif
 #define DARKEN_FACTOR		(16-fHighRes)
 #else
 #define DARKEN_FACTOR		(16-graphics_mode)
@@ -304,9 +297,6 @@ extern "C" {
 SHORT* get_blockm (LONG px1,LONG py1);
 void show_block_lines (void);
 
-/* clip.c */
-LONG clip_line (POINT *a, POINT *b);
-
 /* convert.c */
 LONG segs_match(SHORT a,SHORT b);
 LONG single_sided(LONG s);
@@ -361,9 +351,6 @@ LONG calc_x_texture_info(LONG *xsrc_inc,LONG *src_x);
 LONG draw_backface(LONG type);
 void add_floor_span(LONG x,LONG y,LONG sect);
 void add_ceil_span(LONG x,LONG y,LONG sect);
-
-/* scan.c */
-void scan_line (POINT * a, POINT * b, LONG * array);
 
 /* spans.c */
 void clear_spans (void);
@@ -435,8 +422,6 @@ extern LONG					base_light;
 extern UBYTE * 			shade;
 extern LONG					SectLight;
 extern LONG					NSEWLight;
-extern UBYTE				shade_table[];
-extern UBYTE				antia_table[];
 
 extern LONG					render_perspect;
 extern LONG					render_center_x, render_center_y;

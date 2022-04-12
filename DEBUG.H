@@ -12,6 +12,10 @@
 #ifndef _DEBUG_H
 #define _DEBUG_H
 
+#if defined(_WINDOWS)
+int  debugf(const char* format, ...);
+#endif
+
 #if defined(__cplusplus)
 extern "C" {
 #endif
@@ -19,7 +23,6 @@ extern "C" {
 // Prototypes.
 #if defined(_WINDOWS)
 	void InitDebug ( void );
-	int  debugf ( const char *format, ... );
 	void SS_Assert(char *, int);
 	void SS_printf (const char *format, ... );
 	#if defined (_JPC)
@@ -74,5 +77,3 @@ void	ErrorMessage (const char *format, ...);
 
 // Debug.h
 #endif // _DEBUG_H
-
-

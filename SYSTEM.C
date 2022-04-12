@@ -63,6 +63,8 @@
 extern void SetRedrawMainMapLevel (void);
 extern void ZoomOut (LONG /* type */, LONG);
 extern void MoveZoomMap (LONG xx, LONG yy);
+extern UBYTE				antia_table[];
+extern UBYTE				shade_table[];
 
 /* ------------------------------------------------------------------------
    Defines and Compile Flags
