@@ -100,8 +100,8 @@ static ErrCode err = kNoError;
 
 void PaintAckLED(int k, DWORD id2, BOOL localAcks);
 
-extern "C" void RandomLogComment ( char * szString );
-extern "C" void RandomLogPrefix ( char * szString );
+extern void RandomLogComment ( char * szString );
+extern void RandomLogPrefix ( char * szString );
 
 
 

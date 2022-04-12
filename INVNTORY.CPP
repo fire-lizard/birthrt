@@ -72,7 +72,7 @@
 #include "winsys\mono_c.h"
 #endif
 
-extern "C" void RandomLogComment ( char * szString );
+extern void RandomLogComment ( char * szString );
 extern "C" void RandomLogPrefix ( char * szString );
 
 /* ------------------------------------------------------------------------

@@ -74,7 +74,7 @@ extern "C" {
 void SetRedrawMainMapLevel (void);
 }
 
-extern "C" void RandomLogComment ( char * szString );
+extern void RandomLogComment ( char * szString );
 
 
 // void PaintGenericStatement(LONG MenuCombo, LONG);

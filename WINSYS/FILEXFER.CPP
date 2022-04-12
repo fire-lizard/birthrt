@@ -32,7 +32,7 @@
 
 #ifdef _WINDOWS
 #ifdef _DEBUG
-extern "C" void RandomLogComment ( char * szString );
+extern void RandomLogComment ( char * szString );
 extern "C" void RandomLogPrefix ( char * szString );
 #endif
 #endif

@@ -177,7 +177,7 @@ typedef struct
 void ErrorDPlay (PlatformNetworkModule *pPlatform, HRESULT hResult );
 
 
-extern "C" void RandomLogComment ( char * szString );
+extern void RandomLogComment ( char * szString );
 
 
 FP_DPENUM	PlatformNetworkModule::fp_DPEnum = NULL;		// DirectEnumProviders()

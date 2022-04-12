@@ -112,7 +112,7 @@ extern float RealmAIVersionNumber;
 
 extern "C" void SetRedrawMainMapLevel (void);
 
-extern "C" void RandomLogComment ( char * szString );
+extern void RandomLogComment ( char * szString );
 
 #ifdef _WINDOWS
 extern "C" HWND hwndApp;

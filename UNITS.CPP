@@ -46,7 +46,7 @@ extern BOOL fQuitting;
 extern SHORT				iSelectedUnit;
 BIRTHRT_SND CalcVoxSndObj(VOX_TYPE Voice, VOX_BLOCK Block);
 
-extern "C" void RandomLogComment ( char * szString );
+extern void RandomLogComment ( char * szString );
 extern "C" void RandomLogPrefix ( char * szString );
 
 

@@ -59,7 +59,7 @@
    Notes
    ------------------------------------------------------------------------ */
 
-extern "C" void RandomLogComment ( char * szString );
+extern void RandomLogComment ( char * szString );
 
 /* ------------------------------------------------------------------------
    Defines and Compile Flags

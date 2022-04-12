@@ -151,7 +151,7 @@ extern CHAR pszGames[MAX_GAMES][24];		// list of game names
 extern void ToggleDirectDraw(LONG, LONG);
 #endif
 
-extern "C" void RandomLogComment ( char * szString );
+extern void RandomLogComment ( char * szString );
 extern "C" void RandomLogPrefix ( char * szString );
 
 void DisplayProcess (LONG mode, LONG color, LONG index1, LONG index2);
