@@ -107,7 +107,7 @@ BOOL fStartSIGS = FALSE;            //---- Means startup in SIGS
 extern MCIDEVICEID gwMCIDeviceID;   /* MCI Device ID for the AVI file */
 #endif
 
-HWND	hwndApp;
+extern HWND	hwndApp;
 HDC		gdcScreen;
 HCURSOR hcStd;
 HINSTANCE hInstApp;

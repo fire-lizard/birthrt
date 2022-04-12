@@ -133,4 +133,3 @@ extern BOOL			gDontFight;
 }
 #endif
 #endif // _MACHINE_H
-

@@ -20,7 +20,6 @@
 #define _MULTIMONO    //---- Comment out for no mono
 #endif
 
-//#define LOGCOMMENTSLEEP Sleep(1);
 #define LOGCOMMENTSLEEP {;}
 
 #include "MulPlay.hxx"
