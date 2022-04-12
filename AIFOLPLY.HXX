@@ -57,7 +57,7 @@ public:
 										 LONG * const /* pStartFallZ */) const;
 	void mfFollowPlayer();
 	inline void mfFollowAdventureTeam();
-	inline void mfSwapPlaces(FOLLOW_PLAYER_DATA & const);
+	inline void mfSwapPlaces(FOLLOW_PLAYER_DATA &);
 	
 	
 	
@@ -206,7 +206,7 @@ inline BOOL const FOLLOW_PLAYER_DATA::mfDidIMove(LONG const x,
 	
 	return Result;
 }
-inline void FOLLOW_PLAYER_DATA::mfSwapPlaces(FOLLOW_PLAYER_DATA & const OtherFollower)
+inline void FOLLOW_PLAYER_DATA::mfSwapPlaces(FOLLOW_PLAYER_DATA & OtherFollower)
 {
 	fAdventurer.mfSwapPlaces(OtherFollower.fAdventurer);
 }

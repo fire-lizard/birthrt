@@ -454,7 +454,7 @@ void ADVENTURER::mfFillReversePlayerPts(
    Returns     -
    ======================================================================== */
 void ADVENTURER::mfSwapPlaces(
-	ADVENTURER & const  rAdventurer )
+	ADVENTURER & rAdventurer )
 {
 	SBYTE const OldPosition = fAdventurerPathIndex;
 	

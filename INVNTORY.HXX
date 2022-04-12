@@ -304,9 +304,9 @@ class ObjectList
 class InventoryItor 
 {
 	public:
-		inline InventoryItor(ObjectList & const);
-		inline InventoryItor(InventoryItor & const X);
-		inline InventoryItor(InventoryItor const & const X);
+		inline InventoryItor(ObjectList &);
+		inline InventoryItor(InventoryItor & X);
+		inline InventoryItor(InventoryItor const & X);
 		inline ~InventoryItor();
 	
 		// for setting the iterator to the begining of the list.
@@ -368,7 +368,7 @@ class InventoryItor
 		
 	protected:
 	private:
-		ObjectList & const fInventory;
+		ObjectList &       fInventory;
 		InvenIndex 		   fCurrentIndex;
 		InvenIndex 		   fPrevIndex;
 };
@@ -576,21 +576,21 @@ inline void InventoryNode::mfSetNext(InvenIndex const n)
 }
 
 
-inline InventoryItor::InventoryItor(ObjectList & const Inventory) :
+inline InventoryItor::InventoryItor(ObjectList & Inventory) :
 	fInventory(Inventory),
 	fCurrentIndex(Inventory.begin()),
 	fPrevIndex(Inventory.end())
 {
 }
 
-inline InventoryItor::InventoryItor(InventoryItor & const X) :
+inline InventoryItor::InventoryItor(InventoryItor & X) :
 	fInventory(X.fInventory),
 	fCurrentIndex(X.fCurrentIndex),
 	fPrevIndex(X.fPrevIndex)
 {
 }
 
-inline InventoryItor::InventoryItor(InventoryItor const & const X) :
+inline InventoryItor::InventoryItor(InventoryItor const & X) :
 	fInventory(X.fInventory),
 	fCurrentIndex(X.fCurrentIndex),
 	fPrevIndex(X.fPrevIndex)

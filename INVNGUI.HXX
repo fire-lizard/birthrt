@@ -134,10 +134,10 @@ class InventoryGUI
 		SHORT HighlightedRecipient;
 
 		
-		void mfPaintSpellBoxes(ObjectList const & const,LONG) const;
-		void mfPaintListBoxLine(LONG,ObjectList & const,LONG) const;
-		void mfPaintListBoxIcon(LONG,ObjectList const & const,LONG) const;
-		void mfPaintMiscInfoBox(ObjectList & const,LONG) const;
+		void mfPaintSpellBoxes(ObjectList const & ,LONG) const;
+		void mfPaintListBoxLine(LONG,ObjectList & ,LONG) const;
+		void mfPaintListBoxIcon(LONG,ObjectList const & ,LONG) const;
+		void mfPaintMiscInfoBox(ObjectList & ,LONG) const;
 		void mfPaintArmsBoxes(ObjectList&,LONG);
 		void mfPaintCategoryButtonText(LONG) const;
 		void mfPaintDudeNameText(LONG) const;

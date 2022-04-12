@@ -67,7 +67,7 @@ public:
 	T *operator->() const
 		{	return ((T *)BLKPTR(fHandle));	}
 		
-	DumbHandlePtr<T> & const operator=(SHORT const NewHandle)
+	DumbHandlePtr<T> & operator=(SHORT const NewHandle)
 		{ 
 #if defined (MEMORY_CHK)
 			if (NewHandle < 0 || abBlockAttr[NewHandle] == UNUSED)
@@ -93,7 +93,7 @@ public:
 			return *this;	
 		}
 		
-	DumbHandlePtr<T> & const operator=(DumbHandlePtr<T> const &NewDumbHandle)
+	DumbHandlePtr<T> & operator=(DumbHandlePtr<T> const &NewDumbHandle)
 		{ 
 			if (this != &NewDumbHandle)
 			{
@@ -187,7 +187,7 @@ public:
 		return (((T *) BLKPTR(fHandle))[index]);
  	}
 	
-	DumbHandleArray<T> & const operator=(SHORT const NewHandle)
+	DumbHandleArray<T> & operator=(SHORT const NewHandle)
 		{ 
 #if defined (MEMORY_CHK)
 			if (NewHandle < 0 || abBlockAttr[NewHandle] == UNUSED)
@@ -204,7 +204,7 @@ public:
 			return *this;	
 		}
 		
-	DumbHandleArray<T> & const operator=(DumbHandleArray<T> const &NewDumbHandle)
+	DumbHandleArray<T> & operator=(DumbHandleArray<T> const &NewDumbHandle)
 		{ 
 			if (this != &NewDumbHandle)
 			{
@@ -265,7 +265,7 @@ public:
 	T *operator->() const
 		{	return (fPtr);	}
 		
-	DumbAutoLockPtr<T> & const operator=(SHORT const NewHandle)
+	DumbAutoLockPtr<T> & operator=(SHORT const NewHandle)
 		{ 
 			if (NewHandle != fHandle)
 			{
@@ -305,7 +305,7 @@ public:
 			return *this;	
 		}
 		
-	DumbAutoLockPtr<T> & const operator=(DumbAutoLockPtr<T> const &NewDumbHandle)
+	DumbAutoLockPtr<T> & operator=(DumbAutoLockPtr<T> const &NewDumbHandle)
 		{ 
 			if (this != &NewDumbHandle)
 			{
@@ -428,7 +428,7 @@ public:
 		return (fPtr[index]);
  	}
 	
-	DumbAutoLockArray<T> & const operator=(SHORT const NewHandle)
+	DumbAutoLockArray<T> & operator=(SHORT const NewHandle)
 		{ 
 #if defined (MEMORY_CHK)
 			if (NewHandle < 0 || abBlockAttr[NewHandle] == UNUSED)
@@ -455,7 +455,7 @@ public:
 			return *this;	
 		}
 		
-	DumbAutoLockArray<T> & const operator=(DumbAutoLockArray<T> const &NewDumbHandle)
+	DumbAutoLockArray<T> & operator=(DumbAutoLockArray<T> const &NewDumbHandle)
 		{ 
 			if (this != &NewDumbHandle)
 			{

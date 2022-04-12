@@ -95,7 +95,7 @@ public:
 	                      LONG const /* A */) const;
 	
 	BOOL const mfAmICrouching() const;
-	void mfSwapPlaces( ADVENTURER & const /* rAdventurer */);
+	void mfSwapPlaces( ADVENTURER & /* rAdventurer */);
 	
 	// [d4-25-97 JPC] Added new parameter pStartFallZ.
 	inline WadThingType const mfBumpAndFloor(LONG * const /* pThingIndex */,
