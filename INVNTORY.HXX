@@ -117,7 +117,7 @@ extern BOOL fDomainTurn;
 
 
 
-extern "C" BOOL DoesPlayerHaveItem(THINGTYPE);
+extern BOOL DoesPlayerHaveItem(THINGTYPE);
 
 extern void CombatCastSpellBox(LONG hAvatar , LONG SpellBoxNumber );
 

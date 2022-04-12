@@ -41,9 +41,9 @@ extern BOOL fLogComment;
 /* ------------------------------------------------ */
 extern BOOL	fDomainTurn;
 
-extern "C" { 
-extern SHORT	sMenusUp;
 extern BOOL fQuitting;
+extern "C" {
+extern SHORT	sMenusUp;
 }
 extern SHORT				iSelectedUnit;
 BIRTHRT_SND CalcVoxSndObj(VOX_TYPE Voice, VOX_BLOCK Block);

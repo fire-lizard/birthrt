@@ -149,7 +149,7 @@ static SHORT load_PCX_sequence (ULONG iAnim, ULONG type, ULONG seq, ULONG Rotati
 void WriteErrFile(char *n);
 void beep(void);
 void RemoveAnim (SHORT iAnim);
-SHORT NextAnimFrame (SHORT iAnim, SHORT iSeq, SHORT iRot, UBYTE * pCtrl, SHORT frame);
+SHORT NextAnimFrame (SHORT iAnim, USHORT iSeq, USHORT iRot, UBYTE * pCtrl, SHORT frame);
 SHORT NextPCXFrame (SHORT iAnim, SHORT iSeq, SHORT iRot);
 ERRCODE decode_frame (ANIMPTR pAnim, FLICHEADPTR pHead);
 void decode_byte_run (PTR pData, ANIMPTR pAnim);

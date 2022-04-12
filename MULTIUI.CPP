@@ -272,9 +272,7 @@ extern LONG fControlMode;
 
 extern SHORT	iDMapBx;
 
-extern "C" {
 extern PMENU		Menus;
-}
 
 
 #define TOGGLEMODE

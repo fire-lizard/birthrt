@@ -831,8 +831,8 @@ protected:
   							  		  long );
 	extern BOOL LookMessages(void);
 
-extern "C" {
-   extern BOOL IsMultiPlayer ( void );
+	extern BOOL IsMultiPlayer(void);
+	extern "C" {
 	extern void PingMyMaster (void);
 }
 

@@ -61,7 +61,7 @@ extern BOOL fLogComment;
 
 #ifdef _WINDOWS
 extern HWND hwndApp;
-extern "C" BOOL fQuitting;
+extern BOOL fQuitting;
 
 #endif
 

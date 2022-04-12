@@ -41,9 +41,7 @@
 #endif
 
 
-extern "C" {
 extern BOOL IsMultiPlayer ( void );
-}
 
 /* ------------------------------------------------------------------------
    Typedefs

@@ -3012,7 +3012,6 @@ void DisplayHolding (LONG type, LONG)
 }
 
 /*	======================================================================== */
-extern "C" {
 void ZoomOut (LONG /* type */, LONG)
 {
 	if (map_scale!=MAX_SCALE)		 // clicked on zoom icon
@@ -3021,7 +3020,6 @@ void ZoomOut (LONG /* type */, LONG)
 		reqSound = SND_UI_MAP_ZOOM_OUT;
 		iSelectedUnit = -1;
 	}
-}
 }
 
 /*	======================================================================== */
@@ -7571,7 +7569,6 @@ void NewTutorial (BOOL fInReport)
 	Description - 
 	Returns	-
 	======================================================================== */
-extern "C" {
 void MoveZoomMap (LONG xx, LONG yy)
 {
 	req_x = xx;
@@ -7590,7 +7587,6 @@ void MoveZoomMap (LONG xx, LONG yy)
 
 	desired_scale = FULL_SCALE;
 
-}
 }
 
 /* ========================================================================

@@ -117,8 +117,8 @@ extern void ActivateControlSet(void);
 extern void ToggleDirectDraw(LONG, LONG);
 #endif
 
-extern "C" {
 int InitRedBook(void);
+extern "C" {
 int ShutdownRedBook(void);
 int StopRedBook (void);
 extern BOOL fMinMemory;

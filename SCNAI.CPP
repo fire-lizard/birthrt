@@ -60,9 +60,7 @@ extern HWND hwndApp;
 #endif
 #endif
 
-extern "C" {
 extern void SysForceCursor (void);
-}
 
 void UpdateTime(void);
 

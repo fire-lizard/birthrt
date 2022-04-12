@@ -61,10 +61,8 @@ void DisplayInfo (CSTRPTR szFrame, BOOL fCentered, int iformat, ...);
 static BOOL LoadSceneAvatars( SCENE * const, SHORT /* UnitIndex */ );
 void InitDomainTurn(LONG);
 BOOL LookMessages(void);
-extern "C" {
-void PurgeLevel(void);
 extern BOOL gfWadLoaded;
-}
+void PurgeLevel(void);
 
 /* ------------------------------------------------------------------------
    Global Variables

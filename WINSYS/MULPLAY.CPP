@@ -6017,7 +6017,6 @@ void StartWait( USHORT usType )
 //   Returns: none
 // ------------------------------------------------------------------
 
-extern "C" {
 BOOL IsMultiPlayer(void)
 {
 	long i;
@@ -6040,7 +6039,6 @@ BOOL IsMultiPlayer(void)
 	{
 		return FALSE;
 	}
-}
 }
 
 // ------------------------------------------------------------------
