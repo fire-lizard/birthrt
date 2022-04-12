@@ -20,9 +20,7 @@
 
 #include "string.h"
 
-#include "messque.hxx"
-
-
+#include "MESSQUE.HXX"
 
 
 //---- @@@@@ Do this for now it needs to be working ( Bad programmer )

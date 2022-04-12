@@ -17,17 +17,17 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "system.h"
-#include "sysint.h"
-#include "engine.h"
-#include "machine.h"
-#include "player.hxx"
-#include "sound.hxx"
-#include "strmgr.h"
+#include "SYSTEM.H"
+#include "SYSINT.H"
+#include "ENGINE.H"
+#include "MACHINE.H"
+#include "PLAYER.HXX"
+#include "SOUND.HXX"
+#include "STRMGR.H"
 #include "strenum.h"
 
-#include "menu.h"
-#include "panel.h"
+#include "MENU.H"
+#include "PANEL.H"
 
 /* ------------------------------------------------------------------------
    Defines and Compile Flags

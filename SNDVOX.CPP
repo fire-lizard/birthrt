@@ -13,12 +13,12 @@
 /* ------------------------------------------------------------------------
    Includes
    ------------------------------------------------------------------------ */
-#include "system.h"
-#include "engine.h"
-#include "thingtyp.h"
-#include "sound.hxx"
-#include "sndvox.hxx"
-#include "vector.hxx"
+#include "SYSTEM.H"
+#include "ENGINE.H"
+#include "THINGTYP.H"
+#include "SOUND.HXX"
+#include "SNDVOX.HXX"
+#include "VECTOR.HXX"
 
 /* ------------------------------------------------------------------------
    Defines and Compile Flags

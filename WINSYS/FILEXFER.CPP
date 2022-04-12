@@ -22,13 +22,13 @@
 #endif
 
 #include "windows.h"
-#include "../system.h"
+#include "../SYSTEM.H"
 
 // #define _DEFINE_EXPORT_PLATFORMNETWORKMODULE // header is for export use
-#include "filexfer.hxx"
-#include "mulplay.hxx"
+#include "FILEXFER.HXX"
+#include "MULPLAY.HXX"
 
-#include "mono_c.h"
+#include "MONO_C.H"
 
 #ifdef _WINDOWS
 #ifdef _DEBUG

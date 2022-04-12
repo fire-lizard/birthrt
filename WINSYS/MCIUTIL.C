@@ -7,7 +7,7 @@
 //------------------------------------------------------------------------------
 
 #include <windows.h>
-#include "mciutil.h"
+#include "MCIUTIL.H"
 
 #include <string.h>
 #include <digitalv.h>

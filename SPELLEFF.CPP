@@ -9,22 +9,21 @@
    Filename: SpelType.cpp -Effects for Spells
    Author: Wes Cumberland
    ======================================================================== */
-#include "avatar.hxx"
-#include "battle.hxx"
-#include "battleui.hxx"
-#include "blood.hxx"
-#include "dice.h"
-#include "effsepar.hxx"
-#include "itemtype.hxx"
-#include "invntory.hxx"
-#include "player.hxx"
-#include "playstat.hxx"
-#include "resurect.hxx"
-#include "scene.hxx"
-#include "spell.hxx"
+#include "AVATAR.HXX"
+#include "BATTLE.HXX"
+#include "BATTLEUI.HXX"
+#include "BLOOD.HXX"
+#include "DICE.H"
+#include "EFFSEPAR.HXX"
+#include "ITEMTYPE.HXX"
+#include "INVNTORY.HXX"
+#include "PLAYER.HXX"
+#include "PLAYSTAT.HXX"
+#include "RESURECT.HXX"
+#include "SCENE.HXX"
+#include "SPELL.HXX"
 #include "strenum.h"
-#include "tmsgbox.hxx"
-
+#include "TMSGBOX.HXX"
 
 
 // from aibtlcap.cpp

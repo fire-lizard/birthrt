@@ -31,46 +31,46 @@
 //included by gamemap.hxx commented out to fix the "Segment too large"
 //compiler error that seems to pop up randomly
 
-#include "system.h"
+#include "SYSTEM.H"
 //#include "engine.h"
 //#include "machine.h"
-#include "machint.h"
+#include "MACHINT.H"
 
 
-#include "gamemap.hxx"
+#include "GAMEMAP.HXX"
 
-#include "main.hxx"
-#include "findfile.hxx"
-#include "scene.hxx"
+#include "MAIN.HXX"
+#include "FINDFILE.HXX"
+#include "SCENE.HXX"
 
-#include "charsel.hxx"
-#include "game.h"
-#include "gamekey.hxx"
-#include "regents.hxx"
-#include "realm.hxx"            // GWP HACK addition
-#include "scnmgr.hxx"
-#include "invngui.hxx"
-#include "menu.h"
-#include "request.h"
-#include "panel.h"
-#include "gmenuenm.h"
-#include "flicplay.hxx"
+#include "CHARSEL.HXX"
+#include "GAME.H"
+#include "GAMEKEY.HXX"
+#include "REGENTS.HXX"
+#include "REALM.HXX"            // GWP HACK addition
+#include "SCNMGR.HXX"
+#include "INVNGUI.HXX"
+#include "MENU.H"
+#include "REQUEST.H"
+#include "PANEL.H"
+#include "GMENUENM.H"
+#include "FLICPLAY.HXX"
 #include <dos.h>
-#include "light.h"                                                      // [d7-03-96 JPC]
-#include "strmgr.h"
+#include "LIGHT.H"                                                      // [d7-03-96 JPC]
+#include "STRMGR.H"
 #include "strenum.h"
-#include "playstat.hxx"
-#include "things.h"
-#include "multiui.hxx"
-#include "margin.hxx"
-#include "context.hxx"
-#include "units.hxx"
-#include "places.hxx"
-#include "task.h"
+#include "PLAYSTAT.HXX"
+#include "THINGS.H"
+#include "MULTIUI.HXX"
+#include "MARGIN.HXX"
+#include "CONTEXT.HXX"
+#include "UNITS.HXX"
+#include "PLACES.HXX"
+#include "TASK.H"
 
 #ifdef _WINDOWS
-#include "winsys\DDrawPro.h"
-#include "winsys\mulplay.hxx"       //---- Multiplay
+#include "WINSYS\DDRAWPRO.H"
+#include "WINSYS\MULPLAY.HXX"       //---- Multiplay
 extern HWND hwndApp;
 #endif
 

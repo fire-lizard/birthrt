@@ -20,9 +20,9 @@
 #include <windows.h>
 #endif
 
-#include "engine.h"
+#include "ENGINE.H"
 
-#include "gamekey.hxx"
+#include "GAMEKEY.HXX"
 
 /* ------------------------------------------------------------------------
    Notes

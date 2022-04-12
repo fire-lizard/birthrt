@@ -21,9 +21,9 @@
 #include "debug.h"
 #include "engint.h"
 #endif
-#include "system.h"
-#include "engine.h"
-#include "machine.h"
+#include "SYSTEM.H"
+#include "ENGINE.H"
+#include "MACHINE.H"
 
 #if defined (_STATUS)
 #include "winsys\status.h"

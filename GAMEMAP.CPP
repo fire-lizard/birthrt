@@ -22,44 +22,44 @@
 #include <stdarg.h>
 #include <direct.h>
 
-#include "system.h"
+#include "SYSTEM.H"
 
-#include "actions.hxx"
-#include "actnmenu.hxx"
-#include "charsel.hxx"
-#include "regents.hxx"
-#include "sound.hxx"
-#include "sndvox.hxx"
-#include "provtax.h"
-#include "scnmgr.hxx"
-#include "gamekey.hxx"
-#include "gamemap.hxx"
-#include "game.h"
-#include "light.h"
-#include "menu.h"
-#include "panel.h"
-#include "request.h"
-#include "flicplay.hxx"
-#include "report.hxx"
-#include "strmgr.h"
+#include "ACTIONS.HXX"
+#include "ACTNMENU.HXX"
+#include "CHARSEL.HXX"
+#include "REGENTS.HXX"
+#include "SOUND.HXX"
+#include "SNDVOX.HXX"
+#include "PROVTAX.H"
+#include "SCNMGR.HXX"
+#include "GAMEKEY.HXX"
+#include "GAMEMAP.HXX"
+#include "GAME.H"
+#include "LIGHT.H"
+#include "MENU.H"
+#include "PANEL.H"
+#include "REQUEST.H"
+#include "FLICPLAY.HXX"
+#include "REPORT.HXX"
+#include "STRMGR.H"
 #include "strenum.h"
-#include "multimap.hxx"
-#include "playstat.hxx"
-#include "mapai.hxx"
-#include "loadsave.hxx"
-#include "vector.hxx"
-#include "multiui.hxx"
-#include "battleui.hxx"
-#include "battle.hxx"
-#include "main.hxx"
-#include "realm.hxx"
-#include "tutor.hxx"
-#include "places.hxx"
-#include "handle.hxx"
+#include "MULTIMAP.HXX"
+#include "PLAYSTAT.HXX"
+#include "MAPAI.HXX"
+#include "LOADSAVE.HXX"
+#include "VECTOR.HXX"
+#include "MULTIUI.HXX"
+#include "BATTLEUI.HXX"
+#include "BATTLE.HXX"
+#include "MAIN.HXX"
+#include "REALM.HXX"
+#include "TUTOR.HXX"
+#include "PLACES.HXX"
+#include "HANDLE.HXX"
 
 #ifdef _WINDOWS
-#include "winsys\mulplay.hxx"
-#include "winsys\mono_c.h"
+#include "WINSYS\MULPLAY.HXX"
+#include "WINSYS\MONO_C.H"
 #endif
 
 extern BOOL fLogComment;
@@ -6574,9 +6574,9 @@ BOOL UpdateDataArea (void)
 			{
 				CHAR	temp1[80];
 				CHAR	temp2[80];
-				line(158-4, y-40, 158-4, y-40+58, DKBROWN);	// À occupied
+				line(158-4, y-40, 158-4, y-40+58, DKBROWN);	// ï¿½ occupied
 				line(158-4, y+18, 182,	y+18,	DKBROWN);
-				line(177-4, y-40, 177-4, y-40+46, DKBROWN);	// À castles
+				line(177-4, y-40, 177-4, y-40+46, DKBROWN);	// ï¿½ castles
 				line(177-4, y+6,  182,	y+6,	DKBROWN);
 				print_textf(190, y+3, DKBROWN, STRMGR_GetStr(STR_GM_MAINT_CASTLES), cCastles);
 				y += 12;

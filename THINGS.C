@@ -34,18 +34,18 @@
 #ifdef _JPC
 #include "debug.h"
 #endif
-#include "system.h"
-#include "engine.h"
-#include "engint.h"
-#include "machine.h"
-#include "dynamtex.h"
-#include "things.h"
+#include "SYSTEM.H"
+#include "ENGINE.H"
+#include "ENGINT.H"
+#include "MACHINE.H"
+#include "DYNAMTEX.H"
+#include "THINGS.H"
 #ifdef INET
 #include "inet.h"
 #endif
-#include "light.h"
-#include "special.h"
-#include "thingtyp.h"
+#include "LIGHT.H"
+#include "SPECIAL.H"
+#include "THINGTYP.H"
 
 extern BOOL fBattleCombat;
 extern LONG clip_line(POINT* a, POINT* b);

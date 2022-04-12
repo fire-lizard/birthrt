@@ -15,8 +15,8 @@
    Includes
    ------------------------------------------------------------------------ */
 #include <stdio.h>
-#include "system.h"
-#include "engine.h"
+#include "SYSTEM.H"
+#include "ENGINE.H"
 
 /* ------------------------------------------------------------------------
    Notes

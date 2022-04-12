@@ -19,11 +19,11 @@
 #include <windowsx.h>
 #endif
 
-#include "system.h"
-#include "engine.h"
+#include "SYSTEM.H"
+#include "ENGINE.H"
 
-#include "ava.hxx"
-#include "blood.hxx"
+#include "AVA.HXX"
+#include "BLOOD.HXX"
 
 #ifdef _WINDOWS								// Windows is required for these functions
 

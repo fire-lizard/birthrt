@@ -28,14 +28,14 @@
 #include <stdlib.h>
 #include <dos.h>
 #include <windows.h>
-#include "../resource.h"
-#include "../system.h"
-#include "../machine.h"
-#include "../machint.h"
-#include "../engine.h"
-#include "../player.hxx"
-#include "../menu.h"
-#include "ddrawpro.h"
+#include "../RESOURCE.H"
+#include "../SYSTEM.H"
+#include "../MACHINE.H"
+#include "../MACHINT.H"
+#include "../ENGINE.H"
+#include "../PLAYER.HXX"
+#include "../MENU.H"
+#include "DDRAWPRO.H"
 
 
 /* ------------------------------------------------------------------------

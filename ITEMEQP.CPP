@@ -1,4 +1,4 @@
-#include "itemeqp.hxx"
+#include "ITEMEQP.HXX"
 
 
 LONG EquipMax[]={

@@ -1,11 +1,11 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "places.hxx"
+#include "PLACES.HXX"
 
-#include "system.h"
-#include "realm.hxx"
-#include "mapicon.hxx"
+#include "SYSTEM.H"
+#include "REALM.HXX"
+#include "MAPICON.HXX"
 
 /* PLACES LIST: PROVINCES AND WHO CONTROLS WHAT IN IT */
 

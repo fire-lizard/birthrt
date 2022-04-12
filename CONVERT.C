@@ -29,12 +29,12 @@
    Include
    ------------------------------------------------------------------------ */
 #include <stdio.h>
-#include "system.h"
-#include "engine.h"
-#include "engint.h"
-#include "light.h"
-#include "special.h"
-#include "sound.hxx"
+#include "SYSTEM.H"
+#include "ENGINE.H"
+#include "ENGINT.H"
+#include "LIGHT.H"
+#include "SPECIAL.H"
+#include "SOUND.HXX"
 
 /* ------------------------------------------------------------------------
    Notes

@@ -22,12 +22,12 @@
 #include <stdarg.h>
 #include <io.h>
 #include <fcntl.h>
-#include "typedefs.h"
-#include "machine.h"
-#include "system.h"
+#include "TYPEDEFS.H"
+#include "MACHINE.H"
+#include "SYSTEM.H"
 
-#include "strint.h"
-#include "strmgr.h"
+#include "STRINT.H"
+#include "STRMGR.H"
 #include "strenum.h"
 
 /* ------------------------------------------------------------------------

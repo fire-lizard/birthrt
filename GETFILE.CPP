@@ -9,7 +9,7 @@
 
 #if defined (_WINDOWS)						// Windows is required for this function
 #include <windows.h>
-#include "getfile.hxx"
+#include "GETFILE.HXX"
 
 
 // ---------------------------------------------------------------------------

@@ -19,15 +19,15 @@
 #include <windows.h>
 #include <windowsx.h>
 
-#include "system.h"
-#include "engine.h"
+#include "SYSTEM.H"
+#include "ENGINE.H"
 
-#include "itemtype.hxx"
+#include "ITEMTYPE.HXX"
 
-#include "chared.hxx"
-#include "charedsy.h"						// symbols for CHARED dialogs
-#include "ava.hxx"
-#include "relic.h"
+#include "CHARED.HXX"
+#include "CHAREDSY.H"						// symbols for CHARED dialogs
+#include "AVA.HXX"
+#include "RELIC.H"
 
 /* ------------------------------------------------------------------------
 	External data

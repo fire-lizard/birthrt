@@ -21,13 +21,13 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "system.h"
-#include "engine.h"
-#include "machine.h"
+#include "SYSTEM.H"
+#include "ENGINE.H"
+#include "MACHINE.H"
 
 //#include "dlg_edit.h"
-#include "fileutil.h"
-#include "scnver.hxx"
+#include "FILEUTIL.H"
+#include "SCNVER.HXX"
 
 
 /* ------------------------------------------------------------------------

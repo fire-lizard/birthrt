@@ -15,13 +15,13 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdarg.h>
-#include "typedefs.h"
+#include "TYPEDEFS.H"
 
-#include "system.h"
-#include "regents.hxx"
-#include "gamemap.hxx"
-#include "vector.hxx"
-#include "realm.hxx"
+#include "SYSTEM.H"
+#include "REGENTS.HXX"
+#include "GAMEMAP.HXX"
+#include "VECTOR.HXX"
+#include "REALM.HXX"
 
 // [d4-23-97 JPC] Removed the "name" field of regents struct.
 DEFINE_VECTOR_DATA_S(REGENT,regents, 1 + CHARACTER_COUNT) = {

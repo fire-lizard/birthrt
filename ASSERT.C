@@ -16,9 +16,9 @@
    Includes
    ------------------------------------------------------------------------ */
 #include <stdarg.h>
-#include "system.h"
-#include "machine.h"
-#include "machint.h"
+#include "SYSTEM.H"
+#include "MACHINE.H"
+#include "MACHINT.H"
 
 /* ------------------------------------------------------------------------
    Defines and Compile Flags

@@ -1,10 +1,10 @@
-#include "listbox.hxx"
-#include "system.h"
-#include "engine.h"
+#include "LISTBOX.HXX"
+#include "SYSTEM.H"
+#include "ENGINE.H"
 
 #include <stdio.h>
 
-#include "strmgr.h"
+#include "STRMGR.H"
 #include "strenum.h"
 
 extern "C" {

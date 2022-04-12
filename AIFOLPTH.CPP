@@ -10,9 +10,9 @@
    additional includes
    ----------------------------------------------------------------- */
 
-#include "aifolpth.hxx"
-#include "fileutil.h"
-#include "avatar.hxx"
+#include "AIFOLPTH.HXX"
+#include "FILEUTIL.H"
+#include "AVATAR.HXX"
 
 /* -----------------------------------------------------------------
    class definition

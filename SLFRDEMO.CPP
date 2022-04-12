@@ -19,15 +19,15 @@
 #define W_OK 2
 #endif
 
-#include "system.h"
-#include "machine.h"
+#include "SYSTEM.H"
+#include "MACHINE.H"
 
-#include "flicplay.hxx"
-#include "gamekey.hxx"
-#include "scene.hxx"
-#include "scnai.hxx"
-#include "scnmgr.hxx"
-#include "slfrdemo.hxx"
+#include "FLICPLAY.HXX"
+#include "GAMEKEY.HXX"
+#include "SCENE.HXX"
+#include "SCNAI.HXX"
+#include "SCNMGR.HXX"
+#include "SLFRDEMO.HXX"
 
 #if defined(OLD_SOUND)
 #if defined(WINDOWS)

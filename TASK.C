@@ -23,8 +23,8 @@
 #include <bios.h>
 #endif
 
-#include "task.h"
-#include "machine.h"
+#include "TASK.H"
+#include "MACHINE.H"
 
 /* ------------------------------------------------------------------------
    Notes

@@ -18,7 +18,7 @@
 #include <string.h>
 
 //#include "gamestr.h"
-#include "weapon.hxx"
+#include "WEAPON.HXX"
 #include "strenum.h"   
 
 

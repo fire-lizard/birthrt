@@ -27,15 +27,15 @@
 //#include <dos.h>
 #include <string.h>
 
-#include "system.h"
-#include "machine.h"
-#include "engine.h"
+#include "SYSTEM.H"
+#include "MACHINE.H"
+#include "ENGINE.H"
 
-#include "regions.h"
-#include "panel.h"
+#include "REGIONS.H"
+#include "PANEL.H"
 
-#include "strmgr.h"
-#include "sound.hxx"
+#include "STRMGR.H"
+#include "SOUND.HXX"
 
 /* ------------------------------------------------------------------------
    ®RM250¯Notes

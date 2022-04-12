@@ -22,23 +22,23 @@
 /* ------------------------------------------------------------------------
    Includes
    ------------------------------------------------------------------------ */
-#include "system.h"
-#include "invngui.hxx"
+#include "SYSTEM.H"
+#include "INVNGUI.HXX"
 
-#include "avatar.hxx"
-#include "charsel.hxx"
-#include "context.hxx"
-#include "handle.hxx"
-#include "game.h"
-#include "gamemap.hxx"
-#include "listbox.hxx"
-#include "itemeqp.hxx"
-#include "itemtype.hxx"
-#include "invntory.hxx"
-#include "loadsave.hxx"
-#include "panel.h"		// Hack here for the stupid global update varible
-#include "regents.hxx"
-#include "spell.hxx"
+#include "AVATAR.HXX"
+#include "CHARSEL.HXX"
+#include "CONTEXT.HXX"
+#include "HANDLE.HXX"
+#include "GAME.H"
+#include "GAMEMAP.HXX"
+#include "LISTBOX.HXX"
+#include "ITEMEQP.HXX"
+#include "ITEMTYPE.HXX"
+#include "INVNTORY.HXX"
+#include "LOADSAVE.HXX"
+#include "PANEL.H"		// Hack here for the stupid global update varible
+#include "REGENTS.HXX"
+#include "SPELL.HXX"
 
 /* ------------------------------------------------------------------------
    Defines

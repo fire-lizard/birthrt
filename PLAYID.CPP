@@ -16,7 +16,7 @@
    Includes
    ------------------------------------------------------------------------ */
 //#include "gamestr.h"
-#include "playid.hxx"
+#include "PLAYID.HXX"
 #include "strenum.h"
 
 

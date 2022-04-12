@@ -10,14 +10,14 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "system.h"
-#include "engine.h"
+#include "SYSTEM.H"
+#include "ENGINE.H"
 
-#include "avatar.hxx"	// includes aifolply.hxx
-#include "playstat.hxx"
-#include "scnmgr.hxx"
-#include "scene.hxx"
-#include "sound.hxx"
+#include "AVATAR.HXX"	// includes aifolply.hxx
+#include "PLAYSTAT.HXX"
+#include "SCNMGR.HXX"
+#include "SCENE.HXX"
+#include "SOUND.HXX"
 
 // [MDB] HACK for inventory
 extern "C" {

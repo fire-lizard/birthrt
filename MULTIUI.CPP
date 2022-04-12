@@ -20,32 +20,32 @@
 #include <string.h>
 #include <stdarg.h>
 
-#include "system.h"
-#include "machint.h"
+#include "SYSTEM.H"
+#include "MACHINT.H"
 //#include "loadsave.hxx"
-#include "gamemap.hxx"
+#include "GAMEMAP.HXX"
 
-#include "menu.h"
+#include "MENU.H"
 #include "strenum.h"
-#include "gmenuenm.h"
-#include "colors.h"
-#include "charsel.hxx"
-#include "playstat.hxx"
-#include "context.hxx"
-#include "panel.h"
-#include "random.h"
-#include "regents.hxx"
-#include "scene.hxx"
-#include "scnmgr.hxx"
-#include "game.h"
+#include "GMENUENM.H"
+#include "COLORS.H"
+#include "CHARSEL.HXX"
+#include "PLAYSTAT.HXX"
+#include "CONTEXT.HXX"
+#include "PANEL.H"
+#include "RANDOM.H"
+#include "REGENTS.HXX"
+#include "SCENE.HXX"
+#include "SCNMGR.HXX"
+#include "GAME.H"
 #ifdef _WINDOWS
-#include "winsys\gotourl.h"
-#include "winsys\mulplay.hxx"
-#include "winsys\ddrawpro.h"
+#include "WINSYS\GOTOURL.H"
+#include "WINSYS\MULPLAY.HXX"
+#include "WINSYS\DDRAWPRO.H"
 #endif
 
 
-#include "multiui.hxx"
+#include "MULTIUI.HXX"
 
 
 extern BOOL fLogComment;

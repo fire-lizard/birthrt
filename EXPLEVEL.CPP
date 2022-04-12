@@ -22,18 +22,18 @@
 #ifdef _WINDOWS
 #include <windows.h>
 #endif
-#include "system.h"
-#include "handle.hxx"
-#include "playclas.hxx"
-#include "playstat.hxx"
-#include "explevel.hxx"
-#include "statsmod.hxx"
-#include "constitn.hxx"
-#include "invntory.hxx"
-#include "regents.hxx"
-#include "report.hxx"
+#include "SYSTEM.H"
+#include "HANDLE.HXX"
+#include "PLAYCLAS.HXX"
+#include "PLAYSTAT.HXX"
+#include "EXPLEVEL.HXX"
+#include "STATSMOD.HXX"
+#include "CONSTITN.HXX"
+#include "INVNTORY.HXX"
+#include "REGENTS.HXX"
+#include "REPORT.HXX"
 #ifdef _WINDOWS
-#include "winsys\mulplay.hxx"
+#include "WINSYS\MULPLAY.HXX"
 #endif
 
 // Its in stdlib.h

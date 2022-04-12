@@ -27,13 +27,13 @@
 #if defined (_EDIT)
 #include <windows.h>
 #endif
-#include "debug.h"
-#include "system.h"
-#include "engine.h"
-#include "engint.h"
-#include "machine.h"
-#include "dynamtex.h"
-#include "light.h"
+#include "DEBUG.H"
+#include "SYSTEM.H"
+#include "ENGINE.H"
+#include "ENGINT.H"
+#include "MACHINE.H"
+#include "DYNAMTEX.H"
+#include "LIGHT.H"
 
 /* ------------------------------------------------------------------------
    Notes

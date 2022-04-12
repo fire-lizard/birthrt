@@ -12,19 +12,19 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "system.h"
-#include "engine.h"
-#include "engint.h"
-#include "machine.h"
+#include "SYSTEM.H"
+#include "ENGINE.H"
+#include "ENGINT.H"
+#include "MACHINE.H"
 
-#include "gametype.hxx"
-#include "things.h"
+#include "GAMETYPE.HXX"
+#include "THINGS.H"
 //#include "game.h"
-#include "anim.h"
-#include "menu.h"
-#include "strmgr.h"
+#include "ANIM.H"
+#include "MENU.H"
+#include "STRMGR.H"
 #include "strenum.h"
-#include "gmenuenm.h"
+#include "GMENUENM.H"
 
 //#define NUMROTATIONS 8
 #define NUMROT 8

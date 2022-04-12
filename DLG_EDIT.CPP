@@ -22,15 +22,15 @@
 #include <windows.h>
 #endif
 
-#include "system.h"
-#include "engine.h"
+#include "SYSTEM.H"
+#include "ENGINE.H"
 
-#include "avatar.hxx"
-#include "alignmnt.hxx"
-#include "dlg_edit.h"
-#include "gamemap.hxx"
-#include "main.hxx"
-#include "scene.hxx"
+#include "AVATAR.HXX"
+#include "ALIGNMNT.HXX"
+#include "DLG_EDIT.H"
+#include "GAMEMAP.HXX"
+#include "MAIN.HXX"
+#include "SCENE.HXX"
 
 //extern MAP_INFO gMapInfo; //use access functions
 extern long objClicked;

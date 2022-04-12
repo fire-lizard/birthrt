@@ -25,30 +25,30 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "system.h"
-#include "engine.h"
+#include "SYSTEM.H"
+#include "ENGINE.H"
 //#include "machine.h"
 
-#include "adventur.hxx"
-#include "avatar.hxx"
-#include "battleui.hxx"
-#include "combatui.hxx"
-#include "gamekey.hxx"
-#include "invntory.hxx"
-#include "margin.hxx"
-#include "player.hxx"
-#include "panel.h"
-#include "scene.hxx"
-#include "scnai.hxx"
-#include "slfrdemo.hxx"
-#include "tutrmenu.hxx"
-#include "loadsave.hxx"
+#include "ADVENTUR.HXX"
+#include "AVATAR.HXX"
+#include "BATTLEUI.HXX"
+#include "COMBATUI.HXX"
+#include "GAMEKEY.HXX"
+#include "INVNTORY.HXX"
+#include "MARGIN.HXX"
+#include "PLAYER.HXX"
+#include "PANEL.H"
+#include "SCENE.HXX"
+#include "SCNAI.HXX"
+#include "SLFRDEMO.HXX"
+#include "TUTRMENU.HXX"
+#include "LOADSAVE.HXX"
 //#include "sound.hxx"
-#include "units.hxx"
+#include "UNITS.HXX"
 
 #ifdef _WINDOWS
-#include "winsys\mulplay.hxx"
-#include "winsys\mono_c.h"
+#include "WINSYS\MULPLAY.HXX"
+#include "WINSYS\MONO_C.H"
 #endif
 
 

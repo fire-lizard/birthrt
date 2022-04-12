@@ -11,7 +11,7 @@
 #include <stdio.h>
 
 #ifdef _WINDOWS
-#include "winsys\status.h"
+#include "WINSYS\STATUS.H"
 #include "windows.h"
 #include <io.h>
 #include <fcntl.h>
@@ -20,8 +20,8 @@
 
 // GWP The macro defines in debug.h toast the compile.
 //#include "debug.h"
-#include "system.h"
-#include "machine.h"
+#include "SYSTEM.H"
+#include "MACHINE.H"
 
 //---- global only used by this module
 

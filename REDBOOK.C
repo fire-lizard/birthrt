@@ -15,7 +15,7 @@ Game specific routines
 #include <i86.h>
 #else
 #include <windows.h>
-#include "winsys\mciutil.h"
+#include "WINSYS\MCIUTIL.H"
 extern HWND	hwndApp;
 #endif
 #include <io.h>
@@ -24,10 +24,10 @@ extern HWND	hwndApp;
 #include <string.h>
 #include <fcntl.h>
 
-#include "typedefs.h"
-#include "sound.hxx"
-#include "redbook.h"
-#include "system.h"
+#include "TYPEDEFS.H"
+#include "SOUND.HXX"
+#include "REDBOOK.H"
+#include "SYSTEM.H"
 /*#######################################################################\
 #    Prototypes
 \#######################################################################*/

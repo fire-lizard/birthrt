@@ -27,47 +27,47 @@
 #include "edit.h"
 #endif
 
-#include "system.h"
-#include "engine.h"
-#include "machine.h"
+#include "SYSTEM.H"
+#include "ENGINE.H"
+#include "MACHINE.H"
 
-#include "actnmenu.hxx"
-#include "ai_utils.h"
-#include "dlg_edit.h"
-#include "game.h"
-#include "gametype.hxx"
-#include "anim.h"
-#include "realm.hxx"
-#include "scene.hxx"
-#include "scnmgr.hxx"
-#include "regents.hxx"
-#include "engint.h"
-#include "task.h"
+#include "ACTNMENU.HXX"
+#include "AI_UTILS.H"
+#include "DLG_EDIT.H"
+#include "GAME.H"
+#include "GAMETYPE.HXX"
+#include "ANIM.H"
+#include "REALM.HXX"
+#include "SCENE.HXX"
+#include "SCNMGR.HXX"
+#include "REGENTS.HXX"
+#include "ENGINT.H"
+#include "TASK.H"
 //#include "btlstr.h"
-#include "machint.h"
-#include "magic.h"
-#include "strmgr.h"
+#include "MACHINT.H"
+#include "MAGIC.H"
+#include "STRMGR.H"
 #include "strenum.h"
-#include "gamemap.hxx"
-#include "invntory.hxx"
-#include "invngui.hxx"
-#include "invnbuts.hxx"
-#include "playstat.hxx"
-#include "version.hxx"
-#include "multimap.hxx"
-#include "multiui.hxx"
-#include "strength.hxx"
-#include "itemtype.hxx"
-#include "sndvox.hxx"
-#include "loadsave.hxx"
-#include "charsel.hxx"
-#include "context.hxx"
-#include "doshelp.hxx"
-#include "colors.h"
+#include "GAMEMAP.HXX"
+#include "INVNTORY.HXX"
+#include "INVNGUI.HXX"
+#include "INVNBUTS.HXX"
+#include "PLAYSTAT.HXX"
+#include "VERSION.HXX"
+#include "MULTIMAP.HXX"
+#include "MULTIUI.HXX"
+#include "STRENGTH.HXX"
+#include "ITEMTYPE.HXX"
+#include "SNDVOX.HXX"
+#include "LOADSAVE.HXX"
+#include "CHARSEL.HXX"
+#include "CONTEXT.HXX"
+#include "DOSHELP.HXX"
+#include "COLORS.H"
 
 #ifdef _WINDOWS
-#include ".\winsys\ddrawpro.h"
-#include ".\winsys\mulplay.hxx"
+#include ".\WINSYS\DDRAWPRO.H"
+#include ".\WINSYS\MULPLAY.HXX"
 #endif
 
 /* ------------------------------------------------------------------------
@@ -181,12 +181,12 @@ extern BOOL	mundane_descriptions;
 BOOL fStartMultiGame = FALSE;
 
 /* the list of valid menus */
-#include "menu.h"		// NOTE: this has the enum for the array below,
+#include "MENU.H"		// NOTE: this has the enum for the array below,
 						// !!!!!! keep it up to date !!!!!!
-#include "panel.h"
+#include "PANEL.H"
 
-#include "menudata.h"
-#include "gamemenu.h"
+#include "MENUDATA.H"
+#include "GAMEMENU.H"
 
 MENU Menus[MAX_MENUS] = {
 	{Help, HelpSize},

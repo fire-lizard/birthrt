@@ -21,12 +21,12 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "system.h"
-#include "engine.h"
-#include "machine.h"
+#include "SYSTEM.H"
+#include "ENGINE.H"
+#include "MACHINE.H"
 
-#include "fileutil.h"
-#include "scncamr.hxx"
+#include "FILEUTIL.H"
+#include "SCNCAMR.HXX"
 
 /* ------------------------------------------------------------------------
    Notes

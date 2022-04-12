@@ -34,12 +34,12 @@
 #include "winsys\status.h"
 void WriteDebug (const char *format, ... );
 #endif
-#include "system.h"
-#include "engine.h"
-#include "engint.h"
-#include "machine.h"
-#include "special.h"
-#include "light.h"
+#include "SYSTEM.H"
+#include "ENGINE.H"
+#include "ENGINT.H"
+#include "MACHINE.H"
+#include "SPECIAL.H"
+#include "LIGHT.H"
 
 /* ------------------------------------------------------------------------
    Notes

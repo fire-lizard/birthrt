@@ -20,13 +20,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include "debug.h"
+#include "DEBUG.H"
 
-#include "system.h"
-#include "engine.h"
-#include "engint.h"
-#include "player.hxx"
-#include "special.h"
+#include "SYSTEM.H"
+#include "ENGINE.H"
+#include "ENGINT.H"
+#include "PLAYER.HXX"
+#include "SPECIAL.H"
 
 #define max(a,b) (((a) > (b)) ? (a) : (b))
 #define min(a,b) (((a) < (b)) ? (a) : (b))

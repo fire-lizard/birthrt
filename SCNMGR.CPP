@@ -23,25 +23,25 @@
 #include <windows.h>
 #endif
 
-#include "avatar.hxx"
-#include "combatui.hxx"
-#include "scnmgr.hxx"
-#include "battleui.hxx"
-#include "playstat.hxx"
-#include "scene.hxx"
-#include "units.hxx"
-#include "machine.h"
-#include "doors.h"
-#include "light.h"
-#include "game.h"
-#include "multimap.hxx"
-#include "multiui.hxx"
-#include "regents.hxx"
-#include "gamemap.hxx"
-#include "task.h"
+#include "AVATAR.HXX"
+#include "COMBATUI.HXX"
+#include "SCNMGR.HXX"
+#include "BATTLEUI.HXX"
+#include "PLAYSTAT.HXX"
+#include "SCENE.HXX"
+#include "UNITS.HXX"
+#include "MACHINE.H"
+#include "DOORS.H"
+#include "LIGHT.H"
+#include "GAME.H"
+#include "MULTIMAP.HXX"
+#include "MULTIUI.HXX"
+#include "REGENTS.HXX"
+#include "GAMEMAP.HXX"
+#include "TASK.H"
 
 #ifdef _WINDOWS
-#include "winsys\mulplay.hxx"
+#include "WINSYS\MULPLAY.HXX"
 #endif
 
 /* ------------------------------------------------------------------------

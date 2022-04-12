@@ -15,15 +15,15 @@
 /* ------------------------------------------------------------------------
    Includes
    ------------------------------------------------------------------------ */
-#include "2dmouse.h"
-#include "machine.h"
+#include "2DMOUSE.H"
+#include "MACHINE.H"
 
-#include "combatui.hxx"
-#include "combcamr.hxx"
-#include "combtarg.hxx"
-#include "combopts.hxx"
-#include "gamekey.hxx"
-#include "scene.hxx"
+#include "COMBATUI.HXX"
+#include "COMBCAMR.HXX"
+#include "COMBTARG.HXX"
+#include "COMBOPTS.HXX"
+#include "GAMEKEY.HXX"
+#include "SCENE.HXX"
 
 /* ------------------------------------------------------------------------
    Notes

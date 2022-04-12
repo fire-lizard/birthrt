@@ -13,14 +13,14 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "tmsgbox.hxx"
+#include "TMSGBOX.HXX"
 
-#include "machine.h"
-#include "system.h"
-#include "panel.h"
-#include "strmgr.h"
+#include "MACHINE.H"
+#include "SYSTEM.H"
+#include "PANEL.H"
+#include "STRMGR.H"
 #include "strenum.h"
-#include "combatui.hxx" //for ForceHires
+#include "COMBATUI.HXX" //for ForceHires
 
 
 char TitledMessageBox::Message[]="\0";

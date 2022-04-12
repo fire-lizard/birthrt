@@ -1,5 +1,5 @@
-#include "spell.hxx"
-#include "system.h"
+#include "SPELL.HXX"
+#include "SYSTEM.H"
 #if 0
  PLAYER_CLASS_INFO::
 TYPE			CanCast;

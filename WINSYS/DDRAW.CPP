@@ -8,10 +8,10 @@
 #define CINTERFACE
 #include <windows.h>
 
-#include "../system.h"
-#include "../engine.h"
+#include "../SYSTEM.H"
+#include "../ENGINE.H"
 
-#include "ddrawpro.h"
+#include "DDRAWPRO.H"
 
 extern "C" {
 extern HDC		gdcScreen;

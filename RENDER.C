@@ -35,16 +35,16 @@
 	#include <windows.h>
 	#include "edit.h"
 #endif
-#include "debug.h"
-#include "system.h"
-#include "engine.h"
-#include "engint.h"
-#include "machine.h"
-#include "dynamtex.h"
-#include "light.h"
-#include "sound.hxx"
-#include "special.h"
-#include "colors.h"
+#include "DEBUG.H"
+#include "SYSTEM.H"
+#include "ENGINE.H"
+#include "ENGINT.H"
+#include "MACHINE.H"
+#include "DYNAMTEX.H"
+#include "LIGHT.H"
+#include "SOUND.HXX"
+#include "SPECIAL.H"
+#include "COLORS.H"
 
 extern void scan_line(POINT* a, POINT* b, LONG* array);
 extern LONG clip_line(POINT* a, POINT* b);

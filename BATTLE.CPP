@@ -14,18 +14,18 @@
    Includes
    ------------------------------------------------------------------------ */
 
-#include "system.h"
-#include "machine.h"
-#include "thingtyp.h"
+#include "SYSTEM.H"
+#include "MACHINE.H"
+#include "THINGTYP.H"
 //#include "btlstr.h"
-#include "strmgr.h"
+#include "STRMGR.H"
 #include "strenum.h"
-#include "avatar.hxx"
-#include "battle.hxx"
-#include "gamemap.hxx"
-#include "regents.hxx"
-#include "playstat.hxx"
-#include "explevel.hxx"
+#include "AVATAR.HXX"
+#include "BATTLE.HXX"
+#include "GAMEMAP.HXX"
+#include "REGENTS.HXX"
+#include "PLAYSTAT.HXX"
+#include "EXPLEVEL.HXX"
 
 /* ------------------------------------------------------------------------
    Defines and Compile Flags

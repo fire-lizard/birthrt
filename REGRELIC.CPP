@@ -24,13 +24,13 @@
    Includes
    ------------------------------------------------------------------------ */
 
-#include "typedefs.h"
+#include "TYPEDEFS.H"
 //#include "gamemap.hxx"
 //#include "regents.hxx"
 //#include "realm.hxx"
-#include "itemtype.hxx"
-#include "regrelic.hxx"
-#include "playstat.hxx"
+#include "ITEMTYPE.HXX"
+#include "REGRELIC.HXX"
+#include "PLAYSTAT.HXX"
 
 
 /* ------------------------------------------------------------------------

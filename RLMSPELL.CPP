@@ -1,7 +1,6 @@
 
 
-#include "rlmspell.hxx"
-
+#include "RLMSPELL.HXX"
 
 
 REALM_SPELL_INFO::REALM_SPELL_ITEM const REALM_SPELL_INFO::RealmSpellInfoTable[]={

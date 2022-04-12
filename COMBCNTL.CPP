@@ -16,16 +16,16 @@
    Includes
    ------------------------------------------------------------------------ */
 
-#include "combatui.hxx"
-#include "combcntl.hxx"
-#include "combopts.hxx"
-#include "game.h"
-#include "handle.hxx"
-#include "itemtype.hxx"
-#include "panel.h"
-#include "playhit.hxx"
-#include "strmgr.h"
-#include "scene.hxx"
+#include "COMBATUI.HXX"
+#include "COMBCNTL.HXX"
+#include "COMBOPTS.HXX"
+#include "GAME.H"
+#include "HANDLE.HXX"
+#include "ITEMTYPE.HXX"
+#include "PANEL.H"
+#include "PLAYHIT.HXX"
+#include "STRMGR.H"
+#include "SCENE.HXX"
 
 /* ------------------------------------------------------------------------
    Notes

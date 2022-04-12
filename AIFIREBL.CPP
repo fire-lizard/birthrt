@@ -17,10 +17,10 @@
    ------------------------------------------------------------------------ */
 #include <limits.h>
 
-#include "avatar.hxx"
-#include "explevel.hxx"
-#include "sound.hxx"
-#include "scene.hxx"
+#include "AVATAR.HXX"
+#include "EXPLEVEL.HXX"
+#include "SOUND.HXX"
+#include "SCENE.HXX"
 
 /* ------------------------------------------------------------------------
    Notes

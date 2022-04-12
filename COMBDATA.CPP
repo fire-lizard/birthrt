@@ -15,15 +15,15 @@
 /* ------------------------------------------------------------------------
    Includes
    ------------------------------------------------------------------------ */
-#include "combdata.hxx"
+#include "COMBDATA.HXX"
 
-#include "avatar.hxx"
-#include "adventur.hxx"
-#include "doors.h"
-#include "itemtype.hxx"
-#include "gamekey.hxx"
-#include "scene.hxx"
-#include "task.h"
+#include "AVATAR.HXX"
+#include "ADVENTUR.HXX"
+#include "DOORS.H"
+#include "ITEMTYPE.HXX"
+#include "GAMEKEY.HXX"
+#include "SCENE.HXX"
+#include "TASK.H"
 
 /* ------------------------------------------------------------------------
    Notes

@@ -41,16 +41,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "system.h"
-#include "engine.h"
-#include "engint.h"
-#include "machine.h"
-#include "player.hxx"
-#include "thingtyp.h"
-#include "map.h"
-#include "things.h"
+#include "SYSTEM.H"
+#include "ENGINE.H"
+#include "ENGINT.H"
+#include "MACHINE.H"
+#include "PLAYER.HXX"
+#include "THINGTYP.H"
+#include "MAP.H"
+#include "THINGS.H"
 #include "strenum.h"
-#include "special.h"
+#include "SPECIAL.H"
 //#include "arrow.h"
 
 /* ------------------------------------------------------------------------

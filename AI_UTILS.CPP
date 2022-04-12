@@ -21,18 +21,18 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "system.h"
-#include "engine.h"
+#include "SYSTEM.H"
+#include "ENGINE.H"
 //remove when AICheckLine is moved back to engine
-#include "engint.h"
+#include "ENGINT.H"
 
-#include "ai_utils.h"
-#include "athing.hxx"
-#include "player.hxx"
-#include "scnmgr.hxx"
-#include "scene.hxx"
+#include "AI_UTILS.H"
+#include "ATHING.HXX"
+#include "PLAYER.HXX"
+#include "SCNMGR.HXX"
+#include "SCENE.HXX"
 
-#include "sound.hxx"
+#include "SOUND.HXX"
 //#ifdef _WINDOWS
 //#ifdef OLD_SOUND
 //#include "winsys\sndutil.h"

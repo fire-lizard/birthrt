@@ -6,24 +6,24 @@
    Author: Wes Cumberland
    ======================================================================== */
    
-#include "itemtype.hxx"
-#include "invntory.hxx"
-#include "playstat.hxx"
-#include "avatar.hxx"
-#include "tmsgbox.hxx"
-#include "dice.h"
+#include "ITEMTYPE.HXX"
+#include "INVNTORY.HXX"
+#include "PLAYSTAT.HXX"
+#include "AVATAR.HXX"
+#include "TMSGBOX.HXX"
+#include "DICE.H"
 #include "strenum.h"
-#include "spell.hxx"
-#include "blood.hxx"
-#include "scnmgr.hxx"
+#include "SPELL.HXX"
+#include "BLOOD.HXX"
+#include "SCNMGR.HXX"
 
-#include "battle.hxx"
-#include "battleui.hxx"
+#include "BATTLE.HXX"
+#include "BATTLEUI.HXX"
 #include "strenum.h"   
-#include "resurect.hxx"
-#include "itemeqp.hxx"
-#include "regen.hxx"
-#include "rlmspell.hxx"
+#include "RESURECT.HXX"
+#include "ITEMEQP.HXX"
+#include "REGEN.HXX"
+#include "RLMSPELL.HXX"
 
 //ItemEffects::ActiveItem _ActiveItems[MAX_ACTIVE_ITEMS] = {
 DEFINE_VECTOR_MEMBER_DATA_S(ItemEffects::ActiveItem,

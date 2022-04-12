@@ -16,16 +16,16 @@
    Includes
    ------------------------------------------------------------------------ */
 
-#include "adventur.hxx"
-#include "avatar.hxx"
-#include "combcamr.hxx"
-#include "combcntl.hxx"
-#include "combdata.hxx"
-#include "combopts.hxx"
-#include "combtarg.hxx"
-#include "gamecamr.hxx"
-#include "scene.hxx"
-#include "scnmgr.hxx"
+#include "ADVENTUR.HXX"
+#include "AVATAR.HXX"
+#include "COMBCAMR.HXX"
+#include "COMBCNTL.HXX"
+#include "COMBDATA.HXX"
+#include "COMBOPTS.HXX"
+#include "COMBTARG.HXX"
+#include "GAMECAMR.HXX"
+#include "SCENE.HXX"
+#include "SCNMGR.HXX"
 
 /* ------------------------------------------------------------------------
    Notes

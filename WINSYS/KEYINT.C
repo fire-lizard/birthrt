@@ -24,10 +24,10 @@
 #include <conio.h>
 #include <string.h>
 
-#include "../system.h"
-#include "../machine.h"
-#include "../machint.h"
-#include "../engine.h"
+#include "../SYSTEM.H"
+#include "../MACHINE.H"
+#include "../MACHINT.H"
+#include "../ENGINE.H"
 
 /* ------------------------------------------------------------------------
    Defines and Compile Flags

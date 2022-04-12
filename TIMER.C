@@ -25,8 +25,8 @@
 #include <bios.h>
 #endif
 
-#include "system.h"
-#include "machine.h"
+#include "SYSTEM.H"
+#include "MACHINE.H"
 
 /* ------------------------------------------------------------------------
    Notes

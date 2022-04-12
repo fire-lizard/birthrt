@@ -11,7 +11,7 @@
 
 #include <mmsystem.h>
 
-#include "mds.h"
+#include "MDS.H"
 
 //
 // LoadMDSImage

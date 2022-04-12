@@ -35,9 +35,9 @@
 #include <sys\stat.h>
 #include <fcntl.h>
 #include <ctype.h>
-#include "system.h"
-#include "sysint.h"
-#include "machine.h"
+#include "SYSTEM.H"
+#include "SYSINT.H"
+#include "MACHINE.H"
 
 /* ------------------------------------------------------------------------
    Notes

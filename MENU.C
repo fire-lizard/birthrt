@@ -18,20 +18,20 @@
 #if _WINDOWS
 #include <windows.h>
 #endif
-#include "system.h"
-#include "sysint.h"
-#include "engine.h"
-#include "machine.h"
-#include "player.hxx"
-#include "sound.hxx"
-#include "strmgr.h"
+#include "SYSTEM.H"
+#include "SYSINT.H"
+#include "ENGINE.H"
+#include "MACHINE.H"
+#include "PLAYER.HXX"
+#include "SOUND.HXX"
+#include "STRMGR.H"
 #include "strenum.h"
-#include "gmenuenm.h"
-#include "main.hxx"
-#include "panel.h"
+#include "GMENUENM.H"
+#include "MAIN.HXX"
+#include "PANEL.H"
 
 #if _WINDOWS
-#include "menu.h"
+#include "MENU.H"
 extern HWND	hwndApp;
 #endif
 

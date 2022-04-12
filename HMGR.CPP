@@ -1,6 +1,6 @@
-#include "system.h"
-#include "machine.h"
-#include "hmgr.hxx"
+#include "SYSTEM.H"
+#include "MACHINE.H"
+#include "HMGR.HXX"
 
 HighlightMgr::HighlightMgr(MENU_ID_ENUM a) :
 	MenuId(a)

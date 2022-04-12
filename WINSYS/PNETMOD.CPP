@@ -35,26 +35,26 @@
 
 #define INITGUID
 #include "windows.h"
-#include "..\winsys\PNetMod.hxx"
-#include "StdIo.h"
+#include "..\WINSYS\PNETMOD.HXX"
+#include "stdio.h"
 #include "Direct.h"
 #include "memory.h"
-#include "../system.h"
-#include "../machine.h"
-#include "../menu.h"
+#include "../SYSTEM.H"
+#include "../MACHINE.H"
+#include "../MENU.H"
 
 
 //!!!!!!!!!!!!!!!!!!!!!!!!
-#include "../units.hxx"
+#include "../UNITS.HXX"
 
 //!!!!!!!!!!!!!!!!!!!!!!!!
 
-#include "..\winsys\mono_c.h"
+#include "..\WINSYS\MONO_C.H"
 
 
-#include "..\winsys\SNTypes.h"
-#include "..\winsys\SierraNW.h"
-#include "..\winsys\snwvalid.h"
+#include "..\WINSYS\SNTYPES.H"
+#include "..\WINSYS\SIERRANW.H"
+#include "..\WINSYS\SNWVALID.H"
 
 
 extern BOOL fLogComment;

@@ -17,13 +17,13 @@
    ------------------------------------------------------------------------ */
 #include <stdio.h>
 
-#include "engine.h"
-#include "system.h"
-#include "machine.h"
+#include "ENGINE.H"
+#include "SYSTEM.H"
+#include "MACHINE.H"
 
-#include "panel.h"
-#include "game.h"
-#include "margin.hxx"
+#include "PANEL.H"
+#include "GAME.H"
+#include "MARGIN.HXX"
 /* ------------------------------------------------------------------------
    Notes
    ------------------------------------------------------------------------ */

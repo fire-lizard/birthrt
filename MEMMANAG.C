@@ -59,11 +59,11 @@
 #endif
 
 #include <conio.h>
-#include "system.h"
-#include "machine.h"
+#include "SYSTEM.H"
+#include "MACHINE.H"
 
-#include "memmanag.h"
-#include "resmanag.h"
+#include "MEMMANAG.H"
+#include "RESMANAG.H"
 
 /* ------------------------------------------------------------------------
 	Defines for memory manager functions

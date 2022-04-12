@@ -9,13 +9,13 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "system.h"
-#include "engine.h"
+#include "SYSTEM.H"
+#include "ENGINE.H"
 
-#include "avatar.hxx"	// includes aipong.hxx
-#include "playstat.hxx"
-#include "sndvox.hxx"
-#include "sound.hxx"
+#include "AVATAR.HXX"	// includes aipong.hxx
+#include "PLAYSTAT.HXX"
+#include "SNDVOX.HXX"
+#include "SOUND.HXX"
 
 
 // [d11-26-96 JPC] Changed all mfMoveToXYZA calls to mfMoveToXYA calls.

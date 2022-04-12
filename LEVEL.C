@@ -38,16 +38,16 @@
 #include "edit.h"
 #endif
 
-#include "debug.h"
+#include "DEBUG.H"
 
-#include "system.h"
-#include "engine.h"
-#include "engint.h"
-#include "machine.h"
-#include "dynamtex.h"
-#include "doors.h"
-#include "light.h"
-#include "task.h"
+#include "SYSTEM.H"
+#include "ENGINE.H"
+#include "ENGINT.H"
+#include "MACHINE.H"
+#include "DYNAMTEX.H"
+#include "DOORS.H"
+#include "LIGHT.H"
+#include "TASK.H"
 
 /* ------------------------------------------------------------------------
    Notes

@@ -9,7 +9,7 @@
 
 #include <stdio.h>
 #include <dos.h>
-#include "typedefs.h"
+#include "TYPEDEFS.H"
 
 /*#######################################################################\
 #

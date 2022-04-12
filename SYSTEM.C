@@ -45,14 +45,14 @@
 #include <sys\types.h>
 #include <sys\stat.h>
 #include <fcntl.h>
-#include "system.h"
-#include "sysint.h"
-#include "engine.h"
-#include "engint.h"
-#include "machine.h"
-#include "machint.h"
-#include "Main.hxx"
-#include "light.h"
+#include "SYSTEM.H"
+#include "SYSINT.H"
+#include "ENGINE.H"
+#include "ENGINT.H"
+#include "MACHINE.H"
+#include "MACHINT.H"
+#include "MAIN.HXX"
+#include "LIGHT.H"
 
 /* ------------------------------------------------------------------------
    Notes

@@ -29,7 +29,7 @@
 	//#include <bios.h>
 #endif
 
-#include "system.h"
+#include "SYSTEM.H"
 
 #if defined (WINDOWS_SOUND)
 #include "winsys\wave.h"
@@ -41,13 +41,13 @@
 #include "KERNAUD.HPP"
 #endif
 
-#include "sound.hxx"
-#include "scene.hxx"
+#include "SOUND.HXX"
+#include "SCENE.HXX"
 #include <stdio.h>
 #include <math.h>
 #include <time.h>
 
-#include "vector.hxx"
+#include "VECTOR.HXX"
 /* ------------------------------------------------------------------------
    Notes
    ------------------------------------------------------------------------ */
@@ -138,7 +138,7 @@ typedef struct _LOOPING_SOUND_THING{
 
 static DECL_VECTOR_DATA(LOOPING_SOUND_THING,LoopingSoundThing,MAX_SOUND_THINGS);
 
-#include "ambience.inc"
+#include "AMBIENCE.INC"
 
 // DEMO STUFF
 BOOL intro = TRUE;
@@ -297,7 +297,7 @@ return		the pan
 #define ANGLE_MULTI (1024)
 extern "C" {
     extern LONG sin_table[];
-    #include "system.h"
+    #include "SYSTEM.H"
 }
 int CalculatePan(LONG MyThingsIndex)
 {

@@ -17,9 +17,9 @@
    Includes
    ------------------------------------------------------------------------ */
 #include <stdio.h>
-#include "2dmouse.h"
-#include "machine.h"
-#include "engine.h"
+#include "2DMOUSE.H"
+#include "MACHINE.H"
+#include "ENGINE.H"
 
 /* ------------------------------------------------------------------------
    Defines and Compile Flags

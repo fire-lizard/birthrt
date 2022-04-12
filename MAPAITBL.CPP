@@ -20,16 +20,16 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdarg.h>
-#include "system.h"
-#include "sound.hxx"
-#include "multimap.hxx"
-#include "mapai.hxx"
-#include "realm.hxx"
+#include "SYSTEM.H"
+#include "SOUND.HXX"
+#include "MULTIMAP.HXX"
+#include "MAPAI.HXX"
+#include "REALM.HXX"
 #include "strenum.h"
 
 #ifdef _WINDOWS
-#include "winsys\mulplay.hxx"
-#include "winsys\mono_c.h"
+#include "WINSYS\MULPLAY.HXX"
+#include "WINSYS\MONO_C.H"
 #endif
 
 

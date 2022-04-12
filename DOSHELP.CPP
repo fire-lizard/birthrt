@@ -13,16 +13,16 @@
 /* ------------------------------------------------------------------------
    Includes
    ------------------------------------------------------------------------ */
-#include "system.h"
+#include "SYSTEM.H"
 #include <stdio.h>
-#include "typedefs.h"
+#include "TYPEDEFS.H"
 #include <sys\types.h>
 #include <direct.h>
 
-#include "game.h"
-#include "menu.h"
+#include "GAME.H"
+#include "MENU.H"
 #include "strenum.h"
-#include "doshelp.hxx"
+#include "DOSHELP.HXX"
 
 /* ------------------------------------------------------------------------
    Defines && Macros

@@ -10,12 +10,12 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "system.h"
-#include "engine.h"
+#include "SYSTEM.H"
+#include "ENGINE.H"
 
-#include "ai_utils.h"
-#include "avatar.hxx"
-#include "scnmgr.hxx"
+#include "AI_UTILS.H"
+#include "AVATAR.HXX"
+#include "SCNMGR.HXX"
 
 
 /* ========================================================================

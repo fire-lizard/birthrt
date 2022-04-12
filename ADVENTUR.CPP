@@ -15,13 +15,13 @@
 /* ------------------------------------------------------------------------
    Includes
    ------------------------------------------------------------------------ */
-#include "adventur.hxx"
-#include "avatar.hxx"
-#include "gametype.hxx"
-#include "scnmgr.hxx"
-#include "sound.hxx"
-#include "scene.hxx"
-#include "playstat.hxx"
+#include "ADVENTUR.HXX"
+#include "AVATAR.HXX"
+#include "GAMETYPE.HXX"
+#include "SCNMGR.HXX"
+#include "SOUND.HXX"
+#include "SCENE.HXX"
+#include "PLAYSTAT.HXX"
 
 /* ------------------------------------------------------------------------
    Notes

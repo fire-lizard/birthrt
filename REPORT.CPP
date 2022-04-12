@@ -15,30 +15,30 @@
    ------------------------------------------------------------------------ */
 #ifdef _WINDOWS
 #include <windows.h>
-#include "winsys\mulplay.hxx"
-#include "winsys\mono_c.h"
+#include "WINSYS\MULPLAY.HXX"
+#include "WINSYS\MONO_C.H"
 #endif
 
 #include <stdio.h>
 #include <string.h>
 #include <stdarg.h>
-#include "system.h"
-#include "engine.h"
+#include "SYSTEM.H"
+#include "ENGINE.H"
 
-#include "charsel.hxx"
-#include "game.h"
-#include "menu.h"
-#include "realm.hxx"
+#include "CHARSEL.HXX"
+#include "GAME.H"
+#include "MENU.H"
+#include "REALM.HXX"
 #include "strenum.h"
-#include "units.hxx"
-#include "sound.hxx"
-#include "vector.hxx"
-#include "gmenuenm.h"
-#include "flicplay.hxx"
-#include "report.hxx"
-#include "regents.hxx"
-#include "places.hxx"
-#include "gamemap.hxx"
+#include "UNITS.HXX"
+#include "SOUND.HXX"
+#include "VECTOR.HXX"
+#include "GMENUENM.H"
+#include "FLICPLAY.HXX"
+#include "REPORT.HXX"
+#include "REGENTS.HXX"
+#include "PLACES.HXX"
+#include "GAMEMAP.HXX"
 
 extern BOOL fLogComment;
 

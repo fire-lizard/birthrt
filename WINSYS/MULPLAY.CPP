@@ -22,39 +22,39 @@
 
 #define LOGCOMMENTSLEEP {;}
 
-#include "MulPlay.hxx"
+#include "MULPLAY.HXX"
 
-#include "FileXfer.hxx"
+#include "FILEXFER.HXX"
 
-#include "StdIO.h"
-#include "Limits.h"
+#include "stdio.h"
+#include "limits.h"
 #include "Direct.h"
-#include "../panel.h"
-#include "mono_c.h"
-#include "messque.hxx"
+#include "../PANEL.H"
+#include "MONO_C.H"
+#include "MESSQUE.HXX"
 
 
-#include "../system.h"
-#include "../engine.h"
+#include "../SYSTEM.H"
+#include "../ENGINE.H"
 
-#include "../machine.h"
-#include "../machint.h"
-#include "../realm.hxx"
-#include "../places.hxx"
+#include "../MACHINE.H"
+#include "../MACHINT.H"
+#include "../REALM.HXX"
+#include "../PLACES.HXX"
 
-#include "../charsel.hxx"
-#include "../main.hxx"
-#include "../menu.h"
-#include "../multimap.hxx"
-#include "../game.h"
-#include "../loadsave.hxx"
-#include "../units.hxx"
-#include "../gamemap.hxx"
-#include "../sound.hxx"
-#include "../sndvox.hxx"
-#include "../soundfx.hxx"
+#include "../CHARSEL.HXX"
+#include "../MAIN.HXX"
+#include "../MENU.H"
+#include "../MULTIMAP.HXX"
+#include "../GAME.H"
+#include "../LOADSAVE.HXX"
+#include "../UNITS.HXX"
+#include "../GAMEMAP.HXX"
+#include "../SOUND.HXX"
+#include "../SNDVOX.HXX"
+#include "../SOUNDFX.HXX"
 
-#include "ddrawpro.h"
+#include "DDRAWPRO.H"
 
 extern BOOL fLogComment;
 

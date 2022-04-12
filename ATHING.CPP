@@ -15,11 +15,11 @@
 /* ------------------------------------------------------------------------
    Includes
    ------------------------------------------------------------------------ */
-#include "typedefs.h"
-#include "engine.h"
-#include "things.h"
-#include "machine.h"
-#include "athing.hxx"
+#include "TYPEDEFS.H"
+#include "ENGINE.H"
+#include "THINGS.H"
+#include "MACHINE.H"
+#include "ATHING.HXX"
 
 /* ------------------------------------------------------------------------
    Notes

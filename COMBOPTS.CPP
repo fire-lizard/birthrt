@@ -15,13 +15,13 @@
 /* ------------------------------------------------------------------------
    Includes
    ------------------------------------------------------------------------ */
-#include "system.h"
-#include "combopts.hxx"
-#include "combatui.hxx"
-#include "combcntl.hxx"
-#include "gamekey.hxx"
-#include "gmenuenm.h"
-#include "panel.h"
+#include "SYSTEM.H"
+#include "COMBOPTS.HXX"
+#include "COMBATUI.HXX"
+#include "COMBCNTL.HXX"
+#include "GAMEKEY.HXX"
+#include "GMENUENM.H"
+#include "PANEL.H"
 
 /* ------------------------------------------------------------------------
    Notes

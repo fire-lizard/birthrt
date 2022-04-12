@@ -15,11 +15,11 @@
 /* ------------------------------------------------------------------------
    Includes
    ------------------------------------------------------------------------ */
-#include "typedefs.h"
+#include "TYPEDEFS.H"
 
-#include "experien.hxx"
+#include "EXPERIEN.HXX"
 //#include "gamestr.h"
-#include "playclas.hxx"
+#include "PLAYCLAS.HXX"
 #include "strenum.h"   
 
 /* ------------------------------------------------------------------------

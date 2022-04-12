@@ -27,14 +27,14 @@
 #include <dos.h>
 #include <conio.h>
 #include <errno.h>
-#include "typedefs.h"
-#include "system.h"
-#include "fopen.h"
-#include "findfile.hxx"
-#include "scene.hxx"
-#include "multimap.hxx"
-#include "vector.hxx"
-#include "realm.hxx"
+#include "TYPEDEFS.H"
+#include "SYSTEM.H"
+#include "FOPEN.H"
+#include "FINDFILE.HXX"
+#include "SCENE.HXX"
+#include "MULTIMAP.HXX"
+#include "VECTOR.HXX"
+#include "REALM.HXX"
 
 /* ------------------------------------------------------------------------
    Notes

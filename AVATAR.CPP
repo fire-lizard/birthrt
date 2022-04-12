@@ -11,23 +11,23 @@
 #include <string.h>
 #include <limits.h>
 
-#include "avatar.hxx"
+#include "AVATAR.HXX"
 
-#include "typedefs.h"
-#include "engine.h"
+#include "TYPEDEFS.H"
+#include "ENGINE.H"
 
-#include "ai_utils.h"
-#include "combopts.hxx"
-#include "gamemap.hxx"
-#include "gmenuenm.h"
-#include "thingtyp.h"
-#include "playstat.hxx"
-#include "playhit.hxx"
-#include "invntory.hxx"
-#include "special.h"
-#include "handle.hxx"
-#include "units.hxx"
-#include "scene.hxx"
+#include "AI_UTILS.H"
+#include "COMBOPTS.HXX"
+#include "GAMEMAP.HXX"
+#include "GMENUENM.H"
+#include "THINGTYP.H"
+#include "PLAYSTAT.HXX"
+#include "PLAYHIT.HXX"
+#include "INVNTORY.HXX"
+#include "SPECIAL.H"
+#include "HANDLE.HXX"
+#include "UNITS.HXX"
+#include "SCENE.HXX"
 
 #ifdef _WINDOWS
 #ifdef OLD_SOUND

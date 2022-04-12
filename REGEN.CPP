@@ -1,12 +1,11 @@
-#include "regen.hxx"
+#include "REGEN.HXX"
 
-#include "avatar.hxx"
-#include "battleui.hxx"
-#include "playstat.hxx"
-#include "tmsgbox.hxx"
+#include "AVATAR.HXX"
+#include "BATTLEUI.HXX"
+#include "PLAYSTAT.HXX"
+#include "TMSGBOX.HXX"
 #include "strenum.h"
-#include "scnmgr.hxx"
-
+#include "SCNMGR.HXX"
 
 
 BOOL Regenerator::fListInitted=FALSE;

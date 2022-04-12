@@ -16,25 +16,25 @@
 #include <windows.h>
 #endif
 
-#include "system.h"
-#include "engine.h"
+#include "SYSTEM.H"
+#include "ENGINE.H"
 #include <stdio.h>
-#include "typedefs.h"
+#include "TYPEDEFS.H"
 
-#include "machint.h"
+#include "MACHINT.H"
 
-#include "charsel.hxx"
-#include "game.h"
-#include "sound.hxx"
-#include "listbox.hxx"
-#include "menu.h"
-#include "panel.h"
-#include "combatui.hxx"
-#include "combopts.hxx"
-#include "battleui.hxx"
-#include "margin.hxx"
-#include "multimap.hxx"
-#include "context.hxx"
+#include "CHARSEL.HXX"
+#include "GAME.H"
+#include "SOUND.HXX"
+#include "LISTBOX.HXX"
+#include "MENU.H"
+#include "PANEL.H"
+#include "COMBATUI.HXX"
+#include "COMBOPTS.HXX"
+#include "BATTLEUI.HXX"
+#include "MARGIN.HXX"
+#include "MULTIMAP.HXX"
+#include "CONTEXT.HXX"
 
 /* ------------------------------------------------------------------------
    Defines

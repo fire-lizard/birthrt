@@ -32,15 +32,15 @@
 #if defined (_JPC)
 #include "debug.h"
 #endif
-#include "system.h"
-#include "engine.h"
-#include "engint.h"
-#include "machine.h"
-#include "special.h"
-#include "thingtyp.h"
-#include "sound.hxx"
-#include "soundfx.hxx"
-#include "strmgr.h"
+#include "SYSTEM.H"
+#include "ENGINE.H"
+#include "ENGINT.H"
+#include "MACHINE.H"
+#include "SPECIAL.H"
+#include "THINGTYP.H"
+#include "SOUND.HXX"
+#include "SOUNDFX.HXX"
+#include "STRMGR.H"
 #include "strenum.h"
 
 extern BOOL fSpellKnocking;

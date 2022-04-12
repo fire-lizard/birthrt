@@ -21,12 +21,12 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "system.h"
-#include "engine.h"
-#include "machine.h"
+#include "SYSTEM.H"
+#include "ENGINE.H"
+#include "MACHINE.H"
 
-#include "scene.hxx"
-#include "scnmap.hxx"
+#include "SCENE.HXX"
+#include "SCNMAP.HXX"
 
 #ifdef _WINDOWS
 #ifdef OLD_SOUND

@@ -2,10 +2,10 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "system.h"
-#include "provdata.hxx"
-#include "gamemap.hxx"
-#include "realm.hxx"
+#include "SYSTEM.H"
+#include "PROVDATA.HXX"
+#include "GAMEMAP.HXX"
+#include "REALM.HXX"
 
 
 /* PROVINCE LIST AND WHAT ITS STATS ARE */

@@ -18,16 +18,16 @@
 
 #include <string.h>
 
-#include "engine.h"
-#include "system.h"
-#include "machine.h"
-#include "menu.h"
-#include "panel.h"
-#include "gmenuenm.h"
+#include "ENGINE.H"
+#include "SYSTEM.H"
+#include "MACHINE.H"
+#include "MENU.H"
+#include "PANEL.H"
+#include "GMENUENM.H"
 #include "strenum.h"
-#include "strmgr.h"
+#include "STRMGR.H"
 
-#include "parch.hxx"
+#include "PARCH.HXX"
 /* ------------------------------------------------------------------------
    Notes
    ------------------------------------------------------------------------ */

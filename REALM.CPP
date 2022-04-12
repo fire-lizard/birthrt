@@ -15,10 +15,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "system.h"
-#include "realm.hxx"
-#include "gamemap.hxx"
-#include "regents.hxx"
+#include "SYSTEM.H"
+#include "REALM.HXX"
+#include "GAMEMAP.HXX"
+#include "REGENTS.HXX"
 #include "strenum.h"
 
 /* ------------------------------------------------------------------------

@@ -18,39 +18,39 @@
 #endif
 
 #include <io.h>
-#include "system.h"
+#include "SYSTEM.H"
 #include <stdio.h>
-#include "typedefs.h"
+#include "TYPEDEFS.H"
 #include <sys\types.h>
 #include <direct.h>
 
-#include "actnmenu.hxx"
-#include "charsel.hxx"
-#include "game.h"
-#include "sound.hxx"
-#include "menu.h"
+#include "ACTNMENU.HXX"
+#include "CHARSEL.HXX"
+#include "GAME.H"
+#include "SOUND.HXX"
+#include "MENU.H"
 #include "dos.h"
 
-#include "gamemap.hxx"  /* for realm[], regents[], province[], places[] */
-#include "realm.hxx"    /* for RealmReaction[][] and RealmStatus[][] */
-#include "units.hxx"    /* for units[] */
-#include "playstat.hxx" /* for the PLAYER_STATS class */
-#include "mapai.hxx"	/* for the realm-level AIs */
+#include "GAMEMAP.HXX"  /* for realm[], regents[], province[], places[] */
+#include "REALM.HXX"    /* for RealmReaction[][] and RealmStatus[][] */
+#include "UNITS.HXX"    /* for units[] */
+#include "PLAYSTAT.HXX" /* for the PLAYER_STATS class */
+#include "MAPAI.HXX"	/* for the realm-level AIs */
 
-#include "regrelic.hxx"
-#include "loadsave.hxx"
-#include "regents.hxx"
-#include "multimap.hxx"
-#include "strmgr.h"
-#include "multiui.hxx"
-#include "report.hxx"
-#include "context.hxx"
-#include "panel.h"
-#include "request.h"
-#include "places.hxx"
+#include "REGRELIC.HXX"
+#include "LOADSAVE.HXX"
+#include "REGENTS.HXX"
+#include "MULTIMAP.HXX"
+#include "STRMGR.H"
+#include "MULTIUI.HXX"
+#include "REPORT.HXX"
+#include "CONTEXT.HXX"
+#include "PANEL.H"
+#include "REQUEST.H"
+#include "PLACES.HXX"
 
 #ifdef _WINDOWS
-#include "winsys\mulplay.hxx"
+#include "WINSYS\MULPLAY.HXX"
 #endif
 
 extern BOOL fLogComment;

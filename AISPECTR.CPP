@@ -6,9 +6,9 @@
    Author:   Lan Zhou
    ======================================================================== */
 
-#include "avatar.hxx"	// includes aipong.hxx
-#include "playstat.hxx"
-#include "sound.hxx"
+#include "AVATAR.HXX"	// includes aipong.hxx
+#include "PLAYSTAT.HXX"
+#include "SOUND.HXX"
 
 
 // [d11-26-96 JPC] Changed mfMoveToXYZA to mfMoveToXYA for NON-FLYING

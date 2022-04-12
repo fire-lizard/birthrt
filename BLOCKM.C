@@ -15,9 +15,9 @@
    Includes
    ------------------------------------------------------------------------ */
 #include <stdio.h>
-#include "system.h"
-#include "engine.h"
-#include "engint.h"
+#include "SYSTEM.H"
+#include "ENGINE.H"
+#include "ENGINT.H"
 
 /* ------------------------------------------------------------------------
    Defines and Compile Flags

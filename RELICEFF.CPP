@@ -1,16 +1,16 @@
 
-#include "system.h"
+#include "SYSTEM.H"
 
-#include "playstat.hxx"
-#include "avatar.hxx"
-#include "itemtype.hxx"
-#include "tmsgbox.hxx"
-#include "dice.h"
+#include "PLAYSTAT.HXX"
+#include "AVATAR.HXX"
+#include "ITEMTYPE.HXX"
+#include "TMSGBOX.HXX"
+#include "DICE.H"
 #include "strenum.h"
-#include "scnmgr.hxx"
+#include "SCNMGR.HXX"
 
-#include "battleui.hxx"
-#include "gamemap.hxx"
+#include "BATTLEUI.HXX"
+#include "GAMEMAP.HXX"
 #include "strenum.h"   
 
 

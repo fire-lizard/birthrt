@@ -21,25 +21,25 @@
 #include <windows.h>
 #include <windowsx.h>
 
-#include "system.h"
-#include "engine.h"
-#include "fopen.h"
+#include "SYSTEM.H"
+#include "ENGINE.H"
+#include "FOPEN.H"
 
-#include "avatar.hxx"
-#include "alignmnt.hxx"
-#include "gamemap.hxx"
-#include "main.hxx"
-#include "scene.hxx"
-#include "playclas.hxx"
-#include "appear.hxx"
-#include "bloodreq.hxx"
-#include "constitn.hxx"
+#include "AVATAR.HXX"
+#include "ALIGNMNT.HXX"
+#include "GAMEMAP.HXX"
+#include "MAIN.HXX"
+#include "SCENE.HXX"
+#include "PLAYCLAS.HXX"
+#include "APPEAR.HXX"
+#include "BLOODREQ.HXX"
+#include "CONSTITN.HXX"
 
-#include "resource.h"						// symbols for CHARED dialogs
-#include "ava.hxx"							// load/save functions
-#include "getfile.hxx"
-#include "chared.hxx"
-#include "charedin.hxx"						// inventory selection functions
+#include "RESOURCE.H"						// symbols for CHARED dialogs
+#include "AVA.HXX"							// load/save functions
+#include "GETFILE.HXX"
+#include "CHARED.HXX"
+#include "CHAREDIN.HXX"						// inventory selection functions
 
 #define W_OK 2
 #define F_OK 0

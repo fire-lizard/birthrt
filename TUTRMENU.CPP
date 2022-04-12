@@ -17,15 +17,15 @@
    ------------------------------------------------------------------------ */
 #include <string.h>
 
-#include "system.h"
-#include "engine.h"
-#include "machine.h"
+#include "SYSTEM.H"
+#include "ENGINE.H"
+#include "MACHINE.H"
 
-#include "gmenuenm.h"
-#include "menuprot.h"
-#include "panel.h"
-#include "strmgr.h"
-#include "tutrmenu.hxx"
+#include "GMENUENM.H"
+#include "MENUPROT.H"
+#include "PANEL.H"
+#include "STRMGR.H"
+#include "TUTRMENU.HXX"
 
 /* ------------------------------------------------------------------------
    Notes

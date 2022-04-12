@@ -34,17 +34,17 @@
 #include <windows.h>
 #endif
 
-#include "system.h"
-#include "engine.h"
-#include "engint.h"
-#include "machine.h"
-#include "handle.hxx"
-#include "sound.hxx"
-#include "flicplay.hxx"
+#include "SYSTEM.H"
+#include "ENGINE.H"
+#include "ENGINT.H"
+#include "MACHINE.H"
+#include "HANDLE.HXX"
+#include "SOUND.HXX"
+#include "FLICPLAY.HXX"
 //#if defined (AUDIO_LIB)
 //#include "KERNAUD.HPP"
 //#endif
-#include "Main.hxx"
+#include "MAIN.HXX"
 
 #ifdef _WINDOWS
 	extern BOOL fQuitting;					// [d1-07-97 JPC] defined in WINSYS\MACHINE.C

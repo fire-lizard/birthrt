@@ -17,9 +17,9 @@
 #include <stdio.h>
 #endif
 
-#include "system.h"
-#include "engine.h"
-#include "engint.h"
+#include "SYSTEM.H"
+#include "ENGINE.H"
+#include "ENGINT.H"
 
 /* ------------------------------------------------------------------------
    Notes

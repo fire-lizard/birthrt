@@ -15,15 +15,15 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdarg.h>
-#include "typedefs.h"
-#include "system.h"
-#include "units.hxx"
-#include "regents.hxx"
-#include "gamemap.hxx"
-#include "vector.hxx"
-#include "realm.hxx"
-#include "playstat.hxx"
-#include "handle.hxx"
+#include "TYPEDEFS.H"
+#include "SYSTEM.H"
+#include "UNITS.HXX"
+#include "REGENTS.HXX"
+#include "GAMEMAP.HXX"
+#include "VECTOR.HXX"
+#include "REALM.HXX"
+#include "PLAYSTAT.HXX"
+#include "HANDLE.HXX"
 
 /* ------------------------------------------------------------------------
    Prototypes

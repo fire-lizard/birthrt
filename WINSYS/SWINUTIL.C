@@ -8,9 +8,7 @@
 
 #include <windows.h>
 
-#include "SWinUtil.h"
-
-
+#include "SWINUTIL.H"
 
 
 //--------------------------------------------------------------------------;

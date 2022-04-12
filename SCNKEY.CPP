@@ -25,14 +25,14 @@
 #include <windows.h>
 #endif
 
-#include "system.h"
-#include "engine.h"
-#include "machine.h"
+#include "SYSTEM.H"
+#include "ENGINE.H"
+#include "MACHINE.H"
 
-#include "handle.hxx"
-#include "scene.hxx"
-#include "scnkey.hxx"
-#include "scnmgr.hxx"
+#include "HANDLE.HXX"
+#include "SCENE.HXX"
+#include "SCNKEY.HXX"
+#include "SCNMGR.HXX"
 
 /* ------------------------------------------------------------------------
    Notes

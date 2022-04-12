@@ -10,12 +10,12 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "system.h"
-#include "engine.h"
+#include "SYSTEM.H"
+#include "ENGINE.H"
 
-#include "avatar.hxx"	// includes aipong.hxx
-#include "playstat.hxx"
-#include "sound.hxx"
+#include "AVATAR.HXX"	// includes aipong.hxx
+#include "PLAYSTAT.HXX"
+#include "SOUND.HXX"
 #ifdef _WINDOWS
 #ifdef OLD_SOUND
 #include "winsys\sndutil.h"

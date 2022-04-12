@@ -17,7 +17,7 @@
 #include <stdlib.h>		// for rand.
 #include <string.h>		// for rand.
 
-#include "typedefs.h"
+#include "TYPEDEFS.H"
 
 /* ------------------------------------------------------------------------
    Defines and Compile Flags

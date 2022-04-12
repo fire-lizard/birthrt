@@ -23,11 +23,11 @@
 #include <math.h>
 #include <stdio.h>
 #include <string.h>
-#include "system.h"
-#include "engine.h"
-#include "machine.h"
-#include "light.h"
-#include "main.hxx"
+#include "SYSTEM.H"
+#include "ENGINE.H"
+#include "MACHINE.H"
+#include "LIGHT.H"
+#include "MAIN.HXX"
 
 #ifdef _JPC
 void	ErrorMessage (const char *format, ...);

@@ -23,23 +23,23 @@ X   machine_post_frame    -does postframe things, such as updating the screen
 #include <dos.h>
 #include <conio.h>
 #include <windows.h>
-#include "../resource.h"
-#include "../system.h"
-#include "../machine.h"
-#include "../machint.h"
-#include "../engine.h"
-#include "../debug.h"
+#include "../RESOURCE.H"
+#include "../SYSTEM.H"
+#include "../MACHINE.H"
+#include "../MACHINT.H"
+#include "../ENGINE.H"
+#include "../DEBUG.H"
 
-#include "mciutil.h"
+#include "MCIUTIL.H"
 
-#include "../main.hxx"
-#include "../sound.hxx"
-#include "../fileutil.h"
+#include "../MAIN.HXX"
+#include "../SOUND.HXX"
+#include "../FILEUTIL.H"
 //#include "game.h"
 #include "mmsystem.h"
 
 // [d11-09-96 JPC] No longer use registry. #include "registry.h"
-#include "ddrawpro.h"
+#include "DDRAWPRO.H"
 
 // name of first scene in this
 extern char pInitScene[];

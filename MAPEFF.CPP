@@ -1,13 +1,13 @@
-#include "system.h"
+#include "SYSTEM.H"
 
-#include "playstat.hxx"
-#include "itemtype.hxx"
-#include "tmsgbox.hxx"
+#include "PLAYSTAT.HXX"
+#include "ITEMTYPE.HXX"
+#include "TMSGBOX.HXX"
 #include "strenum.h"
-#include "scnmgr.hxx"
+#include "SCNMGR.HXX"
 
-#include "battle.hxx"
-#include "battleui.hxx"
+#include "BATTLE.HXX"
+#include "BATTLEUI.HXX"
 #include "strenum.h"   
 
 

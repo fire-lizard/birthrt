@@ -20,13 +20,13 @@
 #include <windows.h>
 #endif
 
-#include "system.h"
-#include "machine.h"
-#include "engine.h"
+#include "SYSTEM.H"
+#include "MACHINE.H"
+#include "ENGINE.H"
 
-#include "flicplay.hxx"
-#include "gamekey.hxx"
-#include "sound.hxx"
+#include "FLICPLAY.HXX"
+#include "GAMEKEY.HXX"
+#include "SOUND.HXX"
 
 /* ------------------------------------------------------------------------
    Defines and Compile Flags

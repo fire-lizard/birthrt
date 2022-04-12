@@ -12,7 +12,7 @@
 #include <windows.h>
 #include <shellapi.h>
 #include <string.h>
-#include "gotourl.h"
+#include "GOTOURL.H"
 
 //-----------------------------------------------------------------------------
 //

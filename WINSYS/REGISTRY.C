@@ -8,9 +8,9 @@
 //--------------------------------------------------------------------------------
 
 #include <windows.h>
-#include "Registry.h"
+#include "REGISTRY.H"
 
-#include "../player.hxx"
+#include "../PLAYER.HXX"
 
 #define VAR_DWORD  1  // ( unsigned long )
 #define VAR_BOOL   2  // ( int ) 
@@ -30,9 +30,7 @@ typedef struct
 } REGENTRY, * LPREGENTRY;
 
  // -- Get Application-Specific items
-#include "RegistrS.h"
-
-
+#include "REGISTRS.H"
 
 
 //------------------------------------------------------------------------------------

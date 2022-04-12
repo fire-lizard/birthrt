@@ -27,13 +27,13 @@
    ------------------------------------------------------------------------ */
 #include <stdio.h>
 #include <string.h>
-#include "debug.h"
-#include "system.h"
-#include "engine.h"
-#include "engint.h"
-#include "machine.h"
-#include "dynamtex.h"
-#include "light.h"							// [d7-03-96 JPC]
+#include "DEBUG.H"
+#include "SYSTEM.H"
+#include "ENGINE.H"
+#include "ENGINT.H"
+#include "MACHINE.H"
+#include "DYNAMTEX.H"
+#include "LIGHT.H"							// [d7-03-96 JPC]
 
 #if defined( _DEBUG) && defined(_WINDOWS) && defined(_JPC)
 static char gszSourceFile[] = __FILE__;

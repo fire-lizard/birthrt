@@ -20,26 +20,26 @@
 #include <string.h>
 #include <stdarg.h>
 
-#include "system.h"
+#include "SYSTEM.H"
 
-#include "actnmenu.hxx"
-#include "charsel.hxx"
-#include "gmenuenm.h"
-#include "gamemap.hxx"
-#include "mapai.hxx"
-#include "menu.h"
-#include "request.h"
-#include "multimap.hxx"
-#include "multiui.hxx"
-#include "realm.hxx"
-#include "sound.hxx"
+#include "ACTNMENU.HXX"
+#include "CHARSEL.HXX"
+#include "GMENUENM.H"
+#include "GAMEMAP.HXX"
+#include "MAPAI.HXX"
+#include "MENU.H"
+#include "REQUEST.H"
+#include "MULTIMAP.HXX"
+#include "MULTIUI.HXX"
+#include "REALM.HXX"
+#include "SOUND.HXX"
 #include "strenum.h"
-#include "strmgr.h"
-#include "units.hxx"
-#include "invntory.hxx"
-#include "report.hxx"
-#include "regents.hxx"
-#include "places.hxx"
+#include "STRMGR.H"
+#include "UNITS.HXX"
+#include "INVNTORY.HXX"
+#include "REPORT.HXX"
+#include "REGENTS.HXX"
+#include "PLACES.HXX"
 
 //---- Insure we only have mono in debug versions
 #ifdef _DEBUG
@@ -47,8 +47,8 @@
 #endif
 
 #ifdef _WINDOWS
-#include "winsys\mulplay.hxx"
-#include "winsys\mono_c.h"
+#include "WINSYS\MULPLAY.HXX"
+#include "WINSYS\MONO_C.H"
 #endif
 
 extern BOOL fLogComment;

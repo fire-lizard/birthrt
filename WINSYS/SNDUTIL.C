@@ -11,15 +11,15 @@
 
 #include <mmreg.h>
 #include <msacm.h>
-#include <DSound.h>
+#include <dsound.h>
 
 #include <stdio.h>
 #include <string.h>
 #include <memory.h>
 
-#include "wave.h"
-#include "SndUtil.h"
-#include "SWinUtil.h"
+#include "WAVE.H"
+#include "SNDUTIL.H"
+#include "SWINUTIL.H"
 
 extern BOOL fSound;
 
@@ -55,9 +55,9 @@ WAVECLASS WaveClass [ MAX_WAVE_CLASS ] = { 0,      0,     //---- Never use this
                                            1000,   0,     //---- one second 
                                            2000,   0  };  //---- two seconds 
 
-#include "SndUtilS.h"
-                                                     
-                                                     
+#include "SNDUTILS.H"
+
+
 static LPDIRECTSOUND        lpDS        = NULL;        //---- Direct sound object
 static LPDIRECTSOUNDBUFFER  lpDSPrimary = NULL;        //---- Primary direct sound buffer 
 

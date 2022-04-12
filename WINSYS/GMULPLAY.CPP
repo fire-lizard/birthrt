@@ -18,17 +18,17 @@
 #define LOGCOMMENTSLEEP {;}
 
 #include <windows.h>
-#include "GMulPlay.hxx"
-#include "../Resource.h"
-#include "../system.h"
-#include "../machine.h"
+#include "GMULPLAY.HXX"
+#include "../RESOURCE.H"
+#include "../SYSTEM.H"
+#include "../MACHINE.H"
 
-#include "FileXfer.hxx"
+#include "FILEXFER.HXX"
 
-#include "StdIO.h"
-#include "Limits.h"
+#include "stdio.h"
+#include "limits.h"
 #include "Direct.h"
-#include "mono_c.h"
+#include "MONO_C.H"
 
 extern BOOL fLogComment;
 
@@ -1632,8 +1632,9 @@ BOOL GenericMultiPlayer::SendDirectMessage( DWORD dwToWhom, USHORT usType, short
 #define	ACK_LED_W	4
 #define	ACK_LED_H	4
 #define	ACK_LED_INC	8
-#include "..\colors.h"
-#include "..\engine.h"
+#include "..\COLORS.H"
+#include "..\ENGINE.H"
+
 void PaintAckLED(int k, DWORD id2, BOOL localAcks)
 {
 	LONG	color = (localAcks) ? GREEN : RED ;

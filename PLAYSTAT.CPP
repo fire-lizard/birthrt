@@ -18,17 +18,17 @@
 #include <string.h>
 #include <ctype.h>
 
-#include "avatar.hxx"
-#include "gamemap.hxx"
-#include "invntory.hxx"
-#include "playstat.hxx"
-#include "spellpro.hxx"
-#include "wisdom.hxx"
+#include "AVATAR.HXX"
+#include "GAMEMAP.HXX"
+#include "INVNTORY.HXX"
+#include "PLAYSTAT.HXX"
+#include "SPELLPRO.HXX"
+#include "WISDOM.HXX"
 #include "strenum.h"
-#include "scnmgr.hxx"
-#include "explevel.hxx"
-#include "regen.hxx"
-#include "regents.hxx"
+#include "SCNMGR.HXX"
+#include "EXPLEVEL.HXX"
+#include "REGEN.HXX"
+#include "REGENTS.HXX"
 
 
 /* ------------------------------------------------------------------------

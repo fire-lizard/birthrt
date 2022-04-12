@@ -1,5 +1,5 @@
-#include "tutor.hxx"
-#include "machine.h"
+#include "TUTOR.HXX"
+#include "MACHINE.H"
 
 GAME_STRING const TutorialHelpMgr::STR_NO_HELP=STR_NULL;
 

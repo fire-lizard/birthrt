@@ -22,24 +22,24 @@
 #include <string.h>
 #include <fcntl.h>
 
-#include "scene.hxx"
+#include "SCENE.HXX"
 
-#include "system.h"
-#include "engine.h"
-#include "machine.h"
-#include "map.h"
+#include "SYSTEM.H"
+#include "ENGINE.H"
+#include "MACHINE.H"
+#include "MAP.H"
 
-#include "avatar.hxx"
-#include "playstat.hxx"
-#include "fileutil.h"
-#include "gamemap.hxx"
-#include "battleui.hxx"
-#include "scndlgs.hxx"
-#include "scnexit.hxx"
-#include "scnkey.hxx"
-#include "scnnotes.hxx"
-#include "scnplace.hxx"
-#include "scnsctor.hxx"
+#include "AVATAR.HXX"
+#include "PLAYSTAT.HXX"
+#include "FILEUTIL.H"
+#include "GAMEMAP.HXX"
+#include "BATTLEUI.HXX"
+#include "SCNDLGS.HXX"
+#include "SCNEXIT.HXX"
+#include "SCNKEY.HXX"
+#include "SCNNOTES.HXX"
+#include "SCNPLACE.HXX"
+#include "SCNSCTOR.HXX"
 #include "strenum.h"
 
 /* ------------------------------------------------------------------------

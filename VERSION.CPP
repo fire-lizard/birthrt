@@ -19,14 +19,14 @@
 #include <windows.h>
 #endif
 
-#include "typedefs.h"
-#include "engine.h"
-#include "system.h"
+#include "TYPEDEFS.H"
+#include "ENGINE.H"
+#include "SYSTEM.H"
 
-#include "menu.h"
-#include "strmgr.h"
+#include "MENU.H"
+#include "STRMGR.H"
 #include "strenum.h"
-#include "version.hxx"
+#include "VERSION.HXX"
 
 /* ------------------------------------------------------------------------
    Notes

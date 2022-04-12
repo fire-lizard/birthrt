@@ -20,10 +20,10 @@
 #include <dos.h>
 #include <conio.h>
 #include <errno.h>
-#include "typedefs.h"
-#include "system.h"
-#include "machine.h"
-#include "engine.h"
+#include "TYPEDEFS.H"
+#include "SYSTEM.H"
+#include "MACHINE.H"
+#include "ENGINE.H"
 
 #define F_OK 0
 

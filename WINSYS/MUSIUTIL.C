@@ -7,9 +7,9 @@
 //------------------------------------------------------------------------------
 
 #include <windows.h>
-#include "mds.h"
-#include "mciutil.h"
-#include "MusiUtil.h"
+#include "MDS.H"
+#include "MCIUTIL.H"
+#include "MUSIUTIL.H"
 
 
 #define MDS_MUSIC 1
@@ -18,7 +18,7 @@
 static HANDLE hMds;
 
  // -- Include application specific stuff
-#include "MusiUtiS.h"
+#include "MUSIUTIS.H"
 
 
 //---- MDS routines 

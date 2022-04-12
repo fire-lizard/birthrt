@@ -31,10 +31,10 @@
 #include <stdlib.h>
 #include <math.h>
 
-#include "system.h"
-#include "engine.h"
-#include "engint.h"
-#include "sincos.h"
+#include "SYSTEM.H"
+#include "ENGINE.H"
+#include "ENGINT.H"
+#include "SINCOS.H"
 
 /* ------------------------------------------------------------------------
    Notes

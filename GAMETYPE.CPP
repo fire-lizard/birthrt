@@ -9,12 +9,12 @@
 /* ------------------------------------------------------------------------
    Includes
    ------------------------------------------------------------------------ */
-#include "gametype.hxx"
-#include "sound.hxx"
+#include "GAMETYPE.HXX"
+#include "SOUND.HXX"
 #include "strenum.h"
-#include "scene.hxx"
-#include "scnai.hxx"
-#include "scnmgr.hxx"
+#include "SCENE.HXX"
+#include "SCNAI.HXX"
+#include "SCNMGR.HXX"
 
 /* ------------------------------------------------------------------------
    Notes

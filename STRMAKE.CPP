@@ -8,9 +8,9 @@
 #include <process.h>
 #include <dos.h>
 
-#include "typedefs.h"
+#include "TYPEDEFS.H"
 
-#include "strint.h"
+#include "STRINT.H"
 
 #define STRINGTEXTFILENAME	"strdat.txt"
 #define STRINGENUMFILENAME	"strenum.new"

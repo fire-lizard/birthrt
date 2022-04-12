@@ -1,12 +1,12 @@
 #include <stdio.h>
 
-#include "infobox.hxx"
+#include "INFOBOX.HXX"
 
-#include "system.h"
-#include "engine.h"
-#include "gametype.hxx"
-#include "gmenuenm.h"
-#include "tmsgbox.hxx"
+#include "SYSTEM.H"
+#include "ENGINE.H"
+#include "GAMETYPE.HXX"
+#include "GMENUENM.H"
+#include "TMSGBOX.HXX"
 
 LONG InfoBox::Info=STR_NULL;
 //static PFVLLL InfoBox::pfPrevObjMouseCallback  =NULL;

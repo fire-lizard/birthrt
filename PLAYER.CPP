@@ -33,14 +33,14 @@
 
 #endif	// _WINDOWS
 
-#include "system.h"
-#include "engine.h"
-#include "engint.h"
-#include "machine.h"
+#include "SYSTEM.H"
+#include "ENGINE.H"
+#include "ENGINT.H"
+#include "MACHINE.H"
 
-#include "gamekey.hxx"
-#include "player.hxx"
-#include "special.h"
+#include "GAMEKEY.HXX"
+#include "PLAYER.HXX"
+#include "SPECIAL.H"
 
 
 /* ------------------------------------------------------------------------

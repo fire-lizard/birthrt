@@ -16,10 +16,10 @@
    Includes
    ------------------------------------------------------------------------ */
 
-#include "system.h"
+#include "SYSTEM.H"
 
-#include "bloodreq.hxx"
-#include "dice.h"
+#include "BLOODREQ.HXX"
+#include "DICE.H"
 
 /* ------------------------------------------------------------------------
    Notes

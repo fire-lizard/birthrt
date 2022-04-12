@@ -12,22 +12,22 @@
 
 #include <stdio.h>
 #include <string.h>
-#include "system.h"
-#include "actnmenu.hxx"
-#include "provtax.h"
-#include "main.hxx"
-#include "units.hxx"
-#include "soundfx.hxx"
-#include "regents.hxx"
-#include "game.h"
-#include "report.hxx"
-#include "scnmgr.hxx"
-#include "gamemap.hxx"
-#include "sndvox.hxx"
+#include "SYSTEM.H"
+#include "ACTNMENU.HXX"
+#include "PROVTAX.H"
+#include "MAIN.HXX"
+#include "UNITS.HXX"
+#include "SOUNDFX.HXX"
+#include "REGENTS.HXX"
+#include "GAME.H"
+#include "REPORT.HXX"
+#include "SCNMGR.HXX"
+#include "GAMEMAP.HXX"
+#include "SNDVOX.HXX"
 
 #ifdef _WINDOWS
-#include "winsys\mulplay.hxx"
-#include "winsys\mono_c.h"
+#include "WINSYS\MULPLAY.HXX"
+#include "WINSYS\MONO_C.H"
 #endif
 
 extern BOOL fLogComment;

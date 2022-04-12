@@ -21,12 +21,12 @@
 #include <io.h>
 #include <fcntl.h>
 #include <dos.h>
-#include "system.h"
-#include "engine.h"
-#include "engint.h"
-#include "machine.h"
-#include "sound.hxx"
-#include "flicplay.hxx"
+#include "SYSTEM.H"
+#include "ENGINE.H"
+#include "ENGINT.H"
+#include "MACHINE.H"
+#include "SOUND.HXX"
+#include "FLICPLAY.HXX"
 #if defined (AUDIO_LIB)
 #include "KERNAUD.HPP"
 #endif

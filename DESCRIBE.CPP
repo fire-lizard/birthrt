@@ -14,17 +14,17 @@
    Includes
    ------------------------------------------------------------------------ */
 
-#include "system.h"
-#include "engine.h"
+#include "SYSTEM.H"
+#include "ENGINE.H"
 
-#include "menu.h"
-#include "panel.h"
-#include "gmenuenm.h"
-#include "gamemap.hxx"
-#include "strmgr.h"
+#include "MENU.H"
+#include "PANEL.H"
+#include "GMENUENM.H"
+#include "GAMEMAP.HXX"
+#include "STRMGR.H"
 #include "strenum.h"
 
-#include "describe.hxx"
+#include "DESCRIBE.HXX"
 
 /* ------------------------------------------------------------------------
    Notes
