@@ -182,50 +182,114 @@ static MAP_INFO	gMapInfo = {
 						
 						};
 
+/* ========================================================================
+   Function    - MapRegionFunction
+   Description - This is the function that is hooked to the Map region
+   Returns     - void
+   ======================================================================== */
+static void MapRegionFunction(LONG a, LONG b)
+{
+	LONG WorldX, WorldY;
+	b = a;
+
+	//	printf("in map region func\n");
+
+
+	if (gMapInfo.fWaitingForTeleport)
+	{
+		//		printf("innit again\n");
+		WorldX = SCREEN_X_TO_WORLD_X(cursor_x);
+		WorldY = SCREEN_Y_TO_WORLD_Y(cursor_y);
+		//		printf("Map Clicked at coords (%li,%li)\n",cursor_x,cursor_y);
+		//		printf("camera (%li,%li) mapcntr(%li,%li)\n",(gMapInfo.WorldCenter.x),(gMapInfo.WorldCenter.y),gMapInfo.ScreenCenter.x,gMapInfo.ScreenCenter.y);
+		//		printf("transformed to world coords(%li,%li)\n",WorldX,WorldY);
+		//		printf("you clicked in sector %li ssector %li\n",point_to_sector(WorldX,WorldY),find_ssector(WorldX,WorldY));
+		//		printf("you teleported a distance of %li\n",aprox_dist((gMapInfo.WorldCenter.x),(gMapInfo.WorldCenter.y),WorldX,WorldY));
+		//		printf("\n");
+
+		SetPlayer(WorldX, WorldY, point_to_floor_height(WorldX, WorldY), camera.a, camera.p);
+
+		SetCameraPosition(
+			&camera,
+			PLAYER_INT_VAL(player.x),
+			PLAYER_INT_VAL(player.y),
+			(player.z + (player.h - EYE_HEIGHT)),
+			player.a,
+			player.p
+		);
+
+		MapTeleport(TELEPORT_DONE);
+	}
+}
+
+static void AddMapRegion(void)
+{
+	//	printf("added map reg func (%li,%li) (%lix%li)  (%li,%li)\n",gMapInfo.ScreenOrigin.x,gMapInfo.ScreenOrigin.y,gMapInfo.ScreenClip.x-gMapInfo.ScreenOrigin.x,gMapInfo.ScreenClip.x-gMapInfo.ScreenOrigin.x,gMapInfo.ScreenClip.x,gMapInfo.ScreenClip.y);
+	add_region(gMapInfo.ScreenOrigin.x, gMapInfo.ScreenOrigin.y, gMapInfo.ScreenClip.x - gMapInfo.ScreenOrigin.x, gMapInfo.ScreenClip.y - gMapInfo.ScreenOrigin.y,
+		NO_KEY, MapRegionFunction, 0, 0, 69, -1);
+}
+
+
+static void DelMapRegion(void)
+{
+	//	printf("deled map reg func\n");
+	del_region(MapRegionFunction, NO_KEY);
+}
+
+static void HdlMapRegion(void)
+{
+	static LONG LastFrameMapRegionType = MAP_REG_NONE;  //wow, long name
+
+	static MAP_INFO OldMapInfo = { {0,0},{0,0},{0,0},{0,0} }; //we only worry about the coordinate fields...
+
+
+	//this algorithm is nonsensical, but it's compact and it works.
+	// chart:  DrawMap FullScrn RegionType
+	//				1 	  1 		= 2
+	//				0 	  1 		= 1
+	//				0 	  0 		= 0
+	//				1 	  0  		= 0
+	gMapInfo.RegionType = (MapRegionType)((gMapInfo.fFullScreen && gMapInfo.fDrawMap) + gMapInfo.fDrawMap);
+
+	// if the region type has 	
+	if (LastFrameMapRegionType != gMapInfo.RegionType ||
+		OldMapInfo.ScreenCenter.y != gMapInfo.ScreenCenter.y)
+	{
+		if (LastFrameMapRegionType != MAP_REG_NONE)
+			DelMapRegion();
+		if (gMapInfo.RegionType != MAP_REG_NONE)
+			AddMapRegion();
+	}
+
+	//assign statics
+	LastFrameMapRegionType = gMapInfo.RegionType;
+	OldMapInfo = gMapInfo;
+
+
+}
 
 
 
 
 
 /* ========================================================================
-   Function    - MapRegionFunction
-   Description - This is the function that is hooked to the Map region
-   Returns     - void
+   Function - CalcWadBounds
+   Description - calculates the xy bounds of the wad
+   Returns - void
    ======================================================================== */
-static void MapRegionFunction(LONG a,LONG b)
+void CalcWadBounds(LONG* rx, LONG* ry, LONG* rw, LONG* rh)
 {
-	LONG WorldX,WorldY;
-	b=a;
-	
-//	printf("in map region func\n");
 
+	//SHORT* TestBlock=NULL;
+	//LONG x=0,y=0,w=0,h=0;
 
-	if (gMapInfo.fWaitingForTeleport)
-	{
-//		printf("innit again\n");
-		WorldX=SCREEN_X_TO_WORLD_X(cursor_x);
-		WorldY=SCREEN_Y_TO_WORLD_Y(cursor_y);
-//		printf("Map Clicked at coords (%li,%li)\n",cursor_x,cursor_y);
-//		printf("camera (%li,%li) mapcntr(%li,%li)\n",(gMapInfo.WorldCenter.x),(gMapInfo.WorldCenter.y),gMapInfo.ScreenCenter.x,gMapInfo.ScreenCenter.y);
-//		printf("transformed to world coords(%li,%li)\n",WorldX,WorldY);
-//		printf("you clicked in sector %li ssector %li\n",point_to_sector(WorldX,WorldY),find_ssector(WorldX,WorldY));
-//		printf("you teleported a distance of %li\n",aprox_dist((gMapInfo.WorldCenter.x),(gMapInfo.WorldCenter.y),WorldX,WorldY));
-//		printf("\n");
-
-		SetPlayer(WorldX,WorldY,point_to_floor_height(WorldX,WorldY),camera.a,camera.p);
-		
-		SetCameraPosition(
-			&camera,
-			PLAYER_INT_VAL(player.x),
-			PLAYER_INT_VAL(player.y),
-			(player.z+(player.h - EYE_HEIGHT)), 
-			player.a, 
-			player.p
-			);
-		
-		MapTeleport(TELEPORT_DONE);
-	}
+	*rx = blockm_header.xo - MAP_WAD_BOUNDS_BUFFER;
+	*ry = blockm_header.yo - MAP_WAD_BOUNDS_BUFFER;
+	*rw = blockm_header.cols * 128 + MAP_WAD_BOUNDS_BUFFER;
+	*rh = blockm_header.rows * 128 + MAP_WAD_BOUNDS_BUFFER;
 }
+
+
 
 /* ========================================================================
    Function    - MapTeleport
@@ -262,8 +326,7 @@ void MapTeleport(LONG code)
 	
 		fPause=TRUE;
 		
-		// TODO: (fire lizard) uncomment
-		//HdlMapRegion();
+		HdlMapRegion();
 		gMapInfo.fWaitingForTeleport=TRUE;
 	}
 
@@ -278,8 +341,7 @@ void MapTeleport(LONG code)
 		MapHandleZoom(RESTORE_OLD_ZOOM);
 
 		fPause=FALSE;
-		// TODO: (fire lizard) uncomment
-		//HdlMapRegion();
+		HdlMapRegion();
 		gMapInfo.fWaitingForTeleport=FALSE;
 	}
 	
@@ -291,53 +353,6 @@ void MapTeleport(LONG code)
 	
 
 
-
-
-static void AddMapRegion(void)
-{
-//	printf("added map reg func (%li,%li) (%lix%li)  (%li,%li)\n",gMapInfo.ScreenOrigin.x,gMapInfo.ScreenOrigin.y,gMapInfo.ScreenClip.x-gMapInfo.ScreenOrigin.x,gMapInfo.ScreenClip.x-gMapInfo.ScreenOrigin.x,gMapInfo.ScreenClip.x,gMapInfo.ScreenClip.y);
-	add_region(gMapInfo.ScreenOrigin.x,gMapInfo.ScreenOrigin.y,gMapInfo.ScreenClip.x-gMapInfo.ScreenOrigin.x,gMapInfo.ScreenClip.y-gMapInfo.ScreenOrigin.y,
-			NO_KEY,MapRegionFunction,0,0,69,-1);
-}
-
-
-static void DelMapRegion(void)
-{
-//	printf("deled map reg func\n");
-	del_region(MapRegionFunction,NO_KEY);
-}
-
-static void HdlMapRegion(void)
-{
-	static LONG LastFrameMapRegionType=MAP_REG_NONE;  //wow, long name
-
-	static MAP_INFO OldMapInfo={{0,0},{0,0},{0,0},{0,0}}; //we only worry about the coordinate fields...
-
-
-	//this algorithm is nonsensical, but it's compact and it works.
-	// chart:  DrawMap FullScrn RegionType
-	//				1 	  1 		= 2
-	//				0 	  1 		= 1
-	//				0 	  0 		= 0
-	//				1 	  0  		= 0
-	gMapInfo.RegionType=(MapRegionType)((gMapInfo.fFullScreen&&gMapInfo.fDrawMap)+gMapInfo.fDrawMap);
-
-	// if the region type has 	
-	if (LastFrameMapRegionType!=gMapInfo.RegionType || 
-		OldMapInfo.ScreenCenter.y!=gMapInfo.ScreenCenter.y)
-	{
-		if (LastFrameMapRegionType!=MAP_REG_NONE)
-			DelMapRegion();
-		if (gMapInfo.RegionType!=MAP_REG_NONE)
-			AddMapRegion();
-	}
-
-	//assign statics
-	LastFrameMapRegionType=gMapInfo.RegionType;
-	OldMapInfo=gMapInfo;
-
-	
-}
 
 
 /* ========================================================================
@@ -597,6 +612,39 @@ BOOL SetMapShowAll(LONG unused1,LONG arg)
 	return old;
 }	
 
+/* ========================================================================
+   Function    - DrawMapCheaterArrows
+   Description - Draws lines from the player to the exit line
+   Returns     - void
+   ======================================================================== */
+void DrawMapCheaterArrows(void)
+{
+	LONG ExitLines[100];
+	LONG CurrExitLine = 0;
+	LONG i = 0;
+	POINT Exitpa, Plr;
+
+	//	printf("here\n");
+
+	while (i < tot_linedefs)
+	{
+		if (linedefs[i].special == 11 || linedefs[i].special == 52)
+			ExitLines[CurrExitLine++] = i;
+		++i;
+	}
+	i = 0;
+	while (i < CurrExitLine)
+	{
+		Exitpa.x = vertexs[linedefs[ExitLines[i]].a].x;
+		Exitpa.y = vertexs[linedefs[ExitLines[i]].a].y;
+		Plr.x = (gMapInfo.WorldCenter.x);
+		Plr.y = (gMapInfo.WorldCenter.y);
+
+		DrawMapXLine(Exitpa, Plr, MAP_BLUE);
+		++i;
+	}
+}
+
 
 
 /* =======================================================================
@@ -689,8 +737,7 @@ void DrawMap (LONG xx, LONG yy, LONG ww, LONG hh)
 	MapHandleSecretSSect();
 
 	if (gMapInfo.fDrawGrid)				DrawMapGrid();
-	// TODO: (fire lizard) uncomment
-	//if (gMapInfo.fDrawCheaterLines) 	DrawMapCheaterArrows();
+	if (gMapInfo.fDrawCheaterLines) 	DrawMapCheaterArrows();
 	if (gMapInfo.GameDrawFunc) 			(*gMapInfo.GameDrawFunc)();	//execute the game-level's callback
 	if (gMapInfo.fDrawCamera) 			DrawMapCamera();
 	if (gMapInfo.fDrawPlayer) 			DrawMapPlayer();
@@ -983,39 +1030,6 @@ void DrawMapBoundingBox(void)
 	DrawMapXLine(w,z,MAP_YELLOW);
 	DrawMapXLine(z,x,MAP_YELLOW);
 #endif
-}
-
-/* ========================================================================
-   Function    - DrawMapCheaterArrows
-   Description - Draws lines from the player to the exit line
-   Returns     - void
-   ======================================================================== */
-void DrawMapCheaterArrows(void)
-{
-	LONG ExitLines[100];
-	LONG CurrExitLine=0;
-	LONG i=0;
-	POINT Exitpa,Plr;
-
-//	printf("here\n");
-
-	while (i<tot_linedefs)
-	{
-		if (linedefs[i].special==11 || linedefs[i].special==52)
-			ExitLines[CurrExitLine++]=i;
-		++i;
-	}
-	i=0;
-	while (i<CurrExitLine)
-	{
-		Exitpa.x=vertexs[linedefs[ExitLines[i]].a].x;
-		Exitpa.y=vertexs[linedefs[ExitLines[i]].a].y;
-		Plr.x=(gMapInfo.WorldCenter.x);
-		Plr.y=(gMapInfo.WorldCenter.y);
-
-		DrawMapXLine(Exitpa,Plr,MAP_BLUE);
-		++i;
-	}
 }
 
 
@@ -1624,8 +1638,7 @@ void MapHandleZoom(LONG action)
 
 
 		get_margin_size(&r,&l,&t,&b);
-		// TODO: (fire lizard) uncomment
-		//CalcWadBounds(&Wadx,&Wady,&Wadw,&Wadh);
+		CalcWadBounds(&Wadx,&Wady,&Wadw,&Wadh);
 		
 		NewZoomX=Wadw/(MAX_VIEW_WIDTH-r-l)+1;
 		NewZoomY=Wadh/(MAX_VIEW_HEIGHT-b-t)+1;
@@ -1729,23 +1742,6 @@ void SetMapCenter(LONG x,LONG y)
 
 
 
-
-/* ========================================================================
-   Function - CalcWadBounds
-   Description - calculates the xy bounds of the wad
-   Returns - void
-   ======================================================================== */
-void CalcWadBounds(LONG *rx, LONG *ry,LONG *rw,LONG *rh)
-{
-	
-	//SHORT* TestBlock=NULL;
-	//LONG x=0,y=0,w=0,h=0;
-	
-	*rx=blockm_header.xo-MAP_WAD_BOUNDS_BUFFER;
-	*ry=blockm_header.yo-MAP_WAD_BOUNDS_BUFFER;
-	*rw=blockm_header.cols*128+MAP_WAD_BOUNDS_BUFFER;
-	*rh=blockm_header.rows*128+MAP_WAD_BOUNDS_BUFFER;
-}
 
 	
 	

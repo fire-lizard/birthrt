@@ -821,6 +821,69 @@ ULONG i;
 #endif
 
 /* ========================================================================
+   Function    - PurgeLevel
+   Description -
+   Returns     - void
+   ======================================================================== */
+void PurgeLevel(void)
+{
+	gfWadLoaded = FALSE;
+
+	// [d8-08-96 JPC]
+	// We need to remove tasks immediately!
+	// Note that this is harmless if function is not a registered task.
+	remove_task(handle_doors);
+	remove_task(HandleLifts);
+	remove_task(HandleFloors);
+	remove_task(HandleCeilings);
+	remove_task(TextureFrameHandler);
+	// no longer used: remove_task(SectorFrameHandler);
+#if defined (_EDIT)
+	SendMessage(ghwndEditWallDlg, WM_CLOSE, 0, 0);
+#endif
+
+	printf("Freemem at end of level: %ld\n", ReportFreeMem(TRUE));
+	init_doors();								// [d11-14-96 JPC] removes all sounds
+	purge_all_things();
+	purge_all_textures();
+
+	SetPurgeClass(CLASS2);			/* purge all things and textures */
+	DisposClass(CLASS1);				/* remove all zallocED memory */
+
+	// GWP Zero out the global vars.
+	things = 0;
+	linedefs = 0;
+	sidedefs = 0;
+	vertexs = 0;
+	segs = 0;
+	ssectors = 0;
+	nodes = 0;
+	sectors = 0;
+	gSectorLight = 0;							// [d10-08-96 JPC]
+	rejects = 0;
+	blockm_offs = 0;
+	blockm = 0;
+	blockm_size = 0;
+	segMirror = 0;
+	segMirrorDrawn = 0;
+
+	tot_things = 0;
+	tot_linedefs = 0;
+	tot_sidedefs = 0;
+	tot_vertexs = 0;
+	tot_segs = 0;
+	tot_ssectors = 0;
+	tot_nodes = 0;
+	tot_sectors = 0;
+	tot_rejects = 0;
+	tot_blockms = 0;
+
+	cbWad_Uses = 0;
+
+	printf("Freemem after purge: %ld\n", ReportFreeMem(TRUE));
+}
+
+/* ========================================================================
    Function    - load_new_wad
    Description - loads a new wad.
    Returns     - void
@@ -833,8 +896,7 @@ void load_new_wad(char *name, LONG PlayerStart)
 	// GWP Copied from PurgeLevel
 	//     Why don't we call PurgeLevel here instead of duplicating 90%
 	//     the code??
-// TODO: (fire lizard) uncomment
-	//PurgeLevel();
+	PurgeLevel();
 	// GWP // [d8-08-96 JPC]
 	// GWP // We need to remove tasks immediately!
 	// GWP // Note that this is harmless if function is not a registered task.
@@ -853,69 +915,6 @@ void load_new_wad(char *name, LONG PlayerStart)
 
 	printf("Freemem before loading %s: %ld\n", name, ReportFreeMem(TRUE));
 	load_level(name,PlayerStart);
-}
-
-/* ========================================================================
-   Function    - PurgeLevel
-   Description -
-   Returns     - void
-   ======================================================================== */
-void PurgeLevel (void)
-{
-	gfWadLoaded = FALSE;
-	
-	// [d8-08-96 JPC]
-	// We need to remove tasks immediately!
-	// Note that this is harmless if function is not a registered task.
-	remove_task(handle_doors);
-	remove_task(HandleLifts);
-	remove_task(HandleFloors);
-	remove_task(HandleCeilings);
-	remove_task(TextureFrameHandler);
-	// no longer used: remove_task(SectorFrameHandler);
-#if defined (_EDIT)
-	SendMessage (ghwndEditWallDlg, WM_CLOSE, 0, 0);
-#endif
-
-	printf("Freemem at end of level: %ld\n", ReportFreeMem(TRUE));
-	init_doors ();								// [d11-14-96 JPC] removes all sounds
-	purge_all_things();
-	purge_all_textures();
-	
-	SetPurgeClass(CLASS2);			/* purge all things and textures */
-	DisposClass(CLASS1);				/* remove all zallocED memory */
-	
-	// GWP Zero out the global vars.
-	things = 0;
-	linedefs = 0;
-	sidedefs = 0;
-	vertexs = 0;
-	segs = 0;
-	ssectors = 0;
-	nodes = 0;
-	sectors = 0;
-	gSectorLight = 0;							// [d10-08-96 JPC]
-	rejects = 0;
-	blockm_offs = 0;
-	blockm = 0;
-	blockm_size = 0;
-	segMirror = 0;
-	segMirrorDrawn = 0;
-	
-	tot_things = 0;
-	tot_linedefs = 0;
-	tot_sidedefs = 0;
-	tot_vertexs = 0;
-	tot_segs = 0;
-	tot_ssectors = 0;
-	tot_nodes = 0;
-	tot_sectors = 0;
-	tot_rejects = 0;
-	tot_blockms = 0;
-	
-	cbWad_Uses = 0;
-	
-	printf("Freemem after purge: %ld\n", ReportFreeMem(TRUE));
 }
 
 /* ========================================================================
