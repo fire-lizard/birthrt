@@ -76,6 +76,7 @@ extern "C" {
 
 // auto low res for fast movement
 extern BOOL	fAIAutoRes;
+extern BOOL	fHighRes;
 #if !defined(_WINDOWS)
 extern BOOL	fAIMoving;
 #endif
@@ -136,4 +137,3 @@ void ConvertScreenToFloor(LONG cursor_x, LONG cursor_y, LONG *sx, LONG *sy);
    ------------------------------------------------------------------------ */
 
 #endif
-
