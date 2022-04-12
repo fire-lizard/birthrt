@@ -7,7 +7,7 @@
 //
 //--------------------------------------------------------------------------------
 
-#include <windows.h>
+#include <Windows.h>
 #include "REGISTRY.H"
 
 #include "../PLAYER.HXX"

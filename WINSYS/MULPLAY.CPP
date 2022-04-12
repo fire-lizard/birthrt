@@ -28,7 +28,7 @@
 
 #include "stdio.h"
 #include "limits.h"
-#include "Direct.h"
+#include "direct.h"
 #include "../PANEL.H"
 #include "MONO_C.H"
 #include "MESSQUE.HXX"

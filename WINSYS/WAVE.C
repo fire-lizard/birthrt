@@ -7,7 +7,7 @@
 //------------------------------------------------------------------------------
 
 
-#include <windows.h>
+#include <Windows.h>
 
 
 #define WAVEVERSION 1

@@ -14,7 +14,7 @@ Game specific routines
 #ifndef _WINDOWS
 #include <i86.h>
 #else
-#include <windows.h>
+#include <Windows.h>
 #include "WINSYS\MCIUTIL.H"
 extern HWND	hwndApp;
 #endif

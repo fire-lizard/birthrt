@@ -19,7 +19,7 @@
    Includes
    ------------------------------------------------------------------------ */
 #ifdef _WINDOWS
-#include <windows.h>
+#include <Windows.h>
 #else
 #include <i86.h>
 #include <bios.h>

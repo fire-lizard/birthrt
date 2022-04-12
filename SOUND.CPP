@@ -20,7 +20,7 @@
 
 #ifdef _WINDOWS
 #define INCLUDE_MMSYSTEM_H
-#include <windows.h>
+#include <Windows.h>
 #endif
 
 #if defined (WINDOWS_SOUND)

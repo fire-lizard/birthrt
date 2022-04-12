@@ -15,7 +15,7 @@
 #include <string.h>
 
 #ifdef _WINDOWS
-#include <windows.h>
+#include <Windows.h>
 #include <windowsx.h>
 #endif
 

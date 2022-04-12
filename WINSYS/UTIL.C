@@ -25,7 +25,7 @@
 #include <dos.h>
 #include <conio.h>
 // JPC: VC4 does not have i86.h--do not use. #include <i86.h>
-#include <windows.h>
+#include <Windows.h>
 #include "../SYSTEM.H"
 #include "../MACHINE.H"
 #include "../MACHINT.H"

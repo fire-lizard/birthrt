@@ -6,7 +6,7 @@
 
 
 #define CINTERFACE
-#include <windows.h>
+#include <Windows.h>
 
 #include "../SYSTEM.H"
 #include "../ENGINE.H"

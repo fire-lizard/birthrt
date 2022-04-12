@@ -6,7 +6,7 @@
 //
 //------------------------------------------------------------------------------
 
-#include <windows.h>
+#include <Windows.h>
 #include "MDS.H"
 #include "MCIUTIL.H"
 #include "MUSIUTIL.H"

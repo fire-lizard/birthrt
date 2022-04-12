@@ -17,7 +17,7 @@
 //#define LOGCOMMENTSLEEP Sleep(1);
 #define LOGCOMMENTSLEEP {;}
 
-#include <windows.h>
+#include <Windows.h>
 #include "GMULPLAY.HXX"
 #include "../RESOURCE.H"
 #include "../SYSTEM.H"
@@ -27,7 +27,7 @@
 
 #include "stdio.h"
 #include "limits.h"
-#include "Direct.h"
+#include "direct.h"
 #include "MONO_C.H"
 
 extern BOOL fLogComment;

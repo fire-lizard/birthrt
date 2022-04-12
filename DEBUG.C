@@ -12,7 +12,7 @@
 
 #ifdef _WINDOWS
 #include "WINSYS\STATUS.H"
-#include "windows.h"
+#include "Windows.h"
 #include <io.h>
 #include <fcntl.h>
 #include <stdarg.h>

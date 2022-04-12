@@ -18,7 +18,7 @@
 #include <direct.h>							// for mkdir
 #include <errno.h>
 
-#include <windows.h>
+#include <Windows.h>
 #include <windowsx.h>
 
 #include "SYSTEM.H"

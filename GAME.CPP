@@ -18,7 +18,7 @@
 #include <io.h>
 #include <ctype.h>
 #if defined(_WINDOWS)
-#include <windows.h>
+#include <Windows.h>
 #else
 #include <time.h>
 #endif

@@ -8,7 +8,7 @@
    ======================================================================== */
 
 #if defined (_WINDOWS)						// Windows is required for this function
-#include <windows.h>
+#include <Windows.h>
 #include "GETFILE.HXX"
 
 

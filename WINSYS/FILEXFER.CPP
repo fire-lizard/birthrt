@@ -21,7 +21,7 @@
 #define _MULTIMONO    //---- Comment out for no mono
 #endif
 
-#include "windows.h"
+#include "Windows.h"
 #include "../SYSTEM.H"
 
 // #define _DEFINE_EXPORT_PLATFORMNETWORKMODULE // header is for export use

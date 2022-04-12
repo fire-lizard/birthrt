@@ -16,7 +16,7 @@
 
 #include <stdio.h>
 #if _WINDOWS
-#include <windows.h>
+#include <Windows.h>
 #endif
 #include "SYSTEM.H"
 #include "SYSINT.H"

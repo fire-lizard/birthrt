@@ -55,7 +55,7 @@
 #include <i86.h>
 #include <bios.h>
 #else
-#include <windows.h>
+#include <Windows.h>
 #endif
 
 #include <conio.h>

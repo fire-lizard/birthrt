@@ -14,7 +14,7 @@
    Includes
    ------------------------------------------------------------------------ */
 #ifdef _WINDOWS
-#include <windows.h>
+#include <Windows.h>
 #include "WINSYS\MULPLAY.HXX"
 #include "WINSYS\MONO_C.H"
 #endif

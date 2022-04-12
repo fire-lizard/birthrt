@@ -16,7 +16,7 @@
    Includes
    ------------------------------------------------------------------------ */
 #ifdef _WINDOWS
-#include <windows.h>
+#include <Windows.h>
 #endif
 
 #include <stdlib.h>

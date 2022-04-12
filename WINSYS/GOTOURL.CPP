@@ -9,7 +9,7 @@
 // Contains the following general functions:
 //
 // ======================================================================== */
-#include <windows.h>
+#include <Windows.h>
 #include <shellapi.h>
 #include <string.h>
 #include "GOTOURL.H"

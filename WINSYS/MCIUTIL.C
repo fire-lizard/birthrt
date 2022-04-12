@@ -6,11 +6,11 @@
 //
 //------------------------------------------------------------------------------
 
-#include <windows.h>
+#include <Windows.h>
 #include "MCIUTIL.H"
 
 #include <string.h>
-#include <digitalv.h>
+#include <Digitalv.h>
 
 extern int fSound;
  

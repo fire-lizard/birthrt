@@ -34,10 +34,10 @@
 #endif
 
 #define INITGUID
-#include "windows.h"
+#include "Windows.h"
 #include "..\WINSYS\PNETMOD.HXX"
 #include "stdio.h"
-#include "Direct.h"
+#include "direct.h"
 #include "memory.h"
 #include "../SYSTEM.H"
 #include "../MACHINE.H"

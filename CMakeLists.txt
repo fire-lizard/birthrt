@@ -73,9 +73,7 @@ add_executable (Birthrt "2DMOUSE.C" "2DMOUSE.H" "ABILITY.CPP" "ABILITY.HXX" "ACT
 "WINSYS/SNWVALID.H" "WINSYS/STATISTI.C" "WINSYS/STATUS.C" "WINSYS/STATUS.H" 
 "WINSYS/SWINUTIL.C" "WINSYS/SWINUTIL.H" "WINSYS/SYSGRAPH.C"  "WINSYS/TEMP.H" 
 "WINSYS/UTIL.C" "WINSYS/WAVE.C" "WINSYS/WAVE.H" "WINSYS/WINRES.H")
-include_directories("C:/mssdk/include"
-#"C:\\Program Files (x86)\\Microsoft DirectX 9.0 SDK (April 2005)\\Include"
+include_directories("C:\\Program Files (x86)\\Microsoft DirectX 9.0 SDK (April 2005)\\Include"
 "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.19041.0\\um")
-target_link_libraries(Birthrt "C:/mssdk/lib/ddraw.lib"
-#"C:\\Program Files (x86)\\Microsoft DirectX 9.0 SDK (April 2005)\\Lib\\x64\\ddraw.lib"
+target_link_libraries(Birthrt "C:\\Program Files (x86)\\Microsoft DirectX 9.0 SDK (April 2005)\\Lib\\x64\\ddraw.lib"
 "C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.19041.0\\um\\x64\\winmm.lib")

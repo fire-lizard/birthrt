@@ -25,7 +25,7 @@
 #ifndef _WINDOWS
 #include <bios.h>
 #else
-#include <windows.h>
+#include <Windows.h>
 #endif
 
 //included by gamemap.hxx commented out to fix the "Segment too large"

@@ -6,11 +6,11 @@
 //
 //------------------------------------------------------------------------------
 
-#include <windows.h>
+#include <Windows.h>
 #include <windowsx.h>
 
 #include <mmreg.h>
-#include <msacm.h>
+#include <MSAcm.h>
 #include <dsound.h>
 
 #include <stdio.h>
@@ -304,7 +304,7 @@ BOOL CreateSDS( USHORT   usWave )            //---- Wave number
     memset( &dsbd, 0, sizeof(DSBUFFERDESC) );
 
     dsbd.dwSize = sizeof(DSBUFFERDESC);
-    dsbd.dwFlags = DSBCAPS_CTRLDEFAULT | DSBCAPS_STATIC;  //---- Buffer capabilities
+    dsbd.dwFlags = DSBCAPS_STATIC;  //---- Buffer capabilities
     dsbd.dwBufferBytes = dwDataSize;
 
             
@@ -347,7 +347,7 @@ BOOL CreateSDS( USHORT   usWave )            //---- Wave number
     if ( ( mmResult = 
 				IDirectSoundBuffer_Lock( WaveInfo[usWave].lpDSBuffer, 0,
                                                          dwDataSize,
-                                                         (LPLPVOID)&lpData,
+                                                         (LPVOID *) & lpData,
                                                          &dwBSize,
                                                          &lpWrapPtr,
                                                          &dwWrapBSize,

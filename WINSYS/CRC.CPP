@@ -10,7 +10,7 @@
 // -------------------------------------------------------------------
 
 //#include "Global.h"
-#include "windows.h"
+#include "Windows.h"
 
 /* ========================================================================
 	HashCRC	- Uses polynomial division to hash a string into a word
