@@ -53,6 +53,8 @@
 #include "winsys\mulplay.hxx"
 #endif
 
+extern BOOL fLogComment;
+
 #define F_OK 0
 
 /* ------------------------------------------------------------------------

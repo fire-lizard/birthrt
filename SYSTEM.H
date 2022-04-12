@@ -344,8 +344,6 @@ void * D32DosMemAlloc ( ULONG size );
 /* ------------------------------------------------------------------------
    Global Variables
    ------------------------------------------------------------------------ */
-// for comment logging
-extern BOOL fLogComment;
 
 // for critical errors due to CD removed
 extern BOOL fGraphInitialized;	// main.cpp

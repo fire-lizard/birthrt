@@ -46,6 +46,8 @@ extern char pInitScene[];
 extern char pwad[];
 extern char chCursorName[32];
 
+extern BOOL fLogComment;
+
 /* ------------------------------------------------------------------------
    Defines and Compile Flags
    ------------------------------------------------------------------------ */

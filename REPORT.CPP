@@ -40,6 +40,8 @@
 #include "places.hxx"
 #include "gamemap.hxx"
 
+extern BOOL fLogComment;
+
 extern void RandomLogComment ( char * szString );
 extern "C" void RandomLogPrefix ( char * szString );
 

@@ -50,7 +50,7 @@
 #include "winsys\mono_c.h"
 #endif
 
-
+extern BOOL fLogComment;
 
 /* ------------------------------------------------------------------------
    Notes

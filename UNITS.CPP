@@ -30,6 +30,8 @@
 #include "winsys\mono_c.h"
 #endif
 
+extern BOOL fLogComment;
+
 /* ------------------------------------------------ */
 
 //#define	LOGCOMMENTSLEEP	Sleep(1);

@@ -42,7 +42,7 @@
 #include "main.hxx"
 #include "findfile.hxx"
 #include "scene.hxx"
-//#include "dlg_edit.h"
+
 #include "charsel.hxx"
 #include "game.h"
 #include "gamekey.hxx"
@@ -71,6 +71,7 @@
 #ifdef _WINDOWS
 #include "winsys\DDrawPro.h"
 #include "winsys\mulplay.hxx"       //---- Multiplay
+extern HWND hwndApp;
 #endif
 
 

@@ -56,7 +56,7 @@
 
 #include "ddrawpro.h"
 
-
+extern BOOL fLogComment;
 
 // -- Default global object
 
@@ -115,7 +115,7 @@ extern "C" void SetRedrawMainMapLevel (void);
 extern void RandomLogComment ( char * szString );
 
 #ifdef _WINDOWS
-extern "C" HWND hwndApp;
+extern HWND hwndApp;
 #endif
 
 

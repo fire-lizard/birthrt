@@ -90,7 +90,7 @@ SHORT sitecount[MAX_SITES] = {0};
    ------------------------------------------------------------------------ */
 
 #ifdef _WINDOWS
-   extern "C" HWND hwndApp;
+   extern HWND hwndApp;
 #endif
 
 extern LONG OptionMenuSize;

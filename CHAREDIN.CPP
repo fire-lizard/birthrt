@@ -32,11 +32,9 @@
 /* ------------------------------------------------------------------------
 	External data
    ------------------------------------------------------------------------ */
-extern "C" {
 extern HINSTANCE hInstApp;
 extern HPALETTE hpalApp;				// in WINSYS\SYSGRAPH.C
 extern HWND hwndApp;
-}
 extern AVA_FILE		gAvaData;
 
 /* ------------------------------------------------------------------------

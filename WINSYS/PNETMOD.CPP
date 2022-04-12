@@ -57,8 +57,10 @@
 #include "..\winsys\snwvalid.h"
 
 
+extern BOOL fLogComment;
+
 #ifdef _WINDOWS
-extern "C" HWND hwndApp;
+extern HWND hwndApp;
 extern "C" BOOL fQuitting;
 
 #endif

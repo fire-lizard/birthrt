@@ -30,6 +30,7 @@
 #include "Direct.h"
 #include "mono_c.h"
 
+extern BOOL fLogComment;
 
 #define iMPT_SYNC		20
 #define iMPT_UNIT		8

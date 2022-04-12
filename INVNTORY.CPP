@@ -72,6 +72,8 @@
 #include "winsys\mono_c.h"
 #endif
 
+extern BOOL fLogComment;
+
 extern void RandomLogComment ( char * szString );
 extern "C" void RandomLogPrefix ( char * szString );
 

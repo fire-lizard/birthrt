@@ -48,6 +48,8 @@
 #include "multiui.hxx"
 
 
+extern BOOL fLogComment;
+
 void InitDomainTurn(LONG);
 
 extern "C" {
@@ -59,7 +61,7 @@ extern SHORT	fFadedOut;
 
 
 #ifdef _WINDOWS
-extern "C" HWND hwndApp;
+extern HWND hwndApp;
 #endif
 
 
