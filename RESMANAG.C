@@ -1497,14 +1497,8 @@ SHORT LoadCompressedDataFromResFile (
 	LONG iResFileSlot,
 	BOOL	fLockRes)
 {
-	PTR			pSrc;
-	// GWP SHORT		iSrcBlk;
 	PTR			pInBuffer;
 	SHORT		iTempBlk;
-	// GWP LONG		size;					// size of decompressed data
-	// GWP LONG		size1;					// size + buffer for pMax
-	// GWP LONG		size2;					// size + 2 * buffer for safety buffer
-	PTR			pMax;					// stop decompressing at this point
 	LONG		iFileName;
 	int			result;
 	char		szPathname[_MAX_PATH];
@@ -1592,7 +1586,6 @@ SHORT LoadCompressedDataFromResFile (
 		return (SHORT)fERROR;
 	}
 
-	// if (giResFileCode[iResFileSlot] == NO_COMPRESSION)
 	if (pResHeader->compressionCode == NO_COMPRESSION)
 	{
 #if defined (_CHATTER) && 0
@@ -1611,35 +1604,7 @@ SHORT LoadCompressedDataFromResFile (
 	// Allocate another buffer to decompress it to.
 	// The buffer size of 128L is the next power of 2 greater than the
 	// maximum run length in our LZSS compression, which is 67.
-    // GWP size  = pResHeader->cbUncompressedData;
-    // GWP size1 = pResHeader->cbUncompressedData + 128L; // add a safety buffer for pMax,
-													// which is used to abort the
-													// decompression if it goes too far
-	// GWP size2 = size1 + 128L;					// add an additional safety buffer
-													// for the memory block
-	
-	// GWP ClrLock(iTempBlk);	// Clear the lock to make memory allocation easier.
-	// GWP iSrcBlk = NewBlock (size2);
-	// GWP if (iSrcBlk == fERROR)
-	// GWP {
-	// GWP 	DisposBlock (iTempBlk);
-#if defined (_DEBUG)
-	// GWP	fatal_error("RESMANAG ERROR - unable to allocate memory for the resource\n");
-#endif
-	// GWP 	return (SHORT)fERROR;
-	// GWP }
-	// GWP SetQuickLock (iTempBlk);	// Reset the lock for the decompression.
-	//pInBuffer = (PTR)BLKPTR(iTempBlk);
-	
-	// GWP SetBlockAttr (iSrcBlk, LOCKED, LOCKED);
-	// GWP pSrc = (PTR)BLKPTR(iSrcBlk);
-	pSrc = (PTR) BLKPTR(iTempBlk);
-	// GWP pMax = pSrc + pResHeader->cbUncompressedData;
-	pMax = pInBuffer + pResHeader->cbCompressedData;
-	//pMax = pSrc + size1;						// STOP decompressing at this point
-   												// (a fail-safe mechanism)
 
-	// if (giResFileCode[iResFileSlot] == LZSS_COMPRESSION)
 	if (pResHeader->compressionCode == LZSS_COMPRESSION)
 	{
 #if defined (_CHATTER) && 0
@@ -1667,29 +1632,24 @@ SHORT LoadCompressedDataFromResFile (
 
 		// Resize the block to the true size of the resource (release the
 		// decompression safety buffer).
-		// GWP SetBlockSize (iSrcBlk, size);
 		SetBlockSize(iTempBlk, pResHeader->cbUncompressedData);
 	}
 	else
 	{
 		// LZSS is the only currently supported compression method for RES files.
 		DisposBlock (iTempBlk);
-		// GWP DisposBlock (iSrcBlk);
 		return (SHORT)fERROR;
 	}
 
 	// We can now dispose of the raw data block.
-	// GWP DisposBlock (iTempBlk);
 #if defined (_CHATTER) && 0
 	printf ("  LoadCompressedDataFromResFile: returning iSrcBlk = %d\n", iSrcBlk);
 #endif
 	if (!fLockRes)
 	{
 		ClrLock(iTempBlk);
-		// GWP ClrLock (iSrcBlk);
 	}
 	return iTempBlk;
-	// GWP return iSrcBlk;
 }
 /* ========================================================================
    Function    - QuarterScalePCX
@@ -1715,19 +1675,6 @@ static void QuarterScalePCX(
 		USHORT k;
 		for (k=0; k<w; k++,l++)
 		{
-			// GWP *(pDest+l) =
-			// GWP 	antia_table[
-			// GWP 		(antia_table[
-			// GWP 			(*(pDest+ll+k+k+k+k)*256)+
-			// GWP 			*(pDest+ll+k+k+k+k+2)
-			// GWP 		] * 256) +
-			// GWP 		antia_table[
-			// GWP 			(*(pDest+ll+PCX->w+PCX->w+k+k+k+k)*256) +
-			// GWP 			*(pDest+ll+PCX->w+PCX->w+k+k+k+k+2)
-			// GWP 		]
-			// GWP 	];
-			
-			// GWP Use an intermediate value!
 			PTR const TempVar = pDest + ll + (4 * k);
 			*(pDest+l) =
 				antia_table[
@@ -1774,19 +1721,6 @@ static void HalfScalePCX(
 	{
 		for (k=0; k<w; k++,l++)
 		{
-//			*(pDest+l) = *(pDest+ll+k+k);
-			// GWP *(pDest+l) = antia_table[
-			// GWP 	(antia_table[
-			// GWP 		   (*(pDest+ll+k+k)*256)+
-			// GWP 		   *(pDest+ll+k+k+1)
-			// GWP 	   ] * 256) +
-			// GWP 	antia_table[
-			// GWP            (*(pDest+ll+PCX->w+k+k)*256)+
-			// GWP 		   *(pDest+ll+PCX->w+k+k+1)
-			// GWP 	   ]
-			// GWP 	];
-			
-			// GWP Use an intermediate value!
 			PTR const TempVar = pDest + ll + (k + k);
 			*(pDest+l) = antia_table[
 				(antia_table[
@@ -1844,7 +1778,6 @@ static void DecodeRotatedPCX(
 				{
 					pDD[l] = c;
 					l += PCX->h;
-					// GWP 	w++;
 				}
 			}
 			else											/* unique byte */
@@ -1891,13 +1824,6 @@ static void DecodePCX(
 			l += k; // GWP optimization.
 			memset(pDD, c, k);	// GWP optimization.
 			pDD += k;	// GWP optimization.
-			
-			// GWP for (; k>0; k--)
-			// GWP {
-			// GWP 	*(pDD++) = c;
-			// GWP 	l++;
-			// GWP 	w++;
-			// GWP }
 		}
 		else											/* unique byte */
 		{
@@ -1910,23 +1836,6 @@ static void DecodePCX(
 	}
 	PCX->w = PCX->cbLine;
 }
-
-// ---------------------------------------------------------------------------
-#if defined (_DEBUG) && 0
-void LogMessage (const char *format, ...)
-{
-// Log messages to a file.
-	char 			texbuffer[200];
-	FILE *		f;
-	va_list 		argp;
-
-	f = fopen ("RESMANAG.LOG","at");
-	va_start (argp, format);
-	vsprintf( texbuffer,format,argp);
-	fprintf (f,"%s\n",texbuffer);
-	fclose(f);
-}
-#endif
 
 /* ========================================================================
    Function    - RotateBitm
@@ -1967,11 +1876,6 @@ BOOL RotateBitm (SHORT iBitmBlk, LONG w, LONG h)
 	pData = (PTR)pBitmHeader + sizeof(BITMHDR);
 	pRotatedData = (PTR)BLKPTR (iTempBlk);
 
-	// Here's the rotation algorithm in simple form:
-	// for (y = 0; y < h; y++)
-	// 	for (x = 0; x < w; x++)
-	// 		pRotatedData[x*h + y] = pData[y*w + x];
-
 	// Here's the algorithm without the multiplications in the innermost loop:
 	for (y = 0, ytw = 0; y < h; y++, ytw += w)
 	{
@@ -1999,10 +1903,8 @@ SHORT LoadPCXFromResFile (CSTRPTR szFileName, BOOL fNoScale, BOOL fLockRes, BOOL
 	SHORT			iBlk;
 	ULONG			cBytes, cbLargest;
 	ULONG			cbDecompressed, cbFinal;
-	// GWP ULONG			cbSrcOffset;
 	/* cbDestOffset is where the file is decompressed to */
 	ULONG const	    cbDestOffset = sizeof(BITMHDR);
-	// GEH USHORT			j;
 	USHORT			scale;
 	SHORT			iSrcBlk;
 	ULONG	   		cbSafety = 2048L;		/* default to a safety buffer of 2k bytes */
@@ -2077,8 +1979,6 @@ SHORT LoadPCXFromResFile (CSTRPTR szFileName, BOOL fNoScale, BOOL fLockRes, BOOL
 			fatal_error ("Resfile failed to decompress properly!\n");
 		}
 	
-		// GWP pSrc += 128L;								// skip to the PCX compressed data
-	
 		// Note that there are two compressions going on here.
 		// The resHeader.cbUncompressedData member is the size of the
 		// UNCOMPRESSED LZSS data, which is the size of the COMPRESSED
@@ -2097,12 +1997,6 @@ SHORT LoadPCXFromResFile (CSTRPTR szFileName, BOOL fNoScale, BOOL fLockRes, BOOL
 	
 		/* cbLargest is the size of the buffer to allocate for all opperations */
 		cbLargest		= MAX(cbFinal, cBytes) + cbSafety;
-	
-		/* cbSrcOffset is where the file is loaded */
-		// Unlike LoadPCX, this points to a different buffer.
-		//cbSrcOffset		= 128L;					// size of PCX header + reserved space
-	
-	
 	
 		/* -------------------------------------------------------- */
 		/* Allocate space for data */
@@ -2127,8 +2021,6 @@ SHORT LoadPCXFromResFile (CSTRPTR szFileName, BOOL fNoScale, BOOL fLockRes, BOOL
 			return (SHORT)fERROR;
 		}
 		pDest = ((PTR)BLKPTR(iBlk)) + cbDestOffset;
-		// GWP Using inBlock decompression.
-		// GWP pDest = ((PTR)BLKPTR(iSrcBlk)) + cbDestOffset;
 		
 		SetQuickLock(iSrcBlk);	// Lock it back down for the decoding.
 		pSrc = 128L + (PTR) BLKPTR(iSrcBlk);// skip to the PCX compressed data
@@ -2148,25 +2040,6 @@ SHORT LoadPCXFromResFile (CSTRPTR szFileName, BOOL fNoScale, BOOL fLockRes, BOOL
 			DecodePCX(&PCX, pSrc, pDest, cbDecompressed);
 		}
 	
-		//GEH Obsolete
-		//GEH /* -------------------------------------------------------- */
-		//GEH /* Setup the palette */
-		//GEH /* -------------------------------------------------------- */
-		//GEH if (fSetPal)
-		//GEH {
-		//GEH 	/* !!!!!!!! very dangerous way of setting position, fails if .RES file !!!!!!!! */
-		//GEH 	// lseek(file, -768L, SEEK_END);
-		//GEH 	// read(file, &CurPal[0], 768);			/* read color palette */
-		//GEH 	// [d3-06-97 JPC] Use the source data that's already in memory.
-		//GEH 	memcpy (&CurPal[0], pSrc + cBytes - 768, 768);
-		//GEH 	for (j=0; j<256; j++)					/* change from 0-255 to 0-63 */
-		//GEH 	{
-		//GEH 		CurPal[j].bRed >>= 2;
-		//GEH 		CurPal[j].bGreen >>= 2;
-		//GEH 		CurPal[j].bBlue >>= 2;
-		//GEH 	}
-		//GEH }
-	
 		/* -------------------------------------------------------- */
 		/* The safety buffer can be removed after decompression and optional palette read */
 		// We can also release the source block at this point.
@@ -2175,27 +2048,23 @@ SHORT LoadPCXFromResFile (CSTRPTR szFileName, BOOL fNoScale, BOOL fLockRes, BOOL
 		iSrcBlk = fERROR;
 		if (cbFinal != cbLargest)
 		{
-			// GWP SetBlockSize(iSrcBlk, cbFinal);	/* Resize the data buffer */
 			SetBlockSize(iBlk, cbFinal);	/* Resize the data buffer */
 		}
-	} // else converted PCX format to BITM format
+	}
 
 	// Get the pointers again, because memory may have moved.
 	pDest = ((PTR)BLKPTR(iBlk)) + cbDestOffset;
-	// GWP pDest = ((PTR)BLKPTR(iSrcBlk)) + cbDestOffset;
 
 	/* -------------------------------------------------------- */
 	/* Do some final cleanup */
 	/* -------------------------------------------------------- */
 	if (fNoScale)
 	{
-		//GWP BITMPTR	p = (BITMPTR)BLKPTR(iSrcBlk);
 		BITMPTR	p = (BITMPTR)BLKPTR(iBlk);
 		p->scale = scale = UNITARY_SCALE;
 		p->x_ctr_pt = 0;
 	}
 	else
-		// GWP scale = (USHORT)detect_scale(iSrcBlk, PCX.w, PCX.h);
 		scale = (USHORT)detect_scale(iBlk, PCX.w, PCX.h);
 		
 	/* quarter size if ultra low on memory */
@@ -2205,35 +2074,28 @@ SHORT LoadPCXFromResFile (CSTRPTR szFileName, BOOL fNoScale, BOOL fLockRes, BOOL
 	// fLowResTextures is TRUE, then fMedResTextures will be TRUE too.
 	if (scale > UNITARY_SCALE && fLowResTextures && (scale % 4 == 0))
 	{
-		// GWP QuarterScalePCX(iSrcBlk, &PCX, pDest, &pFinal, &scale);
 		QuarterScalePCX(iBlk, &PCX, pDest, &scale);
 	}
 	/* half size if low on memory */
 	// [d4-15-97 JPC] Make sure scale is a multiple of 2.
 	else if (scale > UNITARY_SCALE && fMedResTextures && (scale % 2 == 0))
 	{
-		// GWP HalfScalePCX(iSrcBlk, &PCX, pDest, &pFinal, &scale);
 		HalfScalePCX(iBlk, &PCX, pDest, &scale);
 	}
 
 	/* set width, height, x, and y */
-	// GWP pFinal = (USHORT *)BLKPTR(iSrcBlk);
 	pFinal = (USHORT *)BLKPTR(iBlk);
 	pFinal[0] = PCX.w;
 	pFinal[1] = PCX.h;
 	pFinal[2] = scale;				/* scale */
 	pFinal[4] = TYPEBITM;			/* type */
 
-	// printf ("About to exit LoadPCXFromResFile, iBlk = %d\n", iBlk);
-
 	if (!fLockRes)
 	{
-		// GWP ClrLock(iSrcBlk);
 		ClrLock(iBlk);
 	}
 		
 	return iBlk;
-	// GWP return iSrcBlk;
 }
 #endif
 
@@ -2245,33 +2107,17 @@ SHORT LoadPCX (CSTRPTR szFileName, BOOL fNoScale, BOOL fLockRes, BOOL fRotated, 
 	USHORT *		pFinal;
 	ULONG			cBytes, cbDecompressed, cbLargest, cbFinal;
 	ULONG			cbSrcOffset, cbDestOffset;
-	// GEH USHORT			j;
 	USHORT			 scale;
 	SHORT			iBlk;
 	ULONG			cbSafety = 2048L;		/* default to a safety buffer of 2k bytes */
 
 #if fUSE_RES_FILES
-#if 0
-//  	if (stricmp (szFileName, "ui\\dturn_bk.pcx") == 0)
-// 	{
-// 		SHORT	testBlk;
-// 		PTR	p;
-// 		testBlk = TestAndLoadFromResFile ("cndl01s0.flc", FALSE);
-// 		if (testBlk != fERROR)
-// 		{
-// 			p = (PTR)(BLKPTR(testBlk));
-// 			DisposBlock (testBlk);
-// 		}
-//  	}	
-#endif
 	if (iResFileSlot >= 0)
 	{
 		return LoadPCXFromResFile (szFileName, fNoScale, fLockRes, fRotated, iResFileSlot);
 	}
 #endif
 
-
-	// printf ("Loading %s from PCX file\n", szFileName);
 
 	file = DiskOpen(szFileName);	/* try to open the file */
 	if (file == fERROR)								/* Resource not found. Print an error */
@@ -2294,15 +2140,6 @@ SHORT LoadPCX (CSTRPTR szFileName, BOOL fNoScale, BOOL fLockRes, BOOL fRotated, 
 	/* cBytes is the size of the compressed graphic */
 	cBytes = filelength(file) - 128L;		/* get the length of the data */
 
-#if 0
-	gFile = fopen ("loadflc.log","a+");
-	if (gFile != NULL)
-	{
-		fprintf (gFile,"%s\t%d\n",szFileName, cBytes + 128L);
-		fclose (gFile);
-	}
-#endif
-
 	/* cbDecompressed is the size of the decompressed graphic */
 	cbDecompressed = (ULONG)PCX.cbLine * (ULONG)PCX.h;
 
@@ -2314,9 +2151,6 @@ SHORT LoadPCX (CSTRPTR szFileName, BOOL fNoScale, BOOL fLockRes, BOOL fRotated, 
 
 	/* cbLargest is the size of the buffer to allocate for all opperations */
 	cbLargest		= MAX(cbFinal, cBytes) + cbSafety;
-
-	/* cbSrcOffset is where the file is loaded */
-	cbSrcOffset		= cbLargest - cBytes;
 
 	/* cbDestOffset is where the file is decompressed to */
 	cbDestOffset = sizeof(BITMHDR);
@@ -2377,23 +2211,6 @@ SHORT LoadPCX (CSTRPTR szFileName, BOOL fNoScale, BOOL fLockRes, BOOL fRotated, 
 		SetBlockSize(iBlk, cbFinal);	/* remove decompress buffer */
 		pDest = ((PTR)BLKPTR(iBlk)) + cbDestOffset;
 	}
-
-	//GEH Obsolete
-	//GEH/* -------------------------------------------------------- */
-	//GEH/* Setup the palette */
-	//GEH/* -------------------------------------------------------- */
-	//GEHif (fSetPal)
-	//GEH{
-	//GEH	/* !!!!!!!! very dangerous way of setting position, fails if .RES file !!!!!!!! */
-	//GEH	lseek(file, -768L, SEEK_END);
-	//GEH	read(file, &CurPal[0], 768);			/* read color palette */
-	//GEH	for (j=0; j<256; j++)					/* change from 0-255 to 0-63 */
-	//GEH	{
-	//GEH		CurPal[j].bRed >>= 2;
-	//GEH		CurPal[j].bGreen >>= 2;
-	//GEH		CurPal[j].bBlue >>= 2;
-	//GEH	}
-	//GEH}
 
 	/* -------------------------------------------------------- */
 	/* Do some final cleanup */

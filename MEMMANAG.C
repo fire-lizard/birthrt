@@ -278,12 +278,10 @@ ULONG InitMemManag (
 	// DOS VERSION
 	cbMaxFree = get_free_mem();
 #endif
-	//cbMaxFree = (45 * 1014 * 1024) / 10;
 
 	printf("memory available: %ld\n",cbMaxFree);
 
 	cbFreemem = cbMaxFree - 4000;
-//	cbFreemem = MIN_MEMORY_16MEG_WINDOWS - 4000;
 
 	// count down til we find the real size of free memory or we can't find enough
 	for (pHeap = NULL; pHeap == NULL && cbFreemem > cbMinMemoryNeeded; cbFreemem -= 0x10000)
@@ -2806,10 +2804,7 @@ void *_zone_alloc(LONG size)
 ULONG WinCheckMem(void)
 {
 	MEMORYSTATUS	memStats;
-	ULONG			MaxFree = 0;
-	//PTR				pBallast;
-	//ULONG			i;
-	//volatile ULONG	x;
+	ULONG			MaxFree;
 
 	memset( &memStats, sizeof(MEMORYSTATUS), 0 );
 	memStats.dwLength = sizeof(MEMORYSTATUS);
@@ -2817,26 +2812,6 @@ ULONG WinCheckMem(void)
 	// ask about memory
 	GlobalMemoryStatus(&memStats) ;
 	
-	// while this scheme is cool, dosen't appear to work
-	// // malloc the whole physical memory
-	// pBallast = malloc(memStats.dwTotalPhys);
-	//
-	// // touch memory every 4K, to flush out as much of other
-	// // people as we can
-	// for(i = 0; i < memStats.dwTotalPhys; i+= 4096)
-	// {
-	// 	x = *(pBallast + i);
-	// }
-	// ++x;  // compiler tease
-	//
-	// // now blow this big ol' block away
-	// free(pBallast);
-	//
-	// // ask about memory again and see if we get a better answer
-	// GlobalMemoryStatus(&memStats) ;
-	//
-	// MaxFree = (ULONG)(memStats.dwAvailPhys&0xFFFFFFF0);
-		
 	MaxFree = (ULONG)(memStats.dwTotalPhys&0xFFFFFFF0);
 	
 	// on a >32Meg, try to run hires
@@ -3495,4 +3470,3 @@ static ULONG	FillFreeBlock(LONG iHandle)
 	return BlkSize;	// Free space left.
 }
 /* ======================================================================== */
-

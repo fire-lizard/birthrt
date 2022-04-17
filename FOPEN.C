@@ -398,11 +398,9 @@ SHORT DiskOpen(
 	CSTRPTR pszFile
 )
 {
-	SHORT	iFile = -1;
+	SHORT	iFile;
 	char	chFileName[_MAX_PATH];
 
-	// printf ("DiskOpen: %s\n", pszFile);
-	// fflush (stdout);
 	if ((iFile = DiskInQueue (pszFile)) != -1)
 	{
 		// To avoid surprising the callers, make sure file pointer is
@@ -450,14 +448,8 @@ SHORT DiskOpen(
 		}
 		if (iFile != -1)
 			RecordOpen (pszFile, "", NULL, iFile);
-#if defined (_DEBUG)
-		// else
-		// 	printf ("  ERROR: Could not open file.\n");
-#endif
 	}
 
-//	if(iFile == -1)
-//		CheckCD();
 		
 	return( iFile );
 }
