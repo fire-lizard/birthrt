@@ -35,7 +35,6 @@ X   machine_post_frame    -does postframe things, such as updating the screen
 #include "../MAIN.HXX"
 #include "../SOUND.HXX"
 #include "../FILEUTIL.H"
-//#include "game.h"
 #include "mmsystem.h"
 
 // [d11-09-96 JPC] No longer use registry. #include "registry.h"
@@ -465,7 +464,8 @@ BOOL AppInit( HINSTANCE hInst, HINSTANCE hPrev, LPSTR szCmdLine, int sw )
 
 
 	// start up the redbook player
-	InitRedBook();
+		// TODO (fire lizard) Sound does not work so far
+	//InitRedBook();
 	//InitializeSoundSystem();
 	
 /*
