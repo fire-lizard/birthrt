@@ -212,7 +212,7 @@ SHORT NextFrame (SHORT iAnim, SHORT sequence, SHORT rotation, UBYTE * pCtrl, SHO
 			goto error_exit;
 			
 		pHead = (FLICHEADPTR)BLKPTR(iHead);
-		if (pHead <= 0)
+		if (pHead == 0)
 			goto error_exit;
 			
 		//decode_frame(pAnim, pHead);

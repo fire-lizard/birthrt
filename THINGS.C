@@ -2542,7 +2542,7 @@ static void draw_thing (LONG t)
 			/* get width and height of selected sequence */
 			pHead = (FLICHEADPTR)BLKPTR(iHead);
 			// We've been paged out.
-			if (pHead <= 0)
+			if (pHead == 0)
 				return;
 				
 			hei = pHead->width;
@@ -2704,7 +2704,7 @@ static void draw_thing (LONG t)
 			/* get width and height of selected sequence */
 			pBitm = (BITMPTR)BLKPTR(iHead);
 			// We've been paged out.
-			if (pBitm <= 0)
+			if (pBitm == 0)
 				return;
 			
 			hei = pBitm->h;		// these are the original (as drawn) width and height of the graphic
@@ -2762,7 +2762,7 @@ static void draw_thing (LONG t)
 				pBitm = (BITMPTR) BLKPTR(mythings[t].iBitm);
 			}
 			
-			if (pBitm <= 0)
+			if (pBitm == 0)
 				return;
 			
 			hei = pBitm->w;		// these are the original (as drawn) width and height of the graphic
@@ -3200,7 +3200,7 @@ SHORT OpenAnim (SHORT iAnim, SHORT iSeq, CSTRPTR szFileName, SHORT Type)
 		{
 			piData = (I_DATA_BLK *) BLKPTR(pAnim->hiData);
 			if (piData->iData[iSeq] <= 0 ||
-			    BLKPTR(piData->iData[iSeq]) <= 0)
+			    BLKPTR(piData->iData[iSeq]) == 0)
 			{
 				iHead = GetResourceStd(szFileName,FALSE);
 				// refresh the pointer
@@ -3221,7 +3221,7 @@ SHORT OpenAnim (SHORT iAnim, SHORT iSeq, CSTRPTR szFileName, SHORT Type)
 		{
 			piData = (I_DATA_BLK *) BLKPTR(pAnim->hiData);
 			if (piData->iData[iSeq] <= 0 ||
-				BLKPTR(piData->iData[iSeq]) <= 0)
+				BLKPTR(piData->iData[iSeq]) == 0)
 			{
 				iHead = GetResourceRot(szFileName);
 				

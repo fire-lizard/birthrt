@@ -1174,7 +1174,7 @@ void ButtonClickSound(BOOL fDelay)
 
 void DepressRegentInfoButtons(LONG iWhichRegent,LONG iWhichButton)
 {
-	ButtonInfo & const Butt=Buttons[iWhichRegent][iWhichButton];
+	ButtonInfo & Butt=Buttons[iWhichRegent][iWhichButton];
 
 	SysHideCursor();
 	DrawBitmap(Butt.Pos.x,Butt.Pos.y,Butt.hDepressedButtonArt,0,0,84,28);

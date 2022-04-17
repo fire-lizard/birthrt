@@ -48,7 +48,7 @@
 /* ------------------------------------------------------------------------
    Global Variables
    ------------------------------------------------------------------------ */
-DEFINE_VECTOR_MEMBER_DATA_S(CONTROL_PANELS::CURRENT_CONTROL,CONTROL_PANELS,fccActive,MAX_NUMBER_CONTROLS) = {
+CONTROL_PANELS::CURRENT_CONTROL CONTROL_PANELS::fccActive[MAX_NUMBER_CONTROLS] = {
 	CONTROL_PANELS::CURRENT_CONTROL(),
 	CONTROL_PANELS::CURRENT_CONTROL(),
 	CONTROL_PANELS::CURRENT_CONTROL(),

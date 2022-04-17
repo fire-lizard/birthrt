@@ -25,11 +25,7 @@
 #include "REGEN.HXX"
 #include "RLMSPELL.HXX"
 
-//ItemEffects::ActiveItem _ActiveItems[MAX_ACTIVE_ITEMS] = {
-DEFINE_VECTOR_MEMBER_DATA_S(ItemEffects::ActiveItem,
-							ItemEffects,
-							ActiveItems,
-							MAX_ACTIVE_ITEMS) = {
+ItemEffects::ActiveItem ItemEffects::ActiveItems[MAX_ACTIVE_ITEMS] = {
 	ItemEffects::ActiveItem(),
 	ItemEffects::ActiveItem(),
 	ItemEffects::ActiveItem(),
@@ -392,7 +388,7 @@ DEFINE_VECTOR_CLASS(ItemType, ItemTypes);
 
 
 #define NUMBER_OF_CHARGED_CHAIN 10
-DEFINE_VECTOR_MEMBER_DATA_S(ItemChargeHandler::ChargedItemChain,ItemChargeHandler,ChargeDegradeTable, 10)=
+ItemChargeHandler::ChargedItemChain ItemChargeHandler::ChargeDegradeTable[10] =
 {
 ItemChargeHandler::ChargedItemChain(8,ITEM_NECKLACE_OF_MISSILES_8,ITEM_NECKLACE_OF_MISSILES_7,ITEM_NECKLACE_OF_MISSILES_6,ITEM_NECKLACE_OF_MISSILES_5,ITEM_NECKLACE_OF_MISSILES_4,ITEM_NECKLACE_OF_MISSILES_3,ITEM_NECKLACE_OF_MISSILES_2,ITEM_NECKLACE_OF_MISSILES_1),
 ItemChargeHandler::ChargedItemChain(3,ITEM_WAND_OF_ENEMY_DETECTION_3,ITEM_WAND_OF_ENEMY_DETECTION_2,ITEM_WAND_OF_ENEMY_DETECTION_1),

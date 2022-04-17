@@ -2169,7 +2169,7 @@ LONG ItemEffects::SpritualHammer(LONG Combo,LONG Arg,LONG Action)
 					if (PriestClass != CANT_CAST_SPELLS)
 						PriestLevel = pPlayerStats->mfGetLevel(PriestClass);
 					
-					DICE const DamageDice = {1, 6, PriestLevel/2};
+					DICE const DamageDice = { 1, 6, (SBYTE)(PriestLevel/2) };
 			   	
 					LONG const DamageDone=RollDice(&DamageDice);
 					
@@ -3282,7 +3282,7 @@ void ResurrectionMenu::Resurrect(LONG MenuCombo, LONG Arg)
 	//this section is so we only drop the item if they actually
 	//resurrect somebody.
 	DumbAutoLockPtr<PLAYER_STATS > const pCasterStats(hCasterStats);
-	ObjectList& const Ol= pCasterStats->mfGetInventory();
+	ObjectList& Ol= pCasterStats->mfGetInventory();
 	
 	InventoryItor itor(Ol);
 	

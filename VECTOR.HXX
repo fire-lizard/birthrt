@@ -100,7 +100,6 @@
    };
    
    In the .cpp file.
-   DEFINE_VECTOR_MEMBER_DATA_S(long,Base,foo,3)
    DEFINE_VECTOR_MEMBER_CLASS(long,Base,foo)
    
    =====================================
@@ -124,7 +123,6 @@
    
    In the .cpp file its the same. (No static keyword in either regular C++
    or Vector checked code.)
-   DEFINE_VECTOR_MEMBER_DATA_S(long,Base,foo,3)
    DEFINE_VECTOR_MEMBER_CLASS(long,Base,foo)
    
    =====================================
@@ -234,7 +232,6 @@
 #define DEFINE_VECTOR_DATA(T,n)		   	   		static T _ ## n[]
 #define DEFINE_VECTOR_DATA_S(T,n,s)		   		static T _ ## n[s]
 #define DEFINE_VECTOR_MEMBER_DATA(T,c,n)   		static T _ ## n[]
-#define DEFINE_VECTOR_MEMBER_DATA_S(T,c,n,s) 	static T _ ## n[s]
 
 
 #define DEFINE_VECTOR_CLASS(T,n)		   		BrVector<T> n(_ ## n,sizeof(_ ## n)/sizeof(T), #T, #n)
@@ -257,7 +254,6 @@
 #define DEFINE_VECTOR_DATA(T,n)		   	   		T n[]
 #define DEFINE_VECTOR_DATA_S(T,n,s)		   		T n[s]
 #define DEFINE_VECTOR_MEMBER_DATA(T,c,n)   		T c ## :: ## n[]
-#define DEFINE_VECTOR_MEMBER_DATA_S(T,c,n,s)	T c ## :: ## n[s]
 
 #define DEFINE_VECTOR_CLASS(T,n)
 #define DEFINE_STATIC_VECTOR_CLASS(T,n)

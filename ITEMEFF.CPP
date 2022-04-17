@@ -1178,7 +1178,7 @@ LONG ItemEffects::TomeAddRandomSpells(LONG Combo,LONG Arg,LONG Action)
 			{
 				
 				DumbAutoLockPtr< PLAYER_STATS > const pPlayerStats(hPlayerStats);
-				ObjectList&  const Ol=pPlayerStats->mfGetInventory();
+				ObjectList&  Ol=pPlayerStats->mfGetInventory();
 
 
 				if (pPlayerStats->mfGetSpellCastClass(SPELL_INFO::WIZARD)==CANT_CAST_SPELLS)

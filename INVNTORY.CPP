@@ -97,7 +97,7 @@ extern "C" void RandomLogPrefix ( char * szString );
 /* ------------------------------------------------------------------------
    Static Member Data
    ------------------------------------------------------------------------ */
-DEFINE_VECTOR_MEMBER_DATA_S(InventoryNode,ObjectList,AllItems,MAX_INVENTORY_ITEMS);
+InventoryNode ObjectList::AllItems[MAX_INVENTORY_ITEMS];
 DEFINE_VECTOR_MEMBER_CLASS(InventoryNode, ObjectList, AllItems);
 
 BOOL ObjectList::AllItemsInitted=FALSE;

@@ -1112,7 +1112,7 @@ SHORT const PLAYER_STATS::mfMemorized(
 	{
         ITEMTYPE const 							item	= (*itor)->mfType();
     	SPELL_INFO::TYPE const					index	= (SPELL_INFO::TYPE) ItemTypes[item].mfGetExtendedData();
-        SPELL_INFO::SPELL_ITEM const & const	spell	= SPELL_INFO::mfGetSpell(index);
+        SPELL_INFO::SPELL_ITEM const &      	spell	= SPELL_INFO::mfGetSpell(index);
 
         if (spell.Type == type && spell.Level == level)
         {
@@ -1134,7 +1134,7 @@ BOOL const PLAYER_STATS::mfCanIMemorizeThisSpell(ITEMTYPE const NewSpell)
     BOOL Result = 0;
 	
     SPELL_INFO::TYPE const 					index	= (SPELL_INFO::TYPE) ItemTypes[NewSpell].mfGetExtendedData();
-    SPELL_INFO::SPELL_ITEM const & const	spell	= SPELL_INFO::mfGetSpell(index);
+    SPELL_INFO::SPELL_ITEM const &      	spell	= SPELL_INFO::mfGetSpell(index);
     SPELL_INFO::CASTERTYPE const 			type	= spell.Type;
     SPELL_INFO::LEVEL const 				level	= spell.Level;
 
@@ -1279,5 +1279,3 @@ void PLAYER_STATS::mfDelete()
 	}
 	hAvatar = fERROR;
 }
-
-

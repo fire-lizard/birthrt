@@ -257,7 +257,7 @@ void InventoryGUI::mfScroll(LONG a,LONG d)
 	}
 	
 	DumbAutoLockPtr<PLAYER_STATS > const pPlayerStats(AvatarStatsHdl);
-	ObjectList & const AvatarInventory=pPlayerStats->mfGetInventory();
+	ObjectList & AvatarInventory=pPlayerStats->mfGetInventory();
 	
  	if (fDomainTurn || fPreparingSpells || CurrCategory != IC_SPELL)
  	{
@@ -406,7 +406,7 @@ void InventoryGUI::mfPaintActionButtonText(LONG MenuId) const
 			else if (HighlightedLine != -1)		// ack, this is ugly...
 			{
 				DumbAutoLockPtr<PLAYER_STATS> const pPlayerStats(AvatarStatsHdl);
-				ObjectList & const AvatarInventory=pPlayerStats->mfGetInventory();
+				ObjectList & AvatarInventory=pPlayerStats->mfGetInventory();
 				InventoryItor itor(AvatarInventory);
 				itor.mfAdvanceTo(HighlightedLine,CurrCategory);
 				if (itor == AvatarInventory.end()
@@ -432,7 +432,7 @@ void InventoryGUI::mfPaintActionButtonText(LONG MenuId) const
    Description - Paints the spell boxes
    Returns     - void
    ======================================================================== */
-void InventoryGUI::mfPaintSpellBoxes(ObjectList const & const Ol,LONG MenuId) const
+void InventoryGUI::mfPaintSpellBoxes(ObjectList const & Ol,LONG MenuId) const
 {
 	LONG i=0;
 	
@@ -477,7 +477,7 @@ void InventoryGUI::mfPaintSpellBoxes(ObjectList const & const Ol,LONG MenuId) co
 
 
 
-void InventoryGUI::mfPaintListBoxIcon(LONG Line,ObjectList const & const Ol,LONG MenuId) const
+void InventoryGUI::mfPaintListBoxIcon(LONG Line,ObjectList const & Ol,LONG MenuId) const
 {
     return;
 }
@@ -488,7 +488,7 @@ void InventoryGUI::mfPaintListBoxIcon(LONG Line,ObjectList const & const Ol,LONG
 
    Returns     - void
    ======================================================================== */
-void InventoryGUI::mfPaintListBoxLine(LONG Lines,ObjectList & const Ol,LONG MenuId) const
+void InventoryGUI::mfPaintListBoxLine(LONG Lines,ObjectList & Ol,LONG MenuId) const
 {
 	LONG ListX=0;
 	LONG ListY=0;
@@ -794,7 +794,7 @@ void InventoryGUI::mfPaintListBoxLine(LONG Lines,ObjectList & const Ol,LONG Menu
    Description - Paints the Miscellaneous Info box
    Returns     - void
    ======================================================================== */
-void InventoryGUI::mfPaintMiscInfoBox(ObjectList & const Ol,LONG MenuId) const
+void InventoryGUI::mfPaintMiscInfoBox(ObjectList & Ol,LONG MenuId) const
 {
 	char NameBuf[300];
 	LONG TextMarginX=4;  //margins!
@@ -927,7 +927,7 @@ void InventoryGUI::mfPaint(LONG MenuCombo,LONG)
 {
 
 	DumbAutoLockPtr<PLAYER_STATS> const pPlayerStats(AvatarStatsHdl);
-	ObjectList & const AvatarInventory=pPlayerStats->mfGetInventory();
+	ObjectList & AvatarInventory=pPlayerStats->mfGetInventory();
 	
 	LONG MenuId,ButtonId;
 	SPLIT_LONG(MenuCombo, MenuId, ButtonId);

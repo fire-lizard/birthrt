@@ -50,7 +50,7 @@
    ------------------------------------------------------------------------ */
 BOOL ADVENTURER::fPlayerMoved = FALSE;
 SHORT ADVENTURER::fhdlPathPositions = fERROR;
-DEFINE_VECTOR_MEMBER_DATA_S(SHORT,ADVENTURER,fAdventurersHdl,MAX_ADVENTURERS) = {
+SHORT ADVENTURER::fAdventurersHdl[MAX_ADVENTURERS] = {
 	fERROR, 
 	fERROR, 
 	fERROR, 
