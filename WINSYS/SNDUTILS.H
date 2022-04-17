@@ -504,7 +504,6 @@ WAVEINFO WaveInfo [] =
 #define MAX_WAVE (sizeof(WaveInfo)/sizeof(WAVEINFO))
 
  // -- Required variables
-extern BOOL fSound;
 BOOL fSpeech;
 
  // -- provided by application

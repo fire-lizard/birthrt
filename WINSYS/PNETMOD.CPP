@@ -917,6 +917,112 @@ void PlatformNetworkModule::DeletePlayer( DWORD dwDelPlayerId )
 } // PlatformNetworkModule::DeletePlayer
 	
 	
+// -----------------------------------------------------------------
+//
+//  PlatformNetworkModule::EnumSession
+//
+//	Description:
+//		Enumerate the network games available to the current protocol.
+//		
+//	Arguments:
+//
+//	Return: BOOL
+//
+// -----------------------------------------------------------------
+BOOL FAR PASCAL EnumSession(LPCDPSESSIONDESC2	lpDPSGameDesc2,
+	LPDWORD				lpdwTimeOut,
+	DWORD					dwFlags,
+	LPVOID					lpContext)
+{
+
+	if (fSigs)
+	{
+		return (kGenericError);
+	}
+	else
+	{
+
+		LPENUMINFO lpInfo = (LPENUMINFO)lpContext;
+		PlatformNetworkModule* pNM = (PlatformNetworkModule*)lpInfo->pnmThis;
+		char szChar[256];
+
+
+		//----- If we timeout something is wrong ? so abort
+		if (dwFlags & DPESC_TIMEDOUT)
+		{
+			if (pNM->fTimedout == FALSE)
+			{
+				(*lpdwTimeOut) = MAX_ENUM_TIMEOUT;     //--- Try alittle longer
+				lpInfo->pnmThis->fTimedout = TRUE;
+				return (TRUE);
+			}
+
+			return(FALSE);
+		}
+
+
+		// Determine if this sessions GUID is already in our list; if so,
+		// return TRUE to continue, but don't add a second copy of it.
+
+		for (int iSession = 0; iSession < lpInfo->pnmThis->usSessionIdx; iSession++)
+		{
+			if (lpInfo->pnmThis->guidSessions[iSession] == lpDPSGameDesc2->guidInstance)
+				return TRUE;
+		}
+
+
+		lpInfo->pnmThis->fModem = FALSE;
+
+
+
+		//
+		//---- This is a modem game so fake out some values for direct play
+		//---- Since DP fills max players with 16 we have to change this to 2
+		//
+
+  //      if (strncmp(lpDPSGameDesc->szSessionName, "Dial", 4 ) == 0) 
+  //	   {
+  //			peiInfo->pnmThis->fModem = TRUE;
+  //       	peiInfo->pnmThis->ngiInfos[peiInfo->pnmThis->usSessionIdx].usMaxPlayers = 2; // (unsigned short) lpDPSGameDesc->dwMaxPlayers;
+  //		}
+  //		else 
+  //   	{
+  //       	peiInfo->pnmThis->ngiInfos[peiInfo->pnmThis->usSessionIdx].usMaxPlayers = (unsigned short) lpDPSGameDesc->dwMaxPlayers;
+  //		}
+
+
+		sprintf(szChar, "%-32.32s", lpDPSGameDesc2->lpszSessionNameA);
+
+		// -- add to the list
+
+		if (lpInfo->pnmThis->usSessionIdx < iMAXSESSIONS)
+		{
+			NETGAMEINFO* pNGI = &lpInfo->pnmThis->ngiInfos[lpInfo->pnmThis->usSessionIdx];
+
+			// -- display the session name
+			strncpy(pNGI->szGameName, lpDPSGameDesc2->lpszSessionNameA, 32);
+
+			pNGI->usMaxPlayers = (unsigned short)lpDPSGameDesc2->dwMaxPlayers;
+
+			pNGI->dwUser1 = lpDPSGameDesc2->dwUser1;
+			pNGI->dwUser2 = lpDPSGameDesc2->dwUser2;
+			pNGI->dwUser3 = lpDPSGameDesc2->dwUser3;
+			pNGI->dwUser4 = lpDPSGameDesc2->dwUser4;
+
+			lpInfo->pDisplayFunc(lpInfo->lContext, szChar, lpInfo->pnmThis->usSessionIdx, pNGI);
+
+			lpInfo->pnmThis->guidSessions[lpInfo->pnmThis->usSessionIdx] = lpDPSGameDesc2->guidInstance;
+
+			lpInfo->pnmThis->usSessionIdx++;
+			lpInfo->pnmThis->usNumSessions++;
+		}
+
+		return(TRUE);
+
+	}
+
+} // PlatformNetworkModule::EnumSession
+
 
 
 // -----------------------------------------------------------------
@@ -990,6 +1096,126 @@ ErrCode PlatformNetworkModule::EnumerateNetworkGames
 } // PlatformNetworkModule::EnumerateNetworkGames
 	
 	
+// -----------------------------------------------------------------
+//
+//  PlatformNetworkModule::EnumPlayers
+//
+//	Description:
+//		Enumerate the players available.
+//		
+//	Arguments:
+//
+//	Return: BOOL
+//
+// -----------------------------------------------------------------
+BOOL FAR PASCAL EnumPlayers(DPID dpID,
+	DWORD dwPlayerType,
+	LPCDPNAME lpcdpName,
+	DWORD flags,
+	LPVOID lpContext)
+{
+
+	if (fSigs)
+	{
+		return (kGenericError);
+	}
+	else
+	{
+		LPENUMPINFO pepiInfo = (LPENUMPINFO)lpContext;
+
+
+		if (dwPlayerType == DPPLAYERTYPE_PLAYER)
+		{
+
+			pepiInfo->pEnumFunc(pepiInfo->lContext, lpcdpName->lpszShortNameA,
+				dpID, NULL);
+
+			// -- note this for the calling routine
+
+			pepiInfo->pnmThis->usNumPlayers++;
+
+		}
+
+
+		return(TRUE);
+
+	}
+
+
+} // PlatformNetworkModule::EnumPlayers
+
+// -----------------------------------------------------------------
+//
+//  PlatformNetworkModule::EnumServiceProvider
+//
+//	Description:
+//		Enumerate the network protocols available.
+//		
+//	Arguments:
+//
+//	Return: BOOL
+//
+// -----------------------------------------------------------------
+BOOL FAR PASCAL EnumServiceProvider(LPGUID lpSPGuid,
+	LPSTR lpDriverDesc,
+	DWORD,
+	DWORD,
+	LPVOID lpContext)
+{
+
+	if (fSigs)
+	{
+		return (kGenericError);
+	}
+	else
+	{
+
+#ifdef NODIRECTSERIAL
+		if (*lpSPGuid != DPSPGUID_SERIAL)
+		{
+#endif
+			IUnknown* pUnk;
+
+			HRESULT hr = (PlatformNetworkModule::fp_DPCreate)(lpSPGuid, &pUnk, NULL);
+
+			if (hr != DP_OK)
+			{
+				// provider isn't supported; don't add to list
+				return TRUE;
+			}
+
+			pUnk->Release();
+
+
+			LPENUMINFO peiInfo = (LPENUMINFO)lpContext;
+			PlatformNetworkModule* pNM = (PlatformNetworkModule*)peiInfo->pnmThis;
+
+			// -- Note this provider's GUID for later
+
+			if (pNM->usProviderIdx < iMAXPROVIDERS)
+			{
+				// -- Send the string to the provided display function
+				peiInfo->pDisplayFunc(peiInfo->lContext,
+					lpDriverDesc,
+					pNM->usProviderIdx,
+					(PNETGAMEINFO)lpSPGuid);
+
+				pNM->guidProviders[pNM->usProviderIdx] = *lpSPGuid;
+				pNM->usProviderIdx++;
+				pNM->usNumProviders++;
+
+			}
+
+#ifdef NODIRECTSERIAL
+		}
+#endif
+
+		return (TRUE);
+
+	}
+
+
+} // PlatformNetworkModule::EnumServiceProvider
 
 
 // -----------------------------------------------------------------
@@ -1127,53 +1353,6 @@ ErrCode PlatformNetworkModule::EnumeratePlayers
 
 	
 
-// -----------------------------------------------------------------
-//
-//  PlatformNetworkModule::EnumPlayers
-//
-//	Description:
-//		Enumerate the players available.
-//		
-//	Arguments:
-//
-//	Return: BOOL
-//
-// -----------------------------------------------------------------
-BOOL FAR PASCAL EnumPlayers( DPID dpID,
-									  DWORD dwPlayerType, 	
-   								  LPCDPNAME lpcdpName,
-									  DWORD flags, 
-									  LPVOID lpContext )
-{
-
-	if ( fSigs )
-	{
-		return ( kGenericError );
-	}
-	else
-	{
-		LPENUMPINFO pepiInfo = (LPENUMPINFO) lpContext;
-
-
-		if( dwPlayerType==DPPLAYERTYPE_PLAYER )
-		{
-
-			pepiInfo->pEnumFunc( pepiInfo->lContext, lpcdpName->lpszShortNameA,
-										dpID, NULL );
-
-			// -- note this for the calling routine
-
-			pepiInfo->pnmThis->usNumPlayers++;
-
-		}
-
-
-		return(TRUE);
-
-	}
-	
-
-} // PlatformNetworkModule::EnumPlayers
 
 
 	
@@ -1214,191 +1393,6 @@ BOOL FAR PASCAL EnumPlayersInit( DPID dpID,
 
 } // PlatformNetworkModule::EnumPlayersInit
 
-
-	
-
-// -----------------------------------------------------------------
-//
-//  PlatformNetworkModule::EnumServiceProvider
-//
-//	Description:
-//		Enumerate the network protocols available.
-//		
-//	Arguments:
-//
-//	Return: BOOL
-//
-// -----------------------------------------------------------------
-BOOL FAR PASCAL EnumServiceProvider( LPGUID lpSPGuid,
-												 LPSTR lpDriverDesc,
-                                     DWORD,
-												 DWORD,
-                                     LPVOID lpContext )
-{
-
-	if ( fSigs )
-	{
-		return ( kGenericError );
-	}
-	else
-	{
-
-#ifdef NODIRECTSERIAL
-		if ( *lpSPGuid !=	DPSPGUID_SERIAL )
-		{
-#endif
-			IUnknown *pUnk;
-
-			HRESULT hr = (PlatformNetworkModule::fp_DPCreate) ( lpSPGuid, &pUnk, NULL );
-
-			if( hr != DP_OK )
-			{
-				// provider isn't supported; don't add to list
-				return TRUE;
-			}
-
-			pUnk->Release();
-
-
-		   LPENUMINFO peiInfo = (LPENUMINFO) lpContext;
-			PlatformNetworkModule *pNM = (PlatformNetworkModule *)peiInfo->pnmThis;
-
-		    // -- Note this provider's GUID for later
-
-			if ( pNM->usProviderIdx < iMAXPROVIDERS )
-			{
-				 // -- Send the string to the provided display function
-				peiInfo->pDisplayFunc( peiInfo->lContext, 
-											  lpDriverDesc,
-											  pNM->usProviderIdx,
-											  (PNETGAMEINFO) lpSPGuid );
-
-				pNM->guidProviders[pNM->usProviderIdx] = *lpSPGuid;
-				pNM->usProviderIdx++;
-				pNM->usNumProviders++;
-		
-			}
-
-#ifdef NODIRECTSERIAL
-		}
-#endif
-
-		return (TRUE);
-
-	}
-
-
-} // PlatformNetworkModule::EnumServiceProvider
-
-	
-
-
-// -----------------------------------------------------------------
-//
-//  PlatformNetworkModule::EnumSession
-//
-//	Description:
-//		Enumerate the network games available to the current protocol.
-//		
-//	Arguments:
-//
-//	Return: BOOL
-//
-// -----------------------------------------------------------------
-BOOL FAR PASCAL EnumSession( LPCDPSESSIONDESC2	lpDPSGameDesc2,
-                             LPDWORD				lpdwTimeOut,
-                             DWORD					dwFlags,         
-                             LPVOID					lpContext )
-{
-
-	if ( fSigs )
-	{
-		return ( kGenericError );
-	}
-	else
-	{
-
-		LPENUMINFO lpInfo = (LPENUMINFO) lpContext;
-		PlatformNetworkModule *pNM = (PlatformNetworkModule *)lpInfo->pnmThis;
-		char szChar[256];
-		
-
-   	 //----- If we timeout something is wrong ? so abort
-		if ( dwFlags & DPESC_TIMEDOUT )
-		{
-			if ( pNM->fTimedout == FALSE )
-			{
-				(*lpdwTimeOut) = MAX_ENUM_TIMEOUT;     //--- Try alittle longer
-				lpInfo->pnmThis->fTimedout = TRUE;
-				return ( TRUE );
-			}
-
-			return( FALSE );
-		}
-
-
-		// Determine if this sessions GUID is already in our list; if so,
-		// return TRUE to continue, but don't add a second copy of it.
-
-		for( int iSession=0; iSession < lpInfo->pnmThis->usSessionIdx; iSession++ )
-		{
-			if( lpInfo->pnmThis->guidSessions[iSession] == lpDPSGameDesc2->guidInstance )
-				return TRUE;
-		}
-
-
-		lpInfo->pnmThis->fModem = FALSE;
-
-
-
-      //
-      //---- This is a modem game so fake out some values for direct play
-      //---- Since DP fills max players with 16 we have to change this to 2
-      //
-
-//      if (strncmp(lpDPSGameDesc->szSessionName, "Dial", 4 ) == 0) 
-//	   {
-//			peiInfo->pnmThis->fModem = TRUE;
-//       	peiInfo->pnmThis->ngiInfos[peiInfo->pnmThis->usSessionIdx].usMaxPlayers = 2; // (unsigned short) lpDPSGameDesc->dwMaxPlayers;
-//		}
-//		else 
-//   	{
-//       	peiInfo->pnmThis->ngiInfos[peiInfo->pnmThis->usSessionIdx].usMaxPlayers = (unsigned short) lpDPSGameDesc->dwMaxPlayers;
-//		}
-
-
-    	sprintf ( szChar, "%-32.32s", lpDPSGameDesc2->lpszSessionNameA );
-
-		// -- add to the list
-
-		if ( lpInfo->pnmThis->usSessionIdx < iMAXSESSIONS ) 
-   	{
-			NETGAMEINFO *pNGI = &lpInfo->pnmThis->ngiInfos[lpInfo->pnmThis->usSessionIdx];
-
-			 // -- display the session name
-	    	strncpy( pNGI->szGameName, lpDPSGameDesc2->lpszSessionNameA, 32) ;
-
-			pNGI->usMaxPlayers = ( unsigned short ) lpDPSGameDesc2->dwMaxPlayers;
-
-       	pNGI->dwUser1 = lpDPSGameDesc2->dwUser1 ;
-       	pNGI->dwUser2 = lpDPSGameDesc2->dwUser2 ;
-       	pNGI->dwUser3 = lpDPSGameDesc2->dwUser3 ;
-       	pNGI->dwUser4 = lpDPSGameDesc2->dwUser4 ;
-
-       	lpInfo->pDisplayFunc( lpInfo->lContext, szChar, lpInfo->pnmThis->usSessionIdx, pNGI );
-
-			lpInfo->pnmThis->guidSessions[lpInfo->pnmThis->usSessionIdx] = lpDPSGameDesc2->guidInstance;
-
-			lpInfo->pnmThis->usSessionIdx++;
-			lpInfo->pnmThis->usNumSessions++;
-		}
-
-		return(TRUE);
-
-	}
-
-} // PlatformNetworkModule::EnumSession
-	
 //----------------------------------------------------------------------------
 //	 PlatformNetworkModule::BuildDPNameA
 //

@@ -12,7 +12,7 @@
 #include <string.h>
 #include <Digitalv.h>
 
-extern int fSound;
+extern BOOL fSound;
  
 static VOID positionMovie(HWND hWnd);
 
