@@ -33,7 +33,6 @@
 
 #include "ACTNMENU.HXX"
 #include "AI_UTILS.H"
-#include "DLG_EDIT.H"
 #include "GAME.H"
 #include "GAMETYPE.HXX"
 #include "ANIM.H"
@@ -43,7 +42,6 @@
 #include "REGENTS.HXX"
 #include "ENGINT.H"
 #include "TASK.H"
-//#include "btlstr.h"
 #include "MACHINT.H"
 #include "MAGIC.H"
 #include "STRMGR.H"
