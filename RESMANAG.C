@@ -2152,6 +2152,9 @@ SHORT LoadPCX (CSTRPTR szFileName, BOOL fNoScale, BOOL fLockRes, BOOL fRotated, 
 	/* cbLargest is the size of the buffer to allocate for all opperations */
 	cbLargest		= MAX(cbFinal, cBytes) + cbSafety;
 
+	/* cbSrcOffset is where the file is loaded */
+	cbSrcOffset = cbLargest - cBytes;
+
 	/* cbDestOffset is where the file is decompressed to */
 	cbDestOffset = sizeof(BITMHDR);
 
