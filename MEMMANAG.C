@@ -800,13 +800,6 @@ static void WriteTestMemory(SHORT iHandle,LONG cBytes)
 {
 	MEMORY_DEBUG_INFO * pHeader = (MEMORY_DEBUG_INFO *)apBlocks[iHandle];
 	
-	// GWP Test code to see if we are overwritting the blocks.
-	// GWP if (cBytes <= (sizeof (LONG) + sizeof(MEMORY_DEBUG_INFO)) || 
-	// GWP     GetBlockSize(iHandle) > cBytes)
-	// GWP {
-	// GWP 	fatal_error("MEMMANAG ERROR! Bad allocation %ld.\n", cBytes);
-	// GWP }
-	
 	// Set the whole block to a default setting.
 	memset((void *)apBlocks[iHandle], UNINITED_MEMORY, cBytes);
 	
@@ -819,14 +812,6 @@ static void WriteTestMemory(SHORT iHandle,LONG cBytes)
 	
 	// Now initialize the tail marker.
 	*((LONG *)((PTR)(apBlocks[iHandle]) + cBytes - sizeof(LONG))) 	= MEMORY_MARKER;
-	
-	// GWP Test code to see if we are overwriting the next block.
-	// GWP if (TEST_BLK_INUSE(abBlockAttr[aiNextBlk[iHandle]]))
-	// GWP {
-	// GWP 	PTR pFoo = (PTR) BLKPTR(aiNextBlk[iHandle]);
-	// GWP 	pFoo = 0;
-	// GWP }
-	
 }
 #endif
 
@@ -870,11 +855,6 @@ SHORT _NewBlock (ULONG cBytes)
 	/* mark the block as allocated */
 	abBlockAttr[i] = BLKINUSE;
 
-	// GWPif (i == 18)
-	// GWP{
-	// GWP	volatile int x = i;
-	// GWP}
-	
 	/* clean up the block to the requested size */
 	CleanUpBlock(i, CLEAN_TO_HIGHER, cBytes);
 
@@ -2112,7 +2092,6 @@ SHORT SetLock (SHORT iHandle)
 #if defined(_DEBUG)
 	if (fReport & fREPORT_MEMMGR)
 	{
-//		PrintMemList();
 		printf("SetLock on block %d\n",i);
 	}
 #endif
@@ -2712,7 +2691,6 @@ void * BLKPTR(LONG i)
 		if ( i > cNumBlkHeads)
 			return (void *) fERROR;
 	
-		//SetBlockAttr(i,MOLDYBIT, MOLDYBIT);		/* set the moldy bit */
 		abBlockAttr[i] |= MOLDYBIT;
 	}
 #endif
@@ -2738,7 +2716,7 @@ void * BLKPTR(LONG i)
 	}
 	return (void *)(((char *)apBlocks[i]) + HEADER_SPACE);
 #else
-	return (void *)((LONG *)apBlocks[i]);
+	return (void *)((ULONG *)apBlocks[i]);
 #endif
 }
 
