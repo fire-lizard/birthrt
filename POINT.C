@@ -112,19 +112,6 @@ void set_view()
 #endif
 }
 
-#if defined(UNUSED)
-/* =======================================================================
-   Function    - round
-   Description - rounds a number to the nearest integral value
-   Returns     - the integral value
-   ======================================================================== */
-// TODO: (fire lizard) uncomment
-//LONG round (double number)
-//{
-//	return (LONG)((double)number + (double) 0.5);
-//}
-#endif // UNUSED
-
 /* =======================================================================
    Function    - point_relation
    Description - given a node n, look at the line (actually a vector,
@@ -474,77 +461,7 @@ void proj(POINT *p,LONG z)
 		p->x = MAX_VIEW_WIDTH-1;
 	}
 
-//	if (p->y < 0)
-//		p->y = 0;
-
 }
-#if defined (UNUSED)
-/* =======================================================================
-   Function    - projection
-   Description - Planar projection of a 3d point into 2d space.
-   Returns     - void
-   ======================================================================== */
-void projection(POINT *p,LONG z, LONG distanceToCamera)
-{
-	double divisor;
-	
-	if (!distanceToCamera)	// full scale.
-		return;
-		
-	divisor = ((double) z)/((double)distanceToCamera);
-
-	p->x=(LONG)( ((double)p->x)/divisor);
-	p->y=(LONG)( ((double)p->y)/divisor);
-}
-#endif
-
-
-#if defined(UNUSED)
-/* =======================================================================
-   Function    - cross_prod
-   Description - returns the cross product of two vectors
-   Returns     - the cross product
-   ======================================================================== */
-POINT3D cross_prod(POINT3D *a, POINT3D *b)
-{
-	POINT3D c;
-	c.x = (a->y*b->z) - (a->z*b->y);
-	c.y = (a->z*b->x) - (a->x*b->z);
-	c.z = (a->x*b->y) - (a->y*b->x);
-	return(c);
-}
-#endif // UNUSED
-
-#if defined(UNUSED)
-/* =======================================================================
-   Function    - dot_prod
-   Description - returns the dot_product of two vectors
-   Returns     - the dot product as a LONG
-   ======================================================================== */
-LONG dot_prod(POINT3D *a, POINT3D *b)
-{
-	a->x=a->x<<8;
-	a->y=a->y<<8;
-	a->z=a->z<<8;
-	return(((a->x*b->x)+(a->y*b->y)+(a->z*b->z)));
-}
-#endif // UNUSED
-
-#if defined(UNUSED)
-/* =======================================================================
-   Function    - unit_normal
-   Description - returns a unit normal to a vector
-   Returns     - the unit normal
-   ======================================================================== */
-POINT3D unit_normal(POINT3D *a,POINT3D *b)
-{
-	POINT3D c;
-	c.x=b->x-a->x;
-	c.y=b->y-a->y;
-	c.z=b->z-a->z;
-	return(c);
-}
-#endif // UNUSED
 
 /* ========================================================================
    Function    - AngleFromPoint
