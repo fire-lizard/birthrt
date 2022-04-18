@@ -533,33 +533,10 @@ void StopPlayer()
 	vx=vy=vz=va=vp=vh=0;
 }
 
-#if defined (_DEBUG) && 0
-void MonoDump (const char *format, ... )
-{
-	static short gxMono, gyMono;
-	char  strbuf [ 256 ];
-   va_list argptr;
-
-	if (gyMono == 0)
-		mono_printf (gxMono, 24, "   ");
-	else
-		mono_printf (gxMono, gyMono - 1, "   ");
-	mono_printf (gxMono, gyMono, "-->                                                                             ");
-
-	va_start(argptr,format);
-   vsprintf(strbuf,format,argptr);
-   va_end(argptr);
-	mono_printf (gxMono + 4, gyMono, strbuf);
-	gyMono++;
-	if (gyMono >= 25)
-		gyMono = 0;
-}
-#else
 // [d3-15-97 JPC] The following outlandish expression resolves to nothing
 // in the release code but does not generate a compiler warning error.
 // So the MonoDump calls can be left in the source or not, as desired.
 #define MonoDump  1 ? (void) 0 : (void) printf             // make it nothing
-#endif
 
 /* ========================================================================
    Function    - MovePlayer
@@ -1369,5 +1346,3 @@ void ConvertScreenToFloor(LONG screen_x, LONG screen_y, LONG *sx, LONG *sy)
 	*sx = CAMERA_INT_VAL(camera.x) + tp.x;
 	*sy = CAMERA_INT_VAL(camera.y) - tp.y;
 }
-
-

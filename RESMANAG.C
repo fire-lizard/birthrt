@@ -78,10 +78,6 @@
 /* ------------------------------------------------------------------------
    Prototypes
    ------------------------------------------------------------------------ */
-#if 0 // UNUSED
-ULONG	ScanIFF (ULONG, USHORT);
-#endif
-
 #define RESUTIL_VERSION		0x00000400
 #define NO_COMPRESSION		0				// uncompressed data
 #define LZSS_COMPRESSION	2
@@ -158,7 +154,6 @@ LONG  iMaxResSlotsInUse = 0;
 #if fUSE_RES_FILES
 ULONG    *gcbResOffset;                // offset into file for resource
 UBYTE    *giResFileNames;              // index into gszResFileNames
-// UBYTE    *giResFileCode;               // compression code for resource
 UBYTE		*gResFlags;
 
 // Instructions: plug in the names of the basic RES files here.
@@ -195,11 +190,6 @@ int		file;
 // GWP BAD CODE!
 BOOL	fNewRes;
 
-// GWP BOOL		fWasSetToPurge = FALSE;
-// ILBMHDR	ILBM;
-// PCXHDR	PCX;
-
-
 RESTYPE	ResExtentions[cMAXEXTENTS] = {
 	{ "", 	 LoadUFF, DisposRes, SetPurgeRes, ClrPurgeRes, HashCRC },
 	{ "PCX", LoadPCX, DisposRes, SetPurgeRes, ClrPurgeRes, HashCRC },
@@ -218,65 +208,6 @@ RESTYPE	ResExtentions[cMAXEXTENTS] = {
 FILE *gFile;
 #endif
 
-// GEH
-// I have added additional hash bits to make a more unique hash
-#if 0
-/* ========================================================================
-	HashCRC	- Uses polynomial division to hash a string into a word
-	======================================================================== */
-USHORT HashCRC(register CSTRPTR szIn)
-{
-	CSTRPTR				sz;
-	register ULONG		c;
-	register ULONG		accumCRC = 0;
-
-	// hashing JUST the filename and extension is better
-	sz = strrchr(szIn, '\\');
-	if (sz == NULL)
-		sz = szIn;		// no path character (\)
-	else
-		sz++;				// next character after path char (\)
-
-	do
-	{
-		c = *sz++;
-
-		// make uppercase
-		if (c >= 'a' && c <= 'z')
-		{
-			c -= ('a' - 'A');
-		}
-
-		accumCRC = (accumCRC << 6) + ((c - ' ') & 63);
-
-//		for (m=1<<21,k=0x1021<<5; m>(1<<15); m>>=1,k>>=1)
-//			if (accumCRC & m)
-//				accumCRC ^= k;
-
-		// Unrolled for loop
-		if (accumCRC & (1 << 21))
-			accumCRC ^= 0x1021 << 5;
-
-		if (accumCRC & (1 << 20))
-			accumCRC ^= 0x1021 << 4;
-
-		if (accumCRC & (1 << 19))
-			accumCRC ^= 0x1021 << 3;
-
-		if (accumCRC & (1 << 18))
-			accumCRC ^= 0x1021 << 2;
-
-		if (accumCRC & (1 << 17))
-			accumCRC ^= 0x1021 << 1;
-
-		if (accumCRC & (1 << 16))
-			accumCRC ^= 0x1021;
-
-	} while (c);
-
-	return ((USHORT)(accumCRC & 0xFFFF));
-}
-#else
 /* ========================================================================
 	HashCRC	- Uses polynomial division to hash a string into a word
 	======================================================================== */
@@ -309,10 +240,6 @@ ULONG HashCRC(register CSTRPTR szIn)
 		
 		accumCRC = (accumCRC << 6) + ((c - ' ') & 63);
 
-//		for (m=1<<21,k=0x1021<<5; m>(1<<15); m>>=1,k>>=1)
-//			if (accumCRC & m)
-//				accumCRC ^= k;
-
 		// Unrolled for loop
 		if (accumCRC & (1 << 21))
 			accumCRC ^= 0x1021 << 5;
@@ -336,45 +263,6 @@ ULONG HashCRC(register CSTRPTR szIn)
 
 	return (BUILD_LONG(accumXOR,(USHORT)(accumCRC & 0xFFFF)));
 }
-#endif
-
-#if 0 // UNUSED
-/* =======================================================================
-	Scan file for IFF code. Return size of chunk.
-	======================================================================= */
-ULONG	ScanIFF (ULONG code, USHORT within)
-{
-	ULONG		incode, temp;
-
-	if (fReport & fREPORT_RESMGR)
-		printf("Scanning for code (%lx) %c%c%c%c... ", code, (UBYTE)(code&0xFFL), (UBYTE)((code>>8)&0xFFL), (UBYTE)((code>>16)&0xFFL), (UBYTE)((code>>24)&0xFFL) );
-
-	incode = 0;
-	while (incode != code)
-	{
-		temp = 0;
-		if (read(file, &temp, 2) == fERROR)		/* read 2 bytes */
-		{
-#if defined (_DEBUG)
-			fatal_error("RESMANAG ERROR - error reading in ScanIFF\n");
-#endif
-			return (ULONG)(NULL);
-		}
-		incode = (incode >> 16) + (temp << 16);
-		if (within)
-		{
-			within -= 2;
-			if (within<2) return (0xFFFFFFFF);	/* not found */
-		}
-	}
-	if (fReport & fREPORT_RESMGR)
-		printf("found the code\n");
-	read(file, &incode, 4);					/* read the length */
-	FixLong(incode);							/* change from 68000 to 80X86 format */
-	return incode;
-}
-#endif
-
 
 /* =======================================================================
 	Create or update an entry in the Resource File Extension Handler table
@@ -461,36 +349,6 @@ static BOOL ProcessUnknownExtension (LONG iSlot, DIRENTRY_PTR pDirentry)
 	return FALSE;
 }
 
-
-// ---------------------------------------------------------------------------
-// Function		-	DeleteResFile
-//	Description	-	Erases a resource file from the hard disk.
-//                Used to get rid of resource files that are copied onto
-//                the hard disk during an adventure.
-// ---------------------------------------------------------------------------
-void DeleteResFile (CSTRPTR szFileName)
-{
-}
-
-
-// ---------------------------------------------------------------------------
-// Function		-	ReleaseResFile
-//	Description	-	Removes a resource file from the "in use" list.
-// ---------------------------------------------------------------------------
-void ReleaseResFile (LONG iFile)
-{
-// 	if (gfResFileInUse[iFile])
-// 	{
-// 		gfResFileInUse[iFile] = FALSE;
-// 		for (iResource = 0; iResource < iMaxResSlots; iResource++)
-// 		{
-// 			if (giResFileNames[iResource] == iFile)
-// 				giResFileNames[iResource] = 0;
-// 		}
-// 	}
-}
-
-
 // ---------------------------------------------------------------------------
 // Function		-	GetOpenResFileSlot
 //	Description	-	Find an open res file slot.  Do this because resource files
@@ -543,9 +401,6 @@ SHORT OpenResFile_ (CSTRPTR szFileName)
 	file = DiskOpen(szPathname);	/* try to open the file */
 	if (file == fERROR)
 	{
-// #if defined (_DEBUG)
-// 		fatal_error("RESMANAG ERROR - could not open resource file %s\n",szFileName);
-// #endif
 		return (SHORT)fERROR;
 	}
 
@@ -749,21 +604,6 @@ void ScanResFiles ()
 			break;
 	}
 }
-
-
-
-
-// ---------------------------------------------------------------------------
-// Function		-	CopyResFile
-//	Description	-	Copies a resource file from CD to hard disk.
-//
-//
-//	Returns		-	fNOERR if it copied correctly, fERROR if not.
-// ---------------------------------------------------------------------------
-void CopyResFile (CSTRPTR szResFileName, CSTRPTR szDestPath)
-{
-}
-
 
 #endif
 
@@ -1015,7 +855,6 @@ UseThisSlot:
 	// arrays accordingly.
 	gcbResOffset[iSlot] = 0;
 	giResFileNames[iSlot] = 0;
-	// giResFileCode[iSlot] = 0;
 #endif
 
 	run_timers();  // cdb 11/27
@@ -1159,7 +998,6 @@ SHORT _GetResource_ (CSTRPTR szResName, BOOL fNoScale, BOOL fLockRes, BOOL fRota
 		// Experiment! (It worked, showing that loading from resfiles
 		// via Query_iResBlock works.)
 		iResBlock[iResFileSlot] = 0;
-		// iBlk = Query_iResBlock (iResFileSlot | RESOURCE_ID_BIT);
 	}
 	else	// Experiment! Goes with above call to Query_iResBlock.
 	{
@@ -1437,11 +1275,6 @@ SHORT SetPurgeRes (SHORT iResBlk, SHORT iMemBlk)
 #endif
 	if (iResBlock[iResBlk] > 0)
 	{
-		// GWP Generates error when used with AutoLock handle templates,
-		// Because after this executes we then do another ClrLock, which
-		// blows up as a double unlock.
-		// GWP if (IsLocked(iMemBlk))
-		// GWP 	ClrLock(iMemBlk); // If we're purgable we are no longer locked in place.
 		Result = SetBlockAttr(iMemBlk,PURGABLE,PURGABLE);	/* set the purge attribute */
 	}
 	else
@@ -1516,9 +1349,6 @@ SHORT LoadCompressedDataFromResFile (
 	if (file == fERROR)					// could not open file
 		return (SHORT)fFILE_NOT_FOUND;
 
-#if defined (_CHATTER) && 0
-	printf ("  LoadCompressedDataFromResFile: file = %d\n", file);
-#endif
 	// Load from resfile; result should be identical to the result
 	// of loading from PCX file.
 
@@ -1588,9 +1418,6 @@ SHORT LoadCompressedDataFromResFile (
 
 	if (pResHeader->compressionCode == NO_COMPRESSION)
 	{
-#if defined (_CHATTER) && 0
-		printf ("  LoadCompressedDataFromResFile: no compression, iTempBlk = %d\n", iTempBlk);
-#endif
 		if (!fLockRes)
 			ClrLock (iTempBlk);
 		return iTempBlk;						// all done, return
@@ -1607,28 +1434,10 @@ SHORT LoadCompressedDataFromResFile (
 
 	if (pResHeader->compressionCode == LZSS_COMPRESSION)
 	{
-#if defined (_CHATTER) && 0
-		PTR	pEnd;
-		PTR	pExpectedEnd = pSrc + pResHeader->cbUncompressedData;
-#endif
-
 		// [d3-06-97 JPC] I added code to _LZSSDecode_ to abort if edi passes
 		// the last parameter (pMax).
 		// (edi should NOT pass the pMax parameter, but if it does and we don't
 		// catch it, the program blows up!)
-
-#if defined (_CHATTER) && 0
-		printf ("  decode, size1 = %d (%X), pSrc = %P, pMax = %P\n", size1, size1, pSrc, pMax);
-		pEnd =
-#endif
-			// TODO: (fire lizard) uncomment
-			//_LZSSDecode_ (pInBuffer, pSrc, pMax);
-
-#if defined (_CHATTER) && 0
-		if (pEnd != pExpectedEnd)
-			printf ("  pEnd (%P) is not correct (%P) in LoadCompressedDataFromResFile\n",
-				pEnd, pExpectedEnd);
-#endif
 
 		// Resize the block to the true size of the resource (release the
 		// decompression safety buffer).
@@ -1641,105 +1450,11 @@ SHORT LoadCompressedDataFromResFile (
 		return (SHORT)fERROR;
 	}
 
-	// We can now dispose of the raw data block.
-#if defined (_CHATTER) && 0
-	printf ("  LoadCompressedDataFromResFile: returning iSrcBlk = %d\n", iSrcBlk);
-#endif
 	if (!fLockRes)
 	{
 		ClrLock(iTempBlk);
 	}
 	return iTempBlk;
-}
-/* ========================================================================
-   Function    - QuarterScalePCX
-   Description - Reduce a PCX to 1/4 the original size.
-   				 This is a helper subroutine to LoadPCX
-   Returns     -
-   ======================================================================== */
-
-static void QuarterScalePCX(
-	SHORT iBlk,
-	PCXHDR *PCX,
-	PTR pDest,
-	USHORT *scale)
-{
-	ULONG w = PCX->w / 4;
-	ULONG h = PCX->h / 4;
-	ULONG l = 0;
-	ULONG ll= 0;
-	USHORT j;
-	
-	for (j=0; j<h; j++,ll+= 4 * PCX->w)
-	{
-		USHORT k;
-		for (k=0; k<w; k++,l++)
-		{
-			PTR const TempVar = pDest + ll + (4 * k);
-			*(pDest+l) =
-				antia_table[
-					(antia_table[
-						(*(TempVar)*256)+
-						*(TempVar+2)
-					] * 256) +
-					antia_table[
-						(*(TempVar+PCX->w+PCX->w)*256) +
-						*(TempVar+PCX->w+PCX->w+2)
-					]
-				];
-		}
-	}
-
-	PCX->w = (SHORT)w;
-	PCX->h = (SHORT)h;
-
-	SetBlockSize(iBlk, (PCX->w*PCX->h)+sizeof(BITMHDR));
-	*scale /= 4;
-}
-
-/* ========================================================================
-   Function    - HalfScalePCX
-   Description - reduce a PCX by 1/2 of its original art.
-   				 This is a helper subroutine to LoadPCX
-   Returns     -
-   ======================================================================== */
-
-static void HalfScalePCX(
-	SHORT iBlk,
-	PCXHDR *PCX,
-	PTR pDest,
-	USHORT *scale)
-{
-	ULONG w = PCX->w / 2;
-	ULONG h = PCX->h / 2;
-	ULONG l = 0;
-	ULONG ll = 0;
-	USHORT k;
-	USHORT j;
-	
-	for (j=0; j<h; j++,ll+=PCX->w+PCX->w)
-	{
-		for (k=0; k<w; k++,l++)
-		{
-			PTR const TempVar = pDest + ll + (k + k);
-			*(pDest+l) = antia_table[
-				(antia_table[
-					   (*(TempVar)*256)+
-					   *(TempVar+1)
-				   ] * 256) +
-				antia_table[
-			           (*(TempVar+PCX->w)*256)+
-					   *(TempVar+PCX->w+1)
-				   ]
-				];
-
-		}
-	}
-	PCX->w = (SHORT)w;
-	PCX->h = (SHORT)h;
-
-	SetBlockSize(iBlk, (PCX->w*PCX->h)+sizeof(BITMHDR));
-	*scale /= 2;
 }
 
 /* ========================================================================
@@ -1911,10 +1626,6 @@ SHORT LoadPCXFromResFile (CSTRPTR szFileName, BOOL fNoScale, BOOL fLockRes, BOOL
 	RESOURCE_HEADER resHeader;
 
 
-#if defined (_CHATTER) && 0
-	printf ("Loading %s from resource file\n", szFileName);
-#endif
-
 	iSrcBlk = LoadCompressedDataFromResFile (&resHeader, iResFileSlot, fLockRes);
 
 	if (resHeader.flags & RFF_PCX_UNCOMP)
@@ -2067,22 +1778,6 @@ SHORT LoadPCXFromResFile (CSTRPTR szFileName, BOOL fNoScale, BOOL fLockRes, BOOL
 	else
 		scale = (USHORT)detect_scale(iBlk, PCX.w, PCX.h);
 		
-	/* quarter size if ultra low on memory */
-	// [d4-15-97 JPC] Add test for scale % 4 because QuarterScalePCX
-	// will divide scale by 4 and scale must be an integer.  Note that
-	// this will move on to the fMedResTextures test, because if
-	// fLowResTextures is TRUE, then fMedResTextures will be TRUE too.
-	if (scale > UNITARY_SCALE && fLowResTextures && (scale % 4 == 0))
-	{
-		QuarterScalePCX(iBlk, &PCX, pDest, &scale);
-	}
-	/* half size if low on memory */
-	// [d4-15-97 JPC] Make sure scale is a multiple of 2.
-	else if (scale > UNITARY_SCALE && fMedResTextures && (scale % 2 == 0))
-	{
-		HalfScalePCX(iBlk, &PCX, pDest, &scale);
-	}
-
 	/* set width, height, x, and y */
 	pFinal = (USHORT *)BLKPTR(iBlk);
 	pFinal[0] = PCX.w;
@@ -2227,21 +1922,6 @@ SHORT LoadPCX (CSTRPTR szFileName, BOOL fNoScale, BOOL fLockRes, BOOL fRotated, 
 	else
 		scale = (USHORT)detect_scale(iBlk, PCX.w, PCX.h);
 
-	/* quarter size if ultra low on memory */
-	// [d4-15-97 JPC] Add test for scale % 4 because QuarterScalePCX
-	// will divide scale by 4 and scale must be an integer.  Note that
-	// this will move on to the fMedResTextures test, because if
-	// fLowResTextures is TRUE, then fMedResTextures will be TRUE too.
-	if (scale > UNITARY_SCALE && fLowResTextures && (scale % 4 == 0))
-	{
-		QuarterScalePCX(iBlk, &PCX, pDest, &scale);
-	}
-	/* half size if low on memory */
-	// [d4-15-97 JPC] Make sure scale is a multiple of 2.
-	else if (scale > UNITARY_SCALE && fMedResTextures && (scale % 2 == 0))
-	{
-		HalfScalePCX(iBlk, &PCX, pDest, &scale);
-	}
 
 	/* set width, height, x, and y */
 	pFinal = (USHORT *) BLKPTR (iBlk);
@@ -2290,15 +1970,6 @@ SHORT LoadFLC (CSTRPTR szFileName, BOOL fNoScale, BOOL fLockRes, BOOL fRotated, 
 #endif
 		return (SHORT)fERROR;
 	}
-
-#if 0
-	gFile = fopen ("loadflc.log","a+");
-	if (gFile != NULL)
-	{
-		fprintf (gFile,"%s\t%d\n",szFileName, cBytes);
-		fclose (gFile);
-	}
-#endif
 
 	lseek(file, -4L, SEEK_CUR);
 
@@ -2453,8 +2124,6 @@ void FreeResourceManager()
 		free(gcbResOffset);
 	if (giResFileNames)
 		free(giResFileNames);
-	// if (giResFileCode)
-	// 	free(giResFileCode);
 	if (gResFlags)								// [d4-13-97 JPC]
 		free (gResFlags);						// [d4-13-97 JPC]
 #endif

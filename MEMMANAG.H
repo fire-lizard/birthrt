@@ -185,4 +185,3 @@ SHORT SetDebugInfo(char * /* file */, LONG /* line */, SHORT /* Hdl */);
 #endif
 
 #endif // _MEMMANAG_H
-

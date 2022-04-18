@@ -83,7 +83,6 @@ extern "C" {
 extern ULONG				*cbResOffset;			/* resmanag.c */
 extern SHORT				*iResBlock;		   		/* resmanag.c */
 extern UBYTE				*iResFile;				/* resmanag.c */
-//extern USHORT				iNextResSlotAvail;		/* resmanag.c */
 #if fUSE_RES_FILES
 extern CSTRPTR				*szFileNames;			/* resmanag.c */
 //GWP This is really bad but I don't want to write the access fns.
@@ -113,15 +112,11 @@ extern "C" {
 #endif
 
 /* resmanag.c */
-void DeleteResFile (CSTRPTR szFileName);
-void ReleaseResFile (LONG iFile);
 LONG GetOpenResFileSlot ();
 SHORT OpenResFile_ (CSTRPTR szFileName);
 void  ScanResFiles ();
-void CopyResFile (CSTRPTR szResFileName, CSTRPTR szDestPath);
 SHORT _GetResource_ (CSTRPTR szResName, BOOL fSetPal, BOOL fLockRes, BOOL fRotated);
 SHORT Query_iResBlock (SHORT i);
-SHORT PutPCX (SHORT iS, USHORT x, USHORT y, USHORT width, USHORT height, CSTRPTR szFileName);
 SHORT PutScreen (SHORT iS, USHORT x, USHORT y, USHORT width, USHORT height, CSTRPTR szFileName);
 SHORT RegisterResExtention ( CSTRPTR sExtention,
 							   PFRESLOAD LoadProc,
@@ -149,4 +144,3 @@ void FreeResourceManager();
 }
 #endif
 #endif // _RESMAMANG_H
-
