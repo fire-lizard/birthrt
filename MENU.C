@@ -183,7 +183,7 @@ void ShowMenu(LONG Index)
 	}
 	
 	// play a zoom sound
-	if( !fRestrictAni && (Menus[Index].Buttons[0].Flags & D_ZOOM))
+	if(Menus[Index].Buttons[0].Flags & D_ZOOM)
 		AddSndObj(SND_UI_MENU_ZOOM_IN, 0, VOLUME_NINETY);
 
 	if (!(Menus[Index].Buttons[0].Flags & D_NO_PUSH))
@@ -293,16 +293,8 @@ void HideMenu(LONG Index)
 		
 	// play a zoom sound
 	if(fRemove[Index] != TRUE)
-		if(!fRestrictAni)
-		{
-			if(Menus[Index].Buttons[0].Flags & D_ZOOM)
-				AddSndObj(SND_UI_MENU_ZOOM_OUT, 0, VOLUME_NINETY);
-		}
-		else
-		{
-			// clean up the mess left behind
-			fUpdatePanels = TRUE;
-		}
+		if(Menus[Index].Buttons[0].Flags & D_ZOOM)
+			AddSndObj(SND_UI_MENU_ZOOM_OUT, 0, VOLUME_NINETY);
 	
 	if(fRemove[Index] != FALSE)
  	{
@@ -364,19 +356,19 @@ LONG AddActiveMenu( LONG Index )
 
 			ActiveMenus[i] = Index;
 			Menus[Index].Buttons[0].Flags |= D_UPDATE;
-			if(!fRestrictAni && (Menus[Index].Buttons[0].Flags & D_ZOOM))
+			if(Menus[Index].Buttons[0].Flags & D_ZOOM)
 			{
 				fZoom[i] = TRUE;
 				fStart[i].x = zoomStart.x;
 				fStart[i].y = zoomStart.y;
 			}
-			else if(!fRestrictAni && (Menus[Index].Buttons[0].Flags & D_SPIN))
+			else if(Menus[Index].Buttons[0].Flags & D_SPIN)
 			{
 				fSpin[i] = TRUE;
 				fStart[i].x = zoomStart.x;
 				fStart[i].y = zoomStart.y;
 			}
-			else if(!fRestrictAni && (Menus[Index].Buttons[0].Flags & D_SCROLL))
+			else if(Menus[Index].Buttons[0].Flags & D_SCROLL)
 			{
 				fScroll[i] = TRUE;
 				fStart[i].x = zoomStart.x;
@@ -424,17 +416,17 @@ void RemoveActiveMenu( LONG Index )
 		amenu = ActiveMenus[i];
 		if (amenu == Index)
 		{
-			if(!fRestrictAni && (Menus[Index].Buttons[0].Flags & D_ZOOM) && (!fRemove[Index]))
+			if((Menus[Index].Buttons[0].Flags & D_ZOOM) && (!fRemove[Index]))
 			{
 				fZoom[i] = TRUE;
 				fRemove[Index] = TRUE;
 			}
-			else if(!fRestrictAni && (Menus[Index].Buttons[0].Flags & D_SPIN) && (!fRemove[Index]))
+			else if((Menus[Index].Buttons[0].Flags & D_SPIN) && (!fRemove[Index]))
 			{
 				fSpin[i] = TRUE;
 				fRemove[Index] = TRUE;
 			}
-			else if(!fRestrictAni && (Menus[Index].Buttons[0].Flags & D_SCROLL) && (!fRemove[Index]))
+			else if((Menus[Index].Buttons[0].Flags & D_SCROLL) && (!fRemove[Index]))
 			{
 				fScroll[i] = TRUE;
 				fRemove[Index] = TRUE;
@@ -450,7 +442,7 @@ void RemoveActiveMenu( LONG Index )
 				}
 				
 				if (((!(Menus[Index].Buttons[0].Flags & D_ZOOM) ||
-					(fRestrictAni && Menus[Index].Buttons[0].Flags & D_ZOOM))) 
+					(Menus[Index].Buttons[0].Flags & D_ZOOM))) 
 					&&
 					(Menus[Index].Buttons[0].Flags & D_FREEZE) )
 				{

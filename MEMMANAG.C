@@ -197,17 +197,6 @@ USHORT	iMaxBlkHeadUsed = 0;
 
 BOOL	fReport;
 
-// memory model flags default for full glory mode
-BOOL	fMinMemory = FALSE;
-BOOL	fLowMemory = FALSE;
-BOOL 	fSmallMap = FALSE;
-BOOL 	fRestrictAni = FALSE;
-BOOL 	fLowResAni = FALSE;
-BOOL 	fMedResAni = FALSE;
-BOOL 	fLowResTextures = FALSE;
-BOOL 	fMedResTextures = FALSE;
-BOOL	fHighResCombat = FALSE;
-
 struct meminfo {
 	ULONG		LargestBlockAvail;
 	ULONG		MaxUnlockedPage;
@@ -349,16 +338,6 @@ void QuitMemManag ()
 	PrintUnFreedMemoryReport();
 	PurgeMem_(ReportFreeMem(TRUE), &SingleBlock, &FoundBlock);
 #endif
-
-#if RES_MANAGER
-//  FreeResourceManager();
-#endif
-
-//	free(pHeap);
-//	free(apBlocks);
-//	free(aiNextBlk);
-//	free(aiPrevBlk);
-//	free(abBlockAttr);
 
 	if (fReport & fREPORT_MEMMGR)
 		puts("MemManager removed");
@@ -2846,16 +2825,12 @@ void ClearAllMoldyBits()
 				/* set the moldy last time bit */
 				if (abAttr & MOLDYBIT)
 				{
-					//SetBlockAttr(iHandle,MOLDYBITLASTTIME,MOLDYBITLASTTIME);
 					*pabBlockAttr |= MOLDYBITLASTTIME;
 					
-					//SetBlockAttr(iHandle,MOLDYBIT,0);					/* clear the moldy bit */
 					*pabBlockAttr &= (0xFFFF ^ MOLDYBIT);
 				}
 				else
 				{
-					//SetBlockAttr(iHandle,MOLDYBITLASTTIME,0);
-					//SetBlockAttr(iHandle,MOLDYBIT,0);					/* clear the moldy bit */
 					*pabBlockAttr &= (0xFFFF ^ (MOLDYBITLASTTIME | MOLDYBIT));
 				}
 				

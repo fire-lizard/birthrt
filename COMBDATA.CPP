@@ -265,9 +265,6 @@ void COMBAT_SCENE_DATA::mfInitCombatVals()
 	}
 	fAIAutoRes = FALSE;
 	
-	// Remember whether we can have high resolution art or not.
-	fOldMedResAni = fMedResAni;
-	
 	// Remember which track we were playing.
 	fucWhichTrack = ucWhichTrack;
 	
@@ -319,8 +316,6 @@ void COMBAT_SCENE_DATA::mfRestoreCombatVals()
 	
 	if (fMusic)
 		PlayTrack(fucWhichTrack);
-	
-	fMedResAni = fOldMedResAni;
 }
 /* ========================================================================
    Function    - mfPauseUpdataData

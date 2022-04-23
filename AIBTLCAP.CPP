@@ -277,10 +277,6 @@ void CAvatar::BattleCapt (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 			break;
 		}
 		
-		// about half as many points in ultra low memory mode
-		if (fRestrictAni == TRUE)
-			pAvatar->fBtlCap.TroopRows = (pAvatar->fBtlCap.TroopRows + 1) / 2;
-		
 		pAvatar->fBtlCap.HitCount = 0;
 		pAvatar->fBtlCap.Healthy = 
 			pAvatar->fBtlCap.HitPoints = 

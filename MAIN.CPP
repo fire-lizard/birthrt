@@ -806,53 +806,6 @@ void GameMain(void)
 #ifndef _CHARED
 {
 	gUnitStackSize = 15;
-	if (MemAvailable >= MIN_MEMORY_TO_HIRES_TEXTURES)
-	{
-		fHighResCombat = TRUE;
-	}
-	else
-	{
-		fHighResCombat = FALSE;
-	}
-	if( MemAvailable < MIN_MEMORY_TO_HIRES_TEXTURES )
-	{
-		fLowMemory = TRUE;
-		fMedResTextures = TRUE;
-		sprintf(cpBuffer,"Low memory condition (%ld), using low res textures.\n", (ULONG) MIN_MEMORY_TO_HIRES_TEXTURES);
-		puts(cpBuffer);
-	}
-	if( MemAvailable < MIN_MEMORY_TO_HIRES_ANI )
-	{
-		fMedResAni = TRUE;
-		sprintf(cpBuffer,"Low memory condition (%ld), using low res animations.\n", (ULONG) MIN_MEMORY_TO_HIRES_ANI);
-		puts(cpBuffer);
-	}
-	if( MemAvailable < MIN_MEMORY_TO_SMALLMAP )
-	{
-		fSmallMap = TRUE;
-		sprintf(cpBuffer,"Low memory condition continues, using small main map.\n", (ULONG) MIN_MEMORY_TO_SMALLMAP);
-		puts(cpBuffer);
-	}
-	if( MemAvailable < MIN_MEMORY_TO_MEDRES_TEXTURES )
-	{
-		fMinMemory = TRUE;
-		fLowResTextures = TRUE;
-		sprintf(cpBuffer,"Very low memory condition, using low res textures.\n", (ULONG) MIN_MEMORY_TO_MEDRES_TEXTURES);
-		puts(cpBuffer);
-	}
-	if( MemAvailable < MIN_MEMORY_TO_MEDRES_ANI )
-	{
-		fLowResAni = TRUE;
-		sprintf(cpBuffer,"Very low memory condition, using low res animations.\n", (ULONG) MIN_MEMORY_TO_MEDRES_ANI);
-		puts(cpBuffer);
-	}
-	if( MemAvailable < MIN_MEMORY_TO_FULL_ROTATION )
-	{
-		fRestrictAni = TRUE;
-		gUnitStackSize = 7;
-		sprintf(cpBuffer,"Ultra low memory condition, using fewer rotations.\n", (ULONG) MIN_MEMORY_TO_FULL_ROTATION);
-		puts(cpBuffer);
-	}
 	
 	// Setup graph mode AND load any graphical fonts... <graph.c>
 	init_graph(1);          /* init in hires */
@@ -1298,7 +1251,6 @@ void PlayIntro(void)
 	if (fQuitting)
 		goto EndSplash;
 
-//	TurnOffAllSounds();
 	KillSoundsNoFade();
 	AddSndObj(SND_AMBIENT_SCABBARD_HIT1,0,-1);      // sword clank
 	FlcDelay = 34;
@@ -1306,7 +1258,7 @@ void PlayIntro(void)
 #if !defined(_JUNEDEMO)	
 	FadeOut(900);
 	
-	if (fFlicPlayedComplete && !fLowResAni)
+	if (fFlicPlayedComplete)
 	{
 		NewIntro();
 	}
@@ -1427,128 +1379,101 @@ void DrawHintPanel(CSTRPTR szFile)
 	Description - Play a gorgon flic
 	Returns     -
 	======================================================================== */
-void PlayGorgon(LONG arg,LONG)
+void PlayGorgon(LONG arg, LONG)
 {
 	char buf[80];
 	char buf1[80];
 
-	if (!fMinMemory)
+	// start the intro music
+	TurnOffAllSounds();
+
+	FadeOut(100);
+	clear_screen();
+	update_screen();
+
+	switch (arg)
 	{
-		// start the intro music
-		TurnOffAllSounds();
-	
-		FadeOut(100);
-		clear_screen();
-		update_screen();
-	
-		switch(arg)
-		{
-			case 1:	
-				init_pal("gorgon2");
-		
-			 	// add list of sound effects
-			 	ClearFlicSound();
-				//	AddFlicSound(  1, SND_SERVANT_VOX_SFX1);
-				AddFlicSound(  1, SND_DOOR_OPEN1);
-				AddFlicSound(  2, SND_DUNGEON1);
-				AddFlicSound( 11, SND_FOOTSTEP4);
-				AddFlicSound( 18, SND_FOOTSTEP5);
-				AddFlicSound( 24, SND_FOOTSTEP6);
-				AddFlicSound( 29, SND_SERVANT_VOX1);
-				AddFlicSound( 31, SND_FOOTSTEP7);
-				AddFlicSound( 38, SND_FOOTSTEP8);
-				AddFlicSound( 44, SND_FOOTSTEP1);
-				AddFlicSound( 75, SND_SHOVE_CHAIR1);
-				AddFlicSound( 82, SND_GORGON_THROW_OBJECT1);
-				AddFlicSound( 94, SND_GORGON_VOX1);
-				strcpy(buf, "intro\\gorgon2.flc");
-				strcpy(buf1, "gorgon1.txt");
-				break;
-	
-			case 2:
-				init_pal("gorgon3");
-				
-			 	// add list of sound effects
-			 	ClearFlicSound();
-				//	AddFlicSound(  1, SND_SERVANT_VOX_SFX2);
-				AddFlicSound(  1, SND_DOOR_OPEN1);
-				AddFlicSound(  2, SND_DUNGEON1);
-				AddFlicSound( 11, SND_FOOTSTEP4);
-				AddFlicSound( 18, SND_FOOTSTEP5);
-				AddFlicSound( 25, SND_FOOTSTEP6);
-				AddFlicSound( 32, SND_FOOTSTEP7);
-				AddFlicSound( 39, SND_FOOTSTEP1);
-				AddFlicSound( 48, SND_SERVANT_VOX2);
-				//	AddFlicSound( 76, SND_SERVANT_VOX_SFX4);
-				AddFlicSound(108, SND_GORGON_VOX2);
-				AddFlicSound(116, SND_SHOVE_CHAIR1);
-				strcpy(buf, "intro\\gorgon3.flc");
-				strcpy(buf1, "gorgon2.txt");
-				break;
-	
-			case 3:
-				init_pal("gorgon4");
-				// [d11-11-96 JPC] Don't use shade tables with flics.
-				// init_shade_table("gorgon4");
-				
-			 	// add list of sound effects
-			 	ClearFlicSound();
-				//	AddFlicSound(  1, SND_SERVANT_VOX_SFX3);
-				AddFlicSound(  1, SND_DOOR_OPEN1);
-				AddFlicSound(  2, SND_DUNGEON1);
-				AddFlicSound( 11, SND_FOOTSTEP2);
-				AddFlicSound( 18, SND_FOOTSTEP3);
-				AddFlicSound( 21, SND_SERVANT_VOX3);
-				AddFlicSound( 24, SND_FOOTSTEP4);
-				AddFlicSound( 30, SND_FOOTSTEP5);
-				AddFlicSound( 74, SND_GORGON_VOX3);
-				AddFlicSound( 80, SND_SHOVE_CHAIR1);
-				AddFlicSound( 95, SND_SUMMON_SWORD1);
-				AddFlicSound(103, SND_SERVANT1_SCREAM1);
-				//	AddFlicSound( 77, SND_GORGON_VOX_SFX1);
-				//	AddFlicSound( 95, SND_GORGON_VOX_SFX2);
-				AddFlicSound(111, SND_GORGON_FOOTSTEP1);
-				AddFlicSound(116, SND_GORGON_FOOTSTEP2);
-				AddFlicSound(120, SND_GORGON_FOOTSTEP3);
-				AddFlicSound(124, SND_GORGON_FOOTSTEP4);
-				strcpy(buf, "intro\\gorgon4.flc");
-				strcpy(buf1, "gorgon3.txt");
-				break;
-		}
-	
-		clear_key_status(0);
-		FadeIn(100);
-		update_screen();
-		
-		FlcDelay = 2;
-		PlayFlic(buf, 4);
-		
+	case 1:
+		init_pal("gorgon2");
+
+		// add list of sound effects
 		ClearFlicSound();
-		TurnOffAllSounds();
-		
-		FadeOut(100);
+		AddFlicSound(1, SND_DOOR_OPEN1);
+		AddFlicSound(2, SND_DUNGEON1);
+		AddFlicSound(11, SND_FOOTSTEP4);
+		AddFlicSound(18, SND_FOOTSTEP5);
+		AddFlicSound(24, SND_FOOTSTEP6);
+		AddFlicSound(29, SND_SERVANT_VOX1);
+		AddFlicSound(31, SND_FOOTSTEP7);
+		AddFlicSound(38, SND_FOOTSTEP8);
+		AddFlicSound(44, SND_FOOTSTEP1);
+		AddFlicSound(75, SND_SHOVE_CHAIR1);
+		AddFlicSound(82, SND_GORGON_THROW_OBJECT1);
+		AddFlicSound(94, SND_GORGON_VOX1);
+		strcpy(buf, "intro\\gorgon2.flc");
+		strcpy(buf1, "gorgon1.txt");
+		break;
+
+	case 2:
+		init_pal("gorgon3");
+
+		// add list of sound effects
+		ClearFlicSound();
+		AddFlicSound(1, SND_DOOR_OPEN1);
+		AddFlicSound(2, SND_DUNGEON1);
+		AddFlicSound(11, SND_FOOTSTEP4);
+		AddFlicSound(18, SND_FOOTSTEP5);
+		AddFlicSound(25, SND_FOOTSTEP6);
+		AddFlicSound(32, SND_FOOTSTEP7);
+		AddFlicSound(39, SND_FOOTSTEP1);
+		AddFlicSound(48, SND_SERVANT_VOX2);
+		AddFlicSound(108, SND_GORGON_VOX2);
+		AddFlicSound(116, SND_SHOVE_CHAIR1);
+		strcpy(buf, "intro\\gorgon3.flc");
+		strcpy(buf1, "gorgon2.txt");
+		break;
+
+	case 3:
+		init_pal("gorgon4");
+		// [d11-11-96 JPC] Don't use shade tables with flics.
+
+		// add list of sound effects
+		ClearFlicSound();
+		AddFlicSound(1, SND_DOOR_OPEN1);
+		AddFlicSound(2, SND_DUNGEON1);
+		AddFlicSound(11, SND_FOOTSTEP2);
+		AddFlicSound(18, SND_FOOTSTEP3);
+		AddFlicSound(21, SND_SERVANT_VOX3);
+		AddFlicSound(24, SND_FOOTSTEP4);
+		AddFlicSound(30, SND_FOOTSTEP5);
+		AddFlicSound(74, SND_GORGON_VOX3);
+		AddFlicSound(80, SND_SHOVE_CHAIR1);
+		AddFlicSound(95, SND_SUMMON_SWORD1);
+		AddFlicSound(103, SND_SERVANT1_SCREAM1);
+		AddFlicSound(111, SND_GORGON_FOOTSTEP1);
+		AddFlicSound(116, SND_GORGON_FOOTSTEP2);
+		AddFlicSound(120, SND_GORGON_FOOTSTEP3);
+		AddFlicSound(124, SND_GORGON_FOOTSTEP4);
+		strcpy(buf, "intro\\gorgon4.flc");
+		strcpy(buf1, "gorgon3.txt");
+		break;
 	}
-	else
-	{
-		switch(arg)
-		{
-		case 1:
-				strcpy(buf1, "gorgon2.txt");
-				break;
-		case 2:
-				strcpy(buf1, "gorgon3.txt");
-				break;
-		case 3:
-				strcpy(buf1, "gorgon1.txt");
-				break;
-		default:
-				break;
-		}
-	}
+
+	clear_key_status(0);
+	FadeIn(100);
+	update_screen();
+
+	FlcDelay = 2;
+	PlayFlic(buf, 4);
+
+	ClearFlicSound();
+	TurnOffAllSounds();
+
+	FadeOut(100);
 
 	clear_screen();
 	update_screen();
-	
+
 	init_pal("nova_l");
 	init_shade_table("nova_l");
 

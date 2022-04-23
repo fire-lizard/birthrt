@@ -129,23 +129,10 @@ void ArtThing::mfTestAndUseLowResArt()
 				ChangeThingType(ThingIndex, LowResThingType);
 			}
 		}
-		else
+		else if (mythings[ThingIndex].type != ThingType)
 		// try to res the art up to max
 		{
-			if (fLowResAni)
-			{
-				// do nothing
-			}
-			else
-			if (fMedResAni && mythings[ThingIndex].type != LowResThingType)
-			{
-				ChangeThingType(ThingIndex, LowResThingType);
-			}
-			else
-			if (!fMedResAni && mythings[ThingIndex].type != ThingType)
-			{
-				ChangeThingType(ThingIndex, ThingType);
-			}
+			ChangeThingType(ThingIndex, ThingType);
 		}
 	}
 }

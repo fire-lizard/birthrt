@@ -250,26 +250,9 @@ void clear_spans (void)
 		// Low-res textures are 16 x 16 or bigger;
 		// Medium-res are 32 x 32 or bigger;
 		// High-res are 64 x 64 or bigger.
-		if (fLowResTextures)
+		for (i = 0; i < (MAX_VIEW_HEIGHT + 10); ++i)
 		{
-			for (i = 0; i < (MAX_VIEW_HEIGHT + 10); ++i)
-			{
-				span_random_start[i] = random(256);
-			}
-		}
-		else if (fMedResTextures)
-		{
-			for (i = 0; i < (MAX_VIEW_HEIGHT + 10); ++i)
-			{
-				span_random_start[i] = random(1024);
-			}
-		}
-		else
-		{
-			for (i = 0; i < (MAX_VIEW_HEIGHT + 10); ++i)
-			{
-				span_random_start[i] = random(4096);
-			}
+			span_random_start[i] = random(4096);
 		}
 		prev_camera_x = camera.x;
 		prev_camera_y = camera.y;

@@ -217,194 +217,6 @@ long get_texture (char *in, ULONG * o_status)
 		return t;
 	}
 #endif
-
-	// replace tree walls with generic walls
-	if(fLowResTextures)
-	{
-		if(strncmp(n,"FRSWAL",6) == 0)	// forest walls
-			strcpy(n,"FRSWALXX");
-		else
-		if(strncmp(n,"PLNHL",5) == 0)	// plains walls
-			strcpy(n,"BATLNULL");
-		else
-		if(strncmp(n,"SWPWAL",6) == 0)	// swampwalls
-			strcpy(n,"SWPWALXX");
-		else
-		if(strncmp(n,"MTNHL",5) == 0)	// mountain walls
-			strcpy(n,"BATLNULL");
-	}
-	
-	// replace banners and extras with generic wall
-	if(fLowResTextures)
-	{
-		// CASTLE01 replacements
-		if( (strcmp(n,"CVWOD202") == 0) ||
-			(strcmp(n,"CVWOD203") == 0) ||
-			(strcmp(n,"CVWOD204") == 0) ||
-			(strcmp(n,"CVWOD205") == 0) )
-			strcpy(n,"CVWOD201") ;
-		else
-		if( (strcmp(n,"CVWOD102") == 0) ||
-			(strcmp(n,"CVWOD103") == 0) ||
-			(strcmp(n,"CVWOD104") == 0) )
-			strcpy(n,"CVWOD101") ;
-		else
-		if( (strcmp(n,"MARB0103") == 0) ||
-			(strcmp(n,"MARB0105") == 0) )
-			strcpy(n,"MARB0101") ;
-		else
-		if( (strcmp(n,"MARB0103") == 0) ||
-			(strcmp(n,"MARB0105") == 0) )
-			strcpy(n,"MARB0101") ;
-		else
-		if( (strcmp(n,"F_MRB012") == 0) )
-			strcpy(n,"F_MRB011") ;
-		else
-		if( (strcmp(n,"STAING02") == 0) ||
-			(strcmp(n,"STAING03") == 0) )
-			strcpy(n,"STAING01") ;
-		else
-		if( (strcmp(n,"BRIKA104") == 0) )
-			strcpy(n,"BRIKA102") ;
-		else
-		if( (strcmp(n,"BRIKC102") == 0) ||
-			(strcmp(n,"BRIKC103") == 0) ||
-			(strcmp(n,"BRIKC104") == 0) ||
-			(strcmp(n,"BRIKC107") == 0) ||
-			(strcmp(n,"BRIKC108") == 0) ||
-			(strcmp(n,"BRIKC109") == 0) ||
-			(strcmp(n,"BRIKC110") == 0) ||
-			(strcmp(n,"BRIKC111") == 0) ||
-			(strcmp(n,"BRIKC112") == 0) ||
-			(strcmp(n,"BRIKC113") == 0) ||
-			(strcmp(n,"BRIKC114") == 0) ||
-			(strcmp(n,"BRIKC115") == 0) ||
-			(strcmp(n,"BRIKC116") == 0) ||
-			(strcmp(n,"BRIKC117") == 0) )
-			strcpy(n,"BRIKC101") ;
-		else
-		if( (strcmp(n,"BRIKC202") == 0) ||
-			(strcmp(n,"BRIKC203") == 0) )
-			strcpy(n,"BRIKC201") ;
-		else
-		if( (strcmp(n,"F_SLABC2") == 0) ||
-			(strcmp(n,"F_SLABC3") == 0) ||
-			(strcmp(n,"F_SLABC4") == 0) )
-			strcpy(n,"F_SLABC1") ;
-		else
-		if( (strcmp(n,"C_WOD012") == 0) )
-			strcpy(n,"C_WOD011") ;
-		else
-		if( (strcmp(n,"F_WOD012") == 0) )
-			strcpy(n,"F_WOD011") ;
-		
-		// CASTLE02 replacements
-		else
-		if( (strcmp(n,"BRIKE102") == 0) ||
-			(strcmp(n,"BRIKE103") == 0) ||
-			(strcmp(n,"BRIKE104") == 0) ||
-			(strcmp(n,"BRIKE106") == 0) ||
-			(strcmp(n,"BRIKE107") == 0) ||
-			(strcmp(n,"BRIKE108") == 0) ||
-			(strcmp(n,"BRIKE109") == 0) )
-			strcpy(n,"BRIKE101") ;
-		else
-		if( (strcmp(n,"BRIKE202") == 0) ||
-			(strcmp(n,"BRIKE203") == 0) )
-			strcpy(n,"BRIKE201") ;
-		else
-		if( (strcmp(n,"F_SLABE2") == 0) ||
-			(strcmp(n,"F_SLABE3") == 0) ||
-			(strcmp(n,"F_SLABE4") == 0) )
-			strcpy(n,"F_SLABE1") ;
-		else
-		if( (strcmp(n,"C_SLABE2") == 0) )
-			strcpy(n,"C_SLABE1") ;
-		else
-		if( (strcmp(n,"CVWOD402") == 0) ||
-			(strcmp(n,"CVWOD403") == 0) ||
-			(strcmp(n,"CVWOD404") == 0) ||
-			(strcmp(n,"CVWOD405") == 0) )
-			strcpy(n,"CVWOD401") ;
-		else
-		if( (strcmp(n,"CVWOD302") == 0) ||
-			(strcmp(n,"CVWOD303") == 0) ||
-			(strcmp(n,"CVWOD304") == 0) )
-			strcpy(n,"CVWOD301") ;
-		else
-		if( (strcmp(n,"MARB0303") == 0) ||
-			(strcmp(n,"MARB0304") == 0) )
-			strcpy(n,"MARB0301") ;
-		else
-		if( (strcmp(n,"F_MRB032") == 0) )
-			strcpy(n,"F_MRB031") ;
-		else
-		if( (strcmp(n,"STAING05") == 0) ||
-			(strcmp(n,"STAING06") == 0) )
-			strcpy(n,"STAING04") ;
-		else
-		if( (strcmp(n,"BRIKD104") == 0) )
-			strcpy(n,"BRIKD102") ;
-		
-		// UNDER01 replacement
-		else
-		if( (strcmp(n,"DUNGC102") == 0) )
-			strcpy(n,"DUNGC101") ;
-		else
-		if( (strcmp(n,"DUNGC105") == 0) ||
-			(strcmp(n,"DUNGC107") == 0) ||
-			(strcmp(n,"DUNGC108") == 0) ||
-			(strcmp(n,"DUNGC109") == 0) ||
-			(strcmp(n,"DUNGC110") == 0) ||
-			(strcmp(n,"DUNGC111") == 0) )
-			strcpy(n,"DUNGC104") ;
-		else
-		if( (strcmp(n,"F_DNGC02") == 0) ||
-			(strcmp(n,"F_DNGC03") == 0) ||
-			(strcmp(n,"F_DNGC04") == 0) )
-			strcpy(n,"F_DNGC01") ;
-		else
-		if( (strcmp(n,"MARB0202") == 0) ||
-			(strcmp(n,"MARB0203") == 0) ||
-			(strcmp(n,"MARB0204") == 0) )
-			strcpy(n,"MARB0201") ;
-		else
-		if( (strcmp(n,"CAVEC104") == 0) ||
-			(strcmp(n,"CAVEC105") == 0) )
-			strcpy(n,"CAVEC103") ;
-		else
-		if( (strcmp(n,"F_CAVC02") == 0) ||
-			(strcmp(n,"F_CAVC03") == 0) )
-			strcpy(n,"F_CAVC01") ;
-		else
-		if( (strcmp(n,"BIZRC103") == 0) ||
-			(strcmp(n,"BIZRC105") == 0) )
-			strcpy(n,"BIZRC102") ;
-		else
-		if( (strcmp(n,"F_BZRC02") == 0) ||
-			(strcmp(n,"F_BZRC03") == 0) )
-			strcpy(n,"F_BZRC01") ;
-	
-		// FOREST01 replacements
-		else
-		if( (strcmp(n,"BARK102") == 0) ||
-			(strcmp(n,"BARK103") == 0) )
-			strcpy(n,"BARK101") ;
-		if( (strcmp(n,"C_LEAF02") == 0) )
-			strcpy(n,"C_LEAF01") ;
-		else
-		if( (strcmp(n,"CORE102") == 0) ||
-			(strcmp(n,"CORE103") == 0) ||
-			(strcmp(n,"CORE104") == 0) ||
-			(strcmp(n,"CORE106") == 0) )
-			strcpy(n,"CORE101") ;
-		else
-		if( (strcmp(n,"F_FRST02") == 0) )
-			strcpy(n,"F_FRST01") ;
-		else
-		if( (strcmp(n,"BIZRC103") == 0) )
-			strcpy(n,"BIZRC102") ;
-	}
 	
 	sprintf(tn,"%s%s.pcx",TEXTURE_PATH,n);
 	// [d3-19-97 JPC] Now that we are using resource files,
@@ -541,14 +353,7 @@ void load_sky_textures (void)
 			{
 			    SHORT hSkyTextureName;
 			
-			    if(fLowResTextures == TRUE)
-			    {
-				    hSkyTextureName = phSkyFileNames[0];
-			    }
-			    else
-			    {
-				    hSkyTextureName = phSkyFileNames[i];
-			    }
+			    hSkyTextureName = phSkyFileNames[i];
 				
 				cpFileName = (char *) BLKPTR(hSkyTextureName);
 				if (strlen (cpFileName) > 0)
@@ -1518,25 +1323,9 @@ SHORT LoadAnimatedTextureStub (																// )
 
 	// [d4-15-97 JPC] UNITARY_SCALE/2 = 2.5, which we can't track because
 	// scale is an integer.  So bump up to medium res.
-	// if (fLowResTextures)
-	// {
-	// 	w = 32;
-	// 	h = 32;
-	// 	scale = UNITARY_SCALE/2;
-	// }
-	// else
-	if (fLowResTextures || fMedResTextures)
-	{
-		w = 64;
-		h = 64;
-		scale = UNITARY_SCALE;
-	}
-	else
-	{
-		w = 128;
-		h = 128;
-		scale = UNITARY_SCALE * 2;
-	}
+	w = 128;
+	h = 128;
+	scale = UNITARY_SCALE * 2;
 
 	iBlk = NewBlock((w * h) + sizeof(BITMHDR));
 

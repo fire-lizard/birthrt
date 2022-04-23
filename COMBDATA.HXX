@@ -130,7 +130,6 @@ private:
 	GAME_CAMERA::CAMERA_STATE	fOldCameraState;
 	BOOL						fOldEnvSoundState;
 	SHORT						fucWhichTrack;
-	LONG						fOldMedResAni;
 	
 	// Combat timers data.
 	LONG						fgTickPrev;
@@ -289,9 +288,4 @@ inline void COMBAT_SCENE_DATA::mfDeAllocateData()
 	fRetreatData.mfDeAllocateData();
 }
 
-
-inline BOOL COMBAT_SCENE_DATA::mfCanGoToHighResArt() const
-{
-	return (fOldMedResAni == FALSE);
-}
 #endif // _COMBDATA_HXX

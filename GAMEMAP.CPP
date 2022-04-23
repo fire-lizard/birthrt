@@ -1246,7 +1246,6 @@ LONG			lTimeLimit[] = {ITT_2MIN, ITT_4MIN, ITT_6MIN, ITT_NONE};
 
 extern MENU		Menus[];
 extern BOOL		char_selected;	/* from game.cpp */
-extern BOOL		fSmallMap;
 extern BOOL 	fMainMenuUp;
 
 extern PROVINCE	TargetProvince;
@@ -6935,12 +6934,6 @@ void WriteRealmStartData ( void )
 void InitDomainTurn (LONG Fake)
 {
 	LONG				i, j, k, cnt;
-	LONG				fLowMemory_ = fLowMemory;
-	LONG				fRestrictAni_ = fRestrictAni;
-	LONG				fLowResTextures_ = fLowResTextures;
-	LONG				fLowResAni_ = fLowResAni;
-	LONG				fMedResTextures_ = fMedResTextures;
-	LONG				fMedResAni_ = fMedResAni;
 	char				n[40];
 	static BOOL		FirstRun	= TRUE;
 	//static ULONG	old_free_mem = 0;
@@ -6978,32 +6971,14 @@ void InitDomainTurn (LONG Fake)
 			return;
 		}
 
-		//printf("InitDomainTurn\n");
-
 		SysForceCursor();
 		fRender = FALSE;
-		fLowMemory = FALSE;				// temporarily load as if we don't have low memory
-		fRestrictAni = FALSE;
-		fLowResTextures = FALSE;
-		fLowResAni = FALSE;
-		fMedResTextures = FALSE;
-		fMedResAni = FALSE;
 		if (fControlMode & 0x100)
 			fControlMode &= 0xFF;
-
-		//remove_timer(draw_cursor);
-
-		// --- check on memory condition
-		//printf("Freemem before map level: %ld\n", ReportFreeMem(TRUE));
-		//if (ReportFreeMem(TRUE) != old_free_mem)
-		//	PrintMemList();
-		//old_free_mem = ReportFreeMem(TRUE);
-		//printf("Region count before map level: %ld\n", CountRegions());
 
 		// ===============================
 		// load map graphic if necessary
 		// ===============================
-		//printf("Start loading map graphics\n");
 		if (fMapAltered || iLgMap == fERROR)
 		{
 			ReleaseDomainUI(0);
@@ -7019,16 +6994,8 @@ printf("GAMEMAP.CPP - InitDomainTurn: load large map\n");
 			else
 #endif
 			{
-				if (fSmallMap)		// low memory requires a smaller map
-				{
-					iLgMap = GetResourceStd ("MAP\\SMMAP.PCX", FALSE);
-					fLgMap = SMALL;
-				}
-				else					// bigger Large Map
-				{
-					iLgMap = GetResourceStd ("MAP\\LGMAP.PCX", FALSE);
-					fLgMap = LARGE;
-				}
+				iLgMap = GetResourceStd("MAP\\LGMAP.PCX", FALSE);
+				fLgMap = LARGE;
 			}
 			SetModifyResource(iLgMap);
 			fMapAltered = FALSE;
@@ -7240,35 +7207,14 @@ printf("GAMEMAP.CPP - InitDomainTurn: load large map\n");
 		WithdrawLosingUnit(TRUE);
 	#ifdef _WINDOWS
 		if (IsMultiPlayer() && fWasABattle
-//				&& !fInfoOnlyDomainUI	[abc] 9/3
 			)
 		{
-			//fSyncPending = TRUE;
-			//ShowSyncWaitWindow( (iMPS_SYNC_INITIATIVE + BattleSync), 0 );
-			//while (fSyncPending)
-			//{
-			//	MenuLoop();
-			//	#ifdef _DEBUG
-			//	LogFlush();
-			//	#endif
-			//}
-			//AMultiPlayer.ResetSync( iMPS_SYNC_INITIATIVE + BattleSync );
 			StartSync( iMPS_SYNC_INITIATIVE + BattleSync );
 			CheckSync( (iMPS_SYNC_INITIATIVE + BattleSync), TRUE, TRUE );
 
 			BattleSync = (BattleSync + 1) & 3;
 		}
 	#endif
-
-		fLowMemory = fLowMemory_;				// DON'T REMOVE THIS
-		fRestrictAni = fRestrictAni_;			// DON'T REMOVE THIS
-		fLowResTextures = fLowResTextures_;	// DON'T REMOVE THIS
-		fLowResAni = fLowResAni_;				// DON'T REMOVE THIS
-		fMedResTextures = fMedResTextures_;	// DON'T REMOVE THIS
-		fMedResAni = fMedResAni_;				// DON'T REMOVE THIS
-
-		// --- MULTIPLAYER
-		//CheckRealmStatus(0, 0, FALSE );			// update after load game
 	}
 
 	// ========================================================
@@ -7276,9 +7222,6 @@ printf("GAMEMAP.CPP - InitDomainTurn: load large map\n");
 	// ========================================================
 	else
 		ReleaseDomainTurn(0);
-
-	//ResumeSuspendedMusic();
-	//PlayTrack(REDBOOK_REALM);
 }
 
 /* ========================================================================

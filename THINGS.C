@@ -610,182 +610,73 @@ static SHORT load_PCX_sequence (ULONG iAnim, ULONG ttype, ULONG seq, ULONG Rotat
    Description - Load a flic for a sequence if available.
    Returns     - iAnim handle
 	======================================================================= */
-SHORT load_FLC_sequence (ULONG iAnim, ULONG ttype, ULONG seq, ULONG Rotation)
+SHORT load_FLC_sequence(ULONG iAnim, ULONG ttype, ULONG seq, ULONG Rotation)
 {
 	ULONG		iseq, rot;
 	char		n[40];
 	char		fn[40];
 	ANIMPTR		pAnim = 0;
-	I_DATA_BLK	*piData;
-		
+	I_DATA_BLK* piData;
+
 	if (iAnim == fERROR)
 		return iAnim;
-		
-	CHECK_THING_INDEX(t,"load_FLC_sequence");
 
-	if (seq > MAX_ANIMATIONSEQ )
+	CHECK_THING_INDEX(t, "load_FLC_sequence");
+
+	if (seq > MAX_ANIMATIONSEQ)
 	{
 #if defined (_DEBUG)
-		fatal_error("ERROR - seq number bad (%ld) in load_FLC_sequence\n",seq);
+		fatal_error("ERROR - seq number bad (%ld) in load_FLC_sequence\n", seq);
 #else
 		return iAnim;
 #endif
 	}
-	
+
 	//if (iAnim == (SHORT)fERROR)
 	//	return;
 
 	/* get base filename from registered TType array */
 	/* GEH also check for the ultra low memory config */
 	/* and swap out some of the animations for another */
-	if(fRestrictAni == TRUE)
+	iseq = seq * NUMROTATIONS;
+	if (seq > MAX_ANIMATIONSEQ)
 	{
-		ULONG GetSeq;
-		ULONG iGetSeq;
-		
-		GetSeq = RestrictAniSeq(seq);
-	
-		iGetSeq = GetSeq * NUMROTATIONS;
-		iseq = seq * NUMROTATIONS;
-		
-		sprintf(n,"%s", GetThingName(ttype));
-		
-		// if not Expire or Dead, only use rotations 0,5,and 9
-		// if EXPIRE or Dead only use rotation 0
-		if (((GetSeq == ANIMATION5SEQ || GetSeq == ANIMATION12SEQ) && (Rotation == 0))
-			||
-			((GetSeq != ANIMATION5SEQ || GetSeq != ANIMATION12SEQ) && (Rotation == 0 || Rotation == 2 || Rotation == 4))
-			)
-		{
-			BOOL iAnimLocked;
-			
-			// First try to get only the rotation requested.
-			sprintf(fn,"%s%s\\%s%c%c.flc",THING_PATH,n,n,cAction[GetSeq],cRotation[Rotation]);
-			OpenAnim(iAnim, iGetSeq+Rotation, fn, TYPE_FLIC);
-			
-			iAnimLocked = IsLocked(iAnim);
-			if (!iAnimLocked)
-				SetQuickLock(iAnim);
-				
-			pAnim = (ANIMPTR) BLKPTR(iAnim);	// Refresh the pointer.
-			if (pAnim->hiData > 0)
-			{
-				piData = (I_DATA_BLK *) BLKPTR(pAnim->hiData);
-				if (piData->iData[iGetSeq + Rotation] > 0)
-				{
-					// Got it!
-					piData->iData[iseq + Rotation] = piData->iData[iGetSeq + Rotation];
-				}
-			}
-			if (!iAnimLocked)
-				ClrLock(iAnim);
-				
-			return iAnim;
-		}
- 		
- 		// This rotation doesn't exist, we must try for all of them  then fill in.
- 		
-		rot = 0; // rotation 0
-		
-		sprintf(fn,"%s%s\\%s%c%c.flc",THING_PATH,n,n,cAction[GetSeq],cRotation[rot]);
-		OpenAnim(iAnim, iGetSeq+rot, fn, TYPE_FLIC);
-		if (GetSeq != seq)
-		{
-			pAnim = (ANIMPTR) BLKPTR(iAnim);	// Refresh the pointer.
-			if (pAnim->hiData > 0)
-			{
-				piData = (I_DATA_BLK *) BLKPTR(pAnim->hiData);
-				if (piData->iData[iGetSeq + rot] > 0)
-				{
-					// Got it!
-					piData->iData[iseq + rot] = piData->iData[iGetSeq + rot];
-				}
-			}
-			else
-			{
-				return iAnim;
-			}
-		}
-		
-		if (GetSeq == ANIMATION5SEQ)
-			rot = 1;	// rotation 3
-		else
-			rot = 2;	// rotation 5
-					
-		sprintf(fn,"%s%s\\%s%c%c.flc",THING_PATH,n,n,cAction[GetSeq],cRotation[rot]);
-		OpenAnim(iAnim, iGetSeq+rot, fn, TYPE_FLIC);
-		if (GetSeq != seq)
-		{
-			pAnim = (ANIMPTR) BLKPTR(iAnim);	// Refresh the pointer.
-			piData = (I_DATA_BLK *) BLKPTR(pAnim->hiData);
-			if (piData->iData[iGetSeq + rot] > 0)
-			{
-				// Got it!
-				piData->iData[iseq + rot] = piData->iData[iGetSeq + rot];
-			}
-		}
-		
-		if (GetSeq != ANIMATION5SEQ)
-			rot = 4;	// rotation 9
-					
-		sprintf(fn,"%s%s\\%s%c%c.flc",THING_PATH,n,n,cAction[GetSeq],cRotation[rot]);
-		OpenAnim(iAnim, iGetSeq+rot, fn, TYPE_FLIC);
-		
-		if (GetSeq != seq)
-		{
-			pAnim = (ANIMPTR) BLKPTR(iAnim);	// Refresh the pointer.
-			piData = (I_DATA_BLK *) BLKPTR(pAnim->hiData);
-			if (piData->iData[iGetSeq + rot] > 0)
-			{
-				// Got it!
-				piData->iData[iseq + rot] = piData->iData[iGetSeq + rot];
-			}
-		}
-		
-		fill_sequence_handles(iAnim, GetSeq);		/* handle non-existant rot */
-	}
-	else
-	{
-		iseq = seq * NUMROTATIONS;
-		if (seq > MAX_ANIMATIONSEQ)
-		{
 #if defined(_DEBUG)
-			fatal_error("ERROR - seq number bad (%ld) in load_FLC_sequence\n",seq);
+		fatal_error("ERROR - seq number bad (%ld) in load_FLC_sequence\n", seq);
 #else
-			return iAnim;
+		return iAnim;
 #endif
-		}
-	
-		sprintf(n,"%s", GetThingName(ttype));
-		
-		// First try to get only the rotation requested.
-		sprintf(fn,"%s%s\\%s%c%c.flc",THING_PATH,n,n,cAction[seq],cRotation[Rotation]);
-		OpenAnim(iAnim, iseq+Rotation, fn, TYPE_FLIC);
-		
-		pAnim = (ANIMPTR) BLKPTR(iAnim);	// Refresh the pointer.
-		if (pAnim->hiData > 0)
-		{
-			piData = (I_DATA_BLK *) BLKPTR(pAnim->hiData);
-			if (piData->iData[iseq + Rotation] > 0)
-			{
-				// Got it!
-				return iAnim;
-			}
-		}
-		else
-			return iAnim;	// Sorry pAnim is missing the hiData.
-		
- 		// This rotation doesn't exist, we must try for all of them  then fill in.
- 		for (rot=0; rot<NUMROTATIONS; ++rot)
-		{
-			sprintf(fn,"%s%s\\%s%c%c.flc",THING_PATH,n,n,cAction[seq],cRotation[rot]);
-			OpenAnim(iAnim, iseq+rot, fn, TYPE_FLIC);
-		}
-		
 	}
 
+	sprintf(n, "%s", GetThingName(ttype));
+
+	// First try to get only the rotation requested.
+	sprintf(fn, "%s%s\\%s%c%c.flc", THING_PATH, n, n, cAction[seq], cRotation[Rotation]);
+	OpenAnim(iAnim, iseq + Rotation, fn, TYPE_FLIC);
+
+	pAnim = (ANIMPTR)BLKPTR(iAnim);	// Refresh the pointer.
+	if (pAnim->hiData > 0)
+	{
+		piData = (I_DATA_BLK*)BLKPTR(pAnim->hiData);
+		if (piData->iData[iseq + Rotation] > 0)
+		{
+			// Got it!
+			return iAnim;
+		}
+	}
+	else
+		return iAnim;	// Sorry pAnim is missing the hiData.
+
+	// This rotation doesn't exist, we must try for all of them  then fill in.
+	for (rot = 0; rot < NUMROTATIONS; ++rot)
+	{
+		sprintf(fn, "%s%s\\%s%c%c.flc", THING_PATH, n, n, cAction[seq], cRotation[rot]);
+		OpenAnim(iAnim, iseq + rot, fn, TYPE_FLIC);
+	}
+
+
 	fill_sequence_handles(iAnim, seq);		/* handle non-existant rot */
-	
+
 	return iAnim;
 }
 
@@ -825,44 +716,6 @@ static void load_obj_graphic(LONG i,
 	/* get base filename from registered TType array */
 	/* GEH also check for the ultra low memory config */
 	/* and swap out some of the animations for another */
-	if(fLowResAni == TRUE)
-	{
-		SHORT count;
-		
-		count = GetLowResIndex(ttype);
-		
-		if(count!=-1)
-			count = GetMinMemConvert(count);
-		else
-			count = GetMinMemConvert(ttype);
-			
-		if(count!=-1)
-		{
-			LONG ArtType = GetArtType(count);
-			if (ArtType == FLC_ART)
-				goto Art_Is_FLC;
-			if (ArtType == BITMAP_ART)
-				goto Art_Is_BITMAP;
-			if (ArtType == PCX_ART)
-				goto Art_Is_PCX;
-				
-			sprintf(n,"%s", GetThingName(count));
-		}
-		else
-		{
-			LONG ArtType = GetArtType(count);
-			if (ArtType == FLC_ART)
-				goto Art_Is_FLC;
-			if (ArtType == BITMAP_ART)
-				goto Art_Is_BITMAP;
-			if (ArtType == PCX_ART)
-				goto Art_Is_PCX;
-				
-			sprintf(n,"%s", GetThingName(ttype));
-		}
-	}
-	else
-	{
 		LONG ArtType = GetArtType(ttype);
 		if (ArtType == FLC_ART)
 			goto Art_Is_FLC;
@@ -872,7 +725,6 @@ static void load_obj_graphic(LONG i,
 			goto Art_Is_PCX;
 				
 		sprintf(n,"%s", GetThingName(ttype));
-	}
 
 	printf("Type:%03ld - %s\n",ttype,n);
 
@@ -975,23 +827,17 @@ Art_Is_BITMAP:
 LoadGenthing:
 			{
 			ULONG Gentype;
-			SHORT count;
 			
 			// GEH substitute valid item
 			//GEH type = gMagicItems.pMagicItems[random(gMagicItems.NumberOfMagicItems)];
 			Gentype = BALM_OF_HEALING;
 			
 			/* get base filename from registered TType array */
-			count = GetLowResIndex(Gentype);
-			if(fMedResAni == TRUE && count!=-1)
-				Load_Bitm(&mythings[i].iBitm, count);
-			else
-				Load_Bitm(&mythings[i].iBitm, Gentype);
+			Load_Bitm(&mythings[i].iBitm, Gentype);
 
 			}
 		}
 
-//		printf("Loading %s as a bitm\n",pn);
 		mythings[i].iAnim = fERROR;
 		if (mythings[i].iBitm == fERROR)
 		{
@@ -1032,70 +878,56 @@ void RegisterTTypes (PTR _TTypePtr, LONG _G_TTypeSize, LONG NumberOfTTypes)
    Description - creates a thing and puts it in the table
    Returns     - the index that it put the thing in
    ======================================================================== */
-LONG create_thing (ULONG type, LONG x, LONG y,LONG z)
+LONG create_thing(ULONG type, LONG x, LONG y, LONG z)
 {
 	LONG			i;
 	// GWP BITMPTR		pBitm;
 
-	for (i=0; i<MAX_THINGS; ++i)
+	for (i = 0; i < MAX_THINGS; ++i)
 		if (!mythings[i].valid)
 			break;
-	
-	if( i > MaxThingLoaded )
+
+	if (i > MaxThingLoaded)
 	{
 		MaxThingLoaded = i;
 	}
-	
-	if(i>=MAX_THINGS)
+
+	if (i >= MAX_THINGS)
 	{
-		printf("ERROR - Requested too many things, exceeded MAX_THINGS (%d)\n",MAX_THINGS);
-		for (i=0; i<300; ++i)
+		printf("ERROR - Requested too many things, exceeded MAX_THINGS (%d)\n", MAX_THINGS);
+		for (i = 0; i < 300; ++i)
 			debug_cTypes[i] = 0;
-		for (i=0; i<MAX_THINGS; ++i)
+		for (i = 0; i < MAX_THINGS; ++i)
 		{
 			if (!mythings[i].valid)
 			{
 				++debug_cTypes[mythings[i].type];
 			}
 		}
-		for (i=0; i<300; ++i)
+		for (i = 0; i < 300; ++i)
 			if (debug_cTypes[i])
 				printf("#%ld - %s: %d", i, GetThingName(type), debug_cTypes[i]);
 #if defined(_DEBUG)		
-		fatal_error("ERROR - Requested too many things, exceeded MAX_THINGS (%d)\n",MAX_THINGS);
+		fatal_error("ERROR - Requested too many things, exceeded MAX_THINGS (%d)\n", MAX_THINGS);
 #else
 		return fERROR;
 #endif
 	}
 
-	if(fLowResAni == TRUE)
+	// Always start with the lowest resolution possible. We'll
+	// Res it up if needed.
+	SHORT lowResIndex = GetLowResIndex(type);
+
+	if (lowResIndex != -1)
 	{
-		SHORT count;
-		
-		count = GetLowResIndex(type);
-		
-		if(count!=-1)
-			type = GetMinMemConvert(count);
-		else
-			type = GetMinMemConvert(type);
-	}
-	else
-	{
-		// Always start with the lowest resolution possible. We'll
-		// Res it up if needed.
-		SHORT lowResIndex = GetLowResIndex(type);
-		
-		if (lowResIndex != -1)
+		SHORT UltraLowRes = GetLowResIndex(lowResIndex);
+		if (UltraLowRes != -1)
 		{
-			SHORT UltraLowRes = GetLowResIndex(lowResIndex);
-			if (UltraLowRes != -1)
-			{
-				type = UltraLowRes;
-			}
-			else
-			{
-				type = lowResIndex;
-			}
+			type = UltraLowRes;
+		}
+		else
+		{
+			type = lowResIndex;
 		}
 	}
 
@@ -1113,14 +945,14 @@ LONG create_thing (ULONG type, LONG x, LONG y,LONG z)
 	else
 	{
 		load_obj_graphic(i,
-					     type,
-					     ANIMATION0SEQ,
-					     0,
-					     LOOP_FLAG | REWIND_FLAG | START_FLAG,
-					     IDLE_FRAME);
+			type,
+			ANIMATION0SEQ,
+			0,
+			LOOP_FLAG | REWIND_FLAG | START_FLAG,
+			IDLE_FRAME);
 	}
 
-	mythings[i].OriginalType=mythings[i].type; //WRC anything created on the
+	mythings[i].OriginalType = mythings[i].type; //WRC anything created on the
 											   //fly had a garbage value in
 											   //the OriginalType field
 
@@ -1137,13 +969,6 @@ LONG create_thing (ULONG type, LONG x, LONG y,LONG z)
 	mythings[i].dist = LONG_MAX;	// so we won't auto res it up.
 	mythings[i].scale_adjust = UNIT_SCALE_ADJUST;
 	mythings[i].ColorRemap = 0;
-
-
-	/* use the filename as the default title, temp. */
-//	if (fDisplayTitles)
-//		mythings[i].title = GetThingName(type);
-//	else
-//		mythings[i].title = NULL;
 
 	return(i);
 }
@@ -1169,10 +994,7 @@ void init_things (LONG * pPlayerStart)  // which player start to begin on
 	LONG UseType;
 	//BOOL TorchToggle = FALSE; // I really hate this
 
-	if(fRestrictAni)
-		MaxThingSpans = MAX_LOWRES_THING_SPANS;
-	else
-		MaxThingSpans = MAX_HIRES_THING_SPANS;
+	MaxThingSpans = MAX_HIRES_THING_SPANS;
 		
 	mythings=(MYTHING *)zalloc(MAX_THINGS*sizeof(MYTHING) );
 	thing_spans = (THING_SPAN *)zalloc(MaxThingSpans * sizeof(THING_SPAN));
@@ -1216,74 +1038,6 @@ void init_things (LONG * pPlayerStart)  // which player start to begin on
 			++gDebug;
 #endif
 		// in mininum case, colapse the trees and rocks
-		if(fRestrictAni == TRUE)
-		{
-		    // reduce the torch and fire types
-		    if (things[i].type == 173 ||
-		    	things[i].type == 179 ||
-		    	things[i].type == 197 ||
-		    	things[i].type == 227 ||
-		    	things[i].type == 272 ||
-		    	things[i].type == 273 ||
-		    	things[i].type == 274 ||
-		    	things[i].type == 275 ||
-		    	things[i].type == 276 )
-			{
-				//if(TorchToggle = !TorchToggle)
-					continue;
-			}
-		    else
-		    // trees
-		    if( (things[i].type >= 233 && things[i].type <= 244) ||
-		    	(things[i].type >= 432 && things[i].type <= 437) )
-			{
-		    	things[i].type = 432;	// TREE_15
-			}
-		    else
-		    // stumps
-		    if(things[i].type >= 245 && things[i].type <= 247)
-		    {
-		    	things[i].type = 246;	// STMP_2
-		    }
-		    else
-		    // bushs
-		    if( (things[i].type >= 248 && things[i].type <= 253) ||
-		    	(things[i].type >= 427 && things[i].type <= 431) )
-		    {
-		    	things[i].type = 427;	//BUSH_8
-		    }
-		    else
-		    // rocks
-		    if( (things[i].type >= 266 && things[i].type <= 269) ||
-		    	(things[i].type >= 425 && things[i].type <= 426) )
-		    {
-		    	things[i].type = 267;	// ROCK_6
-		    }
-			else if( things[i].type == 150 ) continue; //- BARL01
-			else if( things[i].type == 152 ) continue; //- BUKT01
-			else if( things[i].type == 154 ) continue; //- CNDL01
-			else if( things[i].type == 157 ) continue; //- CUP_01
-			else if( things[i].type == 159 ) continue; //- FLGN01
-			else if( things[i].type == 160 ) continue; //- HELM01
-			else if( things[i].type == 162 ) continue; //- PLAT01
-			else if( things[i].type == 163 ) continue; //- PLNT01
-			else if( things[i].type == 164 ) continue; //- POTN01
-			else if( things[i].type == 167 ) continue; //- STAT01
-			else if( things[i].type == 168 ) continue; //- STAT02
-			else if( things[i].type == 169 ) continue; //- STOL01
-			else if( things[i].type == 170 ) continue; //- SWRD01
-			else if( things[i].type == 171 ) continue; //- TABL01
-			else if( things[i].type == 174 ) continue; //- VASE01
-			else if( things[i].type == 175 ) continue; //- FOUN01
-			else if( things[i].type == 176 ) continue; //- BUSH01
-			else if( things[i].type == 177 ) continue; //- TREE01
-			else if( things[i].type == 178 ) continue; //- TREE02
-			else if( things[i].type == 209 ) continue; //- cnbr01
-			else if( things[i].type == 216 ) continue; //- vase03
-			else if( things[i].type == 218 ) continue; //- vase05
-			else if( things[i].type == 220 ) continue; //- tabl02
-			else if( things[i].type == 222 ) continue; //- stol02
-		}
 
 		if (things[i].type<=4 || things[i].type == TYPE_DEATHMATCH)
 		{
@@ -1296,14 +1050,6 @@ void init_things (LONG * pPlayerStart)  // which player start to begin on
 				fMoveCamera = TRUE;
 				*pPlayerStart = FALSE;			/* resolved, so zero out */
 			}
-
-// removed temp [ABC] 3/26/96
-//			else if (things[i].type == TYPE_DEATHMATCH)
-//			{
-//				if (point_to_sector(things[i].x,things[i].y)==*pPlayerStart)
-//					fMoveCamera = TRUE;
-//			}
-
 
 			if (fMoveCamera)
 			{
@@ -1332,14 +1078,11 @@ void init_things (LONG * pPlayerStart)  // which player start to begin on
 		// GEH these are substitute items
 		else if (things[i].type == gMagicItems.MagicThingType) 	// Random Special Item
 		{
-			//things[i].type = gMagicItems.pMagicItems[random(gMagicItems.NumberOfMagicItems)];
 			things[i].type = BALM_OF_HEALING;
 		}
 		else if (things[i].type == gMagicItems.QuestThingType)	// Quest Item
 		{
 			// The game needs to set this variable to some object
-			//things[i].type = gMagicItems.QuestItem;
-			//gMagicItems.QuestItemMythingsIndex=i; //save the index for later.
 			things[i].type = BALM_OF_HEALING;
 		}
 		else if (things[i].type == 424)	// Potion of Poison cure Item // GEH HACK!
@@ -1349,30 +1092,6 @@ void init_things (LONG * pPlayerStart)  // which player start to begin on
 		}
 		
 		UseType = things[i].type;
-		// if you are in a low memory condition, just load the low memory art.
-		// if(fMedResAni == TRUE)
-		{
-			LONG const LowResType = GetLowResIndex(UseType);
-			
-			if (fLowResAni == TRUE)
-			{
-				if (LowResType != -1)
-				{
-					UseType = GetMinMemConvert(LowResType);
-				}
-				else
-				{
-					UseType = GetMinMemConvert(UseType);
-				}
-			}
-			else
-			{
-				if (LowResType != -1)
-				{
-					UseType = LowResType;
-				}
-			}
-		}
 		// First use a bogus z.
 		t = create_thing(UseType, things[i].x, things[i].y, 0);
 		mythings[t].OriginalType = things[i].type;
@@ -4541,26 +4260,7 @@ static void Load_Bitm(SHORT *piBitm, ULONG ttype)
 	/* get base filename from registered TType array */
 	/* GEH also check for the ultra low memory config */
 	/* and swap out some of the bitmaps for another */
-	if(fLowResAni == TRUE)
-	{
-		SHORT count;
-		
-		count = GetLowResIndex(ttype);
-		
-		if(count!=-1)
-			count = GetMinMemConvert(count);
-		else
-			count = GetMinMemConvert(ttype);
-			
-		if(count!=-1)
-			sprintf(n,"%s", GetThingName(count));
-		else
-			sprintf(n,"%s", GetThingName(ttype));
-	}
-	else
-	{
-		sprintf(n,"%s", GetThingName(ttype));
-	}
+	sprintf(n,"%s", GetThingName(ttype));
 	
 	sprintf(pn,"%sPCX\\%s.pcx",THING_PATH,n);
 

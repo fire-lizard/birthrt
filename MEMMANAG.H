@@ -18,6 +18,7 @@
    ------------------------------------------------------------------------ */
 #define _EXTENDED_ATTRIBUTES	1
 #define _AUTO_RESOURCE_ID		1
+#define MEMORY_CHK
 
 /* Equates for memory manager block attributes */
 // Note: UNUSED, FREEMEM, BLKINUSE, BLKTYPE3, BLKTYPE4, STARTBLK, ENDBLK

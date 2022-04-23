@@ -121,7 +121,6 @@ int InitRedBook(void);
 extern "C" {
 int ShutdownRedBook(void);
 int StopRedBook (void);
-extern BOOL fMinMemory;
 }
 /* ------------------------------------------------------------------------
    Code
@@ -212,8 +211,6 @@ void OptAdjLevel(LONG which, LONG what)
             sfxchan += what;
             if (sfxchan > 8)
                 sfxchan = 8;
-            if (fMinMemory && sfxchan > 4)
-            	sfxchan = 4;
             if (sfxchan < 2)
                 sfxchan = 2;
             break;
@@ -222,8 +219,6 @@ void OptAdjLevel(LONG which, LONG what)
             musvol += what;
             if (musvol > 10)
                 musvol = 10;
-            if (musvol < 0 || fMinMemory)
-                musvol = 0;
 			UISetMusicVolume(musvol);
             break;
 
@@ -248,8 +243,6 @@ void OptAdjLevel(LONG which, LONG what)
             sfxenv = (ENV_SETTING) (sfxenv + what);
             if (sfxenv > ENV_ON)
                 sfxenv = ENV_ON;
-            if (sfxenv < ENV_OFF || fMinMemory)
-                sfxenv = ENV_OFF;
             break;
 
 		case OPT_ADJ_SCREEN_SIZE:
@@ -964,4 +957,3 @@ void PaintOptionMenu (LONG MenuCombo, LONG LoadSave)
 	    break;
 	}
 }
-

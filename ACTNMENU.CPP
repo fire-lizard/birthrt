@@ -291,7 +291,6 @@ DEFINE_VECTOR_CLASS(SHORT, UnitTypeID);
 
 extern SHORT		iDRollFIc;
 extern int			reqSound;
-extern BOOL			fSmallMap;
 extern LONG			TutorialActionNumber;
 extern LONG			TutorialScreenNumber;
 extern BOOL			mundane_descriptions;
@@ -402,19 +401,6 @@ BOOL CheckVassal ( REALM::REALM_TYPE rlm )
 void ReconstructMap (void)
 {
 	LONG	j;
-	LONG	fLowMemory_ = fLowMemory;
-	LONG	fRestrictAni_ = fRestrictAni;
-	LONG	fLowResTextures_ = fLowResTextures;
-	LONG	fLowResAni_ = fLowResAni;
-	LONG	fMedResTextures_ = fMedResTextures;
-	LONG	fMedResAni_ = fMedResAni;
-
-	fLowMemory = FALSE;
-	fRestrictAni = FALSE;
-	fLowResTextures = FALSE;
-	fLowResAni = FALSE;
-	fMedResTextures = FALSE;
-	fMedResAni = FALSE;
 
 	if (iLgMap != fERROR)
 	{
@@ -436,24 +422,16 @@ void ReconstructMap (void)
 #endif
 	{
 
-		if (fSmallMap)
+		iLgMap = GetResourceStd("MAP\\LGMAP.PCX", FALSE);
+		if (iLgMap == fERROR)
 		{
+			// Try for the smaller map.
 			iLgMap = GetResourceStd("MAP\\SMMAP.PCX", FALSE);
 			fLgMap = SMALL;
 		}
 		else
 		{
-			iLgMap = GetResourceStd("MAP\\LGMAP.PCX", FALSE);
-			if (iLgMap == fERROR)
-			{
-				// Try for the smaller map.
-				iLgMap = GetResourceStd("MAP\\SMMAP.PCX", FALSE);
-				fLgMap = SMALL;
-			}
-			else
-			{
-				fLgMap = LARGE;
-			}
+			fLgMap = LARGE;
 		}
 	}
 
@@ -467,12 +445,6 @@ void ReconstructMap (void)
 
 	DrawBorders(0, 0, 0, 0, ((BITMPTR)BLKPTR(iLgMap))->w, ((BITMPTR)BLKPTR(iLgMap))->h, FULL_SCALE);
 
-	fLowMemory = fLowMemory_;				// DON'T REMOVE THIS
-	fRestrictAni = fRestrictAni_;			// DON'T REMOVE THIS
-	fLowResTextures = fLowResTextures_;	// DON'T REMOVE THIS
-	fLowResAni = fLowResAni_;				// DON'T REMOVE THIS
-	fMedResTextures = fMedResTextures_;	// DON'T REMOVE THIS
-	fMedResAni = fMedResAni_;				// DON'T REMOVE THIS
 }
 
 /* ========================================================================
@@ -9456,18 +9428,8 @@ void YesOthersDiplomacy(LONG, LONG)
 		else
 #endif
 		{
-			if (fLowMemory)
-			{
-				fLowMemory = FALSE;
-				iLgMap = GetResourceStd("MAP\\SMMAP.PCX", FALSE);
-				fLgMap = SMALL;
-				fLowMemory = TRUE;
-			}
-			else
-			{
-				iLgMap = GetResourceStd("MAP\\LGMAP.PCX", FALSE);
-				fLgMap = LARGE;
-			}
+			iLgMap = GetResourceStd("MAP\\LGMAP.PCX", FALSE);
+			fLgMap = LARGE;
 		}
 
 		for (int j=FIRST_PROVINCE; j<PROVINCE_COUNT; ++j)
@@ -9878,6 +9840,3 @@ LONG ActionExpPoints(
 }
 
 /* ======================================================================== */
-
-
-

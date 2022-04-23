@@ -1408,8 +1408,6 @@ void PaintAttributes (LONG MenuCombo, LONG )
 			
 		// This is done so we'll load all the sequences even though
 		// we won't play them on the adventures.
-		LONG const PrevLowMemory = fLowMemory;
-		fLowMemory = FALSE;
 		#if defined(_JUNEDEMO)
 		load_FLC_sequence(iAnim,
 						  GAME_TTYPE::mfGetLowResType(pPlayerStats->mfGetType()),
@@ -1423,7 +1421,6 @@ void PaintAttributes (LONG MenuCombo, LONG )
 						  0	// rotation Zero.
 						  );
 		#endif
-		fLowMemory = PrevLowMemory;
 		
 		SetAnimSequence(iAnim, (anim.seq * NUMROTATIONS));
 	}
@@ -1976,35 +1973,6 @@ int PaintInputField(LONG lButtonId, char *szBuffer, LONG lBufLen, LONG lFont,
 								AddSndObj(SND_UI_INVALID_BUTTON_CLICK,0,VOLUME_FULL);
 							fQuietItems=FALSE;
 						}
-					}
-					InputHideMenu();
-					return 2;
-				}
-				else
-				// SYNMEM Flag Bool code to modify system memory flags
-				if(	   szBuffer[3] == 'M'
-					&& szBuffer[4] == 'E'
-					&& szBuffer[5] == 'M'
-					)
-				{
-					LONG	FlagNum;
-					BOOL	FlagVal=TRUE;
-					
-					LONG FieldsRead=sscanf(&szBuffer[6],"%ld %ld", &FlagNum, &FlagVal);
-					
-					if (FieldsRead==2)
-					{	
-				   		switch(FlagNum)
-				   		{
-				   			case 0: fLowMemory      = FlagVal;	break;
-				   			case 1: fMinMemory      = FlagVal;	break;
-				   			case 2:	fSmallMap       = FlagVal;	break;
-				   			case 3:	fMedResTextures = FlagVal;	break;
-				   			case 4:	fMedResAni      = FlagVal;	break;
-				   			case 5:	fLowResTextures = FlagVal;	break;
-				   			case 6:	fLowResAni      = FlagVal;	break;
-				   			case 7:	fRestrictAni    = FlagVal;	break;
-				   		}
 					}
 					InputHideMenu();
 					return 2;

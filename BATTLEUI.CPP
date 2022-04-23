@@ -325,8 +325,6 @@ extern "C" {
 }
 #endif
 
-static BOOL BtlLowResAni;
-
 BOOL fBattleFreezeTime = FALSE;
 BOOL fBattleNextTurn = FALSE;
 LONG BattleTick = 0;
@@ -367,13 +365,6 @@ void InitBattleUI(SCENE &rScene)
 		Init_MessQue();
 	}
 	#endif
-	
-	/* -----------------------------------------------------------------
-	   force ultra low animations on the battle field to save memory
-	   and gain speed
-	   ----------------------------------------------------------------- */
-	BtlLowResAni = fLowResAni;
-	fLowResAni = TRUE;
 	
 	// reset our clock
 	BattleUpdateTime();				// clear out old junk
@@ -512,9 +503,6 @@ void InitBattleUI(SCENE &rScene)
    ======================================================================== */
 void ReleaseBattleUI(SCENE &rScene)
 {
-	// release ani back to correct resolution
-	fLowResAni = BtlLowResAni;
-	
 	// clean up a couple values
 	bBattleCameraMode = BTLUI_CAMERA_FIXED;
 	hUnitInfo = fERROR;

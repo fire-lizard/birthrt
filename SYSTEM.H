@@ -353,15 +353,6 @@ extern char CDDrive[4];
 extern SHORT InstallationType;   /*main.cpp*/
 extern char InstallPath[256];
 extern COLORSPEC		CurPal[256];
-extern BOOL				fLowMemory;				/* memmanag.c */
-extern BOOL				fMinMemory;				/* memmanag.c */
-extern BOOL				fSmallMap;				/* memmanag.c */
-extern BOOL				fRestrictAni;			/* memmanag.c */
-extern BOOL				fLowResAni;				/* memmanag.c */
-extern BOOL 			fMedResAni;				/* memmanag.c */
-extern BOOL 			fLowResTextures;		/* memmanag.c */
-extern BOOL 			fMedResTextures;		/* memmanag.c */
-extern BOOL				fHighResCombat;
 extern LONG  			screen_buffer_width;	/* system.c */
 extern LONG  			screen_buffer_height;
 extern LONG				graphics_mode;

@@ -546,11 +546,6 @@ void CombatFirstPersonView(LONG, LONG)
 	
 	DumbHandlePtr<SCENE const> const pCurrentScene(SCENE_MGR::hCurrentScene);
 	DumbHandlePtr<COMBAT_SCENE_DATA> const pcsdData(pCurrentScene->fhData);
-	
-	if (pcsdData->mfCanGoToHighResArt())
-	{
-		fMedResAni = FALSE;
-	}
 }
 
 /* ========================================================================
@@ -691,8 +686,6 @@ static void CombatCameraRightOfFriend(CAvatar const * const pAvatar)
 						  pAvatar->mfWidth() * ROTATE_DISTANCE_FACTOR,
 						  DISTANCE_AWAY,
 						  TRUE);
-	if (!fHighResCombat)
-		fMedResAni = TRUE;		// Stop the high res art from comming in.
 }
 /* ========================================================================
    Function    - CombatCameraLeftOfFriend
@@ -718,8 +711,6 @@ static void CombatCameraLeftOfFriend(CAvatar const * const pAvatar)
 						  pAvatar->mfWidth() * ROTATE_DISTANCE_FACTOR,
 						  DISTANCE_AWAY,
 						  TRUE);
-	if (!fHighResCombat)
-		fMedResAni = TRUE;		// Stop the high res art from comming in.
 }
 /* ========================================================================
    Function    - CombatCameraBehindFriend
@@ -743,8 +734,6 @@ static void CombatCameraBehindFriend(CAvatar const * const pAvatar)
 							pAvatar->mfWidth() * ROTATE_DISTANCE_FACTOR,
 							DISTANCE_AWAY,
 							TRUE);
-	if (!fHighResCombat)
-		fMedResAni = TRUE;		// Stop the high res art from comming in.
 }
 /* ========================================================================
    Function    - CombatCameraBehindFoe
@@ -768,8 +757,6 @@ static void CombatCameraBehindFoe(CAvatar const * const pAvatar)
 							pAvatar->mfWidth() * ROTATE_DISTANCE_FACTOR,
 							DISTANCE_AWAY,
 							TRUE);
-	if (!fHighResCombat)
-		fMedResAni = TRUE;		// Stop the high res art from comming in.
 }
 
 /* ========================================================================
@@ -821,11 +808,6 @@ static void CombatCameraBehindAvatar(CAvatar const * const pAvatar)
 	}
 	DumbHandlePtr<SCENE const> const pCurrentScene(SCENE_MGR::hCurrentScene);
 	DumbHandlePtr<COMBAT_SCENE_DATA> const pcsdData(pCurrentScene->fhData);
-	
-	if (pcsdData->mfCanGoToHighResArt())
-	{
-		fMedResAni = FALSE;
-	}
 }
 
 /* ========================================================================
@@ -878,9 +860,6 @@ static void CombatCameraWanderFreely(CAvatar const * const pAvatar)
 				  radius,
 				  0 		//  swoop
 				  );
-	
-	if (!fHighResCombat)
-		fMedResAni = TRUE;
 }
 
 /* ========================================================================
