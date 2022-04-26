@@ -365,19 +365,15 @@ BOOL text_differs(char *filename1, char *filename2)
 	BOOL differs = TRUE;
 	LONG i, blocknum = 0;
 	
-//	FILE *fperr = fopen("strmake.out", "w");
-	
 	fp1 = fopen(filename1, "r");
 	if (!fp1)
 	{
-//		fprintf(fperr, "couldn't open file: %s\n", filename1);
 		goto Abort;
 	}
 		
 	fp2 = fopen(filename2, "r");
 	if (!fp2)
 	{
-//		fprintf(fperr, "couldn't open file: %s\n", filename2);
 		goto Abort;
 	}
 		
@@ -390,7 +386,6 @@ BOOL text_differs(char *filename1, char *filename2)
 		
 		if (len1 != len2)
 		{
-//			fprintf(fperr, "len1 != len2\n");
 			goto Abort;
 		}
 			
@@ -398,12 +393,10 @@ BOOL text_differs(char *filename1, char *filename2)
 		{
 			if (buf1[i] != buf2[i])
 			{
-//				fprintf(fperr, "differs at block %d, byte %d\n", blocknum, i);
 				goto Abort;
 			}
 		}
 	}
-//	fprintf(fperr, "the files are identical\n");
 	differs = FALSE;
 	
 Abort:
@@ -411,6 +404,5 @@ Abort:
 		fclose(fp2);
 	if (fp1 != NULL)
 		fclose(fp1);
-//	fclose(fperr);
 	return differs;
 }

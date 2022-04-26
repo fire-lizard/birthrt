@@ -352,47 +352,13 @@ extern void DirectDrawPreFrame( void )
 	}
 	else
 	{
-		// -- Decide our mode Whaaaaa!!!!!
-//		if ( (SCENE_MGR::hCurrentScene != fERROR) )
-//		{
-//			sDrawType = iDIRECTTOCARD;
-//		}
-//		else
-//		{
-//			// -- make sure our memory screen buffer is redone
-//		if ( sDrawType == iDIRECTTOCARD )
-//				fUpdateDataArea = TRUE;
-
 			sDrawType = iBLT;
-
-//			screen = GDIscreen;
-//			screen_buffer_width = 640 /*WindowWidth*/;
-//		}
-
-		// -- make sure we are erased!
-		//GEH DDEraseScreen();
-
-#if 0 // CAN'T GET HERE ANYWAY
-		if ( sDrawType == iDIRECTTOCARD )
-		{
-			// -- Make sure the DirectDraw thread has a moment to do stuff
-			Sleep(0);
-
- 			HRESULT ddrval = DDLockSurface( (PCHAR *) &screen, &screen_buffer_width );
-
-			if ( ddrval != DD_OK )
-				fatal_error( "Unable to lock surface: error = %d", ddrval );
-		}
-#endif
-
 	}
-
 } // DirectDrawPreFrame
 
 
 
  // -- routine in sysgraph.c
-//extern "C" void DirectDrawSaveScreen( void )
 #else
 extern "C" void DirectDrawPreFrame( void )
 {

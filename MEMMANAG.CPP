@@ -2682,6 +2682,7 @@ void * BLKPTR(LONG i)
 	}
 	return (void *)(((char *)apBlocks[i]) + HEADER_SPACE);
 #else
+	return (void *)new ULONG[3072];
 	return (void *)((ULONG *)apBlocks[i]);
 #endif
 }

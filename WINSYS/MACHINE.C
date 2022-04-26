@@ -143,7 +143,6 @@ LONG	JoyYPfact = 0;
 LONG	JoyYNfact = 0;
 
 const DWORD iINITIALHEAPSIZE = (24L * 1024L * 1024L);
-// const DWORD iINITIALHEAPSIZE = 0L;
 HANDLE hHeap;
 
 LONG cx, cy;
@@ -159,14 +158,17 @@ static char szClassName[] = "BRCHARED";
 		static  char  szAppName[]= "Birthright - Die Dunkle Allianz";
 		static char szClassName[] = "Birthright";
 		#else
-			static  char  szAppName[]= "Birthright - The Gorgon's Alliance";
+			#ifdef _RUSVER
+			static  char  szAppName[]= "Право на жизнь - Союз Горгон";
 			static char szClassName[] = "Birthright";
+			#else
+				static  char  szAppName[] = "Birthright - The Gorgon's Alliance";
+				static char szClassName[] = "Birthright";
+			#endif
 		#endif
 	#endif
 #endif
 
-// -- moved from AppInit	CAM 20 NOV 96
-//static LONG lStyle = WS_MINIMIZEBOX|WS_SYSMENU|WS_POPUP|WS_CAPTION;
 // ABC removed minimize box per RC 7/18/97
 static LONG lStyle = WS_SYSMENU|WS_POPUP|WS_CAPTION;
 

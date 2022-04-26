@@ -1379,25 +1379,16 @@ void ObjectList::ReadINV(SHORT hPlayerStats, LONG id)
     char filename[80], buffer[BUFLEN];
     LONG count;
     SHORT entry;
-    FILE_MODE OldFileMode;
 
     BOOL sQI = fQuietItems;
     fQuietItems = TRUE;
 
     // load .inv file
 
-	// in the multiplayer game, we don't want any altered avatar file
-	#ifndef _DEBUG
-	if ( fStartMultiGame )
-		OldFileMode = SetFileMode( FILEOPEN_CDROM_ONLY );
-	#endif
-	
     sprintf(filename, "scenes\\id%ld.inv", id);
     fp = FileOpen(filename, "r");
     if (fp != NULL)
     {
-        count = 0;
-
 	    while (fgets(buffer, BUFLEN, fp) != NULL)
 	    {
 	        LONG i;
@@ -1425,12 +1416,6 @@ void ObjectList::ReadINV(SHORT hPlayerStats, LONG id)
 	AddPriestSpells(hPlayerStats);
 
 	fQuietItems = sQI;
-	
-	// in the multiplayer game, reset file mode
-	#ifndef _DEBUG
-	if ( fStartMultiGame )
-		SetFileMode( OldFileMode );
-	#endif
 }
 
 void ObjectList::AddPriestSpells(SHORT hPlayerStats)

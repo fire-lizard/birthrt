@@ -138,7 +138,6 @@ LONG		render_center_x;
 LONG		render_center_y;
 LONG		render_bot;
 LONG		render_top;
-//LONG		lens_factor = NORMAL_LENS*2;
 LONG		lens_factor = NORMAL_LENS;
 LONG		lens_view_width;
 
@@ -203,7 +202,7 @@ char		cFraction[] = {0,91,92,93,94,96,123,124,125,126};
 
 BOOL		fDoRemap = FALSE;
 UBYTE	*	remap_table;
-PTR		screen;
+PTR		screen = NULL;
 
 LONG		GameSpecificGlobal_type = -1;
 LONG		GameSpecificGlobal_x = 0;
@@ -339,12 +338,6 @@ void set_margin_size (LONG l, LONG r, LONG t, LONG b)
 	margin_top = t;
 	margin_bottom = b;
 	set_view_size (margin_left, margin_top, window_width-margin_left-margin_right,	window_height-margin_top-margin_bottom);
-	
-	//if (fNeedRender)
-	//{
-	//	render_view (FALSE);
-	//	ScreenCopy(0, 0, 0, MAX_VIEW_WIDTH, MAX_VIEW_HEIGHT - margin_bottom, SC_DEFAULT_RES);
-	//}
 }
 
 void get_margin_size(LONG *Left, LONG *Right, LONG *Top, LONG *Bottom)
@@ -386,15 +379,7 @@ void dec_view_size(LONG dummy1, LONG dummy2)
 		ldMarginRight += 20;
 	}
 
-	//GEH clear_display();
 	memset(screen, 0, MAX_VIEW_WIDTH * MAX_VIEW_HEIGHT);
-#if 0
-|	// [d10-21-96 JPC] Auto-res work.
-|	if (fHighRes)
-|		set_margin_size(ldMarginTop, ldMarginRight, ldMarginTop, ldMarginBottom);
-|	else
-|		set_margin_size(ldMarginTop/2, ldMarginRight/2, ldMarginTop/2, ldMarginBottom/2);
-#endif
 }
 
 void inc_view_size(LONG dummy1, LONG dummy2)
@@ -2273,7 +2258,6 @@ SHORT SaveBitmap (SHORT x, SHORT y, SHORT w, SHORT h)
 {
 	SHORT    iBitm;
 	BITMPTR  pBitm;
-	//LONG	xx;
 	LONG	yy;
 	PTR		bptr;
 	PTR		sptr;
@@ -2301,7 +2285,7 @@ SHORT SaveBitmap (SHORT x, SHORT y, SHORT w, SHORT h)
 		w = screen_buffer_width - x;
 	}
 
-	for (yy=0; yy < h; ++yy)				// copy bitmap
+	for (yy = 0; yy < h; ++yy)				// copy bitmap
 	{
 		memcpy(bptr, sptr, w);
 		sptr += screen_buffer_width;
@@ -2719,194 +2703,6 @@ void ScaleBitmapY (SHORT x, SHORT y, SHORT iBitm, SHORT bx, SHORT by, SHORT w, S
 }
 
 /* ====================================================================
-	
-	==================================================================== */
-#if 0
-void ScaleMirrorBitmap (SHORT x, SHORT y, SHORT iBitm, SHORT bx, SHORT by, SHORT w, SHORT h, SHORT scale)
-{
-	LONG		xx;
-	LONG		yy;
-	LONG		wid, hei, ww, hh, x_offset;
-	LONG		tsx, tsy;
-	LONG		xinc, yinc;
-	BOOL		fRotated = FALSE;
-	BOOL     fMirror = FALSE;
-	BITMPTR	p;
-	PTR		tptr, bptr;
-	PTR		sptr, sptr_;
-	BYTE		pix;
-
-	if (iBitm == fERROR)							// check for bad source bitmap
-		return;
-
-	p = (BITMPTR) BLKPTR(iBitm);				// get pointer to bitm header
-	if (!IsPointerGood(p))
-		return;
-
-	tptr = (PTR)p + sizeof(BITMHDR);			// get pointer to data
-	wid = p->w;										// get size
-	hei = p->h;
-	scale = (p->scale * scale) / UNITARY_SCALE;	// combo scale
-	ww = (wid * FULL_SCALE) / ABS(scale);			// scaled size
-	hh = (hei * FULL_SCALE) / ABS(scale);
-	x_offset = (p->x_ctr_pt * FULL_SCALE) / ABS(scale);  // scaled ctr point
-	tptr += (by * wid) + bx;					// adj point by start coords
-	xinc = yinc = ABS(scale);					// set independant x & y scales
-
-	// negative width is used as a flag to say that bitm needs to be rotated
-	
-	if (w < 0)
-	{
-		fRotated = TRUE;
-		w = -w;
-		if(h<0)
-		{
-			fMirror = TRUE;
-			h = -h;
-		}
-		y = y + h - ww;		// put feet on bottom of passed area (y+h)
-	}
-	
-	
-	if(fMirror == FALSE)
-		x -= x_offset;		// handle center point;
-	else
-		x -= hh - x_offset;
-
-	/* clipping */
-	if (x>screen_buffer_width-1 || x+w-1<0 || y>screen_buffer_height-1 || y+h-1<0)
-		return;
-
-	if (x+w-1 > screen_buffer_width-1)
-		w = screen_buffer_width - x - 1;
-
-	if (y+h-1 > screen_buffer_height-1)
-		h = screen_buffer_height - y - 1;
-
-	if (x < 0)
-	{
-		w += x;
-		x = 0;
-	}
-
-	if (y < 0)
-	{
-		h += y;
-		y = 0;
-	}
-
-	if (fRotated) {tsy = w; w = h; h = tsy;}			 // fix dimensions
-
-	if (w > ww)
-		w = ww;
-
-	if (h > hh)
-		h = hh;
-
-	sptr=(PTR)screen+((y*screen_buffer_width)+x);		// set destination pointer
-
-	if (fRotated)			// check for rotated
-	{
-		if(fMirror == FALSE)
-		{
-			// bitm needs to be rotated
-			tsy = 0;
-			for (yy=0; yy < h; ++yy)				// copy bitmap
-			{
-				sptr_ = sptr + yy;
-				bptr = &tptr[(tsy>>8)*wid];
-				tsy += yinc;
-				tsx = 0;
-				for (xx=0; xx < w; ++xx)
-				{
-			  		pix = bptr[tsx>>8];
-			  		tsx += xinc;
-
-			  		if (pix)				// check for transparency
-						*sptr_ = pix;
-
-					sptr_ += screen_buffer_width;				// next pixel in column
-				}
-			}
-		}
-
-		else
-		{
-			tsy = yinc * h;
-			for(yy = 0; yy < h; ++yy)
-			{
-				sptr_ = sptr + yy;
-				tsy -= yinc;
-				bptr = &tptr[(tsy>>8)*wid];
-				tsx = 0;
-				for (xx=0; xx < w; ++xx)
-				{
-			  		pix = bptr[tsx>>8];
-			  		tsx += xinc;
-
-			  		if (pix)				// check for transparency
-						*sptr_ = pix;
-
-					sptr_ += screen_buffer_width;				// next pixel in column
-				}
-			}
-		}
-	}
-
-	else		// not rotated
-	{
-		if (scale>0 || ABS(scale) < (FULL_SCALE<<1) )
-		{
-			tsy = 0;
-			for (yy=0; yy < h; ++yy)				// copy bitmap
-			{
-				bptr = &tptr[(tsy>>8)*wid];
-				tsy += yinc;
-				tsx = 0;
-				for (xx=0; xx < w; ++xx)
-				{
-					pix = bptr[tsx>>8];
-					tsx += xinc;
-
-					if (pix)				// check for transparency
-						*sptr = pix;
-					++sptr;
-				}
-				sptr += (screen_buffer_width - w);			// move to start of next scanline
-			}
-		}
-
-		// special for 50% or less
-		else
-		{
-			tsy = 0;
-			for (yy=0; yy < h; ++yy)				// copy bitmap
-			{
-				bptr = &tptr[(tsy>>8)*wid];
-				tsy += yinc;
-				tsx = 0;
-				for (xx=0; xx < w; ++xx)
-				{
-					pix = antia_table[
-							(antia_table[(bptr[(tsx>>8)]*256) + bptr[(tsx>>8)+1]] *256) +
-							antia_table[(bptr[(tsx>>8)+wid]*256) + bptr[(tsx>>8)+wid+1]] ];
-					tsx += xinc;
-
-					if (pix)				// check for transparency
-						*sptr = pix;
-					++sptr;
-				}
-				sptr += (screen_buffer_width - w);			// move to start of next scanline
-			}
-		}
-	}		// not rotated
-
-}
-
-#endif
-
-
-/* ====================================================================
 	function creates, inits, and allocates memory for a bitmap structure
 	==================================================================== */
 SHORT _OpenBitm (SHORT w, USHORT h, BOOL fLocked)
@@ -2943,12 +2739,6 @@ SHORT _OpenBitm (SHORT w, USHORT h, BOOL fLocked)
 
 BOOL Exists( char *filename)
 {
-	// FILE *test;
-	//
-	// if ((test = fopen( filename, "rb")) == NULL)
-	// 	return FALSE;
-	// fclose( test);
-	// return TRUE;
 	return(!FileAccess(filename));
 }
 
@@ -2984,11 +2774,6 @@ SHORT PutScreen (SHORT iS, USHORT x, USHORT y, USHORT width, USHORT height, CSTR
 	cbSrc = 640 & 0xFFFE;
 	pSrc = ((PTR)BLKPTR(iS))+(y*cbSrc)+x;
 
-	// ????
-	// aPCXheader[8] = (UBYTE)right;
-	// aPCXheader[10] = (UBYTE)bottom;
-	// aPCXheader[66] = (UBYTE)width;
-	
 	aPCXheader[8] = (UBYTE)right;
 	aPCXheader[9] = (UBYTE)(right >> 8);
 	aPCXheader[10] = (UBYTE)bottom;

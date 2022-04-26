@@ -73,7 +73,6 @@ void assert_pal();
    ------------------------------------------------------------------------ */
 static BOOL fFadedOut = FALSE;
 
-//GEH PTR	screen;
 PTR	GDIscreen;
 long	disp_color;
 COLORSPEC CurPal[256];
@@ -86,7 +85,7 @@ BOOL fHighRes;
 SHORT	iDispBuffer = fERROR;
 SHORT	sDrawType = iBLT;	  // 5 SEP 96 CAM
 
-void *pBuffer;
+void *pBuffer = NULL;
 header	BufferHeader;
 
 pal LogicalPalette =
@@ -355,14 +354,8 @@ void init_graph (LONG init_mode)
 	SelectPalette( gViewDC, hpalApp, FALSE );
 	RealizePalette( gViewDC );
 
-//	if ( sDrawMode == iDDRAW )
-//	{
-//		DDRealizePalette();
-//	}
-
 	// clear this offscreen buffer
 	clear_screen();
-//	PatBlt(gViewDC, 0, 0, MAX_VIEW_WIDTH, MAX_VIEW_HEIGHT, BLACKNESS);
 
 	// dump the temp hdc
 	ReleaseDC(0,Screen);
@@ -398,7 +391,6 @@ void set_pal (char * pal)
 {
 	int Counter;
 
-//	for(Counter = 10;Counter < 246;Counter++)
 	for (Counter = 0; Counter < 256; Counter++)
 	{
 		// copy from the original color table to the WinGBitmap's
@@ -470,7 +462,6 @@ void set_pal (char * pal)
 		if ( sDrawMode == iDDRAW )
 		{
 			DDSetPaletteEntries();
-//			DDRealizePalette();
 		}
 
 		ReleaseDC( hwndApp, hdcTmp );
@@ -536,9 +527,6 @@ void FadeOut (USHORT steps)
 	fIsFadedOut = TRUE;
 		
 	steps /= 32;
-
-//	// if ( sDrawMode == iDDRAW )
-//		steps = 0;
 
 	if (steps)											/* if steps is not zero */
 	{
@@ -612,9 +600,6 @@ void close_graph()
 	HDC ScreenDC;
 
 	ScreenDC = GetDC(NULL);
-#ifndef _DEBUG
-//	SetSystemPaletteUse(ScreenDC, SYSPAL_STATIC);
-#endif
 	ReleaseDC(NULL, ScreenDC);
 
     if(gdcScreen)
@@ -650,8 +635,6 @@ void update_screen(void)
 		break;
 
 	case iDDRAW:
-		 // - Make sure the hardware mouse is gone, or it'll mess up the display
-//		ShowCursor( FALSE );
 
 		switch ( sDrawType )
 		{
@@ -768,9 +751,6 @@ void clear_display()
 {
 	if ( (sDrawMode == iGDI) || (sDrawType != iDIRECTTOCARD) )
 		memset(screen, 0, MAX_VIEW_WIDTH * MAX_VIEW_HEIGHT);
-
-	// clear this offscreen buffer
-//	PatBlt(gViewDC, 0, 0, MAX_VIEW_WIDTH, MAX_VIEW_HEIGHT, BLACKNESS);
 }
 
 /* ========================================================================
@@ -806,66 +786,6 @@ void ScreenCopy (
 
 
 #endif
-
-#if 0
-
-	switch ( sDrawMode )
-	{
-	case iGDI:
-		if (fHighRes || resolution == SC_HIGH_RES)
-		{
-			StretchBlt(gdcScreen, xSrc, ySrc, width, height, gViewDC, xSrc, ySrc, width, height, SRCCOPY);
-		}
-		else
-		{
-			StretchBlt(gdcScreen, xSrc, ySrc, width * 2, height * 2, gViewDC, xSrc, ySrc, width, height, SRCCOPY);
-		}
-		GdiFlush();
-		break;
-
-	case iDDRAW:
-
-#if 0
-//		update_screen();
-		return;
-#else
-		if ( sDrawType == iBLT )
-		{
-    		HDC hdcDD = DDGetDC( TRUE );
-
-	   	if ( hdcDD != NULL )
-		  	{
-      		if (fHighRes || resolution == SC_HIGH_RES)
-		      {
-		      	StretchBlt(hdcDD, xSrc, ySrc, width, height, gViewDC, xSrc, ySrc, width, height, SRCCOPY);
-      		}
-		      else
-      		{
-		      	StretchBlt(hdcDD, xSrc, ySrc, width * 2, height * 2, gViewDC, xSrc, ySrc, width, height, SRCCOPY);
-      		}
-
-//	      	   StretchBlt(hdcDD, xSrc, ySrc, width * 2, height * 2, gViewDC, xSrc, ySrc, width, height, SRCCOPY);
-//   			StretchBlt( hdcDD, xSrc, ySrc, width, height,
-//								gViewDC, xSrc, ySrc, width, height, SRCCOPY );
-
-				DDReleaseDC( hdcDD );
-//				DDFlipSurface();
-
-
-			}
-		}
-		break;
-
-#endif
-
-//	default:
-//		break;
-	}
-
-
-#endif
-
-
 }
 
 
