@@ -29,8 +29,8 @@
 #include "colors.h"
 #endif
 
-#if !defined(_MEMMANAG_H)
-#include "memmanag.h"
+#if !defined(_MEMMANAG_HXX)
+#include "memmanag.hxx"
 #endif
 
 #if !defined(_RESMANAG_HXX)

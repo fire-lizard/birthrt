@@ -62,7 +62,7 @@
 #include "SYSTEM.H"
 #include "MACHINE.H"
 
-#include "MEMMANAG.H"
+#include "MEMMANAG.HXX"
 #include "RESMANAG.HXX"
 
 /* ------------------------------------------------------------------------
@@ -2682,7 +2682,6 @@ void * BLKPTR(LONG i)
 	}
 	return (void *)(((char *)apBlocks[i]) + HEADER_SPACE);
 #else
-	return malloc(10000);
 	return (void *)((ULONG *)apBlocks[i]);
 #endif
 }

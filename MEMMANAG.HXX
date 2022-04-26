@@ -3,8 +3,8 @@
    All Rights Reserved
    Author: G. Powell
    ======================================================================== */
-#ifndef _MEMMANAG_H
-#define _MEMMANAG_H
+#ifndef _MEMMANAG_HXX
+#define _MEMMANAG_HXX
 
 /* ------------------------------------------------------------------------
    Sub Includes
@@ -184,4 +184,4 @@ SHORT SetDebugInfo(char * /* file */, LONG /* line */, SHORT /* Hdl */);
 }
 #endif
 
-#endif // _MEMMANAG_H
+#endif // _MEMMANAG_HXX

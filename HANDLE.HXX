@@ -13,8 +13,8 @@
 #include "machine.h"
 #endif
 
-#if !defined(_MEMMANAG_H)
-#include "memmanag.h"
+#if !defined(_MEMMANAG_HXX)
+#include "memmanag.hxx"
 #endif
 
 
