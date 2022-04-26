@@ -571,13 +571,6 @@ void StatReadFromAVA(BOOL SaveAfter)
 		    regents[i].mfGetid() != 1056 &&
 		    regents[i].mfGetid() != 1999)
 		{
-#if defined (_DEBUG)
-           SHORT oldRace = regents[i].mfGetRace();
-		   SHORT oldClass1 = regents[i].mfGetClass1();
-		   SHORT oldLevel1 = regents[i].mfGetLevel1();
-		   SHORT oldClass2 = regents[i].mfGetClass2();
-		   SHORT oldLevel2 = regents[i].mfGetLevel2();
-#endif
 		   RACE_INFO::TYPE raceType = pPS->mfGetRace();
 		   if (raceType != RACE_INFO::NOT_SET)
 			   regents[i].mfSetRace((RACE_ENUM)raceType);

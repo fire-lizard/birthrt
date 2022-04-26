@@ -45,10 +45,6 @@
    Macros
    ------------------------------------------------------------------------ */
 #define WAD_PATH			"graphics\\"
-extern LONG PlayerSpeed;
-extern LONG	PlayerLoresSpeed;
-extern LONG	PlayerHiresSpeed;
-extern SHORT	sMenusUp;					// in MENU.C
 
 typedef struct header
 {
@@ -187,7 +183,6 @@ void set_hires(LONG unused, LONG UnusedAlso)
 	{
 		if ( sDrawMode == iGDI )
 		{
-#if 01
 			RECT rc;
 		
 			GetClientRect(hwndApp, &rc);
@@ -206,10 +201,6 @@ void set_hires(LONG unused, LONG UnusedAlso)
 				WindowWidth = WindowWidth * MAX_VIEW_HEIGHT / WindowHeight;
 				WindowHeight = MAX_VIEW_HEIGHT;
 			}
-#else
-			WindowWidth *= 2;
-			WindowHeight *= 2;
-#endif
 		}
 		else
 		{
@@ -217,7 +208,6 @@ void set_hires(LONG unused, LONG UnusedAlso)
 			WindowHeight = MAX_VIEW_HEIGHT;
 		}
 	
-	//	set_view_size(0,0,WindowWidth,WindowHeight);
 		fHighRes = TRUE;
 		set_screen_size(WindowWidth,WindowHeight);
 	
@@ -260,12 +250,6 @@ void set_lowres(LONG unused, LONG UnusedAlso)
 		WindowWidth /= 2;
 		WindowHeight /= 2;
 
-#if 0
-		WindowWidth = 320;
-		WindowHeight = 240;					// [d10-25-96 JPC] used to be 200
-#endif
-
-	//	set_view_size(0,0,WindowWidth,WindowHeight);
 		fHighRes = FALSE;
 		set_screen_size(WindowWidth,WindowHeight);
 	
@@ -480,8 +464,6 @@ void set_pal (char * pal)
 void load_pal(char *n)
 {
 	FILE *f;
-	//int Counter;
-	//HDC Screen;
 
 	f=FileOpen(n,"rb");
 	if(f==NULL)
@@ -694,8 +676,8 @@ void update_screen(void)
 
 		break;
 
-//	default:
-//		break;
+	default:
+		break;
 	}
 }
 
@@ -715,8 +697,6 @@ void clear_screen()
 {
 	if ( (sDrawMode == iGDI) || (sDrawType != iDIRECTTOCARD) )
 		memset(screen, 0, MAX_VIEW_WIDTH * MAX_VIEW_HEIGHT);
-	// clear this offscreen buffer
-//	PatBlt(gViewDC, 0, 0, MAX_VIEW_WIDTH, MAX_VIEW_HEIGHT, BLACKNESS);
 }
 
 /* ========================================================================
