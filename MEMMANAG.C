@@ -63,7 +63,7 @@
 #include "MACHINE.H"
 
 #include "MEMMANAG.H"
-#include "RESMANAG.H"
+#include "RESMANAG.HXX"
 
 /* ------------------------------------------------------------------------
 	Defines for memory manager functions

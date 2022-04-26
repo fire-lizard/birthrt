@@ -35,9 +35,13 @@
 #include <sys\stat.h>
 #include <fcntl.h>
 #include <ctype.h>
+#include <string>
+#include <algorithm>
 #include "SYSTEM.H"
 #include "SYSINT.H"
 #include "MACHINE.H"
+
+using namespace std;
 
 /* ------------------------------------------------------------------------
    Notes
@@ -615,18 +619,17 @@ void ScanResFiles ()
 // ===========================================================================
 static LONG FindExtensionIndex (CSTRPTR szResName)
 {
-	CSTRPTR		szExtension;
-	SHORT			iExtIndex;
-
-	szExtension = strrchr(szResName, '.');
+	CSTRPTR szExtension = strrchr(szResName, '.');
 
 	if (szExtension != NULL)
 	{
 		szExtension++;
 		if (*szExtension !=0)
 		{
-			for (strupr(szExtension), iExtIndex = cMAXEXTENTS-1; iExtIndex > 0; iExtIndex--)
-				if (0 == strcmp(szExtension, ResExtentions[iExtIndex].achExtension))
+			string ext(szExtension);
+			transform(ext.begin(), ext.end(), ext.begin(), toupper);
+			for (SHORT iExtIndex = cMAXEXTENTS-1; iExtIndex > 0; iExtIndex--)
+				if (0 == ext.compare(ResExtentions[iExtIndex].achExtension))
 					return iExtIndex;
 		}
 		return fERROR;

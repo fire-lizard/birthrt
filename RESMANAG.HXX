@@ -3,8 +3,8 @@
    All Rights Reserved
    Author: G. Powell
    ======================================================================== */
-#ifndef _RESMAMANG_H
-#define _RESMAMANG_H
+#ifndef _RESMANAG_HXX
+#define _RESMANAG_HXX
 
 /* ------------------------------------------------------------------------
    Sub Includes
@@ -143,4 +143,4 @@ void FreeResourceManager();
 #if defined (__cplusplus)
 }
 #endif
-#endif // _RESMAMANG_H
+#endif // _RESMANAG_HXX

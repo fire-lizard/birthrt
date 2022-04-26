@@ -33,8 +33,8 @@
 #include "memmanag.h"
 #endif
 
-#if !defined(_RESMANAG_H)
-#include "resmanag.h"
+#if !defined(_RESMANAG_HXX)
+#include "resmanag.hxx"
 #endif
 
 #if !defined(_REGIONS_H)
