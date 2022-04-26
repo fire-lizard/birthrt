@@ -96,8 +96,6 @@ void SysForceCursor (void);
 #define DKBROWN					128
 #define MAX_ACTIVATION_DISTANCE	100		//HACK alert, already #defined
 										//in sectors.c
-#define NUMBER_OF_SCREENS	11
-
 /* ------------------------------------------------------------------------
 	Macros
 	------------------------------------------------------------------------ */
@@ -2045,11 +2043,19 @@ printf("FadeTo called %d/%d/%d, %d\n", red, green, blue, steps);
 
 	else if (steps > 0)					// fade to color
 	{
-		/* get current palette from card */
-// TODO: (fire lizard) uncomment
-		//outp(0x3c7, 0);				 // set starting index
-		//for (i=0; i<768; i++)
-		//	CardPal[i] = inp(0x3c9);
+		for (i = 0; i < 768; i++)
+		{
+			LONG cpv = i;
+			if (cpv >= 512)
+			{
+				cpv -= 512;
+			}
+			else if (cpv >= 256)
+			{
+				cpv -= 256;
+			}
+			CardPal[i] = cpv;
+		}
 
 		for (j=0; j>steps; j++)		/* step through intensity levels */
 		{
@@ -2193,8 +2199,7 @@ void NewIntro (void)
 {
 	LONG			i = 0, j, oj, curScreen = 99, x=0, ox=999, y, z=0, oz=999;
 	LONG			startTime;
-	//LONG			vol;
-	SHORT			iScreen_[11];
+	SHORT			iScreen_[12];
 	SHORT			curSound = fERROR;
 	int			SoundTag = fERROR;
 	LONG			fZoom = 0;
@@ -2213,17 +2218,8 @@ void NewIntro (void)
 				       	"INTRO\\SCREEN9.PCX",
 				       	"INTRO\\SCREENA.PCX",
 					"INTRO\\SCREEN2B.PCX"};
-	LONG const NumberOfScreens = sizeof(scrname)/sizeof(char *);
+	const LONG NumberOfScreens = sizeof(scrname)/sizeof(char *);
 	static LONG	timing[] = {
-
-
-//	 0, 0, 0,108,306,306,531,531,531,531,1160,1160,1620,1620,
-//	1750,1750,1862,1862,1974,1974,1974,2210,2210,2304,2304,2304,2516,2516,2685,2685,2685,2750,2750,3060,3060,3337,3466,3466,3530,3568,3568,3568,3588,3588,3588,3608,3608,3608,3624,3624,3624,3646,3646,3646,00,3850,0};
-//		static LONG	effect[] = {																																																																																																																																												
-//	 0,30,70, 24,  1, 60, 13,  2, 23, 40,  51,  52,   3,  60,
-//	  62,  41,  63,  41,  12,   4,  23,   5,  60,  13,   6,  23,  65,  41,  12,   7,  22,  66,  41,  67,  41,  13,   8,  21,  13,   8,  21,  12,   9,  21,  12,   9,  21,  12,  10,  21,  12,  10,  21,  14,00,   0,99};
-
-
  0, 0, 0,108,306,306,580,580,684,1160,1160,1160,1160,1160,1680,1680,
 1760,1760,1862,1862,1974,1974,1974,2210,2210,2304,2304,2304,2516,2516,2685,2685,2685,2750,2750,3060,3060,3337,3466,3466,3530,3568,3568,3568,3586,3586,3586,3606,3606,3606,3624,3624,3624,3646,3646,3646,00,3850,0};
 	static LONG	effect[] = {																																																																																																																																												
@@ -2241,8 +2237,6 @@ void NewIntro (void)
 		iScreen_[j] = GetResourceStd(scrname[j], FALSE);
 
 	KillSoundsNoFade();
-	//vol = GetGlobalVolume();
-	//SetGlobalVolume(10);
 	startTime = get_time();
 	fPan = 0;
 
@@ -2260,20 +2254,11 @@ void NewIntro (void)
 			break;
 		}
 
-#if 0
-		if (key_status(KEY_SPACEBAR))
-		{
-			j = (get_time()-startTime);
-			printf("%d\n",j);
-		}
-#endif
-
 		run_timers();
 		DoPan();
 
 		if (get_time() > (startTime+timing[i]))
 		{
-//printf("Cur Time:%d  i:%d  Timer:%d\n",get_time(),i,(startTime+(timing[i]*18)));
 			switch (effect[i])
 			{
 				case 0:
@@ -2321,8 +2306,6 @@ void NewIntro (void)
 
 				case 40: fPan=get_time(); x = 0; break;
 				case 41: fWindow=get_time(); x = 0; break;
-
-				//case 51:	FadeTo(255, 255, 255, 200); break;			// white flash..
 
 				case 51:	FadeTo(255, 255, 255, -3); break;			// white flash..
 
@@ -2389,7 +2372,6 @@ void NewIntro (void)
 	}
 	if (iDark != fERROR)
 		DisposBlock(iDark);
-	//SetGlobalVolume(vol);
 	clear_key_status(0);
 }
 

@@ -464,7 +464,6 @@ BOOL AppInit( HINSTANCE hInst, HINSTANCE hPrev, LPSTR szCmdLine, int sw )
 
 
 	// start up the redbook player
-		// TODO (fire lizard) Sound does not work so far
 	//InitRedBook();
 	//InitializeSoundSystem();
 	

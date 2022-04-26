@@ -276,7 +276,6 @@ SHORT	RegisterResExtention (
 	PFRESHASH HashProc )
 {
 	LONG	i;
-//	LONG	iResource;
 
 	if (fReport & fREPORT_RESMGR)
 		printf("Entering RegisterResExtention\n");
@@ -485,7 +484,6 @@ SHORT OpenResFile_ (CSTRPTR szFileName)
 					int	fileColision;
 					// Some other resource with the same extension and hash 
 					// already occupies this slot.
-					LONG iFileName;
 					char szOtherPathname[_MAX_PATH];
 					RESOURCE_HEADER resHeader;
 
@@ -557,7 +555,6 @@ UseThisSlot:
 
 		//	Compression codes: 0 = none, 1 = RLE, 2 = LZSS.
 		// NOTE: RLE is not currently supported.
-		// giResFileCode[iSlot] = direntry.compressionCode;
 
 		// NOTE: The only known resource extensions when we build the RES files
 		// are 1 (PCX) and 2 (FLC).  The "registered" resource types are added
@@ -1238,7 +1235,6 @@ SHORT ReleaseRes(SHORT iResBlk)
 	gcbResOffset[iResBlk]	= 0;
 	giResFileNames[iResBlk]	= 0;		// UNSET_RES_FILE_EXT;
 	gResFlags[iResBlk]		= 0;
-	// giResFileCode[iResBlk]	= 0;
 #endif
 #if defined(CRC_CHK)
 	if (iMemBlk != 0 &&
@@ -2030,9 +2026,6 @@ BOOL InitResourceManager(USHORT MaxResRequested)
 	
 	/* index into apFileNames */
 	giResFileNames = (UBYTE *) malloc(sizeof(UBYTE) * MaxResRequested);
-
-	// Compression code for resource:
-	// giResFileCode  = (UBYTE *) malloc(sizeof(UBYTE) * MaxResRequested);
 
 	// [d4-13-97 JPC] Flags:
 	gResFlags = (UBYTE *) malloc(sizeof(UBYTE) * MaxResRequested);

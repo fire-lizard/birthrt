@@ -27,6 +27,8 @@
 #include <dos.h>
 #include <conio.h>
 #include <errno.h>
+#include <string>
+#include <vector>
 #include "TYPEDEFS.H"
 #include "SYSTEM.H"
 #include "FOPEN.H"
@@ -35,6 +37,8 @@
 #include "MULTIMAP.HXX"
 #include "VECTOR.HXX"
 #include "REALM.HXX"
+
+using namespace std;
 
 /* ------------------------------------------------------------------------
    Notes
@@ -68,11 +72,7 @@ extern DECL_VECTOR_CLASS_S(ADV_SITE,advsite,MAX_SITES);
 	======================================================================== */
 BOOL FindUserSceneFiles ( char * pPath, char * pExt )
 {
-	// TODO: (fire lizard) rewrite completely
 	CHAR				ScenePath[128];
-	//struct _find_t	FileData;
-	LONG				lFileDesc;
-	FILE				*fPtr;
 	LONG				cFiles = 0;
 	FILE_MODE		oldFileMode;
 	SCENE::SCENE_TYPE	SceneType;
@@ -82,11 +82,20 @@ BOOL FindUserSceneFiles ( char * pPath, char * pExt )
 	// build path to scene directory with wildcard extention
 	sprintf(ScenePath, "%s*%s", pPath, pExt);
 	
-	// find first file
-	//lFileDesc =_dos_findfirst(ScenePath, _A_NORMAL, &FileData);
-	
+	vector<string> names;
+	string search_path = pPath + string("*") + pExt;
+	WIN32_FIND_DATA fd;
+	HANDLE hFind = FindFirstFile(search_path.c_str(), &fd);
+	if (hFind != INVALID_HANDLE_VALUE) {
+		do {
+			if (!(fd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)) {
+				names.push_back(fd.cFileName);
+			}
+		} while (::FindNextFile(hFind, &fd));
+		FindClose(hFind);
+	}
+	else
 	// no files found
-	if ( lFileDesc != 0 )
 		return FALSE;
 
 	// clear name array
@@ -95,19 +104,16 @@ BOOL FindUserSceneFiles ( char * pPath, char * pExt )
 	// open directory and read scene file names
 	oldFileMode = SetFileMode( FILEOPEN_HARDDRIVE_ONLY );
 	// paw through the whole dir for each scene file
-	/*do
+	for (int index = 0; index < names.size(); index++)
 	{
-		strcpy(&SceneNames[cFiles][0], FileData.name);
+		strcpy(&SceneNames[cFiles][0], names[index].c_str());
 		
 		// check for too many files
 		if ( ++cFiles >= MAX_SCENE_FILES )
 			break;
 			
-	} while ( _dos_findnext(&FileData) == 0 );	*/
+	}
 
-	// close directory
-	//_dos_findclose( &FileData );
-	
 	// read and fixup scene files array
 	SHORT UserSceneCount = MAX_SITES;
 	for ( cFiles = 0; cFiles < MAX_SCENE_FILES; cFiles++)

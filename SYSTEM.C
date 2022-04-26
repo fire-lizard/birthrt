@@ -2278,8 +2278,6 @@ SHORT SaveBitmap (SHORT x, SHORT y, SHORT w, SHORT h)
 	PTR		bptr;
 	PTR		sptr;
 
-//	DirectDrawSaveScreen();
-
 	iBitm = OpenBitm(w, h);
 	if (iBitm == fERROR)							// check for bad source bitmap
 		return fERROR;
@@ -2305,18 +2303,10 @@ SHORT SaveBitmap (SHORT x, SHORT y, SHORT w, SHORT h)
 
 	for (yy=0; yy < h; ++yy)				// copy bitmap
 	{
-		//for (xx=0; xx < w; ++xx)
-		//{
-		//	*bptr++ = *sptr++;
-		//}
-		//sptr += (screen_buffer_width - w);			// move to start of next scanline
-		
 		memcpy(bptr, sptr, w);
 		sptr += screen_buffer_width;
 		bptr += w;
 	}
-
-//	DirectDrawPreFrame();
 
 	return iBitm;
 }

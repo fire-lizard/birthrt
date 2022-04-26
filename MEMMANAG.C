@@ -804,8 +804,6 @@ SHORT _NewBlock (ULONG cBytes)
 	SHORT		i;
 	LONG		alignment;
 	
-	//printf("_NewBlock (%ld)\n", cBytes);
-
 #if defined (MEMORY_CHK)
 	if (cBytes <= 0)
 	{
@@ -982,8 +980,6 @@ SHORT _NewBlockHigh (ULONG cBytes)
 	LONG		i;
 	BOOL		FirstPass = TRUE;
 
-	//printf("_NewBlockHigh (%ld)\n", cBytes);
-	
 	if (cBytes == 0)					/* can't have zero size blocks */
 		return (SHORT)fERROR;
 
@@ -2144,10 +2140,6 @@ SHORT SetLock (SHORT iHandle)
 		aiNextBlk[pi] = j;
 	}
 
-//	if (fReport & fREPORT_MEMMGR)
-//		PrintMemList();
-
-	//SetBlockAttr(i,LOCKED,LOCKED);		/* lock the new block */
 	abBlockAttr[i] |= LOCKED;
 	
 	if (IsClass1(j))
@@ -2680,11 +2672,6 @@ void * BLKPTR(LONG i)
 		fatal_error("MEMMANAG ERROR! Invalid block handle BLKPTR(%ld).\n", i);
 	}
 	ReportBlockError(i,CheckBlockOverwrite(i));
-	
-	// #if CHECK_REALLY_OFTEN
-	// Don't call this from interupt or threaded code!
-	//ScanAllBlocks();
-	//#endif
 #endif
 
 	
@@ -2695,6 +2682,7 @@ void * BLKPTR(LONG i)
 	}
 	return (void *)(((char *)apBlocks[i]) + HEADER_SPACE);
 #else
+	return malloc(10000);
 	return (void *)((ULONG *)apBlocks[i]);
 #endif
 }

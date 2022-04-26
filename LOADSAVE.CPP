@@ -23,6 +23,8 @@
 #include "TYPEDEFS.H"
 #include <sys\types.h>
 #include <direct.h>
+#include <string>
+#include <vector>
 
 #include "ACTNMENU.HXX"
 #include "CHARSEL.HXX"
@@ -52,6 +54,8 @@
 #ifdef _WINDOWS
 #include "WINSYS\MULPLAY.HXX"
 #endif
+
+using namespace std;
 
 extern BOOL fLogComment;
 
@@ -1715,11 +1719,8 @@ void DeleteGame (LONG MenuCombo, LONG)
    ======================================================================== */
 LONG GetSaveGames(char names[MAX_SAVED_GAMES+1][FILENAME_LEN+1])
 {
-	// TODO: (fire lizard) rewrite completely
 	char *path = "SAVEGAME\\*.SAV";
-    unsigned attribs = _A_NORMAL;
-    //struct find_t findbuf, *bufptr = &findbuf;
-    LONG status, num_files, i;
+    LONG num_files = 0, i;
     char filename[127];
     FILE *fp;
 	char dummy_[80];
@@ -1727,13 +1728,24 @@ LONG GetSaveGames(char names[MAX_SAVED_GAMES+1][FILENAME_LEN+1])
     for (i=0; i <= MAX_SAVED_GAMES; i++)
         memset(names[i], '\0', FILENAME_LEN);
 
-    /*for (status = _dos_findfirst(path, attribs, bufptr), num_files = 0;
-          status == 0 && 
+	vector<string> fileNames;
+	WIN32_FIND_DATA fd;
+	HANDLE hFind = FindFirstFile(path, &fd);
+	if (hFind != INVALID_HANDLE_VALUE) {
+		do {
+			if (!(fd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)) {
+				fileNames.push_back(fd.cFileName);
+			}
+		} while (::FindNextFile(hFind, &fd));
+		FindClose(hFind);
+	}
+
+	for (int index = 0; index < fileNames.size() && 
           ((LoadSave==LS_SAVE && num_files < MAX_SAVED_GAMES) ||
            (LoadSave==LS_LOAD && num_files <= MAX_SAVED_GAMES));
-          status = _dos_findnext(bufptr))
+          index++)
     {
-        strncpy(names[num_files], bufptr->name, FILENAME_LEN);
+        strncpy(names[num_files], fileNames[index].c_str(), FILENAME_LEN);
 
         for (i=0; i < strlen(names[num_files]); i++)
             if (names[num_files][i] == '.')
@@ -1756,8 +1768,7 @@ LONG GetSaveGames(char names[MAX_SAVED_GAMES+1][FILENAME_LEN+1])
         num_files++;
     }
 
-    _dos_findclose(bufptr);*/
-    return num_files;
+	return num_files;
 }
 
 /* ========================================================================
