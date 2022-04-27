@@ -573,9 +573,7 @@ ULONG detect_scale (SHORT t, SHORT h, SHORT w)
 	ULONG	xx;
 	ULONG	pix;
 
-	// TODO Fix the memory manager
-	//p = (BITMPTR)BLKPTR(t);
-	p = (BITMPTR)BLKPTR2(t, w * h);
+	p = (BITMPTR)BLKPTR(t);
 	if (!IsPointerGood(p))
 		return UNITARY_SCALE;					/* if error */
 
@@ -2245,9 +2243,7 @@ SHORT SaveBitmap (SHORT x, SHORT y, SHORT w, SHORT h)
 	if (iBitm == fERROR)							// check for bad source bitmap
 		return fERROR;
 
-	// TODO Fix the memory manager
-	//pBitm = (BITMPTR) BLKPTR(iBitm);				// get pointer and size
-	pBitm = (BITMPTR) BLKPTR2(iBitm, w * h);				// get pointer and size
+	pBitm = (BITMPTR) BLKPTR(iBitm);				// get pointer and size
 	if (!IsPointerGood(pBitm))
 		return fERROR;
 

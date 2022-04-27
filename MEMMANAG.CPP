@@ -50,6 +50,7 @@
 #include <malloc.h>
 #include <dos.h>
 #include <limits.h>
+#include <map>
 
 #ifndef _WINDOWS
 #include <i86.h>
@@ -64,6 +65,8 @@
 
 #include "MEMMANAG.HXX"
 #include "RESMANAG.HXX"
+
+using namespace std;
 
 /* ------------------------------------------------------------------------
 	Defines for memory manager functions
@@ -147,6 +150,8 @@ USHORT	cNumBlkHeads = 0;
 USHORT	iMaxBlkHeadUsed = 0;
 
 BOOL	fReport;
+
+static map<int, void*> memoryBlocks;
 
 struct meminfo {
 	ULONG		LargestBlockAvail;
@@ -978,11 +983,6 @@ SHORT DisposBlock (SHORT iHandle)
 	}
 #endif
 
-#if defined(_DEBUG)
-	if (fReport & fREPORT_MEMMGR)
-		printf("DisposBlock: %u\n", iHandle);
-#endif
-
 	if (aiNextBlk[iHandle] == fERROR)		/* check for an external block */
 	{
 		abBlockAttr[iHandle] = UNUSED;		/* block is external, NOT a managed part of the heap */
@@ -1063,11 +1063,6 @@ static LONG CleanUpBlock (LONG iHandle,
 {
 	LONG		j;
 
-#if defined(_DEBUG)
-	if (fReport & fREPORT_MEMMGR)
-		printf("   CleanUpBlock: %u to 0x%lx (%lu) bytes\n", iHandle, cBytes, cBytes);
-#endif
-
 	/* check for invalid block */
 	if (CheckValidBlock(iHandle, __LINE__) == fERROR)
 		return (SHORT)fERROR;
@@ -1138,12 +1133,6 @@ static LONG MergeBlocks (LONG iHandle)
 	SHORT		iNN;
 	ULONG		BlkBits;
 
-#if defined(_DEBUG)
-	/* check for invalid block */
-	if (CheckValidBlock(iHandle, __LINE__) == fERROR)
-		return fERROR;
-#endif
-
 	while (1)
 	{
 		iNext = aiNextBlk[iHandle];
@@ -1151,11 +1140,6 @@ static LONG MergeBlocks (LONG iHandle)
 		
 		if (BlkBits != FREEMEM)		// Includes ENDBLK
 			break;
-	
-#if defined(_DEBUG)
-		if (fReport & fREPORT_MEMMGR)
-			printf("   MergeBlocks: %u with %u\n", iHandle, iNext);
-#endif
 	
 		iNN = aiNextBlk[iNext];
 		aiNextBlk[iHandle] = iNN;			/* unlink iNext forward */
@@ -1237,12 +1221,6 @@ static void ConcatinateMem ()
 	LONG		i;
 	ULONG		abBlockMask;
 
-#if defined(_DEBUG)
-	if (fReport & fREPORT_MEMMGR)
-		printf("Concatinate\n");
-#endif
-
-
 	/* search for a free block */
 	for (i = aiNextBlk[START_BLOCK],
 			abBlockMask = abBlockAttr[i] & BLKTYPEMASK;
@@ -1269,12 +1247,6 @@ static ULONG CompactMem_ (ULONG cBytes, LONG iStartBlk, LONG *pLargestBlock)
 	ULONG		cbMaxBlock;
 	LONG		i;
 	ULONG		abBlockMask;
-
-#if defined(_DEBUG)
-	if (fReport & fREPORT_MEMMGR)
-		printf("CompactMem\n");
-#endif
-
 
 	/* search for a free block */
 	i = iStartBlk;
@@ -1879,8 +1851,15 @@ void * BLKPTR(LONG i)
 	}
 #endif
 
-	return (void*)new ULONG[3072];
-	return (void *)((ULONG *)apBlocks[i]);
+	if (memoryBlocks.find(i) != memoryBlocks.end())
+	{
+		return memoryBlocks[i];
+	}
+	else
+	{
+		return new ULONG[3072];
+		return (void*)((ULONG*)apBlocks[i]);
+	}
 }
 
 /* ========================================================================
@@ -1891,11 +1870,15 @@ void * BLKPTR(LONG i)
 
 void* BLKPTR2(LONG i, LONG size)
 {
-	if (size <= 0)
+	if (memoryBlocks.find(i) != memoryBlocks.end())
 	{
-		size = -size;
+		return memoryBlocks[i];
 	}
-	return (void*)new ULONG[size];
+	else
+	{
+		memoryBlocks[i] = new ULONG[size];
+		return (void*)memoryBlocks[i];
+	}
 }
 
 /* ========================================================================
@@ -1915,11 +1898,7 @@ void *_zalloc(char * FileName, LONG FileLineNo, LONG size)
 	}
 	else
 	{
-#if defined (_DEBUG)
-		fatal_error("MEMMANAG ERROR! Can't allocate memory zalloc %ld.\n", size);
-#else
 		return NULL;
-#endif
 	}
 	return BLKPTR(iHandle);
 }
