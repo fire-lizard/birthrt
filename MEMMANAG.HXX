@@ -47,9 +47,6 @@
 #define MOLDYBIT			0x0100	// Set this render frame if touched by BLKPTR.
 #define MOLDYBITLASTTIME	0x0200	// The previous state of MOLDYBIT, last frame.
 #define MULTI_USER_BIT		0x0400
-#if defined (CRC_CHK)
-#define MODIFYABLE_RESOURCE	0x0800	// Set to turn off CRC_CHK'ing of the resources.
-#endif
 #define HIGHMEMORY			0x1000	// Allocated by NewBlockHigh
 
 // Note: The Resource Id Bit is set on the resource handle itself.
@@ -90,13 +87,8 @@ typedef USHORT ATTR_BLK_TYPE;
 #define SetMultiUser(i)			SetBlockAttr((i),MULTI_USER_BIT,MULTI_USER_BIT)
 #define ClrMultiUser(i)			SetBlockAttr((i),MULTI_USER_BIT,0)
 
-#if defined (CRC_CHK)
-#define SetModifyResource(i)	SetBlockAttr((i),MODIFYABLE_RESOURCE, MODIFYABLE_RESOURCE)
-#define ClrModifyResource(i)	SetBlockAttr((i),MODIFYABLE_RESOURCE, 0)
-#else
 #define SetModifyResource(i)
 #define ClrModifyResource(i)
-#endif
 
 #define IsResourceHandle(i)		((i) & RESOURCE_ID_BIT)
 #define GetResourceHandleBlk(i)	((i) & RESOURCE_ID_MASK)
@@ -165,21 +157,12 @@ BOOL IsBlockMultiUser(SHORT i);
 
 BOOL IsHandleFlushed(LONG i);
 
-#if defined (MEMORY_CHK)
-void PrintUnFreedMemoryReport();
-SHORT SetBlockName(char * /* name */, SHORT /* Hdl */);
-SHORT SetDebugInfo(char * /* file */, LONG /* line */, SHORT /* Hdl */);
-#define NewBlock(x)			SetDebugInfo(__FILE__, __LINE__, _NewBlock(x))
-#define NewBlockHigh(x)		SetDebugInfo(__FILE__, __LINE__, _NewBlockHigh(x))
-#define zalloc(x)			_zalloc(__FILE__, __LINE__, x)
-#else
 #define PrintUnFreedMemoryReport()
 #define SetBlockName(name, hdl)			hdl
 #define SetDebugInfo(file,line, hdl)	hdl
 #define NewBlock(x)			_NewBlock(x)
 #define NewBlockHigh(x)		_NewBlockHigh(x)
 #define zalloc(x)			_zalloc("", 0, x)
-#endif
 
 #if defined (__cplusplus)
 }

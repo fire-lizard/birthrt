@@ -1698,8 +1698,10 @@ void DrawBorders (LONG x, LONG y, LONG map_x, LONG map_y, LONG w, LONG h, LONG /
 	SetQuickLock(iLgMap);
 	SetQuickLock(iProvMap);
 
+	// TODO Fix the memory manager
 	dptr = ((PTR)BLKPTR(iLgMap)) + sizeof(BITMHDR);
-	p = (BITMPTR) BLKPTR(iProvMap);
+	//p = (BITMPTR) BLKPTR(iProvMap);
+	p = (BITMPTR)BLKPTR2(iProvMap, w * h);
 	bptr = (PTR)p + sizeof(BITMHDR);
 
 	ww = p->w;

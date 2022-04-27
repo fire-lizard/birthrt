@@ -151,7 +151,9 @@ BOOL PlayFlic(char * fn, LONG secondsToWaitAtEnd)
 		if (iAnim == fERROR)
 			goto ReturnTime;
 			
-		pAnim = (ANIMPTR)BLKPTR(iAnim);
+		// TODO Fix the memory manager
+		//pAnim = (ANIMPTR)BLKPTR(iAnim);
+		pAnim = (ANIMPTR)BLKPTR2(iAnim, 3072);
 
 		if(fend)
 			break;
@@ -506,12 +508,12 @@ SHORT OpenFlcAnim (SHORT iAnim, CSTRPTR szFileName, SHORT Type, BOOL *ffirst, BO
 		/* allocate memory for animation header and lock in place */
 		if ( (iAnim = NewLockedBlock(sizeof(ANIMHDR))) == fERROR)
 			return fERROR;
-		pAnim = (ANIMPTR)BLKPTR(iAnim);
+		// TODO Fix the memory manager
+		//pAnim = (ANIMPTR)BLKPTR(iAnim);
+		pAnim = (ANIMPTR)BLKPTR2(iAnim, 3072);
 		pAnim->type			= Type;
 		pAnim->sequence	= 9998;			/* out of range condition */
 		pAnim->frame		= 99;			/* out of range condition */
-		// GWP for (i=0; i<NUMSEQUENCES; i++)
-		// GWP 	pAnim->iData[i] = fERROR;
 		pAnim->hiData = fERROR;
 		pAnim->iBuff		= fERROR;
 	}

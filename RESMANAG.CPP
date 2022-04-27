@@ -1921,8 +1921,10 @@ SHORT LoadPCX (CSTRPTR szFileName, BOOL fNoScale, BOOL fLockRes, BOOL fRotated, 
 		scale = (USHORT)detect_scale(iBlk, PCX.w, PCX.h);
 
 
+	// TODO Fix the memory manager
 	/* set width, height, x, and y */
-	pFinal = (USHORT *) BLKPTR (iBlk);
+	//pFinal = (USHORT *) BLKPTR (iBlk);
+	pFinal = (USHORT *) BLKPTR2 (iBlk, cbDecompressed);
 	pFinal[0] = PCX.w;
 	pFinal[1] = PCX.h;
 	pFinal[2] = scale;				/* scale */

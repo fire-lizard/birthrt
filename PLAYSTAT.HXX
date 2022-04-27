@@ -930,4 +930,3 @@ inline void PLAYER_STATS::mfRemoveAllGold()
 	Gold = 0;
 }
 #endif // _PLAYSTAT_HXX
-
