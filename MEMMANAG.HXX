@@ -130,6 +130,7 @@ extern "C" {
 #endif
 
 void *BLKPTR(LONG);
+void* BLKPTR2(LONG, LONG);
 void * _zalloc(char * /* Name */, LONG /* lineNo */, LONG i);
 void * _zone_alloc(LONG i);
 ULONG InitMemManag (ULONG cbMinMemoryNeeded,

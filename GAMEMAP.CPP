@@ -67,7 +67,6 @@ extern BOOL fLogComment;
 /* -----------------------------------------------------------------------
 	Defines and Compile Flags
 	------------------------------------------------------------------------ */
-//#define  LOGCOMMENTSLEEP	Sleep(1);
 #define  LOGCOMMENTSLEEP	{;}
 
 #define MAX_STACK_DEPTH					15
@@ -155,12 +154,6 @@ extern BOOL fLogComment;
 #define regSWITCH_TO_ACTIONS	1006
 #define regADJUST_TAXES			1007
 #define regSHOW_HOLDINGS		1008
-
-
-// MOVED TO INCLUDE FILE !!!! gamemap.hxx
-//#define BEFORE_LTACTION			0
-//#define DURING_LTACTION			1
-//#define AFTER_LTACTION			2
 
 #define WAITINGFOR				1
 #define PLAYERSTURN				2
@@ -368,7 +361,6 @@ LONG				domain_power;
 LONG				realm_reg;
 LONG				realm_tax;
 LONG				pillage;
-//static LONG		realm_source;
 LONG				new_treasury = 0;
 LONG				trade_routes = 0;
 static LONG		law_holding_claims = 0;
@@ -380,7 +372,6 @@ SHORT				cProvHolds = 0;
 SHORT				cProvinces = 0;
 SHORT				cCastles = 0;
 SHORT				cOccupiedProv = 0;
-//static LONG		domain_turn_counter = 0;
 static SHORT	fDontAdvance = FALSE;
 SHORT				fUnitsAllOn = 1;
 SHORT				fHoldingsAllOn = 1;
@@ -409,37 +400,6 @@ DEFINE_VECTOR_CLASS(UBYTE,coRlmMagic);
 
 DEFINE_VECTOR_DATA(UBYTE,ActionColor) = {0,DKGREEN,DKBLUE,DKRED,DKPURPLE};
 DEFINE_VECTOR_CLASS(UBYTE, ActionColor);
-
-//DEFINE_VECTOR_DATA(CSTRPTR,szOrdinalCap) = {"Zeroth","First","Second","Third","Fourth","Fifth","Sixth","Seventh","Eighth","Ninth"};
-//DEFINE_VECTOR_CLASS(CSTRPTR, szOrdinalCap);
-
-//DEFINE_VECTOR_DATA(CSTRPTR,szOrdinalNum) = {"0th","1st","2nd","3rd","4th","5th","6th","7th","8th","9th"};
-//DEFINE_VECTOR_CLASS(CSTRPTR,szOrdinalNum);
-
-//DEFINE_VECTOR_DATA(CSTRPTR,szRace) = {"Dwarf","Elf","Half-Elf","Halfling","Anuirean","Brecht","Khinasi","Rjurik","Vos","Goblin","Gnoll","Awnshegh"};
-//DEFINE_VECTOR_CLASS(CSTRPTR, szRace);
-
-//DEFINE_VECTOR_DATA(CSTRPTR,szClass) = {"","Fighter","Paladin","Ranger","Priest","Wizard","Thief","Bard"};
-//DEFINE_VECTOR_CLASS(CSTRPTR, szClass);
-
-//DEFINE_VECTOR_DATA (CSTRPTR,szBL_grade) = {"Tainted","Minor","Major","Great","True"};
-//DEFINE_VECTOR_CLASS(CSTRPTR, szBL_grade);
-//
-//DEFINE_VECTOR_DATA (CSTRPTR,szBL_deriv) = {"Anduiras","Reynir","Brenna","Basaia","Masela","Vorynn","Azrai"};
-//DEFINE_VECTOR_CLASS(CSTRPTR, szBL_deriv);
-//
-//DEFINE_VECTOR_DATA (CSTRPTR,szMode) = {"","","Maintenance","Taxation","Occupation","Payroll"};
-//DEFINE_VECTOR_CLASS(CSTRPTR,szMode);
-//
-//DEFINE_VECTOR_DATA (CSTRPTR,TaxLevel) = {"Light","Moderate","Severe"};
-//DEFINE_VECTOR_CLASS(CSTRPTR, TaxLevel);
-//
-//DEFINE_VECTOR_DATA (CSTRPTR,Loyalty) = {"Rebel","Poor","Average","High"};
-//DEFINE_VECTOR_CLASS(CSTRPTR, Loyalty);
-//
-//DEFINE_VECTOR_DATA (CSTRPTR,Terrain) = {"","Forest","Plains","Mountains","Mountain Range","Swamp","Hills","River","Bridge","Road"};
-//DEFINE_VECTOR_CLASS(CSTRPTR, Terrain);
-
 
 DEFINE_VECTOR_DATA (GAME_STRING,gsOrdinalCap) = {STR_NTH_WORD_0,STR_NTH_WORD_1,STR_NTH_WORD_2,STR_NTH_WORD_3,STR_NTH_WORD_4,STR_NTH_WORD_5,STR_NTH_WORD_6,STR_NTH_WORD_7,STR_NTH_WORD_8,STR_NTH_WORD_9};
 DEFINE_VECTOR_CLASS(GAME_STRING,gsOrdinalCap);
@@ -475,9 +435,6 @@ DEFINE_VECTOR_DATA (GAME_STRING,gsCourt) = {STR_COURT_LVL_NONE,STR_COURT_LVL_MIN
 
 DEFINE_VECTOR_CLASS(GAME_STRING,gsCourt);
 
-
-//CSTRPTR szRealmStatus[]={"","AT WAR","NEUTRAL","PERMISSIVE ALLIANCE","FULL ALLIANCE","VASSAL"};
-
 GAME_STRING gsRealmStatus[]={STR_NULL,STR_REALM_STAT_AT_WAR,STR_REALM_STAT_NEUTRAL,STR_REALM_STAT_PERMISSIVE_ALLIANCE,STR_REALM_STAT_FULL_ALLIANCE,STR_REALM_STAT_VASSAL};
 
 DEFINE_VECTOR_DATA(SHORT,LoyaltyAdj) = {+1,0,-1};
@@ -491,11 +448,8 @@ DEFINE_VECTOR_DATA(UBYTE,LoyaltyColor) = {DKRED,ORANGE,DKGREEN,DKBLUE};
 DEFINE_VECTOR_CLASS(UBYTE, LoyaltyColor);
 
 DEFINE_VECTOR_DATA(UBYTE,MaintCost)={
-//							  0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49
 							  0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,10,10,10,10,10,10,10,10,10,
-//							 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97 98 99
 							 10,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,
-//							 00
 							 30};
 DEFINE_VECTOR_CLASS(UBYTE, MaintCost);
 
@@ -665,205 +619,6 @@ DEFINE_VECTOR_DATA_S(CSTRPTR,GameIcons,MAP_ICON_COUNT) = {
 /*121 SPECIAL3_ICON	 */		"FELLPORT",
 };
 DEFINE_VECTOR_CLASS(CSTRPTR, GameIcons);
-
-
-///* This is the troop abbriviation.  Use the MAP_ICON enum as the index */
-//DEFINE_VECTOR_DATA_S(CSTRPTR,IconAbbriv,MAP_ICON_COUNT) = {
-///* NO_MAP_ICON		  */		"",
-///* A_INF_UNIT_ICON	*/		"Infantry",
-///* A_EIN_UNIT_ICON	*/		"Elt.Inf.",
-///* A_BOW_UNIT_ICON	*/		"Archer",
-///* A_IRR_UNIT_ICON	*/		"Irreg.",
-///* A_PIK_UNIT_ICON	*/		"Pikemen",
-///* A_LVY_UNIT_ICON	*/		"Levy",
-///* A_SCT_UNIT_ICON	*/		"Scout",
-///* A_KNT_UNIT_ICON	*/		"Knights",
-///* A_CAV_UNIT_ICON	*/		"Lt.Cav.",
-///* M_INF_UNIT_ICON	*/		"MercInf",
-///* M_BOW_UNIT_ICON	*/		"MercBow",
-///* M_IRR_UNIT_ICON	*/		"MercIrr",
-///* M_PIK_UNIT_ICON	*/		"MercPike",
-///* M_CAV_UNIT_ICON	*/		"MercCav",
-///* E_INF_UNIT_ICON	*/		"ElfInf",
-///* E_BOW_UNIT_ICON	*/		"ElfBow",
-///* E_CAV_UNIT_ICON	*/		"ElfCav",
-///* D_INF_UNIT_ICON	*/		"DwrfInf",
-///* D_BOW_UNIT_ICON	*/		"DwrfBow",
-///* G_INF_UNIT_ICON	*/		"Goblin",
-///* G_BOW_UNIT_ICON	*/		"Gob.Bow",
-///* G_CAV_UNIT_ICON	*/		"Gob.Cav.",
-///* N_INF_UNIT_ICON	*/		"GnollInf",
-///* N_IRR_UNIT_ICON	*/		"GnollIrr",
-///* C_HPY_UNIT_ICON	*/		"Harpy",
-///* C_SKL_UNIT_ICON	*/		"Skeleton",
-///* C_SPD_UNIT_ICON	*/		"Spider",
-///* C_HEL_UNIT_ICON	*/		"HellHnd",
-///* C_WYV_UNIT_ICON	*/		"Wyvern",
-//
-///* REG_LORDM1_UNIT_ICON */	 "Regent",
-///* REG_LORDM2_UNIT_ICON */	 "Regent",
-///* REG_LORDM3_UNIT_ICON */	 "Regent",
-///* REG_LORDM4_UNIT_ICON */	 "Regent",
-///* REG_LORDM5_UNIT_ICON */	 "Regent",
-///* REG_LORDM6_UNIT_ICON */	 "Regent",
-///* REG_LORDM7_UNIT_ICON */	 "Regent",
-///* REG_WIZDM1_UNIT_ICON */	 "Regent",
-///* REG_WIZDM2_UNIT_ICON */	 "Regent",
-///* REG_WIZDM3_UNIT_ICON */	 "Regent",
-///* REG_WIZDM4_UNIT_ICON */	 "Regent",
-///* REG_GILDM1_UNIT_ICON */	 "Regent",
-///* REG_GILDM2_UNIT_ICON */	 "Regent",
-///* REG_PRSTM1_UNIT_ICON */	 "Regent",
-///* REG_PRSTM2_UNIT_ICON */	 "Regent",
-///* REG_LORDF1_UNIT_ICON */	 "Regent",
-///* REG_LORDF2_UNIT_ICON */	 "Regent",
-///* REG_LORDF3_UNIT_ICON */	 "Regent",
-///* REG_WIZDF1_UNIT_ICON */	 "Regent",
-///* REG_WIZDF2_UNIT_ICON */	 "Regent",
-///* REG_GILDF1_UNIT_ICON */	 "Regent",
-///* REG_PRSTF1_UNIT_ICON */	 "Regent",
-///* REG_ELORD1_UNIT_ICON */  "Regent",
-///* REG_ELORD2_UNIT_ICON */  "Regent",
-///* REG_ELADY1_UNIT_ICON */  "Regent",
-///* REG_DLORD1_UNIT_ICON */  "Regent",
-///* REG_DLORD2_UNIT_ICON */  "Regent",
-///* REG_DLORD3_UNIT_ICON */  "Regent",
-///* REG_GLORD1_UNIT_ICON */  "Regent",
-///* REG_GLADY1_UNIT_ICON */  "Regent",
-///* GORGON_UNIT_ICON		*/  "Gorgon",
-///* SPIDERKING_UNIT_ICON */  "Spider",
-///* RHUOBHE_UNIT_ICON		*/  "Rhuobhe",
-///* LET_LORDM1_UNIT_ICON */	 "Lieut.",
-///* LET_LORDM2_UNIT_ICON */	 "Lieut.",
-///* LET_LORDM3_UNIT_ICON */	 "Lieut.",
-///* LET_LORDM4_UNIT_ICON */	 "Lieut.",
-///* LET_LORDM5_UNIT_ICON */	 "Lieut.",
-///* LET_LORDM6_UNIT_ICON */	 "Lieut.",
-///* LET_LORDM7_UNIT_ICON */	 "Lieut.",
-///* LET_WIZDM1_UNIT_ICON */	 "Wizard",
-///* LET_WIZDM2_UNIT_ICON */	 "Wizard",
-///* LET_WIZDM3_UNIT_ICON */	 "Wizard",
-///* LET_WIZDM4_UNIT_ICON */	 "Wizard",
-///* LET_GILDM1_UNIT_ICON */	 "Lieut.",
-///* LET_GILDM2_UNIT_ICON */	 "Lieut.",
-///* LET_PRSTM1_UNIT_ICON */	 "Priest",
-///* LET_PRSTM2_UNIT_ICON */	 "Priest",
-///* LET_LORDF1_UNIT_ICON */	 "Lieut.",
-///* LET_LORDF2_UNIT_ICON */	 "Lieut.",
-///* LET_LORDF3_UNIT_ICON */	 "Lieut.",
-///* LET_WIZDF1_UNIT_ICON */	 "Wizard",
-///* LET_WIZDF2_UNIT_ICON */	 "Wizard",
-///* LET_GILDF1_UNIT_ICON */	 "Lieut.",
-///* LET_PRSTF1_UNIT_ICON */	 "Priest",
-///* LET_ELORD1_UNIT_ICON */  "Lieut.",
-///* LET_ELORD2_UNIT_ICON */  "Lieut.",
-///* LET_ELADY1_UNIT_ICON */  "Wizard",
-///* LET_DLORD1_UNIT_ICON */  "Lieut.",
-///* LET_DLORD2_UNIT_ICON */  "Lieut.",
-///* LET_DLORD3_UNIT_ICON */  "Lieut.",
-///* LET_GLORD1_UNIT_ICON */  "Lieut.",
-///* LET_GLADY1_UNIT_ICON */  "Lieut.",
-//};
-//DEFINE_VECTOR_CLASS(CSTRPTR, IconAbbriv);
-//
-///* This is the troop title.  Use the MAP_ICON enum as the index */
-//DEFINE_VECTOR_DATA_S(CSTRPTR,UnitTitle,MAP_ICON_COUNT) = {
-///* NO_MAP_ICON		  */		"",
-///* A_INF_UNIT_ICON	*/		"Infantry",
-///* A_EIN_UNIT_ICON	*/		"Elite Infantry",
-///* A_BOW_UNIT_ICON	*/		"Archers",
-///* A_IRR_UNIT_ICON	*/		"Irregulars",
-///* A_PIK_UNIT_ICON	*/		"Pikemen",
-///* A_LVY_UNIT_ICON	*/		"Levies",
-///* A_SCT_UNIT_ICON	*/		"Scouts",
-///* A_KNT_UNIT_ICON	*/		"Knights",
-///* A_CAV_UNIT_ICON	*/		"Cavalry",
-///* M_INF_UNIT_ICON	*/		"Merc. Infantry",
-///* M_BOW_UNIT_ICON	*/		"Merc. Archers",
-///* M_IRR_UNIT_ICON	*/		"Merc. Irregulars",
-///* M_PIK_UNIT_ICON	*/		"Merc. Pike",
-///* M_CAV_UNIT_ICON	*/		"Merc. Cavalry",
-///* E_INF_UNIT_ICON	*/		"Elven Infantry",
-///* E_BOW_UNIT_ICON	*/		"Elven Archers",
-///* E_CAV_UNIT_ICON	*/		"Elven Cavalry",
-///* D_INF_UNIT_ICON	*/		"Dwarf Infantry",
-///* D_BOW_UNIT_ICON	*/		"Dwarf Bowmen",
-///* G_INF_UNIT_ICON	*/		"Goblin Infantry",
-///* G_BOW_UNIT_ICON	*/		"Goblin Archers",
-///* G_CAV_UNIT_ICON	*/		"Goblin Cavalry",
-///* N_INF_UNIT_ICON	*/		"Gnoll Infantry",
-///* N_IRR_UNIT_ICON	*/		"Gnoll Marauders",
-///* C_HPY_UNIT_ICON	*/		"Harpies",
-///* C_SKL_UNIT_ICON	*/		"Skeletons",
-///* C_SPD_UNIT_ICON	*/		"Spiders",
-///* C_HEL_UNIT_ICON	*/		"Hellhounds",
-///* C_WYV_UNIT_ICON	*/		"Wyvern",
-//
-///* REG_LORDM1_UNIT_ICON */	 "Regent",
-///* REG_LORDM2_UNIT_ICON */	 "Regent",
-///* REG_LORDM3_UNIT_ICON */	 "Regent",
-///* REG_LORDM4_UNIT_ICON */	 "Regent",
-///* REG_LORDM5_UNIT_ICON */	 "Regent",
-///* REG_LORDM6_UNIT_ICON */	 "Regent",
-///* REG_LORDM7_UNIT_ICON */	 "Regent",
-///* REG_WIZDM1_UNIT_ICON */	 "Regent",
-///* REG_WIZDM2_UNIT_ICON */	 "Regent",
-///* REG_WIZDM3_UNIT_ICON */	 "Regent",
-///* REG_WIZDM4_UNIT_ICON */	 "Regent",
-///* REG_GILDM1_UNIT_ICON */	 "Regent",
-///* REG_GILDM2_UNIT_ICON */	 "Regent",
-///* REG_PRSTM1_UNIT_ICON */	 "Regent",
-///* REG_PRSTM2_UNIT_ICON */	 "Regent",
-///* REG_LORDF1_UNIT_ICON */	 "Regent",
-///* REG_LORDF2_UNIT_ICON */	 "Regent",
-///* REG_LORDF3_UNIT_ICON */	 "Regent",
-///* REG_WIZDF1_UNIT_ICON */	 "Regent",
-///* REG_WIZDF2_UNIT_ICON */	 "Regent",
-///* REG_GILDF1_UNIT_ICON */	 "Regent",
-///* REG_PRSTF1_UNIT_ICON */	 "Regent",
-///* REG_ELORD1_UNIT_ICON */  "Regent",
-///* REG_ELORD2_UNIT_ICON */  "Regent",
-///* REG_ELADY1_UNIT_ICON */  "Regent",
-///* REG_DLORD1_UNIT_ICON */  "Regent",
-///* REG_DLORD2_UNIT_ICON */  "Regent",
-///* REG_DLORD3_UNIT_ICON */  "Regent",
-///* REG_GLORD1_UNIT_ICON */  "Regent",
-///* REG_GLADY1_UNIT_ICON */  "Regent",
-///* GORGON_UNIT_ICON		*/  "The Gorgon",
-///* SPIDERKING_UNIT_ICON */  "The Spider",
-///* RHUOBHE_UNIT_ICON		*/  "Rhuobhe Manslayer",
-///* LET_LORDM1_UNIT_ICON */	 "Lieutenant",
-///* LET_LORDM2_UNIT_ICON */	 "Lieutenant",
-///* LET_LORDM3_UNIT_ICON */	 "Lieutenant",
-///* LET_LORDM4_UNIT_ICON */	 "Lieutenant",
-///* LET_LORDM5_UNIT_ICON */	 "Lieutenant",
-///* LET_LORDM6_UNIT_ICON */	 "Lieutenant",
-///* LET_LORDM7_UNIT_ICON */	 "Lieutenant",
-///* LET_WIZDM1_UNIT_ICON */	 "Wizard",
-///* LET_WIZDM2_UNIT_ICON */	 "Wizard",
-///* LET_WIZDM3_UNIT_ICON */	 "Wizard",
-///* LET_WIZDM4_UNIT_ICON */	 "Wizard",
-///* LET_GILDM1_UNIT_ICON */	 "Lieut.",
-///* LET_GILDM2_UNIT_ICON */	 "Lieut.",
-///* LET_PRSTM1_UNIT_ICON */	 "Priest",
-///* LET_PRSTM2_UNIT_ICON */	 "Priest",
-///* LET_LORDF1_UNIT_ICON */	 "Lieutenant",
-///* LET_LORDF2_UNIT_ICON */	 "Lieutenant",
-///* LET_LORDF3_UNIT_ICON */	 "Lieutenant",
-///* LET_WIZDF1_UNIT_ICON */	 "Wizard",
-///* LET_WIZDF2_UNIT_ICON */	 "Wizard",
-///* LET_GILDF1_UNIT_ICON */	 "Lieutenant",
-///* LET_PRSTF1_UNIT_ICON */	 "Priest",
-///* LET_ELORD1_UNIT_ICON */  "Lieutenant",
-///* LET_ELORD2_UNIT_ICON */  "Lieutenant",
-///* LET_ELADY1_UNIT_ICON */  "Wizard",
-///* LET_DLORD1_UNIT_ICON */  "Lieutenant",
-///* LET_DLORD2_UNIT_ICON */  "Lieutenant",
-///* LET_DLORD3_UNIT_ICON */  "Lieutenant",
-///* LET_GLORD1_UNIT_ICON */  "Lieutenant",
-///* LET_GLADY1_UNIT_ICON */  "Lieutenant",
-//};
-//DEFINE_VECTOR_CLASS(CSTRPTR,UnitTitle);
 
 /* This is the troop abbriviation.  Use the MAP_ICON enum as the index */
 DEFINE_VECTOR_DATA_S(GAME_STRING,gsIconAbbriv,MAP_ICON_COUNT) = {
@@ -1288,8 +1043,6 @@ extern BOOL fStartSIGS;
 static	SHORT	sCommandBattle = 0;
 BOOL	fCommandBattleLoop;
 
-static	BOOL	fPlayerAcknowledgedDeath=FALSE;
-
 void ChangeControlMode (LONG, LONG);
 
 /* ========================================================================
@@ -1301,8 +1054,6 @@ void LoadControlSet (void)
 {
 	if (fControlMode & 0x100)
 		fControlMode &= 0xFF;
-
-//printf("LoadControlSet - fControlMode: %d\n",fControlMode);
 
 	if (iDActnIc!=fERROR) SetPurge(iDActnIc); iDActnIc=fERROR;
 	if (iDActnI2!=fERROR) SetPurge(iDActnI2); iDActnI2=fERROR;
@@ -1333,8 +1084,6 @@ void ActivateControlSet (void)
 	if (fControlMode & 0x100)
 		fControlMode &= 0xFF;
 
-	//printf("ActivateControlSet - fControlMode: %d\n",fControlMode);
-
 	del_region(DoAction,0);
 	del_region(ChangeControlMode,0);
 
@@ -1347,7 +1096,6 @@ void ActivateControlSet (void)
 			add_region(  9,288,48,46,0,DoAction,11,0,regACTION_MODE, STR_GM_TT_ACTION11);
 			add_region(  9,344,48,46,0,DoAction,13,0,regACTION_MODE, STR_GM_TT_ACTION13);
 			add_region(  9,400,48,46,0,DoAction,15,0,regACTION_MODE, STR_GM_TT_ACTION15);
-			//add_region(0,0,20,20,KEY_F10,ChangeControlMode,1,0,regACTION_MODE, STR_GM_TT_ACTION16);
 			break;
 
 		case 1:
@@ -1361,7 +1109,6 @@ void ActivateControlSet (void)
 			add_region(  9,64+7*41,48,41,0,DoAction,15,0,regACTION_MODE, STR_GM_TT_ACTION15);
 			add_region(  9,64+8*41,48,41,0,DoAction,17,0,regACTION_MODE, STR_GM_TT_ACTION17);
 			add_region(  9,64+9*41,48,41,0,DoAction,18,0,regACTION_MODE, STR_GM_TT_ACTION18);
-			//add_region(0,0,20,20,KEY_F10,ChangeControlMode,1,0,regACTION_MODE, STR_GM_TT_ACTION16);
 			break;
 
 		case 2:
@@ -1383,7 +1130,6 @@ void ActivateControlSet (void)
 			add_region( 57,378+8,48,46,0,DoAction,16,0,regACTION_MODE, STR_GM_TT_ACTION16);
 			add_region(  9,424+8,48,46,0,DoAction,17,0,regACTION_MODE, STR_GM_TT_ACTION17);
 			add_region( 57,424+8,48,46,0,DoAction,18,0,regACTION_MODE, STR_GM_TT_ACTION18);
-			//add_region( 0,0,20,20,KEY_F10,ChangeControlMode,-2,0,regACTION_MODE, STR_GM_TT_ACTION16);
 			break;
 	}
 }
@@ -1418,8 +1164,6 @@ void ShowFor (LONG timer, SHORT * control)
 
 void TestShowFor (void)
 {
-//printf("ShowForTimer: %ld  time: %ld  Control: %d\n",ShowForTimer, get_time(), (SHORT)(*ShowForControl));
-
 	if (ShowForTimer && ShowForTimer < get_time() && *ShowForControl)
 	{
 		*ShowForControl = FALSE;
@@ -1459,7 +1203,6 @@ void DisplayProcess (LONG mode, LONG color, LONG index1, LONG index2)
 		return;
 
 	if (	(mode==UNITS_MOVE && time > get_time())
-//		|| ((mode==WAITINGFOR || mode==PLAYERSTURN || mode==REALM_IS) && index1==0)
 		|| ((mode==PLAYERSTURN || mode==REALM_IS) && index1==0)
 		|| (mode==FIGHTING && (index1==0 || index2==0))  )
 	{
@@ -1611,8 +1354,6 @@ static void PaintDeathNotification(LONG MenuCombo, LONG RealmThatBitTheDust)
 
 	strcpy(buffer,STRMGR_GetStr(STR_CS_STR_OK));
 	print_text_centered(X,Y,buffer,WHITE);
-
-//	OutlineAllRegions();
 }
 
 /* ========================================================================
@@ -1623,157 +1364,8 @@ static void PaintDeathNotification(LONG MenuCombo, LONG RealmThatBitTheDust)
 static void NotifyPlayerOfRealmDeath(LONG RealmIdx)
 {
 	AddReport(IMMEDIATE_DEATHNOTIFY, RealmIdx, 0, 0);
-	
-//GEH 	PFVLL OldProc = GetButtonProc(D_MOREINFO,0);
-//GEH 	LONG OldArg = GetButtonValue(D_MOREINFO,0);
-//GEH 	LONG MenuCombo = BUILD_LONG((SHORT)D_MOREINFO,(SHORT)0);
-//GEH 
-//GEH 	if (RealmIdx == HomeRealm && IsMenuActive(D_DACTN))
-//GEH 	{
-//GEH 		HideMenu(D_DACTN);
-//GEH 		RunMenus();
-//GEH 	}
-//GEH 
-//GEH 	SetButtonProc(D_MOREINFO, 0, PaintDeathNotification, RealmIdx, NO_KEY);
-//GEH 	SetButtonProc(D_MOREINFO, 4, HideSubMenu, D_MOREINFO, 0);
-//GEH 	ShowMenu(D_MOREINFO);
-//GEH 
-//GEH 	SysForceCursor();
-//GEH 	while(IsMenuActive(D_MOREINFO))
-//GEH 		MenuLoop();
-//GEH 
-//GEH 	SetButtonProc(D_MOREINFO, 0, OldProc, OldArg, NO_KEY);
-//GEH 	SetButtonProc(D_MOREINFO, 4, NULL, 0, 0);
 }
 
-#if 0
-/* ========================================================================
-   Function    - CheckRealmStatus
-   Description - check for lose game due to no provinces
-						fSend means tell remote players about this change 
-   Returns     - 
-   ======================================================================== */
-void CheckRealmStatus (LONG investor, LONG victim, BOOL fSend )
-{
-	LONG	i, j, k, m, l, r, dx, ts;
-	LONG	axProv[LAND_REALM_COUNT];
-	LONG	ayProv[LAND_REALM_COUNT];
-	LONG	xProv[LAND_REALM_COUNT];
-	LONG	rProv[LAND_REALM_COUNT];
-
-	sMyProvinces = 0;
-	for (i=0; i<LAND_REALM_COUNT; ++i)
-	{
-		sProvinces[i] = 0;
-		axProv[i] = 0;
-		ayProv[i] = 0;
-		rProv[i] = 0;
-		xProv[i] = 99999;
-	}
-
-	// count provinces
-	for (i=1; i<PROVINCE_COUNT; ++i)
-	{
-		r = province[i].Realm;
-		if (r && r < LAND_REALM_COUNT)	// don't count those outside of LAND_REALM_COUNT
-		{
-			++sProvinces[r];
-			if ((LONG)province[i].x < xProv[r]) xProv[r] = province[i].x;
-			if ((LONG)province[i].x > rProv[r]) rProv[r] = province[i].x;
-			axProv[r] += province[i].x;
-			ayProv[r] += province[i].y;
-		}
-	}
-	sMyProvinces = sProvinces[HomeRealm];
-
-	for (i=1; i<LAND_REALM_COUNT; ++i)
-	{
-		// adjust name
-		if (sProvinces[i] && (i==investor || i==victim))
-		{
-			realm[i].mfSetNameX(axProv[i]/sProvinces[i]);
-			realm[i].mfSetNameY(ayProv[i]/sProvinces[i]);
-			dx = rProv[i] - xProv[i];
-			ts = ((LONG)realm[i].mfGetTitleSize() * dx) / ((LONG)realm[i].mfGetRealmWidth()*2L);
-			//printf("%s - x:%d y:%d\n",realm[i].mfGetName(),realm[i].mfGetNameX(),realm[i].mfGetNameY());
-			//printf("%s - dx:%d rw:%d ttlsz:%d ts:%d\n",realm[i].mfGetName(),dx,realm[i].mfGetRealmWidth(),realm[i].mfGetTitleSize(),ts);
-
-			if (ts < 50) ts = 50;
-			if (ts > 100) ts = 100;
-
-			realm[i].mfSetTitleSize(ts);
-		}
-
-
-		// defeated realms
-		if (sProvinces[i] == 0 && i != REALM::MONSTERS && i != REALM::MIERES && realm[i].mfExists())
-		{
-			realm[i].mfSetExists(FALSE);
-
-			if (i != REALM::FIVEPEAKS && i != REALM::ANUIRE)
-				NotifyPlayerOfRealmDeath(i);
-
-			// The fact that DeleteUnit reorders the list doens't matter here,
-			// because we are not following the list chains. So any troops which would
-			// have been disrupted because they were earlier in the chain have already been
-			// deleted.
-			for (j=1; j<MAX_UNITS; ++j)			// kill units
-				if (units[j].Realm == i)
-					DeleteUnit(j, fSend );	
-
-			for (l=0; l<PROVINCE_COUNT; ++l)		// kill holdings
-			{
-				CheckAndFixPlaces((PROVINCE)l);
-				j = k = province[l].FirstPlace;
-				while (k != 0 && j<MAX_PLACES)
-				{
-					k = places[j].NextPlace;
-					/* if the holding which is about to delete is the first one in the province
-					 * DeleteHolding() will change the province's FirstPlace as well as each places' NextPlace.
-					 */
-					m = province[l].FirstPlace + k;
-		
-					if (places[j].Realm == i)
-					{
-						if (places[j].Icon == SEAPORT_ICON
-								|| places[j].Icon == SEAPORT2_ICON
-								|| places[j].Icon == PORT_ICON
-								|| places[j].Icon >= CASTLE1_ICON
-								|| places[j].Icon == RUINS_ICON)
-						{
-//							places[j].Realm = province[l].Realm;
-							SetGameData( MP_PLACES, MPPLACE_REALM, j, province[l].Realm, fSend );
-						}
-						else
-						{
-							DeleteHolding((PROVINCE)l, j, fSend );
-						}
-					}
-					j = m;
-				}
-#ifdef _DEBUG
-				if (j >= MAX_PLACES)
-				{
-					fatal_error("CheckRealmStatus -- illegal place");
-				}
-#endif
-			}
-
-		}
-	}
-
-	if (sMyProvinces == 0 && HomeRealm != REALM::MIERES)
-	{
-		// put up defeat screen, you have lost all your provinces, and
-		// are not fit to be regent.
-		DefeatScreen(PaintProvinceLose, ProvinceLooseProc);
-		return;
-	}
-
-}
-
-
-#else
 /* ========================================================================
    Function    - AdjustNames
    Description - Support functions for CheckRealmStatus
@@ -1857,13 +1449,10 @@ RestartFindBounds:
 	}
 
 	// adjust names
-	//realm[_realm].mfSetNameX( (xProv+rProv)/2 );
-	//realm[_realm].mfSetNameY( (yProv+bProv)/2 );
 	realm[_realm].mfSetNameX(xSum/pCnt);
 	realm[_realm].mfSetNameY(ySum/pCnt);
 
 	dx = rProv - xProv;
-	//ts = ((LONG)realm[_realm].mfGetTitleSize() * dx) / ((LONG)realm[_realm].mfGetRealmWidth()*2L);
 
 	if (_realm == REALM::ANUIRE && pCnt == 1)
 		ts = 10;
@@ -1956,7 +1545,6 @@ void CheckRealmStatus (LONG investor, LONG victim, BOOL fSend )
 								|| places[j].Icon >= CASTLE1_ICON
 								|| places[j].Icon == RUINS_ICON)
 						{
-//							places[j].Realm = province[l].Realm;
 							SetGameData( MP_PLACES, MPPLACE_REALM, j, province[l].Realm, fSend );
 						}
 						else
@@ -1986,8 +1574,6 @@ void CheckRealmStatus (LONG investor, LONG victim, BOOL fSend )
 	}
 
 }
-#endif
-
 
 /* ========================================================================
 	Function	-
@@ -2029,10 +1615,6 @@ static LONG HoldingIcon[] = {VILLAGE_ICON,SEAPORT_ICON,SEAPORT2_ICON,PORT_ICON,
 										RUINS_ICON,WIZTOWER_ICON,
 										LAW1_ICON,GUILD1_ICON,TEMPLE1_ICON,SOURCE1_ICON,
 										CASTLE1_ICON,CASTLE2_ICON,CASTLE3_ICON,CASTLE4_ICON};
-//static CSTRPTR szHolding[] = {"Village", "Seaport", "Seaport", "River Port",
-//										"Ruins", "Wizard's Tower",
-//										"Law", "Guild", "Temple", "Source",
-//										"Castle", "Citadel", "Stronghold", "Fortress"};
 
 static GAME_STRING gsHolding[] = {STR_HOLDING_VILLAGE,STR_HOLDING_SEAPORT,
 											 STR_HOLDING_SEAPORT,STR_HOLDING_RIVPORT,
@@ -2111,11 +1693,6 @@ void DrawBorders (LONG x, LONG y, LONG map_x, LONG map_y, LONG w, LONG h, LONG /
 
 	dptr_buffer_width = ((BITMPTR)BLKPTR(iLgMap))->w;
 
-	//DumbAutoLockPtr<BITMPTR> const pMap(iLgMap);
-	//dptr = (PTR)pMap + sizeof(BITMHDR);
-	//DumbAutoLockPtr<BITMPTR> const p(iProvMap);
-	//bptr = (PTR)p + sizeof(BITMHDR);
-
 	p = (BITMPTR) BLKPTR(iProvMap);	// dummy to get iProvMap into memory
 	ww = p->w;								// dummy to get iProvMap into memory
 	SetQuickLock(iLgMap);
@@ -2184,7 +1761,6 @@ void DrawBorders (LONG x, LONG y, LONG map_x, LONG map_y, LONG w, LONG h, LONG /
 					dptr[i+dptr_buffer_width+2] = (UBYTE) coBorder;
 				}
 
-//				if (f)										  //		- line
 				if (f && fLgMap != SMALL)
 				{
 					dptr[i-dptr_buffer_width-1] = (UBYTE) coBorder;
@@ -2194,7 +1770,6 @@ void DrawBorders (LONG x, LONG y, LONG map_x, LONG map_y, LONG w, LONG h, LONG /
 				}
 
 				pix=ff[(yy-1)&1][xx];				//		| line
-//				if (pix)
 				if (pix && fLgMap != SMALL)
 				{
 					dptr[i-dptr_buffer_width-1] = (UBYTE)coBorder;
@@ -2363,7 +1938,6 @@ void MapLine (LONG x0, LONG y0, LONG x1, LONG y1, LONG co1, LONG co2, BOOL fWand
 
 		while (TRUE)
 		{
-//			if (y>=0 && y<480 && (x+q)<638 && (x+q)>=(lmap+2))
 			{
 				p = x + q + (y * bw);
 				dptr[p-2-diag] = antia_table[(pix*256)+antia_table[anta_ix+(pix=dptr[p-2-diag])]];
@@ -2444,29 +2018,6 @@ void DrawRoads_ (PROVINCE prov, LONG i)
 	Description -
 	Returns	- void
 	======================================================================== */
-#if 0
-void DrawLeyLines (void)
-{
-	LONG		i;
-
-	for (i=0; i<MAX_PLACES; ++i)
-	{
-		// draw lines from Source to iRoute1,2,3
-		if (places[i].Icon == SOURCE1_ICON
-				&& (places[i].iRoute1+places[i].iRoute2+places[i].iRoute3) != 0
-				&& places[i].Realm != REALM::NO_COUNTRY)
-		{
-			if (places[i].iRoute1)
-				MapLine(places[i].x, places[i].y, places[places[i].iRoute1].x, places[places[i].iRoute1].y, WHITE, LTBLUE, FALSE);
-			if (places[i].iRoute2)
-				MapLine(places[i].x, places[i].y, places[places[i].iRoute2].x, places[places[i].iRoute2].y, WHITE, LTBLUE, FALSE);
-			if (places[i].iRoute3)
-				MapLine(places[i].x, places[i].y, places[places[i].iRoute3].x, places[places[i].iRoute3].y, WHITE, LTBLUE, FALSE);
-		}
-	}
-
-}
-#endif
 
 /* ========================================================================
 	Function	-
@@ -2487,8 +2038,6 @@ PROVINCE HoldingToProv (LONG h)
 {
 	LONG i,j,k;
 	PROVINCE p;
-
-	// h = HOLDING INDEX;
 
 	for (p=NO_PROVINCE, i=1; i<PROVINCE_COUNT && p == NO_PROVINCE; ++i)
 	{
@@ -2605,7 +2154,6 @@ LONG ProvinceInfo (PROVINCE prov, MAP_ICON holding_type)
 	j = k = province[prov].FirstPlace;
 	while (k != 0)
 	{
-		//	printf("%d - realm:%d icon:%d level:%d next:%d\n",j,places[j].Realm,places[j].Icon,places[j].Level,places[j].NextPlace);
 		icon = places[j].Icon;
 		level = places[j].Level;
 
@@ -2731,15 +2279,6 @@ LONG ProvinceInfo (PROVINCE prov, MAP_ICON holding_type)
 				else
 				{
 					prov_tax += AveGuildTempleTaxes((SHORT)province[prov].CivLevel,(SHORT)level);
-					#if 0
-					LOGCOMMENTSLEEP
-					if ( fLogComment )
-					{
-						char temp[150];
-						sprintf ( temp, "PROVINCE INFO - %s:%s  AVE guild and temple:prov_tax:%06d",realm[HomeRealm].mfGetName(),province[prov].mfGetName(),prov_tax);
-						RandomLogComment ( temp );
-					}
-					#endif
 				}
 
 				// Someone else's law claim TAKES money
@@ -2789,15 +2328,6 @@ LONG ProvinceInfo (PROVINCE prov, MAP_ICON holding_type)
 			else
 			{
 				prov_tax = province_tax[cProvinces];
-				#if 0
-				LOGCOMMENTSLEEP
-				if ( fLogComment )
-				{
-					char temp[150];
-					sprintf ( temp, "PROVINCE INFO - %s:%s  NON-ROLLED province:prov_tax:%06d",realm[HomeRealm].mfGetName(),province[prov].name,prov_tax);
-					RandomLogComment ( temp );
-				}
-				#endif
 			}
 
 		}
@@ -2805,15 +2335,6 @@ LONG ProvinceInfo (PROVINCE prov, MAP_ICON holding_type)
 		{
 			province_tax[cProvinces] = -1;
 			prov_tax += AveProvinceTaxes((SHORT)province[prov].CivLevel, (SHORT)province[prov].TaxLevel);
-				#if 0
-				LOGCOMMENTSLEEP
-				if ( fLogComment )
-				{
-					char temp[150];
-					sprintf ( temp, "PROVINCE INFO - %s:%s  AVE province:prov_tax:%06d",realm[HomeRealm].mfGetName(),province[prov].name,prov_tax);
-					RandomLogComment ( temp );
-				}
-				#endif
 		}
 	}
 	else		// case where we are not ruler but have holdings in prov
@@ -2825,15 +2346,6 @@ LONG ProvinceInfo (PROVINCE prov, MAP_ICON holding_type)
 			else
 			{
 				prov_tax = province_tax[cProvinces];
-				#if 0
-				LOGCOMMENTSLEEP
-				if ( fLogComment )
-				{
-					char temp[150];
-					sprintf ( temp, "PROVINCE INFO - %s:%s  NON-ROLLED province:prov_tax:%06d",realm[HomeRealm].mfGetName(),province[prov].name,prov_tax);
-					RandomLogComment ( temp );
-				}
-				#endif
 			}
 
 		}
@@ -2843,8 +2355,6 @@ LONG ProvinceInfo (PROVINCE prov, MAP_ICON holding_type)
 
 	our_law_claims = (our_law_claims + 5) / 10;
 	their_law_claims = (their_law_claims + 5) / 10;
-
-// printf("civ:%d tax:%d\n",province[prov].CivLevel,prov_tax);
 
 	return rv;
 }
@@ -2864,8 +2374,6 @@ LONG ProvinceInfo (PROVINCE prov, MAP_ICON holding_type)
 void UpdatingFortify (void)
 {
 	LONG	i, cnt=0;
-
-	//printf("UPDATING FORTIFY -");
 
 	#ifdef _WINDOWS
 	if ( !IsMultiPlayer() || AMultiPlayer.IsMaster() )
@@ -2997,17 +2505,7 @@ void DisplayHolding (LONG type, LONG)
 	
 	fRedrawAll = TRUE;
 
-	// make holding buttons radio buttons
-	//if (type != LAW1_ICON) 		show_place_icon[LAW1_ICON] = FALSE;
-	//if (type != GUILD1_ICON) 	show_place_icon[GUILD1_ICON] = FALSE;
-	//if (type != TEMPLE1_ICON)	show_place_icon[TEMPLE1_ICON] = FALSE;
-	//if (type != SOURCE1_ICON)	show_place_icon[SOURCE1_ICON] = FALSE;
-
 	show_place_icon[type] = !show_place_icon[type];
-
-	//	if (type == GUILD1_ICON)
-	//		show_place_icon[PORT_ICON] = !show_place_icon[PORT_ICON];
-
 }
 
 /*	======================================================================== */
@@ -3069,8 +2567,6 @@ void DataAreaMode (LONG type, LONG fNotDepress)
 		if (!fNotDepress)
 			reqSound = SND_UI_STATUS_REPORT;
 #endif
-//		ACTIVATE_REGION_(regMINIMIZED, FALSE);
-//		ACTIVATE_REGION_(regMAXIMIZED, TRUE);
 	}
 
 	if (dturn_mode == MIN_MODE)
@@ -3092,8 +2588,6 @@ void TempDataAreaMode (LONG flag_addr, LONG value)
 	static LONG save_dturn_mode;
 	SHORT * pFlag = (SHORT *)flag_addr;
 
-	//printf("TempDataAreaMode - Flag:%d  value:%d\n",*pFlag,value);
-
 	if(mouse_button == 2)
 		return;
 
@@ -3101,7 +2595,6 @@ void TempDataAreaMode (LONG flag_addr, LONG value)
 
 	*pFlag = !(*pFlag);
 	fRedrawAll = TRUE;
-	// GWP reqSound = SND_UI_BUTTON_CLICK;
 	// The region code does the click.
 	reqSound = FALSE;
 
@@ -3111,22 +2604,17 @@ void TempDataAreaMode (LONG flag_addr, LONG value)
 			*pFlag = (SHORT) value;
 		activate_region(regDOMAIN_TURN_MODE	, FALSE);
 		activate_region(regACTION_MODE	  , FALSE);
-//		activate_region(regMINIMIZED			, FALSE);
-//		activate_region(regMAXIMIZED			, FALSE);
 		activate_region(regTAX_ROLLS			, FALSE);
 		activate_region(regSWITCH_TO_ACTIONS, FALSE);
 		activate_region(regADJUST_TAXES	 , FALSE);
 		save_mode_save = mode_save;
 		save_dturn_mode = dturn_mode;
-//		DataAreaMode(MIN_MODE, 1);
 		DataAreaMode(MAX_MODE, 1);
 	}
 	else
 	{
 		RESTORE_REGION_STATE(regDOMAIN_TURN_MODE	);
 		RESTORE_REGION_STATE(regACTION_MODE			);
-//		RESTORE_REGION_STATE(regMINIMIZED			 );
-//		RESTORE_REGION_STATE(regMAXIMIZED			 );
 		RESTORE_REGION_STATE(regTAX_ROLLS			 );
 		RESTORE_REGION_STATE(regSWITCH_TO_ACTIONS	 );
 		RESTORE_REGION_STATE(regADJUST_TAXES		);
@@ -3180,7 +2668,6 @@ void ToggleShowUnits (LONG i, LONG fAll)
 		}
 	}
 
-	// GWP reqSound = SND_UI_BUTTON_CLICK;
 	// The region code does the click.
 	reqSound = FALSE;
 	fRedrawAll = TRUE;
@@ -3217,7 +2704,6 @@ void ToggleShowHoldings (LONG i, LONG fAll)
 		}
 	}
 
-	// GWP reqSound = SND_UI_BUTTON_CLICK;
 	// The region code does the click.
 	reqSound = FALSE;
 	fRedrawAll = TRUE;
@@ -3226,19 +2712,6 @@ void ToggleShowHoldings (LONG i, LONG fAll)
 /*	======================================================================== */
 void DoTaxRolls (LONG /* type */, LONG)
 {
-#if 0
-	// save the current state of the game
-	{
-		FILE *fp;
-		char *cur_sav = "tutorial.sav";
- 		if (Exists(cur_sav))
-			remove (cur_sav);
-		fp = fopen(cur_sav, "wb");
-		SaveGameFiles(fp);
-		fclose(fp);
-	}
-#endif
-
 	if(mouse_button == 2)
 	{
 		DoAction(23, 0);
@@ -3254,7 +2727,6 @@ void DoTaxRolls (LONG /* type */, LONG)
 	DataAreaMode(MAINT_MODE, 0);
 	dtrn_ic_active[0] = FALSE;		// adjust taxes lowlight
 	ACTIVATE_REGION_(regTAX_ROLLS				, FALSE);	 // tax rolls OFF
-	//ACTIVATE_REGION_(regSWITCH_TO_ACTIONS	, TRUE);		// switch to actions ON
 	ACTIVATE_REGION_(regADJUST_TAXES			, FALSE);	 // adjust taxes OFF
 
 	del_region(SwitchToActionMode,0);
@@ -3441,7 +2913,6 @@ void SwitchToActionMode (LONG, LONG)
 						|| places[j].Icon == GUILD1_ICON
 						|| places[j].Icon == TEMPLE1_ICON) )
 				{
-					//places[j].Level = 0;
 					SHORT holdingtype = -1;
 					switch(places[j].Icon)
 					{
@@ -3462,7 +2933,6 @@ void SwitchToActionMode (LONG, LONG)
 
 		if (province[i].Pillaged && province[i].CivLevel > 0)
 		{
-			//province[i].CivLevel--;
 			SetGameData( MP_PROVINCE, MPPROV_CIVLEVEL, i, (province[i].CivLevel-1), FALSE);
 		}
 
@@ -3476,7 +2946,6 @@ void SwitchToActionMode (LONG, LONG)
 	// ------------------------------------------
 	// we want to prevent the player from overflowing the 16-bit treasury.
 	// ------------------------------------------
-	//while (realm[HomeRealm].mfGetTreasury() >= 50000)
 	while (new_treasury >= 50000)
 	{
 		SHORT x = random(100);
@@ -3522,7 +2991,6 @@ void SwitchToActionMode (LONG, LONG)
 		}
 		
 		AddReport(lossevent, amount, 0, 0);
-		//realm[HomeRealm].mfAddTreasury( -( amount * 10000));
 		new_treasury -= amount * 10000;
 	}
 
@@ -3617,8 +3085,6 @@ NoLeader:
 				DeleteUnit(i, TRUE );				//---- Send to remote players
 			}
 
-// found to be annoying
-//			AddReport(SUBJ_DISBAND_UNIT, i, units[i].province, 0);
 		}
 	}
 
@@ -3739,8 +3205,6 @@ NoLeader:
 
 	ACTIVATE_REGION_(regDOMAIN_TURN_MODE, FALSE);	// domain turn mode OFF
 	ACTIVATE_REGION_(regACTION_MODE	 , TRUE);		// action mode ON
-//	ACTIVATE_REGION_(regMINIMIZED			, FALSE);	 // minimized OFF
-//	ACTIVATE_REGION_(regMAXIMIZED			, FALSE);	 // maximized OFF
 	ACTIVATE_REGION_(regTAX_ROLLS			, FALSE);		// tax rolls OFF
 	ACTIVATE_REGION_(regSWITCH_TO_ACTIONS,FALSE);	// switch to actions OFF
 	ACTIVATE_REGION_(regADJUST_TAXES		, FALSE);		// adjust taxes OFF
@@ -3837,14 +3301,6 @@ void AdjReduceHolds (LONG prov, LONG)
 	province[prov].ReduceHolds = !province[prov].ReduceHolds;
 	fUpdateDataArea=TRUE;
 }
-
-/*	======================================================================== */
-
-//void PayOccupiedProv (LONG prov, LONG)
-//{
-//	province[prov].CastleSptd = !province[prov].CastleSptd;
-//	fUpdateDataArea=TRUE;
-//}
 
 /*	======================================================================== */
 void AddBloodlineStrength (LONG MenuCombo, LONG button)
@@ -3953,7 +3409,6 @@ void UpdateActionHeader (SHORT iAction)
 	BOOL	f = (fControlMode == 0);
 
 	SysHideCursor();
-	//iDTurnBk = GetResourceStd("UI\\DTURN_BK.PCX", FALSE);
 
 	DrawBitmap (0, 28, iDTurnBk, (SHORT)(DATA_AREA_MAX-l_map), 28, (SHORT)l_map, (f)?77:35);
 	SetRemapTable(HomeRealm);
@@ -3965,8 +3420,6 @@ void UpdateActionHeader (SHORT iAction)
 	{
 		crease(8, 85, 97, 1);			// seperator
 		crease(8, 105, 97, 1);			// seperator
-//		print_textf(7, 32, DKBROWN, STRMGR_GetStr(STR_GM_FMTD_TURN));
-//		print_textf(8, 33, DKBROWN, STRMGR_GetStr(STR_GM_FMTD_TURN_FMT),date+1);
 		print_textf(8, 45, DKBROWN, STRMGR_GetStr(STR_GM_REGENCY),realm[HomeRealm].mfGetRegency());
 		print_textf(8, 57, DKBROWN, STRMGR_GetStr(STR_GM_TREASURY),realm[HomeRealm].mfGetTreasury());
 	}
@@ -3982,8 +3435,6 @@ void UpdateActionHeader (SHORT iAction)
 	else if (iAction == -1)
 	{
 		char buffer[100];
-//		strcpy(buffer,STRMGR_GetStr(gsOrdinalNum[global_action_turn]));
-//		print_textf(55, (f)?97:58, ActionColor[global_action_turn], STRMGR_GetStr(STR_GM_SELECT_ACTION),buffer);
 
 		sprintf(buffer, STRMGR_GetStr(STR_GM_SELECT_ACTION), date+1, global_action_turn);
 		print_textf(55, (f)?97:58, ActionColor[global_action_turn], buffer);
@@ -4031,7 +3482,6 @@ void DoAction (LONG iAction, LONG)
 	}
 
 	else if (HomeRealm == CurrentRealm
-//			&&	!fInfoOnlyDomainUI			[abc] 9/3
 			&& dact_ic_active[iAction])
 	{
 		DepressIcon();
@@ -4061,11 +3511,6 @@ void DoAction (LONG iAction, LONG)
 			#endif
 			{
 				SelectAdvParty();
-				//if (fLTAction == DURING_LTACTION)	// return to normal action type
-				//{
-				//	ActiveRegent = realm[HomeRealm].mfGetRegent();
-				//	fLTAction = AFTER_LTACTION;
-				//}
 			}
 		#endif
 		}
@@ -4208,13 +3653,6 @@ BOOL CastleBesieged (PROVINCE iProv, LONG iPlace)
 				cUnits += UnitsHere(iProv, (REALM::REALM_TYPE)i);
 
 		rv = (cUnits && cUnits >= places[iPlace].Level);
-
-//		if (rv)
-//		{
-//			 printf("CASTLE BESIEGED - %s in %s by %d units\n",province[iProv].name,realm[province[iProv].Realm].mfGetName(),cUnits);
-//			places[iPlace].Besieged = TRUE;	// not used by anything so why set?
-//		}
-
 	}
 
 	return rv;
@@ -4312,7 +3750,6 @@ void DegradeCastles (void)
 					||	places[j].Icon == CASTLE3_ICON	// awnsheigh2 castle
 					||	places[j].Icon == CASTLE4_ICON	// awnsheigh3 castle
 					)
-				//&& places[j].iRoute1 == 0			// not currently fortifying it
 				&& CastleBesieged((PROVINCE)i,j) )
 			{
 				if( places[j].Level > 0)
@@ -4383,11 +3820,8 @@ static void DoRandomEvent (LONG select, PROVINCE prov)
 				realm[REALM::MURKILAD].mfAddTreasury((70*date)+300);
 				SetGameData(MP_REALM, MPRLM_TREASURY, REALM::MURKILAD, realm[REALM::MURKILAD].mfGetTreasury(), fSend );
 				realm[REALM::GORGONSCROWN].mfAddSurplusIncome(1000);
-//				SetGameData(MP_REALM, MPRLM_SURPLUSINCOME, REALM::GORGONSCROWN, realm[REALM::GORGONSCROWN].mfGetSurplusIncome(), fSend );
 				realm[REALM::MARKAZOR].mfAddSurplusIncome(500);
-//				SetGameData(MP_REALM, MPRLM_SURPLUSINCOME, REALM::MARKAZOR, realm[REALM::MARKAZOR].mfGetSurplusIncome(), fSend );
 				realm[REALM::MURKILAD].mfAddSurplusIncome(300);
-//				SetGameData(MP_REALM, MPRLM_SURPLUSINCOME, REALM::MURKILAD, realm[REALM::MURKILAD].mfGetSurplusIncome(), fSend );
 			}
 			break;
 		case 1:		printf("Gold given to Gorgon\n");
@@ -4455,7 +3889,6 @@ static void DoRandomEvent (LONG select, PROVINCE prov)
 					if (province[prov].Realm == HomeRealm)
 		 				AddReport(IMMEDIATE_NPC_MOVE_TROOP, m_rlm, prov, 0);
 					// Don't send the Spotted flag!
-					//SetGameData(MP_UNITS, MPUNITS_NOTSPOTTED, k, FALSE, fSend );
 					units[k].NotSpotted = FALSE;
 				}
 			}
@@ -4470,7 +3903,6 @@ static void DoRandomEvent (LONG select, PROVINCE prov)
 					if (province[prov].Realm == HomeRealm)
 		 				AddReport(IMMEDIATE_NPC_MOVE_TROOP, m_rlm, prov, 0);
 					// Don't send the Spotted flag!
-					//SetGameData(MP_UNITS, MPUNITS_NOTSPOTTED, k, FALSE, fSend );
 					units[k].NotSpotted = FALSE;
 				}
 			}
@@ -4485,7 +3917,6 @@ static void DoRandomEvent (LONG select, PROVINCE prov)
 					if (province[prov].Realm == HomeRealm)
 		 				AddReport(IMMEDIATE_NPC_MOVE_TROOP, m_rlm, prov, 0);
 					// Don't send the Spotted flag!
-					//SetGameData(MP_UNITS, MPUNITS_NOTSPOTTED, k, FALSE, fSend );
 					units[k].NotSpotted = FALSE;
 				}
 			}
@@ -4500,7 +3931,6 @@ static void DoRandomEvent (LONG select, PROVINCE prov)
 					if (province[prov].Realm == HomeRealm)
 		 				AddReport(IMMEDIATE_NPC_MOVE_TROOP, m_rlm, prov, 0);
 					// Don't send the Spotted flag!
-					//SetGameData(MP_UNITS, MPUNITS_NOTSPOTTED, k, FALSE, fSend );
 					units[k].NotSpotted = FALSE;
 				}
 			}
@@ -4515,7 +3945,6 @@ static void DoRandomEvent (LONG select, PROVINCE prov)
 					if (province[prov].Realm == HomeRealm)
 		 				AddReport(IMMEDIATE_NPC_MOVE_TROOP, m_rlm, prov, 0);
 					// Don't send the Spotted flag!
-					//SetGameData(MP_UNITS, MPUNITS_NOTSPOTTED, k, FALSE, fSend );
 					units[k].NotSpotted = FALSE;
 				}
 			}
@@ -4530,7 +3959,6 @@ static void DoRandomEvent (LONG select, PROVINCE prov)
 					if (province[prov].Realm == HomeRealm)
 		 				AddReport(IMMEDIATE_NPC_MOVE_TROOP, m_rlm, prov, 0);
 					// Don't send the Spotted flag!
-					//SetGameData(MP_UNITS, MPUNITS_NOTSPOTTED, k, FALSE, fSend );
 					units[k].NotSpotted = FALSE;
 				}
 			}
@@ -4545,7 +3973,6 @@ static void DoRandomEvent (LONG select, PROVINCE prov)
 					if (province[prov].Realm == HomeRealm)
 		 				AddReport(IMMEDIATE_NPC_MOVE_TROOP, m_rlm, prov, 0);
 					// Don't send the Spotted flag!
-					//SetGameData(MP_UNITS, MPUNITS_NOTSPOTTED, k, FALSE, fSend );
 					units[k].NotSpotted = FALSE;
 				}
 			}
@@ -4560,7 +3987,6 @@ static void DoRandomEvent (LONG select, PROVINCE prov)
 					if (province[prov].Realm == HomeRealm)
 		 				AddReport(IMMEDIATE_NPC_MOVE_TROOP, m_rlm, prov, 0);
 					// Don't send the Spotted flag!
-					//SetGameData(MP_UNITS, MPUNITS_NOTSPOTTED, k, FALSE, fSend );
 					units[k].NotSpotted = FALSE;
 				}
 			}
@@ -4708,7 +4134,6 @@ void RandomEvents (void)
 		for (i=1; i<LAND_REALM_COUNT; ++i)
 		{
 			if (realm[i].mfExists() && !realm[i].mfIsPlayerCtrl()
-				//&& (sScores[i] + (sScores[i]*TestAdjacent(HomeRealm,(REALM::REALM_TYPE)i)*15)/10 + (sScores[i]*AREALLIED(HomeRealm,i)*15)/10 ) > maxScore
 				&& i!=REALM::ANUIRE
 				&& i!=REALM::CHIMAERON && i!=REALM::GORGONSCROWN
 				&& i!=REALM::MARKAZOR  && i!=REALM::MONSTERS
@@ -4761,7 +4186,6 @@ void RandomEvents (void)
 				places[i].Realm = REALM::GORGONSCROWN;
 		++iGorgonPlot;
 	}
-//printf("Gorgon's Plot is:%d, Gorgon's Ally is :%s\n", iGorgonPlot, (iGorgonAlly)?realm[iGorgonAlly].mfGetName():"pending");
 
 	// ------------------------------------------
 	// just for laughs, lets give the Gorgon's ally lots of money
@@ -4893,7 +4317,6 @@ void UpdateUnitAndPlaceCount (void)
 	Description -
 	Returns	- void
 	======================================================================== */
-//CSTRPTR szDomainMode[] = {"MIN_MODE","ACTN_MODE","MAINT_MODE","TAXLVL_MODE","OCCUPATION_MODE","PAYRL_MODE","SELRLM_MODE","ADVPARTY_MODE","INIT_REPORT_MODE","REPORT_MODE","REPORT_DONE_MODE"};
 BOOL DoPageProvince(LONG *startCount, LONG provCount, LONG countToPrint, LONG counter, LONG x, LONG y);
 void NextPrev (LONG val, LONG);
 static LONG		startCount = 1;
@@ -4910,7 +4333,6 @@ void ResetStartCount (void)
 BOOL UpdateDataArea (void)
 {
 	LONG					i, j, k, l, p, q, x, xs, tribute, law_claims;
-	//LONG				  castle_index;
 	LONG					y = 36;			 // starting y position
 	REALM_STRUCT_PTR	pRealm = &realm[HomeRealm];
 	REGENT_PTR			pRegent = &regents[ActiveRegent];
@@ -4933,8 +4355,6 @@ BOOL UpdateDataArea (void)
 	LONG		counter2 = 0;
 	LONG		lPrint2 = FALSE;
 	LONG		lPageDone2 = FALSE;
-
-//printf("UpdateDataArea - dturn_mode:%s (%d)  global_action_turn:%d\n",(dturn_mode>10)?"MAX_MODE":szDomainMode[dturn_mode],dturn_mode,global_action_turn);
 
 	if (HomeRealm == 0 || ActiveRegent == 0)  // problems!
 	{
@@ -4960,7 +4380,6 @@ BOOL UpdateDataArea (void)
 	del_region(AdjPillaged,0);
 	del_region(AdjOccupyOwn,0);
 	del_region(AdjReduceHolds,0);
-//	del_region(PayOccupiedProv,0);
 
 	// GEH for the chat panel
 	fUpdatePanels = TRUE;
@@ -4990,7 +4409,6 @@ BOOL UpdateDataArea (void)
 	//--------------------------------------------------
 	// return to min mode and do report
 	if (dturn_mode == ACTN_MODE && fRoundOver
-//		&& !fInfoOnlyDomainUI	[abc] 9/3
 		)
 	{
 		usedFreeAction = usedFreeForge = usedFreeMagic = 0;
@@ -5016,11 +4434,9 @@ BOOL UpdateDataArea (void)
 			// items which bless
 			if (pPS != NULL &&
 				pPS->StatsMod.mfGetMod(STATSMOD::PROSPERITY_MOD) > 0 &&
-				//province[i].Realm == HomeRealm &&
 				province[i].Blessed == 0)
 			{
 				++province[i].Blessed;
-				//SetGameData(MP_PROVINCE, MPPROV_BLESSED, i, province[i].Blessed, TRUE );
 				SetGameData(MP_PROVINCE, MPPROV_BLESSED, i, province[i].Blessed, FALSE );
 			}
 
@@ -5030,11 +4446,9 @@ BOOL UpdateDataArea (void)
 			// items which blight
 			if (pPS != NULL &&
 				pPS->StatsMod.mfGetMod(STATSMOD::PROSPERITY_MOD) < 0 &&
-				//province[i].Realm == HomeRealm &&
 				province[i].Blighted == 0)
 			{
 				++province[i].Blighted;
-				//SetGameData(MP_PROVINCE, MPPROV_BLIGHTED, i, province[i].Blighted, TRUE );
 				SetGameData(MP_PROVINCE, MPPROV_BLIGHTED, i, province[i].Blighted, FALSE );
 			}
 
@@ -5220,7 +4634,6 @@ BOOL UpdateDataArea (void)
 		// count all places and units
 		//--------------------------------------------------
 		UpdateUnitAndPlaceCount();
-		//printf("TOTAL UNITS:%d - TOTAL PLACES:%d\n",cntUnits_(),cntHolds);
 
 		// revert pay to gold
 		for (i=1; i<MAX_UNITS; ++i)
@@ -5284,10 +4697,6 @@ BOOL UpdateDataArea (void)
 						&& random(50)==0)
 					l += (random(5)+1);		// if not screwed we might get friendlier
 
-				// if more than 75% of the winning points everyone hates them
-//				if (((sScores[i] * 100) / gWinningPoints) > 75)
-//					l -= random(10);
-
 				if (k == STATUS_PERMISSIVE_ALLIANCE && l < 35)
 				{
 					RealmStatus[i][j] = STATUS_NEUTRAL;
@@ -5308,8 +4717,6 @@ BOOL UpdateDataArea (void)
 						l = 65 + (Tribute[j][i]*3);
 					if (l < 40)
 					{
-						//Tribute[j][i] = 0;
-						//Tribute[i][j] = 0;
 						SetGameData(MP_TRIBUTE,j, i, 0, TRUE);
 						SetGameData(MP_TRIBUTE,i, j, 0, TRUE);
 						RealmStatus[j][i] = STATUS_NEUTRAL;
@@ -5355,9 +4762,7 @@ BOOL UpdateDataArea (void)
 	//--------------------------------------------------
 	// INITIAL REPORT (Councilor's Screen)
 	//--------------------------------------------------
-	if (dturn_mode == INIT_REPORT_MODE
-//			&& !fInfoOnlyDomainUI	[abc] 9/3
-		)
+	if (dturn_mode == INIT_REPORT_MODE)
 	{
 		dturn_mode = REPORT_MODE;
 		++date;
@@ -5367,18 +4772,14 @@ BOOL UpdateDataArea (void)
 		return FALSE;
 	}
 
-	if (dturn_mode == REPORT_MODE
-//			&& !fInfoOnlyDomainUI	[abc] 9/3
-		)
+	if (dturn_mode == REPORT_MODE)
 		return FALSE;
 
 	//--------------------------------------------------
 	// AFTER INITIAL REPORT (Councilor's Screen)
 	//--------------------------------------------------
 	// reset to admin phase
-	if (dturn_mode == REPORT_DONE_MODE
-//			&& !fInfoOnlyDomainUI	[abc] 9/3
-		)
+	if (dturn_mode == REPORT_DONE_MODE)
 	{
 		if (fLoadedNewGame)				// after initial report, restart domain game
 		{
@@ -5510,9 +4911,7 @@ BOOL UpdateDataArea (void)
 	//--------------------------------------------------
 	// AFTER COUNCILOR'S SCREEN either initial or button
 	//--------------------------------------------------
-	if ((dturn_mode == REPORT_DONE_MODE || dturn_mode == REPEAT_REPORT_DONE_MODE)
-//			&& !fInfoOnlyDomainUI	[abc] 9/3
-		)
+	if (dturn_mode == REPORT_DONE_MODE || dturn_mode == REPEAT_REPORT_DONE_MODE)
 	{
 		TutorialActionNumber = 1;
 		TutorialScreenNumber = 0;
@@ -5527,14 +4926,12 @@ BOOL UpdateDataArea (void)
 		max_scale = DMAX_SCALE;
 		req_l_map = DATA_AREA_MIN;
 		l_map = DATA_AREA_MIN;
-//		reqSound = SND_UI_STATUS_REPORT;
 		ACTIVATE_REGION_(regDOMAIN_TURN_MODE	, TRUE);		// domain turn mode ON
 		ACTIVATE_REGION_(regACTION_MODE			, FALSE);	// action mode OFF
 		ACTIVATE_REGION_(regTAX_ROLLS				, TRUE);		// tax rolls ON
 		ACTIVATE_REGION_(regSWITCH_TO_ACTIONS	, FALSE);	// switch to actions OFF
 		ACTIVATE_REGION_(regADJUST_TAXES			, TRUE);		// adjust taxes ON
 		activate_region(regSHOW_HOLDINGS			, TRUE);
-		//DataAreaMode (MIN_MODE, 1);
 
 		fFadedOut = -1;
 		fRedrawAll = TRUE;
@@ -5549,7 +4946,6 @@ BOOL UpdateDataArea (void)
 	if (dturn_mode == ACTN_MODE)
 	{
 		if (fStartOfActionMode			// done once at start of action mode
-//				&& !fInfoOnlyDomainUI	[abc] 9/3
 			)
 		{
 			fStartOfActionMode = FALSE;
@@ -5572,8 +4968,6 @@ BOOL UpdateDataArea (void)
 						j = province[i].Realm;
 						SetGameData(MP_PROVINCE, MPPROV_REALM, i, HomeRealm, TRUE );
 						SetGameData(MP_PROVINCE, MPPROV_OCCUPREALM, i, 0, TRUE );
-						//ReconstructMap();
-						//CheckRealmStatus(HomeRealm, j, TRUE );
 						SetGameData(MP_PROVINCE, MPPROV_INVESTED, HomeRealm, j, TRUE );
 					}
 			}
@@ -5647,8 +5041,6 @@ BOOL UpdateDataArea (void)
 
 	#ifdef _WINDOWS
 		//--- DEACTIVATE ADVENTURES IN MULTIPLAYER ---
-//		if (IsMultiPlayer())
-//			dact_ic_active[ADVENTURE] = FALSE;
 		dact_ic_active[ADVENTURE] = !(IsMultiPlayer());
 	#endif
 	
@@ -5658,7 +5050,6 @@ BOOL UpdateDataArea (void)
 				dact_ic_active[j] = GameSpecificArray2[j];
 		}
 
-		//iDTurnBk = GetResourceStd("UI\\DTURN_BK.PCX", FALSE);
 		DrawBitmap (0, 0, iDTurnBk, (SHORT)(DATA_AREA_MAX-l_map), 0, (SHORT)l_map, 480);
 
 		if (fControlMode & 0x100)		// control mode has changed, set correct stuff
@@ -5670,7 +5061,6 @@ BOOL UpdateDataArea (void)
 
 		if (fControlMode == 0)
 		{
-			//print_textf(9,  56+8, DKBROWN, "^F00^W096");
 			DrawBitmap (9, (SHORT)(64+(1*56)), (dact_ic_active[1])?iDActnIc:iDActnI2, 0, (SHORT)(1*56), 48, 46);
 			DrawBitmap (9, (SHORT)(64+(2*56)), (dact_ic_active[6])?iDActnIc:iDActnI2, 0, (SHORT)(2*56), 48, 46);
 			DrawBitmap (9, (SHORT)(64+(3*56)), (dact_ic_active[7])?iDActnIc:iDActnI2, 0, (SHORT)(3*56), 48, 46);
@@ -5738,7 +5128,6 @@ BOOL UpdateDataArea (void)
 
 		if (l_map == DATA_AREA_ACTN
 				&& !sMenusUp && !fFadedOut			// don't draw if menu is up
-//				&& !fInfoOnlyDomainUI	[abc] 9/3
 			)
 		{
 			if (DoNPCAction())
@@ -5767,7 +5156,6 @@ BOOL UpdateDataArea (void)
 
 			// first column
 			y=36;
-//			gprint_text(12, y, STRMGR_GetStr(STR_GM_REALM), DKBROWN);
 			gprint_text(12, y, STRMGR_GetStr(STR_F00_REALMS), DKBROWN);
 			gprint_text(131, y+2, STRMGR_GetStr(STR_GM_UNITS), DKBROWN);
 			gprint_text(152, y+2, STRMGR_GetStr(STR_GM_HOLDINGS), DKBROWN);
@@ -5790,9 +5178,7 @@ BOOL UpdateDataArea (void)
 
 			// second column
 			y=36; x=156;
-//			gprint_text(x+12, y, STRMGR_GetStr(STR_GM_REALM), DKBROWN);
 			gprint_text(x+12, y, STRMGR_GetStr(STR_F00_OTHER_DOMAINS), DKBROWN);
-//			gprint_text(x+138, y+2, STRMGR_GetStr(STR_GM_UNITS), DKBROWN);
 			gprint_text(x+159, y+2, STRMGR_GetStr(STR_GM_HOLDINGS), DKBROWN);
 			y+=12;
 			crease(x+10, y-4, 150, 1);			// seperator
@@ -5854,15 +5240,11 @@ BOOL UpdateDataArea (void)
 		}
 
 		// automatically do tax roll if in Basic controls mode
-		//printf("auto-tax  - fControlMode:%d fDoActionIcon:%d\n",fControlMode,fDoActionIcon);
-		if (	(fControlMode == 0 && fDoActionIcon == FALSE
-//					&& !fInfoOnlyDomainUI	[abc] 9/3
-				)
+		if ((fControlMode == 0 && fDoActionIcon == FALSE)
 				|| (iHotSeatMultiplayerIndex == REALM::MIERES)
 				|| (HomeRealm == REALM::MIERES)
 			)
 		{
-			//DoTaxRolls(0,0);
 			DrawBitmap (0, 0, iDTurnBk, (SHORT)(DATA_AREA_MAX-l_map), 0, (SHORT)l_map, 480);
 			ScreenCopy( 0, 0, 0, (SHORT)l_map, 480, SC_DEFAULT_RES);
 			SwitchToActionMode(0,0);
@@ -5928,7 +5310,6 @@ BOOL UpdateDataArea (void)
 		// print brief realm info
 		if (l_map==DATA_AREA_MIN)
 		{
-//			print_textf(50, y, DKBROWN, STRMGR_GetStr(STR_GM_BRIEF1), pRealm->regency-payregency);
 			print_textf(50, y, DKBROWN, STRMGR_GetStr(STR_GM_REGENCY_FMT), pRealm->mfGetRegency()-payregency);
 			y += 12;
 //			print_textf(50, y, DKBROWN, STRMGR_GetStr(STR_GM_BRIEF3),new_treasury);
@@ -5960,9 +5341,6 @@ BOOL UpdateDataArea (void)
 					line(146, y-24, 208, y-24, DKBROWN);
 					gprint_text(177, y-27, STRMGR_GetStr(STR_GM_TAX_LEVEL), DKBROWN);
 
-//					gprint_text(170, y-7,  STRMGR_GetStr(STR_GM_LIGHT), DKBROWN);
-//					gprint_text(190, y-7,  STRMGR_GetStr(STR_GM_NORMAL), DKBROWN);
-//					gprint_text(210, y-7,  STRMGR_GetStr(STR_GM_SEVERE), DKBROWN);
 					gprint_text(170, y-7,  STRMGR_GetStr(STR_GM_AALIGHT), DKBROWN);
 					gprint_text(190, y-7,  STRMGR_GetStr(STR_GM_AANORMAL), DKBROWN);
 					gprint_text(210, y-7,  STRMGR_GetStr(STR_GM_AASEVERE), DKBROWN);
@@ -6167,9 +5545,7 @@ BOOL UpdateDataArea (void)
 										{
 											if(lPrint)
 											{
-												//DrawBitmap (150, y, iCheck[province[i].OccupdSptd], 0, 0, 20, 20);
 												DrawBitmap (150, (SHORT)y, iCheck[TRUE], 0, 0, 20, 20);
-												//add_region(154-5, y, 30, 12, 0, PayOccupiedProv, i, 0, 0, STR_NULL);
 											}
 										}
 										else
@@ -6201,8 +5577,6 @@ BOOL UpdateDataArea (void)
 											if (prov_source>=0) print_textf(300-40, y, DKBROWN, "^L%d", prov_source); else print_textf(300-40, y, DKBROWN, "^L-");
 											print_textf(300-20, y, DKBROWN, "^L%d", prov_reg);
 											print_textf(300, y, DKBROWN, (fFinalRoll>=cProvinces)?"^L%d":"^T2^L%d", prov_tax);
-//											if (fDoActionIcon && fFinalRoll==cProvinces-1)
-//												DrawBitmap(320, (SHORT)(y+5-24), iDRollIc, 0, 0, 999, 999);
 										}
 									}
 		
@@ -6664,9 +6038,7 @@ BOOL UpdateDataArea (void)
 		//--------------------------------------------------
 		// After tax rolls are done
 		//--------------------------------------------------
-		if (fDoActionIcon && fFinalRoll >= cProvinces
-//				&& !fInfoOnlyDomainUI		[abc] 9/3
-			)
+		if (fDoActionIcon && fFinalRoll >= cProvinces)
 		{
 			// treasury and regency must be positive to go on
 			//if (new_treasury < 0 || realm_reg < 0)			// either is invalid
@@ -6688,18 +6060,12 @@ BOOL UpdateDataArea (void)
 		}
 
 		// roll taxes
-//		if (!fDontAdvance && fDoActionIcon && fFinalRoll <= cProvinces && l_map==DATA_AREA_MAX)
-		if (fDoActionIcon && fFinalRoll <= cProvinces && l_map==DATA_AREA_MAX
-//				&& !fInfoOnlyDomainUI	[abc] 9/3
-			)
+		if (fDoActionIcon && fFinalRoll <= cProvinces && l_map==DATA_AREA_MAX)
 		{
 			++fFinalRoll;
 			fRedrawAll = TRUE;
-//			fDontAdvance = TRUE;
-//			ShowFor(3,&fDontAdvance);
 			if (fFinalRoll == 1)
 			{
-//				reqSound = SND_UI_DICE1;
 				if (fCanDoPushRegions)
 				{
 					push_regions();
@@ -6744,7 +6110,6 @@ printf("DeleteDomainRegions\n");
 		del_region(AdjReduceHolds,0);
 		del_region(AdjUnitPay,0);
 		del_region(AdjCourt,0);
-//		del_region(PayOccupiedProv,0);
 		del_region(QueryBloodlineStrength,0);
 		del_region(TempDataAreaMode,0);
 		del_region(DisplayHolding,0);
@@ -6774,10 +6139,6 @@ void AddDomainRegions (void)
 		del_region(DoTaxRolls,0);
 		del_region(SwitchToActionMode,0);
 
-
-
-//		add_region(  0,0,DATA_AREA_MIN,376,0,DataAreaMode,MAX_MODE,0,regMINIMIZED, STR_NULL);
-//		add_region(DATA_AREA_MAX-32,0,32,376,0,DataAreaMode,MIN_MODE,0,regMAXIMIZED, STR_NULL);
 		if(fRealmSelected || fTutorialSelected )
 		{	
 			add_region(422,432,32,48,0,TempDataAreaMode,(LONG)&fSelectDomains,1,regSHOW_HOLDINGS, STR_GM_TT_SELECT_DOMAIN);
@@ -6855,18 +6216,12 @@ void ReleaseDomainUI (LONG Fake)
 
 void ReleaseDomainTurn (LONG Fake)
 {
-	//printf("ReleaseDomainTurn\n");
-
 	ReleaseDomainUI(0);
 	DeleteDomainRegions();
 
 	fDomainTurn = FALSE;
-	//fAutoRestoreCursor = FALSE;
 	HideMenu(D_GAMEBUTTON);
-	//printf("Freemem leaving map level: %ld\n", ReportFreeMem(TRUE));
-	//printf("Region count leaving map level: %ld\n", CountRegions());
 
-	//add_timer(1,draw_cursor);
 	fRender = TRUE;
 	fFreeze = FALSE;
 	fPause = FALSE;
@@ -6936,7 +6291,6 @@ void InitDomainTurn (LONG Fake)
 	LONG				i, j, k, cnt;
 	char				n[40];
 	static BOOL		FirstRun	= TRUE;
-	//static ULONG	old_free_mem = 0;
 
 #if defined (_EDIT)
 	return;								// [d8-09-96 JPC] can't get to map
@@ -7051,12 +6405,8 @@ printf("GAMEMAP.CPP - InitDomainTurn: load large map\n");
 		SetPurge(iCheck[1]);
 #endif
 
-		//printf("Start loading province data\n");
-
 		for (j=1; j<PROVINCE_COUNT; ++j)
 		{
-			//printf("%s\n",province[j].name);
-
 			// find out how many places are here
 			cnt = 0;
 			CheckAndFixPlaces((PROVINCE)j);
@@ -7289,7 +6639,6 @@ void RealmNames (LONG clipped_x, LONG clipped_y)
 
 	origin_x = (SHORT)l_map;
 
-//	icon_scale = map_scale;
 	icon_scale = (((map_scale-FULL_SCALE)*8)/10)+FULL_SCALE;
 	for (j=0; j<REALM::REALM_COUNT; ++j)
 	{
@@ -7341,12 +6690,6 @@ BOOL CheckForCastleNeutralized (PROVINCE iProvince, LONG iMovingUnit)
 	j = k = province[iProvince].FirstPlace;
 	while (k != 0)
 	{
-		//if (places[j].Icon == CASTLE1_ICON)
-		//	printf("CHECK CASTLE NEUTRALIZED - %s sdisp:%c allied(%s,%s):%c\n",
-		//		province[iProvince].name, (places[j].fSiteDisplayed)?'Y':'N',
-		//		realm[places[j].Realm].mfGetName(), realm[units[iMovingUnit].Realm].mfGetName(),
-		//		(AREALLIED(places[j].Realm, units[iMovingUnit].Realm))?'Y':'N');
-
 		if (	(	places[j].Icon == CASTLE1_ICON
 				||	places[j].Icon == CASTLE2_ICON
 				||	places[j].Icon == CASTLE3_ICON
@@ -7357,9 +6700,6 @@ BOOL CheckForCastleNeutralized (PROVINCE iProvince, LONG iMovingUnit)
 			for (i=0; i<LAND_REALM_COUNT; ++i)
 				if (!AREALLIED(i,places[j].Realm))
 					cUnits += UnitsHere(iProvince, (REALM::REALM_TYPE)i);
-
-			//printf("CHECK CASTLE NEUTRALIZED - %s cUnits:%d level:%d ",
-			//province[iProvince].name,cUnits,places[j].Level); ccUnits=cUnits;
 
 			cUnits--;
 			l = iMovingUnit;
@@ -7393,9 +6733,6 @@ BOOL CheckUnit2ndMoveBlocked (LONG iMovingUnit, PROVINCE iProvince, PROVINCE iNe
 	if (units[iMovingUnit].MovePart!=0)	// in case we are on the move
 		return 1;
 
-	//if (iRealm == REALM::CARIELE)
-	//	printf("Unit:%d in %s, to %s - ",iMovingUnit, province[iProvince].name, province[iNewProv].name);
-
 	// check for foreign units
 	for (j=1; j<MAX_UNITS; ++j)
 	{
@@ -7405,21 +6742,12 @@ BOOL CheckUnit2ndMoveBlocked (LONG iMovingUnit, PROVINCE iProvince, PROVINCE iNe
 				&& UnitFinalProvince(j) == iProvince		// in this prov when done moving
 				&& !AREALLIED(iRealm, units[j].Realm) )	// not ally of iMovingUnit's realm
 		{
-			//if (iRealm == REALM::CARIELE)
-			//	printf("blocked by %d [%s]\n",j,realm[units[j].Realm].mfGetName());
 			return 2;
 		}
 	}
 
-	//if (iRealm == REALM::CARIELE)
-	//	printf("no blocks\n");
-
 	// check for foreign castles
 	cn = CheckForCastleNeutralized(iProvince,iMovingUnit);
-
-	//printf("CASTLE - cn:%d iNewProv:%s (%s,%d)\n",
-	//cn, province[iNewProv].name, realm[province[iNewProv].Realm].name,
-	//province[iNewProv].Realm==HomeRealm);
 
 	if (!cn && province[iNewProv].Realm != iRealm
 			&& province[iNewProv].OccupRealm != iRealm)
@@ -7435,9 +6763,6 @@ BOOL CheckUnit2ndMoveBlocked (LONG iMovingUnit, PROVINCE iProvince, PROVINCE iNe
 	======================================================================== */
 BOOL CheckNotWarded (LONG iMovingUnit, PROVINCE iNewProv, PROVINCE iOldProv)
 {
-	//return (	(province[iNewProv].Warded == 0 || province[iNewProv].DispelLvl == units[iMovingUnit].Realm)
-	//		&& (province[iOldProv].Warded == 0 || province[iOldProv].DispelLvl == units[iMovingUnit].Realm));
-	
 	// GWP You have to check that the warded flag is set, otherwise the DispelLvl
 	//     doesn't apply to the warding information.
 	return !(	(province[iNewProv].Warded > 0 && province[iNewProv].DispelLvl != units[iMovingUnit].Realm)
@@ -7458,8 +6783,6 @@ void NewTutorial (BOOL fInReport)
 	{
 		del_region(HandleMore,0);
 		l = (date*5)+TutorialActionNumber;
-//printf("date:%d  TutorialActionNumber:%d  TutorText[%d]\n",date,TutorialActionNumber,l);
-
 
 		if (TutorialHelpMgr::HelpExists(l,TutorialScreenNumber))
 		{
@@ -7469,14 +6792,6 @@ void NewTutorial (BOOL fInReport)
 			print_textf(0, 0, DKBROWN, STRMGR_GetStr(gs));
 			if (GameSpecificGlobal_type == 5 || GameSpecificGlobal_type == 6)
 			{
-#if 0
-				x = GameSpecificGlobal_x + (GameSpecificGlobal_w/2) - 32;
-				y = GameSpecificGlobal_y + GameSpecificGlobal_h - 17 - 4;
-				color_edged_rect(x,y,64,17,18);
-
-				print_textf(x+32,y+10, MDRED,(GameSpecificGlobal_type == 5)?);
-				add_region(x,y,64,17,(GameSpecificGlobal_type == 5)?D_KEY_MORE:D_KEY_DONE1,HandleMore,0,0,0,STR_NULL);
-#else
 				x = GameSpecificGlobal_x + (GameSpecificGlobal_w/2) - 26;
 				y = GameSpecificGlobal_y + GameSpecificGlobal_h - 16 - 4;
 				SHORT	iButton = fERROR;
@@ -7486,7 +6801,6 @@ void NewTutorial (BOOL fInReport)
 				iButton = fERROR;
 				print_textf(x+26,y+9, MDRED,(GameSpecificGlobal_type == 5)?STRMGR_GetStr(STR_GM_TUT_BUTS_MORE):STRMGR_GetStr(STR_GM_TUT_BUTS_DONE));
 				add_region(x,y,52,16,(GameSpecificGlobal_type == 5)?D_KEY_MORE:D_KEY_DONE1,HandleMore,0,0,0,STR_NULL);
-#endif
 			}
 
 			// code for end the tutorial
@@ -7517,16 +6831,12 @@ void MoveZoomMap (LONG xx, LONG yy)
 	req_x = xx;
 	req_y = yy;
 
-//	if (map_scale != FULL_SCALE)
 	if (desired_scale != FULL_SCALE)
 	{
 		map_x = xx;
 		map_y = yy;
 		req_x = req_y = 0;
-//		reqSound = SND_UI_MAP_ZOOM_IN;
 	}
-//	else
-//		reqSound = SND_UI_MAP_NAVIGATE_LOOP;
 
 	desired_scale = FULL_SCALE;
 
@@ -7726,7 +7036,6 @@ void DomainTurnUI (void)
 	}
 
 	// check for multiplayer messages that require special game handling
-//	if (!fInfoOnlyDomainUI)		[abc] 9/3
 		HandleMultiPlayerEvents();		// calls HaveEvents
 
 	// ========================================================
@@ -7734,9 +7043,7 @@ void DomainTurnUI (void)
 	// ========================================================
 	#ifdef _WINDOWS
 	if ( IsMultiPlayer() && iTTimeLimit != IX_TT_NONE &&  WaitingWhen != 0
-			&& CurrentRealm == HomeRealm && lSuspendedTimeLimitAdjustment==0
-//			&& !fInfoOnlyDomainUI	[abc] 9/3
-		)
+			&& CurrentRealm == HomeRealm && lSuspendedTimeLimitAdjustment==0)
 	{
 		i = (LONG)get_time() - (LONG)WaitingWhen - AdjustedTimeLimit();
 
@@ -7851,7 +7158,6 @@ void DomainTurnUI (void)
 		mouse_click = 0;
 
 		// mouse_button ==1 is left ==2 is right
-//		printf("mouse button: %ld\n",mouse_button);
 
 		if(cursor_x > l_map)		// if on map
 		{
@@ -7879,9 +7185,7 @@ void DomainTurnUI (void)
 				// ========================================================
 				if (dturn_mode == SELRLM_MODE)
 				{
-//					printf("Province:%ld Realm:%ld\n",iProvSelect,province[iProvSelect].Realm);
 					if (iProvSelect >= 0 && iProvSelect < PROVINCE_COUNT
-//						&& HomeRealm != province[iProvSelect].Realm
 						&& realm[province[iProvSelect].Realm].mfIsPlayable()
 #ifdef _WINDOWS
 						&& lRealmSelectedByPlayer[province[iProvSelect].Realm] == -1
@@ -7909,16 +7213,10 @@ void DomainTurnUI (void)
 					// ========================================================
 					// check for clicked on a place
 					// ========================================================
-					// icon_scale = (map_scale>FULL_SCALE) ? (((map_scale-FULL_SCALE)*7)/10)+FULL_SCALE : FULL_SCALE;
-					// if (icon_scale < FULL_SCALE) icon_scale = FULL_SCALE;
 					icon_scale = FULL_SCALE;
 					for (j=0; j<MAX_PLACES; ++j)
 					{
-						//if (show_place_icon[places[j].Icon] && places[j].x && (i=places[j].iIconBitm) != fERROR)
-						if (	(
-//						        (places[j].scene!=NULL && places[j].fSiteDisplayed) ||
-						        (show_place_icon[places[j].Icon] && realm[places[j].Realm].mfShowHoldings())
-						        )
+						if (show_place_icon[places[j].Icon] && realm[places[j].Realm].mfShowHoldings()
 							&& (i=places[j].iIconBitm) != fERROR
 							&& realm[places[j].Realm].mfExists()
 							&& places[j].x)
@@ -7956,10 +7254,7 @@ void DomainTurnUI (void)
 					// ========================================================
 					// check for clicked on a unit
 					// ========================================================
-					//icon_scale = (map_scale>FULL_SCALE) ? ((map_scale-FULL_SCALE)/2)+FULL_SCALE : FULL_SCALE;
 					icon_scale = FULL_SCALE;
-					//unit_scan++;		// NEXT unit
-//printf("unit_scan: %d\n",unit_scan);
 					temp = l = FALSE;
 					for (k=0; k<MAX_UNITS; ++k)
 					{
@@ -7971,8 +7266,6 @@ void DomainTurnUI (void)
 						}
 						j = unit_scan;
 
-						//if (units[j].province && units[j].iIconBitm!=fERROR && units[j].Joined==FALSE)
-
 						if (units[j].province && units[j].iIconBitm!=fERROR
 							&& units[j].Joined==FALSE
 							&& realm[units[j].Realm].mfShowUnits()
@@ -7980,8 +7273,6 @@ void DomainTurnUI (void)
 
 						{
 							i = units[j].iIconBitm;
-							//w_icon = (((BITMPTR)BLKPTR(i))->w * FULL_SCALE) / icon_scale;
-							//h_icon = (((BITMPTR)BLKPTR(i))->h * FULL_SCALE) / icon_scale;
 							w_icon = ((BITMPTR)BLKPTR(i))->w;
 							h_icon = ((BITMPTR)BLKPTR(i))->h;
 							x_icon = (((province[units[j].province].x+UNIT_ICON_X_ADJ-clipped_x) * FULL_SCALE) / map_scale) - (w_icon/2) + l_map;
@@ -8001,7 +7292,6 @@ void DomainTurnUI (void)
 								fInfoOnlyDomainUI = FALSE;
 								return;
 #endif
-								//if (units[j].Realm == HomeRealm) // check for allowed selection
 								{
 									// select unit to move
 									if (l)
@@ -8026,17 +7316,9 @@ void DomainTurnUI (void)
 
 							if (mouse_button==2)
 							{
-//								iSelectedUnit = (SHORT)j;
-								// turn on unit info box
-//								if (iSelectedUnit > 0)
-//									iUnitInfo = iSelectedUnit;
-//								else
-
 								iSelectedUnit = -1;		// deselect unit
 								iUnitInfo = (SHORT)j;
 
-								//ShowFor(MESSAGE_DELAY, &iUnitInfo);
-								//printf("clicked on unit info:%d  id:%d\n",iUnitInfo,units[iUnitInfo].id);
 								fRedrawAll = TRUE;
 								goto DoSpecial;
 							}
@@ -8072,8 +7354,6 @@ void DomainTurnUI (void)
 					&& units[iSelectedUnit].Realm == HomeRealm)
 #endif
 				{
-					//printf("Move request from %s to %s - status %s\n",realm[HomeRealm].mfName(),realm[province[iProvSelect].Realm].mfGetName(),szRealmStatus[((RealmStatus[HomeRealm][province[iProvSelect].Realm]])&0x0F));
-
 					if (iProvSelect <= 0 || iProvSelect >= PROVINCE_COUNT)
 					{
 						reqSound = SND_UI_NOT_PERMITTED;
@@ -8126,13 +7406,10 @@ FINDLEADER:
 							for (k=1; k<MAX_UNITS; ++k)
 								if (units[k].NextUnit == iSelectedUnit)
 								{
-//									units[k].NextUnit = -1;
 									SetGameData(MP_UNITS, MPUNITS_NEXTUNIT, k, -1, TRUE);
 									break;
 								}
-//							units[iSelectedUnit].province = units[l].province;
 							SetGameData(MP_UNITS, MPUNITS_PROVINCE, iSelectedUnit, units[l].province, TRUE);
-//							units[iSelectedUnit].Joined = FALSE;
 							SetGameData(MP_UNITS, MPUNITS_JOINED, iSelectedUnit, FALSE, TRUE);
 						}
 
@@ -8146,10 +7423,7 @@ FINDLEADER:
 							reqSound = SND_UI_TROOPS_ARE_ENGAGED1;
 						else if (l==3)
 							reqSound = SND_UI_CASTLE_BESIEGED1;
-						//else
-						//	reqSound = SND_UI_NOT_ADJACENT;
 					}
-					//printf("\n");
 
 					goto DoSpecial;
 				}
@@ -8168,7 +7442,6 @@ FINDLEADER:
 				{
 					req_x = clipped_x + (((cursor_x-l_map) * map_scale) / FULL_SCALE);
 					req_y = clipped_y + ((cursor_y * map_scale) / FULL_SCALE);
-//					printf("map coord: %ld,%ld\n",req_x,req_y);
 					if (map_scale != FULL_SCALE)
 					{
 						map_x=req_x; map_y=req_y; req_x=req_y=0;
@@ -8255,10 +7528,7 @@ DoSpecial:
 	{
 		temp=req_l_map-l_map;
 		temp=(temp&&ABS(temp)>2)?temp/3:SGN(temp);
-//		dl_map+=SGN(temp)*3;
 		dl_map+=SGN(temp)*8;
-//		if (ABS(dl_map)>MAX_MAP_XY_SPEED)
-//			dl_map=MAX_MAP_XY_SPEED*SGN(temp);
 		if (ABS(dl_map)>(MAX_MAP_XY_SPEED*3))
 			dl_map=MAX_MAP_XY_SPEED*3*SGN(temp);
 		if (ABS(dl_map)>ABS(temp))
@@ -8314,14 +7584,6 @@ DoSpecial:
 	scaled_l_max = MAP_WIDTH - scaled_win_size_x;
 	scaled_t_max = MAP_HEIGHT - scaled_win_size_y;
 
-// I have no idea what this did
-//	if (scaled_l_max < 0)
-//	{
-//		l_map = req_l_map = 640 - ((MAP_WIDTH * FULL_SCALE) / map_scale);
-//		dl_map = 1;
-//		scaled_l_max = 0;
-//	}
-
 	clipped_x = map_x - (scaled_win_size_x/2);
 	clipped_y = map_y - (scaled_win_size_y/2);
 	i = force_x;	// temp store forces
@@ -8353,7 +7615,6 @@ DoSpecial:
 	// draw map
 	// ========================================================
 	// GEH update the chat panel location
-//	SetButtonPosition(D_CHAT_DISPLAY_WINDOW, 0, l_map, 0);
    SetChatPosition ( l_map );
 
 #if ENHANCEDRES
@@ -8379,7 +7640,6 @@ DoSpecial:
 		FrameTimerStart();
 		fRedrawAll = FALSE;
 		SysHideCursor();
-//		ScaleBitmap ((SHORT)l_map, 0, iLgMap, (SHORT)clipped_x, (SHORT)clipped_y, (SHORT)(640-l_map), (SHORT)480, (SHORT)map_scale);
 		ScaleBitmap ((SHORT)l_map, 0, iLgMap, (SHORT)((fLgMap==LARGE)?clipped_x:clipped_x/2), (SHORT)((fLgMap==LARGE)?clipped_y:clipped_y/2), (SHORT)(640-l_map), (SHORT)480, (SHORT)((fLgMap==LARGE)?map_scale:map_scale/2) );
 #endif
 
@@ -8436,8 +7696,6 @@ DoSpecial:
 		// [MDB]
 		if (dturn_mode != SELRLM_MODE)
 		{
-			//icon_scale = (map_scale>FULL_SCALE) ? (((map_scale-FULL_SCALE)*7)/10)+FULL_SCALE : FULL_SCALE;
-			//if (icon_scale < FULL_SCALE) icon_scale = FULL_SCALE;
 			icon_scale = (((map_scale - (FULL_SCALE*8/10)) * 7) / 10) + FULL_SCALE;
 			if (icon_scale < FULL_SCALE) icon_scale = FULL_SCALE;
 
@@ -8445,7 +7703,7 @@ DoSpecial:
 			if (show_place_icon[SOURCE1_ICON])
 			{
 				temp = origin_x;
-				origin_x = l_map;;
+				origin_x = l_map;
 				for (j=0; j<MAX_PLACES; ++j)
 				{
 					if (places[j].Icon == SOURCE1_ICON
@@ -8475,7 +7733,7 @@ DoSpecial:
 			if (show_place_icon[GUILD1_ICON])
 			{
 				temp = origin_x;
-				origin_x = l_map;;
+				origin_x = l_map;
 				for (j=0; j<MAX_PLACES; ++j)
 				{
 					if (places[j].Icon == GUILD1_ICON
@@ -8493,7 +7751,6 @@ DoSpecial:
 								y_icon = (((places[j].y+MAP_ICON_Y_ADJ-clipped_y) * FULL_SCALE) / map_scale);
 								w_icon = (((province[k].x+MAP_ICON_X_ADJ-clipped_x) * FULL_SCALE) / map_scale)+l_map;
 								h_icon = (((province[k].y+MAP_ICON_Y_ADJ-clipped_y) * FULL_SCALE) / map_scale);
-//								line(x_icon, y_icon, w_icon, h_icon, LTYELLOW);
 								dashedline(x_icon, y_icon, w_icon, h_icon, (gRemapColors[places[j].Realm][0])+18, (gRemapColors[places[j].Realm][1])+18);
 								dashedline(x_icon+1, y_icon, w_icon+1, h_icon, (gRemapColors[places[j].Realm][0])+18, (gRemapColors[places[j].Realm][1])+18);
 								dashedline(x_icon, y_icon+1, w_icon, h_icon+1, (gRemapColors[places[j].Realm][0])+18, (gRemapColors[places[j].Realm][1])+18);
@@ -8507,17 +7764,13 @@ DoSpecial:
 			// draw icons
 			for (j=0; j<MAX_PLACES; ++j)
 			{
-				if (	(
-//					(places[j].scene!=NULL && places[j].fSiteDisplayed) ||
-					(show_place_icon[places[j].Icon] && realm[places[j].Realm].mfShowHoldings())
-					)
+				if (show_place_icon[places[j].Icon] && realm[places[j].Realm].mfShowHoldings()
 					&& places[j].iIconBitm != fERROR
 					&& realm[places[j].Realm].mfExists()
 					&& (map_scale < (MAX_SCALE/2) || places[j].Icon >= CASTLE1_ICON)
-					&& places[j].x )
+					&& places[j].x)
 				{
 					i = places[j].iIconBitm;
-//					if (icon_scale < FULL_SCALE) icon_scale = FULL_SCALE;
 					w_icon = (((BITMPTR)BLKPTR(i))->w * FULL_SCALE) / icon_scale;
 					h_icon = (((BITMPTR)BLKPTR(i))->h * FULL_SCALE) / icon_scale;
 					x_icon = (((places[j].x+MAP_ICON_X_ADJ-clipped_x) * FULL_SCALE) / map_scale) - (w_icon/2);
@@ -8528,7 +7781,6 @@ DoSpecial:
 						ScaleBitmap ((SHORT)(x_icon+l_map), (SHORT)y_icon, (SHORT)i, (SHORT)l_icon, (SHORT)t_icon, (SHORT)w_icon, (SHORT)h_icon, (SHORT)icon_scale);
 
 					// province controller
-					//if (icon_scale == FULL_SCALE
 					if (map_scale <= FULL_SCALE
 						&& places[j].Icon >= LAW1_ICON
 						&& places[j].Icon <= CASTLE4_ICON
@@ -8578,7 +7830,6 @@ DoSpecial:
 			temp = (map_scale>FULL_SCALE) ? ((map_scale-FULL_SCALE)/3)+FULL_SCALE : FULL_SCALE;
 			for (j=0,k=1; j<=MAX_UNITS && k; ++j)
 			{
-//				icon_scale = temp;
 				icon_scale = FULL_SCALE;
 
 				if (j == iSelectedUnit)	 //	don't draw in order...
@@ -8606,9 +7857,7 @@ DoSpecial:
 					dir = -1;
 
 					// adjust unit position, use .MovePart to calc how far along
-					if (units[j].DestProvince != NO_PROVINCE
-//							&& !fInfoOnlyDomainUI	[abc] 9/3
-						)
+					if (units[j].DestProvince != NO_PROVINCE)
 					{
 						PROVINCE fromprov = (PROVINCE)units[j].province;
 						PROVINCE destprov = (PROVINCE)units[j].DestProvince;
@@ -8743,7 +7992,6 @@ DoSpecial:
 							w_icon = (640-l_map) - x_icon;
 						}
 
-						//if (y_icon < 0) {h_icon += y_icon; t_icon = -y_icon; y_icon = 0;} else t_icon = 0;
 						if (w_icon > 0 && h_icon > 0)
 						{
 							if (l && dir>=0)	// animated icon
@@ -8751,36 +7999,26 @@ DoSpecial:
 								sprintf(n,"UI\\%s_M.PCX",GameIcons[units[j].Icon]);
 								i = GetResourceStd(n, FALSE);
 								l_icon += ((units[j].MovePart & 0x03) * w);
-								//l_icon = ((units[j].MovePart & 0x03) * w);
 								if (dir > 4)
 									dir = 8 - dir;
 								else
 									w_icon = -w_icon;
-								//t_icon += (dir * h);
 								t_icon = (dir * h);
 								DrawBitmap ((SHORT)(x_icon+l_map), (SHORT)y_icon, (SHORT)i, (SHORT)l_icon, (SHORT)t_icon, (SHORT)w_icon, (SHORT)h_icon);
 								SetPurge(i);
 							}
 							else
 							{
-								//if (units[j].Icon==A_KNT_UNIT_ICON)
-								//	printf("DOMAINTURNUI:drawunits - scaled:%c dest:%d,%d size:%d,%d drawn:%d,%d,%d,%d \n",
-								//		(icon_scale==FULL_SCALE)?'N':'Y',x_icon,y_icon, w,h, l_icon,t_icon,w_icon,h_icon);
-
 								if (icon_scale==FULL_SCALE)
-									//DrawBitmap ((SHORT)(x_icon+l_map), (SHORT)y_icon, (SHORT)i, (SHORT)l_icon, (SHORT)t_icon, (SHORT)w_icon, (SHORT)h_icon);
 									DrawBitmap ((SHORT)(x_icon+l_map), (SHORT)y_icon, (SHORT)i, (SHORT)l_icon, 0, w_icon, h_icon);
 								else
-									//ScaleBitmap ((SHORT)(x_icon+l_map), (SHORT)y_icon, (SHORT)i, (SHORT)l_icon, (SHORT)t_icon, (SHORT)w_icon, (SHORT)h_icon, (SHORT)icon_scale);
 									ScaleBitmap ((SHORT)(x_icon+l_map), (SHORT)y_icon, (SHORT)i, (SHORT)l_icon, 0, w_icon, h_icon, (SHORT)icon_scale);
 							}
 						}
 					}
 
 					// if we arrived in a province, cycle through all units there
-					if (fCheckUnitArrival && fJoinDialog==FALSE
-//							&& !fInfoOnlyDomainUI	[abc] 9/3
-						)
+					if (fCheckUnitArrival && fJoinDialog==FALSE)
 					{
 						if (CheckUnitArrival(fCheckUnitArrival,TRUE) & fSCENEBATTLE)
 						{
@@ -8812,7 +8050,6 @@ DoSpecial:
 						BOOL	fSubUnit = (units[j].Joined);
 
 						init_gfont(FONT_SANS_5PT);
-						//w = gtext_width(realm[units[j].Realm].mfGetName())+10;
 						w = gtext_width(realm[units[j].Realm].mfGetName())+20;
 						h = 12;
 
@@ -8820,7 +8057,6 @@ DoSpecial:
 						while (l > 0)				// calc size of box
 						{
 							sz = UnitName((SHORT)l);
-							//w = MAX(w, gtext_width(sz)+4+(6*(h>3)));
 							w = MAX(w, gtext_width(sz)+20);
 							h += 8;
 							l = units[l].NextUnit;
@@ -8834,9 +8070,6 @@ DoSpecial:
 						if (y+h > 475)		y = 475 - h;
 						if (y < 5)			y = 5;
 
-
-						//color_rect(x, y, w, h, 223);		// lt tan
-						//color_box(x, y, w, h, 223-8);		// md tan
 						DrawLittleButton(x, y, w, h, 0);
 						l = j;
 
@@ -8881,61 +8114,6 @@ DoSpecial:
 					}
 				}
 			}
-
-			// ========================================================
-			//	Join units dialog
-			// ========================================================
-#if 0
-			if (fJoinDialog)
-			{
-				// New Tutorial Display, when join dialog is up
-				if (fTutorialSelected && !fFadedOut)
-				{
-					NewTutorial(FALSE);
-					fDidTutorialScreen = TRUE;
-				}
-
-				del_region(JoinUnits,0);
-				push_regions();
-				init_gfont(FONT_SANS_5PT);
-
-				if (CalcUnitValues(fJoinDialog) > CalcUnitValues(iJoinDialog_to))
-					sprintf(n, STRMGR_GetStr(STR_GM_JOIN), UnitName(iJoinDialog_to), UnitName(fJoinDialog));
-				else
-					sprintf(n, STRMGR_GetStr(STR_GM_JOIN), UnitName(fJoinDialog), UnitName(iJoinDialog_to));
-
-				x = xJoinDialog + l_map + 20;
-				y = yJoinDialog + 25;
-				w = gtext_width(n) + 4;
-				h = 24;
-
-				// handle edges of screen
-				if (x+w > 635)		x = 635 - w;
-				if (x < l_map+5)	x = l_map + 5;
-				if (y+h > 475)		y = 475 - h;
-				if (y < 5)			y = 5;
-
-				color_rect(x, y, w, h, 223);		// lt tan
-				color_box(x, y, w, h, 223-8);		// md tan
-				y+=2;
-				print_textf(x+3, y, DKBROWN, n);
-				y+=10;
-				x = x + (w/3) - 10;
-				color_rect(x, y, 20, 10, 223-4);		// lt tan
-				color_box(x, y, 20, 10, 223-12);		// md tan
-//				print_textf(x+11, y+6, DKBROWN, STRMGR_GetStr(STR_GM_YES));
-				print_textf(x+11, y+6, DKBROWN, STRMGR_GetStr(STR_GM_FMTD_YES));
-				add_region(x,y,20,10,KEY_Y,JoinUnits,fJoinDialog,iJoinDialog_to,0,STR_NULL);
-				x = x + (w/3);
-				color_rect(x, y, 20, 10, 223-4);		// lt tan
-				color_box(x, y, 20, 10, 223-12);		// md tan
-//				print_textf(x+11, y+6, DKBROWN, STRMGR_GetStr(STR_GM_NO));
-				print_textf(x+11, y+6, DKBROWN, STRMGR_GetStr(STR_GM_FMTD_NO));
-				add_region(x,y,20,10,KEY_N,JoinUnits,0,0,0,STR_NULL);
-				fCommandBattleLoop = TRUE;
-			}
-#endif
-
 		}
 		ClearRemapTable();
 
@@ -8971,7 +8149,6 @@ DoSpecial:
 			SetPurge(hRealmSelectBox);
 			hRealmSelectBox = fERROR;
 
-			//print_text_centered(cxText,cyText,STRMGR_GetStr(STR_REALM_SELECTION),BLACK);
 			#if defined (_GERMANVER)
 			print_textf(cxText-170,cyText-10,BLACK,STRMGR_GetStr(STR_GM_FMTD_REALM_SEL));
 			print_textf(cxText-123,cyText+20,BLACK,STRMGR_GetStr(STR_GM_CLICK_FOR_CHOICES));
@@ -8988,11 +8165,9 @@ DoSpecial:
 		// ========================================================
 		if (iUnitInfo)
 		{
-			//DisplayInfo("UI\\DINF3_BK.PCX",0,STR_GM_MOVE,STRMGR_GetStr(gsUnitTitle[units[iUnitInfo].Icon]),realm[units[iUnitInfo].Realm].mfGetName(),2);
 			l = units[iUnitInfo].id;
 			if (l >= 1000 && l < 3000)
 			{
-				//printf("ShowStatus - unit:%d  id:%d\n",iUnitInfo,l);
 				SetStatusRealm( (REALM::REALM_TYPE) units[iUnitInfo].Realm );
 				if(units[iUnitInfo].Realm != HomeRealm)
 					ShowStatus(-l, 0);				// avoid to show the invntory menu for people who is not in my realm
@@ -9001,17 +8176,12 @@ DoSpecial:
 			}
 			else
 			{
-				//printf("InitBattleCard - unit:%d  id:%d\n",iUnitInfo,l);
 				InitBattleCard(iUnitInfo);
 			}
 			iUnitInfo = 0;
 		}
 		else if (iPlaceInfo)
 		{
-			//STR_GM_LOCATION		^F03%s\n^F00REALM: ^F02%s\n^F00ADVENTURE LOCATION: ^F02%s
-			//DisplayInfo("UI\\DINF3_BK.PCX",0,STR_GM_LOCATION,
-			//	(places[iPlaceInfo].scene!=NULL)?places[iPlaceInfo].scene:STRMGR_GetStr(STR_GM_NO2));
-
 			if (HoldType(iPlaceInfo) < 5)		// don't print holding's level
 			{
 				char buffer1[50];
@@ -9023,9 +8193,7 @@ DoSpecial:
 				char buffer7[50];
 				strcpy(buffer1,(places[iPlaceInfo].iName)? STRMGR_GetStr(STR_GM_TYPE_REALM_FMT1): STRMGR_GetStr(STR_GM_TYPE_REALM_FMT2));
 				strcpy(buffer2,STRMGR_GetStr(gsHolding[HoldType(iPlaceInfo)]));
-				strcpy(buffer3,
-//								(places[iPlaceInfo].scene!=NULL)?STRMGR_GetStr(STR_GM_ADVENTURE_LOC):
-								"");
+				strcpy(buffer3,"");
 				strcpy(buffer4,(places[iPlaceInfo].Icon==CASTLE1_ICON&&places[iPlaceInfo].iRoute1)?STRMGR_GetStr(STR_GM_UNDER_CONSTRUCTION):"");
 				strcpy(buffer5,(places[iPlaceInfo].Contested)?STRMGR_GetStr(STR_GM_CONTESTED):"\0");
 				strcpy(buffer6,realm[places[iPlaceInfo].Realm].mfGetName());
@@ -9071,8 +8239,6 @@ print_textf(0,0,BLACK,buffer6);
 		}
 		else if (iProvInfo)
 		{
-//			STR_GM_TERRAIN		^F03%s %d/%d\n^F00REALM: ^F02%s\n^F00TERRAIN: ^F02%s
-//			DisplayInfo("UI\\DINF3_BK.PCX",0,STR_GM_TERRAIN,
 			char buffer[100];
 			char cpProvinceSpellName[100];
 			LONG provSpellCount = 0;
@@ -9150,7 +8316,6 @@ print_textf(0,0,BLACK,buffer6);
 	// ========================================================
 	// if data area changed
 	// ========================================================
-	// fDataAreaChanged includes fUpdateDataArea
 	if (fDataAreaChanged && !fCommandBattleLoop)
 	{
 		fUpdateDataArea = FALSE;
@@ -9201,13 +8366,6 @@ print_textf(0,0,BLACK,buffer6);
 			// ========================================================
 			if (fJoinDialog)
 			{
-				// New Tutorial Display, when join dialog is up
-				//if (fTutorialSelected && !fFadedOut)
-				//{
-				//	NewTutorial(FALSE);
-				//	fDidTutorialScreen = TRUE;
-				//}
-
 				del_region(JoinUnits,0);
 				push_regions();
 				init_gfont(FONT_SANS_5PT);
@@ -9251,13 +8409,11 @@ print_textf(0,0,BLACK,buffer6);
 				x = x + (w/3) - 10;
 				color_rect(x, y, 20, 10, 223-4);		// lt tan
 				color_box(x, y, 20, 10, 223-12);		// md tan
-//				print_textf(x+11, y+6, DKBROWN, STRMGR_GetStr(STR_GM_YES));
 				print_textf(x+11, y+6, DKBROWN, STRMGR_GetStr(STR_GM_FMTD_YES));
 				add_region(x,y,20,10,KEY_Y,JoinUnits,fJoinDialog,iJoinDialog_to,0,STR_NULL);
 				x = x + (w/3);
 				color_rect(x, y, 20, 10, 223-4);		// lt tan
 				color_box(x, y, 20, 10, 223-12);		// md tan
-//				print_textf(x+11, y+6, DKBROWN, STRMGR_GetStr(STR_GM_NO));
 				print_textf(x+11, y+6, DKBROWN, STRMGR_GetStr(STR_GM_FMTD_NO));
 				add_region(x,y,20,10,KEY_N,JoinUnits,0,0,0,STR_NULL);
 				fCommandBattleLoop = TRUE;
@@ -9328,18 +8484,6 @@ print_textf(0,0,BLACK,buffer6);
 					GAMEToggleMainMenu(TRUE, 0);
 
 			}
-
-			// ========================================================
-			// if new game loaded
-			// put up the initial councelor report
-			// ========================================================
-			//if (fLoadedNewGame)
-			//{
-			//	fLoadedNewGame = FALSE;
-			//	AddReport(SUBJ_INITIAL, 0, 0, 0);
-			//	dturn_mode = INIT_REPORT_MODE;
-			//}
-
 		}
 		fRedrawAll = TRUE;
 	}
@@ -9355,7 +8499,6 @@ print_textf(0,0,BLACK,buffer6);
 		init_pal("nova_l");
 		init_shade_table("nova_l");
 		CurPal[254].bRed = CurPal[254].bGreen = CurPal[254].bBlue = 0;
-//		set_pal((char *)&CurPal[0]);
 		FadeOut(0);
 		fFadedOut = 2;								// fade in after 2nd pass
 		fRedrawAll = TRUE;
@@ -9373,7 +8516,6 @@ print_textf(0,0,BLACK,buffer6);
 	// Handle multiplayer events
 	// ========================================================
 	// MOVED TO TOP  ABC 6/9/97
-	//HandleMultiPlayerEvents();		// calls HaveEvents
 
 #ifdef _DEMO
 	CheckAutoDemo();
@@ -9487,7 +8629,6 @@ void CheckAutoDemo (void)
 	if (AutoDelay < get_time())
 	{
 		InitDomainTurn(0);
-//		remove_timer(draw_cursor);
 
 		if (fWhich==0)				  // play battle
 		{
@@ -9512,7 +8653,6 @@ void CheckAutoDemo (void)
 			fWhich = 0;
 		}
 
-//		add_timer(1,draw_cursor);
 		clear_key_status(0);
 		InitDomainTurn(0);
 		clear_key_status(0);
@@ -9558,7 +8698,6 @@ BOOL MultiBattle(LONG iMovingUnit, LONG j )
 		 ||	SCENE_MGR::Aggressor == -1
 	   )
 	{
-//		WaitSync ( iMPS_SYNC7 );
 		return FALSE;
 	}
 
@@ -9599,8 +8738,6 @@ BOOL MultiBattle(LONG iMovingUnit, LONG j )
 	InitDomainTurn(0);		// turn off domain turn
 
 	fWasABattle = TRUE;
-
-//	WaitSync ( iMPS_SYNC7 );
 
 	return TRUE;
 
@@ -9646,8 +8783,6 @@ LONG CheckUnitArrival (LONG iMovingUnit, BOOL fJoinAllowed)
 		return 0;
 	}
 
-//printf("CheckUnitArrival - unit:%d  iJoinDialog_to:%d\n",iMovingUnit,iJoinDialog_to);
-
 	//---------------------------
 	// check visibility
 	// if a non-visible unit moves into a province we own, it should
@@ -9663,8 +8798,6 @@ LONG CheckUnitArrival (LONG iMovingUnit, BOOL fJoinAllowed)
 		{
 			units[p].NotSpotted = FALSE;
 		}
-		// Spotted flag is not transmitted.
-		//SetGameData(MP_UNITS, MPUNITS_NOTSPOTTED, iMovingUnit, FALSE, FALSE );
 	}
 	
 	//---------------------------
@@ -9777,18 +8910,6 @@ LONG CheckUnitArrival (LONG iMovingUnit, BOOL fJoinAllowed)
 					}
 
 					WaitSync( iMPS_SYNC6 );		// before the player controlled battle
-
-					//--- put up info box and wait
-					//fSyncPending = TRUE;
-					//ShowSyncWaitWindow( (iMPS_SYNC_INITIATIVE + BattleSync), 0 );
-					//while (fSyncPending)
-					//{
-					//	MenuLoop();
-					//	#ifdef _DEBUG
-					//	LogFlush();
-					//	#endif
-					//}
-					//AMultiPlayer.ResetSync( iMPS_SYNC_INITIATIVE + BattleSync );
 					StartSync( iMPS_SYNC_INITIATIVE + BattleSync );
 					CheckSync( (iMPS_SYNC_INITIATIVE + BattleSync), TRUE, TRUE );
 
@@ -10046,18 +9167,6 @@ LONG CheckUnitArrival (LONG iMovingUnit, BOOL fJoinAllowed)
 
 										if ( !realm[AwayRealm].mfIsPlayerCtrl() )
 										{
-											#if 0
-											LOGCOMMENTSLEEP
-											if ( fLogComment )
-											{
-												char temp[150];
-												sprintf ( temp, "Finalizing NPCBattle - PlayerCtrl[%ld]=%ld\n",
-													(LONG)AwayRealm,
-													(LONG)(!realm[AwayRealm].mfIsPlayerCtrl()));
-												RandomLogComment ( temp );
-											}
-											#endif
-
 											AMultiPlayer.Finalize();
 											SCENE_MGR::Loser = SCENE_MGR::HomeIndex;
 											SCENE_MGR::Victor = SCENE_MGR::AwayIndex;
@@ -10136,17 +9245,6 @@ LONG CheckUnitArrival (LONG iMovingUnit, BOOL fJoinAllowed)
 									(iMPS_SYNC_INITIATIVE + BattleSync));
 								RandomLogComment ( temp );
 							}
-
-							//fSyncPending = TRUE;
-							//ShowSyncWaitWindow( (iMPS_SYNC_INITIATIVE + BattleSync), 0 );
-							//while (fSyncPending)
-							//{
-							//	MenuLoop();
-							//	#ifdef _DEBUG
-							//	LogFlush();
-							//	#endif
-							//}
-							//AMultiPlayer.ResetSync( iMPS_SYNC_INITIATIVE + BattleSync );
 							StartSync( iMPS_SYNC_INITIATIVE + BattleSync );
 							CheckSync( (iMPS_SYNC_INITIATIVE + BattleSync), TRUE, TRUE );
 
@@ -10210,14 +9308,9 @@ LONG CheckUnitArrival (LONG iMovingUnit, BOOL fJoinAllowed)
 						continue;
 					}
 
-//					printf("NPCBattle was fought between %d and %d",
-//						SCENE_MGR::HomeIndex, SCENE_MGR::AwayIndex);
 					DisplayProcess(FIGHTING, RED_GRAD, SCENE_MGR::HomeIndex, SCENE_MGR::AwayIndex);
 
 					NPCBattleResults(FALSE);
-
-//					printf(" - %d won!\n", SCENE_MGR::Victor);
-//					DisplayNPCBattle(-1, SCENE_MGR::Victor);
 
 					fWasABattle = TRUE;
 
@@ -10248,7 +9341,7 @@ LONG CheckUnitArrival (LONG iMovingUnit, BOOL fJoinAllowed)
 
 			}
 		}
-	}		// if !fJoinAllowed
+	}
 
 	// ----------------------------------------------
 	// continue moving if indicated
@@ -10286,7 +9379,6 @@ void WithdrawLosingUnit (BOOL fSend)
 	BOOL		fFoundEnemy;
 	BOOL		fTerrainPassable;
 	char 		buffer[100];
-//	BOOL		fPermittedBorder[8];
 
 	if (fWasABattle == FALSE)
 		return;
@@ -10296,8 +9388,6 @@ void WithdrawLosingUnit (BOOL fSend)
 	fWasABattle = FALSE;
 	WinningUnit = SCENE_MGR::Victor;
 	LosingUnit = SCENE_MGR::Loser;
-
-	//printf("WasABattle:TRUE	Victor:%d (%s)\n",WinningUnit,realm[units[WinningUnit].Realm].mfGetName());
 
 	// there was a winner and there was loser left to move
 	if (WinningUnit != 0 && LosingUnit != 0)
@@ -10514,7 +9604,6 @@ void WithdrawLosingUnit (BOOL fSend)
 			}
 		}
 			
-		//printf("	Destroying LosingUnits:\n");
 		while (LosingUnit != -1)
 		{
 			LOGCOMMENTSLEEP
@@ -10529,7 +9618,6 @@ void WithdrawLosingUnit (BOOL fSend)
 
 			// DeleteUnit returns the new next unit in the chain.
 			LosingUnit = DeleteUnit(LosingUnit, fSend );
-			//printf("	Destroy %d\n",i);
 		}
 		fCheckUnitArrival = FALSE;
 		LOGCOMMENTSLEEP
@@ -10553,10 +9641,7 @@ FoundOne:
 			RandomLogComment ( temp );
 		}
 
-		//printf("	Withdrawing LosingUnit to %s\n",province[WithdrawToProv].name);
-		//units[LosingUnit].DestProvince = WithdrawToProv;
 		SetGameData(MP_UNITS, MPUNITS_DESTPROVINCE, LosingUnit, WithdrawToProv, fSend);
-		//units[LosingUnit].MovePart	= 1;
 		SetGameData(MP_UNITS, MPUNITS_MOVEPART, LosingUnit, 1, fSend);
 	}
 
@@ -10859,20 +9944,6 @@ SHORT CalculateProvPoints (REALM::REALM_TYPE CheckRealm)
 				sOtherPoints += 5;
 			}
 		}
-
-#if 0
-		if (AREALLIED(CheckRealm,REALM::SPIDERFELL) ||
-			AREALLIED(CheckRealm,REALM::RHUOBHE) ||
-			AREALLIED(CheckRealm,REALM::GORGONSCROWN) )
-		{
-			// only allow this for yourself
-			if( CheckRealm == HomeRealm)
-			{
-				accumPoints += 5;
-				sOtherPoints += 5;
-			}
-		}
-#endif
 	}
 	
 	return accumPoints;
@@ -11325,7 +10396,6 @@ void PaintNPCResults(LONG, LONG)
 			
 			strcpy(cpLosingRealmName, realm[SCENE_MGR::LoserRealm].mfGetName());
 			strcpy(format,STRMGR_GetStr(STR_NPC_WE_RETREAT));
-			// strcpy(format,"^W270The cowards %s %s ran from the field of battle.  They are not worthy of our hate.");
 			sprintf(buffer,format, 
 				STRMGR_GetStr((((REALM::REALM_TYPE)SCENE_MGR::LoserRealm==REALM::MONSTERS)?STR_NPC_OF:STR_NPC_FROM)),
 				cpLosingRealmName);
@@ -11333,7 +10403,6 @@ void PaintNPCResults(LONG, LONG)
 		else
 		{
 			strcpy(format,STRMGR_GetStr(STR_NPC_THEY_RETREAT));
-			//strcpy(format,"^W270Wisely we retreat from this battle with %s.  We will regroup in the next province.");
 			sprintf(buffer,format, realm[SCENE_MGR::VictorRealm].mfGetName());
 		}
 	}
@@ -11348,7 +10417,6 @@ void PaintNPCResults(LONG, LONG)
 			STRMGR_GetStr((((REALM::REALM_TYPE)SCENE_MGR::LoserRealm==REALM::MONSTERS)?STR_NPC_OF:STR_NPC_FROM)),
 			cpLosingRealmName,
 			sUnitsLostWinner,
-//			plural,
 			sUnitsLostLoser);
 	}
 	else
@@ -11361,7 +10429,6 @@ void PaintNPCResults(LONG, LONG)
 			STRMGR_GetStr((((REALM::REALM_TYPE)SCENE_MGR::VictorRealm==REALM::MONSTERS)?STR_NPC_OF:STR_NPC_FROM)),
 			cpVictorRealmName,
 			sUnitsLostLoser,
-//			plural,
 			sUnitsLostWinner);
 	}
 
@@ -11495,8 +10562,6 @@ void NPCBattleResults (BOOL fSend)
 	SHORT AwayRealm = units[SCENE_MGR::AwayIndex].Realm;
 	BOOL  HomeLarger = FALSE;
 	
-	// printf ("NPCBattleResults\n");
-
 	// exp points for being brave enough to fight
 	BattleExpPoints( SCENE_MGR::HomeIndex, BTL_EXP_ENGAGE, 0, FALSE );
 	BattleExpPoints( SCENE_MGR::AwayIndex, BTL_EXP_ENGAGE, 0, FALSE );

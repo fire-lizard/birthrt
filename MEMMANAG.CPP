@@ -2688,6 +2688,17 @@ void * BLKPTR(LONG i)
 }
 
 /* ========================================================================
+   Function    - BLKPTR2
+   Description - Get the block pointer (version of 2022).
+   Returns     - void * (You must cast to use.)
+   ======================================================================== */
+
+void* BLKPTR2(LONG i, LONG size)
+{
+	return (void*)new ULONG[size];
+}
+
+/* ========================================================================
    Function    - zalloc
    Description - Allocate locked blocks of high memory.
    Returns     - pointer to the memory.

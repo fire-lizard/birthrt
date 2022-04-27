@@ -573,7 +573,9 @@ ULONG detect_scale (SHORT t, SHORT h, SHORT w)
 	ULONG	xx;
 	ULONG	pix;
 
-	p = (BITMPTR)BLKPTR(t);
+	// TODO Fix the memory manager
+	//p = (BITMPTR)BLKPTR(t);
+	p = (BITMPTR)BLKPTR2(t, w * h);
 	if (!IsPointerGood(p))
 		return UNITARY_SCALE;					/* if error */
 
@@ -587,7 +589,7 @@ ULONG detect_scale (SHORT t, SHORT h, SHORT w)
 			tptr[xx] = tptr[xx+h];			/* copy next pixel right */
 			p->scale = scale_factors[pix-247];
 			p->x_ctr_pt = x;
-			return scale_factors[pix-247];;
+			return scale_factors[pix-247];
 		}
 	}
 	// if there is no scale bit, then set to neutral values.
@@ -2243,7 +2245,9 @@ SHORT SaveBitmap (SHORT x, SHORT y, SHORT w, SHORT h)
 	if (iBitm == fERROR)							// check for bad source bitmap
 		return fERROR;
 
-	pBitm = (BITMPTR) BLKPTR(iBitm);				// get pointer and size
+	// TODO Fix the memory manager
+	//pBitm = (BITMPTR) BLKPTR(iBitm);				// get pointer and size
+	pBitm = (BITMPTR) BLKPTR2(iBitm, w * h);				// get pointer and size
 	if (!IsPointerGood(pBitm))
 		return fERROR;
 
@@ -2264,7 +2268,6 @@ SHORT SaveBitmap (SHORT x, SHORT y, SHORT w, SHORT h)
 
 	for (yy = 0; yy < h; ++yy)				// copy bitmap
 	{
-		// TODO Fix access violation
 		memcpy(bptr, sptr, w);
 		sptr += screen_buffer_width;
 		bptr += w;
