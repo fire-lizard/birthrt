@@ -552,20 +552,6 @@ void dashedline (LONG x0, LONG y0, LONG x1, LONG y1, LONG color1 ,LONG color2)
    Description -
    Returns     - x center point in high 16 bits, scale in low 16 bits
    ======================================================================== */
-#if 0
-LONG	scale_factors[] = {
-	1,								/* 5:1 walls, 500% normal size		(247) */
-	3,								/* 5:3 walls, 166% normal size		(248) */
-	UNITARY_SCALE,				/* 1:1 walls, doom resolution		(249) */
-	UNITARY_SCALE*2,			/* 1:2 walls, half normal size		(250) */
-	UNITARY_SCALE*4,			/* 1:4 walls, quarter normal size	(251) */
-
-	UNITARY_PEOP_SCALE,		/* 1:1 people, doom resolution		(252) */
-	UNITARY_PEOP_SCALE*2,	/* 1:2 people, half normal size		(253) */
-	UNITARY_PEOP_SCALE*4,	/* 1:4 people, quarter normal size	(254) */
-	UNITARY_PEOP_SCALE*8		/* 1:8 people, eighth normal size	(255) */
-};
-#else
 LONG	scale_factors[] = {
 	1,								/* 5:1 walls, 500% normal size		(247) */
 	2,								/* 5:2 walls, 250% normal size		(248) */
@@ -578,7 +564,6 @@ LONG	scale_factors[] = {
 	UNITARY_PEOP_SCALE*4,	/* 1:4 people, quarter normal size	(254) */
 	UNITARY_PEOP_SCALE*8		/* 1:8 people, eighth normal size	(255) */
 };
-#endif
 
 ULONG detect_scale (SHORT t, SHORT h, SHORT w)
 {
@@ -811,14 +796,6 @@ LONG gtext_height(char *txt)
 				j += (text[i++]-'0');
 				init_gfont(j);
 			}
-//			else if (c=='s' || c=='Y')					/* Y## */
-//				i+=2;
-//			else if (c=='C' || c=='A' || c=='l' || c=='t' || c=='S' || c=='X')	/* C### or l### or S### */
-//				i+=3;
-//			else if (c=='B')								/* bold  */
-//				fBoldLocal = !fBoldLocal;
-//			else if (c == 'D')								/* decimal */
-//				fDecimal = TRUE;
 
 			if (c == 'W')								/* word wrapped */
 			{
@@ -2287,6 +2264,7 @@ SHORT SaveBitmap (SHORT x, SHORT y, SHORT w, SHORT h)
 
 	for (yy = 0; yy < h; ++yy)				// copy bitmap
 	{
+		// TODO Fix access violation
 		memcpy(bptr, sptr, w);
 		sptr += screen_buffer_width;
 		bptr += w;

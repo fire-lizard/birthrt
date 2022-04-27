@@ -1405,7 +1405,8 @@ void ObjectList::ReadINV(SHORT hPlayerStats, LONG id)
 	
 	        if (i < count)
 	        {
-	            sscanf(buffer+i, "%d", &entry);
+				// TODO Fix Stack around the variable 'entry' was corrupted.
+	        	sscanf(buffer+i, "%d", &entry);
 	            if (entry > 0  && entry < MAX_ITEM_TYPES)
 	                mfAddItem((ITEMTYPE) entry);
 	        }

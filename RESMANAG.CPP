@@ -1755,15 +1755,11 @@ SHORT LoadPCXFromResFile (CSTRPTR szFileName, BOOL fNoScale, BOOL fLockRes, BOOL
 		// We can also release the source block at this point.
 		/* -------------------------------------------------------- */
 		DisposBlock (iSrcBlk);
-		iSrcBlk = fERROR;
 		if (cbFinal != cbLargest)
 		{
 			SetBlockSize(iBlk, cbFinal);	/* Resize the data buffer */
 		}
 	}
-
-	// Get the pointers again, because memory may have moved.
-	pDest = ((PTR)BLKPTR(iBlk)) + cbDestOffset;
 
 	/* -------------------------------------------------------- */
 	/* Do some final cleanup */

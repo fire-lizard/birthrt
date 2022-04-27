@@ -576,13 +576,13 @@ void StatReadFromAVA(BOOL SaveAfter)
 			   regents[i].mfSetRace((RACE_ENUM)raceType);
 
 		   PLAYER_CLASS_INFO::TYPE classType = pPS->mfGetClassType (0);
-		   if (classType != PLAYER_CLASS_INFO::NOT_SET)
+		   if (classType > PLAYER_CLASS_INFO::NOT_SET)
 		   {
 			   regents[i].mfSetClass1(gaClassTranslate[classType]);
 			   regents[i].mfSetLevel1(pPS->mfGetLevel (0));
 		   }
 
-		   if (pPS->mfGetClassType (1) != PLAYER_CLASS_INFO::NOT_SET)
+		   if (pPS->mfGetClassType (1) > PLAYER_CLASS_INFO::NOT_SET)
 		   {
 			   regents[i].mfSetClass2(gaClassTranslate[pPS->mfGetClassType (1)]);
 			   regents[i].mfSetLevel2(pPS->mfGetLevel (1));
