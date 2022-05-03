@@ -130,50 +130,11 @@ void ShowStatusContextHelp(LONG MC,LONG HelpStr);
    ------------------------------------------------------------------------ */
 #if defined (_GERMANVER)
 
-#if 0 // UNUSED
-BUTTON BeginRuleDialog[] = {
-{ 0,BUTTON_BITMAP, D_FREEZE|D_ZOOM, 0,-1, 0,"UI\\STS_PANL.PCX",0,"",100, 20,368,436,NO_KEY,PaintAttributes,0,-1},
-
-{ 1,BUTTON_REGION, D_TEXT_LEFT, 0,-1,                 31,"",0,"", 42, 21,223, 32,NO_KEY,NULL,0,-1},
-#if defined(_JUNEDEMO)
-{ 2,BUTTON_BITMAP, 0,           0,STR_AVA_ATT_ANIM,  GREY,"UI\\STSBTNAA.PCX",GREY,"UI\\STSBTNAB.PCX", 52,400, 84, 28,NO_KEY,NULL,0,-1},
-#else
-{ 2,BUTTON_BITMAP, 0,           0,STR_AVA_ATT_ANIM,  BTN_LABEL_COLOR,"UI\\STSBTNAA.PCX",BTN_LABEL_HILITE_COLOR,"UI\\STSBTNAB.PCX", 52,400, 84, 28,KEY_M,PlayAnimation,0,-1},
-#endif
-{ 3,BUTTON_BITMAP, 0,           0,-1,                BTN_LABEL_COLOR,"UI\\STSBTNIA.PCX",BTN_LABEL_HILITE_COLOR,"UI\\STSBTNIB.PCX",188,400, 84, 28,KEY_B,BeginRule,-1},
-{ 4,BUTTON_BITMAP, 0,           0,STR_AVA_ATT_DONE,  BTN_LABEL_COLOR,"UI\\STSBTNXA.PCX",BTN_LABEL_HILITE_COLOR,"UI\\STSBTNXB.PCX",272,400, 84, 28,KEY_F,HideCharacter,0,-1},
-{ 5,BUTTON_REGION, D_TEXT_LEFT, 0,-1,                 31,"",0,"",184, 81,158, 10,NO_KEY,NULL,0,-1},
-{ 6,BUTTON_REGION, D_TEXT_LEFT, 0,STR_AVA_ATT_CLASS, 173,"",0,"",184,112,158, 10,NO_KEY,NULL,0,-1},
-{ 7,BUTTON_REGION, D_TEXT_LEFT, 0,STR_AVA_ATT_LEVEL, 173,"",0,"",184,128,158, 10,NO_KEY,NULL,0,-1},
-{ 8,BUTTON_REGION, D_TEXT_LEFT, 0,STR_AVA_ATT_BLOOD, 173,"",0,"",184,144,158, 10,NO_KEY,NULL,0,-1},
-{ 9,BUTTON_REGION, D_TEXT_LEFT, 0,STR_AVA_ATT_ALIGN, 173,"",0,"",184,159,158, 10,NO_KEY,NULL,0,-1},
-{10,BUTTON_REGION, D_TEXT_LEFT, 0,STR_AVA_ATT_STR,   173,"",0,"",184,200,158, 10,NO_KEY,NULL,0,-1},
-{11,BUTTON_REGION, D_TEXT_LEFT, 0,STR_AVA_ATT_INT,   173,"",0,"",184,216,158, 10,NO_KEY,NULL,0,-1},
-{12,BUTTON_REGION, D_TEXT_LEFT, 0,STR_AVA_ATT_DEX,   173,"",0,"",184,232,158, 10,NO_KEY,NULL,0,-1},
-{13,BUTTON_REGION, D_TEXT_LEFT, 0,STR_AVA_ATT_WIS,   173,"",0,"",184,248,158, 10,NO_KEY,NULL,0,-1},
-{14,BUTTON_REGION, D_TEXT_LEFT, 0,STR_AVA_ATT_CON,   173,"",0,"",184,264,158, 10,NO_KEY,NULL,0,-1},
-{15,BUTTON_REGION, D_TEXT_LEFT, 0,STR_AVA_ATT_CHA,   173,"",0,"",184,280,158, 10,NO_KEY,NULL,0,-1},
-{16,BUTTON_REGION, D_TEXT_LEFT, 0,STR_AVA_ATT_THA,   173,"",0,"",184,296,158, 10,NO_KEY,NULL,0,-1},
-{17,BUTTON_REGION, D_TEXT_LEFT, 0,STR_AVA_ATT_EXP,   173,"",0,"",184,328,158, 10,NO_KEY,NULL,0,-1},
-{18,BUTTON_REGION, D_TEXT_LEFT, 0,STR_AVA_ATT_ARM,   173,"",0,"",184,344,158, 10,NO_KEY,NULL,0,-1},
-{19,BUTTON_REGION, D_TEXT_LEFT, 0,STR_AVA_ATT_HIT,   173,"",0,"",184,360,158, 10,NO_KEY,NULL,0,-1},
-{20,BUTTON_REGION, D_TEXT_LEFT, 0,STR_AVA_ATT_HP,    173,"",0,"",184,376,158, 10,NO_KEY,NULL,0,-1},
-{21,BUTTON_REGION, D_TEXT_LEFT, 0,-1,                  0,"",0,"", 16,108,152,204,NO_KEY,BowToPlayer,0,-1},
-{22,BUTTON_REGION, D_TEXT_LEFT, 0,-1,                  0,"",0,"", 20,329,134, 20,NO_KEY,NULL,0,-1},
-{23,BUTTON_REGION, D_TEXT_LEFT, 0,-1,                  0,"",0,"",  0,  0,  0,  0,KEY_ESCAPE,HideCharacter,0,-1},
-};
-LONG BeginRuleDialogSize = sizeof(BeginRuleDialog) / sizeof(BUTTON);
-#endif // UNUSED
-
 BUTTON AvatarAttributes[] = {
 { 0,BUTTON_BITMAP, D_FREEZE|D_ZOOM, 0,-1, 0,"UI\\STS_PANL.PCX",0,"",112, 20,368,436,NO_KEY,PaintAttributes,0,-1},
 
 { 1,BUTTON_REGION, D_TEXT_LEFT, 0,-1,                 31,"",0,"", 42, 21,223, 32,NO_KEY,NULL,0,-1},
-#if defined(_JUNEDEMO)
-{ 2,BUTTON_BITMAP, 0,           0,STR_AVA_ATT_ANIM,  GREY,"UI\\STSBTNAA.PCX",GREY,"UI\\STSBTNAB.PCX", 52,400, 84, 28,NO_KEY,NULL,0,-1},
-#else
 { 2,BUTTON_BITMAP, 0,           0,STR_AVA_ATT_ANIM,  BTN_LABEL_COLOR,"UI\\STSBTNAA.PCX",BTN_LABEL_HILITE_COLOR,"UI\\STSBTNAB.PCX", 52,400, 84, 28,KEY_M,PlayAnimation,0,-1},
-#endif
 { 3,BUTTON_BITMAP, 0,           0,-1,                BTN_LABEL_COLOR,"UI\\STSBTNIA.PCX",BTN_LABEL_HILITE_COLOR,"UI\\STSBTNIB.PCX",188,400, 84, 28,KEY_I,InventoryFromStatus,0,-1},
 { 4,BUTTON_BITMAP, 0,           0,STR_AVA_ATT_DONE,  BTN_LABEL_COLOR,"UI\\STSBTNXA.PCX",BTN_LABEL_HILITE_COLOR,"UI\\STSBTNXB.PCX",272,400, 84, 28,KEY_F,HideStatus,0,-1},
 { 5,BUTTON_REGION, D_TEXT_LEFT, 0,-1,                 31,"",0,"",184, 81,158, 10,NO_KEY,NULL,0,-1},
@@ -203,11 +164,7 @@ BUTTON AvatarAttributes2[] = {
 { 0,BUTTON_BITMAP, D_FREEZE|D_ZOOM, 0,-1, 0,"UI\\STS_PANL.PCX",0,"",100, 20,368,436,NO_KEY,PaintAttributes,0,-1},
 
 { 1,BUTTON_REGION, D_TEXT_LEFT, 0,-1,                 31,"",0,"", 42, 21,223, 32,NO_KEY,NULL,0,-1},
-#if defined(_JUNEDEMO)
-{ 2,BUTTON_BITMAP, 0,			0,STR_AVA_ATT_ANIM,  GREY,"UI\\STSBTNAA.PCX",GREY,"UI\\STSBTNAB.PCX", 52,400, 84, 28,NO_KEY,NULL,0,-1},
-#else
 { 2,BUTTON_BITMAP, 0,			0,STR_AVA_ATT_ANIM,  BTN_LABEL_COLOR,"UI\\STSBTNAA.PCX",BTN_LABEL_HILITE_COLOR,"UI\\STSBTNAB.PCX", 52,400, 84, 28,KEY_M,PlayAnimation,0,-1},
-#endif
 { 3,BUTTON_REGION, 0,			0,-1,                0,"",0,"",188,400, 84, 28,NO_KEY,NULL,0,-1},
 { 4,BUTTON_BITMAP, 0,			0,STR_AVA_ATT_DONE,  BTN_LABEL_COLOR,"UI\\STSBTNXA.PCX",BTN_LABEL_HILITE_COLOR,"UI\\STSBTNXA.PCX",272,400, 84, 28,KEY_F,HideStatus2,0,-1},
 { 5,BUTTON_REGION, D_TEXT_LEFT, 0,-1,                 31,"",0,"",184, 81,158, 10,NO_KEY,NULL,0,-1},
@@ -606,26 +563,6 @@ BUTTON ChatDisplayWindow1[] =  {
 };
 LONG ChatDisplayWindow1Size = sizeof(ChatDisplayWindow1) / sizeof(BUTTON);
 
-#if 0
-BUTTON ChatSelect[] = {
-{0,BUTTON_BITMAP,D_FREEZE|D_ZOOM, 0, -1, 0, "UI\\CHATPNL1.PCX", 0,"", 83, 80, 472, 320,NO_KEY,PaintChatSelect,0, -1},
-{1,BUTTON_REGION,D_SANS_8, 0,STR_CHATSEL_1,                31, "",0,"", 30, 100,440,15,NO_KEY,0, 0,-1},
-{2,BUTTON_REGION,0, 0,-1,                0, "",0,"", 30, 133,440,15,NO_KEY,SetChatSelect, 0,-1},
-{3,BUTTON_REGION,0, 0,-1,                0, "",0,"", 30, 149,440,15,NO_KEY,SetChatSelect, 1,-1},
-{4,BUTTON_REGION,0, 0,-1,                0, "",0,"", 30, 165,440,15,NO_KEY,SetChatSelect, 2,-1},
-{5,BUTTON_REGION,0, 0,-1,                0, "",0,"", 30, 181,440,15,NO_KEY,SetChatSelect, 3,-1},
-{6,BUTTON_REGION,0, 0,-1,                0, "",0,"", 30, 197,440,15,NO_KEY,SetChatSelect, 4,-1},
-{7,BUTTON_REGION,0, 0,-1,                0, "",0,"", 30, 213,440,15,NO_KEY,SetChatSelect, 5,-1},
-{8,BUTTON_REGION,0, 0,-1,                0, "",0,"", 30, 229,440,15,NO_KEY,SetChatSelect, 6,-1},
-{9,BUTTON_REGION,0, 0,-1,                0, "",0,"", 30, 245,440,15,NO_KEY,SetChatSelect, 7,-1},
-{10,BUTTON_REGION,0, 0,-1,               0, "",0,"", 30, 261,440,15,NO_KEY,SetChatSelect, 8,-1},
-{11,BUTTON_REGION,0, 0,STR_CANCEL1, BTN_LABEL_COLOR,"UI\\CHTBTNCA.PCX",BTN_LABEL_HILITE_COLOR,"UI\\CHTBTNCB.PCX",284,284,84, 28,KEY_ESCAPE, CancelChatSelect, 0, -1},
-{12,BUTTON_REGION,0, 0,STR_DONE1,   BTN_LABEL_COLOR,"UI\\CHTBTNXA.PCX",BTN_LABEL_HILITE_COLOR,"UI\\CHTBTNXB.PCX",368,284,84, 28,NO_KEY,DoneChatSelect, 0, -1},
-};
-LONG ChatSelectSize = sizeof(ChatSelect) / sizeof(BUTTON);
-#endif
-
-
 BUTTON ChatSelect[] = {                                           //80
 {0,BUTTON_BITMAP,D_FREEZE, 0, -1, 0, "UI\\CHATPNL3.PCX", 0,"", 83, 130, 472, 320,NO_KEY,PaintChatSelect,0, -1},
 {1,BUTTON_REGION,0, 0,-1,                0, "",0,"", 25, 100,385,15,NO_KEY,0, 0,-1},
@@ -726,41 +663,6 @@ BUTTON MultiHost[] = {
 };
 LONG MultiHostSize = sizeof(MultiHost) / sizeof(BUTTON);
 
-
-#if 0
-
-BUTTON MultiMenu[] = {
-{99,BUTTON_REGION,0, 0,-1,0,"",0,"",0,0,0,0,KEY_ESCAPE,NULL, 16, -1},
-};
-LONG MultiMenuSize = sizeof(MultiMenu) / sizeof(BUTTON);
-
-BUTTON MultiMenu1[] = {
-{0,BUTTON_BITMAP,D_FREEZE|D_ZOOM, 0, -1, 0, "UI\\MLT_PNL3.PCX", 0,"", 162, 46, 316, 328,NO_KEY,PaintMultiPlayerMenu,0, -1},
-{1,BUTTON_REGION,0, 0,-1,                0, "",0,"", 61, 100,200,15,NO_KEY,GetMultiPlayerHelp, 0,-1},
-{2,BUTTON_REGION,0, 0,-1,                0, "",0,"", 61, 131,200,15,NO_KEY,SetMultiPlayerMenu, 0,-1},
-{3,BUTTON_REGION,0, 0,-1,                0, "",0,"", 61, 151,200,15,NO_KEY,SetMultiPlayerMenu, 1,-1},
-{4,BUTTON_REGION,0, 0,-1,                0, "",0,"", 61, 171,200,15,NO_KEY,SetMultiPlayerMenu, 2,-1},
-{5,BUTTON_REGION,0, 0,-1,                0, "",0,"", 61, 207,200,15,NO_KEY,SetMultiPlayerMenu, 3,-1},
-{6,BUTTON_BITMAP,0, 0,STR_BACK1,   BTN_LABEL_COLOR,"UI\\MLTBTNBA.PCX",BTN_LABEL_HILITE_COLOR,"UI\\MLTBTNBB.PCX", 32,232,84, 28,NO_KEY,BackMultiPlayerMenu, 0, -1},
-{7,BUTTON_BITMAP,0, 0,STR_CANCEL1, BTN_LABEL_COLOR,"UI\\MLTBTNCA.PCX",BTN_LABEL_HILITE_COLOR,"UI\\MLTBTNCB.PCX",116,232,84, 28,KEY_ESCAPE,CancelMultiPlayerMenu, 16, -1},
-{8,BUTTON_BITMAP,0, 0,STR_DONE1,   BTN_LABEL_COLOR,"UI\\MLTBTNXA.PCX",BTN_LABEL_HILITE_COLOR,"UI\\MLTBTNXB.PCX",200,232,84, 28,NO_KEY,DoneMultiPlayerMenu, 0, -1},
-};
-
-LONG MultiMenu1Size = sizeof(MultiMenu1) / sizeof(BUTTON);
-
-
-BUTTON MultiMenu2[] = {
-{0,BUTTON_BITMAP,D_FREEZE|D_ZOOM, 0, -1, 0, "UI\\MLT_PNL1.PCX", 0,"", 162, 46, 316, 232,NO_KEY,PaintMultiPlayerMenu,0, -1},
-{1,BUTTON_REGION,0, 0,-1,                0, "",0,"", 61, 100,200,15,NO_KEY,GetMultiPlayerHelp, 0,-1},
-{2,BUTTON_REGION,0, 0,-1,                0, "",0,"", 61, 131,200,15,NO_KEY,SetMultiPlayerMenu, 0,-1},
-{3,BUTTON_REGION,0, 0,-1,                0, "",0,"", 61, 151,200,15,NO_KEY,SetMultiPlayerMenu, 1,-1},
-{4,BUTTON_REGION,0, 0,-1,                0, "",0,"", 61, 171,200,15,NO_KEY,SetMultiPlayerMenu, 2,-1},
-{5,BUTTON_BITMAP,0, 0,STR_CANCEL1, BTN_LABEL_COLOR,"UI\\MLTBTNCA.PCX",BTN_LABEL_HILITE_COLOR,"UI\\MLTBTNCB.PCX",116,196,84, 28,KEY_ESCAPE,CancelMultiPlayerMenu, 16, -1},
-};
-
-LONG MultiMenu2Size = sizeof(MultiMenu2) / sizeof(BUTTON);
-
-#endif
 
 BUTTON LoyaltyMenu[] = {
 {0,BUTTON_BITMAP,D_FREEZE, 0, -1, 0, "UI\\REPORT2.PCX", 0,"", 102, 6, 436, 468,NO_KEY,PaintLoyaltyTable,0, -1},
@@ -1021,50 +923,11 @@ LONG ParchmentSize = sizeof(Parchment) / sizeof(BUTTON);
 #else 
 #if defined (_FRENCHVER)
 
-#if 0 // UNUSED
-BUTTON BeginRuleDialog[] = {
-{ 0,BUTTON_BITMAP, D_FREEZE|D_ZOOM, 0,-1, 0,"UI\\STS_PANL.PCX",0,"",100, 20,368,436,NO_KEY,PaintAttributes,0,-1},
-
-{ 1,BUTTON_REGION, D_TEXT_LEFT, 0,-1,                 31,"",0,"", 42, 21,223, 32,NO_KEY,NULL,0,-1},
-#if defined(_JUNEDEMO)
-{ 2,BUTTON_BITMAP, 0,           0,STR_AVA_ATT_ANIM,  GREY,"UI\\STSBTNAA.PCX",GREY,"UI\\STSBTNAB.PCX", 52,400, 84, 28,NO_KEY,NULL,0,-1},
-#else
-{ 2,BUTTON_BITMAP, 0,           0,STR_AVA_ATT_ANIM,  BTN_LABEL_COLOR,"UI\\STSBTNAA.PCX",BTN_LABEL_HILITE_COLOR,"UI\\STSBTNAB.PCX", 52,400, 84, 28,KEY_A,PlayAnimation,0,-1},
-#endif
-{ 3,BUTTON_BITMAP, 0,           0,-1,                BTN_LABEL_COLOR,"UI\\STSBTNIA.PCX",BTN_LABEL_HILITE_COLOR,"UI\\STSBTNIB.PCX",188,400, 84, 28,KEY_R,BeginRule,-1},
-{ 4,BUTTON_BITMAP, 0,           0,STR_AVA_ATT_DONE,  BTN_LABEL_COLOR,"UI\\STSBTNXA.PCX",BTN_LABEL_HILITE_COLOR,"UI\\STSBTNXB.PCX",272,400, 84, 28,KEY_O,HideCharacter,0,-1},
-{ 5,BUTTON_REGION, D_TEXT_LEFT, 0,-1,                 31,"",0,"",184, 81,158, 10,NO_KEY,NULL,0,-1},
-{ 6,BUTTON_REGION, D_TEXT_LEFT, 0,STR_AVA_ATT_CLASS, 173,"",0,"",184,112,158, 10,NO_KEY,NULL,0,-1},
-{ 7,BUTTON_REGION, D_TEXT_LEFT, 0,STR_AVA_ATT_LEVEL, 173,"",0,"",184,128,158, 10,NO_KEY,NULL,0,-1},
-{ 8,BUTTON_REGION, D_TEXT_LEFT, 0,STR_AVA_ATT_BLOOD, 173,"",0,"",184,144,158, 10,NO_KEY,NULL,0,-1},
-{ 9,BUTTON_REGION, D_TEXT_LEFT, 0,STR_AVA_ATT_ALIGN, 173,"",0,"",184,159,158, 10,NO_KEY,NULL,0,-1},
-{10,BUTTON_REGION, D_TEXT_LEFT, 0,STR_AVA_ATT_STR,   173,"",0,"",184,200,158, 10,NO_KEY,NULL,0,-1},
-{11,BUTTON_REGION, D_TEXT_LEFT, 0,STR_AVA_ATT_INT,   173,"",0,"",184,216,158, 10,NO_KEY,NULL,0,-1},
-{12,BUTTON_REGION, D_TEXT_LEFT, 0,STR_AVA_ATT_DEX,   173,"",0,"",184,232,158, 10,NO_KEY,NULL,0,-1},
-{13,BUTTON_REGION, D_TEXT_LEFT, 0,STR_AVA_ATT_WIS,   173,"",0,"",184,248,158, 10,NO_KEY,NULL,0,-1},
-{14,BUTTON_REGION, D_TEXT_LEFT, 0,STR_AVA_ATT_CON,   173,"",0,"",184,264,158, 10,NO_KEY,NULL,0,-1},
-{15,BUTTON_REGION, D_TEXT_LEFT, 0,STR_AVA_ATT_CHA,   173,"",0,"",184,280,158, 10,NO_KEY,NULL,0,-1},
-{16,BUTTON_REGION, D_TEXT_LEFT, 0,STR_AVA_ATT_THA,   173,"",0,"",184,296,158, 10,NO_KEY,NULL,0,-1},
-{17,BUTTON_REGION, D_TEXT_LEFT, 0,STR_AVA_ATT_EXP,   173,"",0,"",184,328,158, 10,NO_KEY,NULL,0,-1},
-{18,BUTTON_REGION, D_TEXT_LEFT, 0,STR_AVA_ATT_ARM,   173,"",0,"",184,344,158, 10,NO_KEY,NULL,0,-1},
-{19,BUTTON_REGION, D_TEXT_LEFT, 0,STR_AVA_ATT_HIT,   173,"",0,"",184,360,158, 10,NO_KEY,NULL,0,-1},
-{20,BUTTON_REGION, D_TEXT_LEFT, 0,STR_AVA_ATT_HP,    173,"",0,"",184,376,158, 10,NO_KEY,NULL,0,-1},
-{21,BUTTON_REGION, D_TEXT_LEFT, 0,-1,                  0,"",0,"", 16,108,152,204,NO_KEY,BowToPlayer,0,-1},
-{22,BUTTON_REGION, D_TEXT_LEFT, 0,-1,                  0,"",0,"", 20,329,134, 20,NO_KEY,NULL,0,-1},
-{23,BUTTON_REGION, D_TEXT_LEFT, 0,-1,                  0,"",0,"",  0,  0,  0,  0,KEY_ESCAPE,HideCharacter,0,-1},
-};
-LONG BeginRuleDialogSize = sizeof(BeginRuleDialog) / sizeof(BUTTON);
-#endif // UNUSED
-
 BUTTON AvatarAttributes[] = {
 { 0,BUTTON_BITMAP, D_FREEZE|D_ZOOM, 0,-1, 0,"UI\\STS_PANL.PCX",0,"",112, 20,368,436,NO_KEY,PaintAttributes,0,-1},
 
 { 1,BUTTON_REGION, D_TEXT_LEFT, 0,-1,                 31,"",0,"", 42, 21,223, 32,NO_KEY,NULL,0,-1},
-#if defined(_JUNEDEMO)
-{ 2,BUTTON_BITMAP, 0,           0,STR_AVA_ATT_ANIM,  GREY,"UI\\STSBTNAA.PCX",GREY,"UI\\STSBTNAB.PCX", 52,400, 84, 28,NO_KEY,NULL,0,-1},
-#else
 { 2,BUTTON_BITMAP, 0,           0,STR_AVA_ATT_ANIM,  BTN_LABEL_COLOR,"UI\\STSBTNAA.PCX",BTN_LABEL_HILITE_COLOR,"UI\\STSBTNAB.PCX", 52,400, 84, 28,KEY_A,PlayAnimation,0,-1},
-#endif
 { 3,BUTTON_BITMAP, 0,           0,-1,                BTN_LABEL_COLOR,"UI\\STSBTNIA.PCX",BTN_LABEL_HILITE_COLOR,"UI\\STSBTNIB.PCX",188,400, 84, 28,KEY_I,InventoryFromStatus,0,-1},
 { 4,BUTTON_BITMAP, 0,           0,STR_AVA_ATT_DONE,  BTN_LABEL_COLOR,"UI\\STSBTNXA.PCX",BTN_LABEL_HILITE_COLOR,"UI\\STSBTNXB.PCX",272,400, 84, 28,KEY_O,HideStatus,0,-1},
 { 5,BUTTON_REGION, D_TEXT_LEFT, 0,-1,                 31,"",0,"",184, 81,158, 10,NO_KEY,NULL,0,-1},
@@ -1094,11 +957,7 @@ BUTTON AvatarAttributes2[] = {
 { 0,BUTTON_BITMAP, D_FREEZE|D_ZOOM, 0,-1, 0,"UI\\STS_PANL.PCX",0,"",100, 20,368,436,NO_KEY,PaintAttributes,0,-1},
 
 { 1,BUTTON_REGION, D_TEXT_LEFT, 0,-1,                 31,"",0,"", 42, 21,223, 32,NO_KEY,NULL,0,-1},
-#if defined(_JUNEDEMO)
-{ 2,BUTTON_BITMAP, 0,			0,STR_AVA_ATT_ANIM,  GREY,"UI\\STSBTNAA.PCX",GREY,"UI\\STSBTNAB.PCX", 52,400, 84, 28,NO_KEY,NULL,0,-1},
-#else
 { 2,BUTTON_BITMAP, 0,			0,STR_AVA_ATT_ANIM,  BTN_LABEL_COLOR,"UI\\STSBTNAA.PCX",BTN_LABEL_HILITE_COLOR,"UI\\STSBTNAB.PCX", 52,400, 84, 28,KEY_A,PlayAnimation,0,-1},
-#endif
 { 3,BUTTON_REGION, 0,			0,-1,                0,"",0,"",188,400, 84, 28,NO_KEY,NULL,0,-1},
 { 4,BUTTON_BITMAP, 0,			0,STR_AVA_ATT_DONE,  BTN_LABEL_COLOR,"UI\\STSBTNXA.PCX",BTN_LABEL_HILITE_COLOR,"UI\\STSBTNXA.PCX",272,400, 84, 28,KEY_O,HideStatus2,0,-1},
 { 5,BUTTON_REGION, D_TEXT_LEFT, 0,-1,                 31,"",0,"",184, 81,158, 10,NO_KEY,NULL,0,-1},
@@ -1239,10 +1098,6 @@ BUTTON BtlControl[] = {
 {BTL_FALLBACK_ID,BUTTON_REGION,0,0,BTLUI_FALLBACK,BTN_LABEL_COLOR,"",BTN_LABEL_HILITE_COLOR,"UI\\BTLCANCE.PCX", 70,107, 70, 21,NO_KEY,BattleFallBack,0,-1},
 {BTL_LIGHT_ID,BUTTON_REGION,0,0,-1,             0,"",0,"UI\\LIGHT.PCX",     7,  0,129,135,NO_KEY,NULL,0,-1},
 
-//{BTL_SHOOT_ID,BUTTON_REGION,0,0,BTLUI_MISSILE,BTN_LABEL_COLOR,"",BTN_LABEL_HILITE_COLOR,"UI\\BTLBTN5B.PCX",292,136, 64, 28,KEY_M,BattleSelMissile,0,-1},
-//{BTL_MAGIC_ID,BUTTON_REGION,0,0,BTLUI_MAGIC,  BTN_LABEL_COLOR,"",BTN_LABEL_HILITE_COLOR,"UI\\BTLBTN6B.PCX",356,136, 64, 28,KEY_G,BattleSelMagic,0,-1},
-//{BTL_CHAT_ID, BUTTON_REGION,0,0,BTLUI_CHAT,   BTN_LABEL_COLOR,"",BTN_LABEL_HILITE_COLOR,"UI\\BTLBTN3B.PCX",152,136, 64, 28,KEY_C,BattleChatMode,0,-1},
-//{BTL_FOLW_ID, BUTTON_REGION,0,0,BTLUI_FOLLOW, BTN_LABEL_COLOR,"",BTN_LABEL_HILITE_COLOR,"UI\\BTLBTN8B.PCX",544,136, 92, 28,KEY_F,BattleCameraFollow,0,-1},
 };
 LONG BtlControlSize = sizeof(BtlControl) / sizeof(BUTTON);
 
@@ -1502,26 +1357,6 @@ BUTTON ChatDisplayWindow1[] =  {
 };
 LONG ChatDisplayWindow1Size = sizeof(ChatDisplayWindow1) / sizeof(BUTTON);
 
-#if 0
-BUTTON ChatSelect[] = {
-{0,BUTTON_BITMAP,D_FREEZE|D_ZOOM, 0, -1, 0, "UI\\CHATPNL1.PCX", 0,"", 83, 80, 472, 320,NO_KEY,PaintChatSelect,0, -1},
-{1,BUTTON_REGION,D_SANS_8, 0,STR_CHATSEL_1,                31, "",0,"", 30, 100,440,15,NO_KEY,0, 0,-1},
-{2,BUTTON_REGION,0, 0,-1,                0, "",0,"", 30, 133,440,15,NO_KEY,SetChatSelect, 0,-1},
-{3,BUTTON_REGION,0, 0,-1,                0, "",0,"", 30, 149,440,15,NO_KEY,SetChatSelect, 1,-1},
-{4,BUTTON_REGION,0, 0,-1,                0, "",0,"", 30, 165,440,15,NO_KEY,SetChatSelect, 2,-1},
-{5,BUTTON_REGION,0, 0,-1,                0, "",0,"", 30, 181,440,15,NO_KEY,SetChatSelect, 3,-1},
-{6,BUTTON_REGION,0, 0,-1,                0, "",0,"", 30, 197,440,15,NO_KEY,SetChatSelect, 4,-1},
-{7,BUTTON_REGION,0, 0,-1,                0, "",0,"", 30, 213,440,15,NO_KEY,SetChatSelect, 5,-1},
-{8,BUTTON_REGION,0, 0,-1,                0, "",0,"", 30, 229,440,15,NO_KEY,SetChatSelect, 6,-1},
-{9,BUTTON_REGION,0, 0,-1,                0, "",0,"", 30, 245,440,15,NO_KEY,SetChatSelect, 7,-1},
-{10,BUTTON_REGION,0, 0,-1,               0, "",0,"", 30, 261,440,15,NO_KEY,SetChatSelect, 8,-1},
-{11,BUTTON_REGION,0, 0,STR_CANCEL1, BTN_LABEL_COLOR,"UI\\CHTBTNCA.PCX",BTN_LABEL_HILITE_COLOR,"UI\\CHTBTNCB.PCX",284,284,84, 28,KEY_ESCAPE, CancelChatSelect, 0, -1},
-{12,BUTTON_REGION,0, 0,STR_DONE1,   BTN_LABEL_COLOR,"UI\\CHTBTNXA.PCX",BTN_LABEL_HILITE_COLOR,"UI\\CHTBTNXB.PCX",368,284,84, 28,NO_KEY,DoneChatSelect, 0, -1},
-};
-LONG ChatSelectSize = sizeof(ChatSelect) / sizeof(BUTTON);
-#endif
-
-
 BUTTON ChatSelect[] = {                                           //80
 {0,BUTTON_BITMAP,D_FREEZE, 0, -1, 0, "UI\\CHATPNL3.PCX", 0,"", 83, 130, 472, 320,NO_KEY,PaintChatSelect,0, -1},
 {1,BUTTON_REGION,0, 0,-1,                0, "",0,"", 25, 100,385,15,NO_KEY,0, 0,-1},
@@ -1622,41 +1457,6 @@ BUTTON MultiHost[] = {
 };
 LONG MultiHostSize = sizeof(MultiHost) / sizeof(BUTTON);
 
-
-#if 0
-
-BUTTON MultiMenu[] = {
-{99,BUTTON_REGION,0, 0,-1,0,"",0,"",0,0,0,0,KEY_ESCAPE,NULL, 16, -1},
-};
-LONG MultiMenuSize = sizeof(MultiMenu) / sizeof(BUTTON);
-
-BUTTON MultiMenu1[] = {
-{0,BUTTON_BITMAP,D_FREEZE|D_ZOOM, 0, -1, 0, "UI\\MLT_PNL3.PCX", 0,"", 162, 46, 316, 328,NO_KEY,PaintMultiPlayerMenu,0, -1},
-{1,BUTTON_REGION,0, 0,-1,                0, "",0,"", 61, 100,200,15,NO_KEY,GetMultiPlayerHelp, 0,-1},
-{2,BUTTON_REGION,0, 0,-1,                0, "",0,"", 61, 131,200,15,NO_KEY,SetMultiPlayerMenu, 0,-1},
-{3,BUTTON_REGION,0, 0,-1,                0, "",0,"", 61, 151,200,15,NO_KEY,SetMultiPlayerMenu, 1,-1},
-{4,BUTTON_REGION,0, 0,-1,                0, "",0,"", 61, 171,200,15,NO_KEY,SetMultiPlayerMenu, 2,-1},
-{5,BUTTON_REGION,0, 0,-1,                0, "",0,"", 61, 207,200,15,NO_KEY,SetMultiPlayerMenu, 3,-1},
-{6,BUTTON_BITMAP,0, 0,STR_BACK1,   BTN_LABEL_COLOR,"UI\\MLTBTNBA.PCX",BTN_LABEL_HILITE_COLOR,"UI\\MLTBTNBB.PCX", 32,232,84, 28,NO_KEY,BackMultiPlayerMenu, 0, -1},
-{7,BUTTON_BITMAP,0, 0,STR_CANCEL1, BTN_LABEL_COLOR,"UI\\MLTBTNCA.PCX",BTN_LABEL_HILITE_COLOR,"UI\\MLTBTNCB.PCX",116,232,84, 28,KEY_ESCAPE,CancelMultiPlayerMenu, 16, -1},
-{8,BUTTON_BITMAP,0, 0,STR_DONE1,   BTN_LABEL_COLOR,"UI\\MLTBTNXA.PCX",BTN_LABEL_HILITE_COLOR,"UI\\MLTBTNXB.PCX",200,232,84, 28,NO_KEY,DoneMultiPlayerMenu, 0, -1},
-};
-
-LONG MultiMenu1Size = sizeof(MultiMenu1) / sizeof(BUTTON);
-
-
-BUTTON MultiMenu2[] = {
-{0,BUTTON_BITMAP,D_FREEZE|D_ZOOM, 0, -1, 0, "UI\\MLT_PNL1.PCX", 0,"", 162, 46, 316, 232,NO_KEY,PaintMultiPlayerMenu,0, -1},
-{1,BUTTON_REGION,0, 0,-1,                0, "",0,"", 61, 100,200,15,NO_KEY,GetMultiPlayerHelp, 0,-1},
-{2,BUTTON_REGION,0, 0,-1,                0, "",0,"", 61, 131,200,15,NO_KEY,SetMultiPlayerMenu, 0,-1},
-{3,BUTTON_REGION,0, 0,-1,                0, "",0,"", 61, 151,200,15,NO_KEY,SetMultiPlayerMenu, 1,-1},
-{4,BUTTON_REGION,0, 0,-1,                0, "",0,"", 61, 171,200,15,NO_KEY,SetMultiPlayerMenu, 2,-1},
-{5,BUTTON_BITMAP,0, 0,STR_CANCEL1, BTN_LABEL_COLOR,"UI\\MLTBTNCA.PCX",BTN_LABEL_HILITE_COLOR,"UI\\MLTBTNCB.PCX",116,196,84, 28,KEY_ESCAPE,CancelMultiPlayerMenu, 16, -1},
-};
-
-LONG MultiMenu2Size = sizeof(MultiMenu2) / sizeof(BUTTON);
-
-#endif
 
 BUTTON LoyaltyMenu[] = {
 {0,BUTTON_BITMAP,D_FREEZE, 0, -1, 0, "UI\\REPORT2.PCX", 0,"", 102, 6, 436, 468,NO_KEY,PaintLoyaltyTable,0, -1},
@@ -1916,50 +1716,11 @@ LONG ParchmentSize = sizeof(Parchment) / sizeof(BUTTON);
 
 #else // english ver
 
-#if 0 // UNUSED
-BUTTON BeginRuleDialog[] = {
-{ 0,BUTTON_BITMAP, D_FREEZE|D_ZOOM, 0,-1, 0,"UI\\STS_PANL.PCX",0,"",100, 20,368,436,NO_KEY,PaintAttributes,0,-1},
-
-{ 1,BUTTON_REGION, D_TEXT_LEFT, 0,-1,                 31,"",0,"", 42, 21,223, 32,NO_KEY,NULL,0,-1},
-#if defined(_JUNEDEMO)
-{ 2,BUTTON_BITMAP, 0,           0,STR_AVA_ATT_ANIM,  GREY,"UI\\STSBTNAA.PCX",GREY,"UI\\STSBTNAB.PCX", 52,400, 84, 28,NO_KEY,NULL,0,-1},
-#else
-{ 2,BUTTON_BITMAP, 0,           0,STR_AVA_ATT_ANIM,  BTN_LABEL_COLOR,"UI\\STSBTNAA.PCX",BTN_LABEL_HILITE_COLOR,"UI\\STSBTNAB.PCX", 52,400, 84, 28,KEY_M,PlayAnimation,0,-1},
-#endif
-{ 3,BUTTON_BITMAP, 0,           0,-1,                BTN_LABEL_COLOR,"UI\\STSBTNIA.PCX",BTN_LABEL_HILITE_COLOR,"UI\\STSBTNIB.PCX",188,400, 84, 28,KEY_B,BeginRule,-1},
-{ 4,BUTTON_BITMAP, 0,           0,STR_AVA_ATT_DONE,  BTN_LABEL_COLOR,"UI\\STSBTNXA.PCX",BTN_LABEL_HILITE_COLOR,"UI\\STSBTNXB.PCX",272,400, 84, 28,KEY_D,HideCharacter,0,-1},
-{ 5,BUTTON_REGION, D_TEXT_LEFT, 0,-1,                 31,"",0,"",184, 81,158, 10,NO_KEY,NULL,0,-1},
-{ 6,BUTTON_REGION, D_TEXT_LEFT, 0,STR_AVA_ATT_CLASS, 173,"",0,"",184,112,158, 10,NO_KEY,NULL,0,-1},
-{ 7,BUTTON_REGION, D_TEXT_LEFT, 0,STR_AVA_ATT_LEVEL, 173,"",0,"",184,128,158, 10,NO_KEY,NULL,0,-1},
-{ 8,BUTTON_REGION, D_TEXT_LEFT, 0,STR_AVA_ATT_BLOOD, 173,"",0,"",184,144,158, 10,NO_KEY,NULL,0,-1},
-{ 9,BUTTON_REGION, D_TEXT_LEFT, 0,STR_AVA_ATT_ALIGN, 173,"",0,"",184,159,158, 10,NO_KEY,NULL,0,-1},
-{10,BUTTON_REGION, D_TEXT_LEFT, 0,STR_AVA_ATT_STR,   173,"",0,"",184,200,158, 10,NO_KEY,NULL,0,-1},
-{11,BUTTON_REGION, D_TEXT_LEFT, 0,STR_AVA_ATT_INT,   173,"",0,"",184,216,158, 10,NO_KEY,NULL,0,-1},
-{12,BUTTON_REGION, D_TEXT_LEFT, 0,STR_AVA_ATT_DEX,   173,"",0,"",184,232,158, 10,NO_KEY,NULL,0,-1},
-{13,BUTTON_REGION, D_TEXT_LEFT, 0,STR_AVA_ATT_WIS,   173,"",0,"",184,248,158, 10,NO_KEY,NULL,0,-1},
-{14,BUTTON_REGION, D_TEXT_LEFT, 0,STR_AVA_ATT_CON,   173,"",0,"",184,264,158, 10,NO_KEY,NULL,0,-1},
-{15,BUTTON_REGION, D_TEXT_LEFT, 0,STR_AVA_ATT_CHA,   173,"",0,"",184,280,158, 10,NO_KEY,NULL,0,-1},
-{16,BUTTON_REGION, D_TEXT_LEFT, 0,STR_AVA_ATT_THA,   173,"",0,"",184,296,158, 10,NO_KEY,NULL,0,-1},
-{17,BUTTON_REGION, D_TEXT_LEFT, 0,STR_AVA_ATT_EXP,   173,"",0,"",184,328,158, 10,NO_KEY,NULL,0,-1},
-{18,BUTTON_REGION, D_TEXT_LEFT, 0,STR_AVA_ATT_ARM,   173,"",0,"",184,344,158, 10,NO_KEY,NULL,0,-1},
-{19,BUTTON_REGION, D_TEXT_LEFT, 0,STR_AVA_ATT_HIT,   173,"",0,"",184,360,158, 10,NO_KEY,NULL,0,-1},
-{20,BUTTON_REGION, D_TEXT_LEFT, 0,STR_AVA_ATT_HP,    173,"",0,"",184,376,158, 10,NO_KEY,NULL,0,-1},
-{21,BUTTON_REGION, D_TEXT_LEFT, 0,-1,                  0,"",0,"", 16,108,152,204,NO_KEY,BowToPlayer,0,-1},
-{22,BUTTON_REGION, D_TEXT_LEFT, 0,-1,                  0,"",0,"", 20,329,134, 20,NO_KEY,NULL,0,-1},
-{23,BUTTON_REGION, D_TEXT_LEFT, 0,-1,                  0,"",0,"",  0,  0,  0,  0,KEY_ESCAPE,HideCharacter,0,-1},
-};
-LONG BeginRuleDialogSize = sizeof(BeginRuleDialog) / sizeof(BUTTON);
-#endif // UNUSED
-
 BUTTON AvatarAttributes[] = {
 { 0,BUTTON_BITMAP, D_FREEZE|D_ZOOM, 0,-1, 0,"UI\\STS_PANL.PCX",0,"",112, 20,368,436,NO_KEY,PaintAttributes,0,-1},
 
 { 1,BUTTON_REGION, D_TEXT_LEFT, 0,-1,                 31,"",0,"", 42, 21,223, 32,NO_KEY,NULL,0,-1},
-#if defined(_JUNEDEMO)
-{ 2,BUTTON_BITMAP, 0,           0,STR_AVA_ATT_ANIM,  GREY,"UI\\STSBTNAA.PCX",GREY,"UI\\STSBTNAB.PCX", 52,400, 84, 28,NO_KEY,NULL,0,-1},
-#else
 { 2,BUTTON_BITMAP, 0,           0,STR_AVA_ATT_ANIM,  BTN_LABEL_COLOR,"UI\\STSBTNAA.PCX",BTN_LABEL_HILITE_COLOR,"UI\\STSBTNAB.PCX", 52,400, 84, 28,KEY_M,PlayAnimation,0,-1},
-#endif
 { 3,BUTTON_BITMAP, 0,           0,-1,                BTN_LABEL_COLOR,"UI\\STSBTNIA.PCX",BTN_LABEL_HILITE_COLOR,"UI\\STSBTNIB.PCX",188,400, 84, 28,KEY_I,InventoryFromStatus,0,-1},
 { 4,BUTTON_BITMAP, 0,           0,STR_AVA_ATT_DONE,  BTN_LABEL_COLOR,"UI\\STSBTNXA.PCX",BTN_LABEL_HILITE_COLOR,"UI\\STSBTNXB.PCX",272,400, 84, 28,KEY_D,HideStatus,0,-1},
 { 5,BUTTON_REGION, D_TEXT_LEFT, 0,-1,                 31,"",0,"",184, 81,158, 10,NO_KEY,NULL,0,-1},
@@ -1989,11 +1750,7 @@ BUTTON AvatarAttributes2[] = {
 { 0,BUTTON_BITMAP, D_FREEZE|D_ZOOM, 0,-1, 0,"UI\\STS_PANL.PCX",0,"",100, 20,368,436,NO_KEY,PaintAttributes,0,-1},
 
 { 1,BUTTON_REGION, D_TEXT_LEFT, 0,-1,                 31,"",0,"", 42, 21,223, 32,NO_KEY,NULL,0,-1},
-#if defined(_JUNEDEMO)
-{ 2,BUTTON_BITMAP, 0,			0,STR_AVA_ATT_ANIM,  GREY,"UI\\STSBTNAA.PCX",GREY,"UI\\STSBTNAB.PCX", 52,400, 84, 28,NO_KEY,NULL,0,-1},
-#else
 { 2,BUTTON_BITMAP, 0,			0,STR_AVA_ATT_ANIM,  BTN_LABEL_COLOR,"UI\\STSBTNAA.PCX",BTN_LABEL_HILITE_COLOR,"UI\\STSBTNAB.PCX", 52,400, 84, 28,KEY_M,PlayAnimation,0,-1},
-#endif
 { 3,BUTTON_REGION, 0,			0,-1,                0,"",0,"",188,400, 84, 28,NO_KEY,NULL,0,-1},
 { 4,BUTTON_BITMAP, 0,			0,STR_AVA_ATT_DONE,  BTN_LABEL_COLOR,"UI\\STSBTNXA.PCX",BTN_LABEL_HILITE_COLOR,"UI\\STSBTNXA.PCX",272,400, 84, 28,KEY_D,HideStatus2,0,-1},
 { 5,BUTTON_REGION, D_TEXT_LEFT, 0,-1,                 31,"",0,"",184, 81,158, 10,NO_KEY,NULL,0,-1},
@@ -2397,26 +2154,6 @@ BUTTON ChatDisplayWindow1[] =  {
 };
 LONG ChatDisplayWindow1Size = sizeof(ChatDisplayWindow1) / sizeof(BUTTON);
 
-#if 0
-BUTTON ChatSelect[] = {
-{0,BUTTON_BITMAP,D_FREEZE|D_ZOOM, 0, -1, 0, "UI\\CHATPNL1.PCX", 0,"", 83, 80, 472, 320,NO_KEY,PaintChatSelect,0, -1},
-{1,BUTTON_REGION,D_SANS_8, 0,STR_CHATSEL_1,                31, "",0,"", 30, 100,440,15,NO_KEY,0, 0,-1},
-{2,BUTTON_REGION,0, 0,-1,                0, "",0,"", 30, 133,440,15,NO_KEY,SetChatSelect, 0,-1},
-{3,BUTTON_REGION,0, 0,-1,                0, "",0,"", 30, 149,440,15,NO_KEY,SetChatSelect, 1,-1},
-{4,BUTTON_REGION,0, 0,-1,                0, "",0,"", 30, 165,440,15,NO_KEY,SetChatSelect, 2,-1},
-{5,BUTTON_REGION,0, 0,-1,                0, "",0,"", 30, 181,440,15,NO_KEY,SetChatSelect, 3,-1},
-{6,BUTTON_REGION,0, 0,-1,                0, "",0,"", 30, 197,440,15,NO_KEY,SetChatSelect, 4,-1},
-{7,BUTTON_REGION,0, 0,-1,                0, "",0,"", 30, 213,440,15,NO_KEY,SetChatSelect, 5,-1},
-{8,BUTTON_REGION,0, 0,-1,                0, "",0,"", 30, 229,440,15,NO_KEY,SetChatSelect, 6,-1},
-{9,BUTTON_REGION,0, 0,-1,                0, "",0,"", 30, 245,440,15,NO_KEY,SetChatSelect, 7,-1},
-{10,BUTTON_REGION,0, 0,-1,               0, "",0,"", 30, 261,440,15,NO_KEY,SetChatSelect, 8,-1},
-{11,BUTTON_REGION,0, 0,STR_CANCEL1, BTN_LABEL_COLOR,"UI\\CHTBTNCA.PCX",BTN_LABEL_HILITE_COLOR,"UI\\CHTBTNCB.PCX",284,284,84, 28,KEY_ESCAPE, CancelChatSelect, 0, -1},
-{12,BUTTON_REGION,0, 0,STR_DONE1,   BTN_LABEL_COLOR,"UI\\CHTBTNXA.PCX",BTN_LABEL_HILITE_COLOR,"UI\\CHTBTNXB.PCX",368,284,84, 28,NO_KEY,DoneChatSelect, 0, -1},
-};
-LONG ChatSelectSize = sizeof(ChatSelect) / sizeof(BUTTON);
-#endif
-
-
 BUTTON ChatSelect[] = {                                           //80
 {0,BUTTON_BITMAP,D_FREEZE, 0, -1, 0, "UI\\CHATPNL3.PCX", 0,"", 83, 130, 472, 320,NO_KEY,PaintChatSelect,0, -1},
 {1,BUTTON_REGION,0, 0,-1,                0, "",0,"", 25, 100,385,15,NO_KEY,0, 0,-1},
@@ -2517,41 +2254,6 @@ BUTTON MultiHost[] = {
 };
 LONG MultiHostSize = sizeof(MultiHost) / sizeof(BUTTON);
 
-
-#if 0
-
-BUTTON MultiMenu[] = {
-{99,BUTTON_REGION,0, 0,-1,0,"",0,"",0,0,0,0,KEY_ESCAPE,NULL, 16, -1},
-};
-LONG MultiMenuSize = sizeof(MultiMenu) / sizeof(BUTTON);
-
-BUTTON MultiMenu1[] = {
-{0,BUTTON_BITMAP,D_FREEZE|D_ZOOM, 0, -1, 0, "UI\\MLT_PNL3.PCX", 0,"", 162, 46, 316, 328,NO_KEY,PaintMultiPlayerMenu,0, -1},
-{1,BUTTON_REGION,0, 0,-1,                0, "",0,"", 61, 100,200,15,NO_KEY,GetMultiPlayerHelp, 0,-1},
-{2,BUTTON_REGION,0, 0,-1,                0, "",0,"", 61, 131,200,15,NO_KEY,SetMultiPlayerMenu, 0,-1},
-{3,BUTTON_REGION,0, 0,-1,                0, "",0,"", 61, 151,200,15,NO_KEY,SetMultiPlayerMenu, 1,-1},
-{4,BUTTON_REGION,0, 0,-1,                0, "",0,"", 61, 171,200,15,NO_KEY,SetMultiPlayerMenu, 2,-1},
-{5,BUTTON_REGION,0, 0,-1,                0, "",0,"", 61, 207,200,15,NO_KEY,SetMultiPlayerMenu, 3,-1},
-{6,BUTTON_BITMAP,0, 0,STR_BACK1,   BTN_LABEL_COLOR,"UI\\MLTBTNBA.PCX",BTN_LABEL_HILITE_COLOR,"UI\\MLTBTNBB.PCX", 32,232,84, 28,NO_KEY,BackMultiPlayerMenu, 0, -1},
-{7,BUTTON_BITMAP,0, 0,STR_CANCEL1, BTN_LABEL_COLOR,"UI\\MLTBTNCA.PCX",BTN_LABEL_HILITE_COLOR,"UI\\MLTBTNCB.PCX",116,232,84, 28,KEY_ESCAPE,CancelMultiPlayerMenu, 16, -1},
-{8,BUTTON_BITMAP,0, 0,STR_DONE1,   BTN_LABEL_COLOR,"UI\\MLTBTNXA.PCX",BTN_LABEL_HILITE_COLOR,"UI\\MLTBTNXB.PCX",200,232,84, 28,NO_KEY,DoneMultiPlayerMenu, 0, -1},
-};
-
-LONG MultiMenu1Size = sizeof(MultiMenu1) / sizeof(BUTTON);
-
-
-BUTTON MultiMenu2[] = {
-{0,BUTTON_BITMAP,D_FREEZE|D_ZOOM, 0, -1, 0, "UI\\MLT_PNL1.PCX", 0,"", 162, 46, 316, 232,NO_KEY,PaintMultiPlayerMenu,0, -1},
-{1,BUTTON_REGION,0, 0,-1,                0, "",0,"", 61, 100,200,15,NO_KEY,GetMultiPlayerHelp, 0,-1},
-{2,BUTTON_REGION,0, 0,-1,                0, "",0,"", 61, 131,200,15,NO_KEY,SetMultiPlayerMenu, 0,-1},
-{3,BUTTON_REGION,0, 0,-1,                0, "",0,"", 61, 151,200,15,NO_KEY,SetMultiPlayerMenu, 1,-1},
-{4,BUTTON_REGION,0, 0,-1,                0, "",0,"", 61, 171,200,15,NO_KEY,SetMultiPlayerMenu, 2,-1},
-{5,BUTTON_BITMAP,0, 0,STR_CANCEL1, BTN_LABEL_COLOR,"UI\\MLTBTNCA.PCX",BTN_LABEL_HILITE_COLOR,"UI\\MLTBTNCB.PCX",116,196,84, 28,KEY_ESCAPE,CancelMultiPlayerMenu, 16, -1},
-};
-
-LONG MultiMenu2Size = sizeof(MultiMenu2) / sizeof(BUTTON);
-
-#endif
 
 BUTTON LoyaltyMenu[] = {
 {0,BUTTON_BITMAP,D_FREEZE, 0, -1, 0, "UI\\REPORT2.PCX", 0,"", 102, 6, 436, 468,NO_KEY,PaintLoyaltyTable,0, -1},
@@ -2813,4 +2515,3 @@ LONG ParchmentSize = sizeof(Parchment) / sizeof(BUTTON);
 #endif // english ver
 
 #endif
-

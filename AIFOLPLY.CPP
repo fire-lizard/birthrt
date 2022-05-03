@@ -767,26 +767,3 @@ MoveThisGuy:
 			break;
 	}
 }
-
-
-/* ========================================================================
-   Function	- mfSwitchToFollowPlayer
-   Description - Hide the dialog and send the avatar on the way.
-   Returns	 - void
-   ======================================================================== */
-
-#if 0
-void FOLLOW_PLAYER_DATA::mfSwitchToFollowPlayer(LONG hAvatar)
-{
-	CAvatar *pAvatar = (CAvatar *) BLKPTR((SHORT) hAvatar);
-	
-	pAvatar->SetAIFuncIndex(CAvatar::AI_FUNC_FOLLOW_PLAYER);
-	//pAvatar->fFollowPlayer.DistX = 30;
-	//pAvatar->fFollowPlayer.DistY = 0;
-	pAvatar->fPrev.Status = CAvatar::AI_INIT;
-	
-	pAvatar->Status = CAvatar::AI_END_LISTEN;
-}
-#endif
-
-

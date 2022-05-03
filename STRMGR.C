@@ -276,16 +276,3 @@ static SHORT DisposeStringBlock (SHORT iResBlk, SHORT iMemBlk)
 	// Now clear our resource.
 	return DisposRes(iResBlk, iMemBlk);
 }
-
-#if 0
-STRMGR_Test(void)
-{
-	// test the string manager
-	printf(STRMGR_GetStr(STR_STRING_1));
-	printf("\n");
-	printf(STRMGR_GetStr(STR_STRING_2));
-	printf("\n");
-	printf(STRMGR_GetStr(STR_STRING_100));
-	printf("\n");
-}
-#endif

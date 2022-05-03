@@ -206,24 +206,6 @@ static int iNumGames = 0;
 static DWORD dwWebStart = 0;
 
 
-#if 0 // TEST CODE
-char psG[10][8] = {  
-
-"Line 1",
-"Line 2",
-"Line 3",
-"Line 4",
-"Line 5",
-"Line 6",
-"Line 7",
-"Line 8",
-"Line 9",
-"Line 10"
-
- };
-#endif
-           
-
 // static int iTransType = iMPFT_REC; //---- Default to receive
 
 
@@ -1738,23 +1720,6 @@ void DispMultiOpts(int fProt, LONG MenuId )
 
 	gprint_text(mx, my, buffer, OUR_YELLOW );
 
-
-
-
-#if 0
-	//---- Speed
-	GetButtonPosition( MenuId, 9, &mx, &my );
-	sprintf( buffer1, "%s",
-			 STRMGR_GetStr(STR_MULTIMENU_SPEED) );
-	sprintf( buffer, "%s %s",
-			 buffer1,
-			 STRMGR_GetStr( STR_MULTIMENU_CSLS + AMultiPlayer.GetSpeed() ) );
-	gprint_text( mx, my, buffer, OUR_YELLOW );
-#endif
-
-
-
-
 #endif
 
 }
@@ -1844,13 +1809,6 @@ void GetMultiPlayerHelp( LONG, LONG )
              	SystemHelp( STR_MULTIMENU_SP,
                            STR_MULTIMENU_HELP_SP_TEXT, H_Select_Protocol, 0, 0 );
    			break;
-
-#if 0
-   		case MENU_CONNSPD:
-             	SystemHelp( STR_MULTIMENU_CS,
-                           STR_MULTIMENU_HELP_CS_TEXT, H_Set_Connection_Speed, 0, 0 );
-   			break;
-#endif
 
 		    case MENU_JOINNEW:
        	    SystemHelp( STR_MULTIMENU_JN,
@@ -2896,14 +2854,7 @@ void SetupMPOver ( void )
 
 void SetupWaitRealm ( void )
 {
-
 	SetButtonProc (D_MULTIWAIT, 0, PaintWaitingRealmMenu, 0, 0);
-
-#if 0 // There is no cancel button on this menu.
-	SetButtonArt    (D_MULTIWAIT, 8, "UI\\CHTBTN2A.PCX" );
-	SetButtonProc   (D_MULTIWAIT, 8, CancelWaitingRealmMenu, 0, 0);
-#endif
-
 }
 
 
@@ -3349,16 +3300,6 @@ void StartSync ( LONG sync )
 				if ( !IsMultiPlayer() )		//---- The game is over somehow
 					break;
 			}
-
-			#if 0
-			LOGCOMMENTSLEEP
-			if ( fLogComment )
-			{
-			char temp[200];
-			sprintf ( temp, "   StartSync - Player %ld, sync %ld sent", AMultiPlayer.GetPlayerId(), sync);
-			RandomLogComment ( temp );
-			}
-			#endif
 		}
 		else			// master
 		{
@@ -3382,41 +3323,6 @@ void StartSync ( LONG sync )
 #endif
 }
 
-
-/* ======================================================================== */
-#if 0
-#define	NUM_LED_X	629
-#define	NUM_LED_Y	10
-#define	NUM_LED_W	10
-#define	NUM_LED_H	6
-#define	NUM_LED_INC	8
-#include "engine.h"
-
-void PaintNumberOverLED ( int k, DWORD id2, LONG number )
-{
-	LONG	newY = NUM_LED_Y + (NUM_LED_INC * k);
-	
-	if (id2 != kNoPlayer)
-	{
-		color_rect( NUM_LED_X, newY, NUM_LED_W, NUM_LED_H, RED);
-		print_textf( NUM_LED_X, newY, WHITE, "^F00%ld", number);
-		ScreenCopy( 0, NUM_LED_X, newY, NUM_LED_W, NUM_LED_H, SC_DEFAULT_RES);
-	}
-}
-#endif
-
-#if 0
-void DebugMsgOnScreen ( char * text, LONG arg )
-{
-	SetRemapTable(RED_GRAD);
-	DrawBitmap (422, 409, iDMapBx, 22, 0, 216, 21);
-	ClearRemapTable();
-	init_gfont(FONT_SANS_8PT);
-	print_textf(422+108, 420, WHITE, text, arg);
-	ScreenCopy( 0, 422, 409, 216, 21, SC_DEFAULT_RES);
-}
-#endif
-
 /* ========================================================================
    Function    - CheckSync
    Description - checks for sync status
@@ -3435,21 +3341,8 @@ LONG CheckSync ( LONG sync, BOOL fStay, BOOL fDisplayProcess )
 
 	if ( IsMultiPlayer() )
 	{
-//	[abc] 9/3
-//		if (fInfoOnlyDomainUI)
-//			fatal_error("CheckSync - fInfoOnlyDomainUI = TRUE, executed 2nd sync (sync:%ld/%ld)", fInfoOnlyDomainUI-1,sync);
-
 		if (fStay && !fDisplayProcess)
 			StartWait( sync + 16 );
-
-		//LOGCOMMENTSLEEP
-		//if ( fLogComment )
-		//{
-		//	char temp[200];
-		//	sprintf ( temp, "CheckSync - Start of check sync %ld", sync);
-		//	RandomLogComment ( temp );
-		//}
-
 
 		LOGCOMMENTSLEEP
 		if ( fLogComment )
@@ -3527,16 +3420,6 @@ LONG CheckSync ( LONG sync, BOOL fStay, BOOL fDisplayProcess )
 							if ( MP_LEFT_TIMEOUT < AMultiPlayer.GetSyncTime(i) )
 							{  
 								AMultiPlayer.RemovePlayer( dwId );
-								
-								#if 0
-								LOGCOMMENTSLEEP
-								if ( fLogComment )
-								{
-									char temp[200];
-									sprintf ( temp, "CheckSync - sync %ld for id %ld 2nd TIMEDOUT, RemovingPlayer...", sync, dwId);
-									RandomLogComment ( temp );
-								}
-								#endif
 							}
 							
 							cnt++;
@@ -3560,75 +3443,24 @@ LONG CheckSync ( LONG sync, BOOL fStay, BOOL fDisplayProcess )
 //				DebugMsgOnScreen("^cbefore cnt test. sync %ld", sync);
 				if ( cnt == 0 )		// Everyone has synced
 				{
-//					DebugMsgOnScreen("^ccnt == 0. sync %ld", sync);
 					AMultiPlayer.ResetSync( sync );
 					break;
 				}
 
 				else if ( !fStay )	// if we don't stick here then return
 				{
-//					DebugMsgOnScreen("^cfStay == FALSE. sync %ld", sync);
 					WaitingWho = who;
 					return cnt;
 				}
 
-//	[abc] 9/3 removed
-#if 0
-				else if (fDisplayProcess)	// not all synced but can't just return
-				{									// try to let map scroll, etc.
-//					DebugMsgOnScreen("^cbefore mainloop. sync %ld", sync);
-
-					fInfoOnlyDomainUI = sync+1;
-					fRedrawAll = FALSE;
-					fUpdateDataArea = FALSE;
-	   			WindowsMessages();
-					MainLoop();
-
-//					DebugMsgOnScreen("^cafter mainloop. sync %ld", sync);
-					// keep the player informed
-					#if 01
-					if (cnt != oldcnt)
-					{
-						if (cnt == 1)
-							DisplayProcess(WAITINGFOR, RED_GRAD, who, 1);
-						else if (cnt > 1)
-							DisplayProcess(WAITINGFOR, RED_GRAD, 0, 0);
-						oldcnt = cnt;
-					}
-					#else
-					{
-						SetRemapTable(RED_GRAD);
-						DrawBitmap (422, 409, iDMapBx, 22, 0, 216, 21);
-						ClearRemapTable();
-						init_gfont(FONT_SANS_8PT);
-						print_textf(422+108, 420, WHITE, "^cCheckSync %d Master Wait",sync);
-						ScreenCopy( 0, 422, 409, 216, 21, SC_DEFAULT_RES);
-					}
-					#endif
-				}
-#endif
-
-//		[abc] 9/3 removed
-//				else
-//				{
 					// -- if we get informed of someone leaving game, need
 					// -- to run the menu code to clear the message box
 					RunMenus();
 					run_timers();
 					Sleep(0);
-//		[abc] 9/3 removed
-//				}
-//				DebugMsgOnScreen("^cafter cnt test. sync %ld", sync);
 
 				if ( !IsMultiPlayer() )		//---- The game is over somehow
 					break;
-
-				//---- Break out
-				//if ( GetAsyncKeyState( VK_F10 ) & 0x8000 )
-				//{
-				//    AMultiPlayer.Finalize();
-				//    break;
-				//}
 			}	//----- End of While ( TRUE )
 
 			fRedrawAll = TRUE;		// prime the pump
@@ -3691,16 +3523,6 @@ LONG CheckSync ( LONG sync, BOOL fStay, BOOL fDisplayProcess )
 					RandomLogComment ( temp );
 				}
 			}
-
-			#if 0
-			LOGCOMMENTSLEEP
-			if ( fLogComment )
-			{
-				char temp[200];
-				sprintf ( temp, "   CheckSync - Master, GO for sync %ld sent", sync);
-				RandomLogComment ( temp );
-			}
-			#endif
 		}
 
 		//----------------------------------------------------------
@@ -3785,61 +3607,17 @@ LONG CheckSync ( LONG sync, BOOL fStay, BOOL fDisplayProcess )
 
 				if ( !fStay )	// if we don't stick here then return
 				{
-//					DebugMsgOnScreen("^cfStay == FALSE. sync %ld", sync);
 					return 2;
 				}
 
-//	[abc] 9/3 removed
-#if 0
-				else if (fDisplayProcess)	// not all synced but can't just return
-				{									// try to let map scroll, etc.
-//					DebugMsgOnScreen("^cbefore mainloop. sync %ld", sync);
-
-					fInfoOnlyDomainUI = sync+1;
-					fRedrawAll = FALSE;
-					fUpdateDataArea = FALSE;
-	   			WindowsMessages();
-					MainLoop();
-
-//					DebugMsgOnScreen("^cafter mainloop. sync %ld", sync);
-					// keep the player informed
-					#if 01
-					{
-						DisplayProcess(WAITINGFOR, RED_GRAD, 0, 2);
-					}
-					#else
-					{
-						SetRemapTable(RED_GRAD);
-						DrawBitmap (422, 409, iDMapBx, 22, 0, 216, 21);
-						ClearRemapTable();
-						init_gfont(FONT_SANS_8PT);
-						print_textf(422+108, 420, WHITE, "^cCheckSync %d, Wait for GO",sync);
-						ScreenCopy( 0, 422, 409, 216, 21, SC_DEFAULT_RES);
-					}
-					#endif
-				}
-#endif
-
-//	[abc] 9/3 removed
-//				else
-//				{
 					// -- if we get informed of someone leaving game, need
 					// -- to run the menu code to clear the message box
 					RunMenus();
 					run_timers();
 					Sleep(0);
-//	[abc] 9/3 removed
-//				}
 
 				if ( !IsMultiPlayer() )		//---- The game is over somehow
 					break;
-
-				//---- Break out
-				//if ( GetAsyncKeyState( VK_F10 ) & 0x8000 )
-				//{
-				//    AMultiPlayer.Finalize();
-				//    break;
-				//}
 			}	//----- End of While ( TRUE )
 
 			fRedrawAll = TRUE;		// prime the pump

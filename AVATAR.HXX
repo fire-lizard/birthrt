@@ -67,12 +67,6 @@ typedef SHORT HDL_AVATAR;
 #include "aibtlcap.hxx"
 #endif
 
-#if 0	// Unused.
-#if !defined(_AIFNDTYP_HXX)
-#include "aifndtyp.hxx"
-#endif
-#endif
-
 #if !defined(_AIFOLPLY_HXX)
 #include "aifolply.hxx"
 #endif
@@ -99,10 +93,6 @@ typedef SHORT HDL_AVATAR;
 
 #if !defined(_AIPONG_HXX)
 #include "aipong.hxx"
-#endif
-
-#if !defined(_AIPTHATT_HXX)
-#include "aipthatt.hxx"
 #endif
 
 #if !defined(_AIPTHLDR_HXX)
@@ -216,9 +206,6 @@ class PLAYER_STATS;
 class CAvatar : public CThing
 {
 public:				// Public for the dialog editor
-    friend class PATH_ATTACK_DATA;
-    friend class LEADER_DATA;
-
     typedef enum {
         AI_INIT = 0,
         AI_RELEASE,
@@ -254,15 +241,6 @@ public:				// Public for the dialog editor
     typedef enum
     {
         AI_FUNC_NULL = 0,
-#if 0 // UNUSED
-        AI_FUNC_FOLLOW_ID,
-        AI_FUNC_GUARD_POINT,
-		AI_FUNC_FIND_TYPE,
-		AI_FUNC_STAND_STILL,
-		AI_FUNC_DEATH_SEQUENCE,
-		AI_FUNC_PATH_LEADER,
-		AI_FUNC_PATH_ATTACK,
-#endif
         AI_FUNC_FOLLOW_PATH,
         AI_FUNC_PING_PONG,
         AI_FUNC_BATTLE_CAPTAIN,
@@ -355,13 +333,6 @@ public:				// Public for the dialog editor
 
 	// Any mutually exclusive data should be stored here.
 	union {
-#if 0 // UNUSED
-		GUARDPT_DATA 		fGuardPt;
-		FIND_TYPE_DATA		fFindType;
-		PATH_LEADER_DATA	fPathLeader;
-		PATH_ATTACK_DATA	fPathAttack;
-		LEADER_DATA			fLeader;
-#endif
 		FOLLOW_ID_DATA		fFollowId;
 		PINGPONG_DATA 		fPingPong;
 		FOLLOW_PLAYER_DATA	fFollowPlayer;
@@ -560,15 +531,6 @@ protected:
 private:
 
     // The AI fns.
-#if 0 // UNUSED
-    static void FollowId(CAvatar *, AISTATUS);
-    static void GuardPt(CAvatar *, AISTATUS);
-    static void FindType(CAvatar *, AISTATUS);
-    static void StandStill(CAvatar *, AISTATUS);
-    static void DeathSequence(CAvatar *, AISTATUS);
-    static void PathLeader(CAvatar *, AISTATUS);
-    static void PathAttack(CAvatar *, AISTATUS);
-#endif
     static void FollowPath(CAvatar *, AISTATUS);
     static void BattleCapt(CAvatar *, AISTATUS);
     static void FollowPlayer(CAvatar *, AISTATUS);
@@ -937,16 +899,6 @@ inline void CAvatar::mfInitVals()
 	attrib.KilledByLava=0;
 	switch(GetAIFuncIndex())
 	{
-#if 0 // UNUSED
-	case AI_FUNC_PATH_ATTACK:
-		fPathAttack.FollowPath.mfInitVals();
-		fPathAttack.Leader.mfInitVals();
-		break;
-	case AI_FUNC_PATH_LEADER:
-		fPathLeader.FollowPath.mfInitVals();
-		fPathLeader.Leader.mfInitVals();
-		break;
-#endif
 	case AI_FUNC_PING_PONG:
 		fPingPong.mfInitVals();
 		break;
@@ -963,23 +915,6 @@ inline LONG CAvatar::mfReadRestOfSceneData(FILE * const fp)
 	
 	switch(GetAIFuncIndex())
 	{
-#if 0 // UNUSED
-	case AI_FUNC_FOLLOW_ID:
-		Result = fFollowId.mfReadData(fp);
-		break;
-	case AI_FUNC_GUARD_POINT:
-		Result = fGuardPt.mfReadData(fp);
-		break;
-	case AI_FUNC_FIND_TYPE:
-		Result = fFindType.mfReadData(fp);
-		break;
-	case AI_FUNC_PATH_ATTACK:
-		Result = fPathAttack.mfReadData(fp);
-		break;
-	case AI_FUNC_PATH_LEADER:
-		Result = fPathLeader.mfReadData(fp);
-		break;
-#endif
 	case AI_FUNC_FOLLOW_PATH:
 		Result = fFollowPath.mfReadData(fp);
 		break;

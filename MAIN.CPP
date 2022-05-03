@@ -102,10 +102,6 @@ void SysForceCursor (void);
 /* ------------------------------------------------------------------------
 	Prototypes
 	------------------------------------------------------------------------ */
-#if defined(_JUNEDEMO)
-void ShowAdScreen(SHORT);
-#endif
-
 #ifdef _CHARED
 void CharedDoEditorDialog ();
 #endif
@@ -292,11 +288,6 @@ void ToggleDirectDraw(LONG, LONG)
 
 	if (sDrawMode == iGDI)
 	{
-	    //GEH Leave this until direct draw 5.0 is working
-	    #ifdef _JUNEDEMO
-	    return;
-	    #endif
-
 		RECT rc;
 
 		sDrawMode = iDDRAW;        // set the mode first! 5 SEP 96 CAM
@@ -851,12 +842,6 @@ void GameMain(void)
 	set_hires(0, 0);
 #endif
 
-#if 0
-// Do this just to build the shade table as needed.
-	init_pal("nova_l");
-	init_shade_table("nova_l");
-#endif
-
 #ifndef _WINDOWS	
 	// only checks for button clicks
 	add_timer(1,update_buttons);
@@ -1219,7 +1204,6 @@ void PlayIntro(void)
 	AddSndObj(SND_AMBIENT_SCABBARD_HIT1,0,-1);      // sword clank
 	FlcDelay = 34;
 	// if we didn't already bail and we have enough memory, play history intro
-#if !defined(_JUNEDEMO)	
 	FadeOut(900);
 	
 	if (fFlicPlayedComplete)
@@ -1227,7 +1211,6 @@ void PlayIntro(void)
 		NewIntro();
 	}
 
-#endif
 #endif
 
 	fAnyKeyChanged = FALSE;
@@ -1642,11 +1625,7 @@ void PlayFinale(LONG WinningRealm,LONG)
 
 	}
 
-#if defined(_JUNEDEMO)
-	bitm = GetResourceStd ("graphics\\keepplay.pcx", FALSE);
-#else
 	bitm = GetResourceStd ("finale\\finale.pcx", FALSE);
-#endif
  		
 	if (bitm != fERROR)
 	{
@@ -1654,7 +1633,6 @@ void PlayFinale(LONG WinningRealm,LONG)
 		SetPurge(bitm);
 	}
 	
-#if !defined(_JUNEDEMO)
 	// use only first 8 chars up to a space
 	memset(&name[0], 0, 9);
 	// [d4-09-97 JPC] Modified the following to use the access
@@ -1755,7 +1733,6 @@ void PlayFinale(LONG WinningRealm,LONG)
 	print_textf(450,220,1,temp);
 	strcpy(temp,STRMGR_GetStr(STR_FINALE_SCREEN73));
 	print_textf(450,230,1,temp);
-#endif //_JUNEDEMO
 	
 	update_screen();
 		
@@ -1905,9 +1882,6 @@ void AskQuitSysProc(LONG MenuCombo, LONG button)
 #if defined(_WINDOWS)
 		AMultiPlayer.Finalize();
 #endif
-#if defined(_JUNEDEMO)
-		ShowAdScreen(1);
-#endif
 		QuitSys(0,0);
 	}
 	else
@@ -1917,9 +1891,6 @@ void AskQuitSysProc(LONG MenuCombo, LONG button)
 		AMultiPlayer.Finalize();
 #endif
 		PlayCredits(0,0);
-#if defined(_JUNEDEMO)
-		ShowAdScreen(1);
-#endif
 		QuitSys(0,0);
 	}
 	// else just return

@@ -145,82 +145,6 @@ void fill_extent(LONG x)
 	top_extent[x]=9999;
 }
 
-#if 0
-// Moved to RENDER.C
-/* =======================================================================
-   Function    - clip_span
-   Description - ???
-   Returns     - TRUE if something was left after clipping, FALSE if not.
-   ======================================================================== */
-LONG clip_span (LONG x, LONG* y1, LONG* y2, LONG* clipped)
-{
-#if 0
-	LONG* top, * bot;
-	LONG topVal, botVal;
-
-	top=&top_extent[x];
-	topVal = *top;
-	bot=&bot_extent[x];
-	botVal = *bot;
-
-	if(*y1<=topVal)
-	{
-		*clipped=topVal-*y1;    /* amount clipped */
-		*y1=topVal;   /*clip*/
-	}
-	else
-	{
-		*clipped=0;
-	}
-	
-	if(*y2>=botVal)
-		*y2=botVal;   /*clip*/
-
-	if(*y1>=*y2)   /* is ne-thing left? */
-		return(FALSE);							// no, span was clipped out of existence
-
-	if(*y1<=topVal)
-		*top=*y2+1;   /*abut (update clip spans)*/
-		
-	if(*y2>=botVal)
-		*bot=*y1-1;   /*abut*/
-
-	return(TRUE);								// something was left after clipping
-#else
-// [d7-02-96 JPC] Rewrote to get rid of the local pointers.
-
-	LONG topVal, botVal;
-
-	topVal = top_extent[x];
-	botVal = bot_extent[x];
-
-	if (*y1 <= topVal)
-	{
-		*clipped = topVal - *y1;			// amount clipped
-		*y1 = topVal;   						// clip
-	}
-	else
-	{
-		*clipped=0;
-	}
-	
-	if (*y2 >= botVal)
-      *y2 = botVal;                    // clip
-
-	if (*y1 >= *y2)   						// is anything left?
-      return (FALSE);                  // no, span was clipped out of existence
-
-	if (*y1 <= topVal)
-      top_extent[x] = *y2 + 1;         // abut (update clip spans)
-		
-	if (*y2 >= botVal)
-      bot_extent[x] = *y1 - 1;         // abut
-
-	return(TRUE);								// something was left after clipping
-#endif
-}
-#endif
-
 /* =======================================================================
    Function    - clip_obj
    Description - clip_obj is the same as clip_span except top and bot
@@ -250,5 +174,3 @@ LONG clip_obj (LONG x, LONG* y1, LONG* y2, LONG* clipped)
 		return(FALSE);
 	return(TRUE);
 }
-
-

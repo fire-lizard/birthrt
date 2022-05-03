@@ -1066,25 +1066,4 @@ inline LONG ItemChargeHandler::ChargedItemChain::mfCharges()
 	return numCharges;
 }
 
-#if 0 // UNUSED
-// Makes a copy of the chain of items. 
-// Probably should return a const reference instead.
-inline ItemChargeHandler::ChargedItemChain ItemChargeHandler::mfChain(LONG idx)
-{
-	//this gets nutty if you pass in bad idxs
-
-#ifdef _DEBUG
-	if (idx<0)
-	{
-		fatal_error("negative index (%li) passed into ItemChargeHandler::mfChain()! %s(%li)",idx,__FILE__,__LINE__);
-	}
-#endif
-
-	return ChargeDegradeTable[idx%MAX_CHARGES];
-}
-#endif 
-
-		
-
-
 #endif

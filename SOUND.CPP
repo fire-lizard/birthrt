@@ -506,39 +506,6 @@ void UpdateLoopingSoundObjects(void)
 	}
 }
 
-/**********************************************************************************
-Function AddThingToSoundArray
-Purpose   Add a thing with looping sound to the loopingsounds array
-arguments  the thing type, the index into the thingtype array
-*********************************************************************************/
-extern "C"
-void AddThingToSoundArray(SOUND_TYPES SoundType, LONG ThingIndex)
-{
-#if 0 // all this stuff was removed from the wads
-
-	if(TotalLoopingSounds <= MAX_SOUND_THINGS && AudioInitialized )
-	{
-		LoopingSoundThing[TotalLoopingSounds].ThingTypeIndex = ThingIndex;
-		// get the snd filename into .wave
-		switch(SoundType)
-		{
-			case FIRE_SOUNDS:
-				LoopingSoundThing[TotalLoopingSounds].wave = SND_FIRE_LOOP1;
-				break;
-			case TORCH_SOUNDS:
-				LoopingSoundThing[TotalLoopingSounds].wave = SND_TORCH_LOOP1;
-				break;
-			case FOUNTAIN_SOUNDS:
-				LoopingSoundThing[TotalLoopingSounds].wave = SND_FOUNTAIN_LOOP1;
-				break;
-
-		}
-		TotalLoopingSounds++;
-		TotalEnvironSnds = TotalLoopingSounds;
-	}
-
-#endif	
-}
 /**********************************************************************
 Function AddLoopingSound
 Purpose Add a looping sound so it can be handled by UpdateLoopingSoundObjects and deleted later

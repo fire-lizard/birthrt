@@ -62,13 +62,4 @@ ULONG after_memory;
 	tt=(LONG)get_time();
 	tot_time=(LONG)((LONG)tt-(LONG)before_time);
 	after_memory=(ULONG)get_free_mem();
-
-#if 0
-	printf("STATISTICS------------------------------------------------------\n");
-	printf("TIMER:%ld  FRAMES:%ld   TICK PER:%ld   FPS:%f\n",tot_time,frames,(LONG)((LONG)tot_time)/((LONG)frames),(float)frames/((float)tot_time/18));
-	printf("CAMERA: X:%d Y:%d Z:%d PH:%d A:%d\n",camera.x,camera.y,camera.z,player.hei,camera.a);
-	printf("MEMORY(Includes ZONE): Before:%u After:%u Used:%u\n",before_memory,after_memory,before_memory-after_memory);
-
-printf("----------------------------------------------------------------\n");
-#endif
 }

@@ -290,45 +290,11 @@ DEFINE_VECTOR_CLASS(SHORT, UnitTypeID);
 
 
 extern SHORT		iDRollFIc;
-extern int			reqSound;
 extern LONG			TutorialActionNumber;
 extern LONG			TutorialScreenNumber;
 extern BOOL			mundane_descriptions;
 
 static void DoDealMenu(LONG iRealm);
-#if 0
-// Diplomacy structs
-typedef struct
-{
-	unsigned int	iWhoFrom	: 6;
-	unsigned int	iAlliance	: 2;
-	unsigned int	iReqGold	: 5;
-	unsigned int	iReqProv	: 8;
-	unsigned int	iReqHold	: 10;
-	unsigned int	iReqTrib	: 5;
-	unsigned int	iOffProv	: 8;
-	unsigned int	iOffHold	: 10;
-	unsigned int	iOffTrib	: 5;
-	unsigned int	iOffGold	: 5;
-	unsigned int	iOffRegy	: 5;
-} DIP_DATA;
-
-typedef struct
-{
-	LONG	data1;
-	LONG	data2;
-	LONG	data3;
-} DIP_DATA1;
-
-typedef struct
-{
-	union
-	{
-		DIP_DATA  d1;
-		DIP_DATA1 d2;
-	};
-} DIPLOMACY_DATA;
-#endif
 DIPLOMACY_DATA dData;
 
 
@@ -1060,43 +1026,6 @@ void SetupMod (LONG x, LONG y, UBYTE * pNum, LONG NumMin, LONG Base, LONG dirFac
 		color_rect(x-1, y+6, 10, 4, LTTAN-4);
 	print_textf(x+4, y+5, DKBROWN, "-");
 }
-/* --------------------------------------------- */
-#if 0
-BOOL find_path(LONG cur_prov, LONG to_prov, LONG * countPt)
-{
-	LONG	i, dx, dy, dist;
-	LONG	test_prov;
-	LONG	best_prov = 0;
-	LONG	best_border = 0;
-	LONG	min_dist = 99999999;
-	LONG	count;
-	count = *countPt;
-	for (i=0; i<7; ++i)
-	{
-		test_prov = province[cur_prov].Border[i].Province;
-		dx = province[to_prov].x - province[test_prov].x;
-		dy = province[to_prov].y - province[test_prov].y;
-		dist = (dx * dx) + (dy * dy);
-		if (dist < min_dist && TerrainCost[province[cur_prov].Border[i].MoveCost] < 100)
-		{
-			min_dist = dist;
-			best_prov = test_prov;
-			best_border = i;
-		}
-	}
-
-	if (best_prov)		// found a good province
-	{
-		++count;			// make sure count == 0 when call this function
-		if (best_prov != to_prov)
-			find_path(best_prov, to_prov, &count);
-		*countPt = count;
-		return TRUE;
-	}
-
-	return FALSE;
-}
-#endif
 
 /* ========================================================================
    Function    - 
@@ -3380,44 +3309,6 @@ DiplomacyRestart:
 							if (CheckVassal((REALM::REALM_TYPE)iSelectedRealm) && !ISVASSAL(iSelectedRealm, HomeRealm) )
 								goto DiplomacyRestart;
 
-#if 0
-							AMultiPlayer.LookForMessages();
-
-							// check lockout for 45 seconds
-							time = get_time() + (45 * 18);
-							while ( regents[0].mfGetunit() != 0 )
-							{
-								AMultiPlayer.LookForMessages();
-								Sleep(1);
-								if (get_time() > time)
-									goto DiplomacyRestart;
-							}
-
-							// set lockout
-							SetGameData(MP_REGENT, MPREG_UNIT, 0, HomeRealm, TRUE );
-
-							AMultiPlayer.LookForMessages();
-
-							// check lockout for 4 seconds
-							time = get_time() + (4 * 18);
-							while ( get_time() < time )
-							{
-								if ( regents[0].mfGetunit() != HomeRealm )
-								{
-									SetGameData(MP_REGENT, MPREG_UNIT, 0, 0, TRUE );
-									goto DiplomacyRestart;
-								}
-								AMultiPlayer.LookForMessages();
-								Sleep(1);
-							}
-
-							// check again for already taken. if so, clear lockout
-							if (CheckVassal((REALM::REALM_TYPE)iSelectedRealm) && !ISVASSAL(iSelectedRealm, HomeRealm) )
-							{
-								SetGameData(MP_REGENT, MPREG_UNIT, 0, 0, TRUE );
-								goto DiplomacyRestart;
-							}
-#endif
 							// sieze lieutenant
 							SetGameData(MP_REALMSTATUS, iSelectedRealm, HomeRealm, STATUS_VASSAL, TRUE );
 
@@ -3429,7 +3320,6 @@ DiplomacyRestart:
 							{
 								if ( !ISVASSAL(iSelectedRealm, HomeRealm) )
 								{
-//									SetGameData(MP_REGENT, MPREG_UNIT, 0, 0, TRUE );
 									goto DiplomacyRestart;
 								}
 								AMultiPlayer.LookForMessages();
@@ -3437,7 +3327,6 @@ DiplomacyRestart:
 							}
 
 							// clear lockout
-//							SetGameData(MP_REGENT, MPREG_UNIT, 0, 0, TRUE );
 
 						}
 					}
@@ -7997,45 +7886,6 @@ void DoneDomainAction (LONG MenuCombo, LONG)
 			
 			// new function to handle stuff commented out below, better
 			WarDeclared(HomeRealm, (REALM::REALM_TYPE)iSelectedRealm, TRUE);
-			
-#if 0			
-			// for you and everyone you are full allies with
-			for (i=1; i<LAND_REALM_COUNT; ++i)
-			{
-				if (((RealmStatus[i][HomeRealm])&0x0F) >= STATUS_FULL_ALLIANCE
-						&& i != iSelectedRealm && (i == HomeRealm || !realm[i].mfIsPlayerCtrl()))
-				{
-					// vs. them and everyone they are full allies with
-					for (j=1; j<LAND_REALM_COUNT; ++j)
-					{
-						if ( ((RealmStatus[j][iSelectedRealm])&0x0F) >= STATUS_FULL_ALLIANCE
-							&& ( ((RealmStatus[i][j])&0x0F) < STATUS_FULL_ALLIANCE || i==HomeRealm)
-							&& j != HomeRealm
-							)
-						{
-							// set to AT_WAR and set them neutral to us if not at war
-							SetGameData(MP_REALMSTATUS, i, j, (TestAdjacent((REALM::REALM_TYPE)i,(REALM::REALM_TYPE)j))?STATUS_AT_WAR_ADJ:STATUS_AT_WAR, TRUE );
-							if (j==iSelectedRealm && i!=HomeRealm && (ISVASSAL(i, HomeRealm) || ISVASSAL(HomeRealm, i)))
-								AddReport(IMMEDIATE_ALLY_DECLARE_WAR, 3, i, j);
-							else if (j == iSelectedRealm && i!=HomeRealm && AREFULLALLIES(i, HomeRealm))
-						 		AddReport(IMMEDIATE_ALLY_DECLARE_WAR, 2, i, j);
-							
-							k = RealmReaction[i][j] - (Tribute[j][i] * 5);
-							RealmReaction[i][j] = (k>0)?k:0;
-							SetGameData(MP_REALMREACTION, i, j, RealmReaction[i][j], TRUE);
-							k = RealmReaction[j][i] - (5 + random(10) + (Tribute[i][j] * 5));
-							RealmReaction[j][i] = (k>0)?k:0;
-							SetGameData(MP_REALMREACTION, j, i, RealmReaction[j][i], TRUE);
-							//Tribute[i][j] = 0; Tribute[j][i] = 0;
-							SetGameData(MP_TRIBUTE, i, j, 0, TRUE);
-							SetGameData(MP_TRIBUTE, j, i, 0, TRUE);
-							if (((RealmStatus[j][i])&0x0F) != STATUS_AT_WAR)
-								SetGameData(MP_REALMSTATUS, j, i, STATUS_NEUTRAL, TRUE );
-						}
-					}
-				}
-			}
-#endif
 			// should test whether sounds are on
 			{
 				i = get_time()+5;

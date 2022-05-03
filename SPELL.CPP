@@ -1,21 +1,5 @@
 #include "SPELL.HXX"
 #include "SYSTEM.H"
-#if 0
- PLAYER_CLASS_INFO::
-TYPE			CanCast;
-LEVEL			Level;			// Spell Level
-REVERSABILTY	Reversable;
-SAVING_THROW	SavingThrow;			
-SAVETYPE		SaveType;
-SCHOOL			School;
-void			*pSpellObjects;	// Place holder for list of necessary material objects.
-CASTERLOC		WhereCast;
-UBYTE			Sphere;			// Only used by Priest spells.
-
-void mfSetSphere(const SPHERE_TYPE);
-const BOOL mfCheckSphereType(const SPHERE_TYPE);
-#endif
-
 const SPELL_INFO::SPELL_ITEM SPELL_INFO::SpellInfoTable[]={
 
 // Wizard Spell			 Type		Level		Reversability	SavingThr		SaveType				School				blah	WhereCan		Sphere

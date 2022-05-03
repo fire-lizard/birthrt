@@ -40,32 +40,6 @@ void TransferRegentIconsToUnitsArray(void)
 	
 	for(i=0;i<CHARACTER_COUNT;i++)
 	{
-#if 0
-		if( regents[i].mfGetRealm() == HomeRealm ||
-			realm[regents[i].mfGetRealm()].mfIsPlayerCtrl() )  // or remote player
-		{
-			REALM_STRUCT_PTR	pRealm  = &realm[HomeRealm];
-			SHORT				RegentID = pRealm->mfGetRegent();
-			
-			// if this is the new PC regent make sure
-			// his icon is a regent icon
-			if(RegentID == i)
-			{
-				if (regents[i].mfGeticon() >= REG_LORDM3_UNIT_ICON)
-				{
-					regents[i].mfSeticon(regents[i].mfGeticon() - 17);
-				}
-			}
-			else
-			{
-				if (regents[i].mfGeticon() < REG_LORDM3_UNIT_ICON)
-				{
-					regents[i].mfSeticon(regents[i].mfGeticon() + 17);
-				}
-			}
-		}
-#endif
-		
 		if(regents[i].mfGetunit() > 0)
 		{
 			if (IsLieutenant(regents[i].mfGetunit()) &&

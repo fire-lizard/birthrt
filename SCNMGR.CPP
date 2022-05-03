@@ -475,26 +475,6 @@ LONG const SCENE_MGR::mfLoadScene(
 	// This saves 1 render pass (no big deal, really).
 	pCurrentScene->mfCallSceneAI();
 
-#if 0
-// [d11-15-96 JPC] Add a DONE button to the adventure description.
-// The following code gets moved to SCENE_AI::mfSceneFadeOut.
-	// Execute the init state
-	pCurrentScene->mfCallSceneAI();
-
-	pCurrentScene->mfSetScenePallet();
-	if (SCENE_MGR::fFadeToNextScene == SCENE_MGR::FADE_OUT)
-	{
-		FadeOut(500);
-		SCENE_MGR::fFadeToNextScene = SCENE_MGR::FADE_IN;
-	}
-
-	// [d11-09-96 JPC] Clear out the background buffer to solve a number
-	// of bugs with the main map showing through.  Note that fRealmTurn
-	// is FALSE at this point.
-	clear_screen ();
-	update_screen ();
-#endif
-
 	// [d8-08-96 JPC] Move these here from MAIN: GameMain.  These tasks should
 	// only run if a non-battle scene is active.
 	// They are removed in LEVEL: PurgeLevel.
@@ -508,7 +488,6 @@ LONG const SCENE_MGR::mfLoadScene(
 		// no longer used: add_task(10,SectorFrameHandler,0);  //once every 10 frames check sector effects
 	}
 	ResumeSuspendedMusic();
-	//GEH ClrLock(SCENE_MGR::hCurrentScene);
 	return fNOERR;
 	
 Error:

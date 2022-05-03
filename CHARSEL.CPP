@@ -804,9 +804,7 @@ static void ShowRegentInfo(ULONG x,ULONG y,LONG RegentIdx,LONG iWhichRegent,LONG
 	SHORT hPortraitBack = GetResourceStd ("UI\\REGAREA1.PCX", FALSE);
 	
 
-#if !defined(_JUNEDEMO)	
 	add_region(x, y+15, 72, 92,  0, SelectRegent, iWhichRegent, REG_MORE_INFO, 1009, STR_CS_SELECT_REGENT);
-#endif	
 	add_region(x, y+112, 84, 28,   0, SelectRegent, iWhichRegent, REG_SHOW_STATUS,1009, -1);
 	add_region(x+85,y+112, 84, 28,0, SelectRegent, iWhichRegent, REG_BEGIN_RULE, 1009, -1);
 
@@ -1022,9 +1020,6 @@ void DisplayRealmSelection(void)
 							
 		//print realm data
 		init_gfont(FONT_SANS_8PT);
-#if 0		
-		gprint_text(100, 40, STRMGR_GetStr(RealmInfoBlurbs[HomeRealm]), DKBROWN);
-#else
 		//-------------------------------------------------------------
 		// count stuff
 		//
@@ -1113,8 +1108,6 @@ void DisplayRealmSelection(void)
 			my_provinces, my_income, my_law, my_guild, my_temple, my_source, my_castle,
 			my_troops, my_allies);
 		gprint_text(100, 40, realminfobuf, DKBROWN);
-		
-#endif
 		
 		crease(10, 195, 144, 1);					// seperator
 
@@ -2215,13 +2208,7 @@ void DisplayAdvParty(void)
 		}
 
 		// print info
-#if 0
-		sprintf(buff,"%sTEXT\\%s.adv", InstallPath, places[iSiteChosen].scene);
-#else
 		sprintf(buff,"%sTEXT\\%s.txt", InstallPath, places[iSiteChosen].scene);
-#endif
-
-//		printf("Trying to open %s (site %d)\n", buff, places[iSiteChosen].iName);
 
 		init_gfont(FONT_SANS_8PT);
 

@@ -167,9 +167,6 @@ End:
   	init_shade_table("nova_d");
 	ClearFlicSound();
   	TurnOffAllSounds();
-#ifdef _DEMO
-  	ServiceMusicWave(TRUE);
-#endif
 	FadeIn(100);
 
 }
@@ -365,9 +362,6 @@ void SlideShow(void)
 End:
 	fAnyKeyChanged = FALSE;
 	clear_key_status(0);
-	//GEH add_timer(1,draw_cursor);
 	SlideShowPlaying = FALSE;
 	return;	
 }
-
-

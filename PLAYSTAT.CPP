@@ -623,20 +623,6 @@ void StatReadFromAVA(BOOL SaveAfter)
 		}
     }
 
-#if 0	
-	if (SaveAfter)
-	{
-		printf("Writing stats to single file.\n");
-		StatWriteAll();
-	}
-#endif
-
-//DEATH
-//    for (i=1; i < CHARACTER_COUNT; i++)
-//    {
-//        SetLock(playerstats[i]);
-//    }
-
     playerStatsInitted = TRUE;
     return;
 }
@@ -795,38 +781,6 @@ void StatWriteAll()
 
 
 
-#if 0
-LONG PLAYER_STATS::mfWriteTextData(FILE *fp)
-{
-	LONG Result;
-	
-	fprintf(fp, "%ld\n", (LONG)ThingType);
-	fprintf(fp, "%ld\n", StructVersion);		/* PLAYER_STATS::VERSION  */
-	Ability.mfWriteData(fp);					/* ABILITY	*/
-	fprintf(fp, "%ld\n", (LONG)Race);			/* PLAYER_RACE_TYPE */	
-	fprintf(fp, "%ld\n", Alignment);			/* ALIGNMENT_TYPE */	
-	fprintf(fp, "%hd\n", HitPts);				/* LONG */	
-	fprintf(fp, "%ld\n", (LONG)sbArmorClass);  	/* LONG */	
-	fprintf(fp, "%ld\n", (LONG)Inventory.mfGetCurrentArmor());		/* ARMOR_TYPE */	
-	fprintf(fp, "%ld\n", (LONG)Inventory.mfGetCurrentWeapon());		/* ARMOR_TYPE */	
-	fprintf(fp, "%d\n",  sMorale);				/* SHORT	*/
-	//fprintf(fp, "%s\n",  Task);
-	//fprintf(fp, "%ld\n", (LONG)ShieldType);		/* SHIELD_TYPE */	
-	//fprintf(fp, "%d\n",  IdHeir);				/* SHORT	*/
-	//fprintf(fp, "%ld\n", Age);					/* LONG */	
-	//fprintf(fp, "%ld\n", Height);				/* LONG */	
-	//fprintf(fp, "%ld\n", Weight);				/* LONG */	
-	
-	//GEH NOTE: these three pointers to lists need special treatment
-	//fprintf(fp, "%ld\n", PlayerClassList);	/* PLAYER_CLASS_LIST	*/
-	//fprintf(fp, "%ld\n", CurrentWeapons);		/* PTR_WEAPON_LIST */	
-	//fprintf(fp, "%ld\n", pSpellBook);			/* PTR_SPELL_LIST */	
-	//fprintf(fp, "%ld\n", pSpellSchools);		/* PTR_SPELL_SCHOOL_LIST	*/
-	//fprintf(fp, "%ld\n", BloodInfo);			/* PLAYER_BLOOD_INFO	*/
-	return Result; // bogus
-}
-#endif
-
 /* ========================================================================
    Function    - LoadStats
    Description - Load the stats for this avatar from a .ava file
@@ -931,46 +885,6 @@ SHORT LoadStats(LONG tID,SHORT hAvatar)
 		SetPurge(hRPlayerStats);
 		hRPlayerStats = fERROR;
 	}
-	
-#if 0
-	FILE	*pFileRead;
-	
-	pFileRead = FileOpen(szFileName,"rb");
-	if (pFileRead != 0)
-	{
-		// Version'd files a production and are binary
-		hPlayerStats = PLAYER_STATS::mfAllocateSpace(hAvatar);
-		
-		if (hPlayerStats != fERROR)
-		{
-			DumbAutoLockPtr <PLAYER_STATS> const pPlayerStats(hPlayerStats);
-			pPlayerStats->mfReadData(pFileRead);
-		}
-		FileClose(pFileRead);
-	}
-	else
-	{
-		sprintf(szFileName,"scenes\\id%ld.ava", tID);
-		pFileRead = FileOpen(szFileName,"r");
-		if (pFileRead == NULL)
-		{
-			printf("WARNING! Unable to open file %s\n.", szFileName);
-			return fERROR;
-		}
-		
-		// read text file
-		hPlayerStats = PLAYER_STATS::mfAllocateSpace(hAvatar);
-		if (hPlayerStats != fERROR)
-		{
-			DumbAutoLockPtr<PLAYER_STATS> pPlayerStats(hPlayerStats);
-			pPlayerStats->mfReadTextData(pFileRead);
-		}
-
-		FileClose(pFileRead);		
-	}
-		
-#endif
-	
 	return hPlayerStats;
 }
 

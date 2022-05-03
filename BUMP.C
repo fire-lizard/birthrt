@@ -680,14 +680,6 @@ static WadThingType CheckLinesInBlock (const PLAYER * const pPlayer,				// )
                      // are moving straight ahead but are not in the center and
                      // you cross a teleport line, there will be a noticeable
                      // wobble, especially in corridors.  Revisit later.
-#if 0
-// Old code:
-							SetPlayerXYA(
-								PLAYER_INT_VAL(player.x)+vertexs[linedefs[j].a].x-vertexs[linedefs[iLineDef].a].x,
-								PLAYER_INT_VAL(player.y)+vertexs[linedefs[j].a].y-vertexs[linedefs[iLineDef].a].y,
-								player.a
-								);
-#endif
 							x1 = (vertexs[linedefs[j].a].x + vertexs[linedefs[j].b].x) / 2;
 							y1 = (vertexs[linedefs[j].a].y + vertexs[linedefs[j].b].y) / 2;
 							SetPlayerXYA (x1, y1, player.a);
@@ -697,16 +689,6 @@ static WadThingType CheckLinesInBlock (const PLAYER * const pPlayer,				// )
 		UpdateBumpRecord (pPlayer, x1, y1, x2, y2, TRUE, iLineDef, iNOTHING);
 #endif
 						return iNOTHING;
-
-#if 0
-               case LSP_TELE_EXIT_2WAY: // TYPE 52 TELEPORTS--exit (compare type 11)
-						// [d11-15-96 JPC] We weren't using this in the game
-						// for its intended purpose as an exit, so we have
-						// changed its meaning to "Edge of the world."  You get
-						// a special message when you hit the edge of the world.
-						// But it needs to be handled earlier.
-						return iEDGE_OF_WORLD;
-#endif
 
                case LSP_FLOOR_W1:      // floor up to ceiling (crush)
                case LSP_FLOOR_WR:      // floor up to ceiling (crush)

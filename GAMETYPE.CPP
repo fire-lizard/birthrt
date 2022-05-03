@@ -823,44 +823,6 @@ const THINGTYPE GAME_TTYPE::mfGetThingType(char const * cpFileName)
 	}
 	return Result;
 }
-#if 0
-// Default Constructor
-GAME_TTYPE::GAME_TTYPE()
-	:
-	  fwalkRate(0),
-	  fmarchRate(0),
-	  fsoundType(NOSOUND),
-	  fdescription(STR_NULL)
-{
-	  strncpy(fttype.name, "------", sizeof(fttype.name));
-	  // Guarantee the null.
-	  fttype.name[sizeof(fttype.name) - 1] = 0;
-	  fttype.LowResIndex = (SHORT) NOLOW;
-	  fttype.attrib = NOATTS;
-}
-
-// Constructor for static initialization
-GAME_TTYPE::GAME_TTYPE(
-				char const * const cpTypeName,
-				THINGTYPE const sLowResIndex,
-				ULONG const usTtypeAttrib,
-				MOVEMENT_RATE const mrWalk,
-				MOVEMENT_RATE const mrMarch,
-				SOUND_TYPES const stSound,
-				GAME_STRING const Description)
-	:
-	  fwalkRate(mrWalk),
-	  fmarchRate(mrMarch),
-	  fsoundType(stSound),
-	  fdescription(Description)
-{
-	 strncpy(fttype.name, cpTypeName, sizeof(fttype.name));
-	 // Guarantee the null.
-	 fttype.name[sizeof(fttype.name) - 1] = 0;
-	 fttype.LowResIndex = (SHORT) sLowResIndex;
-	 fttype.attrib = usTtypeAttrib;
-}
-#endif
 
 const BOOL GAME_TTYPE::mfIsMissileBlocker (THINGTYPE const type)
 {

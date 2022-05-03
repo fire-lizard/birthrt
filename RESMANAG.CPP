@@ -168,13 +168,9 @@ char *	gszBasicResFiles[] = {
 	"FONT.RES",								// Fonts
 	"MAP.RES",								// The game map
 	"LOWRES.RES",							// Ultra low res animations
-	#if defined(_JUNEDEMO)
-	"MEDSTRES.RES",							// Medium res stand frames.
-	#else
 	"MEDFTRES.RES",							// Medium res Fight animations
 	"MEDRTRES.RES",							// Medium res (Rest of)animations
 	"HIGHRES.RES",							// High res animations
-	#endif
 	"THINGPCX.RES",							// Thing PCX's
 	"FINALE.RES",							// Finale PCX's
 	""

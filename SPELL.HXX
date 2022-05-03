@@ -201,46 +201,6 @@ class SPELL_INFO
 			LAST_PRIEST_SPELL = RESURRECTION, 
 			
 
-#if 0
-			DETECT_MAGIC = 0,   /* W1 */
-			FEATHER_FALL,       /* W1 */
-			JUMP,               /* W1 */
-			LIGHT,              /* W1 */
-			MAGIC_MISSILE,      /* W1 */
-			KNOCK,              /* W2 */
-			POISON_ARROW,       /* W2 */
-			FIREBALL,           /* W3 */
-			FLY,                /* W3 */
-			ICE_STORM,          /* W4 */
-			CONE_OF_COLD,       /* W5 */
-			TELEPORT,           /* W5 */
-			CHAIN_LIGHTNING,    /* W6 */
-			DEATH,              /* W6 */
-			IMPROVED_FIREBALL,  /* W7 */
-			POWER_BLIND,        /* W8 */
-			METEOR_SWARM,       /* W9 */
-			POWER_KILL,         /* W9 */
-			TIME_STOP,          /* W9 */
-			
-			CURE_LIGHT,         /* P1 */
-			DETECT_EVIL,        /* P1 */
-			DETECT_MAGIC_PR,    /* P1 */
-			LIGHT_PR,           /* P1 */
-			FIND_TRAPS,         /* P2 */
-			FIND_TREASURE,      /* P2 */
-			BARKSKIN,           /* P2 */
-			MAGICAL_VESTAMENT,  /* P3 */
-			CURE_SERIOUS,       /* P4 */
-			CURE_CRITICAL,      /* P5 */
-			TRUE_SEEING,        /* P5 */
-			HEAL,               /* P6 */
-			FIRE_STORM,         /* P7 */
-			HOLY_WORD,          /* P7 */
-#endif
-
-
-			
-			
 			MAX_SPELL_INDEX,
 		}	TYPE;
 			

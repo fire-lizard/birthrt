@@ -76,9 +76,6 @@ LINE2D view_frust_right,view_frust_left;
 void set_view()
 {
 	ULONG a;
-#if 0
-	POINT temp;
-#endif
 
 	/* insure that the angle is valid */
 	a=camera.a;
@@ -89,27 +86,6 @@ void set_view()
 	view_cos=cos_table[a];
 
 	render_center_y = render_top + (render_height/2) + ((camera.p * render_height)/480);
-
-#if 0
-		//set view frust origin
-	view_frust_right.a.x=view_frust_left.a.x=camera.x>>8;
-	view_frust_right.a.y=view_frust_left.a.y=camera.y>>8;
-
-
-		//set right edge
-	temp.x=-FRUST_LINE_LEN;
-	temp.y=FRUST_LINE_LEN;
-	rot8_angle(&temp,-camera.a);
-	view_frust_right.b.x=temp.x+(camera.x>>8);
-	view_frust_right.b.y=temp.y+(camera.y>>8);
-
-		//set left edge
-	temp.x=FRUST_LINE_LEN;
-	temp.y=FRUST_LINE_LEN;
-	rot8_angle(&temp,-camera.a);
-	view_frust_left.b.x=temp.x+(camera.x>>8);
-	view_frust_left.b.y=temp.y+(camera.y>>8);
-#endif
 }
 
 /* =======================================================================

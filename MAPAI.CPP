@@ -116,7 +116,6 @@ void UpdateHoldingFlag (void);
 
 #ifdef _WINDOWS
 void BroadcastAllienceTable ( void );
-void DoMultiplayerDataIntegrityCheck (void);
 #endif
 
 extern void SysForceCursor (void);
@@ -245,11 +244,6 @@ void DoNPCAdmin (void)
 {
 	LONG	i, j, k, l, rlm, hr, fr, iUnit, roll, surplus;
 
-	#ifdef _WINDOWS
-	if ( IsMultiPlayer() )
-		DoMultiplayerDataIntegrityCheck();
-	#endif
-
 	hr = HomeRealm;
 	fr = fFinalRoll;
 
@@ -262,17 +256,6 @@ void DoNPCAdmin (void)
 	for (i=rlm=REALM::FIRST_REALM; rlm<LAND_REALM_COUNT; ++rlm)
 	 	if (realm[rlm].mfExists() && realm[rlm].mfIsDMCtrl())
 			RealmOrder[i++] = rlm;
-
-	// order for player and non-player controlled realms
-	//for (rlm=REALM::FIRST_REALM; rlm<LAND_REALM_COUNT; ++rlm)
-	//{
-	// 	if (realm[rlm].mfExists() && !realm[rlm].mfIsDMCtrl())
-	//	{
-	//		// roll for this turn's order
-	//		while (RealmOrder[(roll=random(LAND_REALM_COUNT))] != REALM::REALM_OUT_OF_RANGE) {}
-	//		RealmOrder[roll] = rlm;
-	//	}
-	//}
 
 	// do admin for NPC realms
 	for (rlm=REALM::FIRST_REALM; rlm<LAND_REALM_COUNT; ++rlm)
@@ -588,11 +571,6 @@ void DoNPCAdmin (void)
 				Sleep(0);
 		}
 	}
-	#endif
-
-	#ifdef _WINDOWS
-	if ( IsMultiPlayer() )
-		DoMultiplayerDataIntegrityCheck();
 	#endif
 
 	iCurrentRealmIndex = 0;		// start new turn
@@ -1454,98 +1432,6 @@ PROVINCE DemandProvince()
 }
 
 /* ========================================================================
-   Function    - FindSrcToConnectLeyLineTo
-   Description - Search for a low source to connect to.
-   Returns     - 
-   ======================================================================== */
-#if 0
-static BOOL FindSrcToConnectLeyLineTo(
-	REALM::REALM_TYPE ourRealm, 
-	PROVINCE *inProv,
-	USHORT *inPlace)
-{
-	BOOL Result = FALSE;
-	LONG i;
-	
-	LONG srcInEnemyTroopLevel = -1;
-	PROVINCE srcInEnemyProv = NO_PROVINCE;
-	LONG srcInEnemyPlace;
-	
-	LONG lowSrcInRealmLevel = -1;
-	PROVINCE lowSrcInRealmProv;
-	LONG lowSrcInRealmPlace;
-	
-	LONG srcInAllyLevel = -1;
-	PROVINCE srcInAllyProv = NO_PROVINCE;
-	LONG srcInAllyPlace;
-	
-	for(i=1; i<PROVINCE_COUNT; ++i)
-	{
-		LONG j;
-		LONG k;
-		
-		CheckAndFixPlaces((PROVINCE)i);
-	 	j = k = province[i].FirstPlace; 
-	 	while (k != 0 )
-	 	{
-	 	   	if(places[j].Icon == SOURCE1_ICON 
-					&& places[j].Realm == ourRealm
-			   )
-			{
-				// look for a source with leyline going out but nothing coming in as a TargetPlace
-				if (places[j].iRoute1 || places[j].iRoute2 || places[j].iRoute3)  // Source has a leyline going out                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
-				{
-					LONG m;
-					
-					for(m = 0; m< MAX_PLACES; ++m)
-					{
-						if( places[m].Icon == SOURCE1_ICON 
-								&& (places[m].iRoute1 == j || places[m].iRoute2 == j || places[m].iRoute3 == j))
-						{
-							break;
-						}
-					}
-					if(m == MAX_PLACES)
-					{
-						*inProv = (PROVINCE)i;
-						*inPlace = j;
-						break;
-					}
-				}
-				else
-				{
-				}
-	 		}
-	 		k = places[j].NextPlace;
-	 		j = province[i].FirstPlace + k;
-	 	}
-		if(k!=0)
-			break;
-	} 
-	
-	if (srcInEnemyProv != NO_PROVINCE)
-	{
-		*inProv = srcInEnemyProv;
-		*inPlace = srcInEnemyPlace;
-		Result = TRUE;
-	}
-	else if (srcInRealmProv != NO_PROVINCE)
-	{
-		*inProv = srcInRealmProv;
-		*inPlace = srcInRealmPlace;
-		Result = TRUE;
-	}
-	else if (srcInAllyProv != NO_PROVINCE)
-	{
-		*inProv = srcInAllyProv;
-		*inPlace = srcInAllyPlace;
-		Result = TRUE;
-	}
-	
-	return Result;
-}
-#endif
-/* ========================================================================
    Function    - FindProvToFortify
    Description - Fortify borders with enemies first, basic borders next.
    Returns     - 
@@ -2301,22 +2187,6 @@ BOOL FindUnit (REALM::REALM_TYPE realm_, LONG action)
 				case ACTION_MOVE_UNOCCUP_FOE:
 				case ACTION_MOVE_UNOCCUP_OWN:
 					UnitsHere(UnitProv, CurrentRealm);	// set cGroups
-					//if (UnitProv != TargetProvince && cGroups > j)		// dont test vs TargetProvince
-					#if 0
-					#ifdef _WINDOWS
-					LOGCOMMENTSLEEP
-					FLOGCOMMENT
-					{
-						char temp[100];
-						sprintf ( temp, "   FindUnit MOVE_FILL Prov:%ld Realm:%ld cGroups:%ld", 
-							UnitProv, CurrentRealm, cGroups );
-						if ( fLogComment )
-							RandomLogComment ( temp );
-						else
-							Sleep(0);
-					}
-					#endif
-					#endif
 					
 					if (cGroups > j)			// find max groups
 					{
@@ -3106,20 +2976,6 @@ static BOOL FindDiffTerrain (PATHTYPE via, PROVINCE StartingProv, PROVINCE *foun
 			return TRUE;
 		}
 
-		#if 0
-		#ifdef _WINDOWS
-		LOGCOMMENTSLEEP
-		FLOGCOMMENT
-		{
-			char temp[100];
-			sprintf ( temp, "   FindDiffTerrain %d - Failed1", 15 );
-			if ( fLogComment )
-				RandomLogComment ( temp );
-			else
-				Sleep(0);
-		}
-		#endif
-		#endif
 
 		return FALSE;
 	}
@@ -3129,20 +2985,6 @@ static BOOL FindDiffTerrain (PATHTYPE via, PROVINCE StartingProv, PROVINCE *foun
 	if (RecursiveRoadFollower(StartingProv) == FALSE)
 	{
 
-		#if 0
-		#ifdef _WINDOWS
-		LOGCOMMENTSLEEP
-		FLOGCOMMENT
-		{
-			char temp[100];
-			sprintf ( temp, "   FindDiffTerrain %d - Failed2", 16 );
-			if ( fLogComment )
-				RandomLogComment ( temp );
-			else
-				Sleep(0);
-		}
-		#endif
-		#endif
 
 		return FALSE;
 	}
@@ -3150,28 +2992,12 @@ static BOOL FindDiffTerrain (PATHTYPE via, PROVINCE StartingProv, PROVINCE *foun
 	for (i=1; i<PROVINCE_COUNT; ++i)
 	{
 		if (iSelectedHolding[i][3]==TRUE
-//			&& province[i].Realm == realm_
 			&& province[i].Terrain != terrain)			// check for existing road
 		{
 			*foundProv = (PROVINCE)i;
 			return TRUE;
 		}
 	}
-
-	#if 0
-	#ifdef _WINDOWS
-	LOGCOMMENTSLEEP
-	FLOGCOMMENT
-	{
-		char temp[100];
-		sprintf ( temp, "   FindDiffTerrain %d - Failed3", 17 );
-		if ( fLogComment )
-			RandomLogComment ( temp );
-		else
-			Sleep(0);
-	}
-	#endif
-	#endif
 
 	return FALSE;
 }
@@ -3751,27 +3577,6 @@ void SetScrewed (REALM::REALM_TYPE Target, REALM::REALM_TYPE Active, BOOL fSend 
 
 	if (Target != REALM::ANY_REALM && Target != Active)
 	{
-#if 0
-		k = RealmReaction[Target][Active] - (random(5)+1);	// 1% to 5% reduction
-		RealmReaction[Target][Active] = (k>0)?k:0;
-		SetGameData(MP_REALMREACTION, Target, Active, RealmReaction[Target][Active], fSend);
-		if (AREALLIED(Target,Active))		// if allied, trash alliance
-		{
-			RealmStatus[Target][Active]--;
-			if (RealmStatus[Target][Active]<STATUS_NEUTRAL)
-				RealmStatus[Target][Active]=STATUS_NEUTRAL;
-			SetGameData(MP_REALMSTATUS, Target, Active, RealmStatus[Target][Active], fSend);
-
-			if (Target<LAND_REALM_COUNT)
-			{
-				RealmStatus[Active][Target]--;
-				if (RealmStatus[Active][Target]<STATUS_NEUTRAL)
-					RealmStatus[Active][Target]=STATUS_NEUTRAL;
-				SetGameData(MP_REALMSTATUS, Active, Target, RealmStatus[Active][Target], fSend);
-			}
-		}
-		else										// if not, then set screwed
-#endif
 		{
 			RealmStatus[Target][Active] |= 0x80;				// set SCREWED flag
 			SetGameData(MP_REALMSTATUS, Target, Active, RealmStatus[Target][Active], fSend);
@@ -4018,50 +3823,6 @@ REALM::REALM_TYPE TestTriggers (USHORT Triggers)
 		if ((Triggers & TEST_OCCUPIED)		&& !TestOccupied()		) continue;
 	#endif
 
-	#if 0
-	#ifdef _WINDOWS
-	LOGCOMMENTSLEEP
-	FLOGCOMMENT
-	{
-		char temp[100];
-		char temp1[50];
-		int temp2 = 0;
-		
-		if (Triggers & TEST_INVADED)		temp2+= sprintf(&temp1[temp2], "INV" );
-		if (Triggers & TEST_SCREWED)		temp2+= sprintf(&temp1[temp2], "SCR" );
-		if (Triggers & TEST_ADJACENT)		temp2+= sprintf(&temp1[temp2], "ADJ" );
-		if (Triggers & TEST_BUILDUP)		temp2+= sprintf(&temp1[temp2], "BLD" );
-		if (Triggers & TEST_HATED)			temp2+= sprintf(&temp1[temp2], "HAT" );
-		if (Triggers & TEST_ALLY)			temp2+= sprintf(&temp1[temp2], "ALY" );
-		if (Triggers & TEST_NOT_ALLY)		temp2+= sprintf(&temp1[temp2], "NAL" );
-		if (Triggers & TEST_HATED_ATWAR)	temp2+= sprintf(&temp1[temp2], "HWR" );
-		if (Triggers & TEST_ALLY_ATWAR)	temp2+= sprintf(&temp1[temp2], "AWR" );
-		if (Triggers & TEST_NOUNITS)		temp2+= sprintf(&temp1[temp2], "NUN" );
-		if (Triggers & TEST_ECONBIGGER)	temp2+= sprintf(&temp1[temp2], "BIG" );
-		if (Triggers & TEST_ECONSMALLER)	temp2+= sprintf(&temp1[temp2], "SML" );
-		if (Triggers &TEST_ECONMUCHSMALLR)temp2+=sprintf(&temp1[temp2], "EMS" );
-		if (Triggers & TEST_BROKE)			temp2+= sprintf(&temp1[temp2], "BRK" );
-		if (Triggers & TEST_REBELLION)	temp2+= sprintf(&temp1[temp2], "REB" );
-		if (Triggers & TEST_OCCUPIED)		temp2+= sprintf(&temp1[temp2], "OCC" );
-		
-		if (TestTargetRealm)
-			sprintf ( temp, "TRIGGERED  %d TR:%s TTR:%s (%d)", 
-				25,
-				temp1, realm[TestTargetRealm].mfGetName(), TestTargetRealm );
-		else
-			sprintf ( temp, "TRIGGERED  %d TR:%s I:%s (%d)", 
-				25,
-				temp1, realm[i].mfGetName(), i );
-		
-		if ( fLogComment )
-			RandomLogComment ( temp );
-		else
-			Sleep(0);
-	}
-	#endif
-	#endif
-
-
 		if (TestTargetRealm)		// return the third party that's now the target
 			return TestTargetRealm;
 
@@ -4069,48 +3830,6 @@ REALM::REALM_TYPE TestTriggers (USHORT Triggers)
 
 
 NOT_TRGD:
-
-	#if 0
-	#ifdef _WINDOWS
-	LOGCOMMENTSLEEP
-	FLOGCOMMENT
-	{
-		char temp[100];
-		char temp1[50];
-		int temp2 = 0;
-		
-		if (Triggers & TEST_INVADED)		temp2+= sprintf(&temp1[temp2], (t1)?"INV":"inv" );
-		if (Triggers & TEST_SCREWED)		temp2+= sprintf(&temp1[temp2], (t2)?"SCR":"scr" );
-		if (Triggers & TEST_ADJACENT)		temp2+= sprintf(&temp1[temp2], (t4)?"ADJ":"adj" );
-		if (Triggers & TEST_BUILDUP)		temp2+= sprintf(&temp1[temp2], (t3)?"BLD":"bld" );
-		if (Triggers & TEST_HATED)			temp2+= sprintf(&temp1[temp2], (t5)?"HAT":"hat" );
-		if (Triggers & TEST_ALLY)			temp2+= sprintf(&temp1[temp2], (t6)?"ALY":"aly" );
-		if (Triggers & TEST_NOT_ALLY)		temp2+= sprintf(&temp1[temp2], (t7)?"NAL":"nal" );
-		if (Triggers & TEST_HATED_ATWAR)	temp2+= sprintf(&temp1[temp2], (t8)?"HWR":"hwr" );
-		if (Triggers & TEST_ALLY_ATWAR)	temp2+= sprintf(&temp1[temp2], (t9)?"AWR":"awr" );
-		if (Triggers & TEST_NOUNITS)		temp2+= sprintf(&temp1[temp2], (t10)?"NUN":"nun" );
-		if (Triggers & TEST_ECONBIGGER)	temp2+= sprintf(&temp1[temp2], (t11)?"BIG":"big" );
-		if (Triggers & TEST_ECONSMALLER)	temp2+= sprintf(&temp1[temp2], (t12)?"SML":"sml" );
-		if (Triggers &TEST_ECONMUCHSMALLR)temp2+=sprintf(&temp1[temp2], (t13)?"EMS":"ems" );
-		if (Triggers & TEST_BROKE)			temp2+= sprintf(&temp1[temp2], (t14)?"BRK":"brk" );
-		if (Triggers & TEST_REBELLION)	temp2+= sprintf(&temp1[temp2], (t15)?"REB":"reb" );
-		if (Triggers & TEST_OCCUPIED)		temp2+= sprintf(&temp1[temp2], (t16)?"OCC":"occ" );
-		
-		if (TestTargetRealm)
-			sprintf ( temp, "NOT TRGD   %d TR:%s TTR:%s (%d)", 
-				26,
-				temp1, realm[TestTargetRealm].mfGetName(), TestTargetRealm );
-		else
-			sprintf ( temp, "NOT TRGD   %d TR:%s I:%s (%d)", 
-				26,
-				temp1, realm[i].mfGetName(), i );
-		if ( fLogComment )
-			RandomLogComment ( temp );
-		else
-			Sleep(0);
-	}
-	#endif
-	#endif
 
 		// ABC  Never change or remove this code. Its here to fix a compiler bug
 		{
@@ -4510,20 +4229,6 @@ BOOL DoNPCAction (void)
 					{
 						fRedrawAll = TRUE;
 
-						#if 0
-						#ifdef _WINDOWS
-						LOGCOMMENTSLEEP
-						FLOGCOMMENT
-						{
-							char temp[100];
-							sprintf ( temp, "First wait for troop movement");
-							if ( fLogComment )
-								RandomLogComment ( temp );
-							else
-								Sleep(0);
-						}
-						#endif
-						#endif
 
 						SetRemapTable(PURPLE_GRAD);
 						DrawBitmap (422, 409, iDMapBx, 22, 0, 216, 21);
@@ -4627,8 +4332,6 @@ GetNextRealm:				// if realm is invalid it loops here until a valid realm is fou
 		#ifdef _WINDOWS
 		if (!fActionsOver)
 		{
-			//if ( IsMultiPlayer() )
-			//	DoMultiplayerDataIntegrityCheck();
 			StartSync( iMPS_SYNC4 );
 			CheckSync( iMPS_SYNC4, TRUE, TRUE );
 			BattleSync = 0;			// clear sync counter for battles
@@ -4653,20 +4356,6 @@ GetNextRealm:				// if realm is invalid it loops here until a valid realm is fou
 					iCurrentRealmIndex = LAND_REALM_COUNT - 1;		// make it loop again
 					fRedrawAll = TRUE;
 
-					#if 0
-					#ifdef _WINDOWS
-					LOGCOMMENTSLEEP
-					FLOGCOMMENT
-					{
-						char temp[100];
-						sprintf ( temp, "Second wait for troop movement");
-						if ( fLogComment )
-							RandomLogComment ( temp );
-						else
-							Sleep(0);
-					}
-					#endif
-					#endif
 
 
 					SetRemapTable(BLUE_GRAD);
@@ -5269,19 +4958,7 @@ CreateHldng:
 
 				WarDeclared(rlm, TriggeredTargetRealm, FALSE);
 
-#if 0
-				RealmStatus[rlm][TriggeredTargetRealm] = (TestAdjacent(rlm,TriggeredTargetRealm))?STATUS_AT_WAR_ADJ:STATUS_AT_WAR;
-
-				k = RealmReaction[rlm][TriggeredTargetRealm] - (Tribute[TriggeredTargetRealm][rlm] * 5);
-				RealmReaction[rlm][TriggeredTargetRealm] = (k>0)?k:0;
-				k = RealmReaction[TriggeredTargetRealm][rlm] - (5 + random(10) + (Tribute[rlm][TriggeredTargetRealm] * 5));
-				RealmReaction[TriggeredTargetRealm][rlm] = (k>0)?k:0;
-
-				// if 0'd, or we'd use SetGameData()
-				Tribute[rlm][TriggeredTargetRealm] = 0; Tribute[TriggeredTargetRealm][rlm] = 0;
-#endif
 				npc_ai[rlm].OldAtWar = TargetRealm;
-				//printf("TRG DECLARE WAR - %s on %s\n",realm[rlm].mfGetName(),realm[TriggeredTargetRealm].name);
 				break;
 			}
 
@@ -5327,30 +5004,6 @@ CreateHldng:
 				npc_ai[rlm].CurrentAction = action;
 				
 				WarDeclared(rlm, TargetRealm, FALSE);
-#if 0
-				RealmStatus[rlm][TargetRealm] = (TestAdjacent(rlm,TargetRealm))?STATUS_AT_WAR_ADJ:STATUS_AT_WAR;
-				k = RealmReaction[rlm][TargetRealm] - (Tribute[TargetRealm][rlm] * 5);
-				RealmReaction[rlm][TargetRealm] = (k>0)?k:0;
-				k = RealmReaction[TargetRealm][rlm] - (5 + random(10) + (Tribute[rlm][TargetRealm] * 5));
-				RealmReaction[TargetRealm][rlm] = (k>0)?k:0;
-				
-				// if 0'd, or we'd use SetGameData()
-				Tribute[rlm][TargetRealm] = 0; Tribute[TargetRealm][rlm] = 0;
-				
-				npc_ai[rlm].OldAtWar = TargetRealm;
-				if(TargetRealm == HomeRealm)
-					AddReport(IMMEDIATE_NPC_DECLARE_WAR, CurrentRealm, 0, 0);
-				else if(AREALLIED(TargetRealm, HomeRealm))
-				{
-					if(ISVASSAL(TargetRealm, HomeRealm))
-						AddReport(IMMEDIATE_NPC_DECLARE_WAR_ALLY, CurrentRealm, 3, TargetRealm);
-					else if(AREFULLALLIES(TargetRealm, HomeRealm))
-						AddReport(IMMEDIATE_NPC_DECLARE_WAR_ALLY, CurrentRealm, 2, TargetRealm);
-					else 
-						AddReport(IMMEDIATE_NPC_DECLARE_WAR_ALLY, CurrentRealm, 1, TargetRealm);
-				}
-//printf("DECLARE WAR - %s on %s\n",realm[rlm].name,realm[TargetRealm].name);
-#endif
 				break;
 			}
 			{logreroll(__LINE__); goto ReRoll_;}				// can't do the action so try another
@@ -6170,42 +5823,6 @@ CreateHldng:
 actmovelbl:
 			Clear_fProv();
 			if (!npc_move(NO_PROVINCE)) {logreroll(__LINE__); goto ReRoll_;}
-#if 0
-			// moved this functionality to gamemap.cpp
-			// when troops actually cross borders
-			
-			if (TargetRealm != REALM::ANY_REALM)
-			{
-				if (TargetRealm == HomeRealm)
-					AddReport(IMMEDIATE_NPC_MOVE_TROOP, CurrentRealm, TargetProvince, 0);
-				else if (AREALLIED(TargetRealm, HomeRealm))
-				{
-					// don't display this if you're in a war already... you're busy!
-					BOOL atwar = FALSE;
-					LONG i;
-					for (i = 1; i < LAND_REALM_COUNT; ++i)
-					{
-						if (ISATWAR(HomeRealm, i) || ISATWAR(i, HomeRealm))
-						{
-							atwar = TRUE;
-							break;
-						}
-					}
-					
-					if (atwar)
-					{
-						// do nothing
-					}
-					else if (ISVASSAL(TargetRealm, HomeRealm))
-						AddReport(IMMEDIATE_NPC_MOVE_TROOP_ALLY, CurrentRealm, 3, TargetRealm);
-					else if (AREFULLALLIES(TargetRealm, HomeRealm))
-						AddReport(IMMEDIATE_NPC_MOVE_TROOP_ALLY, CurrentRealm, 2, TargetRealm);
-					else
-						AddReport(IMMEDIATE_NPC_MOVE_TROOP_ALLY, CurrentRealm, 1, TargetRealm);
-				}
-			}
-#endif
-
 			npc_ai[rlm].CurrentAction = action;
 			goto Another;				// action was free so do another
 

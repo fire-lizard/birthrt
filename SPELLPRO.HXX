@@ -24,18 +24,6 @@ class PLAYER_STATS;
 // is doesn't start with a capital letter, the lower case should be a
 // prefix.  'u' means Ulong.
 
-#if 0
-typedef enum {
-	SPELL_PROGRESSION_NOT_ALLOWED,	// You're not allowed this spell.
-	SPELL_PROGRESSION_LEVEL_FULL,	// No more allowed at this level.
-	SPELL_PROGRESSION_OK			// You can keep it.
-} SPELL_PROGRESSION_CHECK;
-
-SPELL_PROGRESSION_CHECK CheckPlayerSpellLimits(
-		PLAYER_STATS *pPlayerStats,
-		PTR_SPELL pSpell);
-#endif
-
 // returns number of spells of a certain type/level at a class/level
 SHORT num_spells_of(SPELL_INFO::CASTERTYPE	spell_type,
                     SPELL_INFO::LEVEL		spell_level,

@@ -1330,31 +1330,6 @@ int MultiPlayer::HaveResults( void )
 int MultiPlayer::CheckForPlayers( void )
 {
 	int x;
-	static int dwTime = 0;
-
-
-
-#if 0
-	if ( fSigs )
-	{
-
-		if ( dwTime < GetTickCount() )
-		{
-
-		#ifdef _MULTIMONO
-			mono_printf ( 0, 14, "Connect Status %d", 	
-						  GenericMultiPlayer::CheckConnectStatus() );
-		#endif
-
-			dwTime = GetTickCount() + 5000;
-
-		}
-
-	}
-#endif
-
-
-	
 	for ( x = 0; x < MAX_PLAYERS; ++x )
 	{
 		if ( GetAPlayerId(x) != kNoPlayer )
@@ -1363,11 +1338,7 @@ int MultiPlayer::CheckForPlayers( void )
 		}
 
 	}
-
-
 	return TRUE;
-
-
 }
 
 
@@ -1918,17 +1889,6 @@ BOOL MultiPlayer::BroadcastRealmInfo( SHORT WhichRealm, DWORD WhichId, LONG lWhi
 
 	if ( eStatus == iMPS_SETUP )
 	{
-		#if 0
-		LOGCOMMENTSLEEP
-		if ( fLogComment )
-		{
-			char temp[200];
-			sprintf ( temp, "MultiPlayer::BroadcastRealmInfo - Realm:%s Regent:%d ID:%ld",
-				debug_realm_names[WhichRealm], lWhichRegent, WhichId );
-			RandomLogComment ( temp );
-		}
-		#endif
-
 		// -- Make the message
 		sSize = DoHeader( iMPT_BREALM, &pMsg );
 
@@ -2078,119 +2038,6 @@ BOOL MultiPlayer::BroadcastSetGameData(LONG lArray_Id, LONG lStruct_Id, LONG lAr
 	return ( fSent );
 
 } // MultiPlayer::BroadcastSetGameData
-
-
-
-#if 0
-// !!!!! DON'T USE THIS
-
-// -----------------------------------------------------------------
-//
-//	 MultiPlayer::RequestSetGameData
-//
-//		 Asks master to set game data
-//
-//	 Inputs:
-//		lArray_Id		- which array type to set
-//		lStruct_Id		- which element in struct to set
-//		lArray_Index	- which index in the array
-//		lData			- data to set
-//
-//	 Return: results of send
-//
-// -----------------------------------------------------------------
-BOOL MultiPlayer::RequestSetGameData(LONG lArray_Id, LONG lStruct_Id, LONG lArray_Index, LONG lData)
-{
-	short sSize = 0;
-	PCHAR pMsg = NULL;
-
-	fSent = FALSE;
-
-	if ( eStatus == iMPS_SETUP )
-	{
-		// -- Make the message
-
-		sSize = DoHeader( iMPT_INDEXREQUEST, &pMsg );
-
-		((PBRIndexS) pMsg)->lArray_Id	= lArray_Id;
-		((PBRIndexS) pMsg)->lStruct_Id	= lStruct_Id;
-		((PBRIndexS) pMsg)->lArray_Index	= lArray_Index;
-		((PBRIndexS) pMsg)->lData		= lData;
-
-
-		//---- Send the message!
-
-		StartWait( iMPM_SEND );
-
-		#ifdef _MULTIMONO
-	       mono_printf ( 0, 2, "RM-> index %d      ", lData );
-		#endif
-
-       //---- To broadcast or not to broadcast .... 
-
-  		fSent = SendDirectMessage( lMasterId, sSize, TRUE );
-
-//	    fSent = SendBroadcastMessage( sSize, TRUE );
-
-		EndWait( iMPM_SEND );
-	}
-	return ( fSent );
-
-} // MultiPlayer::RequestSetGameData
-
-#endif
-
-// DONT USE dlj
-#if 0
-// -----------------------------------------------------------------
-//
-//	 MultiPlayer::BroadcastGetGameData
-//
-//		 Broadcasts a game data message
-//
-//	 Inputs:
-//		lArray_Id		- which array type to set
-//		lStruct_Id		- which element in struct to set
-//		lArray_Index	- which index in the array
-//
-//	 Return: results of send
-//
-// -----------------------------------------------------------------
-BOOL MultiPlayer::BroadcastGetGameData(LONG lArray_Id, LONG lStruct_Id, LONG lArray_Index)
-{
-	short sSize = 0;
-	PCHAR pMsg = NULL;
-
-	fSent = FALSE;
-
-	if ( eStatus == iMPS_SETUP )
-	{
-		// -- Make the message
-
-		sSize = DoHeader( iMPT_DATASEND, &pMsg );
-
-		((PBRIndexR) pMsg)->lArray_Id	= lArray_Id;
-		((PBRIndexR) pMsg)->lStruct_Id	= lStruct_Id;
-		((PBRIndexR) pMsg)->lArray_Index	= lArray_Index;
-
-
-		//---- Send the message!
-
-		StartWait( iMPM_SEND );
-
-
-       //---- To broadcast or not to broadcast .... 
-
-	    fSent = SendBroadcastMessage( sSize, TRUE );
-
-		EndWait( iMPM_SEND );
-	}
-	return ( fSent );
-
-} // MultiPlayer::BroadcastGetGameData
-#endif
-
-
 
 //!!!!!!!!!!!! DONT USE THIS
 #if 01
@@ -4422,56 +4269,6 @@ BOOL MultiPlayer::HandleSpecialMessages( UCHAR ucMsgId, long lMsgNum )
 
 			break;
 
-
-
-//!!!!! BAD DONT DO THIS OVERWRITES
-#if 0
-		case iMPT_INDEXREQUEST:
-
-			//--- Someone requested data be set
-			// -- Retrieve our stuff
-
-			if ( IsMaster() )
-			{
-				// set the data, and tell everyone else
-				pMsg = &cRcvBuf[0] + sizeof(BRHeader);
-
-
-				DoSetGameData( ((PBRIndexS)pMsg)->lArray_Id, 
-								((PBRIndexS)pMsg)->lStruct_Id,
-								 ((PBRIndexS)pMsg)->lArray_Index, 
-								  ((PBRIndexS)pMsg)->lData );
-
-				BroadcastSetGameData( ((PBRIndexS)pMsg)->lArray_Id,
-									   ((PBRIndexS)pMsg)->lStruct_Id,
-									   ((PBRIndexS)pMsg)->lArray_Index, 
-									   ((PBRIndexS)pMsg)->lData);
-
-           	#ifdef _MULTIMONO
-              		if ( mono_getExist() )
-               	{
-                   	mono_printf ( 0, 1, " Sending Index %d      ",  ((PBRIndexS)pMsg)->lData);
-             		 } 
-           	#endif
-
-
-			}
-
-			break;
-
-		case iMPT_DATASEND:
-
-			//--- Master sent an index update 
-			// -- Retrieve our stuff
-
-			pMsg = &cRcvBuf[0] + sizeof(BRHeader);
-
-			iGameData = DoGetGameData( ((PBRIndexR)pMsg)->lArray_Id, 
-										((PBRIndexR)pMsg)->lStruct_Id, 
-										((PBRIndexR)pMsg)->lArray_Index);
-			break;
-
-#endif
 
 
 #if 01

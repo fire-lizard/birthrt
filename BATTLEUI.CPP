@@ -3750,37 +3750,6 @@ void ClearMagicRegions(void)
 // This code is not called right now. I removed it because it was using context
 // numbers that were removed from the help file. dlj 5/30/97
 
-#if 0
-/* ========================================================================
-   Function    - BattleSelMagic
-   Description - select a magic unit
-   Returns     -
-   ======================================================================== */
-void BattleSelMagic(LONG MenuCombo, LONG )
-{
-	/* -----------------------------------------------------------------
-	   Handle right clicks help
-	   ----------------------------------------------------------------- */
-	if(mouse_button == 2)
-	{
-		SystemHelp(STR_BTLUI_HELP_MAGIC_TITLE,STR_BTLUI_HELP_MAGIC_TEXT, H_Magic_Button, NULL, 0);
-	}
-	else
-	{
-		if (sBattleMode != BTLUI_MODE_MOVE &&
-			sBattleMode != BTLUI_MODE_MAGIC &&
-			sBattleMode != BTLUI_MODE_MISSILE &&
-			sBattleMode != BTLUI_MODE_FALLBACK
-		)
-		{
-			sOldBattleMode = sBattleMode;
-			BattlePanelMode(BUILD_LONG(D_BTL_CONTROL,0),BTLUI_MODE_MAGIC);
-		}
-	}
-}
-
-#endif
-
 /* ========================================================================
    Function    - HilightMissile
    Description - turn on the light for a grid with a legal missile target
@@ -3838,13 +3807,6 @@ SHORT HilightMissile(
 void SetWhosWhere(SHORT Row, SHORT Col, BOOL Home, SHORT hAvatar)
 {
 
-#if 0
-	assert(Row >= 0);
-	assert(Row <= 2);
-	assert(Col >= 0);
-	assert(Col <= 4);
-#endif
-	
 	if ( Row >= 0 &&
 		Row <= 2 &&
 		Col >= 0 &&

@@ -337,10 +337,6 @@ LONG AddActiveMenu( LONG Index )
 {
 	LONG i;
 	LONG amenu;
-#if 0
-	LONG TempDest;
-	LONG TempZoom;
-#endif
 
 	for (i=0;i<MAX_ACTIVE_MENUS;i++)
 	{

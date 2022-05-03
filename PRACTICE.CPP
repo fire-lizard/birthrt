@@ -184,10 +184,6 @@ void DescribeHistory(void);
 // it is not part of some include file!
 void SetRedrawMainMapLevel (void);
 
-#if defined(_JUNEDEMO)
-extern void ShowAdScreen(SHORT);
-#endif
-
 /* ------------------------------------------------------------------------
    Global Variables
    ------------------------------------------------------------------------ */
@@ -3645,25 +3641,6 @@ void SelectGameType(LONG MenuCombo, LONG type)
 	SHORT	MenuId, ButtonId;
 	// general cleanup
 	SPLIT_LONG(MenuCombo, MenuId, ButtonId);
-	
-#if defined(_JUNEDEMO)
-	if (type == 3)
-	{
-		ShowAdScreen(0);
-		fRedrawAll = TRUE;
-		update_screen();
-		return;
-	}
-#endif
-#if defined(_NETJUNEDEMO) || defined(_JUNEDEMO)
-	if (type == 4)
-	{
-		ShowAdScreen(3);
-		fRedrawAll = TRUE;
-		update_screen();
-		return;
-	}
-#endif
 	
 	// click the button
 	SetButtonHilight(MenuId, ButtonId, TRUE);

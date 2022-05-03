@@ -33,15 +33,9 @@
 //----------------------------------
 //	Defines
 //----------------------------------
-#ifdef _JUNEDEMO
-#define MAX_UNITS			1000					// cause alan said so
-#define NPC_MAX_UNITS	 800					// cause alan said so
-#define PER_PLAYER_RESERVED_UNITS	125
-#else
 #define MAX_UNITS			2000					// cause alan said so
 #define NPC_MAX_UNITS	1000					// cause alan said so
 #define PER_PLAYER_RESERVED_UNITS	125
-#endif
 
 #define NO_NAME		0
 

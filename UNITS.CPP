@@ -1060,7 +1060,6 @@ DEFINE_VECTOR_DATA_S(UNIT_TYPE,units,MAX_UNITS) = {
 /* 998 */	{NO_PROVINCE,		REALM::NO_COUNTRY,	0,	A_BOW_UNIT_ICON, 0,0,0,0,0,0,0,1,0, NO_PROVINCE,0,0,0,0, 20,-1,	fERROR},
 /* 999 */	{NO_PROVINCE,		REALM::NO_COUNTRY,	0,	A_BOW_UNIT_ICON, 0,0,0,0,0,0,0,1,0, NO_PROVINCE,0,0,0,0, 20,-1,	fERROR},
 
-#ifndef _JUNEDEMO
 /* 000 */	{NO_PROVINCE,		REALM::NO_COUNTRY,	0,	A_BOW_UNIT_ICON, 0,0,0,0,0,0,0,1,0, NO_PROVINCE,0,0,0,0, 20,-1,	fERROR},
 /* 001 */	{NO_PROVINCE,		REALM::NO_COUNTRY,	0,	A_BOW_UNIT_ICON, 0,0,0,0,0,0,0,1,0, NO_PROVINCE,0,0,0,0, 20,-1,	fERROR},
 /* 002 */	{NO_PROVINCE,		REALM::NO_COUNTRY,	0,	A_BOW_UNIT_ICON, 0,0,0,0,0,0,0,1,0, NO_PROVINCE,0,0,0,0, 20,-1,	fERROR},
@@ -2061,7 +2060,6 @@ DEFINE_VECTOR_DATA_S(UNIT_TYPE,units,MAX_UNITS) = {
 /* 997 */	{NO_PROVINCE,		REALM::NO_COUNTRY,	0,	A_BOW_UNIT_ICON, 0,0,0,0,0,0,0,1,0, NO_PROVINCE,0,0,0,0, 20,-1,	fERROR},
 /* 998 */	{NO_PROVINCE,		REALM::NO_COUNTRY,	0,	A_BOW_UNIT_ICON, 0,0,0,0,0,0,0,1,0, NO_PROVINCE,0,0,0,0, 20,-1,	fERROR},
 /* 999 */	{NO_PROVINCE,		REALM::NO_COUNTRY,	0,	A_BOW_UNIT_ICON, 0,0,0,0,0,0,0,1,0, NO_PROVINCE,0,0,0,0, 20,-1,	fERROR}
-#endif
 };
 
 DEFINE_VECTOR_CLASS(UNIT_TYPE, units);
@@ -2966,39 +2964,6 @@ PROVINCE UnitFinalProvince (LONG i)
 	return unit_test_prov;
 }
 
-/* ======================================================================== */
-#if 0
-void TeleportUnits(void)
-{
-
-#ifdef _WINDOWS
-
-	LONG i;
-
-	if ( IsMultiPlayer() )
-	{
-
-		for (i=1; i<MAX_UNITS; ++i)
-		{
-			if (units[i].Joined == FALSE
-				&& units[i].Realm
-				&& units[i].province
-				&& units[i].iIconBitm != fERROR
-				&& realm[units[i].Realm].mfExists()
-				&& units[i].DestProvince != NO_PROVINCE)
-			{
-				units[i].MovePart = 0;
-				units[i].province = units[i].DestProvince;
-				units[i].DestProvince = NO_PROVINCE;
-			}
-		}
-	}
-#endif
-
-}
-#endif
-
-
 /* ========================================================================
    Function    - TransportUnit
    Description - Move a unit from this stack to another province.
@@ -3387,7 +3352,3 @@ void MarkUnitsSpotted(PROVINCE prov)
 }
 
 /* ======================================================================== */
-
-
-
-

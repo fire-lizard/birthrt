@@ -871,41 +871,6 @@ void zoomout_shade_edged_rect (LONG x, LONG y, LONG w, LONG h, LONG s, SHORT hDe
 		DirectDrawPreFrame();
 
 }	
-	
-
-#if 0
-void zoom_shade_edged_rect (LONG x, LONG y, LONG w, LONG h, LONG s, BOOL * f, SHORT * sr, BOOL * fZoom)
-{
-	LONG scale_rate = *sr;
-	if(scale_rate)
-	{
-			(scale_rate) = w/2;
-			if((scale_rate) > h/2) (scale_rate) = h/2;
-	 		*f = FALSE;
-	}
-	
-	
-		if((scale_rate) <= 0)
-		{
-			(scale_rate)	= 1;
-			*fZoom = FALSE;
-			shade_edged_rect(x, y, w, h, s);
-		}
-  		else
-		{
-			shade_edged_rect ((x+(w-w/(scale_rate))/2),
-									(y+(h-h/(scale_rate))/2),
-									w/(scale_rate),
-									h/(scale_rate),
-									s);
-			(scale_rate) = (scale_rate)/ 2;
-		}
-	
-	*sr = (SHORT) scale_rate;
-}	
-	
-
-#endif
 
 /* =======================================================================
    Function    - shade_edged_rect

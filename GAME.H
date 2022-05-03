@@ -180,14 +180,6 @@ enum {
 };
 
 
-// moved to doshelp.hxx
-//typedef enum
-//{
-//	H_TOPIC_ATLAS=0,
-//	H_TOPIC_RULES,
-//	H_TOPIC_QUICK_KEYS
-//} HELP_TOPIC;
-
 #define SYSHELP_LARGE_BOX	0x00000001
 #define SYSHELP_MED_BOX		0x00000002
 #define SYSHELP_SMALL_BOX	0x00000004
@@ -215,8 +207,6 @@ void PlayAnimation (LONG MenuCombo, LONG);
 void ShowStatus(LONG tID, LONG);
 void HideStatus(LONG, LONG);
 void HideStatus2(LONG, LONG);
-void ShowCharacter(LONG tID, LONG hPossibleStats);
-void HideCharacter(LONG, LONG);
 void InventoryFromStatus(LONG, LONG);
 void StatusFromInventory(LONG, LONG);
 void BowToPlayer(LONG, LONG);

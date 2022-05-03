@@ -153,19 +153,6 @@ static int gcSubclassedControls;
 // change them in a debugging session.
 
 
-#if 01
-// ANSIE_TW.WAD
-LONG     gxF4 = 95;
-LONG     gyF4 = -2044;
-LONG     gaF4 = 64;
-#endif
-
-#if 0
-// BATLW0.WAD, Transparent textures.
-LONG     gxF4 = 2650;
-LONG     gyF4 = 300;
-LONG     gaF4 = 64;
-#endif
 
 LONG     gxF5 = -1205;
 LONG     gyF5 = -1500;
@@ -1109,17 +1096,6 @@ BOOL CALLBACK EditWallDlgProc (HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lP
          }
 			return TRUE;
 
-#if 0
-// [d8-19-96 JPC]
-// A failed attempt to get WATCOM to use the correct background color
-// for my dialog box.  The child controls also have white instead of
-// color backgrounds.  (There seems to be a bug in WATCOM's RC utility.)
-// Eventual solution: use VC4, not WATCOM, for the editor.
- 		case WM_ERASEBKGND:
- 			GetClientRect (hwndDlg, &rect);
- 			FillRect ((HDC) wParam, &rect, ghbrushBkgrnd);
- 			return TRUE;
-#endif
 
 		case WM_COMMAND:
          wID = LOWORD (wParam);
@@ -2016,16 +1992,6 @@ void EditChangePeg (HWND hwndDlg, BOOL fPegged)
 			break;
 	}
 
-#if 0
-// This was the code where pegging affected BOTH textures.
-		// By default, clear both bits.
-      linedefs[iLinedef].flags &= ~(HIGH_PEGGED | LOW_PEGGED);
-		// Check the radio buttons and set bits accordingly.
-		if (Button_GetCheck (GetDlgItem (hwndDlg, IDC_POSITION_PEGGED_HIGH)))
-         linedefs[iLinedef].flags |= HIGH_PEGGED;
-		else if (Button_GetCheck (GetDlgItem (hwndDlg, IDC_POSITION_PEGGED_LOW)))
-         linedefs[iLinedef].flags |= LOW_PEGGED;
-#endif
 
 	if (oldValue != newValue)
 	{
@@ -2115,5 +2081,3 @@ void EditDebugFunction (LONG arg1, LONG arg2)
 
 
 #endif
-
-

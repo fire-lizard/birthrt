@@ -365,18 +365,7 @@ inline void StaticInventoryGUI::mfLoad(LONG,LONG)
 {
 	DumbAutoLockPtr<PLAYER_STATS> const pPlayerStats(GUI.GetStatsHdl());
 	ObjectList& Ol=pPlayerStats->mfGetInventory();
-	//printf("Loading OlID=%li (AID=%li)\n",Ol.GetID(),Ol.AvatarID);
 	Ol.mfLoad();
-	
 }
-#if 0
-inline static void StaticInventoryGUI::mfSave(LONG,LONG)
-{
-	ObjectList& Ol=AvaStatsHdlToObjList(GUI.GetStatsHdl());
-	//printf("Saving OlID=%li (AID=%li)\n",Ol.GetID(),Ol.AvatarID);
-	Ol.mfSave();
-}
-#endif
-
 
 #endif

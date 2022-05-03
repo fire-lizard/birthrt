@@ -942,113 +942,6 @@ static char const * const ReportString (LONG str_typ, LONG index)
 	}
 }
 
-#if 0
-/* ========================================================================
-   Function    - SetReportString
-   Description -
-   Returns     -
-   ======================================================================== */
-static BOOL SetReportString (void)
-{
-	LONG			i, j, s, p, sz_type, last;
-	LONG			X,Y;
-	LONG			W,H;
-	LONG			startY;
-	CSTRPTR			psz = NULL;
-	BOOL			rv = TRUE;
-
-	// everyone except the wizard will have a report
-	if(iWhosReport == 2) rv = FALSE;
-
-	for (s=iWhosReport * 100; s<(iWhosReport * 100) + 64; s++)		// go through all subjects
-	{
-		p = 0;						// start at beginning of string
-		sz_type = 0;				// start with first format string
-
-		for (i=0; i<iNewReports; i++)
-		{
-			// don't display immediate reports
-			if(report[i].imm)
-				continue;
-
-			// save the subject
-			iCurSubj = report[i].subject;
-
-			// check for initial report at start of game
-			if(iCurSubj == SUBJ_INITIAL)
-			{
-				if(iNewSite >= 0 && iWhosReport == 2)
-					psz = &n1[0];
-				else
-					psz = NULL;
-					
-				sprintf(szReport, "%s\n \n     %s", n, psz);
-				return TRUE;
-			}
-
-			// is this a report for the current subject?
-			if (Subject[iCurSubj].subj_class == s)
-			{
-				// assume this is the only report for this subject
-				last = TRUE;
-
-				for (j=i+1; j<iNewReports; j++)		// is this the last?
-					if (Subject[report[j].subject].subj_class == s)
-						last = FALSE;
-
-				// if last report for subject and we have printed a report for this subject
-				// use the fourth format string (sz_type = 3)
-//				if (last && (sz_type==1 || sz_type==2))
-				if (last && sz_type==2)
-					sz_type = 3;
-
-				// put the report in the string
-				{
-					char str1[80], str2[80], str3[80];
-						
-					strncpy(str1, ReportString(Subject[iCurSubj].array1,report[i].index1), 80);
-					strncpy(str2, ReportString(Subject[iCurSubj].array2,report[i].index2), 80);
-					strncpy(str3, ReportString(Subject[iCurSubj].array3,report[i].index3), 80);
-					
-					sprintf(&szReport[p], STRMGR_GetStr(Subject[report[i].subject].sz[sz_type]),
-						str1, str2, str3);
-				}
-
-				// set the next position in the string
-				p = strlen(szReport);
-
-				// assume another report of the same subject
-				// use next format string, but not the last
-				if (sz_type<2)
-					sz_type++;
-			}
-		}
-
-		// if a string was produced for the report, print it
-		if (p)
-		{
-			// if there were more than one of this subject
-			// add the string epilog
-			if (sz_type > 1)
-				sprintf(&szReport[p], "%s  ", STRMGR_GetStr(Subject[iCurSubj].sz[4]));
-
-			// if a new adventure site for the wizard, print it
-			if(iNewSite >= 0 && iWhosReport == 2)
-				psz = &n1[0];
-			else
-				psz = NULL;
-					
-			p = strlen(szReport);
-			sprintf(&szReport[p], "\n \n     %s", psz);
-
-			rv = TRUE;
-		}
-	}
-
-	return rv;
-}
-#endif
-
 /* ========================================================================
    Function    - compare
    Description - comparator for sort routine
@@ -1564,9 +1457,6 @@ End:
 		advisorFLCs[i].mfDrawFrame();
 		advisortimer[i] = get_time() + ( (random(200)+100) * 182 / 1000);
 	}
-#if defined(_JUNEDEMO)
-	introPlaying = 5;	// don't play their intros
-#endif		
 
 	if (introPlaying < 0)
 		advisortimer[0] = get_time();
@@ -1818,9 +1708,7 @@ void AdvisorButton(LONG iWhichButton, LONG)
 	if (iWhichButton <= 3)
 		return;
 		
-#if !defined(_JUNEDEMO)
 	SoundTag = AddSndObj(iWhichSound,0,VOLUME_NINETY);
-#endif
 }
 
 /* ========================================================================
@@ -1884,9 +1772,7 @@ void PaintReportButtons (LONG MenuCombo, LONG)
 				else	// human
 					iWhichSound = sndHuman[introPlaying];
 		
-#if !defined(_JUNEDEMO)
 				SoundTag = AddSndObj(iWhichSound,0,VOLUME_NINETY);
-#endif
 				advisorFLCs[introPlaying].mfMove(0, INTRO_MOVE_AMOUNT); // move "forward"
 			}
 			

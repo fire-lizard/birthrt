@@ -169,22 +169,6 @@ void ssector_to_sector_info(
 	LONG const seg=ssectors[PointSsector].o;
 	SEG * pSeg = &segs[seg];				// [d2-28-97 JPC] optimization
 	
-#if 0	// GWP doesn't seem to be the problem.
-#if defined (_DEBUG)
-	if (seg < 0 || seg >= tot_segs)
-	{
-		fatal_error("ERROR - seg %ld\n", seg);
-	}
-	else
-	if (segs[seg].a < 0 || segs[seg].a >= tot_vertexs ||
-	    segs[seg].b < 0 || segs[seg].b >= tot_vertexs)
-	{
-		printf("ERROR segs[seg].a = %ld\n", segs[seg].a);
-		fatal_error("ERROR segs[seg].b = %ld\n", segs[seg].b);
-	}
-#endif
-#endif
-	
 	if(pSeg->flip)
 	{
 		sx=vertexs[pSeg->b].x;
@@ -549,135 +533,6 @@ void activate_seg(LONG DistanceSquared)
 	}
 }
 
-#if 0
-// [d11-14-96 JPC] Removed this function.  Use GetCrusherDamage instead.
-/* =======================================================================
-   Function    - GetSectorDamage
-   Returns     - TRUE if there was damage from this sector, FALSE if not.
-						If there was damage, it is returned in the output-only
-						parameter damageNumber.
-	Notes			- Avatars should call this function every x frames and
-						use the return information to assign damage.
-   ======================================================================== */
-BOOL GetSectorDamage (LONG iSector, LONG *damageNumber)
-{
-// [d11-13-96 JPC] Relocated this code to GetCrusherDamage.
-// No one should call this routine anymore.
-	LONG			damage;
-
-	damage = 0;
-
-	switch (sectors[iSector].special)
-	{
-		case SSP_DAMAGE_2:
-			damage = 2;
-			break;
-		case SSP_DAMAGE_5:
-			damage = 5;
-			break;
-		case SSP_DAMAGE_10:
-			damage = 10;
-			break;
-		case SSP_LAVA:
-			damage = LAVA_DAMAGE;
-			break;
-		case SSP_POISON_GAS:
-			damage = POISON_DAMAGE;
-			break;
-		case SSP_ACID_FLOOR:
-			damage = ACID_DAMAGE;
-			break;
-	}
-
-	*damageNumber = damage;
-	if (damage)
-		return TRUE;
-	else
-		return FALSE;
-	return FALSE;
-}
-#endif
-
-#if 0
-// [d11-29-96 JPC] Abolished.  Use AVATAR: GetSectorDamage instead.
-/* =======================================================================
-   Function    - GetCrusherDamage
-   Returns     - TRUE if you have been crushed.
-						If there was damage, it is returned in the output-only
-						parameter damageNumber.
-	Notes			- Avatars should call this function every pass through
-						the animation loop.
-					- 10-21-96 JPC: check to make sure it's a crusher sector
-					  before doing damage.
-					- 11-21-96 JPC: no damage in lava or acid sectors if avatar
-					  is above the floor.  Tried to use parameter avatarZ, but
-					  move_thing_to will change the z coordinate of a party member
-					  to the floor (move_thing_to is not aware that we are flying).
-					  Used player.z instead.  This means that if we are above the
-					  floor, nothing in the whole game takes damage from lava or
-					  acid.  This should actually be OK, because no monster should
-					  ever be in acid or lava.
-					  (I couldn't figure out how to get the information about
-					  flying to move_thing_to; the IsFlyingThing test only
-					  works for things that are intrinsically able to fly.)
-   ======================================================================== */
-BOOL GetCrusherDamage (LONG iSector, LONG *damageNumber, LONG avatarHeight, LONG avatarZ)
-{
-	LONG			damage;
-	LONG			sectorHeight;
-
-	damage = 0;
-	sectorHeight = sectors[iSector].ch - sectors[iSector].fh;
-
-	// Simple rule: once the ceiling touches the avatar's head, the
-	// avatar is dead.  We can make this more complicated if we want to.
-	if (sectorHeight < avatarHeight)
-	{
-		// Check for various crushers.
-		if (FloorIsActive (iSector) || CeilingIsActive (iSector))
-			damage = 200;							// should be enough to kill
-	}
-
-	// [d11-13-96 JPC] Move the following code here from GetSectorDamage:
-	// Hand out special damage every DAMAGE_FRAME frames.
-	if ((gcFrames % DAMAGE_FRAME) == 0)
-	{
-		switch (sectors[iSector].special)
-		{
-			case SSP_DAMAGE_2:
-				damage += 2;
-				break;
-			case SSP_DAMAGE_5:
-				damage += 5;
-				break;
-			case SSP_DAMAGE_10:
-				damage += 10;
-				break;
-			case SSP_LAVA:
-				// if (avatarZ <= sectors[iSector].fh)
-				if (player.z <= sectors[iSector].fh)
-					damage += LAVA_DAMAGE;
-				break;
-			case SSP_POISON_GAS:
-				damage += POISON_DAMAGE;
-				break;
-			case SSP_ACID_FLOOR:
-				// if (avatarZ <= sectors[iSector].fh)
-				if (player.z <= sectors[iSector].fh)
-					damage += ACID_DAMAGE;
-				break;
-		}
-	}
-
-	*damageNumber = damage;
-
-	if (damage)
-		return TRUE;
-	else
-		return FALSE;
-}
-#endif
-
 // ---------------------------------------------------------------------------
 BOOL IsSplashSector (LONG iSector)
 {
@@ -705,5 +560,3 @@ BOOL IsLavaSector (LONG iSector)
 
 // ---------------------------------------------------------------------------
 // ---------------------------------------------------------------------------
-
-

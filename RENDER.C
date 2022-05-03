@@ -151,16 +151,6 @@ PTR	pTexture;
 LONG	wTexture;
 LONG	hTexture;
 
-#if 0
-extern BOOL bShowBanner;
-extern SHORT testbitm;
-#endif
-
-extern TEXTURE textures[];
-
-extern ULONG		tot_nodes;				// [d8-02-96 JPC] used to be in ENGINT.H,
-													// but mysteriously disappeared
-
 	/*used by floors and ceils*/
 LONG floor_need_start;
 LONG last_post_x,last_post_y,last_post_ye;
@@ -299,20 +289,6 @@ void scale_col_ttop(long sx,long dx,long dy,long dye,
 	// and so on in RENDER.C, which know what kind of texture they're dealing
 	// with.
 	//
-#if 0
-|	if (gPeggedValue == 0)	 				// "unpegged" = peg to ground-zero
-|	{
-|		tsy.lval += ((wTexture - (floor_z % wTexture)) << 16);
-|	}
-|	else if (gPeggedValue & 16)         // "peg low" = peg to floor
-|	{
-|		tsy.lval += ((wTexture - (col_hei % wTexture)) << 16);
-|	}
-|	else if (gPeggedValue & 8)          // "peg high" = peg to ceiling
-|	{
-|		// in this case, do nothing--leave tsy as is
-|	}
-#endif
 	if (gPeggedValue == 0)	 				// "unpegged" = peg to ground-zero
 	{
 		tsy.lval += ((wTexture - (floor_z % wTexture)) << 16);
@@ -325,13 +301,6 @@ void scale_col_ttop(long sx,long dx,long dy,long dye,
 	{
 		tsy.lval += ((wTexture - (col_hei % wTexture)) << 16);
 	}
-
-#if 0
-|	if (gPeggedValue != 0)
-|	{
-|		tsy.lval += ((wTexture - (col_hei % wTexture)) << 16);
-|	}
-#endif
 
 	// GWP gMaxLight is actually the maximum index into the shade table which
 	//     is all BLACK.
@@ -347,10 +316,6 @@ void scale_col_ttop(long sx,long dx,long dy,long dye,
 			// GWP For DOS Low res draw every other scan line the same for walls.
 			if (light == 0)
 			{
-				#if 0
-				// Special optimized assembly routine to do this loop.
-				Light_Ren(sptr, tptr, wrapMask, tsy.lval, src_inc, sptr_inc, sptr_end);
-				#else
 				do {
 					// Use just the integer part of tsy to index into the texture
 					// tptr.  (tsy is a fixed point integer.)
@@ -364,7 +329,6 @@ void scale_col_ttop(long sx,long dx,long dy,long dye,
 					// advance the offscreen buffer to the next location below this pixal.
 					sptr += sptr_inc;
 				} while (sptr < sptr_end);
-				#endif
 			}
 			else
 			{
@@ -604,16 +568,8 @@ void render_view(LONG fskipmap)
 	// [d2-28-97 JPC] Added gCameraSector so we can use the reject table.
 	// [d3-04-97 JPC] Took gCameraSector out because we aren't using the
 	// reject table anymore.
-	// gCameraSector = point_to_sector (local_camera_x, local_camera_y);
 	draw_node(tot_nodes-1);
 
-#if 0
-debug_draw_seg_line(view_frust_left.a.x,view_frust_left.a.y,
-		view_frust_left.b.x,view_frust_left.b.y,55);
-debug_draw_seg_line(view_frust_right.a.x,view_frust_right.a.y,
-		view_frust_right.b.x,view_frust_right.b.y,55);
-
-#endif
 	run_timers();
 	
 	// Draw the floors and ceilings, using information recorded in draw_node.
@@ -688,133 +644,6 @@ BOOL LineInFrustrum (POINT a, POINT b)
 
 	return TRUE;
 }
-
-
-#if 0	// Not used (The clip is broken.)
-/* =======================================================================
-   Function    - IsNodeVisible
-   Description - Helper of draw_node; uses bounding box and clipping to
-	              decide whether a node is visible from our viewpoint.
-   Returns     - TRUE if node is visible, FALSE if not.
-	Note        - [d3-03-97 JPC]
-   ======================================================================== */
-BOOL IsNodeVisible (LONG iNode, LONG side)
-{
-	BR_NODE *	pNode = &nodes[iNode];
-	POINT			a, b, c, d;
-
-	// Get bounding box points and check bounding lines:
-	//
-	//	 c		d
-	//
-	//	 a		b
-
-	if (side == FRONT)
-	{
-		// Translate.
-		a.x = pNode->minxf - local_camera_x;
-		a.y = pNode->minyf - local_camera_y;
-		b.x = pNode->maxxf - local_camera_x;
-		b.y = pNode->minyf - local_camera_y;
-	}
-	else
-	{
-		a.x = pNode->minxb - local_camera_x;
-		a.y = pNode->minyb - local_camera_y;
-		b.x = pNode->maxxb - local_camera_x;
-		b.y = pNode->minyb - local_camera_y;
-	}
-
-	// Translate.
-	// GWP Moved up to avoid extra assignments.
-	// GWP a.x -= local_camera_x;
-	// GWP a.y -= local_camera_y;
-	// GWP b.x -= local_camera_x;
-	// GWP b.y -= local_camera_y;
-
-	// Rotate, using precalculated sine and cosine for camera angle.
-	{
-	// Use the braces to allocate a temporary variable.
-	LONG ax;
-	
-	ax = a.x;
-	a.x =(((((a.x) * view_cos) )
-		 - (((a.y) * view_sin ) )) / ANGLE_MULTI);
-	a.y =(((((ax) * view_sin ) )
-		 + (((a.y) * view_cos ) )) / ANGLE_MULTI);
-
-	ax = b.x;
-	b.x =(((((b.x) * view_cos) )
-		 - (((b.y) * view_sin ) )) / ANGLE_MULTI);
-	b.y =(((((ax) * view_sin ) )
-		 + (((b.y) * view_cos ) )) / ANGLE_MULTI);
-	}
-
-	// Use special LineInFrustrum routine to see whether this line is visible.
-	if (LineInFrustrum (a, b))
-		return TRUE;
-
-	// Now we need to check line ac.
-	if (side == FRONT)
-	{
-		c.x = pNode->minxf - local_camera_x;
-		c.y = pNode->maxyf - local_camera_y;
-	}
-	else
-	{
-		c.x = pNode->minxb - local_camera_x;
-		c.y = pNode->maxyb - local_camera_y;
-	}
-	// GWP c.x -= local_camera_x;
-	// GWP c.y -= local_camera_y;
-	{
-	// Use the braces to allocate a temporary variable.
-	LONG ax;
-	
-	ax = c.x;
-	c.x =(((((c.x) * view_cos) )
-		 - (((c.y) * view_sin ) )) / ANGLE_MULTI);
-	c.y =(((((ax) * view_sin ) )
-		 + (((c.y) * view_cos ) )) / ANGLE_MULTI);
-	}
-	
-	if (LineInFrustrum (a, c))
-		return TRUE;
-
-	// Now we need to check line bd.
-	if (side == FRONT)
-	{
-		d.x = pNode->maxxf - local_camera_x;
-		d.y = pNode->maxyf - local_camera_y;
-	}
-	else
-	{
-		d.x = pNode->maxxb - local_camera_x;
-		d.y = pNode->maxyb - local_camera_y;
-	}
-	// GWP d.x -= local_camera_x;
-	// GWP d.y -= local_camera_y;
-	{
-	// Use the braces to allocate a temporary variable.
-	LONG ax;
-	
-	ax = d.x;
-	d.x =(((((d.x) * view_cos) )
-		 - (((d.y) * view_sin ) )) / ANGLE_MULTI);
-	d.y =(((((ax) * view_sin ) )
-		 + (((d.y) * view_cos ) )) / ANGLE_MULTI);
-	}
-	if (LineInFrustrum (b, d))
-		return TRUE;
-
-	// Now we need to check line cd.
-	if (LineInFrustrum (c, d))
-		return TRUE;
-
-	return FALSE;								// no line is in our view
-}
-#endif
-
 
 /* =======================================================================
    Function    - draw_node
@@ -1383,50 +1212,6 @@ void process_seg(LONG iSegment)
 
 }
 
-#if 0
-// [d11-05-96 JPC]
-// Original function did not take side into account.  Replace with
-// CalcXTextureInfo, below.
-// Asked Chris Phillips about this: he said OK.
-/* =======================================================================
-   Function    - calc_x_texture_info
-   Description - ???
-   Returns     - void
-   ======================================================================== */
-LONG calc_x_texture_info(LONG *xsrc_inc,LONG *src_x)
-{
-	LONG new_w;
-	LONG clipped_off;
-
-
-	new_w = dist(clipped_a.x,clipped_a.y,clipped_b.x,clipped_b.y);
-	clipped_off = dist(clipped_a.x,clipped_a.y,orig_a.x,orig_a.y);
-
-	if (proj_bx == proj_ax)		// prevent divide by zero
-	{
-		*xsrc_inc=0;
-		*src_x=0;
-		return new_w;
-	}
-
-	/* xsrc_inc is number of source columns per screen column */
-	/* src_x is how much was clipped off + the texture offset from segs */
-	if (wall_scale)
-	{
-		*xsrc_inc = ((new_w * wall_scale)<<16) / ((proj_bx-proj_ax) * UNITARY_SCALE);
-		*src_x = (((clipped_off + segs[current_seg].txoff) * wall_scale) << 16) / UNITARY_SCALE;
-	}
-	else
-	{
-		*xsrc_inc = (new_w << 16) / (proj_bx-proj_ax);
-		*src_x = (clipped_off + segs[current_seg].txoff) << 16;
-	}
-
-	return new_w;
-}
-#endif
-
-
 // ---------------------------------------------------------------------------
 LONG CalcXTextureInfo (LONG *xsrc_inc,LONG *src_x, LONG side, LONG fFlip)
 {
@@ -1510,38 +1295,6 @@ LONG CalcXTextureInfo (LONG *xsrc_inc,LONG *src_x, LONG side, LONG fFlip)
 	return new_w;
 }
 
-#if 0
-// [d9-23-96 JPC] Make this a macro instead for speed.
-/* =======================================================================
-   Function    - SetLightDelta
-   Description - Change the lighting for a specific linedef
-   Returns     - void
-   ======================================================================== */
-void SetLightDelta (LONG seg, LONG side)
-{
-// [d6-04-96 JPC] Made this a function--when working, should be posted back
-// as in-line code in the 3 places it's called from.
-// Side is fairly straightforward when drawing an entire wall, but when
-// drawing a lower wall or upper wall, we seem to have flipped the meaning
-// of front and back--check it again later.
-//
-// [d6-18-96 JPC] Added #defines to make it easy to change the number of
-// bits (we just changed from 4 bits per sidedef to 3).  Also added
-// LIGHT_DELTA_MULTIPLY to make the effect more noticeable.
-// The #defines are in LIGHT.H.
-// ---------------------------------------------------------------------------
-
-   if (side == 0)                      // "front" side
-      gLinedefLight = (linedefs[segs[seg].lptr].flags) >> SIDE_1_LIGHT_SHIFT;
-   else
-      gLinedefLight = (linedefs[segs[seg].lptr].flags) >> SIDE_2_LIGHT_SHIFT;
-   gLinedefLight &= LIGHT_VALUE_MASK;
-   if (gLinedefLight > LIGHT_MAX_POSITIVE)	// high bit is sign bit
-      gLinedefLight -= LIGHT_ADD_FACTOR;
-	gLinedefLight *= LIGHT_DELTA_MULTIPLY;		
-}
-#endif
-
 /* =======================================================================
    Function    - add_floor_span
    Description - ?????????????
@@ -1551,9 +1304,7 @@ void add_floor_span(LONG x,LONG y,LONG sect)
 {
 	LONG y2;
 	LONG clipped;								// not used
-//return;
 	/*assume y2 is screen bottom (it will probably be clipped)*/
-//	y2 = VIEW_HEIGHT;
 	y2 = screen_buffer_height;
 
 	if(!clip_span(x,&y,&y2,&clipped))
@@ -1736,45 +1487,6 @@ void add_ceil_span(LONG x,LONG y,LONG sect)
                0, 0, typeCEILING);
 #endif
 }
-
-#if 0
-// gAddFactor is a global variable for on-the-fly testing of infravision.
-// The higher the value of gAddFactor, the darker non-heat-source things are.
-// Make gAddFactor a constant when done debugging and testing various numbers.
-LONG gAddFactor = 16;
-// ---------------------------------------------------------------------------
-void RenderChangeLight (LONG * light, BOOL fHeatSource)
-{
-// [d7-16-96 JPC] Apply various global lighting effects to the base light.
-// Color remapping has to be handled separately.  See THINGS: draw_thing.
-// ---------------------------------------------------------------------------
-
-	if (gfTestMagicLightSwitch)
-      *light -= 16;                    // brighten by 16 (there are 32 steps)
-	if (gcMagicTemporaryLight > 0)
-		*light -= gcMagicTemporaryLight/10;
-	if (*light < 0)
-		*light = 0;
-
-	// Infravision might have to be handled separately.
-	if (gfInfraVision)
-	{
-		if (fHeatSource)
-		{
-			*light += (INFRAVISION_OFFSET - gAddFactor);
-			if (*light < INFRAVISION_OFFSET)
-				*light = INFRAVISION_OFFSET;
-		}
-		else
-		{
-			*light += INFRAVISION_OFFSET;
-			// *light += INFRAVISION_OFFSET + gAddFactor; // non-alive things are darker
-			// if (*light > INFRAVISION_MAX)
-			// 	*light = INFRAVISION_MAX;
-		}
-	}
-}
-#endif
 
 /* =======================================================================
    Function    - draw_wall

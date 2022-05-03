@@ -330,18 +330,6 @@ void SetPlayer (LONG x, LONG y, LONG z, LONG a, LONG p)
 			player.z=effectivefloor;
 		}
 	}
-	
-#if 0
-	// GWP [11-29-96] Happens too late to correctly do auto crouching.
-	// [d9-03-96 JPC] Allow for water, acid, and lava.
-	if (!player.Flying)
-	{
-		if (special == SSP_WATER || special == SSP_ACID_FLOOR || special == SSP_LAVA)
-			player.z -= player.h / 4;
-		else if (special == SSP_DEEP_WATER)
-			player.z -= (player.h * 3) / 4;
-	}
-#endif
 
 	if(a != NO_CHANGE)
 		player.a= a & 0xFF;
@@ -482,45 +470,6 @@ LONG CheckMoveKeys(void)
 	return KeyState;
 }
 
-#if 0
-// GWP this fn doesn't do what it says. Fix it if you need it.
-/* ========================================================================
-   Function    - SwoopToTarget
-   Description - move along a swoop in path to a new target location
-   Returns     - arrived at new location
-   ======================================================================== */
-BOOL SwoopToTarget ( POSITION *pStart, POSITION *pTarget)
-{
-	LONG	th, ta, tp, tx, ty;
-	
-	th = ta = tp = tx = ty = 0;
-	
-	tx = TargetX - player.x;
-	ty = TargetY - player.y;
-	th = TargetH - player.h;
-	tp = TargetP - player.p;
-	ta = TargetA - player.a;
-	
-	if (ta>128)
-		ta=ta-256;
-	else
-	if (ta<-128)
-		ta=ta+256;
-	
-	TargetFactor2 = TargetFactor - 1;
-	player.h += ((th+((th>0)?TargetFactor2:-TargetFactor2)) / TargetFactor);
-	player.p += ((tp+((tp>0)?TargetFactor2:-TargetFactor2)) / TargetFactor);
- 	 	
-	player.x += ((tx+((tx>0)?TargetFactor2:-TargetFactor2)) / TargetFactor);
-	player.y += ((ty+((ty>0)?TargetFactor2:-TargetFactor2)) / TargetFactor);
-	player.a += ((ta+((ta>0)?TargetFactor2:-TargetFactor2)) / TargetFactor);
-	
-	TargetFactor = ((TargetFactor - 5) / 2) + 5;
-
-	return TRUE;
-}
-#endif // 0
-
 /* ========================================================================
    Function    - StopPlayer
    Description - Stop moving the player. (For returning from combat mode.)
@@ -587,19 +536,6 @@ LONG MovePlayer( LONG KeyState )
 		vx=vy=vz=va=vp=vh=0;
 	}
 	
-#if 0
-	// GWP There is no "player" target only cameras.
-	/* -----------------------------------------------------------------
-	   check for target movement
-	   ----------------------------------------------------------------- */
-	if (KeyState & KEY_SWOOP_TO_TARGET)
-	{
-		// if not at target, return
-		if(!SwoopToTarget((POSITION *)&player, (POSITION *)&Target))
-			return RetVal;
-	}
-#endif
-
 	// get any needed information
 	point_to_sector_info(
 		(player.x>>PLAYER_FIXEDPT),
@@ -837,13 +773,6 @@ LONG MovePlayer( LONG KeyState )
 		// if (ABS (vz) >= STAIR_HEIGHT)
 		if (vz != 0)
 		{
-#if 0
-			player.p = player.p + (LONG)(vz*4);
-			if (player.p < -MAX_PITCH)
-				player.p = -MAX_PITCH;
-			else if (player.p > MAX_PITCH)
-				player.p = MAX_PITCH;
-#endif
 			player.p = (vz < 0) ? -LOOK_PITCH : LOOK_PITCH;
 			cLockPitch = 2;					// do 2 frames without auto-leveling
 		}
@@ -950,24 +879,6 @@ LONG MovePlayer( LONG KeyState )
 			// [d3-15-97 JPC] Do not look up when going up. This stops us
 			// from looking up when going up stairs, but solves many other
 			// bugs with looking up when we aren't supposed to.
-// #if 0
-// 			player.p += (LONG)((floor - player.z) * 4); // [d8-12-96 JPC] experiment--try to look up
-// 			if (player.p < -MAX_PITCH)
-// 				player.p = -MAX_PITCH;
-// 			else if (player.p > MAX_PITCH)
-// 				player.p = MAX_PITCH;
-// #else
-// 			// If we jump, we can end up below the floor when we come down.
-// 			// That is corrected here, but we do NOT want to change the
-// 			// camera pitch in that case!
-// 			if (!fJumping)
-// 			{
-// 				player.p = MAX_PITCH;
-//   				cLockPitch = 2;
-// 			}
-// 			MonoDump ("Up stairs: changed player.p from %d to %d, vz = %d", oldP, player.p, vz);
-// 			MonoDump ("  floor = %d, player.z = %d", floor, player.z);
-// #endif
 			player.z = floor;
 			vz = 0;
 			fJumping = FALSE;

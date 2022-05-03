@@ -67,20 +67,6 @@ typedef unsigned char BYTE;
  // -- User-PNetMod types
 #include "PNetType.h"
 
-#if 0
-const int iMaxChat	= 20;
-
-
-typedef struct 
-{
-   char szMessage[120];        //---- could be less
-
-} SZCHAT, *PSZCHAT;
-#endif
-
-
-
-
  // -- Prototype for the Chat Message alert sound routine
 
 typedef void (*FP_MISCPROC)( void );
@@ -254,4 +240,3 @@ private:
 
 
 //---- GMulPlay.hxx
-

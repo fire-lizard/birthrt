@@ -898,15 +898,6 @@ BOOL GenericMultiPlayer::ReceiveMessage( USHORT usType, DWORD dwWait,
 		LOGCOMMENTSLEEP
 		if ( fLogComment )
 		{
-			#if 0
-			if ( err != kNoError && usType == iMPT_SYNC )
-			{
-				char temp[200];
-				sprintf ( temp, "GMulPlay::ReceiveMessage - looking for SYNC, received an Error!");
-				RandomLogComment ( temp );
-			}
-			#endif
-
 			if ( err != kNoError && usType == iMPT_UNIT )
 			{
 				char temp[200];
@@ -929,17 +920,6 @@ BOOL GenericMultiPlayer::ReceiveMessage( USHORT usType, DWORD dwWait,
 				LOGCOMMENTSLEEP
 				if ( fLogComment )
 				{
-					#if 0
-					if ( usType == iMPT_SYNC )
-					{
-						char temp[200];
-						sprintf ( temp, "GMulPlay::ReceiveMessage - looking for SYNC, received %s (%ld), FromID:%ld (ix=%ld)  MsgNum:%lx",
-							((lpnm->MsgId==iMPT_SYNC)?"SYNC":"NON-SYNC"),lpnm->MsgId,
-							lpnm->dwPlayerId,PlayerInd,lpnm->ulSync);
-						RandomLogComment ( temp );
-					}
-					#endif
-
 					if ( usType == iMPT_UNIT )
 					{
 						char temp[200];
@@ -986,15 +966,6 @@ BOOL GenericMultiPlayer::ReceiveMessage( USHORT usType, DWORD dwWait,
 						LOGCOMMENTSLEEP
 						if ( fLogComment )
 						{
-							#if 0
-							if ( usType == iMPT_SYNC )
-							{
-								char temp[200];
-								sprintf ( temp, "GMulPlay::ReceiveMessage - looking for sync, got wrong type, call HandleSpecialMessage");
-								RandomLogComment ( temp );
-							}
-							#endif
-
 							if ( usType == iMPT_UNIT )
 							{
 								char temp[200];
@@ -1017,15 +988,6 @@ BOOL GenericMultiPlayer::ReceiveMessage( USHORT usType, DWORD dwWait,
 					LOGCOMMENTSLEEP
 					if ( fLogComment )
 					{
-						#if 0
-						if ( usType == iMPT_SYNC )
-						{
-							char temp[200];
-							sprintf ( temp, "GMulPlay::ReceiveMessage - looking for sync, got old message and OneOnly, return Error!");
-							RandomLogComment ( temp );
-						}
-						#endif
-
 						if ( usType == iMPT_UNIT )
 						{
 							char temp[200];
@@ -1098,15 +1060,6 @@ BOOL GenericMultiPlayer::ReceiveMessage( USHORT usType, DWORD dwWait,
 			LOGCOMMENTSLEEP
 			if ( fLogComment )
 			{
-				#if 0
-				if ( usType == iMPT_SYNC )
-				{
-					char temp[200];
-					sprintf ( temp, "GMulPlay::ReceiveMessage - call LookForMessages from inside");
-					RandomLogComment ( temp );
-				}
-				#endif
-
 				if ( usType == iMPT_UNIT )
 				{
 					char temp[200];
@@ -1125,32 +1078,10 @@ BOOL GenericMultiPlayer::ReceiveMessage( USHORT usType, DWORD dwWait,
 					goto LeaveRcv;
 				}
 
-//
-// This is done in gmulplay.cpp
-//
-//				Sleep( 50 );
 			}
 
 		}
 
-		#if 0
-		// GEH says "No quarter given, no quarter expected!"
-		i++;
-
-		if ( dwWait == 0 )
-		{
-			LOGCOMMENTSLEEP
-			if ( fLogComment )
-			{
-				char temp[200];
-				sprintf ( temp, "GMulPlay::ReceiveMessage - Timed out in %ld loops!", i);
-				RandomLogComment ( temp );
-			}
-
-			i = dwMsgMaxLoop;
-		}
-		#endif
-		
 		// -- Last ditch escape route!
 
 		#ifdef _DEBUG
@@ -1180,15 +1111,6 @@ LeaveRcv:
 				usType, i, dwWait);
 			RandomLogComment ( temp );
 		}
-
-		#if 0
-		//if ( usType == iMPT_SYNC )
-		{
-			char temp[200];
-			sprintf ( temp, "GMulPlay::ReceiveMessage - leaving, return %ld (0=error)", ( iRcvType == usType ));
-			RandomLogComment ( temp );
-		}
-		#endif
 	}
 
 	return ( iRcvType == usType );
@@ -1650,36 +1572,6 @@ void PaintAckLED(int k, DWORD id2, BOOL localAcks)
 //----
 //----  Dialog Windows
 //----
-
-
-#if 0
-// -----------------------------------------------------------------
-//
-//	 GenericMultiPlayer::SetupChat
-//
-//		Setup the chat. Initialize chat stuff 
-//
-//	 Inputs:
-//		none
-//
-//	 Return: none
-//
-// -----------------------------------------------------------------
-void GenericMultiPlayer::SetupChat( void )
-{
-
-   
-   memset ( &szChatMessages[0], 0, sizeof ( SZCHAT ) * iMaxChat );   
-
-   sNextMessage = 0;
-
-
-
-} // GenericMultiPlayer::SetupChat
-
-#endif
-
-
 
 
 #ifdef _MULTIMONO

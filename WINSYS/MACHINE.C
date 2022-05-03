@@ -59,8 +59,6 @@ extern BOOL fLogComment;
 
 static void ParseCmdLine (LPSTR szCmdLine);
 
-void CheckCD(void);
-
 LONG WINAPI MainWndProc( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam );
 void AppExit(void);
 void WaitForMessageQueueToEmpty( void );
@@ -456,7 +454,6 @@ BOOL AppInit( HINSTANCE hInst, HINSTANCE hPrev, LPSTR szCmdLine, int sw )
 	
 #if defined (_RELEASE)
 	// make sure the cd is in	
-	CheckCD();
 	if(fQuitting == TRUE)
 		return (FALSE);
 #endif

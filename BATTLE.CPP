@@ -276,25 +276,6 @@ BATTLE_TROOP_INFO	BattleTroopInfo[] = {
 LONG MaxBattleTroopInfoIndex = sizeof(BattleTroopInfo)/ sizeof(BATTLE_TROOP_INFO);
 #endif
 
-#if 0
-/* battle card string table */
-CHAR BattleCardBonusStrings[BTL_LASTBONUS][128] = {
-	BTL_STR_NOBONUS,
-	BTL_STR_VS_CAVALRY,
-	BTL_STR_MISSILE_VS_CAVALRY,
-	BTL_STR_VS_PIKES_IRREG,
-	BTL_STR_MELEE_VS_PIKES_IRREG,
-	BTL_STR_PIKEMEN,
-	BTL_STR_IGNORE_RF_BY_MAGIC,
-	BTL_STR_IGNORE_RF_EXCEPT_MAGIC,
-	BTL_STR_IGNORE_TERRAIN,
-	BTL_STR_REGENT,
-	BTL_STR_OFFICER,
-	BTL_STR_AWNSHEGN,
-};
-#endif
-
-
 // Battle experience points:
 #define NUM_OF_BTL_EXP_CLASSES	4
 static LONG BattleExpPointsTable[NUM_OF_BTL_EXP_TYPES][NUM_OF_BTL_EXP_CLASSES] = {

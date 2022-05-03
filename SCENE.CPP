@@ -2002,22 +2002,6 @@ void SCENE::mfDrawMapStuff ( void )
 					HandleMapAvatar(pAvatar->ThingIndex,pCurrentScene->Avatars[i],MAP_RED,MAP_SCALED);
  			}
  		}
-
-
-#if 0		
-		if (pCurrentScene->fMaxPlaces > 0 && pCurrentScene->fhPlaces != fERROR)
-		{
-			PTR_PLACES pPlaces = (PTR_PLACES) BLKPTR(pCurrentScene->fhPlaces);
-			
-			for (i = 0; i < pCurrentScene->fMaxPlaces; i++)
-			{
-				if (pPlaces[i].ThingIndex != fERROR)
-				{
-					pPlaces[i].mfDrawDiamond();
-				}
-			}
-		}
-#endif
 	}
 }
 /* ========================================================================

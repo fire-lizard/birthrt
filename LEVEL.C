@@ -772,19 +772,6 @@ static void load_wall_textures(void)
 {
 ULONG status;                          // [d6-06-96 JPC]--ignore status for now
                                        // (used in EDIT.C)
-#if 0 // GWP Moved to the load of the sidedefs.
-ULONG i;
-
-	for(i=0;i<tot_sidedefs;++i)
-		{
-		sidedefs[i].n1[0]=(UBYTE)get_texture(&sidedefs[i].n1[0], &status);
-		sidedefs[i].n2[0]=(UBYTE)get_texture(&sidedefs[i].n2[0], &status);
-		sidedefs[i].n3[0]=(UBYTE)get_texture(&sidedefs[i].n3[0], &status);
-		if(sidedefs[i].n1[0] > /* 0xf0 */ MAX_TEXTURES)
-			fatal_error("Too Many Textures in load_wall_textures");
-		}
-#endif
-
 #if 01
 // [d9-09-96 JPC] Make certain the switch textures are loaded.
 	get_texture ("BRIKCSW1", &status);
@@ -796,29 +783,6 @@ ULONG i;
 #endif
 }
 
-
-/* ========================================================================
-   Function    - load_flats
-   Description - loads the flats from the wad.
-   Returns     - void
-   ======================================================================== */
-
-#if 0 // UNUSED
-static void load_flats(void )
-{
-ULONG i;
-
-	for(i=0;i<tot_sectors;++i)
-		{
-		sectors[i].f_flat[0]=(UBYTE)get_floor_texture(&sectors[i].f_flat[0]);
-		sectors[i].c_flat[0]=(UBYTE)get_floor_texture(&sectors[i].c_flat[0]);
-		if(sectors[i].f_flat[0]>0xf0)
-			fatal_error("Too Many Textures in load_flats");
-		}
-//		sect_floor_textures[i]=get_floor_texture(&sectors[i].n1[0]);
-}
-
-#endif
 
 /* ========================================================================
    Function    - PurgeLevel

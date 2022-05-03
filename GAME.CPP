@@ -303,10 +303,6 @@ void ShowHelpMenu ( LONG, LONG )
    }
    else
    {
-#if defined(_JUNEDEMO)
-	SetButtonLabelColor(D_HELP, 3, 16);
-	SetButtonLabelColor(D_HELP, 4, 16);
-#endif
    	ShowSubMenu(0, D_HELP);
    }
 }
@@ -324,17 +320,12 @@ void DoneHelpMenu(LONG , LONG)
 
 
 		case	RULES:
-#if defined(_JUNEDEMO)
-			break;
-#endif			
 
 #ifdef _WINDOWS
 	#ifdef _FOREIGNVER
 			InitDOSHelp(H_TOPIC_ATLAS, 0);
 			break;
 	#endif
-//			if (sDrawMode == iDDRAW)
-//				ToggleDirectDraw(0, 0);
 
            //---- Put us in normal mode  ( well as normal as possible... )
 			if (sDrawMode == iDDRAW)
@@ -355,9 +346,6 @@ void DoneHelpMenu(LONG , LONG)
 #endif
 
 		case	GAMEPLAY:
-#if defined(_JUNEDEMO)
-			break;
-#endif			
 #ifdef _WINDOWS
 	#ifdef _FOREIGNVER
 			InitDOSHelp(H_TOPIC_RULES, 0);
@@ -683,16 +671,6 @@ void MainMenuClick (LONG MenuCombo, LONG ButtonVal)
 	LONG	MenuId, ButtonId;
 	SPLIT_LONG(MenuCombo, MenuId, ButtonId);
 	
-#if defined(_NETJUNEDEMO)
-	if (ButtonVal == 3 || ButtonVal == 4)
-		return;
-#else
-  #if defined(_JUNEDEMO)
-	if (ButtonVal == 3 || ButtonVal == 4 || ButtonVal == 6)
-		return;
-  #endif	
-#endif
-
 	// click the button
 #if !defined(_WINDOWS)	
 	if (ButtonVal != 6)
@@ -843,26 +821,14 @@ void ShowStatus(LONG tID, LONG hPossibleStats)
 	DumbHandlePtr<PLAYER_STATS const> const pPlayerStats(hPlayerStats);
 	
 	anim.seq = STANDSEQ;
-	#if defined(_JUNEDEMO)
-	iAnim = AllocateAnim(TYPE_FLIC, GAME_TTYPE::mfGetLowResType(pPlayerStats->mfGetType()));
-	#else
 	iAnim = AllocateAnim(TYPE_FLIC, pPlayerStats->mfGetType());
-	#endif
 	if (iAnim > 0)
 	{
-		#if defined(_JUNEDEMO)
-		load_FLC_sequence(iAnim,
-						  GAME_TTYPE::mfGetLowResType(pPlayerStats->mfGetType()),
-						  anim.seq,
-						  0	// rotation Zero.
-						  );
-		#else
 		load_FLC_sequence(iAnim,
 						  pPlayerStats->mfGetType(),
 						  anim.seq,
 						  0	// rotation Zero.
 						  );
-	    #endif
 		
 		SetAnimSequence(iAnim, (anim.seq * NUMROTATIONS));
     }
@@ -956,73 +922,6 @@ void HideStatus2(LONG MenuCombo, LONG)
 	HideMenu(D_AVATAR_ATTRIBUTES2);
     RunMenus();
 }
-
-/* ========================================================================
-   Function    - ShowCharacter
-   Description - put up the status dialog
-   Returns     -
-   ======================================================================== */
-#if 0 // UNUSED
-void ShowCharacter(LONG tID, LONG hPossibleStats)
-{
-	SHORT hPlayerStats;
-	
-	if (hPossibleStats == 0)
-	{
-		if(fERROR == (hPlayerStats = LoadStats(tID, fERROR)))
-			return;
-	}
-	else
-	{
-		hPlayerStats = hPossibleStats;
-	}
-	anim.seq = STANDSEQ;
-	DumbHandlePtr<PLAYER_STATS const> const pPlayerStats(hPlayerStats);
-	
-	iAnim = AllocateAnim(TYPE_FLIC, pPlayerStats->mfGetType());
-	
-	if (iAnim > 0)
-	{
-		#if defined(_JUNEDEMO)
-		load_FLC_sequence(iAnim,
-						  GAME_TTYPE::mfGetLowResType(pPlayerStats->mfGetType()),
-						  anim.seq,
-						  0	// rotation Zero.
-						  );
-		#else
-		load_FLC_sequence(iAnim,
-						  pPlayerStats->mfGetType(),
-						  anim.seq,
-						  0	// rotation Zero.
-						  );
-		#endif
-		SetAnimSequence(iAnim, (anim.seq * NUMROTATIONS));
-    }
-	
-	SetButtonValue(D_BEGIN_RULE, BUTNO_STATUS_HDL, hPlayerStats);
-	
-	ShowMenu(D_BEGIN_RULE);
-}
-#endif
-
-/* ========================================================================
-   Function    - HideCharacter
-   Description - throw out the status info
-   Returns     -
-   ======================================================================== */
-#if 0 // UNUSED
-void HideCharacter(LONG, LONG)
-{
-	if (iAnim > 0)
-	{
-		MarkOldAnimPurgable(iAnim, anim.seq);
-		RemoveAnim(iAnim);
-		iAnim = fERROR;
-	}
-	HideMenu(D_BEGIN_RULE);
-	RunMenus();
-}
-#endif
 
 /* ========================================================================
    Function    - checksequence
@@ -1372,16 +1271,6 @@ void PaintAttributes (LONG MenuCombo, LONG )
 
 	run_timers();
 	hBitm = NextAnimFrame(iAnim, anim.seq, 0, &ctrl, -1);
-	// GWP Doesn't work.
-	// GWP if(hBitm == fERROR)
-	// GWP {
-	// GWP 	char buffer[128];
-	// GWP 	// Try for the PCX.
-	// GWP 	sprintf(buffer, "things\\pcx\\%s.PCX", GAME_TTYPE::mfGetArtFileName(pPlayerStats->mfGetType()));
-	// GWP 	hBitm = GetResourceRot(buffer);
-	// GWP 	if (hBitm != fERROR)
-	// GWP 		SetPurge(hBitm);
-	// GWP }
 	
 	if(hBitm != fERROR)
 	{
@@ -1393,7 +1282,6 @@ void PaintAttributes (LONG MenuCombo, LONG )
 	{
 		MarkOldAnimPurgable(iAnim, anim.seq);
 		
-#if !defined(_JUNEDEMO)
 		if(anim.seq == ATTACK1SEQ)
 			anim.seq = ATTACK2SEQ;
 		else
@@ -1403,24 +1291,15 @@ void PaintAttributes (LONG MenuCombo, LONG )
 		if (anim.seq == DEFENDSEQ)
 			anim.seq = BOWSEQ;
 		else
-#endif // _JUNEDEMO
 			anim.seq = STANDSEQ;
 			
 		// This is done so we'll load all the sequences even though
 		// we won't play them on the adventures.
-		#if defined(_JUNEDEMO)
-		load_FLC_sequence(iAnim,
-						  GAME_TTYPE::mfGetLowResType(pPlayerStats->mfGetType()),
-						  anim.seq,
-						  0	// rotation Zero.
-						  );
-		#else
 		load_FLC_sequence(iAnim,
 						  pPlayerStats->mfGetType(),
 						  anim.seq,
 						  0	// rotation Zero.
 						  );
-		#endif
 		
 		SetAnimSequence(iAnim, (anim.seq * NUMROTATIONS));
 	}
@@ -1468,19 +1347,11 @@ void PlayAnimation (LONG MenuCombo, LONG)
 	DumbHandlePtr<PLAYER_STATS const> const pPlayerStats(hPlayerStats);
 	
 	anim.seq = ATTACK1SEQ;
-	#if defined(_JUNEDEMO)
-	load_FLC_sequence(iAnim,
-					  GAME_TTYPE::mfGetLowResType(pPlayerStats->mfGetType()),
-					  anim.seq,
-					  0	// rotation Zero.
-					  );
-	#else
 	load_FLC_sequence(iAnim,
 					  pPlayerStats->mfGetType(),
 					  anim.seq,
 					  0	// rotation Zero.
 					  );
-	#endif
 	SetAnimSequence(iAnim, (anim.seq * NUMROTATIONS));
 }
 
@@ -1598,28 +1469,23 @@ void GAMEToggleMainMenu(LONG fState, LONG)
 		SetButtonLabelColor(D_MAINMENU, 2, color);
 		
 		// -- color the load saved game button
-#if !defined(_JUNEDEMO)	&& !defined(_MULTIPLAY_ONLY)	
 		if (fDomainTurn)
 		{
 			color = BTN_LABEL_COLOR;
 		}
 		else
-#endif
 		{
 			color = GREY;
 		}
 		SetButtonLabelColor(D_MAINMENU, 3, color);
 		
 		// -- color the save game button
-#if !defined(_JUNEDEMO)
 		if (char_selected && fDomainTurn && (master_game_type != GAME_INTRO)
-//				&& (dturn_mode == MIN_MODE || dturn_mode == TAXLVL_MODE || dturn_mode == MAINT_MODE)
 			)
 		{
 			color = BTN_LABEL_COLOR;
 		}
 		else
-#endif
 		{
 			color = GREY;
 		}
@@ -1635,15 +1501,9 @@ void GAMEToggleMainMenu(LONG fState, LONG)
 			color = GREY;
 		}
 		
-#if !defined(_NETJUNEDEMO) && defined(_JUNEDEMO)
-		SetButtonLabelColor(D_MAINMENU, 6, GREY);
-#else
 		#if defined(_WINDOWS)
 		SetButtonLabelColor(D_MAINMENU, 6, color);
-		#else
-		SetButtonLabelColor(D_MAINMENU, 6, GREY);
 		#endif
-#endif
 		ShowMenu(D_MAINMENU);
 	}
 	else
@@ -2502,63 +2362,6 @@ int PaintInputField(LONG lButtonId, char *szBuffer, LONG lBufLen, LONG lFont,
 			}
 		}
 
-#if 0
-		else if(isalnum(iChatKey)
-				|| ((char)iChatKey == ' ' && allowSpace)
-				|| (iChatKey == 0x000000BD)	// dash
-				|| (iChatKey == 0x000000DC) // slash
-			)
-		{
-
-			//---- Range of characters
-
-			if ( range  )
-			{
-
-			    if ( (char)iChatKey >= first &&
-					 (char)iChatKey <= last     )
-				{
-					// we look at size of buffer - 2 for the blinking cursor
-					// and the NULL terminator
-					if(count < lBufLen - 2)
-					{
-						frame = 0;
-						if(iChatKey == 0x000000BD)
-							szBuffer[count++] = '_';
-						else
-						if(iChatKey == 0x000000DC)
-							szBuffer[count++] = '\\';
-						else
-							szBuffer[count++] = (char)iChatKey;
-						szBuffer[count] = ' ';
-					}
-
-				}
-
-			}
-			else
-			{
-				// we look at size of buffer - 2 for the blinking cursor
-				// and the NULL terminator
-				if(count < lBufLen - 2)
-				{
-					frame = 0;
-					if(iChatKey == 0x000000BD)
-						szBuffer[count++] = '_';
-					else
-					if(iChatKey == 0x000000DC)
-						szBuffer[count++] = '\\';
-					else
-						szBuffer[count++] = (char)iChatKey;
-					szBuffer[count] = ' ';
-				}
-			}
-
-		}
-#endif
-
-
-
 		iChatKey = 0;
 	}
 	
@@ -3206,10 +3009,6 @@ void GetMoreInfo( LONG MenuCombo, LONG Context )
 {
 	CHAR chFileName[80];
 
-#if defined(_JUNEDEMO)
-	return;
-#endif			
-
 #ifdef _WINDOWS
 	#ifdef _FOREIGNVER
 		LONG    MenuId, ButtonId;
@@ -3404,9 +3203,6 @@ void SystemHelp(
 		activate_region(SYSHELP_MOREINFO, TRUE);
 		SetButtonValue(DialogName, SYSHELP_MOREINFO, MoreInfoTag);
 		SetButtonProc(DialogName, SYSHELP_MOREINFO, GetMoreInfo, MoreInfoTag, D_KEY_MORE );
-#if defined(_JUNEDEMO)
-		SetButtonLabelColor(DialogName, SYSHELP_MOREINFO, GREY);
-#endif
 		// move the moreinfo button right
 		GetButtonSize(DialogName, SYSHELP_DIALOG, &w, &h);
 		GetButtonSize(DialogName, SYSHELP_MOREINFO, &bw, &bh);

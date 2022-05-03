@@ -348,29 +348,8 @@ static void draw_span (
 #if WRC_CAMERA_TEST
 	LONG		sptr_inc;
 #endif
-	//ULONG		tex_mask = (tex_size*tex_size)-1;
 	PTR	   		sptr;
 	POINT		a,b;
-
-// return;
-
-#if 0
-//[d7-16-96 JPC] Move shading up into closeout_span so that we can
-// adjust for distance BEFORE doing special effects.  This makes
-// floors conform to other lighted objects.
-	/* shade with distance */
-	if (light)		/* if not brightest then darken */
-		light += gSpanLighting[isy+MAX_VIEW_HEIGHT-render_center_y];
-	if (light>DARKEST)
-	{
-		light = DARKEST;
-	}
-	else if (light<0)
-	{
-		light = 0;
-	}
-	SetLight(light);
-#endif
 
 #if WRC_CAMERA_TEST
 	if (VideoCurrentlyRedirected)
@@ -531,28 +510,8 @@ static void draw_cspan (
 #if WRC_CAMERA_TEST
 	LONG		sptr_inc;
 #endif
-	// ULONG		tex_mask = (tex_size*tex_size)-1;
 	PTR		sptr;
 	POINT		a,b;
-// return;
-#if 0
-// [d7-16-96 JPC] Move to closeout_span.
-// Same reasoning as in draw_span.
-	/* shade with distance */
-	if (light)		/* if not brightest then darken */
-		light += gSpanLighting[isy+MAX_VIEW_HEIGHT-render_center_y];
-
-	// [d7-16-96 JPC] Note that the following wipes out effects such as infravision...
-	if (light > DARKEST)
-	{
-		light = DARKEST;
-	}
-	else if (light < 0)
-	{
-		light = 0;
-	}
-	SetLight(light);
-#endif
 
 #if WRC_CAMERA_TEST
 	if (VideoCurrentlyRedirected)
@@ -748,58 +707,6 @@ void draw_spans (void)
 		closeout_span(y);
 	}
 }
-
-#if 0	// GWP Unrolled open_span.
-/* ========================================================================
-   Function    - open_span
-   Description - ???
-   Returns     - void
-	JPC Note		- open_span can do one of two things:
-						(1) nothing (if plot would be redundant?), or
-						(2) FIRST call closeout_span and THEN set up the
-							 gSpans array.
-   ======================================================================== */
-static void open_span (ULONG x, ULONG y, ULONG sector)
-{
-	SPAN *s;
-
-	if ( y >= MAX_VIEW_HEIGHT)
-		return;
-		
-	if ((LONG)sector==gJustClosedSpan[y].sector && gJustClosedSpan[y].x+1==(LONG)x)
-	{
-		gJustClosedSpan[y].sector = ABSURD_SECTOR;
-		return;
-	}
-	
-	// GWP On the first pass this is called without having set gSpans!
-	closeout_span(y);
-
-	s = &gSpans[y];
-	s->x = x;
-	s->sector = sector;
-	s->status = SPAN_OPEN;
-}
-#endif
-
-#if 0 // GWP Unrolled close_span.
-/* ========================================================================
-   Function    - close_span
-   Description - ???
-   Returns     - void
-   ======================================================================== */
-static void close_span (ULONG x, ULONG y, ULONG sector)
-{
-	if ( y >= MAX_VIEW_HEIGHT)
-		return;
-		
-	if(gJustClosedSpan[y].sector != ABSURD_SECTOR)
-		closeout_span(y);
-
-	gJustClosedSpan[y].x = x;
-	gJustClosedSpan[y].sector = sector;
-}
-#endif
 
 /* ========================================================================
    Function    - closeout_span

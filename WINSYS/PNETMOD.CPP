@@ -1641,53 +1641,6 @@ ErrCode PlatformNetworkModule::GetOtherPlayerID ( long* thePlayerID, int index )
 		return ( kNoGameStarted );
 
 } // PlatformNetworkModule::GetOtherPlayerID
-	
-
-
-
-#if 0
-
-// -----------------------------------------------------------------
-//
-//  PlatformNetworkModule::GetMessage
-//
-//	Description:
-//
-//		Return the last generic message received, if any.
-//     Eats any ACKS in message que.
-//		
-//	Arguments:
-//		ptheMessage	- pointer to message area must be MAX_NETBUFF 
-//     bytes in size
-//		
-//		
-//
-//	Return: ErrCode
-//
-// -----------------------------------------------------------------
-ErrCode PlatformNetworkModule::GetMessage(	LPNETMSG ptheMessage,
-															DWORD dwWait,
-															const char bRemove, 
-															BOOL fAck )
-{
-	ErrCode ecError = kNoError;
-	
-	do 
-	{
-		ecError = ReceiveMessages( dwWait, bRemove, (fAck ? kACK : kDONTACK) );
-		if ( kNoError != ecError )
-		{
-			return ecError ;
-		}
-	} while (lpGenericMsgBuf->MsgId == ACK) ;
-	
-	memcpy( ptheMessage, lpGenericMsgBuf, MAX_NETBUFF );
-	
-	return ( ecError );
-
-} // PlatformNetworkModule::GetMessage
-#endif
-
 
 // -----------------------------------------------------------------
 //
@@ -2748,27 +2701,6 @@ receivemessagesendwhileSigs:
 	
 					}
 					
-					// record that we recieved a SYNC message
-					LOGCOMMENTSLEEP
-					if ( fLogComment )
-					{
-						#if 0
-						if (lpRecBuff->MsgId == iMPT_SYNC)
-						{
-							char temp[150];
-							PBRHeader pBRHead = (PBRHeader) (&(lpGenericMsgBuf->cData[0]));
-							PBRSync pSync = (PBRSync) (&(lpGenericMsgBuf->cData[0]) + sizeof(BRHeader));
-	
-							sprintf ( temp, "PlatformNetworkModule::ReceiveMessages - received sync %ld message from %ld (%ld).",
-									pSync->iSync,
-	   							lpGenericMsgBuf->dwPlayerId,         // who send the generic message
-									pBRHead->dwFrom);
-							RandomLogComment ( temp );
-						}
-						#endif
-					}
-
-
 					// -- if message needs an ack, we removed it and 
 					// --  ack flag says we can ack
 					
@@ -2786,20 +2718,6 @@ receivemessagesendwhileSigs:
 							NULL, 0, lpRecBuff->ulSync, 0, 0 );
 	
 						// -- record that we recieved a SYNC message
-						#if 0
-						LOGCOMMENTSLEEP
-						if ( fLogComment )
-						{
-							if (lpRecBuff->MsgId == iMPT_SYNC)
-							{
-								char temp[150];
-								sprintf ( temp, "PlatformNetworkModule::ReceiveMessages - Ack'd sync message from %ld with %ld result (%ld=no error).",
-			   					lpGenericMsgBuf->dwPlayerId, bERR, kNoError);
-								RandomLogComment ( temp );
-							}
-						}
-						#endif
-
 					}
 					else if ( bRemove == kREMOVEFROMQUE ) 
 					{
@@ -3379,53 +3297,6 @@ ErrCode PlatformNetworkModule::SendMessage (	DWORD  dpToId,
 #endif
 		} // for bRetryCount
 
-//----- Don't do the connnection status thing here ( maybe thrashing ?? )
-#if 0
-#ifdef ACKSIGS
-		//---- We haven't got all the acks
-		if ( dpToId == kBroadcast )
-		{
-			int x; 
-			int iOk = 1;   //---- All have acked 
-
-			//---- Check if a player disconnected
-			for ( x=0; x < MAX_PLAYERS; x++ )
-			{
-				//---- If we have player and they didn't ack and not here anymore 
-				//---- Need to delete the player
-
-				if ( dwPlayers[x] != kNoPlayer  &&
-					 !dwAcks[x]                 &&
-				     lpfnSNWCheckPlayerConnectStatus(dwPlayers[x]) == RETURN_ERR ) 
-				{
-					DeletePlayer(dwPlayers[x]);  //---- Delete the player
-				}
-			} 
-		}
-		else
-		{
-			int x;
-
-			//---- Check the players connection status 
-
-			for ( x = 0; x < MAX_PLAYERS; x++ )
-			{
-				if ( dpToId == dwPlayers[x] )
-				{
-				 	if ( lpfnSNWCheckPlayerConnectStatus(dwPlayers[x]) == RETURN_ERR )
-				 	{
-						DeletePlayer(dwPlayers[x]);  //---- Delete the player
-
-						ecError = kPlayerDisconnected;
-						goto outSigs;
-
-				 	}
-				}
-			}
-		}
-#endif
-#endif
-
 outSigs:
 		return ( ecError );
 	}
@@ -3479,37 +3350,11 @@ outSigs:
 			//---- Send the message 
 			if ( dpToId == kBroadcast )
 			{
-				#if 0
-				LOGCOMMENTSLEEP
-				if ( fLogComment )
-				{
-					if (bMsgId == iMPT_SYNC)
-					{
-						char temp[200];
-						sprintf ( temp, "PlatformNetworkModule::SendMessage - broadcasting sync message. OurID:%ld  MsgNum:%lx",dwPlayerId,ulMsgNum);
-						RandomLogComment ( temp );
-					}
-				}
-				#endif
-
 				hResult = lpDP3A->Send( dwPlayerId, 0,
 					dwFlag, lpSndBuff, dwLenMsg );
 			}
 			else
 			{
-				#if 0
-				LOGCOMMENTSLEEP
-				if ( fLogComment )
-				{
-					if (bMsgId == iMPT_SYNC)
-					{
-						char temp[200];
-						sprintf ( temp, "PlatformNetworkModule::SendMessage - pointcasting sync message. OurID:%ld  MsgNum:%lx",dwPlayerId,ulMsgNum);
-						RandomLogComment ( temp );
-					}
-				}
-				#endif
-
 				hResult = lpDP3A->Send( dwPlayerId, 
 												dpToId, 
 												dwFlag, 
@@ -3601,35 +3446,9 @@ outSigs:
 						//----- Broadcast message so we need to get multiple acks
 						if ( dpToId == kBroadcast )
 						{
-							#if 0
-							LOGCOMMENTSLEEP
-							if ( fLogComment )
-							{
-								if (bMsgId == iMPT_SYNC)
-								{
-									char temp[200];
-									sprintf ( temp, "PlatformNetworkModule::SendMessage - broadcast: received ACK from %ld  MsgNum:%lx", lpGenericMsgBuf->dwPlayerId, lpRecBuff->ulSync);
-									RandomLogComment ( temp );
-								}
-							}
-							#endif
-
 							//---- Update and check if all ack have come in
 							if ( UpdateandCheckAcks( lpGenericMsgBuf->dwPlayerId ) )
 							{
-								#if 0
-								LOGCOMMENTSLEEP
-								if ( fLogComment )
-								{
-									if (bMsgId == iMPT_SYNC)
-									{
-										char temp[200];
-										sprintf ( temp, "PlatformNetworkModule::SendMessage - received all sync ACKs");
-										RandomLogComment ( temp );
-									}
-								}
-								#endif
-
 								ecError = kNoError;
 								goto out;
 							}
@@ -3637,19 +3456,6 @@ outSigs:
 
 						else		//	no a broadcast, one ACK is enough
 						{
-							#if 0
-							LOGCOMMENTSLEEP
-							if ( fLogComment )
-							{
-								if (bMsgId == iMPT_SYNC)
-								{
-									char temp[200];
-									sprintf ( temp, "PlatformNetworkModule::SendMessage - pointcast: received ACK from %ld  MsgNum:%lx", lpGenericMsgBuf->dwPlayerId, lpRecBuff->ulSync);
-									RandomLogComment ( temp );
-								}
-							}
-							#endif
-
 							ecError = kNoError;
 							goto out;
 						}

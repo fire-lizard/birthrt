@@ -301,15 +301,6 @@ void COMBAT_SCENE_DATA::mfRestoreCombatVals()
 					&TempKeyStruct);
 	
 // [d11-12-96 JPC] No need to return to low res; movement will do that.
-#if 0
-	// If we were in low res, and AutoRes is off, put us back
-	// in low res.
-	if (fOldHighResState == FALSE &&
-	    fOldAutoResState == FALSE)
-	{
-		set_lowres(0, 0);
-	}
-#endif
 	fAIAutoRes = fOldAutoResState;
 
 	ucWhichTrack = fucWhichTrack;

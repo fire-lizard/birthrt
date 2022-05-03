@@ -189,10 +189,6 @@ extern BOOL RegentDeathTest (void);
 extern void RandomLogComment ( char * szString );
 extern void LogFlush ( void );
 
-#if defined(_JUNEDEMO)
-void ShowAdScreen(SHORT);
-#endif
-
 void NPCBattleResults(BOOL);
 SHORT GetLastUnit( SHORT FirstUnit );
 BOOL CheckWithdrawPath (SHORT UnitIndex);
@@ -3496,11 +3492,6 @@ void DoAction (LONG iAction, LONG)
 		// handle adventure action differently
 		if (iAction == ADVENTURE)
 		{
-		#if defined(_JUNEDEMO)
-			// show teaser screen here	
-			ShowAdScreen(0);
-			IncActionTurn();
-		#else
 			#ifdef _WINDOWS
 			//---- if this is multiplayer then we need to determine if everyone wants to go
 			if ( IsMultiPlayer() )
@@ -3512,7 +3503,6 @@ void DoAction (LONG iAction, LONG)
 			{
 				SelectAdvParty();
 			}
-		#endif
 		}
 		else if (iAction == HOLD_ACTION)
 		{
@@ -4741,14 +4731,6 @@ BOOL UpdateDataArea (void)
 #else
 		if (random(100)<25 && date>1)		// 75% chance of a new adventure site
 			SelectAdvSite();
-#endif
-
-#if defined(_JUNEDEMO)
-		if (date > 8)
-		{
-			ShowAdScreen(4);
-			QuitSys(0,0);
-		}
 #endif
 
 		TutorialActionNumber = 0;
@@ -6239,7 +6221,6 @@ void WriteRealmStartData ( void )
 	BOOL OldfStartMPG = fStartMultiGame ;
 	
 #ifdef _WINDOWS	
-#ifndef _JUNEDEMO	
 	// GEH 8/25/97
 	// read multiplayer player realm start data
 	fStartMultiGame = TRUE;
@@ -6256,7 +6237,6 @@ void WriteRealmStartData ( void )
 	}
 	SaveGameFiles(fp);
 	fclose(fp);
-#endif
 #endif
 
 	// read single player realm start data
@@ -8661,91 +8641,6 @@ void CheckAutoDemo (void)
 	}
 }
 
-
-/* ========================================================================
-   Function    - MultiBattle()
-   Description - Check and initialize multiplayer battle
-   Returns     -
-   ======================================================================== */
-#if 0
-#if defined (_WINDOWS)
-BOOL MultiBattle(LONG iMovingUnit, LONG j )
-{
-
-	CHAR	cTerrain;
-	CHAR	strTerrain[6];
-
-	SCENE_MGR::Aggressor = (REALM::REALM_TYPE)units[iMovingUnit].Realm;
-	SCENE_MGR::Victor = 0; // clear the victor index
-
-	if (units[j].Realm == HomeRealm)
-	{
-		SCENE_MGR::HomeIndex = (SHORT)j;			// who is the home unit (w/camera)
-		SCENE_MGR::AwayIndex = (SHORT)iMovingUnit;	// who is the away unit
-	}
-	else
-	{
-		SCENE_MGR::HomeIndex = (SHORT)iMovingUnit;	// who is the home unit (w/camera)
-		SCENE_MGR::AwayIndex = (SHORT)j;			// who is the away unit
-	}
-
-	SCENE_MGR::SceneType = SCENE_AI::BATTLE_SCENE;  // type for next scene ai
-
-	// Got to protect ourselves
-
-	if (    SCENE_MGR::HomeIndex == -1
-		 ||	SCENE_MGR::AwayIndex == -1
-		 ||	SCENE_MGR::Aggressor == -1
-	   )
-	{
-		return FALSE;
-	}
-
-
-	// GEH my doings
-
-	switch( province[units[j].province].Terrain )
-	{
-		case FOREST:
-			cTerrain = 'w';	// woods
-			break;
-
-		case MOUNTN:
-		case HVY_MNT:
-			cTerrain = 'm';	// mountains
-			break;
-
-		case SWAMP:
-			cTerrain = 's';	// swamp
-			break;
-
-		case HILLS:
-		case PLAINS:
-		case NO_TERRAIN:
-		default:
-			cTerrain = 'p';	// plains
-	}
-
-	sprintf(strTerrain, "batl%c", cTerrain);
-
-	ClearRemapTable();
-
-	BattlePrep();
-
-	fShowProgressBar = TRUE;
-	SCENE_MGR::mfRequestNewScene( strTerrain , TYPE_PLAYERSTART1, TRUE); // load first scene
-
-	InitDomainTurn(0);		// turn off domain turn
-
-	fWasABattle = TRUE;
-
-	return TRUE;
-
-}
-#endif
-
-#endif
-
 /* ========================================================================
 	Function	- CheckUnitArrival
 	Description -
@@ -9023,9 +8918,6 @@ LONG CheckUnitArrival (LONG iMovingUnit, BOOL fJoinAllowed)
 					#ifdef _WINDOWS
 					f = (!IsMultiPlayer() 
 						|| (HowManyPlayers() == 1 && realm[AwayRealm].mfIsPlayerCtrl()));
-						#if defined(_JUNEDEMO)
-						f = FALSE;
-						#endif	
 					#else
 					f = TRUE;
 					#endif
@@ -10212,10 +10104,6 @@ void SetCommandBattleProc(LONG, LONG button)
 	{
 		sCommandBattle = 1;
 
-#if defined(_NETJUNEDEMO)
-		ShowAdScreen(3);
-		sCommandBattle = 0;
-#endif	
 	}
 	else
 	if(button == QUESTION_BTN2)	// Ahhhhhh, run away!
@@ -10883,108 +10771,4 @@ AwayWins:
 	
 	return;
 }
-
-/* ========================================================================
-   Function    - 
-	Description - 
-	Returns     - 
-	======================================================================== */
-#if defined(_JUNEDEMO)
-
-void ShowAdScreen(SHORT whichScreen)
-{
-	SHORT bitm = fERROR;
-	LONG	now;
-	
-	switch (whichScreen)
-	{
-		case 0:
-			bitm = GetResourceStd("graphics\\noadven.pcx", FALSE);
-			if (bitm == fERROR)
-				return;
-			DrawBitmap (0, 0, bitm, 0, 0, 640, 480);
-			gprint_text(155,335, STRMGR_GetStr(STR_DEMO_NOADV), BLACK);
-			break;
-		
-		case 1:
-		case 2:
-			bitm = GetResourceStd("graphics\\keepplay.pcx", FALSE);
-			if (bitm == fERROR)
-				return;
-			DrawBitmap (0, 0, bitm, 0, 0, 640, 480);
-			#define CYAN 75
-			#define GOLD 252
-			gprint_text(200, 26, STRMGR_GetStr(STR_DEMO_KEEPPLAY1), GOLD);
-			gprint_text(200,152, STRMGR_GetStr(STR_DEMO_KEEPPLAY2), WHITE);
-			gprint_text(200,202, STRMGR_GetStr(STR_DEMO_KEEPPLAY3), GOLD);
-			gprint_text(200,226, STRMGR_GetStr(STR_DEMO_KEEPPLAY4), GOLD);
-			gprint_text(200,247, STRMGR_GetStr(STR_DEMO_KEEPPLAY5), GOLD);
-			gprint_text(200,280, STRMGR_GetStr(STR_DEMO_KEEPPLAY6), CYAN);
-			gprint_text(200,303, STRMGR_GetStr(STR_DEMO_KEEPPLAY7), CYAN);
-			gprint_text(200,427, STRMGR_GetStr(STR_DEMO_KEEPPLAY8), CYAN);
-			gprint_text(200,449, STRMGR_GetStr(STR_DEMO_KEEPPLAY9), CYAN);
-			break;
-			
-		case 3:
-			bitm = GetResourceStd("graphics\\nobattle.pcx", FALSE);
-			if (bitm == fERROR)
-				return;
-			DrawBitmap (0, 0, bitm, 0, 0, 640, 480);
-			gprint_text(150,293, STRMGR_GetStr(STR_DEMO_NOBATTLE), BLACK);
-			break;
-		
-		case 4:
-			bitm = GetResourceStd("graphics\\keepplay.pcx", FALSE);
-			if (bitm == fERROR)
-				return;
-			DrawBitmap (0, 0, bitm, 0, 0, 640, 480);
-			init_gfont( FONT_SANS_8PT );
-			gprint_text(56,460, "The Sword of Roele must be given to Caliedhe Dosiere.", WHITE);
-			break;
-			
-		default:
-			break;	
-	}
-		
-	update_screen();
-	
-	now = get_time() + (20*182/10);
-	
-#ifdef _WINDOWS
-	ClearMessageQueue();
-#endif	
-
-	fAnyKeyChanged = FALSE;
-	clear_key_status(0);
-	
-	while (mouse_button > 0)
-	{
-		mouse_button = 0;
-		update_buttons();
-	}
-	
-	while (get_time() < now)
-	{
-		run_timers();
-	
-	#ifdef _WINDOWS
-		ClearMessageQueue();
-	#endif	
-	
-		update_buttons();
-		if (mouse_button)
-		{
-			mouse_button = 0;
-			break;
-		}
-		if (fAnyKeyChanged)
-		{
-			fAnyKeyChanged = FALSE;
-			clear_key_status(0);
-			break;
-		}
-	}
-}
-
-#endif
-/*	========================================================================*/
+/*	======================================================================== */

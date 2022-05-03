@@ -189,48 +189,6 @@ LONG sec,sided;
 }
 
 /* =======================================================================
-   Function    - seg_to_tname
-   Description - finds the name of the texture on a seg
-   Returns     - void
-   ======================================================================== */
-#if 0 // UNUSED
-void seg_to_tname(LONG s,LONG side,char *n)
-{
-LONG l,sided;
-LONG i;
-	l=(LONG)segs[s].lptr;
-
-	if(side==1)
-		sided=(LONG)linedefs[l].psdt;
-	else
-		sided=(LONG)linedefs[l].psdb;
-
-	n[0]='-';
-	n[1]=0;
-	if(sided==-1)
-		return;
-	if(sidedefs[sided].n1[0]!='-')
-		{
-		for(i=0;i<9;i++)
-			n[i]=sidedefs[sided].n1[i];
-		n[8]=0;
-		}
-	else if(sidedefs[sided].n2[0]!='-')
-		{
-		for(i=0;i<9;i++)
-			n[i]=sidedefs[sided].n2[i];
-		n[8]=0;
-		}
-	else if(sidedefs[sided].n3[0]!='-')
-		{
-		for(i=0;i<9;i++)
-			n[i]=sidedefs[sided].n3[i];
-		n[8]=0;
-		}
-}
-#endif
-
-/* =======================================================================
    Function    - sector_to_light
    Description - finds the light level of the sector
    Returns     - the light level

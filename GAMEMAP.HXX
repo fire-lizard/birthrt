@@ -259,6 +259,3 @@ extern REALM::REALM_TYPE		CurrentRealm;
 #endif // _GAMEMAP_HXX
 
 /*	======================================================================== */
-
-
-

@@ -801,28 +801,6 @@ void SwoopCamera(CAMERA *pCamera)
 	   	pCamera->y += NewPoint.dy;
 	   	pCamera->z += NewPoint.dz;
    		break;
-#if 0
-// [d12-09-96 JPC]
-   	case iWALL:
-	   	pCamera->z += NewPoint.dz;
-	   	break;
-   	case iCEILING:
-	   	pCamera->x += NewPoint.dx;
-	   	pCamera->y += NewPoint.dy;
-   		if (NewPoint.dz < 0) // going down.
-   		{
-	   		pCamera->z += NewPoint.dz;
-   		}
-   		break;
-   	case iFLOOR:
-	   	pCamera->x += NewPoint.dx;
-	   	pCamera->y += NewPoint.dy;
-   		if (NewPoint.dz > 0) // going up.
-   		{
-	   		pCamera->z += NewPoint.dz;
-   		}
-   		break;
-#endif
 		// [d12-09-96 JPC] In these cases, do not change x and y; move z to
 		// a reasonable height relative to the player.
 		case iWALL:
@@ -1112,32 +1090,6 @@ void RotateCameraEvenly(CAMERA *pCamera)
 		   	pCamera->y += NewPoint.dy;
 		   	pCamera->z += NewPoint.dz;
 	   		break;
-#if 0
-	// [d12-09-96 JPC]
-			case iWALL:
-		   	pCamera->z += NewPoint.dz;
-		   	break;
-	   	case iCEILING:
-		   	pCamera->x += NewPoint.dx;
-		   	pCamera->y += NewPoint.dy;
-	   		if (NewPoint.dz < 0) // going down.
-	   		{
-		   		pCamera->z += NewPoint.dz;
-	   		}
-	   		break;
-	   	case iFLOOR:
-		   	if(NewPoint.dz < 10)
-			{
-				pCamera->x += NewPoint.dx;
-		   		pCamera->y += NewPoint.dy;
-	   			
-	   			if (NewPoint.dz > 0) // going up.
-	   			{
-		   	  		pCamera->z += NewPoint.dz;
-	   			}
-			}
-	   		break;
-#endif
 			case iWALL:
 			case iCEILING:
 			case iFLOOR:
@@ -1343,24 +1295,11 @@ void RotateSwoopCamera(CAMERA *pCamera)
    		}
    		break;
    	case iFLOOR:
-		//pCamera->x += NewPoint.dx;
-	   	//pCamera->y += NewPoint.dy;
-   		
    		if (NewPoint.dz > 0) // going up.
    		{
 	   		pCamera->z += NewPoint.dz;
    		}
    		break;
-#if 0
-		// GWP 3/24/97
-		case iWALL:
-		case iCEILING:
-		case iFLOOR:
-			// GWP This is bad because it pays no attention to what the
-			//     actual floor height is under the camera vs the player.
-			pCamera->z = player.z + DEFAULT_CAMERA_Z;
-			break;
-#endif
    	}
 	
    	pCamera->p += ((tp+((tp>0)?TargetFactor2:-TargetFactor2)) / pCamera->TargetFactor);
@@ -1605,31 +1544,6 @@ void RotateCameraAroundPoint(CAMERA * pCamera, LONG KeyState )
 	 	pCamera->y += NewPoint.dy;
 	 	pCamera->z += NewPoint.dz;
 		break;
-#if 0
-// [d12-09-96 JPC]
-	case iWALL:
-	 	pCamera->z += NewPoint.dz;
-		break;
-	case iCEILING:
-	 	pCamera->x += NewPoint.dx;
-	 	pCamera->y += NewPoint.dy;
-		if(NewPoint.dz < 0) //going down
-		{
-			pCamera->z += NewPoint.dz;
-		}
-		break;
-	case iFLOOR:
-		if(NewPoint.dz < 10)
-		{
-			pCamera->x += NewPoint.dx;
-	 		pCamera->y += NewPoint.dy;
-			if (NewPoint.dz > 0) // going up.
-			{
-	 			pCamera->z += NewPoint.dz;
-			}
-		}	
-		break;
-#endif
 		case iWALL:
 		case iCEILING:
 		case iFLOOR:
@@ -1644,10 +1558,6 @@ void RotateCameraAroundPoint(CAMERA * pCamera, LONG KeyState )
 		pCamera->RTarget.y,
 		RESOLUTION_1);
    	
-
-	//pCamera->x = pCamera->Current.x;
-	//pCamera->y = pCamera->Current.y;
-	//pCamera->z = pCamera->Current.z;
 	pCamera->z = pCamera->Current.z;
 	pCamera->a = Temp;
 	pCamera->p = pCamera->Current.p;
@@ -1668,31 +1578,3 @@ void RotateCameraAroundPoint(CAMERA * pCamera, LONG KeyState )
 	}
 #endif
 }
-
-#if 0	// UNUSED
-/* =======================================================================
-   Function    - push_camera
-   Description - pushes the active camera onto the camera stack
-   Returns     - void
-   ======================================================================== */
-void push_camera()
-{
-	camera_stack[camera_stack_ptr++]=camera;
-	if(camera_stack_ptr>CAMERA_STACK_SIZE)
-		fatal_error("Overflowed camera stack");
-}
-
-/* =======================================================================
-   Function    - pull_camera
-   Description - pulls a camera off the stack
-   Returns     - void
-   ======================================================================== */
-void pull_camera()
-{
-	camera=camera_stack[--camera_stack_ptr];
-	if(camera_stack_ptr<0)
-		fatal_error("Underflowed camera stack");
-}
-
-#endif // UNUSED
-

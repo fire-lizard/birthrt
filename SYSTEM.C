@@ -319,20 +319,6 @@ void dec_lens (LONG dummy, LONG unused)
    ======================================================================== */
 void set_margin_size (LONG l, LONG r, LONG t, LONG b)
 {
-#if 0
-	BOOL			fNeedRender = FALSE;
-
-	if (l > margin_left || r > margin_right || t > margin_top || b > margin_bottom)
-	{
-		// [d10-27-96 JPC] Screen must have shrunk, get rid of the old
-		// adventure screen margins by blanking out the entire width of the
-		// screen down to the old margin_bottom.
-		//GEH can't do this here. If it needs to be done, it must be
-		// done by the calling game code.
-		//memset(screen, BLACK, MAX_VIEW_WIDTH * (MAX_VIEW_HEIGHT - margin_bottom));
-		//fNeedRender = TRUE;
-	}
-#endif
 	margin_left = l;
 	margin_right = r;
 	margin_top = t;
@@ -1133,9 +1119,6 @@ SHORT gprint_text (LONG x, LONG y, char *text, LONG color)
 					j += (text[i++]-'0');
 					GameSpecificGlobal_h = j;
 
-#if 0
-					color_edged_rect(GameSpecificGlobal_x,GameSpecificGlobal_y,GameSpecificGlobal_w,GameSpecificGlobal_h,22);
-#else
 					if (GameSpecificGlobal_w > 400
 						&& GameSpecificGlobal_h < 100)		iBkgnd = GetResourceStd("UI\\MARBLE05.PCX", FALSE);
 					else if (GameSpecificGlobal_w > 400
@@ -1154,7 +1137,6 @@ SHORT gprint_text (LONG x, LONG y, char *text, LONG color)
 					DrawBitmap(GameSpecificGlobal_x, GameSpecificGlobal_y, iBkgnd, 0, 0, 999, 999);
 					SetPurge(iBkgnd);
 					iBkgnd = fERROR;
-#endif
 					x = GameSpecificGlobal_x+8;		// position text
 					y = GameSpecificGlobal_y+8;
 					if (iBitm != fERROR)		// leave room for head
