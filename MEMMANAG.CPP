@@ -5,6 +5,7 @@
 	All other rights reserved.
 	========================================================================
 	Contains the following internal functions:
+.		CheckValidBlock	- verify block number is acceptable
 .		FindFreeHeader	- find a free block header
 .		SetBlockAttr	- Used by all the Set and Clr functions below
 .		GetBlockSize	- returns the size of a block in bytes
@@ -44,7 +45,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <malloc.h>
 #include <limits.h>
 #include <map>
 
