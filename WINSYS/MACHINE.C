@@ -326,14 +326,6 @@ BOOL AppInit( HINSTANCE hInst, HINSTANCE hPrev, LPSTR szCmdLine, int sw )
 	// automaticly so it doesnt hafta be done durring machine_pre_frame
 	install_keyint();
 
-	// Install mouse handler.. check_regions will look at cursor_x
-	// cursor_y and mouse_button
-//	init_mouse();
-
-   	//---- Open/load registry
-	// [d11-09-96 JPC] No longer use registry.
-   // OpenRegistry( &hKeyBirthright );
-
 	CheckHandles ();							// in FOPEN.C
 
 	if (!hPrev)
@@ -373,13 +365,6 @@ BOOL AppInit( HINSTANCE hInst, HINSTANCE hPrev, LPSTR szCmdLine, int sw )
 		lStyle = WS_POPUP;
 		cy = 1;
 	}
-
-#if defined (_CHARED)
-	// [d5-07-97 JPC]
-	// GEH 9/97
-	// lStyle = WS_POPUP;
-	// cy = 1;
-#endif
 
 	// main window
 	hwndApp = CreateWindowEx (0,		// Extended style bits
@@ -463,21 +448,12 @@ BOOL AppInit( HINSTANCE hInst, HINSTANCE hPrev, LPSTR szCmdLine, int sw )
 		RandomLogOpen ();
 	#endif
 	#endif
-
-
-	// start up the redbook player
-	//InitRedBook();
-	//InitializeSoundSystem();
 	
 /*
    GameMain is the name of the MAIN for the game.  Fill it in in order to
    compile and run a application
 */
 	
-	//GEH GEH GEH!!!!!!!!!!!!!!!!!!!!!!!!!
-	//GEH SetPriorityClass(GetCurrentProcess(), HIGH_PRIORITY_CLASS);
-	
-
 #if defined (_RELEASE)
 	// make sure the cd is in	
 	CheckCD();
@@ -512,10 +488,6 @@ BOOL AppInit( HINSTANCE hInst, HINSTANCE hPrev, LPSTR szCmdLine, int sw )
 
 
 	PostMessage(hwndApp, WM_SIZE, SIZE_RESTORED, MAKELPARAM(640, 480));
-
-	// check the appropriate menu items
-	//GEH obsolete CheckMenuItem(hMenuInit, ID_APP_OPTIONS_MUSIC, (fMusic == 0) ? MF_UNCHECKED : MF_CHECKED);
-	//GEH obsolete CheckMenuItem(hMenuInit, ID_APP_TEST_ANIMATE, (fAIAnimate == TRUE) ? MF_CHECKED : MF_UNCHECKED);
 	
 	return ( TRUE );
 
@@ -728,23 +700,16 @@ void AppExit(void)
 	remove_keyint();
 	TurnOffAllSounds();
 	// Must be called before HeapDestroy!
-	//ShutDownSoundSystem();
 	ShutdownRedBook();
 	
 	QuitMemManag();	// Call this before you distroy the heap.
 	HeapDestroy(hHeap);
-	// [d11-09-96 JPC] No longer use registry.
-	// CloseRegistry(hKeyBirthright, TRUE);
-
 }
 
 LONG WINAPI MainWndProc( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
 {
 	BOOL fRealize;
 	HDC  hdc;
-	//RECT rc;
-	//WORD i;
-	//LONG l;
 	int  iKey;
 	LONG	x, y;
 
@@ -802,62 +767,19 @@ LONG WINAPI MainWndProc( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
 				SetCursor(hcStd);
 			}
 			return 1;
-			
-
-
-//		case WM_MOUSEMOVE:
-//			GetClientRect(hwndApp, &rc);
-//			cursor_x = LOWORD(lParam);
-//			cursor_y = HIWORD(lParam);
-
-			//GEH scale mouse to draw buffer
-//			cursor_x = cursor_x * WindowWidth / rc.right;
-//			cursor_y = cursor_y * WindowHeight / rc.bottom;
-//			break;
 
 		case WM_LBUTTONDOWN:
-//			GetClientRect(hwndApp, &rc);
-//			cursor_x = LOWORD(lParam);
-//			cursor_y = HIWORD(lParam);
-
-			//GEH scale mouse to draw buffer
-//			cursor_x = cursor_x * WindowWidth / rc.right;
-//			cursor_y = cursor_y * WindowHeight / rc.bottom;
-//			need_cursor_draw = FALSE;
 			mouse_button = 1;
 			return 0;
 
 		case WM_RBUTTONDOWN:
-//			GetClientRect(hwndApp, &rc);
-//			cursor_x = LOWORD(lParam);
-//			cursor_y = HIWORD(lParam);
-
-			//GEH scale mouse to draw buffer
-//			cursor_x = cursor_x * WindowWidth / rc.right;
-//			cursor_y = cursor_y * WindowHeight / rc.bottom;
-//			need_cursor_draw = FALSE;
 			mouse_button = 2;
 			return 0;
 
-//		case WM_RBUTTONUP:
-//			GetClientRect(hwndApp, &rc);
-//			cursor_x = LOWORD(lParam);
-//			cursor_y = HIWORD(lParam);
-
-			//GEH scale mouse to draw buffer
-//			cursor_x = cursor_x * WindowWidth / rc.right;
-//			cursor_y = cursor_y * WindowHeight / rc.bottom;
-//			need_cursor_draw = FALSE;
-//			mouse_button = 0;
-//			return 0;
-
 		case WM_DESTROY:
-//			if ( sDrawMode != iGDI )
-//				DDCleanup();
 			quit_sys(0);
 			PostQuitMessage(0);
 			return 0;
-//			break;
 
       case WM_ACTIVATE:
       {
@@ -887,27 +809,6 @@ LONG WINAPI MainWndProc( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
 				//GEH for now, only allow 640,480
 				WindowWidth = MAX_VIEW_WIDTH;
 				WindowHeight = MAX_VIEW_HEIGHT;
-				
-				// WindowWidth = LOWORD(lParam);
-				// WindowHeight = HIWORD(lParam);
-				//
-				// if(WindowWidth > MAX_VIEW_WIDTH)
-				// {
-				// 	WindowHeight = WindowHeight * MAX_VIEW_WIDTH / WindowWidth;
-				// 	WindowWidth = MAX_VIEW_WIDTH;
-				// }
-				//
-				// if(WindowHeight > MAX_VIEW_HEIGHT)
-				// 	{
-				// 	WindowWidth = WindowWidth * MAX_VIEW_HEIGHT / WindowHeight;
-				// 	WindowHeight = MAX_VIEW_HEIGHT;
-				// }
-				//
-				// 	if(!fHighRes)
-				// {
-				// 	WindowWidth /= 2;
-				// 	WindowHeight /= 2;
-				// }
 			
 				set_screen_size(WindowWidth,WindowHeight);
 			}
@@ -1070,11 +971,6 @@ void OpenAFile(void)
 		// PLAYER_START1 == -1
 		load_new_wad(OpenFileName.lpstrFile, -1L);
 	}
-}
-
-void beep(void)
-{
-//	PlayWave(0, FALSE);
 }
 
 static void ParseCmdLine (LPSTR szCmdLine)
