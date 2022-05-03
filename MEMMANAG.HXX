@@ -149,7 +149,6 @@ SHORT SetBlockSize (SHORT i, ULONG cBytes);
 SHORT SetLock (SHORT i);
 SHORT HandleOutOfMemory (void);
 void PrintMemList (void);
-PTR  _GetBlockPtr(SHORT hdl);
 void ClearAllMoldyBits();
 BOOL IsBlockMoldy(SHORT i);
 BOOL IsBlockPurgable(SHORT i);

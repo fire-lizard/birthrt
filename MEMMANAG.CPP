@@ -5,7 +5,6 @@
 	All other rights reserved.
 	========================================================================
 	Contains the following internal functions:
-.		CheckValidBlk	- verify block number is acceptable
 .		FindFreeHeader	- find a free block header
 .		SetBlockAttr	- Used by all the Set and Clr functions below
 .		GetBlockSize	- returns the size of a block in bytes
@@ -179,10 +178,6 @@ ULONG InitMemManag (
 
 	fReport = fReport_;
 	
-	#if defined(MEMORY_CHK)
-	pLook = 0;
-	#endif
-
 	if (fReport & fREPORT_MEMMGR)
 		printf("\n\n\nMemory Manager Initialization\n");
 
@@ -403,11 +398,7 @@ SHORT SetBlockAttr (SHORT i, ATTR_BLK_TYPE mask, ATTR_BLK_TYPE value)
 		
 		if (iResBlk < 0 || iResBlk >= iMaxResSlots)
 		{
-	#if defined (MEMORY_CHK)
-			fatal_error("MEMMANAG ERROR! SetBlockAttr, Res Handle %d out of range.\n", i);
-	#else
 			return fERROR;
-	#endif
 		}
 		
 #if fUSE_RES_FILES
@@ -933,16 +924,6 @@ SHORT DisposBlock (SHORT iHandle)
 		if (iMemBlk < 0)
 			return fERROR;	// Its either not available or already gone.
 		
-	#if defined (MEMORY_CHK)
-		if (iMemBlk != 0)
-		{
-			if (CheckValidBlock(iMemBlk, __LINE__) == fERROR)
-				return fERROR;
-		
-				ReportBlockError(iMemBlk,CheckBlockOverwrite(iMemBlk));
-			}
-	#endif
-		
 		return (*ResExtentions[iResExtIndex[iResBlk]].pfDisposeProc)(iResBlk,iMemBlk);
 	}
 #endif
@@ -963,12 +944,6 @@ SHORT DisposBlock (SHORT iHandle)
 		for (iResBlk=0; iResBlk<iMaxResSlots; ++iResBlk)
 			if (iResBlock[iResBlk] == iHandle)		/* if block has been found */
 				return (*ResExtentions[iResExtIndex[iResBlk]].pfDisposeProc)(iResBlk,iHandle);
-
-		/* no resource using this block. print an error */
-	#if defined(MEMORY_CHK)
-		fatal_error("MEMMANAG ERROR - no resource using this block: %d\n",iHandle);
-	#endif
-		// Otherwise keep on going and toss this block.
 	}
 #endif
 
@@ -1491,15 +1466,6 @@ SHORT SetBlockSize (SHORT i, ULONG cBytes)
 		i = Query_iResBlock(i);
 		if (i <= 0 || i > cNumBlkHeads)
 			return fERROR;
-		
-	#if defined (CRC_CHK)
-		if (!(abBlockAttr[i] & MODIFYABLE_RESOURCE))
-		{
-			fatal_error("MEMMANAG ERROR! Modify'ing a non-modify'able resource %d.\n",
-								i);
-		}
-	#endif
-
 	}
 #endif
 
@@ -1554,7 +1520,7 @@ SetHandleSizeLoop:
 
 /* ========================================================================
 	SetLock	- Locks the position of a block in memory, after moving it
-	as far up as it can. HEY DONT USE THIS IF MEMORY_CHK IS ON
+	as far up as it can.
 	======================================================================== */
 SHORT SetLock (SHORT iHandle)
 {
@@ -1672,11 +1638,7 @@ SHORT SetLock (SHORT iHandle)
 		
 		if (iResBlk < 0 || iResBlk >= iMaxResSlots)
 		{
-	#if defined (MEMORY_CHK)
-			fatal_error("MEMMANAG ERROR! SetLock, Res Handle %d out of range.\n", iHandle);
-	#else
 			return fERROR;
-	#endif
 		}
 		
 		SetResource(i);
@@ -2034,10 +1996,6 @@ BOOL IsBlockPurgable(SHORT iBlk)
 	}
 	if (CheckValidBlock(iHandle, __LINE__) == fERROR)
 		return Result;
-
-#if defined (MEMORY_CHK)
-	ReportBlockError(iHandle,CheckBlockOverwrite(iHandle));
-#endif
 	
 	return ((abBlockAttr[iHandle] & PURGABLE) ? TRUE : FALSE);
 }
@@ -2077,10 +2035,6 @@ BOOL IsBlockMultiUser(SHORT iBlk)
 	}
 	if (CheckValidBlock(iHandle, __LINE__) == fERROR)
 		return TRUE;	// Return TRUE so the resource manager won't try to purge it.
-
-#if defined (MEMORY_CHK)
-	ReportBlockError(iHandle,CheckBlockOverwrite(iHandle));
-#endif
 	
 	return ((abBlockAttr[iHandle] & MULTI_USER_BIT) ? TRUE : FALSE);
 }
