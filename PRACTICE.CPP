@@ -4013,4 +4013,3 @@ void SelectGameType(LONG MenuCombo, LONG type)
 			break;	
 	}
 }
-

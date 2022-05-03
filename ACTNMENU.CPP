@@ -64,7 +64,6 @@ extern BOOL fLogComment;
 /* ------------------------------------------------------------------------
    Defines and Compile Flags
    ------------------------------------------------------------------------ */
-//#define  LOGCOMMENTSLEEP	Sleep(1);
 #define  LOGCOMMENTSLEEP	{;}
 
 #define D20TOPERCENT(a)		((mundane_descriptions)?(105-((a)*5)):(a))

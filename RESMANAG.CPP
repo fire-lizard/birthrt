@@ -1864,11 +1864,8 @@ SHORT LoadPCX (CSTRPTR szFileName, BOOL fNoScale, BOOL fLockRes, BOOL fRotated, 
 	/* -------------------------------------------------------- */
 	/* Read the data into the block */
 	/* -------------------------------------------------------- */
-	// TODO Fix the memory manager
-	//pSrc = ((PTR)BLKPTR(iBlk)) + cbSrcOffset;
-	//pDest = ((PTR)BLKPTR(iBlk)) + cbDestOffset;
-	pSrc = (PTR)BLKPTR2(iBlk, cBytes);
-	pDest = (PTR)BLKPTR2(iBlk, cbDecompressed);
+	pSrc = ((PTR)BLKPTR(iBlk)) + cbSrcOffset;
+	pDest = ((PTR)BLKPTR(iBlk)) + cbDestOffset;
 
 	if (read(file, pSrc, cBytes) == fERROR)
 	{

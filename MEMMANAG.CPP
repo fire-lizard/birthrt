@@ -5,7 +5,6 @@
 	All other rights reserved.
 	========================================================================
 	Contains the following internal functions:
-.		get_free_mem	- returns the available in the far heap
 .		CheckValidBlk	- verify block number is acceptable
 .		FindFreeHeader	- find a free block header
 .		SetBlockAttr	- Used by all the Set and Clr functions below
@@ -132,10 +131,6 @@ static LONG 		FindCloseFit(LONG , ULONG , ULONG *);
 static LONG			SearchBackFor(LONG cBytes);
 static void 		ConcatinateMem();
 
-#ifdef _WINDOWS
-ULONG WinCheckMem(void);
-#endif
-
 /* ------------------------------------------------------------------------ */
 /* Global Variables */
 
@@ -205,13 +200,7 @@ ULONG InitMemManag (
 	InitResourceManager(cNumResHeads_);
 #endif
 
-#ifdef _WINDOWS
-	// WINDOWS VERSION
-	cbMaxFree = WinCheckMem();
-#else
-	// DOS VERSION
-	cbMaxFree = get_free_mem();
-#endif
+	cbMaxFree = 64 * 1024 * 1024;
 
 	printf("memory available: %ld\n",cbMaxFree);
 
@@ -1851,15 +1840,7 @@ void * BLKPTR(LONG i)
 	}
 #endif
 
-	if (memoryBlocks.find(i) != memoryBlocks.end())
-	{
-		return memoryBlocks[i];
-	}
-	else
-	{
-		return new ULONG[3072];
-		return (void*)((ULONG*)apBlocks[i]);
-	}
+	return (void*)((ULONG*)apBlocks[i]);
 }
 
 /* ========================================================================
@@ -1876,7 +1857,7 @@ void* BLKPTR2(LONG i, LONG size)
 	}
 	else
 	{
-		memoryBlocks[i] = new ULONG[size];
+		memoryBlocks[i] = malloc(size * sizeof(ULONG));
 		return (void*)memoryBlocks[i];
 	}
 }
@@ -1925,46 +1906,6 @@ void *_zone_alloc(LONG size)
 	return BLKPTR(iHandle);
 }
 
-
-#ifdef _WINDOWS
-/* ========================================================================
-   Function    - WinCheckMem
-   Description - find the max abount of free mem in a window05 system
-   Returns     - size of free mem availible
-   ======================================================================== */
-ULONG WinCheckMem(void)
-{
-	MEMORYSTATUS	memStats;
-	ULONG			MaxFree;
-
-	memset( &memStats, sizeof(MEMORYSTATUS), 0 );
-	memStats.dwLength = sizeof(MEMORYSTATUS);
-	
-	// ask about memory
-	GlobalMemoryStatus(&memStats) ;
-	
-	MaxFree = (ULONG)(memStats.dwTotalPhys&0xFFFFFFF0);
-	
-	// on a >32Meg, try to run hires
-	if(MaxFree > (34*1024*1024) )
-	{
-		MaxFree = (24*1024*1024);
-	}
-	else
-	// on a 32Meg or better machine, try to run med res
-	if(MaxFree > (29*1024*1024) )
-	{
-		MaxFree = MIN_MEMORY_32MEG_WINDOWS;
-	}
-	// or else just give them Min amount
-	else
-	{
-		MaxFree = MIN_MEMORY_16MEG_WINDOWS;
-	}
-	
-	return (MaxFree);
-}
-#endif // _WINDOWS
 
 /* ========================================================================
    Function    - ClearAllMoldyBits

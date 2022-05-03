@@ -960,7 +960,6 @@ void DisplayRealmSelection(void)
 	int					i, y = 40;
 
 	// draw left panel
-	//iDTurnBk = GetResourceStd("UI\\DTURN_BK.PCX", FALSE);
 	DrawBitmap (0, 0, iDTurnBk, (SHORT)(DATA_AREA_MAX-l_map), 0, (SHORT)l_map, 480);
 
 	// make sure data area is the proper size
@@ -1949,7 +1948,6 @@ void DisplayAdvParty(void)
 	int count = 0;
 
 	// draw left panel
-	//iDTurnBk = GetResourceStd("UI\\DTURN_BK.PCX", FALSE);
 	DrawBitmap (0, 0, iDTurnBk, (SHORT)(DATA_AREA_MAX-l_map), 0, (SHORT)l_map, 480);
 
 	// make sure data area is the proper size

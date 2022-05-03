@@ -2676,9 +2676,7 @@ SHORT _OpenBitm (SHORT w, USHORT h, BOOL fLocked)
 
 	if (iBlk != fERROR)
 	{
-		// TODO Fix the memory manager
-		//pBlk = (BITMPTR)(BLKPTR(iBlk));
-		pBlk = (BITMPTR)(BLKPTR2(iBlk, w * h));
+		pBlk = (BITMPTR)(BLKPTR(iBlk));
 		if (!IsPointerGood(pBlk))
 			return fERROR;
 

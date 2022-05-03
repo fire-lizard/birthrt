@@ -132,10 +132,6 @@ extern HWND hwndApp;
 void MultiPlayerStartGame( LONG MenuCombo, LONG arg );
 void PaintAckLED(int k, DWORD id2, BOOL localAcks);	// winsys\gmulplay.cpp
 
-//extern "C" {
-//void LoadGame(LONG, LONG);
-//}
-
 void IncActionTurn(void);
 
 void StartWaitingMenu(LONG, LONG);

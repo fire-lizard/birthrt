@@ -67,17 +67,6 @@
 #define NORMAL_LENS					4
 #define FULL_SCALE					(1<<8)
 
-#define MIN_MEMORY_TO_RUN				(4096000)
-#define MIN_MEMORY_TO_FULL_ROTATION		( 6*1024*1024)
-#define MIN_MEMORY_TO_MEDRES_ANI		( 7*1024*1024)
-#define MIN_MEMORY_TO_MEDRES_TEXTURES	(10*1024*1024)
-#define MIN_MEMORY_TO_SMALLMAP			(12*1024*1024)
-#define MIN_MEMORY_TO_HIRES_ANI			(15*1024*1024)
-#define MIN_MEMORY_TO_HIRES_TEXTURES	(20*1024*1024)
-
-#define MIN_MEMORY_32MEG_WINDOWS	(16*1024*1024)
-#define MIN_MEMORY_16MEG_WINDOWS	(8*1024*1024)
-
 /* ------------------------------------------------------------------------
 	General Defines
    ------------------------------------------------------------------------ */

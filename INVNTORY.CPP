@@ -285,22 +285,6 @@ BOOL const ObjectList::mfCatsMatch(ItemCategory const c1,ItemCategory const c2)
 	}
 
 	//special cases
-#if 0
-
-	if (c1==IC_ARMS)
-		if (c2==IC_WEAPON || c2==IC_ARMOR)
-			return TRUE;
-	if (c2==IC_ARMS)
-		if (c1==IC_WEAPON || c1==IC_ARMOR)
-			return TRUE;
-
-	if (c1==IC_SPELL)
-		if (c2==IC_REALM_SPELL)
-			return TRUE;
-	if (c2==IC_SPELL)
-		if (c1==IC_REALM_SPELL)
-			return TRUE;
-#endif
 	return FALSE;
 }
 
@@ -746,45 +730,6 @@ void ObjectList::mfLoadFrom(FILE *fp)
     fQuietItems = sQI;
 }
 
-#if 0
-/* ========================================================================
-   Function    - ObjectList::mfSave
-   Description - Saves data to the invntory data file.
-   Returns     - void
-   ======================================================================== */
-void ObjectList::mfSave()
-{
-	FILE* DatFile;
-	SHORT ID=mfGetAvatarID();
-	//printf("mf Saving OlID=%li (AID=%li)\n",GetID(),AvatarID);
-
-	
-	SHORT Header=MAX_ITEM_TYPES;
-	char FileName[40];
-	SHORT WriteMe[2]; //[0]=Type [1]=Quantity
-	SHORT Items=mfLength();
-
-//	//printf("ID vs AvID  (%li %li)\n",mfGetAvatarID(),ID);
-
-
-	sprintf(FileName,"%sid%li.inv",SAVEDIR,ID);
-
-	DatFile=fopen(FileName,"wb");
-	fwrite(&Header,sizeof(SHORT),1,DatFile);
-	fwrite(&Items,sizeof(SHORT),1,DatFile);
-	
-	InventoryItor itor(*this);
-	for (itor = begin(); itor != end(); ++itor)
-	{
-		WriteMe[0] = (*itor)->mfType();
-		WriteMe[1] = (*itor)->mfHowMany();
-		fwrite(WriteMe, sizeof(SHORT), 2, DatFile);
-	}
-	fclose(DatFile);
-}	
-#endif
-	
-
 BOOL ObjectList::mfFindInSpellBoxes(InvenIndex ii,LONG  * outIdx)
 {
 	for (LONG i=0;i<MAX_SPELL_BOXES;++i)
@@ -914,58 +859,10 @@ void ObjectList::mfAddToSpellBoxes(LONG const to,ItemCategory const cat)
 		LONG Result=ItemTypes[(*itor)->mfType()].mfEffect(Arg,EQUIP);
 		if (Result!=CANT_COMPLETE)
 		{
-//			TitledMessageBox::Display("wow!","Wearing!");
-		
 			(*itor)->mfWear();
 		}
 		return;
 	}
-		
-		
-#if 0
-	
-	LONG Arg=BUILD_LONG((*itor)->mfType(),hAvatarStats);
-	LONG Result=ItemTypes[(*itor)->mfType()].mfEffect(Arg,EQUIP);
-
-	if (Result==CANT_COMPLETE)
-	{
-		//need another variable because STRMGR
-		//moves mem, so first ptr is unreliable
-
-		char buffer[80];
-		strcpy(buffer,STRMGR_GetStr(STR_INVENTORY));
-
-		TitledMessageBox::Display(buffer,STRMGR_GetStr(STR_ITEM_CANT_EQUIP));
-	}
-	else if (Result==ALWAYS_IN_EFFECT)
-	{
-		//need another variable because STRMGR
-		//moves mem, so first ptr is unreliable
-
-		char buffer[80];
-		strcpy(buffer,STRMGR_GetStr(STR_INVENTORY));
-
-		TitledMessageBox::Display(buffer,STRMGR_GetStr(STR_ITEM_ALWAYS_IN_EFFECT));
-	}
-	else if (Result==NOT_OK)
-	{
-		//do nothing
-	}
-	else
-	{
-		// Get first available slot.
-		for (EmptyIndex=0;EmptyIndex<MAX_SPELL_BOXES;++EmptyIndex)
-			if (SpellBoxes[EmptyIndex] < 0)
-				break;
-	
-		if(EmptyIndex>=MAX_SPELL_BOXES)
-			return;
-	
-		SpellBoxes[EmptyIndex]=CurrentInventoryIndex;
-	}
-
-#endif
-
 }
 
 
@@ -1284,92 +1181,11 @@ void ObjectList::mfPrint()
 {
    InventoryItor itor(*this);
 
-   //printf("Inventory:\n+--------\n");
    for (itor = begin(); itor != end(); ++itor)
    {
    		ItemTypes[(*itor)->mfType()].mfPrint();
    }
-   //printf("+--------\n\n");
 }
-
-
-
-#if 0
-/* ========================================================================
-   Function    - ObjectList::mfSetCurrentWeapon(InvenIndex)
-   Description - Sets the current weapon
-   Returns     - void
-   ======================================================================== */
-void ObjectList::mfSetCurrentWeapon(InvenIndex const i)
-{
-	mfReset();
-	mfAdvanceTo(i,IC_ARMS);
-	if (ItemTypes[mfData().mfType()].mfCategory()==IC_ARMOR)
-		return;
-
-	CurrentWeapon=mfData().mfType();
-//	//printf("added %s\n",GAME_TTYPE::mfGetDescription(ItemTypes[CurrentWeapon].mfGameType()));
-
-	
-}
-#endif
-
-#if 0
-/* ========================================================================
-   Function    - ObjectList::mfSetCurrentArmor(InvenIndex)
-   Description - Sets the current armor
-   Returns     - void
-   ======================================================================== */
-void ObjectList::mfSetCurrentArmor(InvenIndex const i)
-{
-	mfReset();
-	mfAdvanceTo(i,IC_ARMS);
-	if (mfData().mfCategory()==IC_ARMOR)
-		return;
-
-	CurrentArmor=mfData().mfType();
-//	//printf("added %s\n",GAME_TTYPE::mfGetDescription(ItemTypes[CurrentWeapon].mfGameType()));
-
-	
-}
-#endif
-
-
-
-
-#if 0
-/* ========================================================================
-   Function    - ObjectList::PrintWeaponInfo()
-   Description - debug func, prints info to stdout
-   Returns     - void
-   ======================================================================== */
-void ObjectList::PrintWeaponInfo()
-{
-	SBYTE w;
-	
-	w=mfGetCurrentWeapon();
-
-	//printf("name: %s \nstyle: %li\n",WEAPON_INFO::mfGetName((WEAPON_INFO::TYPE)w),WEAPON_INFO::mfGetStyle((WEAPON_INFO::TYPE)w));
-
-}
-#endif
-
-#if 0
-/* ========================================================================
-   Function    - ObjectList::PrintArmorInfo()
-   Description - debug func, prints info to stdout
-   Returns     - void
-   ======================================================================== */
-void ObjectList::PrintArmorInfo()
-{
-	SBYTE a;
-	
-	a=mfGetCurrentArmor();
-
-	//printf("name: %s\nac:%li\n",ARMOR_INFO::mfGetName((ARMOR_INFO::TYPE)a),ARMOR_INFO::mfGetArmorClass((ARMOR_INFO::TYPE)a));
-
-}
-#endif
 	
 #define BUFLEN 120
 
@@ -1378,7 +1194,7 @@ void ObjectList::ReadINV(SHORT hPlayerStats, LONG id)
     FILE *fp;
     char filename[80], buffer[BUFLEN];
     LONG count;
-    SHORT entry;
+	SHORT entry;
 
     BOOL sQI = fQuietItems;
     fQuietItems = TRUE;
