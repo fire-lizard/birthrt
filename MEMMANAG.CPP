@@ -36,7 +36,6 @@
 +		DisposClass		- deallocates all blocks of memory within a class
 .		SetPurgeClass	-	sets all blocks of memory within a class as purgable
 .		SetBlockSize	- enlarge or shrink a block while preserving its contents
-+		SetLock			- lock a block of memory in place
 
 	======================================================================== */
 /* ®RM200¯ */
@@ -46,7 +45,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <malloc.h>
-#include <dos.h>
 #include <limits.h>
 #include <map>
 
@@ -59,7 +57,6 @@
 
 #include <conio.h>
 #include "SYSTEM.H"
-#include "MACHINE.H"
 
 #include "MEMMANAG.HXX"
 #include "RESMANAG.HXX"
@@ -254,25 +251,6 @@ void QuitMemManag ()
 	if (fReport & fREPORT_MEMMGR)
 		puts("MemManager removed");
 }
-
-/* ====================================================================
-	get_free_mem	-
-	==================================================================== */
-#ifndef _WINDOWS
-ULONG get_free_mem()
-{
-union REGS regs;
-struct SREGS sregs;
-
-	regs.x.eax = 0x00000500;
-	memset( &sregs, 0, sizeof(sregs) );
-	sregs.es = FP_SEG( &MemInfo );
-	regs.x.edi = FP_OFF( &MemInfo );
-
-	int386x( DPMI_INT, &regs, &regs, &sregs );
-	return( MemInfo.LargestBlockAvail );
-}
-#endif
 
 /* ========================================================================
 	CheckValidBlock -
@@ -1517,148 +1495,6 @@ SetHandleSizeLoop:
 
 	return fNOERR;
 }
-
-/* ========================================================================
-	SetLock	- Locks the position of a block in memory, after moving it
-	as far up as it can.
-	======================================================================== */
-SHORT SetLock (SHORT iHandle)
-{
-	SHORT		i, j, ni, pi, nj, pj;
-	ULONG		l;
-
-#if RES_MANAGER
-	if (IsResourceHandle(iHandle))
-	{
-	#if fUSE_RES_FILES
-		SHORT iResBlk = GetResourceHandleBlk(iHandle);
-		
-		// Test if purged out.
-		if (iResBlock[iResBlk] == 0 && giResFileNames[iResBlk] != 0)
-		{
-			gResFlags[iResBlk] |= RM_LOCKED;
-			return fNOERR;
-		}
-	#endif
-		
-		i = Query_iResBlock(iHandle);
-		if ( i < 0 || i > cNumBlkHeads)
-			return fERROR;		// It's not in memory.
-	}
-	else
-	{
-		i = iHandle;
-	}
-#else
-	i = iHandle;
-#endif
-
-	if (CheckValidBlock(i, __LINE__) == fERROR)
-		return (SHORT)fERROR;
-
-	/* check to see if its already locked */
-	if (abBlockAttr[i] & LOCKED)
-		return fNOERR;
-
-	l = GetDataBlkSize(i);						/* find the size of the block */
-	j = _NewBlockHigh(l);						/* get a new block of the same size */
-	if (j == fERROR)							/* if no more room */
-	{
-		SetBlockAttr(i,LOCKED,LOCKED);	/* let's just lock in place (re. GEH and GWP) */
-		return (SHORT)fNOERR;
-	}
-
-	while (MoveFreeBlockUp(j)) ;
-
-	l = GetBlockSize(i);
-	memcpy((PTR)apBlocks[j], (PTR)apBlocks[i], l);	/* copy the contents */
-
-	/* reset the block number to the old value */
-	l = apBlocks[j];
-	apBlocks[j] = apBlocks[i];				/* j now points at the old block */
-	apBlocks[i] = l;							/* i now points at the new block */
-
-	/* fix-up the linked list */
-	pi = aiPrevBlk[i];
-	ni = aiNextBlk[i];
-	pj = aiPrevBlk[j];
-	nj = aiNextBlk[j];
-
-	if (pi==j)									/* blocks are adjacent, pj-j-i-ni */
-	{
-		aiNextBlk[pj] = i;					/* change to pj-i-j-ni */
-		aiNextBlk[i]  = j;
-		aiNextBlk[j]  = ni;
-		aiPrevBlk[ni] = j;
-		aiPrevBlk[j]  = i;
-		aiPrevBlk[i]  = pj;
-	}
-	else if (pj==i)							/* blocks are adjacent, pi-i-j-nj */
-	{
-		aiNextBlk[pi] = j;					/* change to pi-j-i-nj */
-		aiNextBlk[j]  = i;
-		aiNextBlk[i]  = nj;
-		aiPrevBlk[nj] = i;
-		aiPrevBlk[i]  = j;
-		aiPrevBlk[j]  = pi;
-	}
-	else
-	{
-		aiPrevBlk[i] = pj;					/* blocks are not adjacent */
-		aiNextBlk[i] = nj;
-		aiPrevBlk[nj] = i;
-		aiNextBlk[pj] = i;
-
-		aiPrevBlk[j] = pi;
-		aiNextBlk[j] = ni;
-		aiPrevBlk[ni] = j;
-		aiNextBlk[pi] = j;
-	}
-
-	abBlockAttr[i] |= LOCKED;
-	
-	if (IsClass1(j))
-	{
-		SetClass1(i);
-	}
-	
-	if (IsClass2(j))
-	{
-		SetClass2(i);
-	}
-	
-	if (IsClassTemp(j))
-	{
-		SetClassTemp(i);
-	}
-	
-	if (IsResource(j))
-	{
-		SHORT iResBlk = GetResourceHandleBlk(iHandle);
-		
-		if (iResBlk < 0 || iResBlk >= iMaxResSlots)
-		{
-			return fERROR;
-		}
-		
-		SetResource(i);
-		// Find the resource handle and update it.
-		iResBlock[iResBlk] = i;
-		
-		ClrResource(j);
-	}
-	
-	
-	if (IsPurgable(j))
-	{
-		SetPurge(i);
-	}
-	
-	DisposBlock(j);
-
-	return fNOERR;
-}
-
 /* ======================================================================== */
 /* Replace the following error reporting code with an application specific
 	out-of-memory handler and an application specific out-of-memory reporting
@@ -1845,29 +1681,6 @@ void *_zalloc(char * FileName, LONG FileLineNo, LONG size)
 	}
 	return BLKPTR(iHandle);
 }
-
-/* ========================================================================
-   Function    - zone_alloc
-   Description -
-   Returns     - pointer to the memory.
-   ======================================================================== */
-
-void *_zone_alloc(LONG size)
-{		
-	SHORT iHandle = _NewBlockHigh(size);
-	if (iHandle > 0)
-	{
-		ValidateBlockID(iHandle);
-		SetBlockAttr(iHandle,LOCKED|CLASSMASK,LOCKED|CLASS1);
-	}
-	else
-	{
-		return NULL;
-	}
-	
-	return BLKPTR(iHandle);
-}
-
 
 /* ========================================================================
    Function    - ClearAllMoldyBits

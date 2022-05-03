@@ -123,14 +123,12 @@ extern "C" {
 
 void *BLKPTR(LONG);
 void* BLKPTR2(LONG, LONG);
-void * _zalloc(char * /* Name */, LONG /* lineNo */, LONG i);
-void * _zone_alloc(LONG i);
+void * _zalloc(char* FileName, LONG FileLineNo, LONG size);
 ULONG InitMemManag (ULONG cbMinMemoryNeeded,
 					USHORT cNumBlkHeads_,
 					USHORT cNumResHeads_,
 					BOOL fReport_);
 void QuitMemManag (void);
-ULONG get_free_mem(void);
 SHORT NewExternalBlock (PTR p);
 SHORT SetBlockAttr (SHORT i, ATTR_BLK_TYPE mask, ATTR_BLK_TYPE value);
 ATTR_BLK_TYPE GetBlockAttr (SHORT i);
@@ -146,7 +144,6 @@ SHORT SetPurgeClass (UBYTE );
 ULONG ReportFreeMem (ULONG fPurgable);
 ULONG ReportInUse (ULONG fPurgable);
 SHORT SetBlockSize (SHORT i, ULONG cBytes);
-SHORT SetLock (SHORT i);
 SHORT HandleOutOfMemory (void);
 void PrintMemList (void);
 void ClearAllMoldyBits();
@@ -156,8 +153,6 @@ BOOL IsBlockMultiUser(SHORT i);
 
 BOOL IsHandleFlushed(LONG i);
 
-#define PrintUnFreedMemoryReport()
-#define SetBlockName(name, hdl)			hdl
 #define SetDebugInfo(file,line, hdl)	hdl
 #define NewBlock(x)			_NewBlock(x)
 #define NewBlockHigh(x)		_NewBlockHigh(x)

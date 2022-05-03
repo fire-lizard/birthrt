@@ -983,7 +983,6 @@ void CAvatar::CreateBattleTroops(void)
 	
 	fBtlCap.Leader.hdlSlotList = 
 		NewLockedBlock(sizeof(SHORT) * fBtlCap.Leader.sMaxFollowers);
-	//GEH SetBlockAttr(fBtlCap.Leader.hdlSlotList, LOCKED, LOCKED);
 	
 	// No memory for now.
 	if (fBtlCap.Leader.hdlSlotList == fERROR)
@@ -992,9 +991,6 @@ void CAvatar::CreateBattleTroops(void)
 	pList = (SHORT *)BLKPTR(fBtlCap.Leader.hdlSlotList);
 	memset(pList, -1, sizeof(SHORT) * fBtlCap.Leader.sMaxFollowers);
 	
-	// create my troops and record their handles in my follower list
-	//for(k=0; k<fBtlCap.TroopRows; k++)
-	//{
 		for(i=0; i<fBtlCap.HitPoints; i++)
 		{
 			LONG index = CAvatar::CreateAvatar( GetNewId(), 
@@ -1013,7 +1009,6 @@ void CAvatar::CreateBattleTroops(void)
 				pTroop->hEnemy = fERROR;
 				pTroop->Engaged = 0;
 	
-				//pList[k*fBtlCap.TroopCols+i] = pTroop->hThis;
 				pList[i] = pTroop->hThis;
 				
 				const LONG ScaleAdjust = 100 - (random(20) - 10);
@@ -1023,13 +1018,10 @@ void CAvatar::CreateBattleTroops(void)
 			else
 			{
 				// No slots left.
-				//pList[k*fBtlCap.TroopCols+i] = fERROR;
 				pList[i] = fERROR;
-				//printf("WARNING! Unable to create requested troops. %d\n", (fBtlCap.TroopRows - k) * (fBtlCap.TroopCols - i));
 				return;
 			}
 		}
-	//}
 	
 }
 

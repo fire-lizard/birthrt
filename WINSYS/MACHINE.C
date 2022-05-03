@@ -314,11 +314,6 @@ BOOL AppInit( HINSTANCE hInst, HINSTANCE hPrev, LPSTR szCmdLine, int sw )
 	// create the heap
 	hHeap = HeapCreate(HEAP_NO_SERIALIZE, iINITIALHEAPSIZE, 0);
 
-	// Initialize any memory, time, etc statistics
-	// These will be calced and printed/dumped in
-	// close_statistics <see statistics.c>
-	init_statistics();
-
 	// Install a kbrd handler.. check_regions will call key_status
 	// on PC this uses key_stat array. On PC keyint will fill in array
 	// automaticly so it doesnt hafta be done durring machine_pre_frame
@@ -693,7 +688,6 @@ void AppExit(void)
 
 	ReleaseDC(hwndApp, gdcScreen);
 	close_graph();
-	close_statistics();
 	remove_keyint();
 	TurnOffAllSounds();
 	// Must be called before HeapDestroy!
