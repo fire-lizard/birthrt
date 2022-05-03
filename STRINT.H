@@ -60,4 +60,3 @@ extern "C" {
 }
 #endif
 #endif // _STRINT_H
-

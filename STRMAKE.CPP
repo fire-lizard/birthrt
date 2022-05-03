@@ -3,10 +3,7 @@
 #include <stdarg.h>
 #include <stdlib.h>
 #include <io.h>
-#include <fcntl.h>
 #include <ctype.h>
-#include <process.h>
-#include <dos.h>
 
 #include "TYPEDEFS.H"
 
@@ -27,7 +24,6 @@ STRBLOCK stringBlock;
 BLOCKHEADER blockHeader;
 
 int GetToken(FILE *fFile);
-void WriteNumBlocks(void);
 
 char szEnumHeader[] = {
 "/* ========================================================================\n\
@@ -100,7 +96,6 @@ int main(int argc,char * argv[])
 	LONG lNewPosition;
 	LONG lNewStringPos;
 	LONG lCurBlock = 0;
-	LONG lDataSize;
 	STR_FILE_HEADER fileHeader;
 	LONG lBlockLocation;
 
