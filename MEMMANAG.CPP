@@ -51,6 +51,7 @@
 #ifndef _WINDOWS
 #include <i86.h>
 #include <bios.h>
+#include <malloc.h>
 #else
 #include <Windows.h>
 #endif
@@ -169,7 +170,7 @@ ULONG InitMemManag (
 	USHORT cNumResHeads_,
 	BOOL fReport_)
 {
-	ULONG		cbMaxFree = 64 * 1024 * 1024;
+	ULONG		cbMaxFree = 32 * 1024 * 1024;
 	SHORT		i = 0;
 	CHAR		buffer[128];
 

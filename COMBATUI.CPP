@@ -3019,7 +3019,6 @@ void AdventureFixUnitsArray(LONG iUnitIndex)
 	LONG	i;
 	LONG	thisUnit;
 	
-	#if 1
 	CAvatar *pAvatar;
 	BOOL	fSend = FALSE;
 	
@@ -3115,7 +3114,4 @@ void AdventureFixUnitsArray(LONG iUnitIndex)
 			JoinUnitToOthersInProvince(thisUnit, AdventureUnitStack[i].currProv, fSend);
 		}
 	}
-	#else
-	FixUnitsArray(iUnitIndex);
-	#endif
 }

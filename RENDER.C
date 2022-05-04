@@ -392,7 +392,6 @@ void scale_col_ttop(long sx,long dx,long dy,long dye,
 // FKA local_clip_span.  The original clip_span was in EXTENT.C
 LONG clip_span (LONG x, LONG* y1, LONG* y2, LONG* clipped)
 {
-#if 1
 	LONG* top, * bot;
 	LONG topVal, botVal;
 
@@ -424,38 +423,6 @@ LONG clip_span (LONG x, LONG* y1, LONG* y2, LONG* clipped)
 		*bot=*y1-1;   /*abut*/
 
 	return(TRUE);								// something was left after clipping
-#else
-// [d7-02-96 JPC] Rewrote to get rid of the local pointers.
-
-	LONG topVal, botVal;
-
-	topVal = top_extent[x];
-	botVal = bot_extent[x];
-
-	if (*y1 <= topVal)
-	{
-		*clipped = topVal - *y1;			// amount clipped
-		*y1 = topVal;   						// clip
-	}
-	else
-	{
-		*clipped=0;
-	}
-	
-	if (*y2 >= botVal)
-      *y2 = botVal;                    // clip
-
-	if (*y1 >= *y2)   						// is anything left?
-      return (FALSE);                  // no, span was clipped out of existence
-
-	if (*y1 <= topVal)
-      top_extent[x] = *y2 + 1;         // abut (update clip spans)
-		
-	if (*y2 >= botVal)
-      bot_extent[x] = *y1 - 1;         // abut
-
-	return(TRUE);								// something was left after clipping
-#endif
 }
 
 
@@ -741,7 +708,6 @@ void draw_node(LONG n)
 	}
 	else
 	{
-#if 1 // No Recursion.
 		NODE_STACK NodeStack[MAX_NODE_STACK];
 		NODE_STACK *pNodeStack;
 		LONG nr;
@@ -845,22 +811,6 @@ reStartAtPopOut:
 			goto reStartAtFrontFirst;
 		if (NodeGoto == BACK_FIRST)
 			goto reStartAtBackFirst;
-#else
-		if(point_relation(n,local_camera_x,local_camera_y)==FRONT)
-		{
-			//if (IsNodeVisible (n, FRONT))
-				draw_node(nodes[n].f);
-			//if (IsNodeVisible (n, BACK))
-				draw_node(nodes[n].r);
-		}
-		else
-		{
-			//if (IsNodeVisible (n, BACK))
-				draw_node(nodes[n].r);
-			//if (IsNodeVisible (n, FRONT))
-				draw_node(nodes[n].f);
-		}
-#endif
 	}
 }
 

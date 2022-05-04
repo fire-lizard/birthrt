@@ -57,13 +57,9 @@ extern BOOL fLogComment;
    Prototypes
    ------------------------------------------------------------------------ */
 
-static void ParseCmdLine (LPSTR szCmdLine);
-
 LONG WINAPI MainWndProc( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam );
 void AppExit(void);
 void WaitForMessageQueueToEmpty( void );
-
-void load_new_wad(char *n, LONG);
 
 int InitRedBook(void);
 int ShutdownRedBook(void);
@@ -191,7 +187,6 @@ void CombineMouseMoveMessages( void )
 	 // -- marker for if this is filled
 	msg2.message = 0;
 
-#if 1
 	// Clear the message queue
 	while ( !fQuitting &&
 					(PeekMessage( &msg, NULL, WM_MOUSEMOVE, WM_MOUSEMOVE, PM_REMOVE) != 0))
@@ -205,14 +200,6 @@ void CombineMouseMoveMessages( void )
 		TranslateMessage( &msg2 );
 		DispatchMessage( &msg2 );
 	}
-#else
-	while ( !fQuitting &&
-					(PeekMessage( &msg, NULL, WM_MOUSEFIRST, WM_MOUSELAST, PM_REMOVE) != 0))
-	{
-		TranslateMessage( &msg );
-		DispatchMessage( &msg );
-	}
-#endif
 
 } // CombineMouseMoveMessages
 
@@ -381,8 +368,6 @@ BOOL AppInit( HINSTANCE hInst, HINSTANCE hPrev, LPSTR szCmdLine, int sw )
 
 	// -- Make the world a little more random
 	srand(GetTickCount());
-
-	ParseCmdLine(szCmdLine);
 
 	// Find the installation type.
 	fp=fopen("brsetup.cfg","r");
@@ -962,92 +947,4 @@ void OpenAFile(void)
 		// PLAYER_START1 == -1
 		load_new_wad(OpenFileName.lpstrFile, -1L);
 	}
-}
-
-static void ParseCmdLine (LPSTR szCmdLine)
-{
-	char *pArgEnd;
-
-	/*while (*szCmdLine != NULL)
-	{
-		// peel off the color-challenged spaces
-		while(*szCmdLine == ' ')
-			szCmdLine++;
-		
-		// if we reached the end of the string to parse
-		if(*szCmdLine == NULL)
-			return;
-			
-		// stamp a NULL at the end of the next argument
-		pArgEnd = strchr(szCmdLine, ' ');
-		if(pArgEnd != NULL)
-			*pArgEnd = 0;
-
-
-		switch(szCmdLine[0])
-		{
-			case 's':
-			case 'S':
-				// skip white space
-				szCmdLine+=2;
-
-				while(*szCmdLine == ' ')
-					szCmdLine++;
-				// if we reached the end of the string to parse
-				if(*szCmdLine == NULL)
-					return;
-					
-				// stamp a NULL at the end of the next argument
-				pArgEnd = strchr(szCmdLine, ' ');
-
-				if(pArgEnd != NULL)
-					*pArgEnd = 0;
-
-				sprintf(pInitScene, szCmdLine);
-				break;
-				
-			case 'w':
-			case 'W':
-				szCmdLine+=2;
-				// skip white space
-				while(*szCmdLine == ' ')
-					szCmdLine++;
-				// if we reached the end of the string to parse
-				if(*szCmdLine == NULL)
-					return;
-				// stamp a NULL at the end of the next argument
-				pArgEnd = strchr(szCmdLine, ' ');
-				if(pArgEnd != NULL)
-					*pArgEnd = 0;
-				sprintf(pwad,szCmdLine);
-				JustLoadWad = TRUE;			// [d8-23-96 JPC]
-				break;
-			case 'l':
-			case 'L':
-				fLowMemory=TRUE;
-				break;
-#if !defined(_RELEASE)
-			case 'i':
-			case 'I':
-				gDontFight = TRUE;
-				break;
-#endif
-
-         //----- Auto startup in SIGS
-#ifdef _WINDOWS
-         case 'x':
-         case 'X':
-            fStartSIGS = TRUE;
-            break;
-#endif
-
-
-		}
-		
-		// move the pointer to the next non-NULL space
-		if(pArgEnd == NULL)
-			return;
-			
-		szCmdLine = pArgEnd+1;
-	}*/
 }
