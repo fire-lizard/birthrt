@@ -169,7 +169,7 @@ ULONG InitMemManag (
 	USHORT cNumResHeads_,
 	BOOL fReport_)
 {
-	ULONG		cbMaxFree;
+	ULONG		cbMaxFree = 64 * 1024 * 1024;
 	SHORT		i = 0;
 	CHAR		buffer[128];
 
@@ -191,8 +191,6 @@ ULONG InitMemManag (
 	// The resource manager also uses malloc memory.
 	InitResourceManager(cNumResHeads_);
 #endif
-
-	cbMaxFree = 64 * 1024 * 1024;
 
 	printf("memory available: %ld\n",cbMaxFree);
 

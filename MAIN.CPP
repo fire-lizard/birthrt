@@ -32,8 +32,6 @@
 //compiler error that seems to pop up randomly
 
 #include "SYSTEM.H"
-//#include "engine.h"
-//#include "machine.h"
 #include "MACHINT.H"
 
 
@@ -146,9 +144,7 @@ LONG AverageTicksPerFrame (void);
 /* ------------------------------------------------------------------------
 	Global Variables
 	------------------------------------------------------------------------ */
-extern SHORT sMenusUp;
 extern PTR GDIscreen;
-extern LONG tot_thing_spans;
 extern BOOL fDrawing;
 extern LONG	cbWad_Uses;
 extern BOOL fQuitting;
@@ -161,13 +157,10 @@ extern LONG	margin_right;
 extern LONG	margin_top;
 extern LONG	margin_bottom;
 
-extern COLORSPEC CurPal[256];
-
 //GEH this will go away later...
 char InstallPath[256];
 
 #if defined(_WINDOWS)
-extern HWND	hwndApp;
 extern SHORT sDrawType;   // 5 SEP 96 CAM
 extern BOOL  fStartSIGS;
 #endif
@@ -193,25 +186,10 @@ void print_point(LONG,LONG);
 void ActivateSegment(LONG, LONG);
 void CoverInitDomain(LONG, LONG);
 
-extern BOOL fDomainTurn;
-extern BOOL fClimb;
 extern LONG	DifficultyLevel;
 extern BOOL fInfoOnlyDomainUI;
 
-
 extern LONG FlcDelay;
-
-extern BOOL		fRedrawAll;
-
-//extern "C" {
-//extern LONG	JoyXPos;
-//extern LONG	JoyYPos;
-//extern LONG	JoyZPos;
-//extern BOOL	JoyButton1;
-//extern BOOL	JoyButton2;
-//extern BOOL	JoyButton3;
-//extern BOOL	JoyButton4;
-//}
 
 /* ========================================================================
 
@@ -389,22 +367,8 @@ static void machine_pre_frame()
 		prev_button = mouse_button;
 	}
 
-//	mouse_button = 0;		[GEH 9/26]
-
 	zoomStart.x = cursor_x;
 	zoomStart.y = cursor_y;  // zoom in & out menu
-
-	// temp system counter
-	//if (SCENE_MGR::fFadeToNextScene == SCENE_MGR::FADE_OUT)
-	//{
-		//if (SCENE_MGR::hCurrentScene != fERROR)
-		//{
-		//      PTR_SCENE pCurrentScene = (PTR_SCENE) BLKPTR(SCENE_MGR::hCurrentScene);
-		//      pCurrentScene->mfSetScenePallet();
-		//}
-		//FadeOut(500);
-		//SCENE_MGR::fFadeToNextScene = SCENE_MGR::FADE_IN;
- 	//}
 }
 
 /* =======================================================================
@@ -631,28 +595,10 @@ void MainLoop(void)
 	color_rect( render_width/2, render_top+5, 60, 15, 0);
 	print_textf( render_width/2, render_top + 5, 31,"^F00F/S %ld  T/F %ld", fps, AverageTicksPerFrame());
 
-//	print_textf( render_width/2, render_top + 5, 31,"^F00X:%ld Y:%ld %ld%ld%ld%ld",
-//		JoyXPos,
-//		JoyYPos,
-//		JoyButton1,
-//		JoyButton2,
-//		JoyButton3,
-//		JoyButton4
-//	);
-
 	ScreenCopy(0, render_width/2, render_top+5, 60, 15, SC_DEFAULT_RES);
 
 	if (fPosition)
 		PrintLocationInfo();
-
-
-//#if defined(_WINDOWS)
-//	if ( sDrawMode == iDDRAW )
-//		print_textf( 320, render_top + 25, 31,"DDT %s",
-//			(sDrawType == iDIRECTTOCARD) ? "ToCard" : "Blt" );
-//#endif
-
-//#endif
 
 	// GWP HACK ALERT! HACK ALERT!
 	// GWP Prevents drawing to the screen after the demo has tried to Exit.
@@ -688,12 +634,6 @@ void MenuLoop()
 #if !defined(_DEMO)
 	CheckTheCDMusic();
 #endif
-
-//#ifndef _WINDOWS
-//#ifdef AUDIO_LIB
-//	ServiceSOLAudio();
-//#endif
-//#endif
 
 	//run tasks (based off frame counter)
 	run_tasks();
@@ -747,15 +687,8 @@ void MenuLoop()
 	======================================================================== */
 void GameMain(void)
 {
-	FILE *fp;
-	char cpBuffer[256];
-	LONG fileResult, vol, i;
- 	char path[256];
-	char waveres[256];
-	//SHORT splashbitm;
-
+	LONG i;
 	// Initialize Memory Manager, check for less than full needed memory
-	//GEH const LONG MemAvailable = InitMemManag(MIN_MEMORY_TO_RUN, 3072L, 14000, FALSE);
 	const LONG MemAvailable = InitMemManag(4098L, 3072L, 14000, FALSE);
 
 #ifndef _CHARED
@@ -804,7 +737,6 @@ void GameMain(void)
 	RegisterResExtention("AVD", LoadAVD, DisposRes, SetPurgeRes, ClrPurgeRes, HashID);
 	RegisterResExtention("IDA", LoadIData, DisposeIDataBlk, SetPurgeRes, ClrPurgeRes, HashCRC);
 	RegisterResExtention("ANT", LoadAnimatedTextureStub, DisposRes, SetPurgeRes, ClrPurgeRes, HashCRC);
-	//RegisterResExtention("WAV", LoadWAV, DisposRes, SetPurgeRes, ClrPurgeRes, HashCRC /* HashID*/);
 	
 	// Get these two res files before playing the intro.
 	// get the right language
@@ -812,22 +744,16 @@ void GameMain(void)
 	OpenResFile_("INTRO.RES");
 	
 #if !defined (_EDIT)
-//	// -- immediate DirectDraw
-//	ToggleDirectDraw( 0, 0 );
 //=================================
 	clear_key_status(0);
 	if (!JustLoadWad)
 	{
-		// vol = GetGlobalVolume();
-		// SetGlobalVolume((vol*8)/10);
-
 		//---- If starting with SIGS don't play intro
 #if defined(_WINDOWS)
 		if ( fStartSIGS == FALSE )
 #endif
 			PlayIntro();
 
-		
 		// SetGlobalVolume(vol);
   		// [d1-07-97 JPC] You can quit while intro is playing--check
 		// for that here.
@@ -1218,7 +1144,6 @@ void PlayIntro(void)
 
 	run_timers();
 	clear_screen();
-//	FadeIn(1);
 	update_screen();
 	init_pal("intropal");
 	init_shade_table("intropal");
@@ -1238,8 +1163,6 @@ void PlayIntro(void)
 EndSplash:
 	ClearFlicSound();
 	intro = FALSE;
-	//KillSoundsNoFade();
-	//SuspendMusic();
 
 }
 
@@ -1445,7 +1368,6 @@ void PlayCredits(LONG,LONG)
 	KillSoundsNoFade();
 	PlayTrack(103);
 	
-//	for(i = 1; i <= 8; i++)  //---- Changed 6-6-97 by RC
 	for(i = 1; i <= 7; i++) 
 	{
 		sprintf(filename, "intro\\credit%02d.pcx", i);
@@ -1473,7 +1395,6 @@ void PlayCredits(LONG,LONG)
 		switch(i)
 		{
 		case 1:
-			//print_textf(90,455,31,"The Birthright Art Staff in costume on the set of the Imperial Palace in Anuire.");
 			print_textf(90,455,31,STRMGR_GetStr(STR_CREDIT_1));
 			print_textf(  5,155,31,"Captain Alan Speed");
 			print_textf( 74,179,31,"Guilder Jeremy Jones");
@@ -1490,7 +1411,6 @@ void PlayCredits(LONG,LONG)
 			print_textf(240,110,31,"Lord Alex Bennion");
 			break;
 		case 2:
-			//print_textf( 64,455,31,"The Birthright designer/sound/management team preparing for the evening's torture sessions.");
 			print_textf( 64,455,31,STRMGR_GetStr(STR_CREDIT_2));
 			print_textf( 10,321,31,"Craig Utterback the Grim");
 			print_textf(  5,155,31,"High Mage Derek Clardy");
@@ -1504,7 +1424,6 @@ void PlayCredits(LONG,LONG)
 			print_textf(471, 34,31,"Robert Gorgon Clardy");
 			break;
 		case 3:
-			//print_textf(137,455,31,"The Birthright Programming staff taking a break between melees.");
 			print_textf(137,455,31,STRMGR_GetStr(STR_CREDIT_3));
 			print_textf(  9,198,31,"Lady Lan Zhou");
 			print_textf( 63,178,31,"Lord Mike Branham");
@@ -1602,7 +1521,6 @@ void PlayFinale(LONG WinningRealm,LONG)
 	SHORT  prevTrack = ucWhichTrack;
 	
 	StopRedBook();
-//	PlayTrack(REDBOOK_REALM);
 	KillSoundsNoFade();
 
 	// this sound doesn't play
@@ -1791,8 +1709,6 @@ End:
 	
 	FadeIn(100);
 	PlayTrack(prevTrack);	
-	
-	//add_timer(1,draw_cursor);
 	return;	
 }
 
@@ -1813,7 +1729,6 @@ void AddGlobalKeys(void)
 #if defined(_WINDOWS)
 	// Direct Draw hot keys
 	add_key(GAME_KEYS::mfGetKey(GAME_KEYS::TOGGLE_DIRECT_DRAW), ToggleDirectDraw, 0, 0);
-//	add_key(GAME_KEYS::mfGetKey(GAME_KEYS::TOGGLE_CHAT_SELECT_WINDOW),ShowChatSelectWindow, 0, 0);
 	add_key(GAME_KEYS::mfGetKey(GAME_KEYS::TOGGLE_CHAT_DISPLAY_WINDOW),ToggleChatDisplayWindow, 0, 0);
 #endif
 
@@ -1944,8 +1859,6 @@ void DoPan (void)
 		if (!f)
 		{
 			fWindow = FALSE;
-			//wx = 0; wy = 0; ww = 640; wh = 480;
-			//cx = 0; cy = 0; cw = 640; ch = 480;
 		}
 		run_timers();
 	}

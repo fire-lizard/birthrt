@@ -27,7 +27,6 @@
 #include "CHARED.HXX"
 #include "CHAREDSY.H"						// symbols for CHARED dialogs
 #include "AVA.HXX"
-#include "RELIC.H"
 
 /* ------------------------------------------------------------------------
 	External data
@@ -43,6 +42,8 @@ extern AVA_FILE		gAvaData;
 #define _MAX_ITEM_LEN			80
 #define _MAX_SELECTIONS			40
 #define BUFLEN 					120
+
+#define RELIC_CODE 999
 
 /* ------------------------------------------------------------------------
 	Macros
