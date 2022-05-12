@@ -230,9 +230,6 @@ SHORT LoadSTR (
 	
 	if(hStrings != fERROR)
 	{
-#if defined (MEMORY_CHK)
-		SetBlockName(szFileName,hStrings);
-#endif
 		pStrDataBlock->hStrings = hStrings;
 		
 		if (read(iStringFile, BLKPTR(hStrings), pStrDataBlock->stringBlock.lSize) < pStrDataBlock->stringBlock.lSize)

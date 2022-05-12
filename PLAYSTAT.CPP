@@ -183,16 +183,6 @@ HDL_PLAYER_STATS PLAYER_STATS::mfAllocateSpace(SHORT hAvatar,LONG ID)
 		pPlayerStats->mfInitValues();
 		pPlayerStats->hAvatar = hAvatar;
 		pPlayerStats->hThis = hResult;
-		
-#if defined (MEMORY_CHK)
-		if (ID != fERROR)
-		{
-			char cpBuffer[20];
-			
-			sprintf(cpBuffer, "%ld", ID);
-			SetBlockName(cpBuffer,hResult);
-		}
-#endif
 	}
 	
 	return hResult;

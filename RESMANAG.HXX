@@ -57,21 +57,12 @@ typedef struct _RESTYPE
    Macros
    ------------------------------------------------------------------------ */
 #define ReleaseResBlock(i)	DisposBlock(i)
-#if defined (MEMORY_CHK)
-#define OpenImag(s)			SetBlockName((s),SetDebugInfo(__FILE__, __LINE__,_GetResource_((s),FALSE,FALSE,FALSE)))
-#define GetResourceStd(s,f)	SetBlockName((s),SetDebugInfo(__FILE__, __LINE__,_GetResource_((s),(f),FALSE,FALSE)))
-#define GetLockedResource(s,f) SetBlockName((s),SetDebugInfo(__FILE__,__LINE__,_GetResource_((s),(f),TRUE,FALSE)))
-#define GetResourceRot(s)	SetBlockName((s),SetDebugInfo(__FILE__,__LINE__,_GetResource_((s),FALSE,FALSE,TRUE)))
-#define GetResourceRotNoScale(s)	SetBlockName((s),SetDebugInfo(__FILE__,__LINE__,_GetResource_((s),TRUE,FALSE,TRUE)))
-#define TestAndLoadFromResFile(s,l) SetBlockName((s),SetDebugInfo(__FILE__,__LINE__,_TestAndLoadFromResFile_((s),(l))))
-#else
 #define OpenImag(s)			_GetResource_((s),FALSE,FALSE,FALSE)
 #define GetResourceStd(s,f)	_GetResource_((s),(f),FALSE,FALSE)
 #define GetLockedResource(s,f) _GetResource_((s),(f),TRUE,FALSE)
 #define GetResourceRot(s)	_GetResource_((s),FALSE,FALSE,TRUE)
 #define GetResourceRotNoScale(s)	_GetResource_((s),TRUE,FALSE,TRUE)
 #define TestAndLoadFromResFile(s,l) _TestAndLoadFromResFile_((s),(l))
-#endif
 
 /* ------------------------------------------------------------------------
    Global Variables

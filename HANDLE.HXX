@@ -42,26 +42,6 @@ public:
 	DumbHandlePtr(SHORT const NewHandle)
 		: fHandle(NewHandle)
 		{
-#if defined (MEMORY_CHK)
-			if (NewHandle < 0 || abBlockAttr[NewHandle] == UNUSED)
-			{
-				fatal_error("Handle (%hd) had not been allocated.\n", NewHandle);
-			}
-			
-			if (abBlockAttr[NewHandle] == FREEMEM)
-			{
-				fatal_error("Handle (%hd) has been free'd.\n", NewHandle);
-			}
-			
-		    // Data size is on 4 byte boundries.
-		    // GWP	if (GetDataBlkSize(NewHandle) != sizeof(T))
-			   // Some pointers are not fixed size.
-			// GWPif (GetDataBlkSize(fHandle) != (sizeof(T) + ((sizeof(T) % sizeof(int)) ? sizeof(int) - (sizeof(T)%sizeof(int)) : 0)))
-			// GWP{
-		   	// GWP	fatal_error("Mis-Matched Handle (%hd) size (%ld), and sizeof(%ld).\n",
-		   	// GWP				NewHandle,GetDataBlkSize(NewHandle), sizeof(T));
-			// GWP}
-#endif
 		}
 		
 	T *operator->() const
@@ -69,26 +49,6 @@ public:
 		
 	DumbHandlePtr<T> & operator=(SHORT const NewHandle)
 		{ 
-#if defined (MEMORY_CHK)
-			if (NewHandle < 0 || abBlockAttr[NewHandle] == UNUSED)
-			{
-				fatal_error("Handle (%hd) had not been allocated.\n", NewHandle);
-			}
-			
-			if (abBlockAttr[NewHandle] == FREEMEM)
-			{
-				fatal_error("Handle (%hd) has been free'd.\n", NewHandle);
-			}
-			
-		    // Data size is on 4 byte boundries.
-		    // GWP 	if (GetDataBlkSize(NewHandle) != sizeof(T))
-			   // Some pointers are not fixed size.
-			// GWP if (GetDataBlkSize(fHandle) != (sizeof(T) + ((sizeof(T) % sizeof(int)) ? sizeof(int) - (sizeof(T)%sizeof(int)) : 0)))
-			// GWP {
-			// GWP    	fatal_error("Mis-Matched Handle (%hd) size (%ld), and sizeof(%ld).\n",
-			// GWP    				NewHandle,GetDataBlkSize(NewHandle), sizeof(T));
-		    // GWP }
-#endif
 			fHandle = NewHandle; 
 			return *this;	
 		}
@@ -97,29 +57,6 @@ public:
 		{ 
 			if (this != &NewDumbHandle)
 			{
-#if defined (MEMORY_CHK)
-				if (NewDumbHandle.fHandle < 0 || abBlockAttr[NewDumbHandle.fHandle] == UNUSED)
-				{
-					fatal_error("Handle (%hd) had not been allocated.\n", 
-															NewDumbHandle.fHandle);
-				}
-				
-				if (abBlockAttr[NewDumbHandle.fHandle] == FREEMEM)
-				{
-					fatal_error("Handle (%hd) has been free'd.\n", 
-														NewDumbHandle.fHandle);
-				}
-				
-			   // Data size is on 4 byte boundries.
-			   // GWP 	if (GetDataBlkSize(NewDumbHandle.fHandle) != sizeof(T))
-			   // Some pointers are not fixed size.
-			   // GWP	if (GetDataBlkSize(fHandle) != (sizeof(T) + ((sizeof(T) % sizeof(int)) ? sizeof(int) - (sizeof(T)%sizeof(int)) : 0)))
-			   // GWP	{
-			   // GWP		fatal_error("Mis-Matched Handle (%hd) size (%ld), and sizeof(%ld).\n",
-			   // GWP					NewDumbHandle.fHandle,
-			   // GWP					GetDataBlkSize(NewDumbHandle.fHandle), sizeof(T));
-			   // GWP	}
-#endif
 				fHandle = NewDumbHandle.fHandle;	
 			}
 			return *this;
@@ -148,58 +85,22 @@ public:
 	DumbHandleArray(SHORT const NewHandle)
 		: fHandle(NewHandle) 
 		{ 
-#if defined (MEMORY_CHK)
-			if (NewHandle < 0 || abBlockAttr[NewHandle] == UNUSED)
-			{
-				fatal_error("Handle (%hd) had not been allocated.\n", NewHandle);
-			}
-			
-			if (abBlockAttr[NewHandle] == FREEMEM)
-			{
-				fatal_error("Handle (%hd) has been free'd.\n", NewHandle);
-			}
-#endif
 		}
 	
 	// index operators
 	T & operator[](LONG const index)
 	{ 
-#if defined (MEMORY_CHK)
-		if (index < 0 || index >= (GetDataBlkSize(fHandle)/sizeof(T)))
-		{
-			fatal_error("ERROR! Index %ld, Outside array bounds %ld from BLKPTR.\n",
-								index, (GetDataBlkSize(fHandle)/sizeof(T)));
-		}
-#endif
 		return (((T *) BLKPTR(fHandle))[index]);
  	}
 	
 	// for const objects.
 	T & operator[](LONG const index) const
 	{ 
-#if defined (MEMORY_CHK)
-		if (index < 0 || index >= (GetDataBlkSize(fHandle)/sizeof(T)))
-		{
-			fatal_error("ERROR! Index %ld, Outside array bounds %ld from BLKPTR.\n",
-								index, (GetDataBlkSize(fHandle)/sizeof(T)));
-		}
-#endif
 		return (((T *) BLKPTR(fHandle))[index]);
  	}
 	
 	DumbHandleArray<T> & operator=(SHORT const NewHandle)
 		{ 
-#if defined (MEMORY_CHK)
-			if (NewHandle < 0 || abBlockAttr[NewHandle] == UNUSED)
-			{
-				fatal_error("Handle (%hd) had not been allocated.\n", NewHandle);
-			}
-			
-			if (abBlockAttr[NewHandle] == FREEMEM)
-			{
-				fatal_error("Handle (%hd) has been free'd.\n", NewHandle);
-			}
-#endif
 			fHandle = NewHandle; 
 			return *this;	
 		}
@@ -208,18 +109,6 @@ public:
 		{ 
 			if (this != &NewDumbHandle)
 			{
-#if defined (MEMORY_CHK)
-				if (NewDumbHandle.fHandle < 0 || abBlockAttr[NewDumbHandle.fHandle] == UNUSED)
-				{
-					fatal_error("Handle (%hd) had not been allocated.\n", 
-											NewDumbHandle.fHandle);
-				}
-				
-				if (abBlockAttr[NewDumbHandle.fHandle] == FREEMEM)
-				{
-					fatal_error("Handle (%hd) has been free'd.\n", NewDumbHandle.fHandle);
-				}
-#endif
 				fHandle = NewDumbHandle.fHandle;	
 			}
 			return *this;
@@ -240,14 +129,6 @@ public:
 		    fLockFlag(IsLocked(iHandle)),
 		    fPtr((T *)BLKPTR(iHandle))
 	{	
-#if defined (MEMORY_CHK)
-		// Some pointers are not a fixed size.
-		// GWP if (GetDataBlkSize(fHandle) != (sizeof(T) + ((sizeof(T) % sizeof(int)) ? sizeof(int) - (sizeof(T)%sizeof(int)) : 0)))
-		// GWP {
-		// GWP 	fatal_error("Handle (%hd) wrong size for type.\n", iHandle);
-		// GWP }
-#endif
-		
 		if (!fLockFlag)
 		{
 			SetQuickLock(iHandle);		// Lock the memory in place
@@ -269,26 +150,6 @@ public:
 		{ 
 			if (NewHandle != fHandle)
 			{
-#if defined (MEMORY_CHK)
-				if (NewHandle < 0 || abBlockAttr[NewHandle] == UNUSED)
-				{
-					fatal_error("Handle (%hd) had not been allocated.\n", NewHandle);
-				}
-				
-				if (abBlockAttr[NewHandle] == FREEMEM)
-				{
-					fatal_error("Handle (%hd) has been free'd.\n", NewHandle);
-				}
-				
-				// Data is on 4 byte boundries.
-				// GWP if (GetDataBlkSize(NewHandle) != sizeof(T))
-			   // Some pointers are not fixed size.
-				// GWP if (GetDataBlkSize(fHandle) != (sizeof(T) + ((sizeof(T) % sizeof(int)) ? sizeof(int) - (sizeof(T)%sizeof(int)) : 0)))
-				// GWP {
-				// GWP  	fatal_error("Mis-Matched Handle (%hd) size (%ld), and sizeof(%ld).\n",
-				// GWP  				NewHandle,GetDataBlkSize(NewHandle), sizeof(T));
-				// GWP }
-#endif
 				if (!fLockFlag)
 				{
 					ClrLock(fHandle);
@@ -309,29 +170,6 @@ public:
 		{ 
 			if (this != &NewDumbHandle)
 			{
-#if defined (MEMORY_CHK)
-				if (NewDumbHandle.fHandle < 0 || abBlockAttr[NewDumbHandle.fHandle] == UNUSED)
-				{
-					fatal_error("Handle (%hd) had not been allocated.\n", 
-															NewDumbHandle.fHandle);
-				}
-				
-				if (abBlockAttr[NewDumbHandle.fHandle] == FREEMEM)
-				{
-					fatal_error("Handle (%hd) has been free'd.\n", 
-														NewDumbHandle.fHandle);
-				}
-				
-				// Data is on 4 byte boundries.
-				// GWP if (GetDataBlkSize(NewDumbHandle.fHandle) != sizeof(T))
-			   // Some pointers are not fixed size.
-				// GWP if (GetDataBlkSize(fHandle) != (sizeof(T) + ((sizeof(T) % sizeof(int)) ? sizeof(int) - (sizeof(T)%sizeof(int)) : 0)))
-				// GWP {
-				// GWP 	fatal_error("Mis-Matched Handle (%hd) size (%ld), and sizeof(%ld).\n",
-				// GWP 				NewDumbHandle.fHandle,
-				// GWP 				GetDataBlkSize(NewDumbHandle.fHandle), sizeof(T));
-				// GWP }
-#endif
 				if (!fLockFlag)
 				{
 					ClrLock(fHandle);
@@ -376,17 +214,6 @@ public:
 		    fLockFlag(IsLocked(iHandle)),
 		    fPtr((T *)BLKPTR(iHandle))
 	{ 
-#if defined (MEMORY_CHK)
-		if (iHandle < 0 || abBlockAttr[iHandle] == UNUSED)
-		{
-			fatal_error("Handle (%hd) had not been allocated.\n", iHandle);
-		}
-		
-		if (abBlockAttr[iHandle] == FREEMEM)
-		{
-			fatal_error("Handle (%hd) has been free'd.\n", iHandle);
-		}
-#endif
 		if (!fLockFlag)
 		{
 			SetQuickLock(iHandle);		// Lock the memory in place
@@ -405,42 +232,17 @@ public:
 	// index operators
 	T & operator[](LONG const index)
 	{ 
-#if defined (MEMORY_CHK)
-		if (index < 0 || index >= (GetDataBlkSize(fHandle)/sizeof(T)))
-		{
-			fatal_error("ERROR! Index %ld, Outside array bounds %ld from BLKPTR.\n",
-								index, (GetDataBlkSize(fHandle)/sizeof(T)));
-		}
-#endif
 		return (fPtr[index]);
  	}
 	
 	// for const objects.
 	T & operator[](LONG const index) const
 	{ 
-#if defined (MEMORY_CHK)
-		if (index < 0 || index >= (GetDataBlkSize(fHandle)/sizeof(T)))
-		{
-			fatal_error("ERROR! Index %ld, Outside array bounds %ld from BLKPTR.\n",
-								index, (GetDataBlkSize(fHandle)/sizeof(T)));
-		}
-#endif
 		return (fPtr[index]);
  	}
 	
 	DumbAutoLockArray<T> & operator=(SHORT const NewHandle)
 		{ 
-#if defined (MEMORY_CHK)
-			if (NewHandle < 0 || abBlockAttr[NewHandle] == UNUSED)
-			{
-				fatal_error("Handle (%hd) had not been allocated.\n", NewHandle);
-			}
-			
-			if (abBlockAttr[NewHandle] == FREEMEM)
-			{
-				fatal_error("Handle (%hd) has been free'd.\n", NewHandle);
-			}
-#endif
 			if (!fLockFlag)
 			{
 				ClrLock(fHandle);
@@ -459,18 +261,6 @@ public:
 		{ 
 			if (this != &NewDumbHandle)
 			{
-#if defined (MEMORY_CHK)
-				if (NewDumbHandle.fHandle < 0 || abBlockAttr[NewDumbHandle.fHandle] == UNUSED)
-				{
-					fatal_error("Handle (%hd) had not been allocated.\n", 
-											NewDumbHandle.fHandle);
-				}
-				
-				if (abBlockAttr[NewDumbHandle.fHandle] == FREEMEM)
-				{
-					fatal_error("Handle (%hd) has been free'd.\n", NewDumbHandle.fHandle);
-				}
-#endif
 				if (!fLockFlag)
 				{
 					ClrLock(fHandle);

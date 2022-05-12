@@ -2892,12 +2892,6 @@ SHORT AllocateAnim(SHORT Type, LONG ttype)
 	sprintf(cpBuffer, "%s.IDA", GetThingName(ttype));
 	pAnim->hiData = GetResourceStd(cpBuffer, FALSE);
 	
-	// Debug information about the iAnim.
-#if defined (MEMORY_CHK)
-	sprintf(cpBuffer, "%s.IAM", GetThingName(ttype));
-	SetBlockName(cpBuffer,iAnim);
-#endif
-	
 	ClrLock(iAnim);
 	return iAnim;
 }

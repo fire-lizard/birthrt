@@ -1058,11 +1058,7 @@ SHORT Query_iResBlock (SHORT i)
 	
 	if (!(i & RESOURCE_ID_BIT))
 	{
-	#if defined(MEMORY_CHK)
-		fatal_error("RESMANAGER: ERROR! Resquest for resource without a Res handle %d.\n", i);
-	#else
 		return fERROR;
-	#endif
 	}
 	
 	i &= RESOURCE_ID_MASK;
@@ -1072,11 +1068,7 @@ SHORT Query_iResBlock (SHORT i)
 		i > iMaxResSlots
 		)
 	{
-#if defined(MEMORY_CHK)
-		fatal_error("RESMAMANG ERROR! Bad request for resource blk %ld.\n", i);
-#else
 		return fERROR;
-#endif
 	}
 
 	iBlk = iResBlock[i];
@@ -1169,16 +1161,9 @@ SHORT DisposRes (SHORT iResBlk, SHORT iMemBlk)
 	iResBlk &= RESOURCE_ID_MASK;
 
 	if (iResBlk < 0 || iResBlk > iMaxResSlots)
-#if defined(MEMORY_CHK)
-	{
-		fatal_error("RESMAMANG ERROR! Bad Dispose for resource blk %ld.\n", iResBlk);
-	}
-#else
 	{
 		return fERROR;
 	}
-#endif
-
 
 	// Clear just the memory block, anyone asking whether the data is in memory
 	// now can ask using Query_ResBlock.
@@ -1215,15 +1200,9 @@ SHORT ReleaseRes(SHORT iResBlk)
 	iResBlk &= RESOURCE_ID_MASK;
 
 	if (iResBlk < 0 || iResBlk > iMaxResSlots)
-#if defined(MEMORY_CHK)
-	{
-		fatal_error("RESMAMANG ERROR! Bad Release for resource blk %ld.\n", iResBlk);
-	}
-#else
 	{
 		return fERROR;
 	}
-#endif
 	
 	iMemBlk = iResBlock[iResBlk];
 	
@@ -1392,10 +1371,6 @@ SHORT LoadCompressedDataFromResFile (
 	if (!fLockRes)
 		SetBlockAttr (iTempBlk, LOCKED, LOCKED);
 
-#if defined(MEMORY_CHK)
-	SetBlockName(pResHeader->szName, iTempBlk);
-#endif
-
 	pInBuffer = (PTR)BLKPTR(iTempBlk) + ((pResHeader->cbUncompressedData + iLzssDataOffset) - pResHeader->cbCompressedData);
 
 	result = read (file, pInBuffer, pResHeader->cbCompressedData);
@@ -1418,10 +1393,6 @@ SHORT LoadCompressedDataFromResFile (
 		return iTempBlk;						// all done, return
 	}
 	
-#if defined(MEMORY_CHK)
-	SetBlockName(pResHeader->szName, iTempBlk);
-#endif
-
 	// If we get here, the resource is compressed.
 	// Allocate another buffer to decompress it to.
 	// The buffer size of 128L is the next power of 2 greater than the

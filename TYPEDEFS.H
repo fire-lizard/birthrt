@@ -12,14 +12,11 @@
 	typedef signed long		LONG;
 #endif
 
-//#ifndef _WINDOWS
-//ypedef signed long		LONG;
 #if defined(_WINDOWS)
 	typedef int	BOOL;
 #else
 	typedef unsigned long	BOOL;
 #endif
-//#endif
 
 #ifndef TRUE
 	#define TRUE	1
