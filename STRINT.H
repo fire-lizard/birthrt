@@ -38,12 +38,12 @@ typedef struct {
 typedef struct {
 	LONG	lSize;			// size of the block of strings
 	LONG	sOffsets[100];	// offsets to string data for this block
-} STRBLOCK, *STRBLOCKPTR;
+} STRBLOCK;
 
 typedef struct {
 	SHORT	sBlocks;			// number of blocks
 	LONG	sBlockOffsets[100];	// offsets to STRBLOCK for each block
-} BLOCKHEADER, *BLOCKHEADERPTR;
+} BLOCKHEADER;
 
 /* ------------------------------------------------------------------------
    Macros

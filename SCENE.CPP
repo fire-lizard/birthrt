@@ -341,12 +341,6 @@ void SCENE::mfLoadScene(char * cpSceneFile,
 		printf("WARNING! Scene File version data missing! File %s\n", cpSceneFile);
 	}
 	
-#if defined(_SELF_RUNNING_DEMO)
-	if (fSelfRunningDemoData.mfIsSet())
-	{
-		fSceneAI.mfSetSceneType(SCENE_AI::SELF_RUNNING_DEMO_SCENE);
-	}
-#endif
 	fSceneAI.mfSetSceneState(SCENE_AI::INIT);
 }
 

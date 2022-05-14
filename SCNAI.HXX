@@ -51,9 +51,6 @@ public:
         // GWP Not used. GENERIC_SCENE = 0,
         BATTLE_SCENE,
         COMBAT_SCENE,
-#if defined(_SELF_RUNNING_DEMO)
-        SELF_RUNNING_DEMO_SCENE,
-#endif
         ADVENTURE_SCENE,
 
         // No entries below here

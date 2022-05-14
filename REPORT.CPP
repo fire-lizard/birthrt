@@ -1003,67 +1003,6 @@ void GiveReport (LONG lArg)
 	sMyPermissive = 0;
 	sMyOther = 0;
 
-#ifdef _GEH_DEMO
-	if (date == 2)
-	{
-		SHORT	bitm;
-		LONG	now;
-		
-		PlayFinale(REALM::ROESONE,0);
-		bitm = GetResourceStd ("finale\\buymore.pcx", FALSE);
- 		
-		if (bitm != fERROR)
-		{
-			DrawBitmap (0, 0, bitm, 0, 0, 640, 480);
-			update_screen();
-			SetPurge(bitm);
-		}
-		
-		// delay 20 seconds
-		now=get_time() + (20 * 182 / 10);
-		
-		#ifdef _WINDOWS
-		ClearMessageQueue();
-		#endif
-						
-		fAnyKeyChanged = FALSE;
-		clear_key_status(0);
-		mouse_button = 0;
-		
-		while(get_time()<now)
-		{
-			run_timers();
-			
-			#ifdef _WINDOWS
-			ClearMessageQueue();
-			#endif
-						
-			update_buttons();
-			if(mouse_button)
-			{
-				mouse_button = 0;
-				break;
-			}
-			else
-			if(fAnyKeyChanged)
-			{
-				if(key_status(KEY_ESCAPE))
-				{
-					goto End;
-				}
-				fAnyKeyChanged = FALSE;
-				clear_key_status(0);
-				break;
-			}
-		}
-		
-End:	
-		FadeOut(100);
-		
-		QuitSys(0,0);
-	}
-#endif
-
 	push_regions();
 
 	// clear the arrays

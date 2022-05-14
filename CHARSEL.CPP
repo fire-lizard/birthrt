@@ -1689,24 +1689,6 @@ void EndAdvParty(LONG i, LONG j)
 			else
 				action_turn[HomeRealm]++;
 
-#ifdef _GEH_DEMO
-			// show tutorial
-			DoSlideShow(2);
-			//	  restore the state of the map level
-			RESTORE_REGION_STATE(regDOMAIN_TURN_MODE);
-			RESTORE_REGION_STATE(regACTION_MODE);
-			RESTORE_REGION_STATE(regMINIMIZED);
-			RESTORE_REGION_STATE(regMAXIMIZED);
-			RESTORE_REGION_STATE(regTAX_ROLLS);
-			RESTORE_REGION_STATE(regSWITCH_TO_ACTIONS);
-			RESTORE_REGION_STATE(regADJUST_TAXES);
-			//	  RESTORE_REGION_STATE(1008);
-
-			action_turn[HomeRealm]--;
-			//AddSndObj((BIRTHRT_SND)SND_UI_STATUS_REPORT,0,VOLUME_NINETY);
-			dturn_mode = ACTN_MODE;
-			DataAreaMode (ACTN_MODE, 0);
-#else
 			// first, clean up the linked lists
 			{
 				LONG	who, me;	  // loop index, unit# of selection
@@ -1800,11 +1782,7 @@ void EndAdvParty(LONG i, LONG j)
 			SCENE_MGR::SceneType = SCENE_AI::ADVENTURE_SCENE;	   // type for next scene ai
 			SCENE_MGR::mfRequestNewScene( places[j].scene, TYPE_PLAYERSTART1, FALSE); // load first scene
 			
-//			TurnOffAllSounds();
 			InitDomainTurn(0);
-			// dturn_mode = ACTN_MODE;
-			// DataAreaMode (ACTN_MODE, 0);
-#endif // _GEH_DEMO
 		}
 	}
 	else if (i == 4)

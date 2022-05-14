@@ -60,11 +60,7 @@ extern "C" {
 extern BOOL PlayEnvironmentalSounds;
 extern BOOL UIPlayEnvironmentalSounds;
 extern SHORT WhichEnvironmentalSound;
-extern BOOL intro;
 extern SHORT UserNumSFXPlaying;  // default 8, which is the maximum, I think.
-#if defined(_DEMO)
-extern BOOL SlideShowPlaying;
-#endif
 
 extern int AdventureMusic[];
 /* ------------------------------------------------------------------------

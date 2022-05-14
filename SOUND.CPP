@@ -140,14 +140,6 @@ static DECL_VECTOR_DATA(LOOPING_SOUND_THING,LoopingSoundThing,MAX_SOUND_THINGS);
 
 #include "AMBIENCE.INC"
 
-// DEMO STUFF
-BOOL intro = TRUE;
-#if defined(_DEMO)
-static SHORT MusicInstance = 30001;
-static BIRTHRT_SND MusicID;
-#endif
-// DEMO STUFF
-
 unsigned long SndRandom ( LONG val )
 {
 
@@ -661,10 +653,6 @@ void ServiceSOLAudio(void)
 		KernelAudioService();
 #endif
 
-#if defined(_DEMO)
-	ServiceMusicWave(FALSE);
-#endif
-
 	if(PlayEnvironmentalSounds && UIPlayEnvironmentalSounds && SFXVolumeIndex)
 	{
 		// play random environmental sounds at random number of frames
@@ -908,88 +896,8 @@ void SetMusicVolume(int CurrentSong,int volume,int CurrentTag)
 #endif	
 }
 
-void PlayMusicWave(void)
-{
-#if defined(_DEMO)
-	SHORT loop;
-	static SHORT id = 0;
-	int volume;
-
-	if(SlideShowPlaying)
-		return;
-
-	if(intro)
-	{
-		volume = 90;
-		MusicID = (BIRTHRT_SND) 3;
-		loop = FALSE;
-	}
-	else
-	{
-		if(id + 1 > 5)
-			id = 1;
-		else
-			id++;
-
-		if(id == 4)
-			id = 5;
-		MusicID = (BIRTHRT_SND) id;
-		loop = TRUE;
-		volume = 90;
-	}
-
-	MusicInstance = 11000; //(SHORT)((MusicInstance > 30010) ? 30001 : ++MusicInstance);
-#ifdef AUDIO_LIB	
-	kernel->AudioPlay(	(int) MusicID,
-					(BOOL) loop, 		// looped
-					(int) volume, 			// volume
-					(int) MusicInstance,
-					(long) FALSE );		// paused
-#endif
-
-#endif
-}
 /*/////////////////////////////////////////////////////////////////
 Function	ServiceMusicWave
 Purpose		update the music wave in the demo
 argument	TRUE starts a new wave NOW
 /////////////////////////////////////////////////////////////////*/
-
-void ServiceMusicWave(BOOL StartMusicNow)
-{
-#if defined(_DEMO)
-	static SHORT volume = 0;
-	static LONG StartTime = -100;
-
-	if(SlideShowPlaying)
-		return;
-	
-#ifdef AUDIO_LIB	
-	if(!intro)
-	{
-		if(StartMusicNow)
-		{
-			StartTime = 0;
-			volume = 0;
-		}
-		if( (get_time() - StartTime) > 1200)
-		{	
-			if(volume < 20)
-			{
-				kernel->AudioStop(MusicID, MusicInstance);
-				volume = 90;
-				PlayMusicWave();
-				StartTime = get_time();
-			}
-			else
-			{
-				if(--volume >= 0)
-					kernel->AudioVolume(MusicID,volume,MusicInstance);
-
-			}
-		}
-	}
-#endif	
-#endif
-
-}

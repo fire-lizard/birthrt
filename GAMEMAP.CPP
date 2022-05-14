@@ -223,7 +223,6 @@ SHORT QueryCommandBattle(BOOL);
 void ShowSyncWaitWindow( LONG sync, LONG);
 void DisplayNPCResults(void);
 void PaintNPCResults(LONG, LONG);
-void StartMapIntro (LONG, LONG);
 void PlayGorgon(LONG arg,LONG);
 void CopyReactionTable(void);
 void DeleteDomainRegions(void);
@@ -379,9 +378,6 @@ LONG				iGorgonAlly = 0;
 LONG				fControlMode = 0;		// basic game
 BOOL				fBattlePrep = FALSE;
 
-#ifdef _DEMO
-	SHORT			fTutorialMessage=TRUE;
-#endif
 DEFINE_MATRIX_DATA_S(UBYTE,Tribute,REALM::REALM_COUNT,REALM::REALM_COUNT);
 DEFINE_MATRIX_CLASS_S(UBYTE,Tribute,REALM::REALM_COUNT,REALM::REALM_COUNT);
 
@@ -4355,9 +4351,6 @@ BOOL UpdateDataArea (void)
 	PTR_PLAYER_STATS pPS = NULL;
 
 
-#ifdef _DEMO
-	InitAutoDemo();
-#endif
 	del_region(NextPrev,0);
 	del_region(AdjTaxLevel,0);
 	del_region(AdjCastleSupport,0);
@@ -6106,7 +6099,6 @@ printf("DeleteDomainRegions\n");
 		del_region(SelectSubUnit,0);
 		del_region(MoveSubUnitUpList,0);
 		del_region(JoinUnits,0);
-		del_region(StartMapIntro,0);
 }
 
 void AddDomainRegions (void)
@@ -7132,9 +7124,6 @@ void DomainTurnUI (void)
 	// ========================================================
 	if (mouse_click)
 	{
-#ifdef _DEMO
-		InitAutoDemo();
-#endif
 		mouse_click = 0;
 
 		// mouse_button ==1 is left ==2 is right
@@ -7207,18 +7196,6 @@ void DomainTurnUI (void)
 							y_icon = (((places[j].y+MAP_ICON_Y_ADJ-clipped_y) * FULL_SCALE) / map_scale) - (h_icon/2);
 							if (cursor_x<x_icon || cursor_y<y_icon || cursor_x>(x_icon+w_icon-1) || cursor_y>(y_icon+h_icon-1) )
 								continue;
-#ifdef _DEMO
-							if (mouse_button==1)
-							{
-								InitDomainTurn(0);
-								PlayAdvFlc();
-								clear_key_status(0);
-								InitDomainTurn(0);
-								clear_key_status(0);
-								fInfoOnlyDomainUI = FALSE;
-								return;
-							}
-#endif
 							if (mouse_button==2)
 							{
 								iPlaceInfo = (SHORT)j;	  // turn on place info box
@@ -7262,16 +7239,6 @@ void DomainTurnUI (void)
 							temp = TRUE;			// temp used as a flag to indicate a unit selection attempt was made
 							if (mouse_button==1)
 							{
-#ifdef _DEMO
-								TurnOffAllSounds();
-								InitDomainTurn(0);
-								PlayBattleFlc();
-								clear_key_status(0);
-								InitDomainTurn(0);
-								clear_key_status(0);
-								fInfoOnlyDomainUI = FALSE;
-								return;
-#endif
 								{
 									// select unit to move
 									if (l)
@@ -8324,14 +8291,6 @@ print_textf(0,0,BLACK,buffer6);
 	old_clipped_y = clipped_y;
 	old_scale = map_scale;
 
-#ifdef _DEMO
-	if (fTutorialMessage)
-	{
-		print_textf(321, 241, DKBROWN, STRMGR_GetStr(STR_GM_SPACE));
-		print_textf(320, 240, WHITE, STRMGR_GetStr(STR_GM_SPACE));
-	}
-#endif
-
 	// ========================================================
 	// New Tutorial Display
 	// ========================================================
@@ -8497,10 +8456,6 @@ print_textf(0,0,BLACK,buffer6);
 	// ========================================================
 	// MOVED TO TOP  ABC 6/9/97
 
-#ifdef _DEMO
-	CheckAutoDemo();
-#endif
-
 	// handle join dialog
 	if (fCommandBattleLoop)
 	{
@@ -8511,134 +8466,6 @@ print_textf(0,0,BLACK,buffer6);
 	}
 
 	fInfoOnlyDomainUI = FALSE;
-}
-
-
-/*	========================================================================
-	DEMO SUPPORT CODE
-	========================================================================*/
-#ifdef _DEMO
-static CSTRPTR szMapIntroScrn[] = {"intro\\mapscrn0.pcx","intro\\mapscrn1.pcx","intro\\mapscrn2.pcx",
-"intro\\mapscrn3.pcx","intro\\mapscrn4.pcx","intro\\mapscrn5.pcx"};
-#endif
-
-void PlayMapIntro (
-#if defined (_DEMO)
-	LONG iStart, LONG iEnd
-#else
-	LONG , LONG
-#endif
-	)
-{
-#ifdef _DEMO
-	SHORT	bitm, i;
-	LONG	now;
-
-	// load new palette
-	FadeOut(100);
-	clear_screen();
-	update_screen();
-	init_pal("nova_l");
-	init_shade_table("nova_l");
-	set_hires(0, 0);
-	CurPal[254].bRed = CurPal[254].bGreen = CurPal[254].bBlue = 0;
-	set_pal((char *)&CurPal[0]);
-	FadeIn(100);
-
-	// play intro flic
-	for (i=iStart; i<=iEnd; ++i)
-	{
-		bitm = GetResourceStd (szMapIntroScrn[i], FALSE);
-		if (bitm != fERROR)
-		{
-			POINT start,bck;
-			start.x = 320;
-			start.y = 240;
-			bck.x = 320;
-			bck.y = 240;
-			ZoomBitmap (0, 0, bitm, 0, 0, 640, 480, fERROR, start, bck, 640, 480);
-			//DrawBitmap (0, 0, bitm, 0, 0, 999, 999);
-			update_screen();
-			DisposBlock(bitm);
-		}
-
-		now = get_time()+(18*10);			 // 20 seconds delay
-
-		while(get_time()<now)
-		{
-			run_timers();
-			//read_mouse();
-			update_buttons();
-			if (mouse_button)
-				break;
-			if(key_status(KEY_ESCAPE))
-				goto End;
-			if(key_status(KEY_SPACEBAR) || key_status(KEY_RETURN))
-				break;
-		}
-	}
-
-End:
-	clear_key_status(0);
-	FadeOut(100);
-	clear_screen();
-	update_screen();
-#endif
-}
-
-/*	========================================================================*/
-static LONG		AutoDelay;
-static SHORT	fWhich = 0;
-
-void InitAutoDemo (void)
-{
-	AutoDelay = get_time()+(18*20);	 // 20 seconds delay
-}
-
-/*	========================================================================*/
-void StartMapIntro (LONG, LONG)
-{
-	fWhich = 2;
-	AutoDelay = get_time();
-
-}
-/*	========================================================================*/
-void CheckAutoDemo (void)
-{
-
-	if (AutoDelay < get_time())
-	{
-		InitDomainTurn(0);
-
-		if (fWhich==0)				  // play battle
-		{
-			PlayBattleFlc();
-			++fWhich;
-		}
-		else if (fWhich==1)			// play intro
-		{
-			PlayIntro();
-			++fWhich;
-		}
-		else if (fWhich==2)			// play tutorial
-		{
-			del_region(StartMapIntro,0);
-			PlayMapIntro(0,5);
-			++fWhich;
-			add_key(GAME_KEYS::mfGetKey(GAME_KEYS::SKIP_TO_NEXT_FRAME),StartMapIntro,0,5);
-		}
-		else if (fWhich==3)			// play adventure
-		{
-			PlayAdvFlc();
-			fWhich = 0;
-		}
-
-		clear_key_status(0);
-		InitDomainTurn(0);
-		clear_key_status(0);
-
-		InitAutoDemo();
-	}
 }
 
 /* ========================================================================
@@ -8656,16 +8483,6 @@ LONG CheckUnitArrival (LONG iMovingUnit, BOOL fJoinAllowed)
 	BOOL	f = TRUE;
 	SHORT	result;
 	char	n[50];
-
-#ifdef _DEMO
-		TurnOffAllSounds();
-		InitDomainTurn(0);
-		PlayBattleFlc();
-		clear_key_status(0);
-		InitDomainTurn(0);
-		clear_key_status(0);
-		return 0;
-#endif
 
 	if ( units[iMovingUnit].DestProvince != 0 )
 	{
@@ -8707,7 +8524,6 @@ LONG CheckUnitArrival (LONG iMovingUnit, BOOL fJoinAllowed)
 			if (j!=iMovingUnit && units[j].DestProvince==0
 					&& units[j].province == iProvince
 					&& units[j].Joined==FALSE
-//					&& AREFULLALLIES(units[iMovingUnit].Realm, units[j].Realm)
 					&& units[iMovingUnit].Realm == units[j].Realm
 					&& gUnitStackSize > CountUnitStack(j)
 				)

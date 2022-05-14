@@ -21,7 +21,6 @@
 #include <string.h>
 #include <stdarg.h>
 #include <io.h>
-#include <fcntl.h>
 #include "TYPEDEFS.H"
 #include "MACHINE.H"
 #include "SYSTEM.H"
@@ -117,7 +116,7 @@ CSTRPTR STRMGR_GetStr(LONG iStrNum)
 	CSTRPTR pStrings;
 	CSTRPTR pStr;
 	char idstr[20];
-	SHORT hStrDataBlock = fERROR;
+	SHORT hStrDataBlock;
 	STRING_DATA_BLOCK *pStrDataBlock;
 	static char NullString[150];
 
@@ -261,10 +260,9 @@ SHORT LoadSTR (
 
 static SHORT DisposeStringBlock (SHORT iResBlk, SHORT iMemBlk)
 {
-	STRING_DATA_BLOCK * pStrDataBlock = 0;
+	STRING_DATA_BLOCK * pStrDataBlock = (STRING_DATA_BLOCK*)BLKPTR(iMemBlk);
 	
 	// First get rid our our string table.
-	pStrDataBlock = (STRING_DATA_BLOCK *) BLKPTR(iMemBlk);
 	if (pStrDataBlock->hStrings != fERROR)
 	{
 		DisposBlock(pStrDataBlock->hStrings);

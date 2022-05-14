@@ -2985,7 +2985,6 @@ void BowToPlayer(LONG MenuCombo, LONG)
 	{
 		AddVoxSndType(VOX_CASTLE_INQUIRY, pPlayerStats->mfGetType());
 		
-#if !defined(_DEMO)
 		MarkOldAnimPurgable(iAnim, anim.seq);
 		anim.seq = BOWSEQ;
 		load_FLC_sequence(iAnim,
@@ -2994,7 +2993,6 @@ void BowToPlayer(LONG MenuCombo, LONG)
 						  0	// rotation Zero.
 						  );
 		SetAnimSequence(iAnim, (anim.seq * NUMROTATIONS));
-#endif // _DEMO
 	}
 
 }

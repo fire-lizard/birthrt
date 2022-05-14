@@ -117,12 +117,6 @@ void PlayFinale(LONG,LONG);
 void PlayGorgon(LONG arg,LONG);
 void CheckTheCDMusic(void);
 
-#ifdef _DEMO
-void PlayBattleFlc(void);
-void PlayAdvFlc(void);
-void PlayMapIntro(LONG,LONG);
-void StartMapIntro(LONG,LONG);
-#endif
 void PlayIntro(void);
 void AddFlicSound(LONG whichFrame, LONG whichSound);
 void ClearFlicSound(void);
@@ -450,9 +444,7 @@ void MainLoop(void)
 	// Touch all the memory attributes moldy bits.
 	ClearAllMoldyBits();
 	// check status of redbook audio, if stopped, loop it
-#if !defined(_DEMO)
 	CheckTheCDMusic();
-#endif
 
 	ServiceSOLAudio();
 
@@ -631,9 +623,7 @@ void MenuLoop()
 	machine_pre_frame();
 
 	// check status of redbook audio, if stopped, loop it
-#if !defined(_DEMO)
 	CheckTheCDMusic();
-#endif
 
 	//run tasks (based off frame counter)
 	run_tasks();
@@ -763,11 +753,6 @@ void GameMain(void)
 //=================================
 #endif
 
-#ifdef _DEMO
-	PlayAdvFlc();
-	set_hires(0, 0);
-#endif
-
 #ifndef _WINDOWS	
 	// only checks for button clicks
 	add_timer(1,update_buttons);
@@ -806,10 +791,6 @@ void GameMain(void)
 	/* keyboard keys */
 	AddGameKeys();
 
-#ifdef _DEMO
-	JustLoadWad = FALSE;
-#endif
-
 #ifdef _WINDOWS
 	ClearMessageQueue();
 #endif
@@ -836,13 +817,6 @@ void GameMain(void)
 
 	clear_key_status(0);
 	ResumeSuspendedMusic();
-
-#ifdef _DEMO
-	PlayTrack(REDBOOK_REALM);
-	SlideShowPlaying = FALSE;
-	ServiceMusicWave(TRUE);
- 	PlayTrack(REDBOOK_REALM);
-#endif
 
 	// begin with the domain turn
 	if (JustLoadWad)
@@ -1047,11 +1021,7 @@ void AddGameKeys(void)
 	add_key(GAME_KEYS::mfGetKey(GAME_KEYS::MAP_ZOOMOUT),ZoomMap,-1, 0);
 	add_key(GAME_KEYS::mfGetKey(GAME_KEYS::MAP_ZOOMIN),ZoomMap,+1, 0);
 	
-#ifdef _DEMO
-	add_key(KEY_SPACEBAR,StartMapIntro,0,5);
-#else
 	add_key(GAME_KEYS::mfGetKey(GAME_KEYS::PLAYER_OPENDOOR),ActivateSegment,MAX_ACTIVATION_DISTANCE*MAX_ACTIVATION_DISTANCE,MAX_ACTIVATION_DISTANCE*MAX_ACTIVATION_DISTANCE);
-#endif
 
 	/* -----------------------------------------------------------------
 		The Function keys
@@ -1108,9 +1078,6 @@ void PlayIntro(void)
 	init_shade_table("intropal");
 	FadeIn(100);
 
-#ifdef _GEH_DEMO	
-	TurnOffAllSounds();
-#else
  	// add list of sound effects
  	ClearFlicSound();
 	AddFlicSound(  1,SND_INTRO_LOGO2);
@@ -1137,8 +1104,6 @@ void PlayIntro(void)
 		NewIntro();
 	}
 
-#endif
-
 	fAnyKeyChanged = FALSE;
 	mouse_button = 0;
 
@@ -1162,8 +1127,6 @@ void PlayIntro(void)
 
 EndSplash:
 	ClearFlicSound();
-	intro = FALSE;
-
 }
 
 /* ========================================================================
