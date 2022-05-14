@@ -182,10 +182,6 @@ BOOL  gfResFileInUse[cMAXRESFILES];     // flag whether any resource file is
 
 #endif
 
-#if defined(CRC_CHK)
-USHORT	*iResChkSum;
-#endif
-
 int		file;
 // GWP BAD CODE!
 BOOL	fNewRes;
@@ -729,14 +725,6 @@ static SHORT FindResourceSlot (
 		#else
 				(*ResExtentions[iExtIndex].pfClrPurgeProc)(iSlot, iBlk);
 		#endif
-#if defined(CRC_CHK)
-				if ((!(abBlockAttr[iBlk] & MODIFYABLE_RESOURCE)) &&
-					 iResChkSum[iSlot] != CheckSum(iBlk))
-				{
-					fatal_error("RESMANAGER ERROR! Resource %ld, Memory block %ld has been changed.\n",
-										iSlot, iBlk);
-				}
-#endif
             // It is in memory, so just set the resource handle and return TRUE.
 				*piSlot = iSlot;   	
 				return RM_IN_MEMORY;
@@ -1003,17 +991,6 @@ SHORT _GetResource_ (CSTRPTR szResName, BOOL fNoScale, BOOL fLockRes, BOOL fRota
 			SetResource(iBlk);
 			//GWP BAD CODE!
 			fNewRes = TRUE;
-#if defined(CRC_CHK)
-			if (iBlk > 0 &&
-			    (!(abBlockAttr[iBlk] & MODIFYABLE_RESOURCE)))
-			{
-				iResChkSum[iSlot] = CheckSum(iBlk);
-			}
-			else
-			{
-				iResChkSum[iSlot] = 0;
-			}
-#endif
 		}
 	}
 
@@ -1072,17 +1049,6 @@ SHORT Query_iResBlock (SHORT i)
 	}
 
 	iBlk = iResBlock[i];
-#if defined(CRC_CHK)
-	if (iResBlock[i] > 0 && 			// Can't tell if the memory is gone.
-		(!(abBlockAttr[iResBlock[i]] & MODIFYABLE_RESOURCE)))
-	{
-		if (iResChkSum[i] != CheckSum(iResBlock[i]))
-		{
-			fatal_error("RESMANAGER ERROR! Resource %ld, Memory block %ld has been changed.\n",
-								i, iResBlock[i]);
-		}
-	}
-#endif
 
 #if fUSE_RES_FILES
 	// GWP & JPC.
@@ -1128,17 +1094,6 @@ SHORT Query_iResBlock (SHORT i)
 				
 				//GWP BAD CODE!
 				fNewRes = TRUE;
-	#if defined(CRC_CHK)
-				if (iBlk > 0 &&
-				    (!(abBlockAttr[iBlk] & MODIFYABLE_RESOURCE)))
-				{
-					iResChkSum[iSlot] = CheckSum(iBlk);
-				}
-				else
-				{
-					iResChkSum[iSlot] = 0;
-				}
-	#endif
 			}
 		}
 	}
@@ -1168,15 +1123,6 @@ SHORT DisposRes (SHORT iResBlk, SHORT iMemBlk)
 	// Clear just the memory block, anyone asking whether the data is in memory
 	// now can ask using Query_ResBlock.
 	iResBlock[iResBlk]		 = 0;		/* set resource map for not-in-memory */
-#if defined(CRC_CHK)
-	if (iResChkSum[iResBlk] != CheckSum(iMemBlk) &&
-		(!(abBlockAttr[iMemBlk] & MODIFYABLE_RESOURCE)))
-	{
-		fatal_error("RESMANAGER ERROR! Resource %ld, Memory block %ld has been changed.\n",
-							iResBlk, iMemBlk);
-	}
-	iResChkSum[iResBlk]	= 0;
-#endif
 
 	if (iMemBlk > 0)
 	{
@@ -1213,16 +1159,6 @@ SHORT ReleaseRes(SHORT iResBlk)
 	gcbResOffset[iResBlk]	= 0;
 	giResFileNames[iResBlk]	= 0;		// UNSET_RES_FILE_EXT;
 	gResFlags[iResBlk]		= 0;
-#endif
-#if defined(CRC_CHK)
-	if (iMemBlk != 0 &&
-	    iResChkSum[iResBlk] != CheckSum(iMemBlk) &&
-		(!(abBlockAttr[iMemBlk] & MODIFYABLE_RESOURCE)))
-	{
-		fatal_error("RESMANAGER ERROR! Resource %ld, Memory block %ld has been changed.\n",
-							iResBlk, iMemBlk);
-	}
-	iResChkSum[iResBlk]	= 0;
 #endif
 	
 	iMaxResSlotsInUse--;
@@ -1996,9 +1932,6 @@ BOOL InitResourceManager(USHORT MaxResRequested)
 	// [d4-13-97 JPC] Flags:
 	gResFlags = (UBYTE *) malloc(sizeof(UBYTE) * MaxResRequested);
 #endif
-#if defined(CRC_CHK)
-	iResChkSum	= (USHORT *) malloc (sizeof(USHORT) * MaxResRequested);
-#endif
 
 #else
 	// For DOS use the low memory area for the resource manager memory.
@@ -2018,10 +1951,6 @@ BOOL InitResourceManager(USHORT MaxResRequested)
 	gResFlags = (UBYTE *) D32DosMemAlloc(sizeof(UBYTE) * MaxResRequested);
 #endif
 
-#if defined(CRC_CHK)
-	iResChkSum	= (USHORT *) D32DosMemAlloc (sizeof(USHORT) * MaxResRequested);
-#endif
-
 #endif
 
 	
@@ -2030,9 +1959,6 @@ BOOL InitResourceManager(USHORT MaxResRequested)
 #if fUSE_RES_FILES
 		gcbResOffset == NULL ||
 		giResFileNames == NULL ||
-#endif
-#if defined(CRC_CHK)
-		iResChkSum == NULL ||
 #endif
 	    iResExtIndex == NULL)
 	{
@@ -2050,9 +1976,6 @@ BOOL InitResourceManager(USHORT MaxResRequested)
 	memset(iResBlock, 				 0, (sizeof(SHORT) * MaxResRequested));
 	memset(lResNameCRC, 			 0, (sizeof(ULONG) * MaxResRequested));
 	memset(iResExtIndex, UNSET_RES_EXT, (sizeof(UBYTE) * MaxResRequested));
-#if defined(CRC_CHK)
-	memset(iResChkSum, 				 0, (sizeof(USHORT) * MaxResRequested));
-#endif
 #if fUSE_RES_FILES
 	memset(gcbResOffset,			 0, (sizeof(ULONG) * MaxResRequested));
 	memset(giResFileNames,		 0, (sizeof(UBYTE) * MaxResRequested));
@@ -2086,12 +2009,6 @@ void FreeResourceManager()
 	if (gResFlags)								// [d4-13-97 JPC]
 		free (gResFlags);						// [d4-13-97 JPC]
 #endif
-
-#if defined(CRC_CHK)
-	if (iResChkSum)
-		free(iResChkSum);
-#endif
-
 
 #endif
 // For DOS we just let the system clean up the memory.

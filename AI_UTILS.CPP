@@ -33,11 +33,6 @@
 #include "SCENE.HXX"
 
 #include "SOUND.HXX"
-//#ifdef _WINDOWS
-//#ifdef OLD_SOUND
-//#include "winsys\sndutil.h"
-//#endif
-//#endif
 
 /* ------------------------------------------------------------------------
    Defines and Compile Flags
