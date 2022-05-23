@@ -94,10 +94,6 @@ extern int iWhichTrack;
 BOOL fStartSIGS = FALSE;            //---- Means startup in SIGS
 #endif
 
-#if defined (OLD_SOUND)
-extern MCIDEVICEID gwMCIDeviceID;   /* MCI Device ID for the AVI file */
-#endif
-
 extern HWND	hwndApp;
 HDC		gdcScreen;
 HCURSOR hcStd;

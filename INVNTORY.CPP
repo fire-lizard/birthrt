@@ -80,13 +80,6 @@ extern "C" void RandomLogPrefix ( char * szString );
 /* ------------------------------------------------------------------------
    Defines
    ------------------------------------------------------------------------ */
-//Visual C++ can't handle redundant static modifiers, (as in, "static" in the
-//definition of the function) so we have to define them out of existence.
-//I provide the redundant statics for readability and clarity.
-#ifdef _VC4
-#define static
-#endif
-
 #define MAX_ITEMS_IN_LIST 20
 #define MAX_PICKUP_DISTANCE 300
 #define SAVEDIR ".\\"

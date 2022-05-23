@@ -53,11 +53,6 @@ extern UBYTE				shade_table[];
 
 #define QUIETDEGRADE 1
 
-#if defined (_VC4)
-#include <crtdbg.h>
-#define ASSERT _ASSERT
-#endif
-
 #if defined(_DEBUG) && defined(_WINDOWS) && defined(_JPC)
 static char gszSourceFile[] = __FILE__;	// for ASSERT
 #endif

@@ -46,15 +46,15 @@
 #include <stdlib.h>
 #include <string.h>
 #include <limits.h>
-#include <map>
+#include <memory>
 
-#ifndef _WINDOWS
-#include <i86.h>
-#include <bios.h>
-#include <malloc.h>
-#else
-#include <Windows.h>
-#endif
+//#ifndef _WINDOWS
+//#include <i86.h>
+//#include <bios.h>
+//#include <malloc.h>
+//#else
+//#include <Windows.h>
+//#endif
 
 #include <conio.h>
 #include "SYSTEM.H"
@@ -69,11 +69,11 @@ using namespace std;
    ------------------------------------------------------------------------ */
 
 // heap allocations
-#ifdef _WINDOWS
-	#define malloc(size)	HeapAlloc(hHeap, 0, size)
-	#define free(p)			HeapFree(hHeap, 0, p)
-	extern HANDLE hHeap;
-#endif
+//#ifdef _WINDOWS
+//	#define malloc(size)	HeapAlloc(hHeap, 0, size)
+//	#define free(p)			HeapFree(hHeap, 0, p)
+//	extern HANDLE hHeap;
+//#endif
 
 /* ------------------------------------------------------------------------ */
 /* Defines and Compile flags */
@@ -131,19 +131,22 @@ static void 		ConcatinateMem();
 /* ------------------------------------------------------------------------ */
 /* Global Variables */
 
-PTR		pHeap;
+//PTR		pHeap;
+shared_ptr<unsigned char[]> pHeap;
 
-ULONG	*	apBlocks;
-SHORT	*	aiNextBlk;
-SHORT	*	aiPrevBlk;
-ATTR_BLK_TYPE	*	abBlockAttr;
+//ULONG	*	apBlocks;
+//SHORT	*	aiNextBlk;
+//SHORT	*	aiPrevBlk;
+//ATTR_BLK_TYPE	*	abBlockAttr;
+ULONG		apBlocks[3072];
+SHORT		aiNextBlk[3072];
+SHORT		aiPrevBlk[3072];
+ATTR_BLK_TYPE		abBlockAttr[3072];
 
 USHORT	cNumBlkHeads = 0;
 USHORT	iMaxBlkHeadUsed = 0;
 
 BOOL	fReport;
-
-static map<int, void*> memoryBlocks;
 
 struct meminfo {
 	ULONG		LargestBlockAvail;
@@ -180,11 +183,11 @@ ULONG InitMemManag (
 		printf("\n\n\nMemory Manager Initialization\n");
 
 	cNumBlkHeads = cNumBlkHeads_;
-	apBlocks	 = (ULONG *)malloc((ULONG)(cNumBlkHeads*sizeof(ULONG *)));
-	aiNextBlk	 = (SHORT *)malloc((ULONG)(cNumBlkHeads*sizeof(SHORT)));
-	aiPrevBlk	 = (SHORT *)malloc((ULONG)(cNumBlkHeads*sizeof(SHORT)));
-	abBlockAttr	 = (ATTR_BLK_TYPE *)malloc((ULONG)cNumBlkHeads *sizeof(ATTR_BLK_TYPE));
-	
+	//apBlocks	 = (ULONG *)malloc((ULONG)(cNumBlkHeads*sizeof(ULONG *)));
+	//aiNextBlk	 = (SHORT *)malloc((ULONG)(cNumBlkHeads*sizeof(SHORT)));
+	//aiPrevBlk	 = (SHORT *)malloc((ULONG)(cNumBlkHeads*sizeof(SHORT)));
+	//abBlockAttr	 = (ATTR_BLK_TYPE *)malloc((ULONG)cNumBlkHeads *sizeof(ATTR_BLK_TYPE));
+
 	for (i=0; i<cNumBlkHeads; ++i)		/* init all blocks to unused */
 		abBlockAttr[i] = UNUSED;
 
@@ -198,10 +201,11 @@ ULONG InitMemManag (
 	cbFreemem = cbMaxFree - 4000;
 
 	// count down til we find the real size of free memory or we can't find enough
-	for (pHeap = NULL; pHeap == NULL && cbFreemem > cbMinMemoryNeeded; cbFreemem -= 0x10000)
-		pHeap = (PTR)malloc(cbFreemem);
+	/*for (pHeap = NULL; pHeap == NULL && cbFreemem > cbMinMemoryNeeded; cbFreemem -= 0x10000)
+		pHeap = (PTR)malloc(cbFreemem);*/
+	pHeap = shared_ptr<unsigned char[]>(new unsigned char[cbFreemem]);
 
-	printf("memory allocated: %ld Starting at 0x%lx\n",cbFreemem, pHeap);
+	printf("memory allocated: %ld Starting at 0x%lx\n",cbFreemem, pHeap.get());
 
 	if (cbFreemem < cbMinMemoryNeeded || pHeap == NULL)
 	{
@@ -214,27 +218,27 @@ ULONG InitMemManag (
 			puts(buffer);
 		}
 		
-		FreeResourceManager();
+		//FreeResourceManager();
 		
-		free(pHeap);
-		free(apBlocks);
-		free(aiNextBlk);
-		free(aiPrevBlk);
-		free(abBlockAttr);
+		//free(pHeap);
+		//free(apBlocks);
+		//free(aiNextBlk);
+		//free(aiPrevBlk);
+		//free(abBlockAttr);
 		exit(EXIT_SUCCESS);
 	}
 
-	apBlocks[START_BLOCK] = (ULONG)pHeap;				/* START-OF-SPACE marker */
+	apBlocks[START_BLOCK] = (ULONG)pHeap.get();				/* START-OF-SPACE marker */
 	aiNextBlk[START_BLOCK] = FIRST_BLOCK;
 	aiPrevBlk[START_BLOCK] = (SHORT)fERROR;						/* means no link */
 	abBlockAttr[START_BLOCK] = STARTBLK | LOCKED;
 
-	apBlocks[FIRST_BLOCK] = (ULONG)pHeap;				/* first free space */
+	apBlocks[FIRST_BLOCK] = (ULONG)pHeap.get();				/* first free space */
 	aiNextBlk[FIRST_BLOCK] = END_BLOCK;
 	aiPrevBlk[FIRST_BLOCK] = START_BLOCK;
 	abBlockAttr[FIRST_BLOCK] = FREEMEM;
 
-	apBlocks[END_BLOCK] = (ULONG)pHeap+cbFreemem;	/* END-OF-CONTIGUOUS-SPACE marker */
+	apBlocks[END_BLOCK] = (ULONG)pHeap.get() + cbFreemem;	/* END-OF-CONTIGUOUS-SPACE marker */
 	aiNextBlk[END_BLOCK] = (SHORT)fERROR;						/* means no link */
 	aiPrevBlk[END_BLOCK] = FIRST_BLOCK;
 	abBlockAttr[END_BLOCK] = ENDBLK | LOCKED;
@@ -1638,25 +1642,6 @@ void * BLKPTR(LONG i)
 #endif
 
 	return (void*)((ULONG*)apBlocks[i]);
-}
-
-/* ========================================================================
-   Function    - BLKPTR2
-   Description - Get the block pointer (version of 2022).
-   Returns     - void * (You must cast to use.)
-   ======================================================================== */
-
-void* BLKPTR2(LONG i, LONG size)
-{
-	if (memoryBlocks.find(i) != memoryBlocks.end())
-	{
-		return memoryBlocks[i];
-	}
-	else
-	{
-		memoryBlocks[i] = malloc(size * sizeof(ULONG));
-		return (void*)memoryBlocks[i];
-	}
 }
 
 /* ========================================================================

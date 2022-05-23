@@ -18,12 +18,13 @@
 /* ------------------------------------------------------------------------
    Includes
    ------------------------------------------------------------------------ */
-#ifdef _WINDOWS
-#include <Windows.h>
-#else
-#include <i86.h>
-#include <bios.h>
-#endif
+//#ifdef _WINDOWS
+//#include <Windows.h>
+//#else
+//#include <i86.h>
+//#include <bios.h>
+//#include <malloc.h>
+//#endif
 
 #include <string.h>
 #include <stdio.h>
@@ -56,8 +57,6 @@ using namespace std;
 #define	RM_IN_MEMORY				0
 #define	RM_NOT_IN_MEMORY			1
 
-// #define _CHATTER
-
 /* Define for max number of named resources. */
 #define	cMAXRESFILES		32
 
@@ -65,7 +64,6 @@ using namespace std;
 #define	cMAXEXTENTS			10
 
 #define UNSET_RES_EXT		0xFF
-// #define UNSET_RES_FILE_EXT	0xFF
 
 #define HASH_COLLSION_FILE	"hashcln.txt"
 
@@ -73,11 +71,11 @@ using namespace std;
    Macros
    ------------------------------------------------------------------------ */
 // heap allocations
-#ifdef _WINDOWS
-	#define malloc(size)	HeapAlloc(hHeap, 0, size)
-	#define free(p)			HeapFree(hHeap, 0, p)
-	extern HANDLE hHeap;
-#endif
+//#ifdef _WINDOWS
+//	#define malloc(size)	HeapAlloc(hHeap, 0, size)
+//	#define free(p)			HeapFree(hHeap, 0, p)
+//	extern HANDLE hHeap;
+//#endif
 
 /* ------------------------------------------------------------------------
    Prototypes
@@ -147,18 +145,24 @@ SHORT LoadFLCFromResFile (LONG iResFileSlot, BOOL fLockRes);
 extern UBYTE antia_table[];
 
 
-ULONG		*lResNameCRC;	/* hash of name of resource */
-SHORT		*iResBlock;		/* index number of the memmanag block for this resource */
-UBYTE		*iResExtIndex;	/* index into ResExtentions */
+//ULONG		*lResNameCRC;	/* hash of name of resource */
+//SHORT		*iResBlock;		/* index number of the memmanag block for this resource */
+//UBYTE		*iResExtIndex;	/* index into ResExtentions */
+ULONG		lResNameCRC[14000];	/* hash of name of resource */
+SHORT		iResBlock[14000];		/* index number of the memmanag block for this resource */
+UBYTE		iResExtIndex[14000];	/* index into ResExtentions */
 
 LONG  iMaxResSlotsUsed = 0;
 LONG  iMaxResSlots = 0;
 LONG  iMaxResSlotsInUse = 0;
 
 #if fUSE_RES_FILES
-ULONG    *gcbResOffset;                // offset into file for resource
-UBYTE    *giResFileNames;              // index into gszResFileNames
-UBYTE		*gResFlags;
+//ULONG    *gcbResOffset;                // offset into file for resource
+//UBYTE    *giResFileNames;              // index into gszResFileNames
+//UBYTE		*gResFlags;
+ULONG    gcbResOffset[14000];                // offset into file for resource
+UBYTE    giResFileNames[14000];              // index into gszResFileNames
+UBYTE		gResFlags[14000];
 
 // Instructions: plug in the names of the basic RES files here.
 // We do not search for .RES files.
@@ -1917,40 +1921,19 @@ BOOL InitResourceManager(USHORT MaxResRequested)
 	remove(HASH_COLLSION_FILE);
 #endif
 
-#if defined (_WINDOWS)
-	iResBlock	= (SHORT *) malloc (sizeof(SHORT)  * MaxResRequested);
-	lResNameCRC = (ULONG *) malloc (sizeof(ULONG) * MaxResRequested);
-	iResExtIndex = (UBYTE*) malloc (sizeof(UBYTE)  * MaxResRequested);
+	//iResBlock	= (SHORT *) malloc (sizeof(SHORT)  * MaxResRequested);
+	//lResNameCRC = (ULONG *) malloc (sizeof(ULONG) * MaxResRequested);
+	//iResExtIndex = (UBYTE*) malloc (sizeof(UBYTE)  * MaxResRequested);
 
 #if fUSE_RES_FILES
 	/* offset into file for resource */
-	gcbResOffset = (ULONG *) malloc(sizeof(LONG) * MaxResRequested);
+	//gcbResOffset = (ULONG *) malloc(sizeof(LONG) * MaxResRequested);
 	
 	/* index into apFileNames */
-	giResFileNames = (UBYTE *) malloc(sizeof(UBYTE) * MaxResRequested);
+	//giResFileNames = (UBYTE *) malloc(sizeof(UBYTE) * MaxResRequested);
 
 	// [d4-13-97 JPC] Flags:
-	gResFlags = (UBYTE *) malloc(sizeof(UBYTE) * MaxResRequested);
-#endif
-
-#else
-	// For DOS use the low memory area for the resource manager memory.
-	iResBlock =    (SHORT *) D32DosMemAlloc (sizeof(SHORT)  * MaxResRequested);
-	lResNameCRC = (ULONG *) D32DosMemAlloc (sizeof(ULONG) * MaxResRequested);
-	iResExtIndex =   (UBYTE*) D32DosMemAlloc (sizeof(UBYTE)  * MaxResRequested);
-
-#if fUSE_RES_FILES
-	/* offset into file for resource */
-	gcbResOffset = (ULONG *) D32DosMemAlloc(sizeof(LONG) * MaxResRequested);
-	
-	/* index into apFileNames */
-	giResFileNames = (UBYTE *)   D32DosMemAlloc(sizeof(UBYTE) * MaxResRequested);
-	// giResFileCode 	= (UBYTE *)   D32DosMemAlloc(sizeof(UBYTE) * MaxResRequested);
-
-	// [d4-13-97 JPC] Flags:
-	gResFlags = (UBYTE *) D32DosMemAlloc(sizeof(UBYTE) * MaxResRequested);
-#endif
-
+	//gResFlags = (UBYTE *) malloc(sizeof(UBYTE) * MaxResRequested);
 #endif
 
 	

@@ -543,7 +543,6 @@ class ItemChargeHandler
 		static BOOL mfFind(ITEMTYPE,LONG *,LONG *);
 		static void mfDropCharge(ITEMTYPE ItemTypeIdx,SHORT hAvatarStats);
 		static LONG mfCharges(ITEMTYPE ItemTypeIdx);
-		// UNUSED static ChargedItemChain mfChain(LONG);
 };
 		
 	

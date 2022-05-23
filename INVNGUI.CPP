@@ -43,10 +43,6 @@
 /* ------------------------------------------------------------------------
    Defines
    ------------------------------------------------------------------------ */
-#ifdef _VC4
-#define static
-#endif
-
 #define LIST_SIZE 30	// from advprep.cpp
 
 extern DECL_VECTOR_CLASS(SHORT,Adventures);

@@ -16,7 +16,6 @@
 #include "TYPEDEFS.H"
 #include "ENGINE.H"
 
-#include "AI_UTILS.H"
 #include "COMBOPTS.HXX"
 #include "GAMEMAP.HXX"
 #include "GMENUENM.H"
@@ -28,18 +27,6 @@
 #include "HANDLE.HXX"
 #include "UNITS.HXX"
 #include "SCENE.HXX"
-
-#ifdef _WINDOWS
-#ifdef OLD_SOUND
-#include "winsys\sndutil.h"
-#include "winsys\mciutil.h"
-#include "winsys\musiutil.h"
-#endif
-#endif
-
-#if defined (_VC4)
-#define static
-#endif
 
 #define FALL_DIVISOR 			128
 #define DAMAGE_FRAME				5

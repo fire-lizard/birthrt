@@ -58,16 +58,6 @@
 #define SVGA 			1
 #define MAX_VIEW_WIDTH 	640
 #define MAX_VIEW_HEIGHT	480
-//#define VIEW_WIDTH 	MAX_VIEW_WIDTH
-//#define VIEW_HEIGHT 	MAX_VIEW_HEIGHT
-
-#ifdef _VC4
-// Define F_OK for Visual C++ 4.0 compatibility.
-// F_OK is used in the "access" function.
-// [d7-29-96 JPC]
-#define F_OK 0
-#endif
-
 
 /* types for player starts */
 #define TYPE_PLAYERSTART1	-1L

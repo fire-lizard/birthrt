@@ -19,7 +19,6 @@
 #include "SYSTEM.H"
 #include "ENGINE.H"
 
-#include "AI_UTILS.H"
 #include "AVATAR.HXX"
 //#include "btlstr.h"
 #include "AIBTLCAP.HXX"
@@ -47,11 +46,6 @@
 #include "WINSYS\MULPLAY.HXX"
 #include "WINSYS\MESSQUE.HXX"
 #include "WINSYS\MONO_C.H"
-#ifdef OLD_SOUND
-#include "winsys\sndutil.h"
-#include "winsys\mciutil.h"
-#include "winsys\musiutil.h"
-#endif
 #endif
 /* ------------------------------------------------------------------------
    Defines and Compile Flags

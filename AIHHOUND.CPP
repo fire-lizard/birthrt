@@ -16,13 +16,6 @@
 #include "AVATAR.HXX"	// includes aipong.hxx
 #include "PLAYSTAT.HXX"
 #include "SOUND.HXX"
-#ifdef _WINDOWS
-#ifdef OLD_SOUND
-#include "winsys\sndutil.h"
-#include "winsys\mciutil.h"
-#include "winsys\musiutil.h"
-#endif
-#endif
 
 // GWP May need to be stored on a per art type basis in gametypes.
 // GWP Hack for Testing purposes.

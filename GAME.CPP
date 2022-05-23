@@ -32,7 +32,6 @@
 #include "MACHINE.H"
 
 #include "ACTNMENU.HXX"
-#include "AI_UTILS.H"
 #include "GAME.H"
 #include "GAMETYPE.HXX"
 #include "ANIM.H"

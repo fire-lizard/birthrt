@@ -34,15 +34,6 @@ void	ErrorMessage (const char *format, ...);
 // Various macros.
 #if defined(_WINDOWS)
 
-	#if defined(_VC4)							// Visual C++ 4.0
-      #include <crtdbg.h>              // for _ASSERT macro
-		#define ASSERT _ASSERT				// _ASSERT handles _DEBUG/NDEBUG behavior
-	#else											// Watcom
-		#if defined(_DEBUG)
-			//GEH #define ASSERT(arg) if(!(arg)) SS_Assert(gszSourceFile, __LINE__)
-		#endif
-	#endif
-
 	#if defined(_STATUS)
 		#include "winsys\Status.h"
 		#define StatusLine WriteDebug

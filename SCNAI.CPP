@@ -51,15 +51,6 @@
 #include "WINSYS\MONO_C.H"
 #endif
 
-
-#ifdef _WINDOWS
-#ifdef OLD_SOUND
-#include "winsys\sndutil.h"
-#include "winsys\musiutil.h"
-extern HWND hwndApp;
-#endif
-#endif
-
 extern void SysForceCursor (void);
 
 void UpdateTime(void);
@@ -260,13 +251,6 @@ void SCENE_AI::mfSceneFadeOut (SCENE &rScene)
    ======================================================================== */
 void SCENE_AI::mfBattleInit ( SCENE &rScene)
 {
-#ifdef _WINDOWS
-#ifdef OLD_SOUND
-	//mci_OpenCD();
-	//mci_PlayCD(hwndApp, 2, 0, 0, 0, 0, 0, 0);
-#endif
-#endif
-	
 	LONG 	i;
 	
 	UpdateTime();
@@ -343,16 +327,6 @@ void SCENE_AI::mfBattleRelease (SCENE &rScene)
 	init_mouse("DAGGER",CURSOR_HOTSPOT_UL);
 	
 	pop_regions();
-	
-#ifdef _WINDOWS
-#ifdef OLD_SOUND
-	//StopAllWave(); // Don't stop now incase we are in the middle of a speech.
-	StopMusic();
-	FinalMusic();
-	//mci_StopCD();
-	//mci_CloseCD();
-#endif
-#endif
 }
 		
 /* ========================================================================
@@ -454,12 +428,6 @@ void SCENE_AI::mfBattleFadeOut (SCENE &rScene)
    ======================================================================== */
 void SCENE_AI::mfCombatInit ( SCENE &rScene)
 {
-#ifdef _WINDOWS
-#ifdef OLD_SOUND
-	//mci_OpenCD();
-	//mci_PlayCD(hwndApp, 2, 0, 0, 0, 0, 0, 0);
-#endif
-#endif
 	LONG i;
 
 	UpdateTime();
@@ -504,16 +472,6 @@ void SCENE_AI::mfCombatRelease (SCENE &rScene)
 	// Go back to standard Adventure AI.
 	rScene.mfSetSceneType(SCENE_AI::ADVENTURE_SCENE);
 	rScene.mfSetSceneState(SCENE_AI::PLAY);
-	
-#ifdef _WINDOWS
-#ifdef OLD_SOUND
-	//StopAllWave(); // Don't stop now incase we are in the middle of a speech.
-	StopMusic();
-	FinalMusic();
-	//mci_StopCD();
-	//mci_CloseCD();
-#endif
-#endif
 }
 		
 /* ========================================================================
@@ -600,13 +558,6 @@ void SCENE_AI::mfCombatFadeOut (SCENE &rScene)
    ======================================================================== */
 void SCENE_AI::mfAdventureInit ( SCENE &rScene)
 {
-#ifdef _WINDOWS
-#ifdef OLD_SOUND
-	//mci_OpenCD();
-	//mci_PlayCD(hwndApp, 2, 0, 0, 0, 0, 0, 0);
-#endif
-#endif
-	
 	UpdateTime();
 	
  	// set engine lens
@@ -744,17 +695,6 @@ void SCENE_AI::mfAdventureRelease (SCENE &rScene)
 	SetSoundDecay(100, 200);
 	
 	pop_regions();
-	
-#ifdef _WINDOWS
-#ifdef OLD_SOUND
-	//StopAllWave(); // Don't stop now incase we are in the middle of a speech.
-	TurnOffAllSounds();
-	StopMusic();
-	FinalMusic();
-	//mci_StopCD();
-	//mci_CloseCD();
-#endif
-#endif
 }
 /* ========================================================================
    Function    - mfAdventurePlay

@@ -71,25 +71,22 @@ typedef struct _RESTYPE
 extern "C" {
 #endif
 
-extern ULONG				*cbResOffset;			/* resmanag.c */
-extern SHORT				*iResBlock;		   		/* resmanag.c */
-extern UBYTE				*iResFile;				/* resmanag.c */
+//extern SHORT				*iResBlock;		   		/* resmanag.c */
+extern SHORT				iResBlock[14000];		   		/* resmanag.c */
 #if fUSE_RES_FILES
-extern CSTRPTR				*szFileNames;			/* resmanag.c */
 //GWP This is really bad but I don't want to write the access fns.
 //    And the memory manager needs access to this data.
-extern UBYTE				*gResFlags;
-extern UBYTE				*giResFileNames;
+//extern UBYTE				*gResFlags;
+//extern UBYTE				*giResFileNames;
+extern UBYTE				gResFlags[];
+extern UBYTE				giResFileNames[];
 #endif
-extern UBYTE				iNextFileNameAvail;		/* resmanag.c */
-extern BOOL					fNewRes;				/* resmanag.c */
-extern int					file;
 
-extern UBYTE				*iResExtIndex;		/* index into ResExtentions */
+//extern UBYTE				*iResExtIndex;		/* index into ResExtentions */
+extern UBYTE				iResExtIndex[];		/* index into ResExtentions */
 extern RESTYPE				ResExtentions[];
 
 extern LONG					iMaxResSlots;
-extern LONG					iMaxResSlotsUsed;
 
 #if defined (__cplusplus)
 }

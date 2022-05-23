@@ -18,11 +18,6 @@
 #include "engine.h"
 #endif
 
-
-#if !defined(_AI_UTILS_H)
-#include "ai_utils.h"
-#endif
-
 #if !defined(_CTHING_HXX)
 #include "cthing.hxx"
 #endif
@@ -812,7 +807,6 @@ inline void CAvatar::mfBeginListenBow()
 	if (mfTestSequenceDone())
 	{
 		Status = AI_LISTEN;
-		pfVoiceInq( mfType() );
 	}
 }
 
@@ -836,7 +830,6 @@ inline void CAvatar::mfListen()
 inline void CAvatar::mfEndListen()
 {
     // Since we currently recieve no messages just resume like AI_END_PAUSE
-	pfVoiceResp( mfType() );
 	Status = AI_END_LISTEN_BOW;
 	mfPlayAnimationOnce(BOWSEQ); // Bow once again.
 	//	fFreeze = FALSE; // Let go of the camera.

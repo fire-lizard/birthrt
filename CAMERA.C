@@ -40,8 +40,6 @@ extern BOOL gfCheckCameraMove;
 /* ------------------------------------------------------------------------
    Defines and Compile Flags
    ------------------------------------------------------------------------ */
-// UNUSED #define CAMERA_STACK_SIZE 20
-
 #define INITIAL_TARGET_FACTOR	105
 #define DEFAULT_LINEAR_RATE		20
 #define DEFAULT_ANGLE_RATE     4
@@ -76,7 +74,6 @@ enum {
    Global Variables
    ------------------------------------------------------------------------ */
 CAMERA camera;	// used by the engine to do the main view.
-// UNUSED CAMERA camera_stack[CAMERA_STACK_SIZE];
 LONG camera_stack_ptr=0;
 
 extern BOOL fAIAutoRes;

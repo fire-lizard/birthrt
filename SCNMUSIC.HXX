@@ -22,15 +22,6 @@
 #include "filename.hxx"
 #endif
 
-#if defined _WINDOWS && defined(OLD_SOUND)
-#if !defined(_SNDUTIL_H)
-#include "winsys\sndutil.h"
-#endif
-//#include "winsys\mciutil.h"
-#if !defined(_MUSIUTIL_H)
-#include "winsys\musiutil.h"
-#endif
-#endif
 /* ------------------------------------------------------------------------
    Defines and Compile Flags
    ------------------------------------------------------------------------ */
@@ -125,17 +116,6 @@ inline LONG SCENE_MUSIC_DATA::mfReadData(FILE *fp)
 	fBackgroundMusic.mfInitVals();
 	
 	Result = fBackgroundMusic.mfReadFileName(fp);
-#ifdef _WINDOWS
-#ifdef OLD_SOUND
-	if (Result != EOF)
-	{
-		StopMusic();
-		FinalMusic();
-		InitMusic ( mfGetBackgroundMusic(), ".", FALSE ); 
-		StartMusic();
-	}
-#endif
-#endif
-		return Result;
+	return Result;
 }
 #endif // _SCNMUSIC_HXX

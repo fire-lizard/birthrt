@@ -2399,7 +2399,6 @@ void TargetMenu::Display(LONG combo, LONG targetargs)
 	LONG index = 0;
 	ADVENTURER_TEAM_ITOR AdvItor;
 	
-//	FILE *fp = fopen("blah", "w");
 	for (AdvItor = ADVENTURER::begin();
 		AdvItor != ADVENTURER::end();
 		AdvItor++)
@@ -2410,7 +2409,6 @@ void TargetMenu::Display(LONG combo, LONG targetargs)
 		CAvatar const *const pAvatar = (CAvatar const * const) BLKPTR(*AdvItor);
 		
 		TargetMenu::StatsHdls[index] = pAvatar->hPlayerStats;
-//		fprintf(fp, "Setting stats handle %d to %d\n", index, StatsHdls[index]);
 		
 		DumbAutoLockPtr< PLAYER_STATS > const pPS(pAvatar->hPlayerStats);
 		
@@ -2425,17 +2423,13 @@ void TargetMenu::Display(LONG combo, LONG targetargs)
 		
 		if (i < CharCount)
 		{
-//		    fprintf(fp, "Setting button %d to Activate %d, with hPS of %d.\n",
-//		    	button, i, StatsHdls[i]);
 		    SetButtonProc(D_RESURRECT_MENU, button, TargetMenu::Activate, i, NO_KEY);
 		}
 		else    
 		{
-//			fprintf(fp, "Button %d unused.\n");
 			SetButtonProc(D_RESURRECT_MENU, button, NULL, 0, NO_KEY);
 		}
 	}
-//	fclose(fp);
 	
 	SetButtonLabel(D_RESURRECT_MENU, RESURRECT_BUT_TITLE, STR_ITEM_UI_TARGET, BLACK);
 	SetButtonLabel(D_RESURRECT_MENU, RESURRECT_BUT_Q, STR_ITEM_UI_TARGET_QUESTION, BLACK);

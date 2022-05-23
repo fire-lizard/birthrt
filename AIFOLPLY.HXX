@@ -59,17 +59,7 @@ public:
 	inline void mfFollowAdventureTeam();
 	inline void mfSwapPlaces(FOLLOW_PLAYER_DATA &);
 	
-	
-	
 	SBYTE			fCurrentSpellBox;
-	
-	
-	// So we can tell if the animation should go to the walk sequence.
-	// GWP UNUSED
-	// GWP LONG		fPrevX;		//Save in the same 24.8 format as the pPlayer->x
-	// GWP LONG		fPrevY;		//Save in the same 24.8 format as the pPlayer->y
-	// GWP LONG		fPrevZ;
-	// GWP LONG		fPrevA;
 	
 	LONG	fTimeLastBump;
 	

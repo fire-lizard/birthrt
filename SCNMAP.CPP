@@ -28,18 +28,6 @@
 #include "SCENE.HXX"
 #include "SCNMAP.HXX"
 
-#ifdef _WINDOWS
-#ifdef OLD_SOUND
-#include "winsys\sndutil.h"
-#include "winsys\mciutil.h"
-#include "winsys\musiutil.h"
-extern HWND hwndApp;
-extern "C" {
-BOOL SetWaveVolume(USHORT, int);
-}
-#endif
-#endif
-
 /* ------------------------------------------------------------------------
    Notes
    ------------------------------------------------------------------------ */

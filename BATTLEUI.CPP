@@ -4710,7 +4710,6 @@ void PaintBattleWin (LONG MenuCombo, LONG )
 	Y = my + 80;
 	
 	UnitIndex = SCENE_MGR::AwayIndex;
-	// GWP Unused pAvatar = (CAvatar *) BLKPTR(units[UnitIndex].iHandle);
 	
 	// calculate how many unit they lost
 	PFBM = 0;

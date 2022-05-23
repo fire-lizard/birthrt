@@ -409,7 +409,6 @@ class REPORT_COUNT
 public:
 	REALM::REALM_TYPE realm;
 	int count;
-	// Unused int score;
 };
 
 class ALLIES

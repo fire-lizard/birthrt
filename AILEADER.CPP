@@ -11,7 +11,6 @@
 #include "SYSTEM.H"
 #include "ENGINE.H"
 
-#include "AI_UTILS.H"
 #include "AVATAR.HXX"
 
 static const SHORT sFrameCountDelay = 6;

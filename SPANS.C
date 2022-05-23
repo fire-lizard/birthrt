@@ -137,8 +137,6 @@ static POST_TABLE_PTR	gPosts;
 //     screen or another post.
 static SPAN				*gSpans;
 
-// GWP UNUSED static ULONG			*gLastSpan;
-
 // GWP gJustClosedSpan is an array, one element for each screen coordinate y
 //     value. It contains the ending x coordinate and the sector. The sector
 //     value doubles as a flag to indicate whether the span is closed or not.
@@ -164,13 +162,8 @@ void allocate_spans()
 	gSpans = (SPAN *) zalloc((MAX_VIEW_HEIGHT + 10) * sizeof(SPAN));
 	memset(gSpans, 0,(MAX_VIEW_HEIGHT + 10) * sizeof(SPAN));
 	
-	// GWP UNUSED gLastSpan = (ULONG *) zalloc(MAX_VIEW_HEIGHT * sizeof(ULONG));
-	//memset(gLastSpan, 0,MAX_VIEW_HEIGHT * sizeof(ULONG));
-	
 	gJustClosedSpan = (SPAN *) zalloc(MAX_VIEW_HEIGHT * sizeof (SPAN));
 	memset(gJustClosedSpan, 0 ,MAX_VIEW_HEIGHT * sizeof(SPAN));
-	
-//	memset(gSpanLighting, 0,MAX_VIEW_HEIGHT * 2 * sizeof(SHORT));
 }
 
 /* ========================================================================
@@ -182,9 +175,6 @@ void init_spans (void)
 {
 	LONG	ii;
 
-//  X_RES_ADJ
-//  Y_RES_ADJ
-
 	for(ii=0; ii<(MAX_VIEW_HEIGHT*2); ++ii)
 	{
 		LONG	l;
@@ -192,7 +182,6 @@ void init_spans (void)
 
 		if (i < render_center_y)
 		{
-//			l = render_center_y - i;				/* ceiling expression */
 			l = (render_center_y - i)/2;			/* ceiling expression */
 		}
 		else
@@ -224,13 +213,8 @@ void clear_spans (void)
 	static LONG prev_camera_a = 0;
 	static LONG prev_camera_p = 0;
 
-	// for(i=0; i<MAX_VIEW_WIDTH; ++i)
-	// 	last_post[i] = 0;
 	memset(&last_post[0], 0, sizeof(last_post));	// replaces above for loop.
 
-	// GWP UNUSED gLastSpan[i] = 0;
-	// GWP UNUSED memset(&gLastSpan[0], 0, sizeof(gLastSpan));	// pulled out of lower for loop.
-	
 	for(i=0; i<MAX_VIEW_HEIGHT; ++i)
 	{
 		gJustClosedSpan[i].sector = ABSURD_SECTOR;

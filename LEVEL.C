@@ -256,7 +256,6 @@ IWAD_ENTRY ent;
 	debugf("Free memory before textures...%ld\n", ReportFreeMem(TRUE));
 	load_sky_textures();
 	load_wall_textures();
-	// UNUSED load_flats();
 	debugf("Free memory after textures...%ld\n", ReportFreeMem(TRUE));
 	cbWad_Uses = cbMem_Before - ReportFreeMem(TRUE);	/* mem used by wad */
 
@@ -652,29 +651,17 @@ static void load_nodes(IWAD_ENTRY *ent, FILE * fi)
 {
 NODE *t;
 SHORT NodeHandle;
-//FILE *fi;
 ULONG i=0;
 LONG numRead;
 
-	//fi=FileOpen(pwad_name,"rb");
 	fseek(fi,ent->offset,SEEK_SET);
 	tot_nodes=ent->size/sizeof(NODE);
 	if (tot_nodes==0 || tot_nodes > 10000)
 		fatal_error("LEVEL ERROR - Total nodes=%ld in wad %s\n",tot_nodes,pwad_name);
-	// GWP nodes=(NODE *)zalloc(ent.size+1);
 	
 	NodeHandle = NewBlock(sizeof(NODE) * tot_nodes);
 	SetBlockAttr(NodeHandle,LOCKED,LOCKED);
 	t = (NODE *)BLKPTR(NodeHandle);
-
-	// GWP while(ftell(fi)<ent->offset+ent->size)
-	// GWP 	{
-	// GWP 	fread(&t,sizeof(NODE),1,fi);
-	// GWP 	// GWP EXPAND_FACTOR == 1
-	// GWP 	// GWP t.x*=EXPAND_FACTOR;
-	// GWP 	// GWP t.y*=EXPAND_FACTOR;
-	// GWP 	nodes[i++]=t;
-	// GWP 	}
 	
 	numRead = fread(&t[0], sizeof(NODE), tot_nodes, fi);
 	if (numRead < tot_nodes)
@@ -690,19 +677,10 @@ LONG numRead;
 		nodes[i].y=t[i].y;
 		nodes[i].a=t[i].a;
 		nodes[i].b=t[i].b;
-		// GWP Unused nodes[i].minyf = t[i].minyf;
-		// GWP Unused nodes[i].maxyf = t[i].maxyf;
-		// GWP Unused nodes[i].minxf = t[i].minxf;
-		// GWP Unused nodes[i].maxxf = t[i].maxxf;
-		// GWP Unused nodes[i].minyb = t[i].minyb;
-		// GWP Unused nodes[i].maxyb = t[i].maxyb;
-		// GWP Unused nodes[i].minxb = t[i].minxb;
-		// GWP Unused nodes[i].maxxb = t[i].maxxb;
 		nodes[i].f=t[i].f;
 		nodes[i].r=t[i].r;
 	}
 	DisposBlock(NodeHandle);
-	//fclose(fi);
 }
 
 /* ========================================================================

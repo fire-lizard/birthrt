@@ -21,7 +21,6 @@
 #include "machine.h"
 #endif
 
-
 #if !defined(_PANORAMA_HXX)
 #include "panorama.hxx"
 #endif
@@ -38,7 +37,6 @@
 #include "scndemo.hxx"
 #endif
 
-
 #if !defined(_SCNMAP_HXX)
 #include "scnmap.hxx"
 #endif
@@ -47,7 +45,6 @@
 #include "scnmusic.hxx"
 #endif
 
-
 #if !defined(_SCNVER_HXX)
 #include "scnver.hxx"
 #endif
@@ -55,7 +52,6 @@
 #if !defined(_STRENUM_H)
 #include "strenum.h"
 #endif
-
 
 /* ------------------------------------------------------------------------
    Defines and Compile Flags
@@ -106,7 +102,6 @@ public:
 #if defined(SCENE_EDITOR)
 	BOOL mfWriteSceneFile();	// Used by scene editor.
 	BOOL mfAddHotKey(HDL_KEY hNewKey);
-	// UNUSED BOOL mfIsMusicSet();
 #endif
 
 	BOOL const mfGetExitScene(LONG &/* id */, char ** const /* cpNewSceneName */ ); 
@@ -386,21 +381,6 @@ inline char *SCENE::mfGetCommandFileName ()
 {
 	return fSelfRunningDemoData.mfGetCommandFileName();
 }
-
-#if UNUSED
-/* ========================================================================
-   Function    - mfIsMusicSet
-   Description - Test for whether we've started music or not.
-   Returns     - 
-   ======================================================================== */
-#if defined(SCENE_EDITOR)
-inline BOOL SCENE::mfIsMusicSet() 
-{
-	return fMusicData.mfIsBackgroundSet();
-}
-
-#endif
-#endif
 
 /* ========================================================================
    Function    - mfGetSceneName

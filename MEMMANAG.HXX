@@ -103,11 +103,7 @@ typedef USHORT ATTR_BLK_TYPE;
 extern "C" {
 #endif
 
-extern ULONG *				apBlocks;				/* memmanag.c */
-extern SHORT *				aiNextBlk;				/* memmanag.c */
-extern SHORT *				aiPrevBlk;				/* memmanag.c */
-extern ATTR_BLK_TYPE *		abBlockAttr;			/* memmanag.c */
-extern USHORT				cNumBlkHeads;			/* memmanag.c */
+extern ULONG 				apBlocks[];				/* memmanag.c */
 extern BOOL					fReport;				/* memmanag.c */
 
 #if defined (__cplusplus)
@@ -122,7 +118,6 @@ extern "C" {
 #endif
 
 void *BLKPTR(LONG);
-void* BLKPTR2(LONG, LONG);
 void * _zalloc(char* FileName, LONG FileLineNo, LONG size);
 ULONG InitMemManag (ULONG cbMinMemoryNeeded,
 					USHORT cNumBlkHeads_,

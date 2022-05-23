@@ -211,8 +211,6 @@ typedef struct{
 typedef struct{
 	LONG	x,y;
 	LONG	a,b;
-	// GWP Unused SHORT	minyf,maxyf,minxf,maxxf;	// Left these as shorts for size.
-	// GWP Unused SHORT	minyb,maxyb,minxb,maxxb;
 	ULONG	f,r;
 } BR_NODE;
 

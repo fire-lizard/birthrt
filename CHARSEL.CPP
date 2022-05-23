@@ -316,7 +316,6 @@ DEFINE_VECTOR_DATA_S(LONG,whoIndex,ADVENTURER_LIST_SIZE);
 DEFINE_VECTOR_CLASS(LONG,whoIndex);
 
 BOOL  fRealmSelected = FALSE;
-// GWP Unused BOOL  fCouncelor = FALSE;
 static LONG  iRegent1ID;
 static LONG  iRegent2ID;
 static LONG  iUnit1;
