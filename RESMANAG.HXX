@@ -56,13 +56,9 @@ typedef struct _RESTYPE
 /* ------------------------------------------------------------------------
    Macros
    ------------------------------------------------------------------------ */
-#define ReleaseResBlock(i)	DisposBlock(i)
-#define OpenImag(s)			_GetResource_((s),FALSE,FALSE,FALSE)
 #define GetResourceStd(s,f)	_GetResource_((s),(f),FALSE,FALSE)
-#define GetLockedResource(s,f) _GetResource_((s),(f),TRUE,FALSE)
 #define GetResourceRot(s)	_GetResource_((s),FALSE,FALSE,TRUE)
 #define GetResourceRotNoScale(s)	_GetResource_((s),TRUE,FALSE,TRUE)
-#define TestAndLoadFromResFile(s,l) _TestAndLoadFromResFile_((s),(l))
 
 /* ------------------------------------------------------------------------
    Global Variables
@@ -72,7 +68,7 @@ extern "C" {
 #endif
 
 //extern SHORT				*iResBlock;		   		/* resmanag.c */
-extern SHORT				iResBlock[14000];		   		/* resmanag.c */
+extern SHORT				iResBlock[];		   		/* resmanag.c */
 #if fUSE_RES_FILES
 //GWP This is really bad but I don't want to write the access fns.
 //    And the memory manager needs access to this data.
@@ -120,7 +116,6 @@ SHORT ClrPurgeRes (SHORT iResBlk, SHORT iMemBlk);
 ULONG HashCRC(CSTRPTR szResName);
 ULONG HashID(CSTRPTR szFileName);
 USHORT CheckSum(SHORT i);
-SHORT _TestAndLoadFromResFile_ (CSTRPTR szResName, BOOL fLockRes);
 LONG ResourceFileAccess (CSTRPTR pszFile);
 
 // Call before initializing the memory manager. Or inside the memory
