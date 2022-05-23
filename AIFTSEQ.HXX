@@ -118,13 +118,6 @@ inline FIGHT_SEQUENCE::ATTACK_MODE const FIGHT_SEQUENCE::mfGetCurrentSequence(TH
 // Get the weak sequence for this type of warrior
 inline FIGHT_SEQUENCE::ATTACK_MODE const FIGHT_SEQUENCE::mfGetWeakSequence(THINGTYPE const ThingType) const
 {
-//#if defined (_DEBUG)
-//	{
-//		fatal_error("FILE: %s[%d] ThingType %ld has no attack sequence.\n",
-//					 __FILE__, __LINE__, ThingType);
-//	}
-//#endif
-
 	if (ThingType < FIRST_GAME_THING || ThingType > LAST_GAME_AVATAR)
 	{
 		return ATM_NONE;

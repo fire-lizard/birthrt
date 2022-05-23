@@ -1887,11 +1887,7 @@ static void scale_obj (LONG t, LONG sx, LONG dx, LONG dy, LONG dye, LONG clipped
 	// GEH a bptr of NULL means the object was purged and we haven't
 	// been able to anything about that yet, so just return
 	if (bptr == NULL)
-//#if defined(_DEBUG)
-//		fatal_error("thing.c: scale_obj() attempted to use NULL bitmap pointer.");
-//#else
 		return;
-//#endif
 		
 #if !defined(_WINDOWS)
 	if (fAIMoving)
@@ -3632,18 +3628,7 @@ void decode_delta_flc (PTR pData, ANIMPTR pAnim)
 	USHORT	pix;
 	SBYTE		psize;
 
-// [d1-08-97 JPC] If we're desperate to know where the memory overwrite
-// occurs, try checking for the overwrite as we decode--but this will
-// be terribly slow.
-// #if defined (_DEBUG)
-// 	PTR		pEndOfBlock;
-// #endif
-
 	pDest = ((PTR)BLKPTR(pAnim->iBuff)) + sizeof(BITMHDR);
-
-// #if defined (_DEBUG)
-// 	pEndOfBlock = pDest + GetDataBlkSize (pAnim->iBuff);
-// #endif
 
 	uDataPtr.ub = pData;			/* set union of pointers to pData */
 	line_count = *uDataPtr.w++;	/* union allows us to treat the ptr as various types */
@@ -3662,10 +3647,6 @@ void decode_delta_flc (PTR pData, ANIMPTR pAnim)
 					/* copy a run */
 					if ((psize = *uDataPtr.b++) > 0)	/* copy run of data */
 					{
-// #if defined (_DEBUG)
-// 					if (uDestTmp.uw + psize >= pEndOfBlock)
-// 						fatal_error ("Overwrote end of block in decode_delta_flc\n");
-// #endif
 						memcpy(uDestTmp.uw, uDataPtr.uw, psize<<1);
 						uDestTmp.uw += psize;
 						uDataPtr.uw += psize;
@@ -3677,10 +3658,6 @@ void decode_delta_flc (PTR pData, ANIMPTR pAnim)
 						psize = -psize;
 						pix = *uDataPtr.uw++;
 						do {
-// #if defined (_DEBUG)
-// 							if (uDestTmp.uw >= pEndOfBlock)
-// 								fatal_error ("Overwrote end of block in decode_delta_flc\n");
-// #endif
 							*uDestTmp.uw++ = pix;
 						} while (--psize);
 					}

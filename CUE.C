@@ -637,18 +637,6 @@ void init_shade_table(CHAR *Name)
 void color_rect (LONG x,LONG y,LONG w,LONG h,LONG s)
 {
 	PTR  sptr;
-	// GWP LONG ww;
-	
-//#if defined(_DEBUG)
-//	if (x < 0 || x >= MAX_VIEW_WIDTH ||
-//	    y < 0 || y >= MAX_VIEW_HEIGHT ||
-//	    (x + w) >= MAX_VIEW_WIDTH ||
-//	    (y + h) >= MAX_VIEW_HEIGHT)
-//	{
-//		fatal_error("CUE ERROR! rectangle off screen. x = %ld, y = %ld, w = %ld, h = %ld,\n",
-//													x, y, w, h);
-//	}
-//#else
 	// Clip!
 	if (x < 0)
 		x = 0;

@@ -73,7 +73,6 @@ static FP_DSND        fp_DSnd = NULL;
 
 
  // -- local prototype
-void DSError					( MMRESULT mmResult );
 BOOL InitializeWaveDevice	( HWND hwndApp );
 BOOL SetWavePan				( USHORT usWave, int Pan );
 BOOL SetWaveFreq				( USHORT usWave, DWORD dwFreq );
@@ -255,8 +254,6 @@ BOOL InitializeWaveDevice ( HWND hwndApp )
 
 			}
             
-			DSError ( mmResult ); 
-
 		} // end if could get proc address
 
 	} // end if DSound.dll found
@@ -328,8 +325,6 @@ BOOL CreateSDS( USHORT   usWave )            //---- Wave number
                                                &WaveInfo[usWave].lpDSBuffer,
                                                NULL ) ) != DS_OK )
     {
-        DSError ( mmResult );
-
         return FALSE;
     }
 
@@ -353,8 +348,6 @@ BOOL CreateSDS( USHORT   usWave )            //---- Wave number
                                                          &dwWrapBSize,
                                                          0L ) )       != DS_OK )
     {
-        DSError ( mmResult );
-            
         return FALSE;
     } 
     else 
@@ -1591,102 +1584,6 @@ void SuspendSound ( void )
 
 
 }   //---- SuspendSound()
-
-
-
-
-//----------------------------------------------------------------------------
-//
-//  DSError ( ) 
-//
-//  Description: Debugf the known Direct Sound errors
-//                                  
-//
-//  Arguments:   
-//
-//
-//  Return :
-//      
-//--------------------------------------------------------------------------;
-
-void DSError ( MMRESULT mmResult )
-{
-//    #if defined ( _DEBUG )
-//
-//    switch ( mmResult )
-//    {
-//        case DS_OK:
-//            debugf ( "DS_OK" );
-//            break;
-//
-//        case DSERR_ALLOCATED:
-//            debugf ( "DSERR resources (such as a priority level) already being used" );
-//            break;
-//
-//        case DSERR_CONTROLUNAVAIL:
-//            debugf( "DSERR The control (vol,pan,etc.) requested is not available." );
-//            break;
-//
-//        case DSERR_INVALIDPARAM:
-//            debugf ( "DSERR An invalid parameter was passed to the returning function" );
-//            break;
-//
-//        case DSERR_INVALIDCALL:
-//            debugf ( "DSERR This call is not valid for the current state of this object" );
-//            break;
-//
-//        case DSERR_GENERIC:
-//            debugf ( "DSERR An undetermined error occured inside the DSound subsystem" );
-//            break;          
-//
-//        case DSERR_PRIOLEVELNEEDED:
-//            debugf ( "DSERR The caller does not have the priority level required. " );
-//            break;
-//
-//        case DSERR_OUTOFMEMORY:
-//            debugf ( "DSERR Couldn't allocate sufficient memory to complete request" );
-//            break;
-//
-//        case DSERR_BADFORMAT:
-//            debugf ( "DSERR Wave format not supported" );
-//            break;
-//
-//        case DSERR_UNSUPPORTED:
-//            debugf ( "DSERR Function not support at this time" );
-//            break;
-//
-//        case DSERR_NODRIVER:
-//            debugf ( "DSERR No sound driver is available for use" );
-//            break;
-//
-//        case DSERR_ALREADYINITIALIZED:
-//            debugf ( "DSERR This object is already initialized" );
-//            break; 
-//
-//        case DSERR_NOAGGREGATION:
-//            debugf ( "DSERR This object does not support aggregation" );
-//            break;
-//
-//        case DSERR_BUFFERLOST:
-//            debugf ( "DSERR The buffer memory has been lost, and must be Restored." );
-//            break;
-//
-//        case DSERR_OTHERAPPHASPRIO:
-//            debugf ( "Another app has a higher priority level, preventing this call from succeeding." );
-//            break;
-//
-//        default:
-//            debugf ( "DSERR UnKnown" );
-//            break;
-//    }
-//
-//    #endif
-
-    return;
-
-}   //---- End of DSError()
-
-
 
 //---- End of SndUtil.cpp
 

@@ -3124,9 +3124,6 @@ void CAvatar::mfSetDamageFlag()
 	// then its fDamage member should NOT be modified; just return.
 	if (AIFuncIndex == AI_FUNC_FIREBALL)
 	{
-// #if defined (_DEBUG)
-// 		printf ("Not applicable to fireball\n");
-// #endif
 		return;
 	}
 

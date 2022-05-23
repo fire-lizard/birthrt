@@ -537,9 +537,7 @@ void StatReadFromAVA(BOOL SaveAfter)
 		  playerstats[i] = LoadStats(regents[i].mfGetid(), fERROR);
         if (playerstats[i] == fERROR)
         {
-//#if defined(_DEBUG)
             fatal_error("Can't load stats from AVA files!");
-//#endif
             PurgePS(i);
             return;
         }

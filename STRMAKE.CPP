@@ -74,7 +74,6 @@ char szEnumFooter[] = {
 
 char szTextBuffer[4097];
 char szLabel[80];
-SHORT sNumBlocks = 0;
 
 FILE *fTextFile;
 FILE *fEnumFile;

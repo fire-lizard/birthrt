@@ -9,7 +9,6 @@
 #if !defined (_AVA_HXX_)
 #define _AVA_HXX_
 
-// #include "avatar.hxx"
 #include "alignmnt.hxx"
 #include "gamemap.hxx"
 #include "main.hxx"
