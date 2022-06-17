@@ -51,12 +51,7 @@ class PLACE : public ArtThing {
 public:
 	void mfCreatePlace(char *);
 	void mfDeletePlace();
-#if defined(SCENE_EDITOR)
-	void mfWritePlaceData(FILE *fp);
-#endif
 	void mfInitVals();
-
-	void mfDrawDiamond ();
 	char *mfGetSceneName();
 
 protected:
@@ -114,37 +109,6 @@ inline void PLACE::mfCreatePlace(char *cpBuffer)
 		
 		mfDefineArtThing(ThingType, X, Y);
 	}
-}
-
-/* ========================================================================
-   Function    - mfWritePlaceData
-   Description - Write the scene file data.
-   Returns     - 
-   ======================================================================== */
-#if defined(SCENE_EDITOR)
-inline void PLACE::mfWritePlaceData(FILE *fp) 
-{
-	fprintf(fp, "%ld\t%ld\t%ld\t%s\n",mfX(), 
-	                                  mfY(), 
-	                                  mfType(), 
-	                                  fscInfo.mfGetSceneName());
-}
-#endif
-
-/* ========================================================================
-   Function    - mfDrawDiamond
-   Description - Draw the diamond on the map.
-   Returns     - 
-   ======================================================================== */
-inline void PLACE::mfDrawDiamond () 
-{
-//WRC    **places don't show on map, _for_now_**
-//	POINT a;       		
-//	
-//	a.x = mfX();
-//	a.y = mfY();
-//	
-//	draw_diamond(&a, 254);
 }
 
 /* ========================================================================

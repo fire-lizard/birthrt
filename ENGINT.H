@@ -20,11 +20,7 @@
    Defines and Compile Flags
    ------------------------------------------------------------------------ */
 #define TEXTURE_PATH			"TEXTURES\\"
-#if defined(_EDIT)
-#define MAX_TEXTURES			(230)
-#else
 #define MAX_TEXTURES			(200)
-#endif
 #define DARKEST				31
 
 /* divide a 32bit fixed pt by 2^n */
@@ -166,11 +162,6 @@ typedef struct {
 	LONG	n1;		// The index into the texture array
 	LONG	n2;		// The index into the texture array
 	LONG	n3;		// The index into the texture array
-#if defined (_EDIT)
-	UBYTE	n1_noTexture;
-	UBYTE	n2_noTexture;
-	UBYTE	n3_noTexture;
-#endif
 	LONG	sec_ptr;
 } BR_SIDEDEF;
 
@@ -230,10 +221,6 @@ typedef struct{
 	LONG		ch;   					/*floor -n- ceiling*/
 	LONG		f_flat;
 	LONG		c_flat;  /*index's for texures*/
-#if defined(_EDIT)
-	UBYTE		f_flat_noTexture;
-	UBYTE		c_flat_noTexture;
-#endif
 	LONG		light;
 	LONG		special;
 	SHORT		tag;

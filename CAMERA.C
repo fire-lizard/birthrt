@@ -1518,12 +1518,6 @@ void RotateCameraAroundPoint(CAMERA * pCamera, LONG KeyState )
 	NewPoint.dz = pCamera->Current.z - pCamera->z;	
 	CheckMove(&TempPlayer, &NewPoint, 0, &Angle, &BumpDistance);
 
-#ifdef _STATUS
-	WriteDebug ("Camera bump in RotateCameraAroundPoint = %d", TempPlayer.bump);
-	if (async_key_status (KEY_CONTROL))
-		TempPlayer.bump = iNOTHING;
-#endif
-
 	switch(TempPlayer.bump)
 	{
 	case iNOTHING:

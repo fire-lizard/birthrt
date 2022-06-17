@@ -100,10 +100,6 @@ void SysForceCursor (void);
 /* ------------------------------------------------------------------------
 	Prototypes
 	------------------------------------------------------------------------ */
-#ifdef _CHARED
-void CharedDoEditorDialog ();
-#endif
-
 void DumpScreen (LONG, LONG);
 void toggle_ShowWadSize (LONG, LONG);
 void ShowWadSize (void);
@@ -838,14 +834,6 @@ void GameMain(void)
 	}
 #endif
 }
-#else // _CHARED
-{
-   ScanResFiles ();							// [d5-21-97 JPC] moved here from
-													// init_game.
-	init_pal("nova_l");
-	CharedDoEditorDialog ();
-	fQuitting = TRUE;
-}
 #endif
 }
 
@@ -856,10 +844,6 @@ void GameMain(void)
 	======================================================================== */
 void CPPQuitSys(LONG, LONG)
 {
-
-#ifdef _CHARED
-	quit_sys(0);
-#endif
 
 #if defined (_WADBUILDERS)
    QuitSys (0, 0);                     // skip confiming dialog

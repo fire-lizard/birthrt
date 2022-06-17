@@ -26,12 +26,6 @@
    ------------------------------------------------------------------------ */
 #include <stdio.h>
 #include <string.h>
-#if defined (_EDIT) || (defined (_WINDOWS) && defined (_DEBUG))
-#include <windows.h>
-#endif
-#if defined (_JPC)
-#include "debug.h"
-#endif
 #include "SYSTEM.H"
 #include "ENGINE.H"
 #include "ENGINT.H"
@@ -206,11 +200,6 @@ static LIFT floors[MAX_FLOORS];
 static LIFT ceilings[MAX_CEILINGS];
 static BOOL gfAdvise;				// if TRUE, tell user what he needs to open
 											// door (or that room is inaccessible)
-
-#if defined (_EDIT) && defined (_DEBUG)
-static char gszTemp[128];		// for debugging messages
-#endif
-
 
 // ---------------------------------------------------------------------------
 static LONG DoorCreateThing (LONG x, LONG y)
@@ -387,10 +376,6 @@ static BOOL DoorGetTagSector (LONG * pSector, LONG tag)
 	
 	if (iSector == 0 && sectors[0].tag != tag)
 	{
-#if defined (_EDIT) && defined (_DEBUG)
-		wsprintf (gszTemp, "WARNING: could not find sector with tag %d", tag);
-		MessageBox (NULL, gszTemp, "WARNING", MB_OK);
-#endif
 		return FALSE;
 	}
 
@@ -590,10 +575,6 @@ static void HandleSwingingDoor (LONG iDoor)
 void handle_doors(LONG arg)
 {
 	LONG i;
-
-#if defined (_EDIT) && !defined (_JPC)
-	return;										// do NOT allow changes in EditWad
-#endif
 
 	// [d12-07-96 JPC] Decided not to stop doors when in combat.
 	// Reason: door can stop halfway up, and combat proceeds through the
@@ -1074,10 +1055,6 @@ void DoorChangeSwitchTexture (LONG iLinedef)
 	LONG  iTexture;
 	LONG	i;
 
-#if defined (_EDIT) && !defined (_JPC)
-	return;										// do NOT allow changes in EditWad
-#endif
-
 	iTexture = (LONG) sidedefs[iSidedef].n3;	// n3 is middle
 	for (i = 0; i < cSWITCH_TEXTURE_PAIRS; i++)
 	{
@@ -1154,10 +1131,6 @@ void open_door (LONG seg, LONG special)
 	SHORT			iLinedef;
 	BOOL			fClose;
 	BOOL			fHaveKey;
-
-#if defined (_EDIT) && !defined (_JPC)
-	return;										// do NOT allow changes in EditWad
-#endif
 
 	if (gfInCombat)
 		return;									// [d12-07-96 JPC]
@@ -1351,10 +1324,6 @@ void DoorActivate (LONG iLinedef, LONG tag, LONG special)
 	LONG			x, y;
 	BOOL			fSuccess;
 	BOOL			fChangedTexture = FALSE;
-
-#if defined (_EDIT) && !defined (_JPC)
-	return;										// do NOT allow changes in EditWad
-#endif
 
 	if (gfInCombat)
 		return;									// [d12-07-96 JPC]
@@ -1755,10 +1724,6 @@ void HandleLifts (LONG arg)
 
 	LONG iLift;
 
-#if defined (_EDIT) && !defined (_JPC)
-	return;										// do NOT allow changes in EditWad
-#endif
-
 	if (fFreeze || fPause || gfInCombat)
 		return;									// [d9-16-96 JPC]
 
@@ -1821,10 +1786,6 @@ void LiftActivate (LONG iLinedef, LONG tag, LONG special)
 	LONG			x, y;
 	BOOL			fSuccess;
 	BOOL			fChangedTexture = FALSE;
-
-#if defined (_EDIT) && !defined (_JPC)
-	return;										// do NOT allow changes in EditWad
-#endif
 
 	if (!DoorGetTagSector (&iSector, tag))
 		return;									// no sector has this tag
@@ -1912,9 +1873,6 @@ void LiftActivate (LONG iLinedef, LONG tag, LONG special)
 		}
 		else
 		{
-#if defined (_WINDOWS) && defined (_DEBUG)
-			MessageBox (NULL, "LiftActivate: Invalid Lift Type", "Error", MB_OK);
-#endif
 			lifts[iLift].fInUse  = FALSE;
 		}
 
@@ -2127,10 +2085,6 @@ void HandleFloors (LONG arg)
 // ---------------------------------------------------------------------------
 
 	LONG iFloor;
-
-#if defined (_EDIT) && !defined (_JPC)
-	return;										// do NOT allow changes in EditWad
-#endif
 
 	if (fFreeze || fPause || gfInCombat)
 		return;									// [d9-16-96 JPC]
@@ -2445,10 +2399,6 @@ void HandleCeilings (LONG arg)
 
 	LONG iCeiling;
 
-#if defined (_EDIT) && !defined (_JPC)
-	return;										// do NOT allow changes in EditWad
-#endif
-
 	if (fFreeze || fPause || gfInCombat)
 		return;									// [d9-16-96 JPC]
 
@@ -2504,10 +2454,6 @@ void CeilingActivate (LONG iLinedef, LONG tag, LONG special)
 	LONG			x, y;
 	BOOL			fSuccess;
 	BOOL			fChangedTexture = FALSE;
-
-#if defined (_EDIT) && !defined (_JPC)
-	return;										// do NOT allow changes in EditWad
-#endif
 
 	if (!DoorGetTagSector (&iSector, tag))
 		return;									// no sector has this tag

@@ -136,28 +136,6 @@ void SS_printf (const char *format, ... )
 }
 #endif
 
-
-// ---------------------------------------------------------------------------
-#ifdef _STATUS
-void WriteDebug (const char *format, ... )
-{
-// Prints a message to the status window.
-// Assumes ghwndSBMessageField is valid.
-// ghwndSBMessageField is a child of the status window, which is set up in
-// MACHINE.C: AppInit.  Also see STATUS.C.
-// ---------------------------------------------------------------------------
-
-   char 			szTemp[256];
-	va_list		argp;
-
-	va_start (argp, format);
-	vsprintf (szTemp, format, argp);
-	va_end (argp);
-	SetWindowText (ghwndSBMessageField, szTemp);
-}
-#endif
-
-
 // ---------------------------------------------------------------------------
 void ErrorMessage (const char *format, ...);
 void ErrorMessage (const char *format, ...)

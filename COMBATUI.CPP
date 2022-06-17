@@ -2899,22 +2899,6 @@ void CombatToggleViewKey(LONG , LONG )
 	}
 }
 
-#if defined (_EDIT)
-// C hooks to call IncreaseAdventureScreen and DecreaseAdventureScreen.
-extern "C" {
-CCallIncreaseAdventureScreen (LONG, LONG)
-{
-	IncreaseAdventureScreen (0, 0);
-}
-
-CCallDecreaseAdventureScreen (LONG, LONG)
-{
-	DecreaseAdventureScreen (0, 0);
-}
-}
-
-
-#endif
 /* ========================================================================
    Function    - AdventureFixUnitsArray
    Description - Remove dead units and send them back to thier provinces.

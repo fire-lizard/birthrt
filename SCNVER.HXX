@@ -40,9 +40,6 @@ public:
 	       CURRENT_MINOR = 0 };
 	
 	LONG mfReadVersion(FILE *);
-#if defined (SCENE_EDITOR)
-	void mfWriteSceneFileVersionData(FILE * /* fp */);
-#endif
 	void mfInitVals ();
 	BOOL mfIsSet();
 	
@@ -61,18 +58,6 @@ private:
 };
 	
 	
-/* ========================================================================
-   Function    - mfWriteSceneFileVersionData
-   Description - 
-   Returns     - 
-   ======================================================================== */
-#if defined (SCENE_EDITOR)
-inline void SCENE_FILE_VERSION::mfWriteSceneFileVersionData(FILE * fp) 
-{
-	fprintf(fp, "%hd.%hd\n", fsMajor, fsMinor);
-}
-#endif
-
 /* ========================================================================
    Function    - mfInitVals
    Description - Initialize the member data.

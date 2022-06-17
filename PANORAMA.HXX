@@ -48,11 +48,6 @@ public:
 	inline void mfInitVals();
 	inline void mfReleaseData();
 	inline void mfDeleteData();
-	
-#if defined(SCENE_EDITOR)
-	inline BOOL mfIsSet();
-	inline void mfWriteData(FILE *fp);
-#endif
 
 protected:
 private:
@@ -126,34 +121,5 @@ inline void PANORAMA_DATA::mfReleaseData() {
 	// Hang onto our memory, for use later.
 	hSky_filenames = fERROR;
 }
-
-/* ========================================================================
-   Function    - mfIsSet
-   Description - 
-   Returns     - 
-   ======================================================================== */
-#if defined(SCENE_EDITOR)
-inline BOOL PANORAMA_DATA::mfIsSet() {
-	return ( (hSky_filenames == fERROR) ?  FALSE : TRUE);
-}
-
-/* ========================================================================
-   Function    - mfWriteData
-   Description - Write Scene file data.
-   Returns     - 
-   ======================================================================== */
-inline void PANORAMA_DATA::mfWriteData(FILE *fp) {
-	SHORT *pPanoramaFileNames = (SHORT *)BLKPTR(fhPanoramaFileNames);
-	
-	for (int i = 0; i < MAX_PANORAMAS; i++)
-	{
-		if (pPanoramaFileNames[i] != fERROR)
-		{
-			char *cpFileName = (char *) BLKPTR(pPanoramaFileNames[i]);
-			fprintf(fp, "%s\n", cpFileName);
-		}
-	}
-}
-#endif
 
 #endif // _PANORAMA_HXX

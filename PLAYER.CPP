@@ -73,14 +73,6 @@
 #define LOOK_PITCH			(3 * MAX_PITCH / 4)	// [d3-16-97 JPC] fixed amount
 																// to look up or down
 
-#if defined (_EDIT)
-// [d7-23-96 JPC] for extra-fine movement control.
-// ("maxSpeed" is toggled in EditToggleSpeed.)
-extern "C" int maxSpeed = 31 << PLAYER_FIXEDPT;
-#undef  MAX_XY_SPEED						
-#define MAX_XY_SPEED maxSpeed
-#endif
-
 /* ------------------------------------------------------------------------
    Macros
    ------------------------------------------------------------------------ */
@@ -1097,38 +1089,6 @@ LONG MovePlayer( LONG KeyState )
 #endif
 		}
 	}
-//#endif
-
-#if 01
-// [d12-04-96 JPC] Can also do this for the CAMERA instead.
-#ifdef _DEBUG
-#ifdef _WINDOWS
-#ifdef _STATUS
-// [d5-07-96  9:11 JPC]
-// Note that the status window and its child windows (ghwndSBx, ghwndSBy,
-// etc.), must be set up for the following to work.
-// The status window and child windows are set up in MACHINE.C: AppInit,
-// and the support code for the status window is in STATUS.C.
-//GEH commented out for now, extern the ghwnd* later
-   wsprintf (szTemp, "X %d", player.x >> PLAYER_FIXEDPT);
-   SetWindowText (ghwndSBx, szTemp);
-   wsprintf (szTemp, "Y %d", player.y >> PLAYER_FIXEDPT);
-   SetWindowText (ghwndSBy, szTemp);
-   wsprintf (szTemp, "Z %d", player.z);
-   SetWindowText (ghwndSBz, szTemp);
-   wsprintf (szTemp, "A %d", player.a);
-   SetWindowText (ghwndSBa, szTemp);
-   wsprintf (szTemp, "P %d", player.p);
-   SetWindowText (ghwndSBp, szTemp);
-   wsprintf (szTemp, "vz %d", vz);
-   SetWindowText (ghwndSBr, szTemp);
-   wsprintf (szTemp, "fJ %d", fJumping);
-   SetWindowText (ghwndSBs, szTemp);
-#endif
-#endif
-#endif
-#endif
-
 	return 1;
 }
 

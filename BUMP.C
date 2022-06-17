@@ -74,50 +74,6 @@ static WadThingType CheckLineMove (PLAYER *pPlayer,
 #if defined (_DEBUG)
 int	gfOldTest;								// [d2-26-97 JPC] debug walk through wall error
 int	gfOldTestLine;
-// #define _BUMPLOG
-#endif
-#ifdef _BUMPLOG
-struct bumpRecordType {
-	PLAYER * 		pPlayer;
-	LONG				thingIndex;
-	LONG				x;
-	LONG				y;
-	LONG				x1;
-	LONG				y1;
-	LONG				x2;
-	LONG				y2;
-	BOOL				fValidBlock;
-	LONG				iLinedef;
-	WadThingType 	bump;
-	LONG				caller;		// 0 = CheckMove, 1 = CheckMoveSimple
-} gBumpRecord[100];
-
-LONG giBumpRec = 0;
-LONG gPlayerx;
-LONG gPlayery;
-LONG gDebug = 0;
-LONG gCallingFunction = 0;
-
-// [d12-12-96 JPC] Keep track of what we bumped
-void UpdateBumpRecord (PLAYER * pPlayer, LONG x1, LONG y1, LONG x2, LONG y2,
-	BOOL fValidBlock, LONG iLinedef, WadThingType bump)
-{
-	gBumpRecord[giBumpRec].pPlayer	  = pPlayer;
-	gBumpRecord[giBumpRec].thingIndex  = pPlayer->ThingIndex;
-	gBumpRecord[giBumpRec].x			  = gPlayerx;
-	gBumpRecord[giBumpRec].y           = gPlayery;
-	gBumpRecord[giBumpRec].x1          = x1;
-	gBumpRecord[giBumpRec].y1          = y1;
-	gBumpRecord[giBumpRec].x2          = x2;
-	gBumpRecord[giBumpRec].y2          = y2;
-	gBumpRecord[giBumpRec].fValidBlock = fValidBlock;
-	gBumpRecord[giBumpRec].iLinedef    = iLinedef;
-	gBumpRecord[giBumpRec].bump        = bump;
-	gBumpRecord[giBumpRec].caller		  = gCallingFunction;
-
-	if (++giBumpRec >= 100)
-		giBumpRec = 0;
-}
 #endif
 
 // ---------------------------------------------------------------------------
@@ -175,9 +131,6 @@ LONG lines_intersect(LONG x0, LONG y0, LONG x1, LONG y1, LONG x2, LONG y2, LONG 
 
 	r1 = ccw(x0, y0, x1, y1, x2, y2);
 	r2 = ccw(x0, y0, x1, y1, x3, y3);
-	// GWP r3 = ccw (x2, y2, x3, y3, x0, y0);
-	// GWP r4 = ccw (x2, y2, x3, y3, x1, y1);
-	// GWP return r1 * r2 <= 0 && r3 * r4 <= 0;
 	if (r1 * r2 <= 0)
 	{
 		LONG        r3;
@@ -303,9 +256,6 @@ LONG Rate						// Motion rate for this player.
 				FIXED_VECTOR Delta;
 				BOOL GoingForward;
 				
-				//otherwise return a true bump
-				//printf("Bumped into an object!\n");
-				
 				// check to see if we are moving backwards or forwards
 				if ((pPlayer->a > 64 && pPlayer->a < 192 && pPoint->dy < 0) ||
 				   ((pPlayer->a < 64 || pPlayer->a > 192) && pPoint->dy > 0))
@@ -324,8 +274,6 @@ LONG Rate						// Motion rate for this player.
 								(mythings[i].y<<PLAYER_FIXEDPT),
 								RESOLUTION_1
 								);
-				
-				// GWP RelAngle = RelativeAngle( pPlayer->a, AngleToObject );
 				
 				// Now normalize the angle to the player's angle.
 				RelAngle = AngleToObject - pPlayer->a;
@@ -351,8 +299,6 @@ LONG Rate						// Motion rate for this player.
 					Delta.dx = 	-(BumpDistance)<<PLAYER_FIXEDPT;
 				}
 				Delta.dy = 0;
-				
-				//Rotate((POINT *)&Delta,AngleToObject);
 				
 				// Rotate the offset in the direction of travel.
 				if (GoingForward)
@@ -417,7 +363,6 @@ LONG LinePointDistance (LONG x, LONG y, LONG ax, LONG ay, LONG bx, LONG by)
 	{
 		x1 = ax;
 		y1 = y;
-		//goto FinalCheck;
 	}
 	else
 	{
@@ -426,7 +371,6 @@ LONG LinePointDistance (LONG x, LONG y, LONG ax, LONG ay, LONG bx, LONG by)
 		{
 			x1 = x;
 			y1 = ay;
-			// goto FinalCheck;
 		}
 		else
 		{
@@ -496,11 +440,6 @@ static WadThingType CheckLinesInBlock (const PLAYER * const pPlayer,				// )
 	LONG		distTarget;
 	BOOL		fIntersect;             // use Booleans to simplify the code
 	BOOL		fTooClose;              // (See McConnell, Sec. 11.5.)
-#ifdef _DEBUG
-#ifdef _JPC
-	ULONG       playerSector;
-#endif
-#endif
 
 	i=1;                                // blockmap element 0 is always 0,
 													// so start at 1
@@ -528,15 +467,11 @@ static WadThingType CheckLinesInBlock (const PLAYER * const pPlayer,				// )
 			gbumpV1.y = vertexs[va].y;
 			gbumpV2.x = vertexs[vb].x;
 			gbumpV2.y = vertexs[vb].y;
-			//gBumpDistance = distPlayer;
 
 			// [d11-15-96 JPC] We are using LSP_TELE_EXIT_2WAY as an
 			// edge of the world type.
 			if (linedefs[iLineDef].special == LSP_TELE_EXIT_2WAY)
 			{
-#ifdef _BUMPLOG
-		UpdateBumpRecord (pPlayer, x1, y1, x2, y2, TRUE, iLineDef, iEDGE_OF_WORLD);
-#endif
 				return iEDGE_OF_WORLD;
 			}
 
@@ -561,8 +496,6 @@ static WadThingType CheckLinesInBlock (const PLAYER * const pPlayer,				// )
 				{
                return iWALL;           // one-sided line
 				}
-				// gfOldTest = 1;	// remember that the old test would have treated this as a wall
-				// gfOldTestLine = iLineDef;
 				continue;						// [d2-26-97 JPC] Do not do other tests
 													// on this line.  If you are in back
 													// of a single-sided line, you should
@@ -588,17 +521,12 @@ static WadThingType CheckLinesInBlock (const PLAYER * const pPlayer,				// )
 				{
 					return iWALL;					// impassible line
 				}
-				// gfOldTest = 2;	// remember that the old test would have treated this as a wall
-				// gfOldTestLine = iLineDef;
 			}
 
 			if (sSpecial & CHECKLINE_MONSTER
 				&& linedefs[iLineDef].flags & MONSTER_BLOCK_LINE
 				)
 			{
-#ifdef _BUMPLOG
-		UpdateBumpRecord (pPlayer, x1, y1, x2, y2, TRUE, iLineDef, iMONSTER_BOX);
-#endif
 				return iMONSTER_BOX;
 			}
 		
@@ -618,7 +546,6 @@ static WadThingType CheckLinesInBlock (const PLAYER * const pPlayer,				// )
 				// and changing it may break more stuff than it fixes.
 				// So don't change it unless we have to.
 				linedefs[iLineDef].flags |= HAS_BEEN_CROSSED;
-//				printf("crossed linedef %li\n",iLineDef);
 
 				switch (special)	
 				{
@@ -643,14 +570,8 @@ static WadThingType CheckLinesInBlock (const PLAYER * const pPlayer,				// )
 							teleport_data.dx = 0; // [d10-22-96 JPC] special value
 							teleport_data.dy = 0; // [d10-22-96 JPC] special value
 							teleport_data.a = player.a;
-#ifdef _BUMPLOG
-		UpdateBumpRecord (pPlayer, x1, y1, x2, y2, TRUE, iLineDef, iEXITLEVEL);
-#endif
 							return iEXITLEVEL;	// [d10-22-96 JPC]
 						}
-#ifdef _BUMPLOG
-		UpdateBumpRecord (pPlayer, x1, y1, x2, y2, TRUE, iLineDef, iNOTHING);
-#endif
 						return iNOTHING;		// sb break?
 
                case LSP_LIFT_WI:       // lift
@@ -685,9 +606,6 @@ static WadThingType CheckLinesInBlock (const PLAYER * const pPlayer,				// )
 							SetPlayerXYA (x1, y1, player.a);
 							fTeleport = TRUE;
 						}
-#ifdef _BUMPLOG
-		UpdateBumpRecord (pPlayer, x1, y1, x2, y2, TRUE, iLineDef, iNOTHING);
-#endif
 						return iNOTHING;
 
                case LSP_FLOOR_W1:      // floor up to ceiling (crush)
@@ -700,9 +618,6 @@ static WadThingType CheckLinesInBlock (const PLAYER * const pPlayer,				// )
                case LSP_TELE_2WAY:     // "WR teleport"
 						TeleportPlayer(tag_to_sector(linedefs[iLineDef].tag));
 						fTeleport = TRUE;
-#ifdef _BUMPLOG
-		UpdateBumpRecord (pPlayer, x1, y1, x2, y2, TRUE, iLineDef, iNOTHING);
-#endif
 						return iNOTHING;
 				}
 				if (special >= LSP_DIALOG_FIRST &&
@@ -736,19 +651,6 @@ static WadThingType CheckLinesInBlock (const PLAYER * const pPlayer,				// )
 				side2=(LONG)linedefs[iLineDef].psdt;
 			}
 
-#ifdef _JPC
-			playerSector = point_to_sector (x1, y1);
-			// JPC: The following test sometimes fails when the player's
-			// X coordinate is ON a line segment.  (Presumably can also
-			// fail when the Y coordinate is on a line segment, but I
-			// have not seen or looked for this case.)
-			// But it doesn't seem to cause a problem.
-         if (sidedefs[side1].sec_ptr != (short) playerSector)
-         {
-            TRACE ("Found discrepancy at %d, %d: sec_ptr = %d, point_to_sector = %d\n\r",
-               x1, y1, sidedefs[side1].sec_ptr, playerSector);
-         }
-#endif
 			ceiling1 = sectors[sidedefs[side1].sec_ptr].ch;
 			floor2   = sectors[sidedefs[side2].sec_ptr].fh;
 			ceiling2 = sectors[sidedefs[side2].sec_ptr].ch;
@@ -760,13 +662,7 @@ static WadThingType CheckLinesInBlock (const PLAYER * const pPlayer,				// )
 			{
 				if (pPlayer->z < floor2)
 				{
-#ifdef _STATUS
-					WriteDebug ("Too big a step in line %d", iLineDef);
-#endif
 					gFloor = floor2;
-#ifdef _BUMPLOG
-		UpdateBumpRecord (pPlayer, x1, y1, x2, y2, TRUE, iLineDef, iFLOOR);
-#endif
 					return iFLOOR;
 				}
 				
@@ -775,9 +671,6 @@ static WadThingType CheckLinesInBlock (const PLAYER * const pPlayer,				// )
 				    (pPlayer->z + pPlayer->h + (pPlayer->h/2)) < ceiling2)
 				{
 					gCeiling = ceiling2;
-#ifdef _BUMPLOG
-		UpdateBumpRecord (pPlayer, x1, y1, x2, y2, TRUE, iLineDef, iCEILING);
-#endif
 					return iCEILING;
 				}
 				
@@ -788,9 +681,6 @@ static WadThingType CheckLinesInBlock (const PLAYER * const pPlayer,				// )
 				{
 					gCeiling = ceiling2;
 					gFloor = floor2;
-#ifdef _BUMPLOG
-		UpdateBumpRecord (pPlayer, x1, y1, x2, y2, TRUE, iLineDef, iCEILING);
-#endif
 					return iCEILING;
 				}
 			}
@@ -815,18 +705,12 @@ static WadThingType CheckLinesInBlock (const PLAYER * const pPlayer,				// )
 				if (pPlayer->z + pPlayer->h/2 < actualFloor)
 				{
 					gFloor = actualFloor;
-#ifdef _BUMPLOG
-		UpdateBumpRecord (pPlayer, x1, y1, x2, y2, TRUE, iLineDef, iFLOOR);
-#endif
 					return iFLOOR;
 				}
 				if (ceiling2 < ceiling1 &&
 				    (pPlayer->z + pPlayer->h > ceiling2))
 				{
 					gCeiling = ceiling2;
-#ifdef _BUMPLOG
-		UpdateBumpRecord (pPlayer, x1, y1, x2, y2, TRUE, iLineDef, iCEILING);
-#endif
 					return iCEILING;
 				}
 				
@@ -837,14 +721,8 @@ static WadThingType CheckLinesInBlock (const PLAYER * const pPlayer,				// )
 				
 				if ((pPlayer->z + PlayerHalfHeight) < floor2 )
 				{
-#ifdef _STATUS
-					WriteDebug ("Too big a step in line %d", iLineDef);
-#endif
 					gFloor = floor2;
 					gCeiling = ceiling1;
-#ifdef _BUMPLOG
-		UpdateBumpRecord (pPlayer, x1, y1, x2, y2, TRUE, iLineDef, iFLOOR);
-#endif
 					return iFLOOR;
 				}
 				
@@ -852,9 +730,6 @@ static WadThingType CheckLinesInBlock (const PLAYER * const pPlayer,				// )
 				if ((pPlayer->z + pPlayer->h) > ceiling2)
 				{
 					gCeiling = ceiling2;
-#ifdef _BUMPLOG
-		UpdateBumpRecord (pPlayer, x1, y1, x2, y2, TRUE, iLineDef, iCEILING);
-#endif
 					return iCEILING;
 				}
 
@@ -890,9 +765,6 @@ static WadThingType CheckLinesInBlock (const PLAYER * const pPlayer,				// )
 						&& sectors[targetSector].special != SSP_CLIMB_OK)
 					{
 						gFloor = floor2;
-#ifdef _BUMPLOG
-		UpdateBumpRecord (pPlayer, x1, y1, x2, y2, TRUE, iLineDef, iHOLE);
-#endif
 						return iHOLE;
 					}
 				}
@@ -901,20 +773,11 @@ static WadThingType CheckLinesInBlock (const PLAYER * const pPlayer,				// )
 			// Can't step into space too small.
 			if ((ceiling2 - floor2) < pPlayer->h)
 			{
-#ifdef _STATUS
-				WriteDebug ("Too small a space in line %d", iLineDef);
-#endif
 				gCeiling = ceiling2;
-#ifdef _BUMPLOG
-		UpdateBumpRecord (pPlayer, x1, y1, x2, y2, TRUE, iLineDef, iCEILING);
-#endif
 				return iCEILING;
 			}
 		}
 	}
-#ifdef _BUMPLOG
-		UpdateBumpRecord (pPlayer, x1, y1, x2, y2, TRUE, iLineDef, iNOTHING);
-#endif
 	return iNOTHING;
 }  // CheckLinesInBlock
 
@@ -946,11 +809,8 @@ static WadThingType CheckLineMove (PLAYER *pPlayer,
 	// 128 X 128 square in the map.
 	bm = get_blockm (x1, y1);
 
-	// gfOldTest = 0;								// [d2-26-97 JPC] debug
-
 	if (bm != FALSE)                      /*inside block area!!!*/
 	{
-		// SHORT *     bm2;                 // (abandoned)
 		SHORT *     bm3;                    // blockmap in dir of travel - 45 degrees
 		SHORT *     bm4;                    // blockmap in direction of travel
 		SHORT *     bm5;                    // blockmap in dir of travel + 45 degrees
@@ -964,9 +824,6 @@ static WadThingType CheckLineMove (PLAYER *pPlayer,
 		x2 = PLAYER_INT_VAL(pPoint->x );
 		y2 = PLAYER_INT_VAL(pPoint->y );
 		
-#ifdef _BUMPLOG
-		//UpdateBumpRecord (pPlayer, x1, y1, x2, y2, FALSE, 0, 0);
-#endif
 	
 		Result= CheckLinesInBlock (pPlayer,
 								sSpecial,
@@ -1075,9 +932,6 @@ static WadThingType CheckLineMove (PLAYER *pPlayer,
 		bm3 = get_blockm (x3, y3);
 		if (bm3 != FALSE)                        /*inside block area!!!*/
 		{
-#ifdef _BUMPLOG
-			//UpdateBumpRecord (pPlayer, x1, y1, x2, y2, FALSE, 0, 0);
-#endif
 		
 			// If bm3 is the same as bm, don't check it again.
 			if (bm3 != bm)
@@ -1096,9 +950,6 @@ static WadThingType CheckLineMove (PLAYER *pPlayer,
 		bm4 = get_blockm (x4, y4);
 		if (bm4 != FALSE)                        /*inside block area!!!*/
 		{
-#ifdef _BUMPLOG
-			//UpdateBumpRecord (pPlayer, x1, y1, x2, y2, FALSE, 0, 0);
-#endif
 			// If bm4 is the same as one we already checked, don't check it again.
 			if (bm4 != bm && bm4 != bm3)
 			{
@@ -1118,9 +969,6 @@ static WadThingType CheckLineMove (PLAYER *pPlayer,
 		bm5 = get_blockm (x5, y5);
 		if (bm5 != FALSE)                        /*inside block area!!!*/
 		{
-#ifdef _BUMPLOG
-			//UpdateBumpRecord (pPlayer, x1, y1, x2, y2, FALSE, 0, 0);
-#endif
 			// If bm5 is the same as one we already checked, don't check it again.
 			if (bm5 != bm && bm5 != bm3 && bm5 != bm4)
 			{
@@ -1142,9 +990,6 @@ static WadThingType CheckLineMove (PLAYER *pPlayer,
 		return iWALL;
 	}
 
-	// if (gfOldTest > 0)
-	// 	printf ("Old test %d would have blocked this move at line %d!\n", gfOldTest, gfOldTestLine);
-
 	return iNOTHING;
 }  // CheckLineMove
 
@@ -1163,34 +1008,21 @@ SHORT sSpecial,
 LONG *Angle,
 LONG *BumpDistance)	// distance to line squared;
 {
-	//PLAYER      	startp;
 	FIXED_POINT_3D 	targetp;
 	FIXED_VECTOR	adj;
 	BOOL        	TestTwo = FALSE;
  	LONG				special;
- 	// GWP LONG				sector;	// Save in currentSector instead.
  	LONG 				tag;
 	LONG        	direction;              // direction of movement
 	LONG        	minDist;                // minimum distance allowed from wall
 	WadThingType 	Result = iNOTHING;
 	LONG LineAngle;
 	*Angle = fERROR;		// Initialize it to an invalid angle.
-	
-
-#ifdef _BUMPLOG
-	gCallingFunction = 0;
-#endif
 
 	// You cannot get closer to a line than minDist.
 	// For now, it is half the player width.  (GEH changed to full width)
 	// THINK ABOUT: Perhaps the caller should set minDist.
-	//GEH minDist = (pPlayer->w * pPlayer->w) / 4; // square the distance to avoid square roots
-#ifdef _EDIT
-   minDist = 4;                        // [d6-05-96 JPC] make it easy to move
-                                       // when editing
-#else
 	minDist = (pPlayer->w * pPlayer->w); // square the distance to avoid square roots
-#endif
 
 	// This will probably have to come out later, because things might
 	// happen even when you're standing still.
@@ -1213,10 +1045,6 @@ LONG *BumpDistance)	// distance to line squared;
 		if(pPlayer->Flying && pPlayer->ceiling < (pPlayer->z+pPoint->dz+pPlayer->h))
 				pPoint->dz = pPlayer->ceiling - pPlayer->z - pPlayer->h;
 
-#ifdef _STATUS
-		if (Result != iNOTHING)
-			WriteDebug ("Result = %d", Result);
-#endif
 		return Result; // no movement, move ok
 	}
 	// Check direction of movement from where we were to where we're
@@ -1228,14 +1056,6 @@ LONG *BumpDistance)	// distance to line squared;
 		PLAYER_INT_VAL(pPlayer->y+pPoint->dy),
 		RESOLUTION_1
 		);
-	
-
-	// set up the player structure
-	// GWP startp.z = pPlayer->z;
-	// GWP startp.w = pPlayer->w;
-	// GWP startp.h = pPlayer->h;
-	// GWP startp.x = pPlayer->x;
-	// GWP startp.y = pPlayer->y;
 
 ReTest:
 	fTeleport = FALSE;
@@ -1266,37 +1086,10 @@ ReTest:
 		// Couldn't get from startp to incTarget because of some
 		// impassible line in the way.
 		LONG A1;
-		//LONG A2;
-		//POINT Bump1, Bump2;
-		//LONG RotationAngle;
-	
 	
 		// gbumpV* is set whenever you bump a ceiling, floor or wall.
 		
-		// GWP Old bump code.
-		// GWP Bump1.x = gbumpV1.x << PLAYER_FIXEDPT;
-		// GWP Bump1.y = gbumpV1.y << PLAYER_FIXEDPT;
-		// GWP Bump2.x = gbumpV2.x << PLAYER_FIXEDPT;
-		// GWP Bump2.y = gbumpV2.y << PLAYER_FIXEDPT;
-	
-		// Localize the line to my player angle.
-		// GWP Rotate(&Bump1, pPlayer->a);
-		// GWP Rotate(&Bump2, pPlayer->a);
-		// GWP
-		// GWP // Find the angle of this rotated line.
-		// GWP // Always want small x coord to the left.
-		// GWP if (Bump1.x <= Bump2.x)
-		// GWP {
-		// GWP 	A1 = AngleFromPoint ( Bump1.x, Bump1.y, Bump2.x, Bump2.y, RESOLUTION_1 );
-		// GWP }
-		// GWP else
-		// GWP {
-		// GWP 	A1 = AngleFromPoint ( Bump2.x, Bump2.y, Bump1.x, Bump1.y, RESOLUTION_1 );
-		// GWP }
-		
-		
 		// Always want small x coord to the left.
-		
 		
 		// Rotate the line Angle to normalize it to the player angle.
 		A1 = direction - LineAngle;
@@ -1304,20 +1097,9 @@ ReTest:
 		{
 			A1 += 256;
 		}
-		
-#if !defined(RELEASE)
-		// DEBUG if (sSpecial & CHECKLINE_PLAYER)
-		// DEBUG {
-		// DEBUG 	printf("Player Angle = %ld, Hit Angle = %ld\n", pPlayer->a, A1);
-		// DEBUG 	printf("Line Angle = %ld\n", LineAngle);
-		// DEBUG }
-#endif
 	
 		if(TestTwo == TRUE)
 		{
-// #ifdef _STATUS
-// 			WriteDebug ("Failed second bump test!");
-// #endif
 			*Angle = A1;
 			pPlayer->bump = Result;
 		 	
@@ -1344,23 +1126,12 @@ ReTest:
 		 			pPoint->dz = 0;
 		 		}
 	 		}
-		 		
-		
-// #ifdef _STATUS
-// 			if (Result != iNOTHING)
-// 				WriteDebug ("Result = %d", Result);
-// #endif
 			return Result;		// only one retest
 		}
 		
 		// Bumped straight on (more or less) with wall.  You're stuck.
 		if ((A1 > 54 && A1 < 74 )|| ( A1 < 202 && A1 > 182))
 		{
-			//printf("Nose square into wall!\n");
-#ifdef _STATUS
-			WriteDebug ("Wall angle = %d, hit wall, can't slide [dir = %d, LineAngle = %d]",
-				A1, direction, LineAngle);
-#endif
 			*Angle = A1;
 			pPlayer->bump = Result;
  			if(pPlayer->ThingIndex != fERROR
@@ -1400,24 +1171,10 @@ ReTest:
 		// game run more slowly.  The best solution seems to be to put up
 		// with an occasional wrong answer.
 
-#ifdef _STATUS
-		WriteDebug ("Wall angle = %d, trying to slide [dir = %d, LineAngle = %d]",
-				A1, direction, LineAngle);
-#endif
 		if (A1 > 192)
 		{
 		 	pPlayer->a += 8;
-			// if (pPlayer->a < 0)
-			// 	pPlayer->a += 256;
 			pPlayer->a %= 256;
-			//direction = AngleFromPoint(
-			//	pPlayer->x, pPlayer->y,
-			//	pPlayer->x+pPoint->dx, pPlayer->y+pPoint->dy,
-			//	RESOLUTION_1
-			//	);
-			//A1 = direction - LineAngle;
-			//if(A1 == 0)
-			//	pPlayer->a += 1;
 			adj.dx = 3<< PLAYER_FIXEDPT;
 			adj.dy = 8<< PLAYER_FIXEDPT;
 			Rotate((POINT *)&adj,LineAngle);
@@ -1428,15 +1185,7 @@ ReTest:
 			pPlayer->a -= 8;
 			if (pPlayer->a < 0)
 				pPlayer->a += 256;
-			// pPlayer->a %= 256;
-			//direction = AngleFromPoint(
-			//	pPlayer->x, pPlayer->y,
-			//	pPlayer->x+pPoint->dx, pPlayer->y+pPoint->dy,
-			//	RESOLUTION_1
-			//	);
-			//A1 = direction - LineAngle;
-		 	//if(A1 == 128)
-			//	pPlayer->a-=1;
+
 			adj.dx = 3<< PLAYER_FIXEDPT;
 			adj.dy = -8<< PLAYER_FIXEDPT;
 			Rotate((POINT *)&adj,LineAngle);
@@ -1445,17 +1194,7 @@ ReTest:
 		if (A1 > 64)
 		{
 			pPlayer->a += 8;
-			//if (pPlayer->a < 0)
-			//	pPlayer->a += 255;
 			pPlayer->a %= 256;
-			//direction = AngleFromPoint(
-			//	pPlayer->x, pPlayer->y,
-			//	pPlayer->x+pPoint->dx, pPlayer->y+pPoint->dy,
-			//	RESOLUTION_1
-			//	);
-			//A1 = direction - LineAngle;
-			//if(A1 == 128)
-			//	pPlayer->a +=1;
 			adj.dx = -3<< PLAYER_FIXEDPT;
 			adj.dy = -8<< PLAYER_FIXEDPT;
 			Rotate((POINT *)&adj,LineAngle);
@@ -1465,15 +1204,6 @@ ReTest:
 			pPlayer->a -= 8;
 			if (pPlayer->a < 0)
 				pPlayer->a += 256;
-			// pPlayer->a %= 256;
-			//direction = AngleFromPoint(
-			//	pPlayer->x, pPlayer->y,
-			//	pPlayer->x+pPoint->dx, pPlayer->y+pPoint->dy,
-			//	RESOLUTION_1
-			//	);
-			//A1 = direction - LineAngle;
-			//if(A1 == 0)
-			//	pPlayer->a -=1;
 			adj.dx = -3<< PLAYER_FIXEDPT;
 			adj.dy = 8<< PLAYER_FIXEDPT;
 			Rotate((POINT *)&adj,LineAngle);
@@ -1492,10 +1222,6 @@ ReTest:
 	else if (Result == iEDGE_OF_WORLD)
 	{
 		pPlayer->bump = Result;
-#ifdef _STATUS
-		if (Result != iNOTHING)
-			WriteDebug ("Result = %d", Result);
-#endif
 		return Result;
 	}
 	else
@@ -1504,15 +1230,8 @@ ReTest:
 	{
 		if(TestTwo == TRUE)
 		{
-#ifdef _STATUS
-			WriteDebug ("Failed second bump test!");
-#endif
 			pPlayer->bump = Result;
 			pPlayer->ceiling = gCeiling;
-#ifdef _STATUS
-		if (Result != iNOTHING)
-			WriteDebug ("Result = %d", Result);
-#endif
 			return Result;		// only one retest
 		}
 		
@@ -1546,15 +1265,9 @@ ReTest:
 	{
 		if(TestTwo == TRUE)
 		{
-#ifdef _STATUS
-			WriteDebug ("Failed second bump test!");
-#endif
 			pPlayer->bump = Result;
 			pPlayer->floor = gFloor;
 			pPlayer->ceiling = gCeiling;
-#ifdef _STATUS
-			WriteDebug ("Result = %d", Result);
-#endif
 			return Result;		// only one retest
 		}
 		if(pPlayer->ThingIndex == fERROR)
@@ -1595,7 +1308,6 @@ ReTest:
 	// lan even player couldn't fly, he may still go down into floor??
 	if(pPlayer->ThingIndex != fERROR
       && mythings[pPlayer->ThingIndex].valid == TRUE)
-	 	//&& pPlayer->Flying)
 	{
 	 	sector_info(mythings[pPlayer->ThingIndex].sect, &pPlayer->floor,
 	 					&pPlayer->ceiling, &special, &tag);
@@ -1650,11 +1362,6 @@ ReTest:
 		if (Result != iNOTHING)
 			pPlayer->bump = Result;
 	}
-
-#ifdef _STATUS
-		if (Result != iNOTHING)
-			WriteDebug ("Result = %d", Result);
-#endif
 	return Result;
 }  // CheckMove
 
@@ -1680,10 +1387,6 @@ WadThingType CheckMoveSimple (
 	LONG        	minDist;                // minimum distance allowed from wall
 	WadThingType 	Result = iNOTHING;
 	
-#ifdef _BUMPLOG
-	gCallingFunction = 1;
-#endif
-
 	minDist = (pPlayer->w * pPlayer->w); // square the distance to avoid square roots
 
 	// Set the target location.
@@ -1735,11 +1438,6 @@ WadThingType CheckLongMove(
 	tempPlayer.BumpIndex = pPlayer->BumpIndex;
 	a = a % ANGLE_STEPS;
 
-#ifdef _BUMPLOG
-	gPlayerx = pPlayer->x>>8;
-	gPlayery = pPlayer->y>>8;
-#endif
-
 	while (tmpdist > UNIT_DISTANCE)
 	{
 		pPoint.dx = 0;
@@ -1752,10 +1450,7 @@ WadThingType CheckLongMove(
 			// [d12-12-96 JPC] We always want to know the actual bump distance
 			// (= square root).  No need to check whether tmpdist is different
 			// from distance.  If they're equal, we just add a zero.
-	  		// if(tmpdist != distance)
-			// {
-				*BumpDistance = (LONG)(sqrt(*BumpDistance)) + (distance-tmpdist);
-			// }
+			*BumpDistance = (LONG)(sqrt(*BumpDistance)) + (distance-tmpdist);
 			pPlayer->bump = tempPlayer.bump;
 			return tempPlayer.bump;
 		}
@@ -1783,5 +1478,3 @@ WadThingType CheckLongMove(
 	pPlayer->bump = tempPlayer.bump;
 	return tempPlayer.bump;
 } // CheckLongMove
-
-

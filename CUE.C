@@ -29,10 +29,6 @@
 #include "LIGHT.H"
 #include "MAIN.HXX"
 
-#ifdef _JPC
-void	ErrorMessage (const char *format, ...);
-#endif
-
 #ifdef _DEBUG
 BOOL gfTestGrayLight;
 #endif
@@ -398,11 +394,7 @@ void init_shade_table(CHAR *Name)
 			sprintf (szTemp,"init_shade_table: existing file %s is smaller than expected.\n"
 				"Possible cause: change in cREMAP_GROUPS without deleting existing .SHD table.\n"
 				"Exit the program, delete %s, and run the program again.", pathname, pathname);
-#ifdef _JPC
-			ErrorMessage (szTemp);
-#else
 			printf (szTemp);
-#endif
 		}
 		FileClose(f);
 	}

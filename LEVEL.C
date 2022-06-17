@@ -33,11 +33,6 @@
 #include <string.h>
 #include <fcntl.h>
 
-#if defined (_EDIT)
-#include <windows.h>
-#include "edit.h"
-#endif
-
 #include "DEBUG.H"
 
 #include "SYSTEM.H"
@@ -454,11 +449,6 @@ LONG numRead;
 		sidedefs[i].n1=get_texture((char*) &t[i].n1[0], &status);
 		sidedefs[i].n2=get_texture((char*) &t[i].n2[0], &status);
 		sidedefs[i].n3=get_texture((char*) &t[i].n3[0], &status);
-#if defined(_EDIT)
-		sidedefs[i].n1_noTexture = 0;
-		sidedefs[i].n2_noTexture = 0;
-		sidedefs[i].n3_noTexture = 0;
-#endif
 		sidedefs[i].sec_ptr = t[i].sec_ptr;
 	}
 	
@@ -780,9 +770,6 @@ void PurgeLevel(void)
 	remove_task(HandleCeilings);
 	remove_task(TextureFrameHandler);
 	// no longer used: remove_task(SectorFrameHandler);
-#if defined (_EDIT)
-	SendMessage(ghwndEditWallDlg, WM_CLOSE, 0, 0);
-#endif
 
 	printf("Freemem at end of level: %ld\n", ReportFreeMem(TRUE));
 	init_doors();								// [d11-14-96 JPC] removes all sounds

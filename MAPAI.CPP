@@ -4185,8 +4185,6 @@ BOOL DoNPCAction (void)
 	ACTION_EXPTYPE		ActionExpType  = RLM_EXP_PASS;
 	LONG				ActionExpModifier = 0;
 
-	//static BOOL		fPrintDebugData = TRUE;
-
 	// ========================================================================
 	// 
 	// ========================================================================
@@ -4433,7 +4431,6 @@ GetNextRealm:				// if realm is invalid it loops here until a valid realm is fou
 		#ifdef _WINDOWS
 		StartSync( iMPS_SYNC2 );	//---- Sync after battles/troop movement 
 		CheckSync( iMPS_SYNC2, TRUE, TRUE );
-		//fPrintDebugData = TRUE;		//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		#endif
 
 		iCurrentRealmIndex = 0;		// reset

@@ -69,14 +69,6 @@ LONG CAMERA_SETUP_DATA::mfReadCameraData(FILE *fp)
 			LONG Value;
 			
 			Result = GetNextLine(fp, cpBuffer, sizeof(cpBuffer));
-			
-			if (Result != EOF && 2 == sscanf(cpBuffer,"%s %ld", cpKeyword, &Value))
-			{
-				if (strcmp(cpKeyword, "Accelleration") == 0)
-				{
-					mfSetCameraAccelleration(Value);
-				}
-			}
 		}
 	}
 	

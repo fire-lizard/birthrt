@@ -25,25 +25,12 @@ extern "C" {
 	void InitDebug ( void );
 	void SS_Assert(char *, int);
 	void SS_printf (const char *format, ... );
-	#if defined (_JPC)
-		void	WriteDebug (const char *format, ...);
-	#endif
 #endif
 void	ErrorMessage (const char *format, ...);
 
 // Various macros.
-#if defined(_WINDOWS)
+#if !defined(_WINDOWS) // not Windows
 
-	#if defined(_STATUS)
-		#include "winsys\Status.h"
-		#define StatusLine WriteDebug
-		#define TRACE SS_printf
-	#endif
-	
-#else                                  // not Windows
-
-	//GEH #include <assert.h>
-	//GEH #define ASSERT assert
 	#define InitDebug()
 	#define debugf	printf
 
@@ -52,9 +39,6 @@ void	ErrorMessage (const char *format, ...);
 
 // Use the following definitions for things that haven't been defined above
 // (in which case the macros drop out).
-//GEH #if !defined(ASSERT)
-	//GEH #define ASSERT(__ignore) ((void)0)
-//GEH #endif
 #if !defined(StatusLine)
 	#define StatusLine 1?0:printf
 #endif

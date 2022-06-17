@@ -136,10 +136,6 @@ const DWORD iINITIALHEAPSIZE = (24L * 1024L * 1024L);
 HANDLE hHeap;
 
 LONG cx, cy;
-#ifdef _CHARED
-static  char  szAppName[]= "Birthright Character Editor";
-static char szClassName[] = "BRCHARED";
-#else
 	#ifdef _FRENCHVER
 	static  char  szAppName[]= "Birthright - Le Pacte des Ténèbres";
 	static char szClassName[] = "Birthright";
@@ -157,7 +153,7 @@ static char szClassName[] = "BRCHARED";
 			#endif
 		#endif
 	#endif
-#endif
+
 
 // ABC removed minimize box per RC 7/18/97
 static LONG lStyle = WS_SYSMENU|WS_POPUP|WS_CAPTION;
@@ -607,14 +603,7 @@ int WINAPI WinMain( HINSTANCE hInstExe, HINSTANCE hInstPrev, LPSTR szCmdLine, in
 	/* Call initialization procedure */
 	if ( !AppInit( hInstExe, hInstPrev, szCmdLine, sw ) )
 	{
-	#ifdef _CHARED
-		MessageBox(NULL, "Can't initialize Birthright Character Editor.\n"
-		"Make sure the program is installed on your hard disk\n"
-		"in the same directory as the BIRTHRIGHT game.",
-		"Birthright", MB_OK | MB_APPLMODAL);
-	#else
 		MessageBox(NULL, "Can't initialize BirthRight.\n", "BirthRight", MB_OK | MB_APPLMODAL);
-	#endif
 		return FALSE;
 	}
 

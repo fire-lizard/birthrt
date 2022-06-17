@@ -23,10 +23,6 @@
 #include <time.h>
 #endif
 
-#if defined(_EDIT)
-#include "edit.h"
-#endif
-
 #include "SYSTEM.H"
 #include "ENGINE.H"
 #include "MACHINE.H"
@@ -603,12 +599,7 @@ void init_game()
 		add_task(1,HandleFloors,0);  	//once every frame see if any floors moving
 		add_task(1,HandleCeilings,0); //once every frame see if any ceilings moving
 		add_task(1,TextureFrameHandler,0);  //once every frame check lighting effects
-#ifdef _EDIT
-		EditOpeningMessage ();
-#endif
 	}
-	
-//	REALM::mfInitAllyTable();		changed 8-30 ABC
 }
 
 

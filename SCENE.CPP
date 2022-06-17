@@ -108,131 +108,6 @@ static LONG ComputePlayerStart()
 	
 }
 
-
-/* ========================================================================
-   Function    - mfWriteSceneFileVersion
-   Description - Write Version information to the scene file.
-   Returns     -
-   ======================================================================== */
-#if defined(SCENE_EDITOR)
-inline void SCENE::mfWriteSceneFileVersion(FILE * fp)
-{
-	fprintf(fp,"[Version]\n");
-	fVersion.mfWriteSceneFileVersionData(fp);
-}
-#endif
-
-/* ========================================================================
-   Function    - mfWriteWadName
-   Description - Write Wad data to scene file.
-   Returns     -
-   ======================================================================== */
-#if defined(SCENE_EDITOR)
-inline void SCENE::mfWriteWadName(FILE * fp)
-{
-	fprintf(fp, "[Wad]\n%s\n", fcpWadName);
-}
-#endif
-
-/* ========================================================================
-   Function    - mfWritePalletName
-   Description - Write the pallet information to the scene file.
-   Returns     -
-   ======================================================================== */
-#if defined(SCENE_EDITOR)
-inline void SCENE::mfWritePalletName(FILE * fp)
-{
-	fprintf(fp, "[Pallet]\n%s\n", fcpPalName);
-}
-#endif
-
-/* ========================================================================
-   Function    - mfWriteMap
-   Description - Write the Map data to the scene file.
-   Returns     -
-   ======================================================================== */
-#if defined(SCENE_EDITOR)
-inline void SCENE::mfWriteMap(FILE *fp)
-{
-	const LONG count = fMapData.mfCountOfChanges();
-	
-	if (count > 0)
-	{
-		fprintf(fp, "[Map]\n%ld\n", count);
-		fMapData.mfWriteMapData(fp);
-	}
-}
-#endif
-
-/* ========================================================================
-   Function    - mfWritePanoramaData
-   Description - Write the Panorama data to the scene file.
-   Returns     -
-   ======================================================================== */
-#if defined(SCENE_EDITOR)
-inline void SCENE::mfWritePanoramaData (FILE *fp)
-{
-	if (fPanoramaData.mfIsSet())
-	{
-		fprintf(fp,"[Panorama]\n");
-		fPanoramaData.mfWriteData(fp);
-	}
-
-}
-#endif
-
-/* ========================================================================
-   Function    - mfWriteCameraData
-   Description - Write the camera data to the scene file.
-   Returns     -
-   ======================================================================== */
-#if defined(SCENE_EDITOR)
-inline void SCENE::mfWriteCameraData(FILE *fp)
-{
-	const LONG count = fCameraData.mfCountOfChanges();
-	
-	if (count > 0)
-	{
-		fprintf(fp, "[Camera]\n%ld\n", count);
-		fCameraData.mfWriteCameraData(fp);
-	}
-
-}
-#endif
-
-/* ========================================================================
-   Function    - mfWriteSelfRunningDemoData
-   Description - Write the self running demo data to the scene file.
-   Returns     -
-   ======================================================================== */
-#if defined(SCENE_EDITOR)
-inline void SCENE::mfWriteSelfRunningDemoData (FILE *fp)
-{
-	if (fSelfRunningDemoData.mfIsSet())
-	{
-		fprintf(fp,"[Demo]\n");
-		fSelfRunningDemoData.mfWriteData(fp);
-	}
-
-}
-#endif
-
-/* ========================================================================
-   Function    - mfWriteMusicData
-   Description - Write the scene music data to the scene file.
-   Returns     -
-   ======================================================================== */
-#if defined(SCENE_EDITOR)
-inline void SCENE::mfWriteMusicData (FILE *fp)
-{
-	if (fMusicData.mfIsSet())
-	{
-		fprintf(fp,"[Music]\n");
-		fMusicData.mfWriteData(fp);
-	}
-}
-#endif
-
 /* ========================================================================
    Function    - mfInitializeData
    Description - Get everything ready for the first scene load.
@@ -269,21 +144,11 @@ void SCENE::mfInitializeData()
 	
 	fVersion.mfInitVals();
 	
-	fMapData.mfInitVals();
-	
-	fCameraData.mfInitVals();
-	
 	fPanoramaData.mfInitVals();
 	
 	fSelfRunningDemoData.mfInitVals();
 	
 	fOpeningDialog = STR_NULL;
-	
-#if defined(SCENE_EDITOR)
-	// Needed for scene editing.
-	fcpWadName[0] = 0;
-	fcpPalName[0] = 0;
-#endif
 
 	cpThisSceneName[0] = 0;
 	
@@ -321,10 +186,6 @@ void SCENE::mfLoadScene(char * cpSceneFile,
 	
 	fMaxSectors = 0;
 	fhSectors = fERROR;
-	
-	fMapData.mfInitVals();
-	
-	fCameraData.mfInitVals();
 	
 	fSelfRunningDemoData.mfInitVals();
 	
@@ -447,7 +308,6 @@ void SCENE::mfReadSceneFile(char *szName,
 			else
 			if (strcmp(cpBuffer, "[Music]") == 0)
 			{
-// if defined SCENE_EDITOR				fileResult = fMusicData.mfReadData(fp);
 				fileResult = mfReadMusicTrack(fp);
 			}
 			else
@@ -777,11 +637,6 @@ LONG SCENE::mfReadWad(FILE *fp,
 		// Connect up the AutoAI's (Avatars found in the wad.)
 		// This is done here before we add the scene Avatars.
 		mfAttachAutoAIsAndThingSnds();
-		
-#if defined(SCENE_EDITOR)
-		strncpy(fcpWadName, cpBuffer, sizeof(fcpWadName) - 1);
-		fcpWadName[sizeof(fcpWadName) - 1] = 0;
-#endif
 	}
 		
 	return Result;
@@ -1726,253 +1581,6 @@ BOOL const SCENE::mfGetExitScene( LONG &Id, char * *const cpNewSceneName)
 	
 	return bFound;
 }
-
-#if defined (SCENE_EDITOR)
-/* ========================================================================
-   Function    - mfWriteAvatars
-   Description - Dump the Avatar data to a scene file
-   Returns     - void
-   ======================================================================== */
-void SCENE::mfWriteAvatars(FILE *fp)
-{
-	LONG i;
-	LONG count =0;
-	// First count'm
-	
-	for(i=0; i<MAX_AVATARS; i++)
-	{
-		if (Avatars[i] != fERROR)
-		{
-			CAvatar *pAvatar = (CAvatar *) BLKPTR(Avatars[i]);
-			if (pAvatar && TRUE == pAvatar->mfShouldSaveToSceneFile())
-			{
-				count++;
-			}
-		}
-	}
-	
-	if (count > 0)
-	{
-		fprintf(fp,"[Avatars]\n");
-		fprintf(fp,"%ld\n", count);
-		
-		for(i=0; i<MAX_AVATARS; i++)
-		{
-			if (Avatars[i] != fERROR)
-			{
-				CAvatar *pAvatar = (CAvatar *) BLKPTR(Avatars[i]);
-				if (IsPointerGood(pAvatar))
-				{
-					pAvatar->mfWriteSceneData(fp);
-				}
-			}
-		}
-	}
-}
-#endif // SCENE_EDITOR
-#if defined (SCENE_EDITOR)
-/* ========================================================================
-   Function    - mfWriteExitPoints
-   Description - Dump the ExitPoint data to a scene file
-   Returns     - void
-   ======================================================================== */
-
-void SCENE::mfWriteExitPoints(FILE *fp)
-{
-	if (fMaxExitPoints > 0 && fhExitPoints != fERROR)
-	{
-		LONG i;
-		LONG count = 0;
-		PTR_EXIT_POINTS pExits = (PTR_EXIT_POINTS) BLKPTR(fhExitPoints);
-		
-		for (i = 0; i < fMaxExitPoints; i++)
-		{
-			if (pExits[i].mfGetId() != fERROR)
-			{
-				count++;
-			}
-		}
-		if (count > 0)
-		{
-			fprintf(fp, "[Exit]\n");
-			fprintf(fp, "%ld\n", count);
-			
-			for (i = 0; i < fMaxExitPoints; i++)
-			{
-				if (pExits[i].mfGetId() != fERROR)
-				{
-					pExits[i].mfWriteExitPointData(fp);
-				}
-			}
-		}
-	
-	}
-}
-#endif // SCENE_EDITOR
-#if defined (SCENE_EDITOR)
-/* ========================================================================
-   Function    - mfWriteSectors
-   Description - Dump the Sector data to a scene file
-   Returns     - void
-   ======================================================================== */
-
-void SCENE::mfWriteSectors(FILE *fp)
-{
-	if (fMaxSectors > 0 && fhSectors != fERROR)
-	{
-		LONG i;
-		
-		fprintf(fp, "[Sectors]\n");
-		fprintf(fp, "%ld", fMaxSectors);
-		
-		PTR_SCN_SECTORS pSectors = (PTR_SCN_SECTORS) BLKPTR(fhSectors);
-		
-		for (i = 0; i < fMaxSectors; i++)
-		{
-			if (pSectors[i].mfGetId() != fERROR)
-			{
-				pSectors[i].mfWriteSectorData(fp);
-			}
-			
-		}
-	
-	}
-}
-#endif // SCENE_EDITOR
-#if defined (SCENE_EDITOR)
-/* ========================================================================
-   Function    - mfWritePlaces
-   Description - Dump the Place data to a scene file
-   Returns     - void
-   ======================================================================== */
-
-void SCENE::mfWritePlaces(FILE *fp)
-{
-	if (fMaxPlaces > 0 && fhPlaces != fERROR)
-	{
-		LONG i;
-		
-		fprintf(fp, "[Places]\n");
-		fprintf(fp, "%ld", fMaxPlaces);
-		
-		PTR_PLACES pPlaces = (PTR_PLACES) BLKPTR(fhPlaces);
-		
-		for (i = 0; i < fMaxPlaces; i++)
-		{
-			if (pPlaces[i].ThingIndex != fERROR)
-			{
-				pPlaces[i].mfWritePlaceData(fp);
-			}
-		}
-	}
-}
-#endif // SCENE_EDITOR
-#if defined (SCENE_EDITOR)
-/* ========================================================================
-   Function    - mfWriteKeys
-   Description - Dump the Key data to a scene file
-   Returns     - void
-   ======================================================================== */
-
-void SCENE::mfWriteKeys(FILE *fp)
-{
-	if (fMaxKeys > 0 && fhKeys != fERROR)
-	{
-		LONG i;
-		SHORT count = 0;
-		PTR_KEYS pKeys = (PTR_KEYS) BLKPTR(fhKeys);
-		
-		// Count the number in use.
-		for (i = 0; i < fMaxKeys; i++)
-		{
-			if (pKeys[i] != fERROR)
-			{
-				PTR_KEY pKey = (PTR_KEY) BLKPTR(pKeys[i]);
-				if (pKey->mfGetKeyId() != NO_KEY)
-				{
-					count++;
-				}
-			}
-		}
-		
-		if (count > 0)
-		{
-			fprintf(fp, "[Keys]\n");
-			fprintf(fp, "%ld\n", count);
-			
-			for (i = 0; i < fMaxKeys; i++)
-			{
-				if (pKeys[i] != fERROR)
-				{
-					PTR_KEY pKey = (PTR_KEY) BLKPTR(pKeys[i]);
-					if (pKey->mfGetKeyId() != NO_KEY)
-					{
-						pKey->mfWriteKeyData(fp);
-					}
-				}
-			}
-		}
-	}
-}
-#endif // SCENE_EDITOR
-#if defined (SCENE_EDITOR)
-/* ========================================================================
-   Function    - mfWriteSceneFile
-   Description - Dump the scene data to a scene file
-   Returns     - BOOL (successful or not.)
-   ======================================================================== */
-
-BOOL SCENE::mfWriteSceneFile()
-{
-	BOOL bResult = FALSE;
-	char cpSceneFileName[20] = {"scenes\\"};
-	
-	strcat(cpSceneFileName, mfGetSceneName());
-	strcat(cpSceneFileName, ".scn");
-	
-	// If this file already exsists, move it to a backup file.
-	if (0 == access(cpSceneFileName, F_OK))
-	{
-		LONG i;
-		char cpSceneFileNameBackup[20];
-		
-		for (i = 0; i < 99; i++)
-		{
-			sprintf(cpSceneFileNameBackup, "scenes\\%s.b%.2ld", mfGetSceneName(), i);
-			
-			if (0 != access(cpSceneFileNameBackup, F_OK))
-			{
-				rename(cpSceneFileName, cpSceneFileNameBackup);
-				break;
-			}
-		}
-	}
-	
-	FILE *fp = FileOpen(cpSceneFileName, "w");
-	if (fp)
-	{
-		mfWriteSceneFileVersion(fp);
-		mfWriteMusicData(fp);
-		mfWritePanoramaData(fp);
-		mfWriteWadName(fp);
-		mfWritePalletName(fp);
-		mfWritePlaces(fp);
-		mfWriteSectors(fp);
-		mfWriteKeys(fp);
-		mfWriteDialogs(fp);
-		mfWriteExitPoints(fp);
-		mfWriteMap(fp);
-		mfWriteCameraData(fp);
-		mfWriteSelfRunningDemoData(fp);
-		mfWriteAvatars(fp);
-		
-		FileClose(fp);
-		bResult = TRUE;
-	}
-	return bResult;
-}
-#endif // SCENE_EDITOR
-
 
 /* ========================================================================
    Function    - DrawMapStuff

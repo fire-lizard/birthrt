@@ -31,9 +31,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#ifdef _JPC
-#include "debug.h"
-#endif
 #include "SYSTEM.H"
 #include "ENGINE.H"
 #include "ENGINT.H"
@@ -52,10 +49,6 @@ extern LONG clip_line(POINT* a, POINT* b);
 extern UBYTE				shade_table[];
 
 #define QUIETDEGRADE 1
-
-#if defined(_DEBUG) && defined(_WINDOWS) && defined(_JPC)
-static char gszSourceFile[] = __FILE__;	// for ASSERT
-#endif
 
 #if !defined (ASSERT)
 	#if defined(_DEBUG)
@@ -135,7 +128,6 @@ SHORT MinMemAdditionalTableMax = sizeof(MinMemAdditionalTable) / sizeof(MINMEMCO
 /* ------------------------------------------------------------------------
    Macros
    ------------------------------------------------------------------------ */
-//#define CHECK_THING_INDEX(t,s)	if (t<0 || t>=MAX_THINGS) fatal_error("ERROR: t out of range in %s: %ld",t,s)
 #define CHECK_THING_INDEX(t,s)	;
 /* ------------------------------------------------------------------------
    Prototypes
@@ -144,7 +136,6 @@ static ULONG RestrictAniSeq(ULONG seq);
 static void Load_Bitm(SHORT *piBitm, ULONG type);
 static SHORT load_PCX_sequence (ULONG iAnim, ULONG type, ULONG seq, ULONG Rotation);
 void WriteErrFile(char *n);
-void beep(void);
 void RemoveAnim (SHORT iAnim);
 SHORT NextAnimFrame (SHORT iAnim, USHORT iSeq, USHORT iRot, UBYTE * pCtrl, SHORT frame);
 SHORT NextPCXFrame (SHORT iAnim, SHORT iSeq, SHORT iRot);
@@ -167,8 +158,6 @@ static void MarkAllAnimPurgable(SHORT iAnim);
    Global Variables
    ------------------------------------------------------------------------ */
 
-//char THING_PATH[] = "things\\";
-
 LONG		MaxThingSpans = MAX_HIRES_THING_SPANS;
 MYTHING *	mythings = NULL;
 LONG	   	*ssector_things;
@@ -176,11 +165,6 @@ LONG	   	*ssector_things;
 // JPC: prevent dead things from being clipped at the edge of a subsector.
 // [d11-07-96 JPC] Abandon attempt to fix; uses way too many system resources,
 // slowing everything down and eventually crashing when we run out of thing spans!
-#define EXTRATHINGS 0		// set to 0 to remove this code (for speed testing)
-									// NOTE! Conform to #define in AVATAR.CPP.
-#if EXTRATHINGS
-static LONG	subsectorExtraThings[MAX_SSECTORS];
-#endif
 
 THING_SPAN	*thing_spans;
 LONG			tot_thing_spans;
@@ -191,9 +175,6 @@ LONG			butClicked = 0;		// which button clicked
 LONG			torchh,torchw;
 char			cAction[MAX_ANIMATIONSEQ] = {'S','W','D','A','F','X','C','E','L','G','B','M','Z'};
 char			cRotation[] = {'0','3','5','7','9'};
-//static PTR	TTypePtr = NULL;
-//static LONG	G_TTypeSize = 0;
-//static LONG	G_NumberOfTTypes = 0;
 PTR	TTypePtr = NULL;
 LONG	G_TTypeSize = 0;
 LONG	G_NumberOfTTypes = 0;
@@ -222,29 +203,13 @@ static MAGIC_ITEMS_INFO gMagicItems = { 0, 0, 0, -1, -1 };
 LONG			inetStartX, inetStartY, inetStartA;
 BOOL			fDisplayTitles = FALSE;
 
-// Debugging
-#ifdef _DEBUG
-#ifdef _JPC
-static unsigned int giType1 = 23; 		// infantry
-static unsigned int giType2 = 163;		// potted plant 1
-LONG   gRemapIndex = 0;
-#endif
-// static SHORT giSector = 1;
-static SHORT giDebugThing = 274;
-static int gDebug;
-#endif
 static SHORT debug_cTypes[300];
-
 
 extern PTR	pTexture;
 extern LONG	wTexture;
 extern LONG	hTexture;
 
 extern CAMERA_DESCRIPTOR* LevelCameras;
-#if WRC_CAMERA_TEST	
-extern BOOL	VideoCurrentlyRedirected;
-#endif
-
 
 /* =======================================================================
    Function    - IsAViewBlocker
@@ -627,9 +592,6 @@ SHORT load_FLC_sequence(ULONG iAnim, ULONG ttype, ULONG seq, ULONG Rotation)
 #endif
 	}
 
-	//if (iAnim == (SHORT)fERROR)
-	//	return;
-
 	/* get base filename from registered TType array */
 	/* GEH also check for the ultra low memory config */
 	/* and swap out some of the animations for another */
@@ -754,7 +716,6 @@ Art_Is_FLC:
 		mythings[i].bControl  = bFLCControl;
 		
 		pAnim = (ANIMPTR) BLKPTR(iAnim);
-		// pAnim->iBuff could have changed in SetAnimSequence.
 		mythings[i].iBitm = pAnim->iBuff;
 		if (mythings[i].iBitm != fERROR)
 		{
@@ -814,9 +775,6 @@ Art_Is_BITMAP:
 
 		if (mythings[i].iBitm == fERROR)
 		{
-#if defined (_JPC)
-			TRACE("ERROR - THINGS.C: Loading GENTHING, could not find: %s (%ld)\n",pn, ttype);
-#endif
 			printf("WARNING - %s (%ld) not found in load_obj_graphic, loading GENTHING\n",pn,ttype);
 
 LoadGenthing:
@@ -836,11 +794,7 @@ LoadGenthing:
 		mythings[i].iAnim = fERROR;
 		if (mythings[i].iBitm == fERROR)
 		{
-#if defined (_DEBUG)
-			fatal_error("ERROR - Unable to load thing file: %s\n",n);
-#else
 			return;
-#endif
 		}
 		
 		
@@ -876,7 +830,6 @@ void RegisterTTypes (PTR _TTypePtr, LONG _G_TTypeSize, LONG NumberOfTTypes)
 LONG create_thing(ULONG type, LONG x, LONG y, LONG z)
 {
 	LONG			i;
-	// GWP BITMPTR		pBitm;
 
 	for (i = 0; i < MAX_THINGS; ++i)
 		if (!mythings[i].valid)
@@ -987,7 +940,6 @@ void init_things (LONG * pPlayerStart)  // which player start to begin on
 	LONG Special;
 	LONG Tag;
 	LONG UseType;
-	//BOOL TorchToggle = FALSE; // I really hate this
 
 	MaxThingSpans = MAX_HIRES_THING_SPANS;
 		
@@ -1007,9 +959,6 @@ void init_things (LONG * pPlayerStart)  // which player start to begin on
 	for(i=0;i<MAX_SSECTORS;++i)
 	{
 		ssector_things[i] = -1;	//nothing here.
-#if EXTRATHINGS
-		subsectorExtraThings[i] = -1;		// [d11-05-96 JPC]
-#endif
 	}
 
 	// Init the mythings array.
@@ -1027,11 +976,7 @@ void init_things (LONG * pPlayerStart)  // which player start to begin on
 		
 		if(things[i].type == 343)
 			continue;
-			
-#ifdef _JPC
-		if (i == giDebugThing)
-			++gDebug;
-#endif
+
 		// in mininum case, colapse the trees and rocks
 
 		if (things[i].type<=4 || things[i].type == TYPE_DEATHMATCH)
@@ -1063,13 +1008,7 @@ void init_things (LONG * pPlayerStart)  // which player start to begin on
 			// don't store player starts in the mythings
 			continue;
 		}
-#if WRC_CAMERA_TEST
-		else if (things[i].type == CAMERA_TYPE)
-		{
-			NewCameraThing(i);
-			continue;
-		}
-#endif
+
 		// GEH these are substitute items
 		else if (things[i].type == gMagicItems.MagicThingType) 	// Random Special Item
 		{
@@ -1266,31 +1205,6 @@ static void MoveSetThing (LONG ThingIndex,LONG nx,LONG ny)
 			}
 		}
 	}
-#ifdef _STATUS
-	if (ThingIndex == player.ThingIndex)
-	{
-		LONG 			iSector;
-		LONG			x, y;
-		SHORT			special;
-
-		if (!fGraphInitialized)
-			return;
-	
-		x = mythings[ThingIndex].x;
-		y = mythings[ThingIndex].y;
-		iSector = point_to_sector (x, y);
-		special = sectors[iSector].special;
-		if (special == SSP_WATER ||
-		    special == SSP_ACID_FLOOR ||
-		    special == SSP_LAVA ||
-			 special == SSP_DEEP_WATER)
-		{
-			++gDebug;
-			if (mythings[ThingIndex].z == 0)
-				++gDebug;
-		}
-	}
-#endif
 }
 
 
@@ -1303,10 +1217,6 @@ void set_thing (LONG t, LONG x, LONG y, LONG z, LONG a)
 {
 	// Set the Z first, then if it is outside reasonable bounds, MoveSetThing
 	// will put the object between the floor and the ceiling.
-#ifdef _DEBUG
-	if (t == giDebugThing && mythings[t].z < 0)
-		++gDebug;								// for breakpoint
-#endif
 	mythings[t].z = z;
 	// We used to call move_thing_to, but that function changes the z coordinate
 	// too much--it puts our party z on the floor even if we're flying!
@@ -1452,7 +1362,6 @@ void move_thing_to (LONG ThingIndex,LONG nx,LONG ny)
 		if (nx==mythings[ThingIndex].x&& ny==mythings[ThingIndex].y)
 			return;						// premature return if thing hasn't moved
 
-	// GWP orig_ss=find_ssector(mythings[ThingIndex].x,mythings[ThingIndex].y);
 	// GWP We already know this.
 	orig_ss = mythings[ThingIndex].ssect;
 	mythings[ThingIndex].x=nx;
@@ -1546,32 +1455,6 @@ void move_thing_to (LONG ThingIndex,LONG nx,LONG ny)
 			}
 		}
 	}
-
-#ifdef _STATUS
-	if (ThingIndex == player.ThingIndex)
-	{
-		LONG 			iSector;
-		LONG			x, y;
-		SHORT			special;
-
-		if (!fGraphInitialized)
-			return;
-	
-		x = mythings[ThingIndex].x;
-		y = mythings[ThingIndex].y;
-		iSector = point_to_sector (x, y);
-		special = sectors[iSector].special;
-		if (special == SSP_WATER ||
-		    special == SSP_ACID_FLOOR ||
-		    special == SSP_LAVA ||
-			 special == SSP_DEEP_WATER)
-		{
-			++gDebug;
-			if (mythings[ThingIndex].z == 0)
-				++gDebug;
-		}
-	}
-#endif
 }
 
 /* =======================================================================
@@ -1683,9 +1566,6 @@ void remove_thing (LONG t)
 	LONG ss;
 	LONG ft;		//first thing
 	LONG ct;		//current thing
-#if EXTRATHINGS
-	LONG iSubsector;							// [d11-05-96 JPC]
-#endif
 
 	CHECK_THING_INDEX(t,"remove_thing");
 
@@ -1751,19 +1631,6 @@ void remove_thing (LONG t)
 		mythings[ct].next_thing = mythings[t].next_thing;
 		mythings[t].next_thing=-1;
 	}
-
-#if EXTRATHINGS
-	// [d11-05-96 JPC] Check things that are posted to more than one
-	// subsector so they won't clip (mainly for dead bodies).
-	for (iSubsector = 0; iSubsector < tot_ssectors; ++iSubsector)
-	{
-		if (subsectorExtraThings[iSubsector] == t)
-		{
-			subsectorExtraThings[iSubsector] = -1;
-			// No "break" here: multiple subsectors might be affected.
-		}
-	}
-#endif
 }
 
 /* =======================================================================
@@ -1790,11 +1657,6 @@ void add_thing (LONG t, LONG ss)
 		fatal_error("THINGS ERROR! add_thing Ssector out of bounds %ld.\n", ss);
 	}
 #endif
-
-//	if (t==14)
-//		printf("teleporter being added to ssector %li\n",ss);
-//	if (ss==4)
-//		printf("adding thing type %li to sector %li\n",mythings[t].type,ss);
 
 	ft = ssector_things[ss];					// get first thing in linked list
 	if (ft == -1)									// is there any thing here already?
@@ -1870,12 +1732,9 @@ static void scale_obj (LONG t, LONG sx, LONG dx, LONG dy, LONG dye, LONG clipped
 {
 	BITMPTR	bptr = (BITMPTR)BLKPTR(t);
 	ULONG		tsy;
-	//const LONG		hei = bptr->h;		// these are NOT in the original order, they have been swapped (w->h, h->w)
-	//const LONG		wid = bptr->w;
 	PTR		tptr = ((PTR)BLKPTR(t)) + sizeof(BITMHDR);
 	PTR		sptr;
 	PTR		sptr_end;
-	//LONG		sy;
 	ULONG		pix;
 	LONG		sptr_inc; //helper for Cameraas
 
@@ -1893,19 +1752,8 @@ static void scale_obj (LONG t, LONG sx, LONG dx, LONG dy, LONG dye, LONG clipped
 #endif
 	
 	++dye;
-	//if (sx >= hei)
 	if (sx < 0 || sx >= bptr->h)
 		return;
-
-#if WRC_CAMERA_TEST	
-	if (VideoCurrentlyRedirected) 	//must rotate 90deg if rendering to buf
-	{
-		sptr = (PTR)screen+((dx*screen_buffer_height)+dy);
-		sptr_end = sptr + (dye-dy);
-		sptr_inc = 1;
-	}
-	else
-#endif
 	{
 		sptr = (PTR)screen+((dy*screen_buffer_width)+dx);
 		sptr_end = sptr + ((dye-dy)*screen_buffer_width);
@@ -1913,13 +1761,9 @@ static void scale_obj (LONG t, LONG sx, LONG dx, LONG dy, LONG dye, LONG clipped
 	}
 
 
-	// sy = clipped * src_inc;
 	tsy = clipped * src_inc;
-	// tptr = &tptr[sx * wid]; /*note add of sx here instead of in loop*/
 	tptr = &tptr[sx * bptr->w]; /*note add of sx here instead of in loop*/
 
-	// tsy = sy;
-	
 	if (light != DARKEST)
 	{
 		if (light == 0)
@@ -2018,19 +1862,6 @@ static void scale_obj (LONG t, LONG sx, LONG dx, LONG dy, LONG dye, LONG clipped
 void draw_thing_spans (void)
 {
 	LONG i;
-
-	/* print text above things */
-//	if (fDisplayTitles)
-//	{
-//		init_gfont(FONT_SANS_6PT);
-//		for (i=0; i<(LONG)tot_things; ++i)
-//		{
-//			if (mythings[i].fDrawn && mythings[i].title != NULL)
-//			{
-//				print_text_centered(mythings[i].xDrawn, mythings[i].yDrawn-10, mythings[i].title, 31);
-//			}
-//		}
-//	}
 #ifdef INET
 	DisplayPlayerNames();
 #endif
@@ -2082,7 +1913,6 @@ static void draw_thing (LONG t)
 	LONG			oldHeiScaled;				// [d9-05-96 JPC]
 	LONG			floorHeight;				// [d9-05-96 JPC]
 	POINT			torig_a;
-	//SHORT			iBitm = mythings[t].iBitm;
 	BITMPTR			pBitm;
 	ULONG			type = mythings[t].type;	// support WARNINGS
 	LONG			light;							// [d6-27-96 JPC]
@@ -2099,21 +1929,6 @@ static void draw_thing (LONG t)
 		mythings[t].dist < mythings[gDontDrawInfo.ThingIndex].dist
 		)
 		return;
-
-#ifdef _JPC
-// Debugging breakpoints.
-		if (mythings[t].type == giType1 && mythings[t].x == -534)
-			++gDebug;					// put breakpoint here
-		if (mythings[t].type == giType2)
-			++gDebug;					// put breakpoint here
-#endif
-
-	/* get some details about the graphic */
-	//if (iBitm == (SHORT)fERROR)
-	//{
-	//	printf("WARNING - iBitm is fERROR in draw_thing (thing type %ld)\n",type);
-	//	return;
-	//}
 
 	if ( mythings[t].inVisible == TRUE )
 		return;
@@ -2192,9 +2007,6 @@ static void draw_thing (LONG t)
 				if (iHead <= 0 ||
 					IsHandleFlushed(iHead))
 				{
-#ifndef QUIETDEGRADE				
-					printf("WARNING - degrading %s seq:%c to stand\n", GetThingName(type), cAction[mythings[t].iSequence]);
-#endif				
 					// Couldn't load it.  Degrade to STAND
 					
 					MarkOldAnimPurgable(iAnim, mythings[t].iSequence);
@@ -2261,7 +2073,6 @@ static void draw_thing (LONG t)
 			/* only decompress flics that can be seen */
 			
 			if(mythings[t].Frozen == TRUE)
-			   // && mythings[t].fDrawnLastFrame == TRUE)		// -GWP- Optimization for Battlefields, causes us to be one frame off...
 			{	
 				mythings[t].bControl = 0;
 				mythings[t].iBitm = NextAnimFrame(iAnim, (SHORT)mythings[t].iSequence, rotation, &(mythings[t].bControl), pAnim->frame);
@@ -2296,8 +2107,6 @@ static void draw_thing (LONG t)
 			}
 			else
 			{
-				//if (mythings[t].fDrawnLastFrame == TRUE)
-				{
 					mythings[t].iBitm = NextAnimFrame(iAnim, (SHORT)mythings[t].iSequence, rotation, &(mythings[t].bControl), -1);
 					if ( mythings[t].iBitm == fERROR)
 					{
@@ -2326,7 +2135,6 @@ static void draw_thing (LONG t)
 							mythings[t].widScaled = (pBitm->w*UNITARY_SCALE)/pBitm->scale;
 						}
 					}
-				}
 			}
 		}
 		else
@@ -2354,9 +2162,6 @@ static void draw_thing (LONG t)
 				if (iHead <= 0 ||
 				    IsHandleFlushed(iHead))
 				{
-#ifndef QUIETDEGRADE				
-					printf("WARNING - degrading %s seq:%c to stand\n", GetThingName(type), cAction[mythings[t].iSequence]);
-#endif				
 					// Couldn't load it.  Degrade to STAND
 					
 					MarkOldAnimPurgable(iAnim, mythings[t].iSequence);
@@ -2497,13 +2302,6 @@ static void draw_thing (LONG t)
 			return;
 		}
 	}
-
-#ifdef _JPC
-// Debugging breakpoints.
-		if (mythings[t].type == giType1 && mythings[t].x == -534)
-			++gDebug;					// put breakpoint here
-#endif
-
 
 	xlate(&a);									// translate to camera
 	xlate(&b);
@@ -2668,12 +2466,6 @@ static void draw_thing (LONG t)
 		}
 	}
 	
-#ifdef _JPC
-// Debugging breakpoints.
-		if (mythings[t].type == giType1 && mythings[t].x == -534)
-			++gDebug;					// put breakpoint here
-#endif
-
 	/* loop for each column in the thing */
 	while (a.x < b.x)
 	{
@@ -2691,16 +2483,11 @@ static void draw_thing (LONG t)
 			if (!mythings[t].fDrawn)
 			{
 				mythings[t].fDrawn = TRUE;			/* part of thing WAS drawn */
-//				mythings[t].xDrawn = ((b.x-a.x)/2)+a.x;
-//				mythings[t].yDrawn = a.y;
 				mythings[t].fMapSpotted = TRUE;
 			}
 			// Note that if delta_y is 0, clip_obj will return FALSE and
 			// we won't get here.  So no division by 0 will occur.
 			thing_spans[tot_thing_spans].src_inc = (hei << 15) / delta_y;
-#ifdef _JPC
-			// GWP ASSERT (thing_spans[tot_thing_spans].src_inc == mySrcInc);
-#endif
 
 			// check for click
 			if(mouse_button)
@@ -2712,11 +2499,6 @@ static void draw_thing (LONG t)
 					objClicked = t;
 					typeClicked = iOBJECT;
 					butClicked = mouse_button;
-
-#ifdef _WINDOWS
-					// play a sound effect
-//					beep();
-#endif
 
 					// turn off click so we don't process any more
 					mouse_button = 0;

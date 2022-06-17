@@ -6264,10 +6264,6 @@ void InitDomainTurn (LONG Fake)
 	char				n[40];
 	static BOOL		FirstRun	= TRUE;
 
-#if defined (_EDIT)
-	return;								// [d8-09-96 JPC] can't get to map
-#endif									// from editor.
-
 	if (hSaveBkgnd != fERROR)		// throw away hSaveBkgnd (Menu.c)
 	{
 		DisposBlock(hSaveBkgnd);

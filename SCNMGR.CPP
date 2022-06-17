@@ -578,9 +578,6 @@ Error:
 void SCENE_MGR::mfReleaseSceneToMap(LONG,LONG)
 {
 
-#if defined (_EDIT)
-	return;										// [d8-09-96 JPC] can't get to map
-#endif											// from editor.
 	PlayEnvironmentalSounds = FALSE;
 	SuspendMusic();
 	if (hCurrentScene != fERROR)

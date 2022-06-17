@@ -27,13 +27,6 @@
 #if !defined(_RELEASE)
 #include <stdio.h>
 #endif
-#if defined (_EDIT)
-#include <windows.h>
-#endif
-#if defined (_JPC)
-#include "winsys\status.h"
-void WriteDebug (const char *format, ... );
-#endif
 #include "SYSTEM.H"
 #include "ENGINE.H"
 #include "ENGINT.H"

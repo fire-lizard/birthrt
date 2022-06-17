@@ -28,13 +28,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#ifdef _EDIT
-	#if !defined(_WINDOWS)
-		#error _EDIT must be combined with _WINDOWS
-	#endif
-	#include <windows.h>
-	#include "edit.h"
-#endif
 #include "DEBUG.H"
 #include "SYSTEM.H"
 #include "ENGINE.H"
@@ -99,10 +92,6 @@ long local_camera_x,local_camera_y;
 /* ------------------------------------------------------------------------
    Global Variables
    ------------------------------------------------------------------------ */
-#if defined(_DEBUG) && defined(_WINDOWS) && defined(_JPC)
-static char gszSourceFile[] = __FILE__;	// for ASSERT
-#endif
-
 LONG first=TRUE;
 LONG level_first=TRUE;
 LONG frames=0;
@@ -160,18 +149,6 @@ ULONG floor_lastb_y;
 	/*used to open doors and such like. this needs a better mechanism*/
 LONG first_seg;
 
-#if defined(_DEBUG) && defined(_JPC)
-// Comment-out the following to suppress various TRACE statements:
-// #define _SHOWLINES
-//int giLinedef = 2294;             		// JPC: for breakpoint
-int giLinedef = 50;             		// JPC: for breakpoint
-int gDebug;                     		// JPC: for breakpoint
-#endif
-
-// short gCameraSector;						// [d2-28-97 JPC] Was used for reject
-													// table processing in draw_node,
-													// which is no longer used.
-
 #if defined (_DEBUGNODE)
 // [d3-03-97 JPC] Variables for testing IsNodeVisible.
 int gDepth = 0;
@@ -179,7 +156,6 @@ int gMax = 0;
 #define DEBUG_NODES 2000
 char gNodeHit[DEBUG_NODES];
 #endif
-
 
 #define DEBUG_SCALE	(10)
 void debug_draw_seg_line(long x1,long y1,long x2,long y2,long c)
@@ -265,13 +241,6 @@ void scale_col_ttop(long sx,long dx,long dy,long dye,
 	// Add gtxOff here (this is the x offset specified by the sidedef).
 	sx = (sx + gtxoff) % hTexture;		/* insure horiz wrapping */
 	tptr = pTexture + (sx * wTexture);
-
-#ifdef _DEBUG
-#ifdef _JPC
-	if (floor_z % wTexture)
-		++gDebug;
-#endif
-#endif
 
 	// At this point, "tptr" points to the start of the texture row we'll use.
 	// Remember that a row in the source texture becomes a column on screen.
@@ -850,27 +819,11 @@ void draw_ssector(LONG sect)
 		// [d10-21-96 JPC] Add segMirror code.
 		// Call process_seg only if the seg has no mirror OR the seg's
 		// mirror has not yet been drawn.
-#if defined (_JPC)
-		ASSERT (ssectors[sect].o + i < tot_segs);
-#endif
-		// GWP & GEH if (segMirror[ssectors[sect].o+i] == -1 ||
-		// GWP & GEH 	segMirrorDrawn[segMirror[ssectors[sect].o+i]] == 0)
 		// This test doesn't protect from a -1 array index in segMirrorDrawn.
 		
 		// GWP added these temp variables for speed optimization.
 		LONG const Temp_ssector = ssectors[sect].o+i;
 		LONG const Temp_mirror_seg = segMirror[Temp_ssector];
-		
-		// GWP if (segMirror[ssectors[sect].o+i] == -1)
-		// GWP {
-		// GWP 	process_seg(ssectors[sect].o+i);
-		// GWP }
-		// GWP else if (segMirrorDrawn[segMirror[ssectors[sect].o+i]] == 0)
-		// GWP {
-		// GWP 	process_seg(ssectors[sect].o+i);
-		// GWP 	segMirrorDrawn[ssectors[sect].o+i]=TRUE;
-		// GWP 	segMirrorDrawn[segMirror[ssectors[sect].o+i]]=TRUE;
-		// GWP }
 		
 		if (Temp_mirror_seg == -1)
 		{
@@ -1339,14 +1292,6 @@ void add_floor_span(LONG x,LONG y,LONG sect)
 			}
 		}
 	}
-#ifdef _EDIT
-// [d6-03-96 JPC]
-// This is very similar to the "check for click" just above; but it is
-// separate code so the editor will be easier to remove.
-			if (gfFindSeg)
-            EditCheckCoordinates (x, last_post_y, last_post_ye, sect,
-               0, 0, typeFLOOR);
-#endif
 }
 
 /* =======================================================================
@@ -1429,13 +1374,6 @@ void add_ceil_span(LONG x,LONG y,LONG sect)
 		floor_lastb_y=y2;
 	}
 	last_post_x=x;last_post_y=y;last_post_ye=y2;
-#ifdef _EDIT
-// [d6-03-96 JPC]
-// Similar to floor check in add_floor_span:
-			if (gfFindSeg)
-            EditCheckCoordinates (x, last_post_y, last_post_ye, sect & 0x7FFF,
-               0, 0, typeCEILING);
-#endif
 }
 
 /* =======================================================================
@@ -1677,7 +1615,6 @@ static LONG draw_wall(LONG seg, LONG side)
 		{
 			delta_y = scaned[x1] - scanedt[x1];
 
-#if SEE_THROUGH
 			if (textures[texture].type == TRANSP_TEX)		/* check for see-through */
 			{
 				if ( clip_obj(x1,&scanedt[x1],&scaned[x1],&clipped) )
@@ -1722,16 +1659,6 @@ static LONG draw_wall(LONG seg, LONG side)
 					scale_col_ttop(src_x.TwoHalves.sHigh,x1,scanedt[x1],scaned[x1],clipped,(shift_16_colhei)/delta_y);
 				}
 			}
-#else
-			if (clip_span(x1,&scanedt[x1],&scaned[x1],&clipped))
-				scale_col_ttop(src_x.TwoHalves.sHigh,x1,scanedt[x1],scaned[x1],clipped,(shift_16_colhei)/delta_y);
-#endif
-
-#ifdef _EDIT
-// [d6-03-96 JPC] Editor needs to know what we clicked on.
-			if (gfFindSeg)
-            EditCheckCoordinates (x1, scanedt[x1], scaned[x1], seg, MIDDLE_TEXTURE, FRONT, typeWALL);
-#endif
 
 			src_x.lval += xsrc_inc;
 			++x1;
@@ -1773,11 +1700,6 @@ static LONG draw_lower_wall(LONG seg, LONG side)
 	LONG	furtherFloorHeight;
 	SHORT type;
 
-#if defined(_DEBUG) && defined(_JPC)
-	if (segs[seg].lptr == giLinedef)
-		++gDebug; // put break point here
-#endif
-
 	// Remember that front_sect is the sector further away from us and
 	// back_sect is the one closer to us.  [Or so it seems--JPC.]
 	closerFloorHeight = sector_to_fh (back_sect);
@@ -1809,16 +1731,10 @@ static LONG draw_lower_wall(LONG seg, LONG side)
 		return(NOT_DRAWN);
 	}
 		
-	// [d7-11-96 JPC] Don't do this here! Wait until after wall_scale is calculated (below).
-	// if (wall_scale)
-	// 	floor_z = (floor_z * wall_scale) / UNITARY_SCALE;
-
 	texture=seg_to_texture_num(seg,side,LOWER_TEXTURE);
-	//gtxoff = seg_to_txoff(seg, side);   // [d6-07-96 JPC]
 	seg_to_txoff_tyoff(seg, side, &gtxoff, &tyoff);	// GWP
    while (gtxoff < 0)
       gtxoff += textures[texture].h;   // not .w because of 90 degree rotation
-	//tyoff = seg_to_tyoff(seg,side);
 
 	type = textures[texture].type;
 	if (type != SKY_TEX)
@@ -1841,17 +1757,6 @@ static LONG draw_lower_wall(LONG seg, LONG side)
 	// and unpegged from what they are in DOOM and DCK.
  	gPeggedValue = (linedefs[segs[seg].lptr].flags & 16);	// 16 = lower wall pegged
 //38fps
-
-	/*project bottom of wall*/
-	// GWP Moved to higher in the fn to stop looking for texture info for excluded walls.
-	// GWP ba=clipped_a;
-	// GWP bb=clipped_b;
-	// GWP proj(&ba,bz);
-	// GWP proj(&bb,bz);
-	// GWP 
-	// GWP /*Check wall against extent list*/
-	// GWP if(!extent_visible(ba.x,bb.x))
-	// GWP 	return(NOT_DRAWN);
 
 	/*project bottom of wall*/
 	ta=clipped_a;
@@ -1879,15 +1784,12 @@ static LONG draw_lower_wall(LONG seg, LONG side)
 
 	/* get x texture constants */
 	// [d11-05-96 JPC] Add side parameter.
-	// calc_x_texture_info(&xsrc_inc,&src_x.lval);
 	CalcXTextureInfo(&xsrc_inc,&src_x.lval,side, segs[seg].flip);
 
 //35fps
 
 	/* set sector lighting */
 	SectLight = sector_to_light(back_sect);
-
-	// if (!SectLight) SetLight(0)				// [d11-06-96 JPC] omit
 
    SetLightDelta (seg, side);                // [d6-04-96 JPC]
 
@@ -1950,13 +1852,6 @@ static LONG draw_lower_wall(LONG seg, LONG side)
 		{
 			scale_col_ttop(src_x.TwoHalves.sHigh,x1,scanedt[x1],scaned[x1],clipped,(shift_16_colhei)/delta_y);
 		}
-#ifdef _EDIT
-// [d6-03-96 JPC]
-      if (gfFindSeg)
-      {
-         EditCheckCoordinates (x1, scanedt[x1], scaned[x1], seg, LOWER_TEXTURE, side, typeWALL);
-      }
-#endif
 		src_x.lval+=xsrc_inc;
 		++x1;
 	}
@@ -1996,16 +1891,6 @@ static LONG draw_upper_wall(LONG seg, LONG side)
 	LONG texture;
 	SHORT type;
 
-#if defined(_DEBUG) && defined(_JPC)
-	if (segs[seg].lptr == giLinedef)
-		++gDebug; // put break point here
-#endif
-
-	//GEH bz = (-sector_to_ch(front_sect))-camera.z; /*get hei of ceiling*/
-	//GEH tz = (-sector_to_ch(back_sect))-camera.z;  /*get height of adj sector*/
-	// JPC bz = (-sector_to_ch(front_sect))+camera.z; /*get hei of ceiling*/
-	// JCP tz = (-sector_to_ch(back_sect))+camera.z;  /*get height of adj sector*/
-
 	// Remember that front_sect is the sector further away from us and
 	// back_sect is the one closer to us.  [I realize this seems odd,
 	// but it seems to be true--JPC.]
@@ -2040,16 +1925,10 @@ static LONG draw_upper_wall(LONG seg, LONG side)
 		return(NOT_DRAWN);
 	}
 
-	// [d7-11-96 JPC] Don't do this here! Wait until after wall_scale is calculated (below).
-	// if (wall_scale)
-	// 	floor_z = (floor_z * wall_scale) / UNITARY_SCALE;
-
 	texture=seg_to_texture_num(seg,side,UPPER_TEXTURE);
-	//gtxoff = seg_to_txoff(seg, side);   // [d6-07-96 JPC]
 	seg_to_txoff_tyoff(seg, side, &gtxoff, &tyoff);	// GWP
    while (gtxoff < 0)
       gtxoff += textures[texture].h;   // not .w because of 90 degree rotation of textures
-	//tyoff = seg_to_tyoff(seg,side);
 
 	type = textures[texture].type;
 	if (type != SKY_TEX)
@@ -2174,11 +2053,6 @@ static LONG draw_upper_wall(LONG seg, LONG side)
 		{
 			scale_col_ttop(src_x.TwoHalves.sHigh,x1,scanedt[x1],scaned[x1],clipped,(shift_16_colhei)/delta_y);
 		}
-#ifdef _EDIT
-// [d6-03-96 JPC]
-      if (gfFindSeg)
-         EditCheckCoordinates (x1, scanedt[x1], scaned[x1], seg, UPPER_TEXTURE, side, typeWALL);
-#endif
 		src_x.lval+=xsrc_inc;
 		++x1;
 	}

@@ -45,13 +45,6 @@ public:
     LONG mfReadMap(FILE *);
 	void mfSetZoomFactor (char * /* cpBuffer */);
 	void mfSetMapState (char * /* cpBuffer */);
-	
-#if defined(SCENE_EDITOR)
-	void mfWriteMapData(FILE * /* fp */);
-	LONG mfCountOfChanges();
-#endif
-
-	void mfInitVals();
 
 protected:
 private:
@@ -61,12 +54,6 @@ private:
 	void operator delete (void *p);
 	MAP(const MAP &);			// No copies
 	const MAP operator=(const MAP &);	// No assignments
-	
-#if defined(SCENE_EDITOR)
-	BOOL fbZoomFactorSet;
-	LONG fZoomFactor;
-	TRI_STATE fMapDisplayed;
-#endif
 };
 	
 /* ========================================================================
@@ -77,10 +64,6 @@ private:
 inline void MAP::mfSetZoomFactor (char *cpBuffer) 
 {
 	ZoomMap(0,atol(cpBuffer));
-#if defined(SCENE_EDITOR)
-	fbZoomFactorSet = TRUE;
-	fZoomFactor = MapZoomFactor();
-#endif
 }
 
 /* ========================================================================
@@ -93,62 +76,12 @@ inline void MAP::mfSetMapState (char *cpBuffer)
 	if (strcmp(cpBuffer, "On") == 0)
 	{
 		SetMapDraw(0,TRUE);
-#if defined(SCENE_EDITOR)
-		fMapDisplayed = ON;
-#endif
 	}
 	else
 	if (strcmp(cpBuffer, "Off") == 0)
 	{
 		SetMapDraw(0,FALSE);
-#if defined(SCENE_EDITOR)
-			fMapDisplayed = OFF;
-#endif
 	}
-}
-
-/* ========================================================================
-   Function    - mfWriteMapData
-   Description - Write the scene file data.
-   Returns     - 
-   ======================================================================== */
-#if defined(SCENE_EDITOR)
-inline void MAP::mfWriteMapData(FILE *fp) 
-{
-	if (fbZoomFactorSet)
-	{
-		fprintf(fp, "ZoomFactor %ld\n", fZoomFactor);
-	}
-		
-	if (fMapDisplayed != NOT_SET)
-	{
-		fprintf(fp,"MapState %s\n", (fMapDisplayed == ON) ? "On" : "Off" );
-	}
-}
-
-/* ========================================================================
-   Function    - mfCountOfChanges
-   Description - Count the number of lines for the scene file.
-   Returns     - 
-   ======================================================================== */
-inline LONG MAP::mfCountOfChanges() 
-{
-	return (fbZoomFactorSet + (fMapDisplayed != NOT_SET));
-}
-#endif
-
-/* ========================================================================
-   Function    - mfInitVals
-   Description - Initialize the member data.
-   Returns     - 
-   ======================================================================== */
-inline void MAP::mfInitVals() 
-{
-#if defined(SCENE_EDITOR)
-	fbZoomFactorSet = FALSE;
-	fZoomFactor = MapZoomFactor();
-	fMapDisplayed = NOT_SET;
-#endif
 }
 
 #endif // _SCNMAP_HXX

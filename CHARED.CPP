@@ -84,10 +84,6 @@ struct BITMAPHEADER
    Prototypes
    ------------------------------------------------------------------------ */
 
-#ifdef _CHARED
-void CharedDoEditorDialog ();
-#endif
-
 static void ShowNewAppearance (HWND hwnd, int index);
 static void ChangeHitPoints (HWND hwnd);
 static BOOL IsWarrior (int iClass);

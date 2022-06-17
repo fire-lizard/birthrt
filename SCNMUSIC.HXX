@@ -39,10 +39,6 @@
    ------------------------------------------------------------------------ */
 class SCENE_MUSIC_DATA {
 public:
-#if defined (SCENE_EDITOR)
-	BOOL mfIsSet();
-	BOOL mfIsBackgroundSet();
-#endif
 	char * mfGetBackgroundMusic();
 	void mfWriteData(FILE *fp);
 	
@@ -61,30 +57,6 @@ private:
    inline functions   
    ------------------------------------------------------------------------ */
    
-/* ========================================================================
-   Function    - mfIsSet
-   Description - Test for whether this is a demo scene or not.
-   Returns     - 
-   ======================================================================== */
-#if defined (SCENE_EDITOR)
-inline BOOL SCENE_MUSIC_DATA::mfIsSet() 
-{
-	return fBackgroundMusic.mfIsSet();
-}
-#endif
-
-/* ========================================================================
-   Function    - mfIsBackgroundSet
-   Description - Test for whether The background music is set
-   Returns     - 
-   ======================================================================== */
-#if defined (SCENE_EDITOR)
-inline BOOL SCENE_MUSIC_DATA::mfIsBackgroundSet() 
-{
-	return fBackgroundMusic.mfIsSet();
-}
-#endif
-
 /* ========================================================================
    Function    - mfGetBackgroundMusic
    Description - Get the name of the Background Music.

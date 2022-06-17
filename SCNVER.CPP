@@ -25,7 +25,6 @@
 #include "ENGINE.H"
 #include "MACHINE.H"
 
-//#include "dlg_edit.h"
 #include "FILEUTIL.H"
 #include "SCNVER.HXX"
 

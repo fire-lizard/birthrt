@@ -35,10 +35,6 @@
 #include "DYNAMTEX.H"
 #include "LIGHT.H"							// [d7-03-96 JPC]
 
-#if defined( _DEBUG) && defined(_WINDOWS) && defined(_JPC)
-static char gszSourceFile[] = __FILE__;
-#endif
-
 extern UBYTE				shade_table[];
 
 /* ------------------------------------------------------------------------
@@ -613,11 +609,6 @@ void draw_spans (void)
 	{
 		ULONG i;
 		const ULONG LastPostX = last_post[x];
-
-#ifdef _JPC
-		if (last_post[x] == 0)
-			ASSERT (1);
-#endif
 
 		for (i=0; i<LastPostX; ++i)
 		{

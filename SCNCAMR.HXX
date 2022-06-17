@@ -41,15 +41,6 @@ public:
 	
 	LONG mfReadCameraData(FILE *);
 	
-	void mfInitVals ();
-	
-#if defined(SCENE_EDITOR)
-	void mfWriteCameraData(FILE *fp);
-	
-	LONG mfCountOfChanges();
-#endif
-
-	void mfSetCameraAccelleration(LONG );
 protected:
 private:
 	void *operator new (size_t stAllocateBlock);	// Can't use new/delete
@@ -63,74 +54,5 @@ private:
 #endif
 	
 };
-
-/* ========================================================================
-   Function    - mfInitVals
-   Description - Initialize the member data.
-   Returns     - 
-   ======================================================================== */
-inline void CAMERA_SETUP_DATA::mfInitVals () 
-{
-#if defined(SCENE_EDITOR)
-	fbCameraAccellerationSet = FALSE;
-	fCameraAccelleration = SHRT_MAX;
-	
-#endif
-	// Reset the global variable too.
-}
-
-/* ========================================================================
-   Function    - CAMERA_SETUP_DATA
-   Description - Constructor
-   Returns     - 
-   ======================================================================== */
-inline CAMERA_SETUP_DATA::CAMERA_SETUP_DATA() 
-{
-	mfInitVals();
-}
-
-/* ========================================================================
-   Function    - mfWriteCameraData
-   Description - Write the scene camera data.
-   Returns     - 
-   ======================================================================== */
-#if defined(SCENE_EDITOR)
-inline void CAMERA_SETUP_DATA::mfWriteCameraData(FILE *fp) 
-{
-	if (fbCameraAccellerationSet == TRUE)
-	{
-		fprintf(fp, "Accelleration %ld\n", fCameraAccelleration);
-	}
-}
-
-/* ========================================================================
-   Function    - mfCountOfChanges
-   Description - Write the first line of the scene camera data.
-   Returns     - 
-   ======================================================================== */
-inline LONG CAMERA_SETUP_DATA::mfCountOfChanges() 
-{
-	return (fbCameraAccellerationSet);
-}
-#endif
-
-/* ========================================================================
-   Function    - SCENE_AI
-   Description - Constructor
-   Returns     - 
-   ======================================================================== */
-#if defined(SCENE_EDITOR)
-inline void CAMERA_SETUP_DATA::mfSetCameraAccelleration(LONG val ) 
-{
-	fbCameraAccellerationSet = TRUE;
-	fCameraAccelleration = val;
-	
-	// Set the global variable too.
-}
-#else
-inline void CAMERA_SETUP_DATA::mfSetCameraAccelleration(LONG ) 
-{
-}
-#endif
 
 #endif // SCNCAMR_HXX
