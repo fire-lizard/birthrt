@@ -15,7 +15,7 @@
    void BeginRule(LONG, LONG)
    void SelectAdvParty(void)
 
-   ®RM250¯======================================================================= */
+   ï¿½RM250ï¿½======================================================================= */
 /* ------------------------------------------------------------------------
    Includes
    ------------------------------------------------------------------------ */
@@ -407,6 +407,24 @@ void MultiSetAdvSite(void)
 }
 
 
+/* ========================================================================
+   Function    - MakeAllRealmsSelectable
+   Description - Let the player start as ANY existing ruler - the
+                 awnsheghlien (Gorgon, Spider, ...) included - instead of
+                 only the realms the scenario data marks playable.
+   Returns     -
+   ======================================================================== */
+static void MakeAllRealmsSelectable(void)
+{
+	LONG i;
+
+	for (i = REALM::FIRST_REALM; i < LAND_REALM_COUNT; i++)
+	{
+		if (realm[i].mfExists() && realm[i].mfGetRegent() > 0)
+			realm[i].mfSetPlayable(TRUE);
+	}
+}
+
 void MultiResetRealmSelect(void)
 {
 	FILE *fp;
@@ -418,10 +436,11 @@ void MultiResetRealmSelect(void)
 	else
 #endif
 		fp = fopen("rlmstart.dat", "rb");
-	
+
 	LoadGameFiles(fp);
 	fclose(fp);
 	date = 0;
+	MakeAllRealmsSelectable();
 	
 	fRealmSelected = FALSE;
 	iOldRealm = fERROR;
@@ -585,6 +604,10 @@ void NewGameConfirmed2(BOOL fMulti)
 	for ( i = 0; i < LAND_REALM_COUNT; i++ )
 		realm[i].mfSetPlayerCtrl(FALSE);
 
+	// Every path into realm selection funnels through here; open up all
+	// existing ruled realms so any ruler in the game can be picked.
+	MakeAllRealmsSelectable();
+
 	ReconstructMap();
 	
 	// make the menu go away
@@ -681,7 +704,7 @@ void NewGameConfirmed(LONG,LONG lMultiFlag)
 	else
 #endif
 		fp = fopen("rlmstart.dat", "rb");
-	
+
 	LoadGameFiles(fp);
 	fclose(fp);
 	date = 0;
