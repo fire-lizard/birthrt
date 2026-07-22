@@ -2139,7 +2139,7 @@ SHORT LoadLump (
 #endif
 	
 	pFileRead = DiskOpen(szFileName);
-	if (pFileRead != 0)
+	if (pFileRead != fERROR)	// DiskOpen returns fERROR, not 0, on failure
 	{
 		LONG size = filelength(pFileRead);
 		if (fLockRes)

@@ -101,9 +101,9 @@ BOOL PlayEnvironmentalSounds = TRUE;
 BOOL UIPlayEnvironmentalSounds = TRUE;
 SHORT WhichEnvironmentalSound = 0;
 #ifdef _WINDOWS
-extern "C" {
+// hwndApp is defined in GAME.CPP; every TU here builds as C++, so the
+// symbol is C++-mangled - no extern "C" wrapper.
 extern HWND hwndApp;
-}
 HWND hMyWnd;
 #endif
 SHORT UserNumSFXPlaying = 4;

@@ -72,7 +72,8 @@ add_executable (Birthrt WIN32 "2DMOUSE.C" "2DMOUSE.H" "ABILITY.CPP" "ABILITY.HXX
 "WINSYS/SIERRANW.H" "WINSYS/SNDUTIL.C" "WINSYS/SNDUTIL.H" "WINSYS/SNDUTILS.H" "WINSYS/SNTYPES.H" 
 "WINSYS/SNWVALID.H" "WINSYS/STATUS.C" "WINSYS/STATUS.H" 
 "WINSYS/SWINUTIL.C" "WINSYS/SWINUTIL.H" "WINSYS/SYSGRAPH.CPP" 
-"WINSYS/UTIL.C" "WINSYS/WAVE.C" "WINSYS/WAVE.H" "WINSYS/WINRES.H")
+"WINSYS/UTIL.C" "WINSYS/WAVE.C" "WINSYS/WAVE.H" "WINSYS/WINRES.H"
+"KERNAUD.CPP" "KERNAUD.HPP" "SOLAUDIO/Dsound.cpp" "SOLAUDIO/DSOUND.HPP")
 include_directories("C:\\Program Files (x86)\\Microsoft DirectX 9.0 SDK (April 2005)\\Include"
 "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um")
 target_link_libraries(Birthrt "C:\\Program Files (x86)\\Microsoft DirectX 9.0 SDK (April 2005)\\Lib\\x64\\ddraw.lib"
@@ -81,3 +82,5 @@ target_link_libraries(Birthrt "C:\\Program Files (x86)\\Microsoft DirectX 9.0 SD
 # (e.g. apBlocks[] in MEMMANAG.CPP). Keep all allocations below 2GB so
 # those truncated pointers stay valid on x64.
 target_link_options(Birthrt PRIVATE "/LARGEADDRESSAWARE:NO")
+# Audio: SOLAUDIO DirectSound backend + reconstructed KERNAUD kernel glue.
+target_compile_definitions(Birthrt PRIVATE AUDIO_LIB)
