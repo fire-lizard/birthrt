@@ -248,7 +248,7 @@ SHORT AddSndObj( BIRTHRT_SND  WaveID, SHORT randomCount, LONG MyThingsIndex)
 	{
 #ifdef AUDIO_LIB
 		// adjust volume for user options
-		if( (WaveID == 499) || (WaveID == 102) || (WaveID == 105) || ( (WaveID > 111) && (WaveID < 125) )) // this is music xxx
+		if( (WaveID == 499) || ( (WaveID >= 101) && (WaveID < 125) ) ) // this is music (101..111 are the MUSIC\ tracks)
 			volume = volume * GetMusicVolume() / 10;  // GetMusicVolume returns an index, 1 - 10, ten is loudest
 		else
 			volume = volume * SFXVolumeIndex / 10;

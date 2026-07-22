@@ -314,22 +314,25 @@ int PlayTrack (SHORT track)
 				CurrentSong = (BIRTHRT_SND) (SND_WIN_GAME_MUSIC1 + random(SND_WIN_GAME_MUSIC_TOTAL) );
 				CurrentTag=AddSndObj((BIRTHRT_SND)CurrentSong,NULL,VOLUME_FULL);
 				break;
-			case 2:
-				CurrentTag = AddSndObj((BIRTHRT_SND)102,NULL,VOLUME_FULL);
-				CurrentSong= 102;
-				break;
-			case 103:
-				CurrentTag = AddSndObj((BIRTHRT_SND)103,NULL,VOLUME_FULL);
-				CurrentSong= 103;
-				break;
-			case 5:
-				CurrentTag = AddSndObj((BIRTHRT_SND)105,NULL,VOLUME_FULL);
-				CurrentSong= 105;
-				break;
 			default:
-				CurrentTag = AddSndObj((BIRTHRT_SND)THE_SONG_ON_THE_HARD_DRIVE,NULL,VOLUME_FULL);
-				CurrentSong= THE_SONG_ON_THE_HARD_DRIVE;
+			{
+				// No CD on modern installs, so the 499.wav copy-from-CD
+				// scheme (THE_SONG_ON_THE_HARD_DRIVE) never has data.
+				// Play tracks straight from the local MUSIC directory.
+				// Tracks 102 (battle) and 105 (realm) were Red Book audio
+				// on the retail CD and are not in the install's MUSIC set;
+				// substitute nearby tracks so those scenes have music.
+				char	szSong[32];
+				SHORT	id = (track < 100) ? (SHORT)(track + 100) : (SHORT)track;
+
+				sprintf(szSong, "MUSIC\\%d.WAV", id);
+				if (access(szSong, 0) != 0)
+					id = (id == 102) ? 104 : 101;
+
+				CurrentSong = id;
+				CurrentTag = AddSndObj((BIRTHRT_SND)CurrentSong,NULL,VOLUME_FULL);
 				break;
+			}
 			}
 		
 	}
