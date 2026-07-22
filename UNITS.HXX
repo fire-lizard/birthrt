@@ -1,4 +1,4 @@
-/* =®RM254¯=======================================================================
+/* =ï¿½RM254ï¿½=======================================================================
    Copyright (c) 1990,1996	Synergistic Software
    All Rights Reserved
    ========================================================================
@@ -42,6 +42,9 @@
 //----------------------------------
 //	Units
 //----------------------------------
+// Byte-packed: units[] is fread/fwritten wholesale by LOADSAVE.CPP and the
+// 1997 save format has sizeof(UNIT_TYPE) == 14 (retail build used /Zp1).
+#pragma pack(push, 1)
 typedef struct {
 	unsigned int		province		: 8;		// current location
 	unsigned int		Realm			: 7;
@@ -69,6 +72,7 @@ typedef struct {
 	SHORT					iHandle;					// Handle to the Avatar memory.
 	};
 } UNIT_TYPE, *UNIT_PTR;
+#pragma pack(pop)
 
 
 extern DECL_VECTOR_CLASS(UNIT_TYPE, units);

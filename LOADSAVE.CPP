@@ -8,7 +8,7 @@
    ========================================================================
    Contains the following general functions:
 
-   ®RM250¯======================================================================= */
+   ï¿½RM250ï¿½======================================================================= */
 
 /* ------------------------------------------------------------------------
    Includes
@@ -76,6 +76,81 @@ extern BOOL fLogComment;
 
 #define BUFSIZE 2048
 #define SAVEFILE_VERSION 0x00020051
+
+/* ------------------------------------------------------------------------
+   1997 save-file record layouts.
+   The retail build was 32-bit with /Zp1 packing and the save files embed
+   raw structs - including 4-byte pointer fields.  These shadow structs
+   reproduce that on-disk layout exactly; LoadGameFiles and SaveGameFiles
+   convert between them and the live structs field by field.  The pointer
+   fields are meaningless in the file (rebuilt after load), written as 0.
+   ------------------------------------------------------------------------ */
+#pragma pack(push, 1)
+
+typedef struct {
+	ULONG				name32;			// was CSTRPTR in the 32-bit build
+	SHORT				x, y;
+	unsigned int		Realm			: 7;
+	unsigned int		CivLevel		: 4;
+	unsigned int		CurCivLevel	: 4;
+	unsigned int		MagLevel		: 4;
+	unsigned int		TaxLevel		: 2;
+	unsigned int		Loyalty		: 2;
+	unsigned int		Contested	: 1;
+	unsigned int		OccupRealm	: 7;
+	unsigned int		Pillaged		: 1;		// 32 bits filled
+	unsigned int		ReduceHolds	: 1;
+	unsigned int		Blessed		: 2;
+	unsigned int		Blighted		: 2;
+	unsigned int		Honest		: 2;
+	unsigned int		Warded		: 2;
+	unsigned int		Dispel		: 3;
+	unsigned int		DispelLvl	: 6;
+	unsigned int		LawClaims	: 1;
+	unsigned int		CastleSptd	: 1;
+	unsigned int		HumanPop		: 1;
+	unsigned int		ElfPop		: 1;
+	unsigned int		DwarfPop		: 1;
+	unsigned int		GoblinPop	: 1;
+	unsigned int		LevyMustered: 4;
+	unsigned int		Terrain     : 4;		// 32 bits filled
+	BORDER_TYPE			Border[7];
+	SHORT				FirstPlace;
+} PROV_FILE;
+
+typedef struct {
+	SHORT				x, y;
+	unsigned int		Realm			: 7;
+	unsigned int		Level			: 4;
+	unsigned int		Icon			: 7;
+	unsigned int		iRoute1		: 10;
+	unsigned int		iRoute2		: 10;
+	unsigned int		iRoute3		: 10;
+	unsigned int		Besieged		: 1;
+	unsigned int		Contested	: 1;
+	unsigned int		fSiteDisplayed	: 1;
+	unsigned int		fRelicFound	: 1;
+	unsigned int		iName			: 8;
+	SHORT				NextPlace;
+	ULONG				scene32;		// was CSTRPTR in the 32-bit build
+	SHORT				iIconBitm;
+} PLACE_FILE;
+
+typedef struct {
+	ULONG				name32;			// was CSTRPTR in the 32-bit build
+	SHORT				difficulty;
+	BOOL				available;
+	LONG				realm;
+	SHORT				iPlaces;
+} ADVSITE_FILE;
+
+#pragma pack(pop)
+
+static_assert(sizeof(PROV_FILE)    == 32, "must match the 1997 save format");
+static_assert(sizeof(PLACE_FILE)   == 20, "must match the 1997 save format");
+static_assert(sizeof(ADVSITE_FILE) == 16, "must match the 1997 save format");
+static_assert(sizeof(REGENT)       == 14, "must match the 1997 save format");
+static_assert(sizeof(UNIT_TYPE)    == 14, "must match the 1997 save format");
 /* ------------------------------------------------------------------------
    Global Variables
    ------------------------------------------------------------------------ */
@@ -187,8 +262,8 @@ void SaveGameFiles(FILE *fp)
 
     REALM_STRUCT	*pRmS;
     REGENT			*pRgS;
-    PROV_TYPE		*pPrS;
-    PLACE_TYPE		*pPlS;
+    PROV_FILE		*pPrS;
+    PLACE_FILE		*pPlS;
 
     char buffer[BUFSIZE];
     LONG ver, i, j, saved, size, count;
@@ -279,24 +354,84 @@ void SaveGameFiles(FILE *fp)
     fwrite(RealmStatus, size, count, fp);
 
     /*-------------------------------------------------------------------*/
-    /* Save province[] */
+    /* Save province[] (in the 1997 on-disk layout) */
 
 	run_timers();
-    size = sizeof(PROV_TYPE);
+    size = sizeof(PROV_FILE);
     count = PROVINCE_COUNT;
     fwrite(&size, sizeof(LONG), 1, fp);
     fwrite(&count, sizeof(LONG), 1, fp);
-    fwrite(province, size, count, fp);
+    {
+        LONG i, j;
+        for (i = 0; i < count; i++)
+        {
+            PROV_FILE pf;
+            memset(&pf, 0, sizeof(pf));
+            pf.x            = province[i].x;
+            pf.y            = province[i].y;
+            pf.Realm        = province[i].Realm;
+            pf.CivLevel     = province[i].CivLevel;
+            pf.CurCivLevel  = province[i].CurCivLevel;
+            pf.MagLevel     = province[i].MagLevel;
+            pf.TaxLevel     = province[i].TaxLevel;
+            pf.Loyalty      = province[i].Loyalty;
+            pf.Contested    = province[i].Contested;
+            pf.OccupRealm   = province[i].OccupRealm;
+            pf.Pillaged     = province[i].Pillaged;
+            pf.ReduceHolds  = province[i].ReduceHolds;
+            pf.Blessed      = province[i].Blessed;
+            pf.Blighted     = province[i].Blighted;
+            pf.Honest       = province[i].Honest;
+            pf.Warded       = province[i].Warded;
+            pf.Dispel       = province[i].Dispel;
+            pf.DispelLvl    = province[i].DispelLvl;
+            pf.LawClaims    = province[i].LawClaims;
+            pf.CastleSptd   = province[i].CastleSptd;
+            pf.HumanPop     = province[i].HumanPop;
+            pf.ElfPop       = province[i].ElfPop;
+            pf.DwarfPop     = province[i].DwarfPop;
+            pf.GoblinPop    = province[i].GoblinPop;
+            pf.LevyMustered = province[i].LevyMustered;
+            pf.Terrain      = province[i].Terrain;
+            for (j = 0; j < 7; j++)
+                pf.Border[j] = province[i].Border[j];
+            pf.FirstPlace   = province[i].FirstPlace;
+            fwrite(&pf, sizeof(pf), 1, fp);
+        }
+    }
 
     /*-------------------------------------------------------------------*/
-    /* Save places[] */
+    /* Save places[] (in the 1997 on-disk layout) */
 
 	run_timers();
-    size = sizeof(PLACE_TYPE);
+    size = sizeof(PLACE_FILE);
     count = MAX_PLACES;
     fwrite(&size, sizeof(LONG), 1, fp);
     fwrite(&count, sizeof(LONG), 1, fp);
-    fwrite(places, size, count, fp);
+    {
+        LONG i;
+        for (i = 0; i < count; i++)
+        {
+            PLACE_FILE pl;
+            memset(&pl, 0, sizeof(pl));
+            pl.x              = places[i].x;
+            pl.y              = places[i].y;
+            pl.Realm          = places[i].Realm;
+            pl.Level          = places[i].Level;
+            pl.Icon           = places[i].Icon;
+            pl.iRoute1        = places[i].iRoute1;
+            pl.iRoute2        = places[i].iRoute2;
+            pl.iRoute3        = places[i].iRoute3;
+            pl.Besieged       = places[i].Besieged;
+            pl.Contested      = places[i].Contested;
+            pl.fSiteDisplayed = places[i].fSiteDisplayed;
+            pl.fRelicFound    = places[i].fRelicFound;
+            pl.iName          = places[i].iName;
+            pl.NextPlace      = places[i].NextPlace;
+            pl.iIconBitm      = places[i].iIconBitm;
+            fwrite(&pl, sizeof(pl), 1, fp);
+        }
+    }
 
     /*-------------------------------------------------------------------*/
     /* Save units[] */
@@ -339,14 +474,26 @@ void SaveGameFiles(FILE *fp)
     fwrite(Tribute, size, count, fp);
 
     /*-------------------------------------------------------------------*/
-    /* Save advsite[] */
+    /* Save advsite[] (in the 1997 on-disk layout) */
 
     run_timers();
-    size = sizeof(ADV_SITE);
+    size = sizeof(ADVSITE_FILE);
     count = MAX_SITES;
     fwrite(&size, sizeof(LONG), 1, fp);
     fwrite(&count, sizeof(LONG), 1, fp);
-    fwrite(advsite, size, count, fp);
+    {
+        LONG i;
+        for (i = 0; i < count; i++)
+        {
+            ADVSITE_FILE as;
+            memset(&as, 0, sizeof(as));
+            as.difficulty = advsite[i].difficulty;
+            as.available  = advsite[i].available;
+            as.realm      = advsite[i].realm;
+            as.iPlaces    = advsite[i].iPlaces;
+            fwrite(&as, sizeof(as), 1, fp);
+        }
+    }
 
     /*-------------------------------------------------------------------*/
     /* Save playerstats[]	*/
@@ -372,8 +519,8 @@ void LoadGameFiles(FILE *fp)
 {
     REALM_STRUCT	*pRmS;
     REGENT			*pRgS;
-    PROV_TYPE		*pPrS;
-    PLACE_TYPE		*pPlS;
+    PROV_FILE		*pPrS;
+    PLACE_FILE		*pPlS;
     char buffer[BUFSIZE];
     LONG ver, i, j, loaded, tmp, size, count;
     LONG dummy, newIPlaces;
@@ -544,9 +691,9 @@ void LoadGameFiles(FILE *fp)
 	run_timers();
     printf("Loading province[]\n");
     fread((char *) &size, sizeof(LONG), 1, fp);
-    assert(size == sizeof(PROV_TYPE));
+    assert(size == sizeof(PROV_FILE));
     fread((char *) &count, sizeof(LONG), 1, fp);
-    pPrS = (PROV_TYPE *) buffer;
+    pPrS = (PROV_FILE *) buffer;
     loaded = BUFSIZE / size;
     if (loaded > count)
         loaded = count;
@@ -560,7 +707,7 @@ void LoadGameFiles(FILE *fp)
             if (loaded > count)
                 loaded = count;
             fread(buffer, size, (loaded-tmp), fp);
-            pPrS = (PROV_TYPE *) buffer;
+            pPrS = (PROV_FILE *) buffer;
         }
         for (j=0; j < 7; j++)
             province[i].Border[j] = pPrS->Border[j];
@@ -597,9 +744,9 @@ void LoadGameFiles(FILE *fp)
 	run_timers();
     printf("Loading places[]\n");
     fread((char *) &size, sizeof(LONG), 1, fp);
-    assert(size == sizeof(PLACE_TYPE));
+    assert(size == sizeof(PLACE_FILE));
     fread((char *) &count, sizeof(LONG), 1, fp);
-    pPlS = (PLACE_TYPE *) buffer;
+    pPlS = (PLACE_FILE *) buffer;
     loaded = BUFSIZE / size;
     if (loaded > count)
         loaded = count;
@@ -613,7 +760,7 @@ void LoadGameFiles(FILE *fp)
             if (loaded > count)
                 loaded = count;
             fread(buffer, size, (loaded-tmp), fp);
-            pPlS = (PLACE_TYPE *) buffer;
+            pPlS = (PLACE_FILE *) buffer;
         }
         places[i].iRoute1   		= pPlS->iRoute1;
         places[i].iRoute2   		= pPlS->iRoute2;
@@ -735,7 +882,7 @@ void LoadGameFiles(FILE *fp)
 	fread(&size, sizeof(LONG), 1, fp);
 	fread(&count, sizeof(LONG), 1, fp);
 	
-	if (size == sizeof(ADV_SITE) && count == MAX_SITES)  // not saved; reset
+	if (size == sizeof(ADVSITE_FILE) && count == MAX_SITES)  // not saved; reset
 	{
 		LONG i, j;
 		for (i=0; i < REALM::REALM_COUNT; i++)
@@ -754,7 +901,7 @@ void LoadGameFiles(FILE *fp)
 		
 		run_timers();
     	fread(&size, sizeof(LONG), 1, fp);
-    	assert(size == sizeof(ADV_SITE));
+    	assert(size == sizeof(ADVSITE_FILE));
     	fread(&count, sizeof(LONG), 1, fp);
     	assert(count == MAX_SITES);
     }
@@ -764,7 +911,7 @@ void LoadGameFiles(FILE *fp)
 
     fread(buffer, size, count, fp);
 
-    ADV_SITE *pAS = (ADV_SITE *) buffer;
+    ADVSITE_FILE *pAS = (ADVSITE_FILE *) buffer;
     for (i=0; i < MAX_SITES; i++)
     {
 		advsite[i].available = pAS[i].available;
@@ -775,9 +922,33 @@ void LoadGameFiles(FILE *fp)
 	}
 
 	/*-------------------------------------------------------------------*/
-	/* Load playerstats[] */
+	/* Load playerstats[]
+	   Saves written by this build store PLAYER_STATS in the current
+	   layout; the first LONG of the first record (StructVersion) is 0.
+	   The 1997 retail saves (tutorial and scenario starts) use the old
+	   32-bit layout we cannot parse; for those, fall back to the .AVA
+	   defaults (they ARE the scenario starting stats) and skip ahead to
+	   the realm-name block at the end of the file. */
+	{
+		LONG statsPos = ftell(fp);
+		LONG peek[3] = { 0, 0, -1 };
 
-	StatReadAllFrom(fp);
+		fread(peek, sizeof(LONG), 3, fp);
+		fseek(fp, statsPos, SEEK_SET);
+
+		if (peek[2] == 0)
+		{
+			StatReadAllFrom(fp);
+		}
+		else
+		{
+			StatReadAllFrom(NULL);	// old layout: rebuild from .AVA files
+			if (ScenarioInfo.RealmNames)
+				fseek(fp, -22L * REALM::REALM_COUNT, SEEK_END);
+			else
+				fseek(fp, 0L, SEEK_END);
+		}
+	}
 
 	/*-------------------------------------------------------------------*/
 	// Load scenario specific realm names
@@ -1879,7 +2050,7 @@ void PaintLoadSaveMenu (LONG MenuCombo, LONG)
 
 #ifdef _FOREIGNVER
 	#ifdef _FRENCHVER
-			sprintf(buffer, "%s %s", saved_games[i+first_displayed], (ScenInfo[i+first_displayed].IsScenario)?"Scénario":" ");
+			sprintf(buffer, "%s %s", saved_games[i+first_displayed], (ScenInfo[i+first_displayed].IsScenario)?"Scï¿½nario":" ");
 	#endif
 	#ifdef _GERMANVER
 			sprintf(buffer, "%s %s", saved_games[i+first_displayed], (ScenInfo[i+first_displayed].IsScenario)?"Szenario":" ");

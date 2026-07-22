@@ -197,6 +197,11 @@
 //----------------------------------
 //	Regents
 //----------------------------------
+// Byte-packed: regents[] is written to / read from save files wholesale,
+// and the 1997 save format has sizeof(REGENT) == 14 (the retail build
+// used /Zp1). No member becomes misaligned - packing only drops the
+// trailing pad.
+#pragma pack(push, 1)
 class REGENT {
 private:
 	// Helper class to hide the data yet let the complier generate a default
@@ -271,6 +276,7 @@ public:
 protected:
 private:
 };
+#pragma pack(pop)
 
 typedef REGENT *REGENT_PTR;
 /* ------------------------------------------------------------------------
