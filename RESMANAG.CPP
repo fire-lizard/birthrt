@@ -489,18 +489,23 @@ SHORT OpenResFile_ (CSTRPTR szFileName)
 				{
 					FILE *fp;
 					int	fileColision;
-					// Some other resource with the same extension and hash 
+					// Some other resource with the same extension and hash
 					// already occupies this slot.
 					char szOtherPathname[_MAX_PATH];
 					RESOURCE_HEADER resHeader;
+					// Own variable — reusing iFileName here clobbered the
+					// file index for every entry registered after a collision
+					// (e.g. all of THINGPCX.RES after GORGON.PCX pointed at
+					// UI.RES), which broke adventure resource loads.
+					LONG	iOtherFile;
 
-					iFileName = giResFileNames[iSlot];
-					if (iFileName)
+					iOtherFile = giResFileNames[iSlot];
+					if (iOtherFile)
 					{
-						if(0 == strncmp("wave", gszResFileNames[iFileName],4) )
-							sprintf (szOtherPathname, "%s%s%s", InstallPath, RESFILE_PATH, gszResFileNames[iFileName]);
+						if(0 == strncmp("wave", gszResFileNames[iOtherFile],4) )
+							sprintf (szOtherPathname, "%s%s%s", InstallPath, RESFILE_PATH, gszResFileNames[iOtherFile]);
 						else
-							sprintf (szOtherPathname, "%s%s", RESFILE_PATH, gszResFileNames[iFileName]);
+							sprintf (szOtherPathname, "%s%s", RESFILE_PATH, gszResFileNames[iOtherFile]);
 						fileColision = DiskOpen (szOtherPathname);		// try to open the file
 						if (fileColision == fERROR)					// could not open file
 							fatal_error ("Could not open RES file %s", szOtherPathname);
@@ -1243,8 +1248,21 @@ SHORT LoadCompressedDataFromResFile (
 	// of loading from PCX file.
 
 	lseek (file, gcbResOffset[iResFileSlot], SEEK_SET);
-	read (file, pResHeader, sizeof (RESOURCE_HEADER));
-	assert (strncmp ((char *)(&pResHeader->startcode), "RSRC", 4) == 0);
+	result = read (file, pResHeader, sizeof (RESOURCE_HEADER));
+	if (result != sizeof (RESOURCE_HEADER) ||
+	    strncmp ((char *)(&pResHeader->startcode), "RSRC", 4) != 0)
+	{
+#if defined (_DEBUG)
+		UBYTE * p = (UBYTE *)&pResHeader->startcode;
+		fatal_error("RESMANAG ERROR - bad RSRC header: slot=%ld file=%s offset=%lu read=%d magic=%02x%02x%02x%02x hash=%08lx ext=%d flags=%02x\n",
+			iResFileSlot, szPathname, gcbResOffset[iResFileSlot], result,
+			p[0], p[1], p[2], p[3],
+			lResNameCRC[iResFileSlot], (int)iResExtIndex[iResFileSlot],
+			(int)gResFlags[iResFileSlot]);
+#endif
+		DiskClose (file);
+		return (SHORT)fERROR;
+	}
 
 	if (pResHeader->compressionCode == NO_COMPRESSION)
 	{
@@ -1265,7 +1283,7 @@ SHORT LoadCompressedDataFromResFile (
 		{
 			iLzssDataOffset = pResHeader->cbCompressedData;
 		}
-		
+
 		if (fLockRes)
 		{
 			iTempBlk = NewLockedBlock ((LONG)(pResHeader->cbUncompressedData + iLzssDataOffset));

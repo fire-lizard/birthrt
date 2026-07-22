@@ -39,7 +39,7 @@
 .		SetBlockSize	- enlarge or shrink a block while preserving its contents
 
 	======================================================================== */
-/* ®RM200¯ */
+/* ï¿½RM200ï¿½ */
 /* includes */
 
 #include <stdio.h>
@@ -429,7 +429,7 @@ SHORT SetBlockAttr (SHORT i, ATTR_BLK_TYPE mask, ATTR_BLK_TYPE value)
 		}
 		
 		i = iResBlock[iResBlk];
-		if (i == 0 && giResFileNames != 0)	// It's not in memory but that's ok.
+		if (i == 0 && giResFileNames[iResBlk] != 0)	// It's not in memory but that's ok.
 			return fNOERR;
 #endif
 
