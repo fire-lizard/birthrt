@@ -731,29 +731,25 @@ void ScreenCopy (
 
 	if ( sDrawMode == iGDI)
 	{
+		// Partial updates must produce bit-identical pixels to update_screen's
+		// full-frame stretch: a separately-rounded partial StretchBlt shimmers
+		// against it at scaled window sizes (visible flicker on areas repainted
+		// every frame, e.g. the map ticker). So clip to the mapped target rect
+		// and redo the same full-frame stretch instead.
 		RECT rc;
-		LONG dx = xSrc, dy = ySrc, dw = width, dh = height;
+		LONG x0, y0, x1, y1;
 
-		if (!(fHighRes || resolution == SC_HIGH_RES))
-		{
-			dw *= 2;
-			dh *= 2;
-		}
-
-		// Map the 640x480-window dest rect onto the actual client size
-		// (edge-aligned so adjacent partial blits don't leave seams).
 		GetClientRect(hwndApp, &rc);
-		if (rc.right != MAX_VIEW_WIDTH || rc.bottom != MAX_VIEW_HEIGHT)
-		{
-			LONG x1 = (dx + dw) * rc.right  / MAX_VIEW_WIDTH;
-			LONG y1 = (dy + dh) * rc.bottom / MAX_VIEW_HEIGHT;
-			dx = dx * rc.right  / MAX_VIEW_WIDTH;
-			dy = dy * rc.bottom / MAX_VIEW_HEIGHT;
-			dw = x1 - dx;
-			dh = y1 - dy;
-		}
 
-		StretchBlt(gdcScreen, dx, dy, dw, dh, gViewDC, xSrc, ySrc, width, height, SRCCOPY);
+		x0 = xSrc * rc.right  / WindowWidth;
+		y0 = ySrc * rc.bottom / WindowHeight;
+		x1 = (xSrc + width)  * rc.right  / WindowWidth;
+		y1 = (ySrc + height) * rc.bottom / WindowHeight;
+
+		IntersectClipRect(gdcScreen, x0, y0, x1, y1);
+		StretchBlt( gdcScreen, 0, 0, rc.right, rc.bottom,
+					gViewDC, 0, 0, WindowWidth, WindowHeight, SRCCOPY);
+		SelectClipRgn(gdcScreen, NULL);
 		GdiFlush();
 
    }
