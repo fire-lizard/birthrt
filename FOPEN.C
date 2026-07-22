@@ -139,7 +139,7 @@ FILE * FileOpen(
 )
 {
 	FILE	*pFile = NULL;
-	char	chFileName[_MAX_PATH];
+	char	chFileName[_MAX_PATH] = "";
 
 	// printf ("FileOpen: %s\n", pszFile);
 	// fflush (stdout);
@@ -230,7 +230,7 @@ SHORT DiskOpen(
 )
 {
 	SHORT	iFile;
-	char	chFileName[_MAX_PATH];
+	char	chFileName[_MAX_PATH] = "";
 
 	if ((iFile = DiskInQueue (pszFile)) != -1)
 	{
@@ -654,6 +654,11 @@ void CloseAllFiles ()
 FILE_MODE SetFileMode ( FILE_MODE NewFileMode )
 {
 	FILE_MODE OldMode = fmCurrentFileMode;
+	// ponytail: this port has no CD - the install dir holds the full CD
+	// contents, so CD-only requests (release multiplayer stat reload,
+	// chared restore) read from the hard drive instead.
+	if (NewFileMode == FILEOPEN_CDROM_ONLY)
+		NewFileMode = FILEOPEN_HARDDRIVE_ONLY;
 	fmCurrentFileMode = NewFileMode;
 	return OldMode;
 }

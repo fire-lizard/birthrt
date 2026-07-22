@@ -136,20 +136,17 @@ const DWORD iINITIALHEAPSIZE = (24L * 1024L * 1024L);
 HANDLE hHeap;
 
 LONG cx, cy;
+static char szClassName[] = "Birthright";
 	#ifdef _FRENCHVER
 	static  char  szAppName[]= "Birthright - Le Pacte des Tйnиbres";
-	static char szClassName[] = "Birthright";
 	#else
 		#ifdef _GERMANVER
 		static  char  szAppName[]= "Birthright - Die Dunkle Allianz";
-		static char szClassName[] = "Birthright";
 		#else
 			#ifdef _RUSVER
 			static  char  szAppName[]= "Право на жизнь - Союз Горгон";
-			static char szClassName[] = "Birthright";
 			#else
 				static  char  szAppName[] = "Birthright - The Gorgon's Alliance";
-				static char szClassName[] = "Birthright";
 			#endif
 		#endif
 	#endif
@@ -598,7 +595,11 @@ void WinCursorSet()
 \*----------------------------------------------------------------------------*/
 int WINAPI WinMain( HINSTANCE hInstExe, HINSTANCE hInstPrev, LPSTR szCmdLine, int sw)
 {
-	MSG     msg;
+	// msg is read in the loop condition (and PeekMessage leaves it untouched
+	// when the queue is empty), so it must start zeroed.  Uninitialized, the
+	// release build randomly saw WM_QUIT in the stack garbage and exited
+	// cleanly moments after startup.
+	MSG     msg = {0};
 
 	/* Call initialization procedure */
 	if ( !AppInit( hInstExe, hInstPrev, szCmdLine, sw ) )

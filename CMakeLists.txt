@@ -84,3 +84,6 @@ target_link_libraries(Birthrt "C:\\Program Files (x86)\\Microsoft DirectX 9.0 SD
 target_link_options(Birthrt PRIVATE "/LARGEADDRESSAWARE:NO")
 # Audio: SOLAUDIO DirectSound backend + reconstructed KERNAUD kernel glue.
 target_compile_definitions(Birthrt PRIVATE AUDIO_LIB)
+# Debug info in optimized builds too - crash dumps stay symbolizable.
+target_compile_options(Birthrt PRIVATE "$<$<CONFIG:Release>:/Zi>")
+target_link_options(Birthrt PRIVATE "$<$<CONFIG:Release>:/DEBUG>")

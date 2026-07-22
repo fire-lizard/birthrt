@@ -85,8 +85,12 @@ float	RealmAIVersionNumber = 1.28; // updated  geh 9/12/97
 //float	RealmAIVersionNumber = 1.28; // unchanged
 
 // Fourth Patch 
-float	ProductVersionNumber = 1.15; // updated  geh 12/09/97
-float	RealmAIVersionNumber = 1.29; // updated  geh 12/09/97
+//float	ProductVersionNumber = 1.15; // updated  geh 12/09/97
+//float	RealmAIVersionNumber = 1.29; // updated  geh 12/09/97
+
+// Fourth Patch 
+float	ProductVersionNumber = 1.16; // updated  geh 22/07/26
+float	RealmAIVersionNumber = 1.29; // unchanged
 
 #endif // _MULTIPLAY_ONLY
 
