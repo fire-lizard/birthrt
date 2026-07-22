@@ -181,33 +181,12 @@ void set_hires(LONG unused, LONG UnusedAlso)
 
 	if (fHighRes == FALSE)
 	{
-		if ( sDrawMode == iGDI )
-		{
-			RECT rc;
-		
-			GetClientRect(hwndApp, &rc);
-		
-			WindowWidth = rc.right;
-			WindowHeight = rc.bottom;
-		
-			if(WindowWidth > MAX_VIEW_WIDTH)
-			{
-				WindowHeight = WindowHeight * MAX_VIEW_WIDTH / WindowWidth;
-				WindowWidth = MAX_VIEW_WIDTH;
-			}
-		
-			if(WindowHeight > MAX_VIEW_HEIGHT)
-			{
-				WindowWidth = WindowWidth * MAX_VIEW_HEIGHT / WindowHeight;
-				WindowHeight = MAX_VIEW_HEIGHT;
-			}
-		}
-		else
-		{
-			WindowWidth = MAX_VIEW_WIDTH;
-			WindowHeight = MAX_VIEW_HEIGHT;
-		}
-	
+		// The buffer is always 640x480; the window client may be larger and
+		// update_screen stretch-blits to it. Never derive buffer size from
+		// the client rect (a 16:9 window would yield a 640x360 buffer).
+		WindowWidth = MAX_VIEW_WIDTH;
+		WindowHeight = MAX_VIEW_HEIGHT;
+
 		fHighRes = TRUE;
 		set_screen_size(WindowWidth,WindowHeight);
 	
@@ -752,14 +731,29 @@ void ScreenCopy (
 
 	if ( sDrawMode == iGDI)
 	{
-		if (fHighRes || resolution == SC_HIGH_RES)
+		RECT rc;
+		LONG dx = xSrc, dy = ySrc, dw = width, dh = height;
+
+		if (!(fHighRes || resolution == SC_HIGH_RES))
 		{
-			StretchBlt(gdcScreen, xSrc, ySrc, width, height, gViewDC, xSrc, ySrc, width, height, SRCCOPY);
+			dw *= 2;
+			dh *= 2;
 		}
-		else
+
+		// Map the 640x480-window dest rect onto the actual client size
+		// (edge-aligned so adjacent partial blits don't leave seams).
+		GetClientRect(hwndApp, &rc);
+		if (rc.right != MAX_VIEW_WIDTH || rc.bottom != MAX_VIEW_HEIGHT)
 		{
-			StretchBlt(gdcScreen, xSrc, ySrc, width * 2, height * 2, gViewDC, xSrc, ySrc, width, height, SRCCOPY);
+			LONG x1 = (dx + dw) * rc.right  / MAX_VIEW_WIDTH;
+			LONG y1 = (dy + dh) * rc.bottom / MAX_VIEW_HEIGHT;
+			dx = dx * rc.right  / MAX_VIEW_WIDTH;
+			dy = dy * rc.bottom / MAX_VIEW_HEIGHT;
+			dw = x1 - dx;
+			dh = y1 - dy;
 		}
+
+		StretchBlt(gdcScreen, dx, dy, dw, dh, gViewDC, xSrc, ySrc, width, height, SRCCOPY);
 		GdiFlush();
 
    }

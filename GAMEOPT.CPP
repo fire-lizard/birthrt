@@ -40,7 +40,7 @@
    Defines
    ------------------------------------------------------------------------ */
 #define OPTIONSAVEFILE "gameopt.dat"
-#define OPTIONVERSION 0x00003101
+#define OPTIONVERSION 0x00003102	// 3102: selected_screen_size is a resolution index now
 
 #define MODE_MASK		0x00FF
 #define MODE_CHANGED	0x0100
@@ -58,7 +58,7 @@ static SHORT		oldmusvol = 6;
 SHORT		sfxvol = 8;
 static SHORT		oldsfxvol = 8;
 static SHORT		sfxchan = 8;
-static SHORT		selected_screen_size = 1;
+static SHORT		selected_screen_size = 0;	// index into screen_resolutions[]
 static SHORT		combat_speed = 5;
 static BOOL		newAutoRes = FALSE;
 DIFFICULTY			game_difficulty = DIF_EASY;
@@ -71,7 +71,12 @@ BOOL			mundane_descriptions = TRUE;
 static BOOL		new_mundane = TRUE;
 static LONG		newControlMode = 1;
 
-static SHORT		num_screen_sizes = 6;
+// "Screen Size" is a real window resolution: the 640x480 game buffer is
+// stretch-blitted to this client size (see SetGameResolution in MACHINE.C).
+static const SHORT screen_resolutions[6][2] = {
+	{640,480}, {800,600}, {1024,768}, {1152,864}, {1280,1024}, {1920,1080}
+};
+static SHORT		old_screen_size = 0;
 
 static SHORT sound_levels[] = {0, 13, 26, 38, 51, 64, 77, 90, 102, 115, 127};
 
@@ -114,7 +119,7 @@ extern void LoadControlSet(void);
 extern void ActivateControlSet(void);
 
 #ifdef _WINDOWS
-extern void ToggleDirectDraw(LONG, LONG);
+extern void SetGameResolution(LONG, LONG);
 #endif
 
 int InitRedBook(void);
@@ -253,24 +258,6 @@ void OptAdjLevel(LONG which, LONG what)
 		        selected_screen_size = 5;
 		    break;    
 		    
-		case OPT_ADJ_SCREEN_AUTORES:
-		    newAutoRes += what;
-		    if (newAutoRes >= 1 )
-		        newAutoRes = TRUE;
-		    if (newAutoRes <= 0 )
-		        newAutoRes = FALSE;
-		    break;
-
-#ifdef _WINDOWS
-		case OPT_ADJ_SCREEN_WINDOW:
-			screen_mode += what;
-		    if (screen_mode >= 1 )
-		        screen_mode = iDDRAW;
-		    if (screen_mode <= 0 )
-		        screen_mode = iGDI;
-			break;
-#endif
-        		    
         case OPT_ADJ_DESCRIPTIONS:
 			new_mundane += what;
 			if (new_mundane >= 1)
@@ -332,13 +319,8 @@ void OpenOptions   (LONG, LONG)
 		battle_speed      = (SPEED)(SPD_TURNS-SpeedLevel);    /* {0,1,2,4} from {4,3,2,1} */
 		battle_difficulty = (DIFFICULTY)(3-DifficultyLevel);       /* ditto */
    
-		if (GetCombatMenuUp() > 0)
-			selected_screen_size = MARGIN_CONTROL::mfGetReductionCount() + 1;
-		else     
-			selected_screen_size = 0;
-       
-		newAutoRes = fAIAutoRes;
-       
+		old_screen_size = selected_screen_size;	// for cancel
+
 		//GEH 6/8 game_difficulty = (DIFFICULTY) (DIF_EASY + gWinningPoints / 100 - 3);
 		combat_firstperson_view = COMBAT_INITIAL_VIEWPT::mfIsModeFirstPerson();
    
@@ -406,7 +388,8 @@ void OptionCancel  (LONG, LONG)
 
     SetGlobalVolume(oldsfxvol);
     sfxvol = oldsfxvol;
-	
+    selected_screen_size = old_screen_size;
+
 	if (plusmin[0]!=fERROR) SetPurge(plusmin[0]);
 	if (plusmin[1]!=fERROR) SetPurge(plusmin[1]);
     HideMenu(D_OPTION_MENU);
@@ -457,30 +440,21 @@ void UpdateOptionSettings(void)
 		fBattleNextTurn = 0;
     }
     DifficultyLevel  =  3 - battle_difficulty; /*        ditto         */
-    fAIAutoRes = newAutoRes;
-    if (selected_screen_size > 0)
-    {
-        SetCombatMenuUp(TRUE);
-        MARGIN_CONTROL::mfSetReductionCount(selected_screen_size - 1);
-    }
-    else
-    {
-        SetCombatMenuUp(FALSE);
-        MARGIN_CONTROL::mfSetReductionCount(0);
-    }
 
-
-    //---- switch to GDI or DDRAW
-
+    // "Screen Size" is a real window resolution now. The old margin
+    // reduction / menus-off modes and the AI auto-res that drove them
+    // are retired; combat still has its own [ ] margin hotkeys.
+    fAIAutoRes = FALSE;
+    SetCombatMenuUp(TRUE);
+    MARGIN_CONTROL::mfSetReductionCount(0);
 #ifdef _WINDOWS
-	if ( screen_mode != sDrawMode )
-		ToggleDirectDraw(0,0);
-	else
-	{
-		ShowWindow(hwndApp, SW_SHOW);
+    SetGameResolution(screen_resolutions[selected_screen_size][0],
+                      screen_resolutions[selected_screen_size][1]);
 
-		SetFocus(hwndApp);
-	}
+	// This is also the initial reveal of the main window at startup
+	// (ReadOptionSettings -> here); it is created without WS_VISIBLE.
+	ShowWindow(hwndApp, SW_SHOW);
+	SetFocus(hwndApp);
 #endif
 
 	mundane_descriptions = new_mundane;
@@ -637,14 +611,13 @@ void OptionDefaults(LONG MenuCombo, LONG)
     sfxvol = 8;
     sfxchan = 8;
     sfxenv = ENV_OFF;
-    selected_screen_size = 1;
+    selected_screen_size = 0;
     battle_speed = SPD_MEDIUM;
     battle_difficulty = DIF_EASY;
     adventure_difficulty = DIF_EASY;
     game_difficulty = DIF_EASY;
     newAutoRes = FALSE;
 	combat_firstperson_view = FALSE;
-    selected_screen_size = 1;
     new_mundane = TRUE;
 
     for (i=0; i < OPT_ADJ_COUNT; i++)
@@ -882,38 +855,14 @@ void PaintOptionMenu (LONG MenuCombo, LONG LoadSave)
 		
 	case 8:  /* screen */
 		gprint_text(menu_x+164, menu_y+81, STRMGR_GetStr(STR_OPT_HDR_SCREEN), 31);
-		
+
 		print_textf(menu_x+164, menu_y+110, 173, STRMGR_GetStr(STR_OPT_SCREEN_SIZE));
-		strcpy(buffer, STRMGR_GetStr(STR_OPT_SCREEN_SIZE_0 + selected_screen_size));
+		sprintf(buffer, "%dx%d", screen_resolutions[selected_screen_size][0],
+			screen_resolutions[selected_screen_size][1]);
 		print_textf(menu_x+324 - gtext_width(buffer), menu_y+110, 173, "%s", buffer);
-		
-		gprint_text(menu_x+165, menu_y + 130, STRMGR_GetStr(STR_OPT_SCREEN_AUTORES), 173);
-		if (newAutoRes)
-		    strcpy(buffer, STRMGR_GetStr(STR_OPT_ON));
-		else
-		    strcpy(buffer, STRMGR_GetStr(STR_OPT_OFF));
-		print_textf(menu_x+324 - gtext_width(buffer), menu_y+130, 173, "%s", buffer);
 
-#ifdef _WINDOWS
-		gprint_text(menu_x+165, menu_y + 150, STRMGR_GetStr(STR_OPT_SCREEN_WINDOW), 173);
-		gprint_text(menu_x+165, menu_y + 170, STRMGR_GetStr(STR_OPT_SCREEN_WINDOW2), 173);
-
-		if (screen_mode)
-		    strcpy(buffer, STRMGR_GetStr(STR_OPT_ON));
-		else
-		    strcpy(buffer, STRMGR_GetStr(STR_OPT_OFF));
-
-		print_textf(menu_x+324 - gtext_width(buffer), menu_y+150, 173, "%s", buffer);
-
-#endif
-		
 		PaintOptionAdj(menu_x, menu_y, 0, OPT_ADJ_SCREEN_SIZE);
-		PaintOptionAdj(menu_x, menu_y, 1, OPT_ADJ_SCREEN_AUTORES);
 
-#ifdef _WINDOWS
-		PaintOptionAdj(menu_x, menu_y, 2, OPT_ADJ_SCREEN_WINDOW );
-#endif
-		
 	    break;
 	
 	case 9:  /* speed */
@@ -938,21 +887,14 @@ void PaintOptionMenu (LONG MenuCombo, LONG LoadSave)
 		print_textf(menu_x+324 - gtext_width(buffer), menu_y+130, 173, "%s", buffer);
 		
 		print_textf(menu_x+164, menu_y+150, 173, STRMGR_GetStr(STR_OPT_SCREEN_SIZE));
-		strcpy(buffer, STRMGR_GetStr(STR_OPT_SCREEN_SIZE_0 + selected_screen_size));
+		sprintf(buffer, "%dx%d", screen_resolutions[selected_screen_size][0],
+			screen_resolutions[selected_screen_size][1]);
 		print_textf(menu_x+324 - gtext_width(buffer), menu_y+150, 173, "%s", buffer);
-		
-		gprint_text(menu_x+165, menu_y + 170, STRMGR_GetStr(STR_OPT_SCREEN_AUTORES), 173);
-		if (newAutoRes)
-		    strcpy(buffer, STRMGR_GetStr(STR_OPT_ON));
-		else
-		    strcpy(buffer, STRMGR_GetStr(STR_OPT_OFF));
-		print_textf(menu_x+324 - gtext_width(buffer), menu_y+170, 173, "%s", buffer);
-		
+
 		PaintOptionAdj(menu_x, menu_y, 0, OPT_ADJ_SOUND_CHANNELS);
 		PaintOptionAdj(menu_x, menu_y, 1, OPT_ADJ_SOUND_ENV);
 		PaintOptionAdj(menu_x, menu_y, 2, OPT_ADJ_SCREEN_SIZE);
-		PaintOptionAdj(menu_x, menu_y, 3, OPT_ADJ_SCREEN_AUTORES);
-	
+
 	default:
 	    break;
 	}

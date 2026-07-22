@@ -138,13 +138,13 @@ HANDLE hHeap;
 LONG cx, cy;
 static char szClassName[] = "Birthright";
 	#ifdef _FRENCHVER
-	static  char  szAppName[]= "Birthright - Le Pacte des Ténèbres";
+	static  char  szAppName[]= "Birthright - Le Pacte des TÃ©nÃ¨bres";
 	#else
 		#ifdef _GERMANVER
 		static  char  szAppName[]= "Birthright - Die Dunkle Allianz";
 		#else
 			#ifdef _RUSVER
-			static  char  szAppName[]= "Ïðàâî íà æèçíü - Ñîþç Ãîðãîí";
+			static  char  szAppName[]= "ÐŸÑ€Ð°Ð²Ð¾ Ð½Ð° Ð¶Ð¸Ð·Ð½ÑŒ - Ð¡Ð¾ÑŽÐ· Ð“Ð¾Ñ€Ð³Ð¾Ð½";
 			#else
 				static  char  szAppName[] = "Birthright - The Gorgon's Alliance";
 			#endif
@@ -154,6 +154,11 @@ static char szClassName[] = "Birthright";
 
 // ABC removed minimize box per RC 7/18/97
 static LONG lStyle = WS_SYSMENU|WS_POPUP|WS_CAPTION;
+
+// Client-area size selected on the options screen. The game still renders
+// 640x480 internally; update_screen stretch-blits to this size.
+static LONG GameWindowClientW = MAX_VIEW_WIDTH;
+static LONG GameWindowClientH = MAX_VIEW_HEIGHT;
 
 
 
@@ -481,15 +486,32 @@ void DefaultMainWindowSize( UINT flags )
 	XF = GetSystemMetrics( SM_CXFULLSCREEN );
 	YF = GetSystemMetrics( SM_CYFULLSCREEN );
 
-	rc.top = 0;			
+	rc.top = 0;
 	rc.left = 0;
 	rc.right = 640;
 	rc.bottom = 480;
 
 	if ( sDrawMode == iGDI )
 	{
-		SetWindowLong( hwndApp, GWL_STYLE, lStyle );
-		AdjustWindowRect( &rc, lStyle, FALSE );
+		LONG style = lStyle;
+
+		rc.right = GameWindowClientW;
+		rc.bottom = GameWindowClientH;
+
+		// Resolution covers the whole desktop: go borderless at 0,0.
+		if ( GameWindowClientW >= GetSystemMetrics( SM_CXSCREEN ) &&
+			 GameWindowClientH >= GetSystemMetrics( SM_CYSCREEN ) )
+		{
+			style = WS_POPUP;
+			lSavedX = -1;
+		}
+
+		// Never touch the visibility bit; SetWindowLong replaces the
+		// whole style and would hide an already-shown window.
+		style |= GetWindowLong( hwndApp, GWL_STYLE ) & WS_VISIBLE;
+
+		SetWindowLong( hwndApp, GWL_STYLE, style );
+		AdjustWindowRect( &rc, style & ~WS_VISIBLE, FALSE );
 		if ( lSavedX < 0 )
 		{
 			if ( XF > rc.right )
@@ -502,21 +524,59 @@ void DefaultMainWindowSize( UINT flags )
 				lSavedY = 0;
 		}
 		SetWindowPos( hwndApp, HWND_NOTOPMOST,
-								lSavedX, lSavedY,	
-										(rc.right  - rc.left), (rc.bottom - rc.top), flags );
+								lSavedX, lSavedY,
+										(rc.right  - rc.left), (rc.bottom - rc.top), flags | SWP_FRAMECHANGED );
 	}
 	else
 	{
-		SetWindowLong( hwndApp, GWL_STYLE, lStyle & (~WS_CAPTION) );
-		AdjustWindowRect( &rc, lStyle & (~WS_CAPTION), FALSE );
+		LONG style = lStyle & (~WS_CAPTION);
 
-		SetWindowPos( hwndApp, HWND_NOTOPMOST, 0, 0,	
-								(rc.right  - rc.left), (rc.bottom - rc.top), flags );
+		style |= GetWindowLong( hwndApp, GWL_STYLE ) & WS_VISIBLE;
+
+		SetWindowLong( hwndApp, GWL_STYLE, style );
+		AdjustWindowRect( &rc, style & ~WS_VISIBLE, FALSE );
+
+		SetWindowPos( hwndApp, HWND_NOTOPMOST, 0, 0,
+								(rc.right  - rc.left), (rc.bottom - rc.top), flags | SWP_FRAMECHANGED );
 	}
 
 	WaitForMessageQueueToEmpty();
 
 } // DefaultMainWindowSize
+
+
+// ===================================================================================================================
+//
+//	SetGameResolution
+//
+//		Pick the client-area size the 640x480 game buffer is stretched to.
+//		Applied from the options screen and at startup (gameopt.dat).
+//
+// ===================================================================================================================
+void SetGameResolution( LONG w, LONG h )
+{
+	if ( w == GameWindowClientW && h == GameWindowClientH )
+		return;
+
+	GameWindowClientW = w;
+	GameWindowClientH = h;
+	lSavedX = -1;					// recenter on the new size
+	lSavedY = -1;
+
+	if ( hwndApp != NULL && sDrawMode == iGDI )
+	{
+		RECT rc;
+
+		DefaultMainWindowSize( 0 );
+		InvalidateRect( hwndApp, NULL, TRUE );
+
+		GetClientRect( hwndApp, &rc );
+		printf( "SetGameResolution: %ldx%ld -> client %ldx%ld\n",
+				w, h, (LONG)rc.right, (LONG)rc.bottom );
+		fflush( stdout );
+	}
+
+} // SetGameResolution
 
 
 

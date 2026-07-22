@@ -47,6 +47,7 @@ void UpdateFPS(void);
 void StartTimerThread(PFV func);
 void StopTimerThread(void);
 void DefaultMainWindowSize( UINT flags );
+void SetGameResolution( LONG w, LONG h );
 
 /* sysgraph.c */
 void init_graph (LONG init_mode);
