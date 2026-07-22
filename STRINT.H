@@ -26,6 +26,11 @@
 /* ------------------------------------------------------------------------
    Typedefs
    ------------------------------------------------------------------------ */
+/* On-disk strdat.dat structures — must match the 1997 file byte for byte.
+   Without pack(1), MSVC pads BLOCKHEADER's sBlockOffsets to offset 4 while
+   the file has it at offset 2, garbling every block offset. */
+#pragma pack(push, 1)
+
 typedef struct {
 	LONG	version;
 	char	cpDate[40];
@@ -40,6 +45,8 @@ typedef struct {
 	SHORT	sBlocks;			// number of blocks
 	LONG	sBlockOffsets[100];	// offsets to STRBLOCK for each block
 } BLOCKHEADER;
+
+#pragma pack(pop)
 
 /* ------------------------------------------------------------------------
    Macros

@@ -181,6 +181,10 @@ typedef struct bitmhdr
 } BITMHDR, *BITMPTR, ARECT, *RECTPTR;
 
 
+/* On-disk FLC file structures — CHUNKHEAD is 6 bytes in the file; without
+   pack(1) MSVC pads it to 8 and (pChunk+1) overshoots the chunk data. */
+#pragma pack(push, 1)
+
 /* Flic Chunk Header */
 typedef struct
 {
@@ -196,6 +200,8 @@ typedef struct
 	SHORT		chunks;			/* Number of chunks in frame. */
 	UBYTE		reserved[8];	/* Always 0. */
 } FRAMEHEAD, *FRAMEHEADPTR;
+
+#pragma pack(pop)
 
 /* ------------------------------------------------------------------------
    Macros

@@ -1,4 +1,4 @@
-/* ®RM200¯ */
+/* ï¿½RM200ï¿½ */
 /* ========================================================================
 	ResManag.c	- Resource manager routines
    Copyright (c) 1989-1994 by Alan B. Clark
@@ -88,6 +88,11 @@ using namespace std;
 // (= converted to BITM format)
 #define RFF_ROTATED			2           // TRUE if rotated
 
+// These three structs are on-disk .RES file formats, read directly with
+// read() â€” they must match the 1997 files byte for byte. Without pack(1),
+// MSVC pads DIRENTRY from 22 to 24 bytes and directory parsing drifts.
+#pragma pack(push, 1)
+
 // Header for an individual resource.
 typedef struct sResourceHeader {
 	ULONG		startcode;						// RSRC string for validity check
@@ -116,6 +121,8 @@ typedef struct strDirEntry {
 	UBYTE		fileExtension;					// index to file extension type
 	char		szName[cMAX_RESNAME];		// 8.3 filename (no path)
 } DIRENTRY, * DIRENTRY_PTR;
+
+#pragma pack(pop)
 
 static SHORT LoadUFF (CSTRPTR szFileName, BOOL fNoScale, BOOL fLockRes, BOOL fRotated, LONG iResFileSlot);
 SHORT LoadCompressedDataFromResFile (
@@ -1171,6 +1178,43 @@ SHORT LoadUFF (CSTRPTR szFileName, BOOL fNoScale, BOOL fLockRes, BOOL fRotated, 
 	======================================================================= */
 
 #if fUSE_RES_FILES
+
+/* C replacement for the lost _LZSSDecode_ assembly routine.
+	Stream format (recovered from the shipped .RES files): a sequence of
+	16-bit little-endian flag words, bits consumed MSB to LSB, one bit per
+	item.  Flag 1 = copy one literal byte.  Flag 0 = two-byte match b1,b2:
+	copy (b2>>2)+3 bytes from (((b2&3)<<8)|b1)+1 bytes back in the output
+	(copies may overlap, so copy byte by byte).
+	Decompression is in-place: pSrc sits at the tail of the same block
+	pDest writes into; the caller's layout guarantees no overrun. */
+static PTR LZSSDecode (PTR pSrc, PTR pDest, PTR pSrcEnd, PTR pDestEnd)
+{
+	USHORT	flags;
+	SHORT		bit;
+
+	while (pSrc < pSrcEnd && pDest < pDestEnd)
+	{
+		flags = (USHORT)(pSrc[0] | (pSrc[1] << 8));
+		pSrc += 2;
+		for (bit = 15; bit >= 0 && pSrc < pSrcEnd && pDest < pDestEnd; --bit)
+		{
+			if (flags & (1 << bit))
+			{
+				*pDest++ = *pSrc++;
+			}
+			else
+			{
+				ULONG	dist = (ULONG)(((pSrc[1] & 3) << 8) | pSrc[0]) + 1;
+				LONG	len = (pSrc[1] >> 2) + 3;
+				pSrc += 2;
+				for (; len > 0 && pDest < pDestEnd; --len, ++pDest)
+					*pDest = *(pDest - dist);
+			}
+		}
+	}
+	return pDest;
+}
+
 SHORT LoadCompressedDataFromResFile (
 	RESOURCE_HEADER * pResHeader,
 	LONG iResFileSlot,
@@ -1276,6 +1320,11 @@ SHORT LoadCompressedDataFromResFile (
 		// the last parameter (pMax).
 		// (edi should NOT pass the pMax parameter, but if it does and we don't
 		// catch it, the program blows up!)
+		PTR	pOut = (PTR)BLKPTR(iTempBlk);
+
+		LZSSDecode (pInBuffer, pOut,
+			pInBuffer + pResHeader->cbCompressedData,
+			pOut + pResHeader->cbUncompressedData);
 
 		// Resize the block to the true size of the resource (release the
 		// decompression safety buffer).
