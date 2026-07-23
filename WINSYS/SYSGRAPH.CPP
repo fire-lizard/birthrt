@@ -84,6 +84,14 @@ SHORT	sDrawType = iBLT;	  // 5 SEP 96 CAM
 void *pBuffer = NULL;
 header	BufferHeader;
 
+// Scale2x upscale stage: at window sizes above 640x480 the frame is
+// edge-smoothed into this 2x DIB before the final stretch, so the
+// paletted art scales cleanly instead of blocky nearest-neighbor.
+// NULL means fall back to the direct stretch.
+static HDC		gScaleDC = NULL;
+static PUCHAR	gScaleBuf = NULL;
+static HBITMAP	hOldScaleBitmap = NULL;
+
 pal LogicalPalette =
 {
   0x300,
@@ -320,6 +328,41 @@ void init_graph (LONG init_mode)
 	// clear this offscreen buffer
 	clear_screen();
 
+	// Create the 2x Scale2x intermediate buffer. On failure we silently
+	// keep gScaleDC NULL and present with the direct stretch instead.
+	if (gScaleDC == NULL)
+	{
+		BufferHeader.Header.biWidth = MAX_VIEW_WIDTH * 2;
+		BufferHeader.Header.biHeight = -(MAX_VIEW_HEIGHT * 2 + 1);
+
+		gScaleDC = CreateCompatibleDC(Screen);
+		if (gScaleDC != NULL)
+		{
+			void *pScale = NULL;
+			HBITMAP hbmScale;
+
+			SetMapMode(gScaleDC, MM_TEXT);
+			hbmScale = CreateDIBSection(gScaleDC, (BITMAPINFO far *)&BufferHeader,
+											DIB_RGB_COLORS, &pScale, NULL, 0);
+			if (hbmScale != NULL)
+			{
+				gScaleBuf = (PUCHAR) pScale;
+				hOldScaleBitmap = (HBITMAP)SelectObject(gScaleDC, hbmScale);
+				SelectPalette( gScaleDC, hpalApp, FALSE );
+				RealizePalette( gScaleDC );
+			}
+			else
+			{
+				DeleteDC(gScaleDC);
+				gScaleDC = NULL;
+			}
+		}
+
+		// restore the header for the main buffer's users (set_pal et al.)
+		BufferHeader.Header.biWidth = MAX_VIEW_WIDTH;
+		BufferHeader.Header.biHeight = -(MAX_VIEW_HEIGHT + 1);
+	}
+
 	// dump the temp hdc
 	ReleaseDC(0,Screen);
 
@@ -403,6 +446,8 @@ void set_pal (char * pal)
 
 		// put it in my off screen DIB
 		SetDIBColorTable( gViewDC, 0, 255, &BufferHeader.aColors[0]);
+		if (gScaleDC != NULL)
+			SetDIBColorTable( gScaleDC, 0, 255, &BufferHeader.aColors[0]);
 
 		assert_pal();
 	
@@ -431,6 +476,8 @@ void set_pal (char * pal)
 		
 		// new set the off-screen DIB buffer palette
 		SetDIBColorTable( gViewDC, 0, 255, &BufferHeader.aColors[0]);
+		if (gScaleDC != NULL)
+			SetDIBColorTable( gScaleDC, 0, 255, &BufferHeader.aColors[0]);
 	}
 
 }
@@ -570,6 +617,100 @@ void close_graph()
         DeleteObject(hbm);
         DeleteObject(gViewDC);
     }
+
+	if (gScaleDC)
+	{
+		HDC dc = gScaleDC;
+
+		// disarm the present path first, then free
+		gScaleBuf = NULL;	// PresentGDIFrame falls back to direct stretch
+		gScaleDC = NULL;
+		hbm = (HBITMAP)SelectObject(dc, hOldScaleBitmap);
+		DeleteObject(hbm);
+		DeleteDC(dc);
+	}
+}
+
+/* ========================================================================
+   Function    - Scale2xFrame
+   Description - AdvMAME2x/Scale2x: expand the game buffer 2x into
+                 gScaleBuf, smoothing staircase edges while keeping the
+                 paletted art crisp. Pure byte ops, no blending, so the
+                 result stays within the current 256-color palette.
+   ======================================================================== */
+static void Scale2xFrame(LONG srcw, LONG srch)
+{
+	LONG x, y;
+
+	for (y = 0; y < srch; y++)
+	{
+		const UCHAR *row  = (const UCHAR *)GDIscreen + y * MAX_VIEW_WIDTH;
+		const UCHAR *up   = (y > 0)        ? row - MAX_VIEW_WIDTH : row;
+		const UCHAR *down = (y < srch - 1) ? row + MAX_VIEW_WIDTH : row;
+		UCHAR *out0 = gScaleBuf + (2*y) * (MAX_VIEW_WIDTH*2);
+		UCHAR *out1 = out0 + (MAX_VIEW_WIDTH*2);
+
+		for (x = 0; x < srcw; x++)
+		{
+			UCHAR P = row[x];
+			UCHAR A = up[x];							/* above */
+			UCHAR D = down[x];							/* below */
+			UCHAR C = (x > 0)        ? row[x-1] : P;	/* left  */
+			UCHAR B = (x < srcw - 1) ? row[x+1] : P;	/* right */
+			UCHAR e0 = P, e1 = P, e2 = P, e3 = P;
+
+			if (A != D && C != B)
+			{
+				if (C == A) e0 = A;
+				if (A == B) e1 = B;
+				if (C == D) e2 = C;
+				if (B == D) e3 = D;
+			}
+
+			out0[2*x]   = e0;
+			out0[2*x+1] = e1;
+			out1[2*x]   = e2;
+			out1[2*x+1] = e3;
+		}
+	}
+}
+
+/* ========================================================================
+   Function    - PresentGDIFrame
+   Description - Stretch the game buffer to the window client area.
+                 Above 640x480 the frame goes through Scale2x first and
+                 the remaining non-integer stretch uses HALFTONE
+                 ("sharp bilinear"). This is the ONLY routine that may
+                 paint the client area in GDI mode - partial updates
+                 (ScreenCopy) clip and call it, so every painter produces
+                 identical pixels and nothing shimmers.
+   ======================================================================== */
+// ponytail: Scale2x runs over the full frame even for clipped partial
+// updates; scale only the dirty rect if profiling ever demands it.
+static void PresentGDIFrame(void)
+{
+	RECT rc;
+
+	GetClientRect(hwndApp, &rc);
+
+	if (gScaleBuf != NULL && (rc.right > WindowWidth || rc.bottom > WindowHeight))
+	{
+		int OldMode;
+
+		GdiFlush();		// DIB-section contract: flush GDI before reading bits
+		Scale2xFrame(WindowWidth, WindowHeight);
+
+		OldMode = SetStretchBltMode(gdcScreen, HALFTONE);
+		SetBrushOrgEx(gdcScreen, 0, 0, NULL);
+		StretchBlt( gdcScreen, 0, 0, rc.right, rc.bottom,
+					gScaleDC, 0, 0, WindowWidth*2, WindowHeight*2, SRCCOPY);
+		SetStretchBltMode(gdcScreen, OldMode);
+	}
+	else
+	{
+		StretchBlt( gdcScreen, 0, 0, rc.right, rc.bottom,
+					gViewDC, 0, 0, WindowWidth, WindowHeight, SRCCOPY);
+	}
 }
 
 /* ========================================================================
@@ -582,17 +723,7 @@ void update_screen(void)
 	switch ( sDrawMode )
 	{
 	case iGDI:
-		{
-		RECT rc;
-
-		GetClientRect(hwndApp, &rc);
-		// [d10-27-96 JPC] Apparently nothing needs to be done to the following
-		// to support auto-res.
-		StretchBlt( gdcScreen, 0, 0, rc.right, rc.bottom,
-                  gViewDC, 0, 0, WindowWidth, WindowHeight, SRCCOPY);
-
-
-		}
+		PresentGDIFrame();
 		break;
 
 	case iDDRAW:
@@ -732,23 +863,25 @@ void ScreenCopy (
 	if ( sDrawMode == iGDI)
 	{
 		// Partial updates must produce bit-identical pixels to update_screen's
-		// full-frame stretch: a separately-rounded partial StretchBlt shimmers
-		// against it at scaled window sizes (visible flicker on areas repainted
-		// every frame, e.g. the map ticker). So clip to the mapped target rect
-		// and redo the same full-frame stretch instead.
+		// full-frame present, or areas repainted every frame (e.g. the map
+		// ticker) shimmer against it at scaled window sizes. So clip to the
+		// mapped target rect and redo the same full-frame present.
 		RECT rc;
 		LONG x0, y0, x1, y1;
 
 		GetClientRect(hwndApp, &rc);
 
-		x0 = xSrc * rc.right  / WindowWidth;
-		y0 = ySrc * rc.bottom / WindowHeight;
-		x1 = (xSrc + width)  * rc.right  / WindowWidth;
-		y1 = (ySrc + height) * rc.bottom / WindowHeight;
+		// Inflate by 2 source pixels and round the far edge up: Scale2x
+		// output depends on +/-1 source neighbors and HALFTONE spreads
+		// about a pixel more, so a tight rect leaves stale halos around
+		// per-frame partial repaints.
+		x0 = (xSrc - 2) * rc.right  / WindowWidth;
+		y0 = (ySrc - 2) * rc.bottom / WindowHeight;
+		x1 = ((xSrc + width  + 2) * rc.right  + WindowWidth  - 1) / WindowWidth;
+		y1 = ((ySrc + height + 2) * rc.bottom + WindowHeight - 1) / WindowHeight;
 
 		IntersectClipRect(gdcScreen, x0, y0, x1, y1);
-		StretchBlt( gdcScreen, 0, 0, rc.right, rc.bottom,
-					gViewDC, 0, 0, WindowWidth, WindowHeight, SRCCOPY);
+		PresentGDIFrame();
 		SelectClipRgn(gdcScreen, NULL);
 		GdiFlush();
 
