@@ -304,25 +304,6 @@ DWORD			buffLen1, buffLen2;
 		return FALSE;
 	}
 
-	#if 0
-	// GWP This is really bad. (The address will move after the Unlock call.
-	
-	// get the starting address of the buffer for later reference
-	hr = pDSB->Lock(0,1,&buffPtr1,&buffLen1,&buffPtr2,&buffLen2,0);
-	if( hr != DS_OK ) {
-		DSDisplayError(hr,"Lock",FALSE);
-		return FALSE;
-	}
-	lpDSoundBuf = buffPtr1;
-
-	// unlock the buffer
-	hr = pDSB->Unlock(buffPtr1,buffLen1,buffPtr2,buffLen2);
-	if( hr != DS_OK ) {
-		DSDisplayError(hr,"Unlock",FALSE);
-		return FALSE;
-	}
-	#endif
-
 	// fill the buffer so it's ready to play
 	PrimeBuffer(sampPtr);
 
@@ -830,10 +811,6 @@ BOOL			result;
 
 	// if it wrapped, copy the second piece
 	if (buffPtr2 != NULL) {
-		#if 0 // GWP Bad idea.
-		// save starting address
-		lpDSoundBuf = buffPtr2;
-		#endif
 		result = CopyData(sampPtr,(LPSTR)buffPtr2,buffLen2, FALSE);
 		if (!result)
 			return FALSE;
@@ -889,13 +866,6 @@ DWORD	 	nextPos;
 	// compute the next position in the buffer at which we will write
 #ifdef _DEBUG
 #endif
-	#if 0
-	// GWP This uses pointer math, ick.
-	nextPos = (DWORD)(writePtr - (LPSTR)lpDSoundBuf) + writeLen;
-	if (nextPos >= secondaryBuffSize)
-		nextPos = 0;
-	nextWritePosition = nextPos;
-	#endif
 	
 	// GWP I think this replaces the block above.
 	// nextWritePosition is the index into the secondary buffer where we

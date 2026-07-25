@@ -88,50 +88,6 @@ extern "C" void mono_c_printf( short x, short y, const char *format, ... )
 
 void mono_dump  ( short port )
 {
-/*
-   if( MDA.IsEnabled() && MDA.Status() )
-   {
-	   char	linefeed[3] = "\r\n";
-	   int	fp;
-      char lptPort[] = "LPTx";
-      lptPort[3] = port + '0';               //set LPT port
-
-      short *ptr = 0;//(short *)(_x386_zero_base_ptr + MONOBASE);
-      short i;
-      short ch;
-      short attribute;
-      short col = 0;
- 	   if ((fp = open(lptPort, O_WRONLY) ) >= 0)
-	   {
-		   // Output screen
-         for (i=0; i<MONOHEIGHT*MONOWIDTH; i++)
-         {
-            attribute = (*ptr)>>8;
-            ch        = (*ptr) & 0x00ff;
-            (*ptr) = 0x0fdb;                 //display a progress character
-
-            if (attribute == MONO_NORM)
-               write(fp, "(s0B", 5);        //Normal on
-            else
-               write(fp, "(s7B", 5);        //BOLD on
-
-            if (!ch)
-               ch = ' ';   // char 0 is also a space on the mono
-            write(fp, &ch, 1);               //write the character
-
-            if (++col == MONOWIDTH)          //Next line?
-            {
-               col = 0;
-		         write(fp,&linefeed,2);
-            }
-            (*ptr) = (attribute<<8)+ch;      //remove progress character
-            ptr++;
-         }
-
-		   close(fp);
-	   }
-   }
-*/
 }
 
 //---------------------------------------------------------------------------

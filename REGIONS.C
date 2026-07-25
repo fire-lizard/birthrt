@@ -868,26 +868,6 @@ LONG CountRegions (void)
    ======================================================================== */
 void OutlineAllRegions(void)
 {
-/*      REGION *pThisRegion;
-	// REGION * const pLastRegion = &regions[MAX_REGIONS - 1];
-	REGION * const pFirstRegion = &regions[region_stack[CurStackIndex]];
-	
-	for (pThisRegion=gpLastRegion;
-	     pThisRegion>=pFirstRegion;
-	     pThisRegion--)
-	{
-		// this region is unused
-		if (pThisRegion->flags == REGION_INVALID)
-			continue;
-
-		// this region is used, but inactive
-		if (pThisRegion->flags == REGION_INACTIVE)
-			continue;
-		color_box(pThisRegion->x,pThisRegion->y,
-				pThisRegion->w,pThisRegion->h,79);
-		
-	}
-*/
 
 	REGION *pThisRegion;
 
@@ -915,7 +895,6 @@ void OutlineAllRegions(void)
 
 /* ========================================================================
    Function    - change_tooltip
-				return;
    Description - given a func and or key and an x,y , swap out the old tool 
    				 tip for the new one.
    				 Change them all throughout the stack because we could have
@@ -990,7 +969,6 @@ BOOL change_tooltip(PFVLL func, LONG key, LONG x, LONG y,
 
 /* ========================================================================
    Function    - change_function
-				return;
    Description - given a func and or key and an x,y , swap out the old func 
    				 key and vals
    				 Change them all throughout the stack because we could have

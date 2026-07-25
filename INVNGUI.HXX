@@ -211,25 +211,6 @@ inline InventoryGUI::InventoryGUI()
 
 inline void InventoryGUI::mfDisplay(LONG,LONG FromStatus)
 {	
-/*
-	SHORT test=NewBlock(10*41);
-	if(test==fERROR)
-		fatal_error("wes is lame\n");
-	char* ptest=(char*)BLKPTR(test);
-	
-	memset(ptest,0,10*41);
-	
-	strcpy(&ptest[0*41],"line 1");
-	strcpy(&ptest[1*41],"line 2");
-	strcpy(&ptest[2*41],"line 3");
-	strcpy(&ptest[3*41],"line 4");
-	strcpy(&ptest[4*41],"line 5");
-	strcpy(&ptest[5*41],"line 6");
-	strcpy(&ptest[6*41],"line 7");
-	strcpy(&ptest[7*41],"line 8");
-	strcpy(&ptest[8*41],"line 9");
-	strcpy(&ptest[9*41],"line 10");
-*/	
 
 	if (FromStatus)
 		HideMenu(D_AVATAR_ATTRIBUTES); //get rid of status

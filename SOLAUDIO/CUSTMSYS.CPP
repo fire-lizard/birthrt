@@ -218,15 +218,6 @@ char& MemID::operator[](size_t s) const
 {
 	return *((char*)handle + s);
 }
-#if 0
-MemID::operator int() const
-{
-	if (handle)
-		return 1;
-	else
-		return 0;
-}
-#endif
 
 long MemID::IsAllocated() const
 {

@@ -2060,14 +2060,6 @@ void PaintTradeRoute (LONG x, LONG y, LONG h)
 			SyncRegencySpentInOpposition((REALM::REALM_TYPE)province[iSelectedRealm].Realm);
 			SyncRegencySpentInOpposition((REALM::REALM_TYPE)province[iSelectedProvince].Realm);
 		}
-/*
-		GoldBar = 1;
-		RegencePoint = modRegency + 1;
-		if(checkGoldReg)
-			fAllowRollButton = (ProcessGoldAndReg(CHECK_QUITE))?fAllowRollButton:0;
-		else
-			fAllowRollButton = (ProcessGoldAndReg(CHECK_ONLY))?fAllowRollButton:0;
-*/
 	}
 	if (startY == y && startX == x && !fAllowDoneButton && GoldBar==0 && !iSelectedRealm)
 	   gprint_text(x, y,STRMGR_GetStr(STR_ACTNMENU_CANT_BUILD_ROAD) , DKBROWN);

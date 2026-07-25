@@ -375,9 +375,6 @@ class DSound
 	LONG	LogVolume(WORD volume, WORD factor);
 
 	DWORD						secondaryBuffSize;
-	#if 0	// GWP Bad idea
-	LPVOID					lpDSoundBuf;
-	#endif
 	DWORD						bytesPerSec;
 	DWORD						readPos;
 	DWORD						waveSize;

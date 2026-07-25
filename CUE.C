@@ -46,13 +46,6 @@ BOOL gfTestGrayLight;
    Macros
    ------------------------------------------------------------------------ */
 /* ------------------------------------------------------------------------
-   Prototypes
-static void rgb_to_hsl (double r,double g,double b,double *h,double *s,double *l);
-static double value (double n1,double n2,double h);
-static void hsl_to_rgb (double h,double s,double l,double *r,double *g,double *b);
-static void remap_pal (PALETTE src, PALETTE dest, UBYTE *table);
-   ------------------------------------------------------------------------ */
-/* ------------------------------------------------------------------------
    Global Variables
    ------------------------------------------------------------------------ */
 // Allocate space for the base tables, the infravision tables, and the

@@ -179,8 +179,6 @@ ULONG InitMemManag (
 	cbFreemem = cbMaxFree - 4000;
 
 	// count down til we find the real size of free memory or we can't find enough
-	/*for (pHeap = NULL; pHeap == NULL && cbFreemem > cbMinMemoryNeeded; cbFreemem -= 0x10000)
-		pHeap = (PTR)malloc(cbFreemem);*/
 	pHeap = shared_ptr<unsigned char[]>(new unsigned char[cbFreemem]);
 
 	printf("memory allocated: %ld Starting at 0x%lx\n",cbFreemem, pHeap.get());
