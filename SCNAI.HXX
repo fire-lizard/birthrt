@@ -17,7 +17,6 @@
 #include "typedefs.h"
 #endif
 
-
 /* ------------------------------------------------------------------------
    Defines and Compile Flags
    ------------------------------------------------------------------------ */
@@ -48,7 +47,6 @@ public:
     typedef enum
     {
         NO_SCENE = -1,
-        // GWP Not used. GENERIC_SCENE = 0,
         BATTLE_SCENE,
         COMBAT_SCENE,
         ADVENTURE_SCENE,
@@ -168,7 +166,6 @@ inline SCENE_AI::SCENE_AI()
 	mfInitVals();
 }
 
-
 /* ========================================================================
    Function    - mfSetSceneType
    Description - Set the scene to be Generic or Self running demo.
@@ -178,7 +175,6 @@ inline void SCENE_AI::mfSetSceneType(SCENE_AI::SCENE_TYPE const SceneType)
 {
 	fSceneType = SceneType;
 }
-
 
 /* ========================================================================
    Function    - mfDoAI

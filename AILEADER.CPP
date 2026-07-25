@@ -240,16 +240,6 @@ void LEADER_DATA::mfMoveFollowers(CAvatar *) // pAvatar (pointer to yourself.
 				sIndex += sMaxFollowers;
 				
 			// first try to compact the list
-			// if (pList[i] == fERROR)
-			// {
-			// 	// found a guy following an empty slot
-			// 	// move him forward one
-			// 	if(pList[i+1] != fERROR)
-			// 	{
-			// 		pList[i] = pList[i+1];
-			// 		pList[i+1] = fERROR;
-			// 	}
-			// }
 			
 			if (pList[i] != fERROR)
 			{
@@ -264,5 +254,3 @@ void LEADER_DATA::mfMoveFollowers(CAvatar *) // pAvatar (pointer to yourself.
 		}
 	}
 }
-
-

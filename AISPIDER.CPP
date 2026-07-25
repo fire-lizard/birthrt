@@ -9,7 +9,6 @@
    
    Contains the following general functions:
 
-   
    ======================================================================== */
 
 /* ------------------------------------------------------------------------
@@ -209,7 +208,6 @@ void CAvatar::Spiders (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 			
 			if (pAvatar->attrib.DiedLastFrame)
 			{
-//				pAvatar->mfSpewAll();
 				pAvatar->attrib.DiedLastFrame=FALSE;
 			}
 
@@ -232,7 +230,6 @@ void CAvatar::Spiders (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 				pAvatar->Status = AI_SEARCH;
 				if(pAvatar->attrib.IsFollowPath == TRUE)
 				{
-					//pAvatar->FaceTo(pAvatar->fFollowPath.oldP.x, pAvatar->fFollowPath.oldP.y);
 					pAvatar->SetAIFuncIndex(CAvatar::AI_FUNC_FOLLOW_PATH);
 					pAvatar->DoAI(CAvatar::AI_INIT);
 					break;
@@ -254,7 +251,6 @@ void CAvatar::Spiders (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 					}
 					if(pAvatar->attrib.IsFollowPath == TRUE)
 					{
-						//pAvatar->FaceTo(pAvatar->fFollowPath.oldP.x, pAvatar->fFollowPath.oldP.y);
 						pAvatar->SetAIFuncIndex(CAvatar::AI_FUNC_FOLLOW_PATH);
 						pAvatar->DoAI(CAvatar::AI_INIT);
 						break;
@@ -300,7 +296,6 @@ void CAvatar::Spiders (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 					pAvatar->Status = AI_SEARCH;
 					if(pAvatar->attrib.IsFollowPath == TRUE)
 					{
-						//pAvatar->FaceTo(pAvatar->fFollowPath.oldP.x, pAvatar->fFollowPath.oldP.y);
 						pAvatar->SetAIFuncIndex(CAvatar::AI_FUNC_FOLLOW_PATH);
 						pAvatar->DoAI(CAvatar::AI_INIT);
 						break;
@@ -318,7 +313,6 @@ void CAvatar::Spiders (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 						pAvatar->Status = AI_SEARCH;
 						if(pAvatar->attrib.IsFollowPath == TRUE)
 						{
-							//pAvatar->FaceTo(pAvatar->fFollowPath.oldP.x, pAvatar->fFollowPath.oldP.y);
 							pAvatar->SetAIFuncIndex(CAvatar::AI_FUNC_FOLLOW_PATH);
 							pAvatar->DoAI(CAvatar::AI_INIT);
 							break;
@@ -365,7 +359,6 @@ void CAvatar::Spiders (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 				pAvatar->Status = AI_SEARCH;
 				if(pAvatar->attrib.IsFollowPath == TRUE)
 				{
-					//pAvatar->FaceTo(pAvatar->fFollowPath.oldP.x, pAvatar->fFollowPath.oldP.y);
 					pAvatar->SetAIFuncIndex(CAvatar::AI_FUNC_FOLLOW_PATH);
 					pAvatar->DoAI(CAvatar::AI_INIT);
 				}
@@ -381,11 +374,6 @@ void CAvatar::Spiders (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 				CAvatar * pAvatarTarget = (CAvatar *) BLKPTR(pAvatar->hEnemy);
 			
 				// If you can be seen you are active no matter what.
-				// if (pAvatar->mfIsVisible())
-				// {
-				// 	pAvatar->Status = AI_MOVING;
-				// 	// May want to add a Blech goto here.
-				// }
 				// else
 				
 				if (pAvatar->mfCanSeeAvatar(pAvatarTarget) &&
@@ -483,7 +471,6 @@ void CAvatar::Spiders (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 				pAvatar->Status = AI_SEARCH;
 				if(pAvatar->attrib.IsFollowPath == TRUE)
 				{
-					//pAvatar->FaceTo(pAvatar->fFollowPath.oldP.x, pAvatar->fFollowPath.oldP.y);
 					pAvatar->SetAIFuncIndex(CAvatar::AI_FUNC_FOLLOW_PATH);
 					pAvatar->DoAI(CAvatar::AI_INIT);
 				}
@@ -515,7 +502,6 @@ void CAvatar::Spiders (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 					pAvatar->Status = AI_SEARCH;
 					if(pAvatar->attrib.IsFollowPath == TRUE)
 					{
-						//pAvatar->FaceTo(pAvatar->fFollowPath.oldP.x, pAvatar->fFollowPath.oldP.y);
 						pAvatar->SetAIFuncIndex(CAvatar::AI_FUNC_FOLLOW_PATH);
 						pAvatar->DoAI(CAvatar::AI_INIT);
 					}
@@ -535,7 +521,6 @@ void CAvatar::Spiders (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 				pAvatar->Status = AI_SEARCH;
 				if(pAvatar->attrib.IsFollowPath == TRUE)
 				{
-					//pAvatar->FaceTo(pAvatar->fFollowPath.oldP.x, pAvatar->fFollowPath.oldP.y);
 					pAvatar->SetAIFuncIndex(CAvatar::AI_FUNC_FOLLOW_PATH);
 					pAvatar->DoAI(CAvatar::AI_INIT);
 					break;
@@ -600,7 +585,6 @@ void CAvatar::Spiders (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 				    bump == iOBJECT))
 				{
 					// we're stuck.
-					//pAvatar->mfStartAnimationOnce(STANDSEQ);
 					tp.dx = 0;
 					tp.dy = (pAvatar->mfGetMarchRate())<<PLAYER_FIXEDPT;
 					tp.dz = 0;
@@ -609,7 +593,6 @@ void CAvatar::Spiders (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 						pAvatar->Status = AI_SEARCH;
 						if(pAvatar->attrib.IsFollowPath == TRUE)
 						{
-							//pAvatar->FaceTo(pAvatar->fFollowPath.oldP.x, pAvatar->fFollowPath.oldP.y);
 							pAvatar->SetAIFuncIndex(CAvatar::AI_FUNC_FOLLOW_PATH);
 							pAvatar->DoAI(CAvatar::AI_INIT);
 							break;
@@ -635,7 +618,6 @@ void CAvatar::Spiders (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 												  pAvatar->mfAngle());
 						}
 
-
 						if(pAvatar->dAngle>0)
 							pAvatar->dAngle = -(pAvatar->dAngle);
 						else
@@ -647,11 +629,9 @@ void CAvatar::Spiders (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 				{
 					pAvatar->dAngle = 8;
 
-
 				}
 			}
 			
 			break;
 	}
 }
-

@@ -4,7 +4,6 @@
 //              DDraw.C  - handles all direct draw functionality.
 //
 
-
 #define CINTERFACE
 #include <Windows.h>
 
@@ -32,8 +31,6 @@ typedef struct pal
 }
 extern pal LogicalPalette;
 
-
-
  // -- local direct draw items
 LPDIRECTDRAW            lpDD                    = NULL;   // DirectDraw object
 LPDIRECTDRAWSURFACE     lpDDSPrimary    = NULL;   // DirectDraw primary surface
@@ -48,8 +45,6 @@ static HRESULT ddrvalG         = 0;
 static USHORT  usNum           = 0;
 static HDC		hdcSurface		 = NULL;
 
-
-
 extern "C" HRESULT CALLBACK DDAttachedCallback( 
 	LPDIRECTDRAWSURFACE lpDDSurface, 
     LPDDSURFACEDESC /* lpDDSurfaceDesc */, 
@@ -62,9 +57,6 @@ extern "C" HRESULT CALLBACK DDAttachedCallback(
 
    return ( DDENUMRET_OK );
 } // DDAttachedCallback
-
-
-
 
 //--------------------------------------------------------------------------
 //
@@ -96,7 +88,6 @@ extern "C" void DDCleanup( void )
    if( lpDDSBack2 != NULL )
       IDirectDrawSurface_Release( lpDDSBack2 );
        
-      
         // -- release the palette
    if( lpDDPPalette != NULL )
       IDirectDrawPalette_Release( lpDDPPalette );
@@ -115,9 +106,6 @@ extern "C" void DDCleanup( void )
    lpDD = NULL;
 
 } // DDCleanup
-
-
-
 
 //--------------------------------------------------------------------------
 //
@@ -183,9 +171,6 @@ extern "C" void DDDrawBuffer ( PCHAR pchBuf )
 
 } // DDDrawBuffer
 
-
-
-
 //--------------------------------------------------------------------------
 //
 //  void DDEraseScreen
@@ -233,9 +218,6 @@ extern "C" void DDEraseScreen ( void )
 
 } // DDEraseScreen
 
-
-
-
 //--------------------------------------------------------------------------
 //
 //  void DDFlipScreen
@@ -282,9 +264,6 @@ extern "C" HRESULT DDFlipScreen( LPDIRECTDRAWSURFACE lpDDSFlip )
 
 } // DDFlipScreen
 
-
-
-
 //--------------------------------------------------------------------------
 //
 //  void DDFlipSurface
@@ -308,9 +287,6 @@ extern "C" HRESULT DDFlipSurface( void )
    return ( DDFlipScreen( lpDDSFlip ) );
 
 } // DDFlipSurface
-
-
-
 
 //--------------------------------------------------------------------------
 //
@@ -363,9 +339,6 @@ extern "C" HDC DDGetDC( BOOL fBack )
 		return ( NULL );
 } // DDGetDc
 
-
-
-
 //--------------------------------------------------------------------------
 //
 //  BOOL DDGetSurfaceWidth
@@ -387,9 +360,6 @@ extern "C" DWORD DDGetSurfaceWidth( void )
 
 	return ( dds.dwWidth );
 } // DDgetSurfaceWidth
-
-
-
 
 //--------------------------------------------------------------------------
 //
@@ -418,17 +388,12 @@ extern "C" BOOL DDInitialize ( HWND hwndMain, BOOL fGDI )
    hwndAppDD = hwndMain;
 
 //        // see if we are in 256 color mode
-//        rval = GetDeviceCaps(gdcScreen, NUMCOLORS);
-//        if(rval == -1 || rval == 32767)
-//                return FALSE;
 
     // --
     // -- Create the Direct Draw object
     // --
    usNum = 0;
-//	printf("before DirectDrawCreate( NULL, &lpDD, NULL )");
    ddrvalG = DirectDrawCreate( NULL, &lpDD, NULL );
-//	printf("after DirectDrawCreate( NULL, &lpDD, NULL )");
 
    if( ddrvalG != DD_OK )
    {
@@ -436,7 +401,6 @@ extern "C" BOOL DDInitialize ( HWND hwndMain, BOOL fGDI )
       DDCleanup();
       goto DDInitializeExit;
    }
-
 
     // --
     // -- Set the cooperative level
@@ -451,21 +415,17 @@ extern "C" BOOL DDInitialize ( HWND hwndMain, BOOL fGDI )
       goto DDInitializeExit;
    }
 
-
     // --
     // -- Set the mode to 640 by 480 by 8
     // --
    usNum = 3;
-//	printf("before DDSetDisplayMode");
    ddrvalG = DDSetDisplayMode( TRUE ); 
-//	printf("after DDSetDisplayMode");
    if( ddrvalG != DD_OK )
    {
       fOK = FALSE;
       DDCleanup();
       goto DDInitializeExit;
    }
-
 
     // --
     // -- Create the front and back surfaces
@@ -479,16 +439,13 @@ extern "C" BOOL DDInitialize ( HWND hwndMain, BOOL fGDI )
    ddsd.dwBackBufferCount = fGDI ? 2 : 1;
 
    usNum = 4;
-//	printf("before IDirectDraw_CreateSurface");
    ddrvalG = IDirectDraw_CreateSurface( lpDD, &ddsd, &lpDDSPrimary, NULL );
-//	printf("after IDirectDraw_CreateSurface");
    if( ddrvalG != DD_OK )
    {
 		fOK = FALSE;
       DDCleanup();
       goto DDInitializeExit;
    }
-
 
     // --
     // -- Get a pointer to the back buffer(s)
@@ -511,11 +468,6 @@ extern "C" BOOL DDInitialize ( HWND hwndMain, BOOL fGDI )
 		ddrvalG = IDirectDrawSurface_EnumAttachedSurfaces( lpDDSPrimary, NULL, 
                                                                                                                                 DDAttachedCallback );
 
-//              usNum = 6;
-//          ddsd.dwFlags = DDSD_CAPS | DDSD_BACKBUFFERCOUNT;
-//              ddsd.ddsCaps.dwCaps = DDSCAPS_FLIP;
-//          ddsd.dwBackBufferCount = 1;
-//          ddrvalG = IDirectDraw_CreateSurface( lpDD, &ddsd, &lpDDSBack2, NULL );
       if( ddrvalG != DD_OK )
       {
 	      fOK = FALSE;
@@ -523,16 +475,7 @@ extern "C" BOOL DDInitialize ( HWND hwndMain, BOOL fGDI )
          goto DDInitializeExit;
 		}
 
-//              usNum = 7;
-//              ddrvalG = IDirectDrawSurface_AddAttachedSurface( lpDDSPrimary, lpDDSBack2 );
-//          if( ddrvalG != DD_OK )
-//              {
-//                      fOK = FALSE;
-//              DDCleanup();
-//                      goto DDInitializeExit;
-//              }
 	}
-
 
     // --
     // -- Deal with Blting the GDI
@@ -569,7 +512,6 @@ extern "C" BOOL DDInitialize ( HWND hwndMain, BOOL fGDI )
       goto DDInitializeExit;
    }
 
-
     // --
     // -- Cleanup and leave
     // --
@@ -577,9 +519,6 @@ extern "C" BOOL DDInitialize ( HWND hwndMain, BOOL fGDI )
 
    return ( fOK );
 } // DDInitialize
-
-
-
 
 //--------------------------------------------------------------------------
 //
@@ -606,7 +545,6 @@ extern "C" HRESULT DDLockSurface( PCHAR *ppchBuf, long *pViewWidth )
 
    if ( NULL == lpDDSBack1 )
 		return ( DDERR_SURFACELOST ); 
-
 
     // -- lock the surface drawing area
 	while ( TRUE )
@@ -641,9 +579,6 @@ extern "C" HRESULT DDLockSurface( PCHAR *ppchBuf, long *pViewWidth )
 	return ( ddrval );
 } // DDLockSurface
 
-
-
-
 //--------------------------------------------------------------------------
 //
 //  BOOL DDRealizePalette
@@ -673,7 +608,6 @@ extern "C" BOOL DDRealizePalette( void )
 		lpDDPPalette = NULL;
 	}
 
-
     // -- Create and set the palette 
    ddrval = IDirectDraw_CreatePalette( lpDD, 
 	   									DDPCAPS_8BIT | DDPCAPS_ALLOW256, 
@@ -690,9 +624,6 @@ extern "C" BOOL DDRealizePalette( void )
 	return ( TRUE );
 
 } // DDRealizePalette
-
-
-
 
 //--------------------------------------------------------------------------
 //
@@ -737,9 +668,6 @@ extern "C" BOOL DDSetPaletteEntries( void )
 
 } // DDRealizePalette
 
-
-
-
 //--------------------------------------------------------------------------
 //
 //  BOOL DDReleaseDC
@@ -757,9 +685,6 @@ extern "C" void DDReleaseDC( HDC hdc )
 {
 	IDirectDrawSurface_ReleaseDC( lpDDSBack1, hdc );
 } // DDReleaseDC
-
-
-
 
 //--------------------------------------------------------------------------
 //
@@ -787,13 +712,7 @@ extern "C" BOOL DDRestoreSurfaces( void )
     // set colorfill colors and color keys according to bitmap contents
 
         // -- CLR_INVALID will make palette 0's entry the transparent one
-//    dwFillColor = DDColorMatch( lpScreen, CLR_INVALID );
-//    
-//    return ( TRUE );
 } // DDRestoreSurfaces
-
-
-
 
 //--------------------------------------------------------------------------
 //
@@ -812,15 +731,6 @@ HRESULT DDSetCooperative( BOOL fExclusive )
 {
 	HRESULT ddrval = DD_OK + 1;
 
-//	if ( fUsingGDI )
-//	{
-//		ddrval = IDirectDraw_SetCooperativeLevel( lpDD, hwndAppDD,
-//												DDSCL_EXCLUSIVE | DDSCL_FULLSCREEN );
-//	}
-//	else
-//	{
-//		printf("before IDirectDraw_SetCooperativeLevel");
-
        if ( lpDD == NULL )
           return ( ddrval );
 
@@ -833,14 +743,9 @@ HRESULT DDSetCooperative( BOOL fExclusive )
 		{
 	      ddrval = IDirectDraw_SetCooperativeLevel( lpDD, hwndAppDD, DDSCL_NORMAL );
 		}
-//		printf("after IDirectDraw_SetCooperativeLevel");
-//	}
 
 	return ( ddrval );
 } // DDSetCooperative
-
-
-
 
 //--------------------------------------------------------------------------
 //
@@ -875,9 +780,6 @@ extern "C" HRESULT DDSetDisplayMode( BOOL fHigh )
 		return ( IDirectDraw_SetDisplayMode( lpDD, 320, 200, 8 ) );
 
 } // DDSetDisplayMode
-
-
-
 
 //--------------------------------------------------------------------------
 //

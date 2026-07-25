@@ -141,7 +141,6 @@ SCLASSTYPE sclass_by_class(PLAYER_CLASS_INFO::TYPE pclass)
     return sclass;
 }
 
-
 BOOL SaveVs(const SHORT hPlayerStats, SAVETYPE savetype, SBYTE modifier)
 {
     SHORT i, level, best_save = 25, save;
@@ -204,7 +203,6 @@ BOOL SaveVs(const SHORT hPlayerStats, SAVETYPE savetype, SBYTE modifier)
 
     return result;
 }
-
 
 BOOL ExpCheck(PLAYER_STATS * pPS)
 {
@@ -328,7 +326,6 @@ BOOL ExpCheck(PLAYER_STATS * pPS)
     return has_gained_level;
 }
 
-
 void GainRealmExp(LONG RegentIndex, const LONG ExpAmount,
 				const BOOL CanGainLevelNow, const BOOL fSend)
 {
@@ -402,5 +399,4 @@ void GainExp(PLAYER_STATS * pPS, const LONG ExpAmount,
         }
     }
 }
-
 

@@ -24,7 +24,6 @@
    ------------------------------------------------------------------------ */
 #include <stdio.h>
 #include <stdlib.h>
-//#include <dos.h>
 #include <string.h>
 
 #include "SYSTEM.H"
@@ -53,7 +52,6 @@
 #define MAX_REGIONS						500
 #define MAX_STACK_DEPTH					15
 #define ticsDISPLAY_TIP_TIME			50
-//#define ticsWAIT_BEFORE_DISPLAY		40
 #define ticsWAIT_BEFORE_DISPLAY		1
 
 typedef struct
@@ -303,7 +301,6 @@ void del_region(PFVLL func,LONG key)
 {
 	REGION *pThisRegion;
 
-
 	if(func!=NULL)
 	{
 		for(pThisRegion=&regions[region_stack[CurStackIndex]];
@@ -318,7 +315,6 @@ void del_region(PFVLL func,LONG key)
 					tooltip[pThisRegion->lTipIndex].lId = -1;
 					pThisRegion->lTipIndex = -1;
 				}
-				//return;
 			}
 
 		}
@@ -337,7 +333,6 @@ void del_region(PFVLL func,LONG key)
 					tooltip[pThisRegion->lTipIndex].lId = -1;
 					pThisRegion->lTipIndex = -1;
 				}
-				//return;
 			}
 		}
 	}
@@ -383,9 +378,7 @@ REGION_EVENT_TYPE check_regions(void)
 	REGION_EVENT_TYPE EventHandled = REGION_EVENT_NOT_HANDLED;
 	int i, iCursorOnTip = 0;
 	int iHaveTip = 0;
-	//SHORT         iBkgnd;
 	SHORT w, h, x, y;
-	//REGION * const pLastRegion = &regions[MAX_REGIONS - 1];
 	REGION const * const pFirstRegion = &regions[region_stack[CurStackIndex]];
 	char szText[50];
 
@@ -541,9 +534,7 @@ SKIP_TIP:
 REGION_EVENT_TYPE check_regions(void)
 {
 	REGION_EVENT_TYPE EventHandled = REGION_EVENT_NOT_HANDLED;
-	//REGION * const pLastRegion = &regions[MAX_REGIONS - 1];
 	REGION const * const pFirstRegion = &regions[region_stack[CurStackIndex]];
-
 
 	for (pThisRegion=gpLastRegion;
 	     pThisRegion>=pFirstRegion;
@@ -592,9 +583,7 @@ void paint_tooltips(void)
 {
 	int i, iCursorOnTip = 0;
 	int iHaveTip = 0;
-	//SHORT         iBkgnd;
 	SHORT w, h, x, y;
-	//REGION * const pLastRegion = &regions[MAX_REGIONS - 1];
 	REGION const * const pFirstRegion = &regions[region_stack[CurStackIndex]];
 	char szText[50];
 
@@ -851,7 +840,6 @@ void activate_region(LONG id, BOOL state_on)
 			else
 				pThisRegion->flags = REGION_INACTIVE;
 				
-//                      break;          //[ABC] let's do all the regions with the id
 		}
 	}
 }
@@ -884,7 +872,6 @@ void OutlineAllRegions(void)
 	// REGION * const pLastRegion = &regions[MAX_REGIONS - 1];
 	REGION * const pFirstRegion = &regions[region_stack[CurStackIndex]];
 	
-
 	for (pThisRegion=gpLastRegion;
 	     pThisRegion>=pFirstRegion;
 	     pThisRegion--)
@@ -899,7 +886,6 @@ void OutlineAllRegions(void)
 		color_box(pThisRegion->x,pThisRegion->y,
 				pThisRegion->w,pThisRegion->h,79);
 		
-
 	}
 */
 
@@ -1095,4 +1081,3 @@ BOOL del_region_xy(PFVLL oldFunc, LONG x, LONG y, LONG w, LONG h, CHANGE_REGION_
 	return Result;
 }
 /* ======================================================================== */
-

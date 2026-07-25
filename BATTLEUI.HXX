@@ -197,9 +197,7 @@
 #define BTLUI_HELP_POINTS_LEFT		0
 #define BTLUI_HELP_POINTS_RIGHT		1
 
-
 const DWORD kNoMultiId = 777777777;			//---- No player here in dwPlayers[]
-
 
 /* ------------------------------------------------------------------------
    Enums

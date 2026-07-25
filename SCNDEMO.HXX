@@ -17,7 +17,6 @@
 #include "system.h"
 #endif
 
-
 #if !defined(_FILEUTIL_H)
 #include "fileutil.h"
 #endif
@@ -25,8 +24,6 @@
 #if !defined(_FILENAME_HXX)
 #include "filename.hxx"
 #endif
-
-
 
 /* ------------------------------------------------------------------------
    Defines and Compile Flags
@@ -65,8 +62,6 @@ private:
 	FILENAME	fCommandFile;
 };
 	
-
-    
 /* ========================================================================
    Function    - mfInitVals
    Description - initialize the member data.
@@ -77,7 +72,6 @@ inline void SCENE_DEMO_DATA::mfInitVals()
 	fCommandFile.mfInitVals();
 }
 
-    
 /* ========================================================================
    Function    - mfGetCommandFileName
    Description - Retrieve the comand file name.
@@ -88,7 +82,6 @@ inline char * SCENE_DEMO_DATA::mfGetCommandFileName ()
 	return (fCommandFile.mfGetFileName());
 }
 
-    
 /* ========================================================================
    Function    - mfReadData
    Description - Read the data from the scene file.
@@ -99,7 +92,6 @@ inline LONG SCENE_DEMO_DATA::mfReadData (FILE *fp)
 	return fCommandFile.mfReadFileName(fp);
 }
 
-    
 /* ========================================================================
    Function    - mfWriteData
    Description - Write the data back to the scene file.
@@ -110,7 +102,6 @@ inline void SCENE_DEMO_DATA::mfWriteData (FILE *fp)
 	fCommandFile.mfWriteFileName(fp);
 }
 
-    
 /* ========================================================================
    Function    - mfIsSet
    Description - Test for whether this is a demo scene or not.

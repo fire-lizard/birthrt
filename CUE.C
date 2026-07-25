@@ -279,7 +279,6 @@ static void remap_pal (PALETTE src, PALETTE dest, UBYTE *table)
 			}
 		}
 
-
 		/* set the current source color remap index */
 		table[i] = (UBYTE)k;
 	}
@@ -384,8 +383,6 @@ void init_shade_table(CHAR *Name)
 	if(f!=NULL)
 	{
 		// If file exists, read it in.
-		// fread(&shade_table[0],sizeof(char),256*35,f);
-		// fread(&shade_table[0],sizeof(char),256*(35+32),f); // [d7-02-96 JPC]
 		size = TOTAL_COLORTABLE_SIZE;
 		bytesRead = fread(&shade_table[0],sizeof(char), size, f); // [d7-15-96 JPC]
 		if (bytesRead != size)
@@ -647,22 +644,13 @@ void color_rect (LONG x,LONG y,LONG w,LONG h,LONG s)
 	
 	if ((y + h) >= MAX_VIEW_HEIGHT)
 		h = (MAX_VIEW_HEIGHT - 1) - y;
-//#endif
 	
 	sptr = screen + (screen_buffer_width * y) + x;
 
 	/* Note this access screen directly for speed */
 	do
 	{
-		// GWP ww = w;
-		// GWP
-		// GWP do
-		// GWP {
-		// GWP 	(*sptr++) = (char)s;
-		// GWP } while (ww--);
 
-		// GWP sptr += screen_buffer_width-w-1;
-		
 		memset(sptr, s, w);
 		sptr += screen_buffer_width;
 	} while (h--);
@@ -734,9 +722,6 @@ void zoomout_color_edged_rect (LONG x, LONG y, LONG w, LONG h, LONG s, SHORT hDe
 
 }	
 	
-
-
-
 /* =======================================================================
    Function    - color_edged_rect
    Description - draws a 'shadowed' rectangle
@@ -786,7 +771,6 @@ void shade_rect (LONG x,LONG y,LONG w,LONG h,LONG s)
 	if (y_end>MAX_VIEW_HEIGHT)
 		y_end=MAX_VIEW_HEIGHT;
 	
-
 	shade=(CHAR *)&shade_table[256*s];
 		
 		/*Note this access screen directly for speed*/
@@ -796,7 +780,6 @@ void shade_rect (LONG x,LONG y,LONG w,LONG h,LONG s)
 		PTR sptr= screen_y_start;
 		for(sy=y;sy<y_end;++sy, sptr += screen_buffer_width)
 		{
-			// GWP screen[sx+(sy*screen_buffer_width)]=shade[ screen[sx+(sy*screen_buffer_width)] ];
 			if (*sptr!=254)
 				*sptr=shade[ *sptr ];
 		}

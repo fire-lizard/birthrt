@@ -69,7 +69,6 @@
    Typedefs
    ------------------------------------------------------------------------ */
 
-
 /* ------------------------------------------------------------------------
    Macros   
    ------------------------------------------------------------------------ */
@@ -117,7 +116,6 @@ public:
     inline LONG const mfGetOpeningDialog() const;
     inline void mfClearOpeningDialog();
     
-	
     SHORT    	Avatars[MAX_AVATARS];
     
     // Handle to data used by specialized Scene AI functions.
@@ -247,7 +245,6 @@ inline void SCENE::mfSetScenePallet()
     }
 }
         
-
 /* ========================================================================
    Function    - mfSetSceneState
    Description - Cover fn to get at the SCENE_AI stuff.
@@ -258,7 +255,6 @@ inline void SCENE::mfSetSceneState(SCENE_AI::STATE SceneStateFlag )
     fSceneAI.mfSetSceneState(SceneStateFlag);
 }
         
-
 /* ========================================================================
    Function    - mfCallSceneAI
    Description - Called every render. 
@@ -333,7 +329,6 @@ inline char *SCENE::mfGetSceneName()
 {
 	return cpThisSceneName;
 }
-
 
 /* ========================================================================
    Function    - mfGetBackGroundMusic

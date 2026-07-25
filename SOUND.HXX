@@ -7,7 +7,6 @@
    ========================================================================
    Contains the following general functions:
    
-   
    ======================================================================== */
 
 #ifndef _SOUND_HXX
@@ -18,7 +17,6 @@
 #if !defined(_TYPEDEFS_H)
 #include "typedefs.h"
 #endif
-
 
 #if defined (__cplusplus)
 extern "C" {
@@ -53,7 +51,6 @@ extern "C" {
    Prototypes
    ------------------------------------------------------------------------ */
 
-
 /* ------------------------------------------------------------------------
    Global Variables
    ------------------------------------------------------------------------ */
@@ -70,7 +67,6 @@ extern int AdventureMusic[];
 /* ------------------------------------------------------------------------
    Defines and Compile Flags
    ------------------------------------------------------------------------ */
-
 
 /* ------------------------------------------------------------------------
    Enum
@@ -111,7 +107,6 @@ typedef enum {
     PLASMA_SOUNDS
         
 } SOUND_TYPES;
-
 
 // redbook track selections
 enum {
@@ -180,9 +175,7 @@ void TurnOffAllSounds(void);
 void KillSoundsNoFade(void);
 void	StopASound (int reqSound, int SoundTag);
 
-//#ifndef _WINDOWS
 void ServiceSOLAudio(void);
-//#endif
 
 void UpdateLoopingSoundObjects(void);
 void InitSoundThings(void);
@@ -190,20 +183,15 @@ void AddThingToSoundArray(SOUND_TYPES, LONG);
 
 unsigned long SndRandom ( LONG val );
 
-
 /* -----------------------------------------------------------------
    Globals
    ----------------------------------------------------------------- */
 
 // -- Required variables
 // GWP Add back later.
-// extern BOOL fSound;
-
-// extern BOOL fSpeech;
 
  // -- provided by application
 BOOL KillSplash( void );
-
 
 #if defined (__cplusplus)
 }

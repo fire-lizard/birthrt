@@ -43,7 +43,6 @@ struct WadFileInfo
    DirPtr directory;		/* array of directory information */
 };
 
-
 /*
    the master directory structure is used to build a complete directory
    of all the data blocks from all the various wad files
@@ -60,7 +59,6 @@ struct MasterDirectory
    syntactic sugar
 */
 typedef int Bool;               /* Boolean data: true or false */
-
 
 /* from wads.c */
 extern WadPtr  WadFileList;	/* list of wad files */

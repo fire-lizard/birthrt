@@ -117,14 +117,11 @@ void PlayBattleFlc(void)
 	// add list of sound effects
 	ClearFlicSound();
 	AddFlicSound(6,SND_UI_BUTTON_CLICK);
-	//	AddFlicSound(16,SND_TROOP_ACKNOWL2);
 	AddFlicSound(17,SND_ARROW_SHOT1);
 	AddFlicSound(18,SND_ARROW_SHOT2);
 	AddFlicSound(19,SND_ARROW_SHOT3);
 	AddFlicSound(20,SND_UI_BUTTON_CLICK);
-	//	AddFlicSound(25,SND_MATURE_MAN_ACKNOWL8);
 	AddFlicSound(30,SND_UI_BUTTON_CLICK);
-	//	AddFlicSound(35,SND_TROOP_ACKNOWL3);
 	AddFlicSound(79,SND_BIG_SWORD_HIT1);
 	AddFlicSound(81,SND_MALE_SCREAM1);
 	AddFlicSound(83,SND_SMALL_SWORD_HIT2);
@@ -135,9 +132,7 @@ void PlayBattleFlc(void)
 	AddFlicSound(90,SND_METAL_ARMOR_HIT1);
 	AddFlicSound(98,SND_UI_BUTTON_CLICK);
 	AddFlicSound(100,SND_MALE_SCREAM3);
-	//	AddFlicSound(103,SND_MATURE_MAN_ACKNOWL10);
 	AddFlicSound(110,SND_UI_BUTTON_CLICK);
-	//	AddFlicSound(114,SND_MATURE_MAN_ACKNOWL15);
 	AddFlicSound(115,SND_SMALL_SWORD_HIT2);
 	AddFlicSound(116,SND_MALE_DIE1);
 	AddFlicSound(117,SND_METAL_ARMOR_HIT1);
@@ -218,7 +213,6 @@ void PlayAdvFlc(void)
 		ClearMessageQueue();
 		#endif
 					
-		
 		if(mouse_button)
 		{
 			mouse_button = 0;
@@ -236,8 +230,6 @@ void PlayAdvFlc(void)
 	// add list of sound effects
 	ClearFlicSound();
 	AddFlicSound(1,-(TEN_SECONDS/20));
-	//	AddFlicSound(2,SND_GUARD_CHALLENGE1);
-	//	AddFlicSound(7,SND_DUEL_TAUNT1);
 	AddFlicSound(14,SND_UI_MENU_ZOOM_IN);
 	AddFlicSound(23,SND_BIG_SWORD_HIT1);
 	AddFlicSound(24,SND_LEATHER_ARMOR_HIT2);
@@ -246,7 +238,6 @@ void PlayAdvFlc(void)
 	AddFlicSound(42,SND_METAL_ARMOR_HIT1);
 	AddFlicSound(43,SND_MALE_SCREAM3);
 	AddFlicSound(47,SND_LEATHER_ARMOR_HIT1);
-	//	AddFlicSound(50,SND_DUEL_TAUNT10);
 	AddFlicSound(51,SND_MALE_DIE1);
 	AddFlicSound(54,SND_BODY_FALLS_DEAD1);
 	AddFlicSound(58,-(18*2));
@@ -286,7 +277,6 @@ void SlideShow(void)
 	// mouse from drawing, because the mouse code is so screwed
 	// up that SysHideCursor/SysShowCursor doesn't actually
 	// stop the mouse from drawing!
-	//GEH remove_timer(draw_cursor);
 
 	TurnOffAllSounds();
 #ifdef _DEMO
@@ -300,10 +290,7 @@ void SlideShow(void)
 	for(i = 1; i <= 15; i++)
 	{
 	
-		// FadeOut(10);
-		
 		// start zoom sound early
-		//AddSndObj(SND_UI_MENU_ZOOM_IN, 0, -1);
 		
 		// play intro flic	
 		sprintf(filename, "intro\\screen%02d.pcx", i);
@@ -319,10 +306,8 @@ void SlideShow(void)
 			bck.x = 320;
 			bck.y = 240;
 			ZoomBitmap (0, 0, bitm, 0, 0, 640, 480, fERROR, start, bck, 640, 480);
-			//DrawBitmap (0, 0, bitm, 0, 0, 999, 999);
 			update_screen();
 			SetPurge(bitm);
-			//FadeIn(10);
 		}
 		else
 		{

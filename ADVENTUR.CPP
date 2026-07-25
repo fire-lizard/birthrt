@@ -9,7 +9,6 @@
 
    Contains the following general functions:
 
-
    ======================================================================== */
 
 /* ------------------------------------------------------------------------
@@ -162,12 +161,6 @@ void ADVENTURER::mfUpdateAdventureTeam(PLAYER const * const pPlayer )
 			break;
 	   // GWP This noise is too anoy'ing
 	   // GWP 	case iWALL:
-	   // GWP 		if (SCENE_MGR::gTick > SoundDelay + fTimeLastBump)
-	   // GWP 		{
-	   // GWP 			fTimeLastBump = SCENE_MGR::gTick;
-	   // GWP 			AddSndObj(SND_HIT_WALL1,SND_HIT_WALL_TOTAL, -1);
-	   // GWP 		}
-	   // GWP 		break;
 		case iEDGE_OF_WORLD:
 			if (SCENE_MGR::gTick > SoundDelay + fTimeLastBump)
 			{
@@ -177,12 +170,6 @@ void ADVENTURER::mfUpdateAdventureTeam(PLAYER const * const pPlayer )
 			break;
 	   // GWP This noise is too anoy'ing
 	   // GWP 	case iSLIDE_ON_WALL:
-	   // GWP 		if (SCENE_MGR::gTick > SoundDelay + fTimeLastBump)
-	   // GWP 		{
-	   // GWP 			fTimeLastBump = SCENE_MGR::gTick;
-	   // GWP 			AddSndObj(SND_HIT_WALL1,SND_HIT_WALL_TOTAL, -1);
-	   // GWP 		}
-	   // GWP 		break;
 		case iCEILING:
 			// You are too tall.
 			if (SCENE_MGR::gTick > SoundDelay + fTimeLastBump)
@@ -277,7 +264,6 @@ void ADVENTURER::mfInitAdventureTeam(PLAYER const * const pPlayer)
 	}
 	
 	fNumberOfGoodTrailPts = 1;
-	
 	
 	for (i = 0; i < MAX_ADVENTURERS; i++)
 	{
@@ -406,7 +392,6 @@ BOOL const ADVENTURER::mfJoinAdventureTeam(SHORT const hdlAvatar)
 					fAdventurerPathIndex = (SBYTE)(fFirstAdventurerIndex - (FIRST_TEAM_SPACING + (i * TEAM_SPACING)));
 				}
 				fAdventurersHdl[i] = hdlAvatar;
-				
 				
 				// give the avatar an initial position.
 				mfGetMyPosition(&NewX, &NewY, &NewZ, &NewA);

@@ -10,7 +10,6 @@
 extern "C" {
 #endif
 
-
 void	CenterInWindow	( HWND hwnd, HWND hwndBasis, BOOL fRelative );
 void	CenterWindow	( HWND hwnd );
 

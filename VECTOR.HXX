@@ -199,7 +199,6 @@
 #include "machine.h"
 #endif
 
-
 /* ------------------------------------------------------------------------
    Defines and Compile Flags
    ------------------------------------------------------------------------ */
@@ -233,7 +232,6 @@
 #define DEFINE_VECTOR_DATA_S(T,n,s)		   		static T _ ## n[s]
 #define DEFINE_VECTOR_MEMBER_DATA(T,c,n)   		static T _ ## n[]
 
-
 #define DEFINE_VECTOR_CLASS(T,n)		   		BrVector<T> n(_ ## n,sizeof(_ ## n)/sizeof(T), #T, #n)
 #define DEFINE_STATIC_VECTOR_CLASS(T,n) 		static BrVector<T> n(_ ## n,sizeof(_ ## n)/sizeof(T), #T, #n)
 #define DEFINE_VECTOR_MEMBER_CLASS(T,c,n)		BrVector<T> c ## :: ## n(_ ## n,sizeof(_ ## n)/sizeof(T), #T, #n)
@@ -259,7 +257,6 @@
 #define DEFINE_STATIC_VECTOR_CLASS(T,n)
 #define DEFINE_VECTOR_MEMBER_CLASS(T,c,n)
 #define DEFINE_VECTOR_ARRAY_CLASS(T, n)
-
 
 #endif
 
@@ -366,7 +363,6 @@ public:
 		return *this;
 	}
 	
-	
 	BrVector < T > & operator= (BrVector < T > * pNewVector)
 	{
 		fnDim = pNewVector->fnDim;
@@ -396,7 +392,6 @@ protected:
 	
 private:
 };
-
 
 // Check in two directions. But create a BrVector<T> on the stack.
 template <class T> class Matrix2D
@@ -452,7 +447,6 @@ public:
 	operator char *() 
 	{ return (char *)start;	}
 
-	
 protected:
 	LONG	fRows;
 	LONG	fCols;

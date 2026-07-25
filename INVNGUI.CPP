@@ -55,8 +55,6 @@ extern SHORT localActiveRegent;
    ------------------------------------------------------------------------ */
 InventoryGUI StaticInventoryGUI::GUI;
 
-//SPELL_INFO::BATTLE_TYPE BattleSpellType; //global
-
 #ifndef _WINDOWS
 void InvokeDebugger(LONG,LONG);
 #endif 
@@ -69,9 +67,6 @@ static SHORT givenFrom = fERROR;
 static SHORT numCharges = 0;
 static SHORT numRecipients;
 extern BOOL fBattlePrep;
-
-
-
 
 /* ========================================================================
    Function    - mfAddToSpellBoxes
@@ -115,7 +110,6 @@ void InventoryGUI::mfClearSpellBox(LONG,LONG b)
 	
 	DumbAutoLockPtr<PLAYER_STATS> const pPlayerStats(AvatarStatsHdl);
 	ObjectList& AvatarInventory=pPlayerStats->mfGetInventory();
-	
 	
 	if (HighlightedLine != -1)
 	{
@@ -227,14 +221,7 @@ void InventoryGUI::mfUseSpellBox(LONG,LONG b)
 	DumbAutoLockPtr<PLAYER_STATS > const pPlayerStats(AvatarStatsHdl);
 	ObjectList& AvatarInventory=pPlayerStats->mfGetInventory();
 
-
 //	doesn't work.
-//	if (mouse_button==2)
-//	{
-//		GAME_STRING Name=GAME_TTYPE::mfGetSTRMgrId(ItemTypes[ObjectList::AllItems[AvatarInventory.SpellBoxes[b]].mfType()].mfGameType());
-//		InfoBox::Show(Name);
-//		return;
-//	}	
 
 	AvatarInventory.mfActivateSpellBox(b);
 }
@@ -270,7 +257,6 @@ void InventoryGUI::mfScroll(LONG a,LONG d)
 		DispStart=0;
 }
 
-
 void InventoryGUI::mfSetHighlightedLine(LONG,LONG d)
 {
 	if (fPickingRecipient)
@@ -287,8 +273,6 @@ void InventoryGUI::mfSetHighlightedLine(LONG,LONG d)
 	else
 		HighlightedLine=(SHORT)(DispStart+d);
 }
-
-
 
 void InventoryGUI::mfPaintDudeNameText(LONG MenuId) const
 {
@@ -309,7 +293,6 @@ void InventoryGUI::mfPaintDudeNameText(LONG MenuId) const
 	
 	print_text_centered(NameX+NameW/2-1,NameY+NameH/2-3,NameBuf,173);
 }
-
 
 void InventoryGUI::mfPaintCategoryButtonText(LONG MenuId) const
 {
@@ -471,8 +454,6 @@ void InventoryGUI::mfPaintSpellBoxes(ObjectList const & Ol,LONG MenuId) const
 	paint_tooltips();
 }
 
-
-
 void InventoryGUI::mfPaintListBoxIcon(LONG Line,ObjectList const & Ol,LONG MenuId) const
 {
     return;
@@ -559,8 +540,6 @@ void InventoryGUI::mfPaintListBoxLine(LONG Lines,ObjectList & Ol,LONG MenuId) co
 		}
 	}
 
-	
-	
 	// paint the list boxes
 		
 	for (Line = 0; Line < Lines; ++Line)
@@ -576,14 +555,11 @@ void InventoryGUI::mfPaintListBoxLine(LONG Lines,ObjectList & Ol,LONG MenuId) co
 		LONG TextMarginX=4;  //margins!
 		LONG TextMarginY=4;
 
-	
-	
 		if (!fPickingRecipient)
 		{
 			if (itor == Ol.end())
 				return;
 				
-		
 			sprintf(NumBuf,"^F03%li",(*itor)->mfHowMany());
 			
 			if (fPreparingSpells && CurrCategory == IC_SPELL)
@@ -652,17 +628,14 @@ void InventoryGUI::mfPaintListBoxLine(LONG Lines,ObjectList & Ol,LONG MenuId) co
 			LONG NameY=TextY+TextH/2-NameHeight/2;
 			LONG Color=175;
 
-	
 			// draw the text and number
 			if (HighlightedLine==DispStart+Line)
 				Color=31;
-
 
   			gprint_text(TextX+TextMarginX,NameY+2,NameBuf,Color);
   			if (CurrCategory!=IC_BLOODAB && CurrCategory!=IC_REALM_SPELL)
   				print_text_centered(NumX+NumW/2+1,NumY+NumH/2+1,NumBuf,Color);
 
-	
 			//draw the icon
 			
 			if (CurrCategory!=IC_SPELL || !fPreparingSpells)
@@ -743,17 +716,6 @@ void InventoryGUI::mfPaintListBoxLine(LONG Lines,ObjectList & Ol,LONG MenuId) co
 				// which is going away.
 				strcpy(NameBuf, regents[who].mfGetname());
 				
-//				for (SHORT k=0; k<CHARACTER_COUNT; ++k)
-//				{
-//					if(regents[k].unit == who)
-//					{
-//						if (RecipStart+Line == HighlightedRecipient)
-//							hRecipientStats = playerstats[k];
-//						
-//						strcpy(NameBuf, regents[k].name);
-//						break;
-//					}
-//				}
 			}
 	    	else
 	    	{
@@ -784,7 +746,6 @@ void InventoryGUI::mfPaintListBoxLine(LONG Lines,ObjectList & Ol,LONG MenuId) co
 	}
 }
 
-
 /* ========================================================================
    Function    - InventoryGUI::mfPaintMiscInfoBox
    Description - Paints the Miscellaneous Info box
@@ -800,18 +761,15 @@ void InventoryGUI::mfPaintMiscInfoBox(ObjectList & Ol,LONG MenuId) const
 	LONG MiscTextBoxW;
 	LONG MiscTextBoxH;
 	
-	
 	DumbAutoLockPtr<PLAYER_STATS > const pPS(AvatarStatsHdl);
 	
 	if (fPickingRecipient)
 	{
 		GetButtonPosition(MenuId,INV_BUT_INFO,&MiscTextBoxX,&MiscTextBoxY);
 		
-		// GEH 10/97 sprintf(NameBuf,"^W230^F03%s", "Select character to receive item.");
 		sprintf(NameBuf,"^W230^F03%s", STRMGR_GetStr(STR_INV_GIVE_ITEM) );
 		gprint_text(MiscTextBoxX+TextMarginX,MiscTextBoxY+TextMarginY,NameBuf,31);
 	
-
 		return;
 	}
 
@@ -853,7 +811,6 @@ void InventoryGUI::mfPaintMiscInfoBox(ObjectList & Ol,LONG MenuId) const
 			sprintf(NameBuf,"^W230^F%02i%s",font--,STRMGR_GetStr(ItemTypes[(*itor)->mfType()].mfInfo()));
 		} while (gtext_height(NameBuf)>(MiscTextBoxH-TextMarginY) && font!=0);
 
-		
 		gprint_text(MiscTextBoxX+TextMarginX,MiscTextBoxY+TextMarginY,NameBuf,31);
 	}
 	else if (fPreparingSpells && CurrCategory == IC_SPELL)
@@ -913,7 +870,6 @@ void InventoryGUI::mfPaintMiscInfoBox(ObjectList & Ol,LONG MenuId) const
 			
 }
 	
-
 /* ========================================================================
    Function    - InventoryGUI::mfPaint
    Description - Paints the inventory for an avatar
@@ -930,9 +886,6 @@ void InventoryGUI::mfPaint(LONG MenuCombo,LONG)
 	init_gfont(FONT_SANS_8PT);
 	LONG OrigColor;
 
-
-
-	
 	if (fPickingRecipient)
 	{
 	    GetButtonLabelColor(MenuId, INV_BUT_TITLE, &OrigColor);
@@ -968,7 +921,6 @@ void InventoryGUI::mfPaint(LONG MenuCombo,LONG)
 		OutlineAllRegions();
 }
 
-
 /* ========================================================================
    Function    - InventoryGUI::mfInit
    Description - Initializes the instance
@@ -976,7 +928,6 @@ void InventoryGUI::mfPaint(LONG MenuCombo,LONG)
    ======================================================================== */
 void InventoryGUI::mfInit(SHORT a)
 {	
-	//printf("setting avastatshdl to %li\n",a);
 	AvatarStatsHdl=a;
 	HighlightedLine=-1;
 	DispStart=0;
@@ -984,7 +935,6 @@ void InventoryGUI::mfInit(SHORT a)
 	DrawRedBoxes=FALSE;
 	mfChangeCurrCat(0,CurrCategory);
 }
-
 
 void InventoryGUI::mfAddToAvailSpells(LONG MC ,LONG d)
 {
@@ -1032,7 +982,6 @@ void InventoryGUI::mfAddToAvailSpells(LONG MC ,LONG d)
 
 }
 
-
 void InventoryGUI::mfTakeFromAvailSpells(LONG MC,LONG d)
 {	
 	if (fPickingRecipient)
@@ -1045,9 +994,6 @@ void InventoryGUI::mfTakeFromAvailSpells(LONG MC,LONG d)
 	{
 
 		HlMgr.HighlightButton(MC,1);
-		// GWP AvatarInventory.mfAdvanceTo(DispStart+d,CurrCategory);
-        // GWP if (AvatarInventory.mfData().mfHowMany() > 0)
-		// GWP     AvatarInventory.mfData().mfLoseOne();
 		InventoryItor itor(AvatarInventory);
 		itor.mfAdvanceTo(DispStart+d, CurrCategory);
 		if (itor != AvatarInventory.end() &&
@@ -1113,10 +1059,7 @@ void InventoryGUI::mfUseHighlightedObject(LONG a,LONG)
 		return;
 	}
 
-	//printf("highlighted use button %li\n",a&0xFFFF);
 	HlMgr.HighlightButton(a&0xFFFF,1);
-	
-	// GWP AvatarInventory.mfAdvanceTo((SHORT)HighlightedLine,CurrCategory);
 	
 	InventoryItor itor(AvatarInventory);
 	
@@ -1134,7 +1077,6 @@ void InventoryGUI::mfUseHighlightedObject(LONG a,LONG)
 	HideSubMenu(a,D_AVATAR_INVENTORY);
 	RunMenus();
 	
-	// GWP AvatarInventory.mfActivateCurrent();
 	itor.mfActivateCurrent();
 }
 
@@ -1147,7 +1089,6 @@ static LONG CtxtHlpCats[]=
 	H_Blood_Abilities_Button,
 };
 									
-
 void InventoryGUI::mfChangeCurrCat(LONG MenuCombo,LONG c)
 {
 
@@ -1169,19 +1110,14 @@ void InventoryGUI::mfChangeCurrCat(LONG MenuCombo,LONG c)
 	for (LONG i = INV_BUT_MUNDANE; i <= INV_BUT_BLOODABLT; ++i)
 		HlMgr.SubdueButton(i);
 
-	
 	LONG newArg=BUILD_LONG(MenuId, INV_BUT_MUNDANE+c);
 	
-
 	HlMgr.HighlightButton(newArg,-1);
 	
 	CurrCategory=(ItemCategory)c;
 	DispStart=0;
 	HighlightedLine=-1;
 }
-
-
-
 
 void StaticInventoryGUI::mfDropItem(LONG a,LONG)
 {
@@ -1191,7 +1127,6 @@ void StaticInventoryGUI::mfDropItem(LONG a,LONG)
 		SystemHelp(STR_INVN_BUTN_DROP_BUTTON,STR_INVN_HELP_DROP_BUTTON,H_Drop_Button,NULL,0);
 		return;
 	}
-
 
 	if (fPickingRecipient)
 		return;
@@ -1208,7 +1143,6 @@ void StaticInventoryGUI::mfDropItem(LONG a,LONG)
 	{
 		return;
 	}
-	
 	
 	if (fPreparingSpells && GUI.CurrCategory == IC_SPELL)
 	{
@@ -1251,12 +1185,10 @@ void StaticInventoryGUI::mfDropItem(LONG a,LONG)
 	else
 	{
 		/* we're not going to allow dropping outside of adventuring */
-		// itor.mfDropItem();
 	}
 
 }
 	
-
 void StaticInventoryGUI::mfUseHighlightedObject(LONG a,LONG b)
 {
 	GUI.mfUseHighlightedObject(a,b);
@@ -1269,7 +1201,6 @@ void StaticInventoryGUI::mfGiveItem(LONG a,LONG)
 		SystemHelp(STR_INVN_BUTN_GIVE_BUTTON,STR_INVN_HELP_GIVE_BUTTON,H_Give_Button,NULL,0);
 		return;
 	}
-
 
 	SHORT AvatarStatsHdl=GUI.GetStatsHdl();
 	
@@ -1346,8 +1277,6 @@ void StaticInventoryGUI::mfGiveItem(LONG a,LONG)
 	}
 }
 
-
-
 void StaticInventoryGUI::mfGoStatus(LONG a,LONG Combo)
 {
 	if (fPickingRecipient)
@@ -1357,7 +1286,6 @@ void StaticInventoryGUI::mfGoStatus(LONG a,LONG Combo)
 	
 	StatusFromInventory(a, Combo);
 }
-
 
 void StaticInventoryGUI::mfDone(LONG a,LONG Combo)
 {
@@ -1419,7 +1347,6 @@ void StaticInventoryGUI::mfDone(LONG a,LONG Combo)
 	}
 }
 
-
 //high word of second arg is whether or not we're coming from the status menu
 //low word is handle to display (0 for global handle)
 
@@ -1432,8 +1359,6 @@ void StaticInventoryGUI::mfDisplay(LONG a,LONG Combo)
 	if (ShowThisHandle!=fERROR)
   	{
 		GUI.mfInit(ShowThisHandle);
-		//printf("displaying Handle %li\n",ShowThisHandle);
-
 
 		LONG Arg=BUILD_LONG(D_AVATAR_INVENTORY,INV_BUT_MUNDANE+GUI.CurrCategory);
 	
@@ -1468,5 +1393,4 @@ void StaticInventoryGUI::mfAddItem(LONG,LONG Itype)
 	
 	AvatarInventory.mfAddItem((ITEMTYPE)Itype);
 }
-
 

@@ -34,7 +34,6 @@
 #include "things.h"
 #endif
 
-
 // Base class for all avatar things that exist in Birthright
 // Its the interface to the Engine specific data so that should the engine
 // change there is only one place that needs fixing for the code to still work.
@@ -120,7 +119,6 @@ private:
 	
 };
 
-
 /* ========================================================================
    Function    - mfAttachArtThing
    Description - inline to attach to an existing thing in the mythings array.
@@ -191,8 +189,6 @@ inline LONG const ArtThing::mfHeight() const
 {
 	return mythings[ThingIndex].heiScaled;
 }
-
-
 
 /* ========================================================================
    Function    - mfDeathHeight
@@ -479,7 +475,6 @@ inline void ArtThing::mfSetInvisible(BOOL const flag)
 	 mythings[ThingIndex].inVisible = (unsigned int) flag;
 }
 
-
 /* ========================================================================
    Function    - mfGetArtSequence
    Description - inline Get the actual art sequence running. (Could be stand.)
@@ -489,7 +484,6 @@ inline LONG const ArtThing::mfGetArtSequence() const
 {
 	return (mythings[ThingIndex].iSequence);
 }
-
 
 /* ========================================================================
    Function    - mfWading

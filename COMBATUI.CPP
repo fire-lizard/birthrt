@@ -9,7 +9,6 @@
 
    Contains the following general functions:
 
-
    ======================================================================== */
 
 /* ------------------------------------------------------------------------
@@ -52,7 +51,6 @@
 #include "WINSYS\MONO_C.H"
 #endif
 
-
 extern LONG CountRegions (void);
 
 /* ------------------------------------------------------------------------
@@ -62,7 +60,6 @@ extern LONG CountRegions (void);
 /* ------------------------------------------------------------------------
    Defines and Compile Flags
    ------------------------------------------------------------------------ */
-
 
 #define FRAMES_TO_WAIT	10
 /* ------------------------------------------------------------------------
@@ -97,7 +94,6 @@ static SHORT gblankBarIndex = fERROR;
 static LONG GoldCoins = 0;
 static LONG MundaneValue = 0;
 
-
 /* ------------------------------------------------------------------------
    Prototypes
    ------------------------------------------------------------------------ */
@@ -107,7 +103,6 @@ extern void GainExp(PLAYER_STATS * pPS, const LONG ExpAmount,
 					const BOOL CanGainLevelNow);
 extern LONG GetCastleName( SHORT PlacesIndex );
 void static TestAndPutLiveOneInFront();
-
 
 static void ShowCombatUIMenu(SCENE & /* rScene */);
 static void HideCombatUIMenu(SCENE & /* rScene */);
@@ -122,7 +117,6 @@ void 			AdvExit (LONG, LONG button);
 void 			QueryAdvExit (LONG, LONG);
 
 //WRC [24.3.97] why should this be static? this is a useful function!
-//static void ForceHires ();
 void ForceHires ();
 
 extern void SetRelicFound( SHORT PlacesIndex );
@@ -299,7 +293,6 @@ static ULONG CountUpTheGoldCoins( LONG * MundaneSoldFor)
 	return Result;
 }
 
-
 /* ========================================================================
    Function    - AdventureEndMulti.
    Description - send overrides event starter 
@@ -421,7 +414,6 @@ void AdventureEndDialog( int send )
 	    new_treasury += amount/200;
 	}
 
-	
 	if ((numAlive > 0) && !RegentKilled && foundQuestItem)
 	{
 		//---- Found the relic of power.
@@ -462,12 +454,9 @@ void AdventureEndDialog( int send )
 		AMultiPlayer.Finalize(1);
 	}
 
-
 #endif
 
-
 }
-
 
 /* ========================================================================
    Function    - AdventureOverMulti
@@ -494,7 +483,6 @@ void AdventureOverMulti(void)
 			}
 			
 // Thanks
-//			action_turn++;
 
 		}
 
@@ -505,8 +493,6 @@ void AdventureOverMulti(void)
 #endif
 
 }
-
-
 
 /* ========================================================================
    Function    - AdventureLooseProc
@@ -541,14 +527,12 @@ static void AdventureLooseProc(LONG MenuCombo, LONG )
 	RunMenus();
 	
 	AdvPrepReturn(0,0);
-	//ReturnFromAdventure(0,0);
 	ADVENTURER::mfDoToAllAdventurers(&CAvatar::mfIfAliveRestoreHealth);
 	SCENE_MGR::mfReleaseSceneToMap(0,0);
 
 	AdventureOverMulti();
 
 }
-
 
 /* ========================================================================
    Function    - AdventureWinProc
@@ -688,15 +672,12 @@ static void AdventureWinProc(LONG MenuCombo, LONG )
 	}
 
     AdvPrepReturn(0,0);
-    //ReturnFromAdventure(0,0);
 	ADVENTURER::mfDoToAllAdventurers(&CAvatar::mfIfAliveRestoreHealth);
 	SCENE_MGR::mfReleaseSceneToMap(0,0);
 
 	AdventureOverMulti();
 
 }
-
-
 
 /* ========================================================================
    Function    - PaintAdventureLose
@@ -721,7 +702,6 @@ static void PaintAdventureLose (LONG MenuCombo, LONG )
 	BOOL	fDied = FALSE;
 	BOOL	fSurvived = FALSE;
 	
-	
 	SPLIT_LONG(MenuCombo, MenuId, ButtonId);
 
 	// get position of lose screen
@@ -738,9 +718,7 @@ static void PaintAdventureLose (LONG MenuCombo, LONG )
 	X = mx + 27;
 	Y = my + 100;
 	
-	
 	// build some text that says why you lost
-	
 	
 	init_gfont(FONT_SANS_12PT);
 	strncpy(cpFormatBuffer, STRMGR_GetStr(COMBAT_STR_END_MSG_1), sizeof(cpFormatBuffer));
@@ -795,7 +773,6 @@ static void PaintAdventureLose (LONG MenuCombo, LONG )
 		}
 	}
 	
-		
 	if ( fSurvived )
 	{
 		SHORT	sIndex = strlen(cpSurvivedBuffer);
@@ -841,7 +818,6 @@ static void PaintAdventureLose (LONG MenuCombo, LONG )
 		gprint_text(X,Y,cpBuffer ,color);
 		Y += 15;
 		
-	
 	   if (GoldCoins > 0)
 	   {
 		   sprintf(cpBuffer, STRMGR_GetStr(COMBAT_STR_END_MSG_14), MundaneValue);
@@ -896,7 +872,6 @@ static void PaintAdventureWin (LONG MenuCombo, LONG )
 	ADVENTURER_TEAM_ITOR AdvItor;
 	BOOL	numAlive = 0;
 	
-	
 	SPLIT_LONG(MenuCombo, MenuId, ButtonId);
 
 	// get position of win screen
@@ -922,7 +897,6 @@ static void PaintAdventureWin (LONG MenuCombo, LONG )
 	
 	gprint_text(X,Y,cpBuffer ,color);
 	
-
 	Y += 50;
 	for (AdvItor = ADVENTURER::begin();
 	     AdvItor != ADVENTURER::end();
@@ -956,7 +930,6 @@ static void PaintAdventureWin (LONG MenuCombo, LONG )
 		}
 	}
 	
-		
 	if (numAlive > 0)
 	{
 		strncpy(cpBuffer, STRMGR_GetStr(COMBAT_STR_END_MSG_7), sizeof(cpFormatBuffer));
@@ -967,7 +940,6 @@ static void PaintAdventureWin (LONG MenuCombo, LONG )
 		gprint_text(X,Y,cpBuffer ,color);
 		Y += 15;
 		
-	
 	   if (GoldCoins > 0)
 	   {
 		   sprintf(cpBuffer, STRMGR_GetStr(COMBAT_STR_END_MSG_14), MundaneValue);
@@ -985,7 +957,6 @@ static void PaintAdventureWin (LONG MenuCombo, LONG )
 	   }
 	}
 	
-	//gprint_text(X,Y,cpBuffer ,color);
 	Y += 15;
 	
 	// paint the control buttons
@@ -1062,7 +1033,6 @@ void PlayAdventureUI(SCENE &rScene)
 				pShootingAvatar->mfSethEnemy(rScene.Avatars[i]);
 			}
 			
-			
 			pShootingAvatar->fDamageFlag = 1;
 			
 			// clear target
@@ -1112,7 +1082,6 @@ void PlayAdventureUI(SCENE &rScene)
 		}
 	}
 }
-
 
 /* ========================================================================
    Function    - AdventureShowStatus
@@ -1169,7 +1138,6 @@ void CombatShowStatusKey(LONG  menuid, LONG BottomMenuFlag)
 	if (mouse_button == 2)
 	{
 		// Display help dialog on right click
-		//CombatHelpDialog(0, COMBAT_STR_HELP_STATUS);
 		mouse_click = 0;
 		SystemHelp(COMBAT_STR_HELP_STATUS_TITLE, COMBAT_STR_HELP_STATUS, H_Character_Status, 0, 0);
 	}
@@ -1180,7 +1148,6 @@ void CombatShowStatusKey(LONG  menuid, LONG BottomMenuFlag)
 		{
 			return;
 		}
-		
 		
 		// click the button
 		SetButtonHilight(D_COMBAT_RPGBOTTOM_BAR, BUTNO_RPG_STATUS, TRUE);
@@ -1226,7 +1193,6 @@ void CombatShowInventoryKey(LONG , LONG )
 	if (mouse_button == 2)
 	{
 		// Display help dialog on right click
-		//CombatHelpDialog(0, COMBAT_STR_HELP_INVENTORY);
 		mouse_click = 0;
 		SystemHelp(COMBAT_STR_HELP_INVENTORY_TITLE, COMBAT_STR_HELP_INVENTORY, H_Character_Inventory, 0, 0);
 	}
@@ -1465,8 +1431,6 @@ static void HideCombatUIMenu(SCENE & rScene)
 	 	}
 		
 		pop_regions();
-		//HideMenu(D_GAMEBUTTON);
-		//ShowMenu(D_GAMEBUTTON);
 		printf("Region count after Combat Menu: %ld\n", CountRegions());
 	}
 }
@@ -1484,7 +1448,6 @@ void ReleaseCombatUI(SCENE &rScene)
 	{
 		if (rScene.Avatars[i] != fERROR)
 		{
-			//GEH SetBlockAttr(rScene.Avatars[i], LOCKED, LOCKED);
 			CAvatar * const pAvatar = (CAvatar * const) BLKPTR(rScene.Avatars[i]);
 			
 			// Clear the Pause mode (if set)
@@ -1495,7 +1458,6 @@ void ReleaseCombatUI(SCENE &rScene)
 			
 			// Just incase he died.
 			//GEH if (rScene.Avatars[i] != fERROR)
-			//GEH 	ClrLock(rScene.Avatars[i]);
 		}
 	}
 	
@@ -1616,14 +1578,10 @@ void PlayCombatUI(SCENE &rScene)
 				// This is a sparsly filled array.
 				if (rScene.Avatars[i] != fERROR)
 				{
-					//GEH SetBlockAttr(rScene.Avatars[i], LOCKED, LOCKED);
 					CAvatar * const pAvatar = (CAvatar * const ) BLKPTR(rScene.Avatars[i]);
 					pAvatar->DoAI();
 					// Hey he could have died!
 					//GEH if (rScene.Avatars[i] != fERROR)
-					//GEH {
-					//GEH 	ClrLock(rScene.Avatars[i]);
-					//GEH }
 				}
 			}
 			
@@ -1643,21 +1601,16 @@ void PlayCombatUI(SCENE &rScene)
 			// This is a sparsly filled array.
 			if (rScene.Avatars[i] != fERROR)
 			{
-				//GEH SetBlockAttr(rScene.Avatars[i], LOCKED, LOCKED);
 				CAvatar * const pAvatar = (CAvatar * const ) BLKPTR(rScene.Avatars[i]);
 				pAvatar->DoAI();
 				// Hey he could have died!
 				//GEH if (rScene.Avatars[i] != fERROR)
-				//GEH {
-				//GEH 	ClrLock(rScene.Avatars[i]);
-				//GEH }
 			}
 		}
 		
 		if (rScene.fhData == fERROR)
 			return;	// Don't crash but you're toast.
 			
-		//GEH SetBlockAttr(rScene.fhData, LOCKED, LOCKED);
 		DumbAutoLockPtr<COMBAT_SCENE_DATA> const pcsdData(rScene.fhData);
 		
 		CONTROL_PANELS::mfCheckAllPanels();
@@ -1721,14 +1674,12 @@ void PlayCombatUI(SCENE &rScene)
 						{
 							if (rScene.Avatars[i] != fERROR)
 							{
-								//GEH SetBlockAttr(rScene.Avatars[i], LOCKED, LOCKED);
 								CAvatar * const pAvatar = (CAvatar * const) BLKPTR(rScene.Avatars[i]);
 								pAvatar->DoAI(CAvatar::AI_BEGIN_PAUSE);
 								pAvatar->mfClearTurnToAttack();
 								
 								// Just incase he died.
 								//GEH if (rScene.Avatars[i] != fERROR)
-								//GEH 	ClrLock(rScene.Avatars[i]);
 								
 							}
 						}
@@ -1755,14 +1706,12 @@ void PlayCombatUI(SCENE &rScene)
 						{
 							if (rScene.Avatars[i] != fERROR)
 							{
-								//GEH SetBlockAttr(rScene.Avatars[i], LOCKED, LOCKED);
 								CAvatar *const pAvatar = (CAvatar * const) BLKPTR(rScene.Avatars[i]);
 								pAvatar->DoAI(CAvatar::AI_END_PAUSE);
 								pAvatar->mfDecideWhoseTurnToAttack();
 								
 								// Just incase he died.
 								//GEH if (rScene.Avatars[i] != fERROR)
-								//GEH 	ClrLock(rScene.Avatars[i]);
 								
 							}
 						}
@@ -1770,7 +1719,6 @@ void PlayCombatUI(SCENE &rScene)
 				}
 			}
 		}
-		//GEH ClrLock(rScene.fhData);
 		
 		// Let the DamageTimers be reset if necessary.
 		AdventureTripDamageTimer(rScene);
@@ -1885,7 +1833,6 @@ void CombatDefendKey(LONG menuid, LONG )
 	if (mouse_button == 2)
 	{
 		// Display help dialog on right click
-		//CombatHelpDialog(0, COMBAT_STR_HELP_DEFEND);
 		mouse_click = 0;
 		SystemHelp(COMBAT_STR_HELP_DEFEND_TITLE, COMBAT_STR_HELP_DEFEND, H_Attack_Defend_Mode,0,0);
 	}
@@ -1949,7 +1896,6 @@ void CombatFallbackKey(LONG menuid, LONG )
 	if (mouse_button == 2)
 	{
 		// Display help dialog on right click
-		//CombatHelpDialog(0, COMBAT_STR_HELP_FALLBACK);
 		mouse_click = 0;
 		SystemHelp(COMBAT_STR_HELP_FALLBACK_TITLE, COMBAT_STR_HELP_FALLBACK, -1, 0,0);
 	}
@@ -2042,7 +1988,6 @@ void CombatSpellKey(
 	if (mouse_button == 2)
 	{
 		// Display help dialog on right click
-		//CombatHelpDialog(0, COMBAT_STR_HELP_SPELLBOX);
 		mouse_click = 0;
 		SystemHelp(COMBAT_STR_HELP_SPELLBOX_TITLE, COMBAT_STR_HELP_SPELLBOX, H_Adventure_Hot_Boxes, 0, 0);
 	}
@@ -2149,7 +2094,6 @@ void CombatSpellKey(
 	}
 }
 
-
 /* ========================================================================
    Function    - CombatSwitchActive
    Description - Switch the active menu to this one.
@@ -2200,7 +2144,6 @@ void CombatCycleActive(LONG, LONG)
 	}
 }
 
-
 /* ========================================================================
    Function    - CombatReturnToMap
    Description - Cleanup and return to the map.
@@ -2211,7 +2154,6 @@ void CombatReturnToMap(LONG , LONG)
 	if (mouse_button == 2)
 	{
 		// Display help dialog on right click
-		//CombatHelpDialog(0, COMBAT_STR_HELP_EXIT);
 		mouse_click = 0;
 		SystemHelp(COMBAT_STR_HELP_EXIT_TITLE, COMBAT_STR_HELP_EXIT,H_Exit_Adventure_Button, 0, 0);
 	}
@@ -2289,7 +2231,6 @@ void AdvExit (LONG MenuCombo, LONG button)
 			pCurrentScene->mfGetSceneAIState(&OldSceneState,
 						                 &OldSceneType);
 		
-	
 			if (OldSceneType == SCENE_AI::COMBAT_SCENE)
 			{
 				pCurrentScene->mfSetSceneState(SCENE_AI::RELEASE);
@@ -2328,7 +2269,6 @@ void QueryAdvExit (LONG, LONG)
 }
 /*	======================================================================== */
 
-
 /* ========================================================================
    Function    - CombatRetreatKey
    Description - Try to get us out of combat by retreating.
@@ -2339,7 +2279,6 @@ void CombatRetreatKey(LONG , LONG )
 	if (mouse_button == 2)
 	{
 		// Display help dialog on right click
-		//CombatHelpDialog(0, COMBAT_STR_HELP_RETREAT);
 		mouse_click = 0;
 		SystemHelp(COMBAT_STR_HELP_RETREAT_TITLE, COMBAT_STR_HELP_RETREAT, H_Party_Retreat,0, 0);
 	}
@@ -2411,13 +2350,10 @@ void CombatRetreatKey(LONG , LONG )
 				{
 					if (pCurrentScene->Avatars[i] != fERROR)
 					{
-						//GEH SetBlockAttr(pCurrentScene->Avatars[i], LOCKED, LOCKED);
 						CAvatar * const pAvatar = (CAvatar * const) BLKPTR(pCurrentScene->Avatars[i]);
 						pAvatar->DoAI(CAvatar::AI_END_PAUSE);
 						
 						// Just incase he died.
-						//GEH if (pCurrentScene->Avatars[i] != fERROR)
-						//GEH 	ClrLock(pCurrentScene->Avatars[i]);
 					}
 				}
 			}
@@ -2451,7 +2387,6 @@ void CombatMenuPaint(LONG MenuId, LONG )
 	CONTROL_PANELS::mfPaintThisMenu(MenuIndex);
 }
 
-
 /* ========================================================================
    Function    - CombatHighAttack
    Description - For this Avatar set mode to the High Attack
@@ -2463,7 +2398,6 @@ void CombatHighAttackKey(LONG menuid, LONG SwingFast)
 	if (mouse_button == 2)
 	{
 		// Display help dialog on right click
-		//CombatHelpDialog(0, COMBAT_STR_HELP_ATTACK1);
 		mouse_click = 0;
 		SystemHelp(COMBAT_STR_HELP_ATTACK_TITLE, COMBAT_STR_HELP_ATTACK1,H_Attack_Defend_Mode, 0,0);
 	}
@@ -2549,7 +2483,6 @@ void CombatLowAttackKey(LONG menuid, LONG SwingFast)
 	if (mouse_button == 2)
 	{
 		// Display help dialog on right click
-		// CombatHelpDialog(0, COMBAT_STR_HELP_ATTACK2);
 		mouse_click = 0;
 		SystemHelp(COMBAT_STR_HELP_ATTACK_TITLE, COMBAT_STR_HELP_ATTACK2, H_Attack_Defend_Mode, 0, 0);
 	}
@@ -2639,7 +2572,6 @@ void CombatTurnDoneKey(LONG /* unused */, LONG /* unused */ )
 	if (mouse_button == 2)
 	{
 		// Display help dialog on right click
-		//CombatHelpDialog(0, COMBAT_STR_HELP_DONE);
 		mouse_click = 0;
 		SystemHelp(COMBAT_STR_HELP_DONE_TITLE, COMBAT_STR_HELP_DONE, H_Adventure_Done_Button,0,0);
 	}
@@ -2681,14 +2613,12 @@ void CombatTurnDoneKey(LONG /* unused */, LONG /* unused */ )
 			return;
 		}
 					
-			
 		LONG i;
 		
 		for (i = 0; i < MAX_AVATARS; i++)
 		{
 			if (pCurrentScene->Avatars[i] != fERROR)
 			{
-				//GEH SetBlockAttr(pCurrentScene->Avatars[i], LOCKED, LOCKED);
 				CAvatar * const pAvatar = (CAvatar * const) BLKPTR(pCurrentScene->Avatars[i]);
 				pAvatar->DoAI(CAvatar::AI_END_PAUSE);
 				
@@ -2699,8 +2629,6 @@ void CombatTurnDoneKey(LONG /* unused */, LONG /* unused */ )
 				}
 				
 				// Just incase he died.
-				//GEH if (pCurrentScene->Avatars[i] != fERROR)
-				//GEH 	ClrLock(pCurrentScene->Avatars[i]);
 				
 			}
 		}
@@ -2727,7 +2655,6 @@ void CombatNewLeaderKey(LONG , LONG /* unused */)
 	if (mouse_button == 2)
 	{
 		// Display help dialog on right click
-		//CombatHelpDialog(0, COMBAT_STR_HELP_LEADER);
 		mouse_click = 0;
 		SystemHelp(COMBAT_STR_HELP_LEADER_TITLE, COMBAT_STR_HELP_LEADER, H_Change_Leader,0,0);
 	}
@@ -2838,7 +2765,6 @@ void CombatToggleMapKey(LONG , LONG )
 	if (mouse_button == 2)
 	{
 		// Display help dialog on right click
-		//CombatHelpDialog(0, COMBAT_STR_HELP_MAP);
 		mouse_click = 0;
 		SystemHelp(COMBAT_STR_HELP_MAP_TITLE, COMBAT_STR_HELP_MAP, H_Adventure_Map, 0, 0);
 	}
@@ -2874,7 +2800,6 @@ void CombatToggleViewKey(LONG , LONG )
 	if (mouse_button == 2)
 	{
 		// Display help dialog on right click
-		//CombatHelpDialog(0, COMBAT_STR_HELP_VIEW);
 		mouse_click = 0;
 		SystemHelp(COMBAT_STR_HELP_VIEW_TITLE, COMBAT_STR_HELP_VIEW, H_Change_View, 0, 0);
 	}
@@ -2949,7 +2874,6 @@ void AdventureFixUnitsArray(LONG iUnitIndex)
 				NextUnitsProv = (PROVINCE) units[units[iUnitIndex].NextUnit].province;
 				ResetNextUnitProv = TRUE;
 			}
-			
 			
 			if (SCENE_MGR::mfIsSceneRequested())
 			{

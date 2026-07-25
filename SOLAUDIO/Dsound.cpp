@@ -43,7 +43,6 @@ static	DSBUFFERDESC			primaryDsbd;
 static	LPDIRECTSOUNDBUFFER	primaryDSB;
 static	char						errBuff[255];
 
-
 BOOL
 DetectDSound(void)
 
@@ -294,7 +293,6 @@ DWORD			buffLen1, buffLen2;
 		dsbd.dwFlags             |= DSBCAPS_STATIC;
 	dsbd.dwFlags                |= DSBCAPS_CTRLDEFAULT;
 	dsbd.dwFlags                |= DSBCAPS_LOCSOFTWARE;
-//	dsbd.dwFlags                |= DSBCAPS_GLOBALFOCUS;
 	dsbd.dwBufferBytes          = secondaryBuffSize;
 	dsbd.lpwfxFormat            = (LPWAVEFORMATEX)&wfx;
 
@@ -699,7 +697,6 @@ DWORD	bytesToPlay;
 	}
 	nextPos = nextWritePosition;
 
-
 	// examine the arrangement of play, write, and next positions to
 	// determine what the next write length should be - i.e. how much of the
 	// secondary buffer can be filled and where it starts.  
@@ -717,7 +714,6 @@ DWORD	bytesToPlay;
 				// play, next, write (error)
 				startPos = writePos;
 				writeLen = secondaryBuffSize - startPos + dsPlayPos;
-//				OutputDebugString("err 1\n");
 			}
 		} else {
 				// next, play, write
@@ -734,13 +730,11 @@ DWORD	bytesToPlay;
 				// write, play, next (error)
 				startPos = writePos;
 				writeLen = dsPlayPos - startPos;
-//				OutputDebugString("err 2\n");
 			}
 		} else {
 				// next, write, play (error)
 				startPos = writePos;
 				writeLen = dsPlayPos - startPos;
-//				OutputDebugString("err 3\n");
 		}
 	}
 
@@ -804,7 +798,6 @@ DSound::PrimeBuffer(LPSTR sampPtr)
 		bufferPrimed = TRUE;
 	}
 }
-
 
 BOOL
 DSound::FillBuffer(LPSTR sampPtr, int startPos, int writeLen)
@@ -895,12 +888,6 @@ DWORD	 	nextPos;
 
 	// compute the next position in the buffer at which we will write
 #ifdef _DEBUG
-//	int size = (int)(writePtr - (LPSTR)lpDSoundBuf);
-//	if ((size > (int)secondaryBuffSize) || (size < 0)) {
-//		hr = DSOUND_SIZE_ERROR;
-//		DSDisplayError(hr,"CopyData",inService);
-//		return FALSE;
-//	}
 #endif
 	#if 0
 	// GWP This uses pointer math, ick.
@@ -1060,4 +1047,3 @@ DSDisplayError(HRESULT hr, LPSTR title, BOOL inService)
 
 #endif	//_DEBUG
 }
-

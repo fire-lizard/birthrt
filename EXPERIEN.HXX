@@ -48,7 +48,6 @@ inline LONG const CLASS_EXPERIENCE_TABLE::mfGetExperiencePts(
 	return ExperiencePts[sbLevel];
 }
 
-
 // Note: Access to this table is by PLAYER_CLASS_TYPE
 class ALL_CLASS_EXPERIENCE_TABLE 
 {

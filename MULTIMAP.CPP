@@ -56,7 +56,6 @@ extern BOOL fLogComment;
 /* ------------------------------------------------------------------------
    Defines and Compile Flags
    ------------------------------------------------------------------------ */
-//#define	LOGCOMMENTSLEEP	Sleep(1);
 #define  LOGCOMMENTSLEEP	{;}
 
 #define IX_TT_NONE				3
@@ -76,8 +75,6 @@ void SetRedrawMainMapLevel (void);
 
 extern void RandomLogComment ( char * szString );
 
-
-// void PaintGenericStatement(LONG MenuCombo, LONG);
 void DrawRoads_ (PROVINCE prov, LONG i);
 void CancelRoll (void);
 void CalcTimerBar(void);
@@ -158,12 +155,8 @@ void DoSetGameData(LONG lArray_Id, LONG lStruct_Id, LONG lArray_Index, LONG lDat
 					break;
 
 //				case	MPRLM_COLOR1:
-//					realm[lArray_Index].color1 = (unsigned int) lData;
-//					break;
 
 //				case	MPRLM_COLOR2:
-//					realm[lArray_Index].color2 = (unsigned int) lData;
-//					break;
 
 				case	MPRLM_SHOWUNITS:
 					realm[lArray_Index].mfSetShowUnits((unsigned int) lData);
@@ -676,12 +669,10 @@ void DoSetGameData(LONG lArray_Id, LONG lStruct_Id, LONG lArray_Index, LONG lDat
 					break;
 
 				case MPGAMESEMIPHORE_UNITINDEX:
-					//units[lArray_Index].id = (SHORT) lData;
 					units[0].id = (SHORT) lData;
 					break;
 
 				case MPGAMESEMIPHORE_PLACEINDEX:
-					//places[lArray_Index].iIconBitm = (SHORT) lData;
 					units[0].id = (SHORT) lData;
 					break;
 			}
@@ -736,10 +727,8 @@ LONG DoGetGameData(LONG lArray_Id, LONG lStruct_Id, LONG lArray_Index)
 					return (LONG)realm[lArray_Index].mfGetRegent();
 
 //				case	MPRLM_COLOR1:
-//					return (LONG)realm[lArray_Index].color1;
 
 //				case	MPRLM_COLOR2:
-//					return (LONG)realm[lArray_Index].color2;
 
 				case	MPRLM_SHOWUNITS:
 					return (LONG)realm[lArray_Index].mfShowUnits();
@@ -1081,8 +1070,6 @@ LONG DoGetGameData(LONG lArray_Id, LONG lStruct_Id, LONG lArray_Index)
 
 }
 
-
-
 // ------------------------------------------------------------------
 //
 //   SetGameData()
@@ -1117,7 +1104,6 @@ BOOL SetGameData( LONG lArray_Id, LONG lStruct_Id, LONG lArray_Index,
 			AMultiPlayer.BroadcastSetGameData(lArray_Id, lStruct_Id, lArray_Index, lData);
 		}
 
-
 		//---- Reset the semiphore after sending 
 
 		if ( lArray_Id == MP_GAMEDATA && 
@@ -1144,8 +1130,6 @@ BOOL SetGameData( LONG lArray_Id, LONG lStruct_Id, LONG lArray_Index,
 #endif
 
 }	//---- End of SetGameData()
-
-
 
 //@@@@@@  REMOVED by DLJ
 
@@ -1176,7 +1160,6 @@ LONG GetGameData(LONG lArray_Id, LONG lStruct_Id, LONG lArray_Index)
 		else
 		{
 			// clear old data
-			//DoSetGameData(lArray_Id, lStruct_Id, lArray_Index, 0xBADC0DE);
 			units[0].id = 0;
 
 			// request this data be got by the master
@@ -1197,7 +1180,6 @@ LONG GetGameData(LONG lArray_Id, LONG lStruct_Id, LONG lArray_Index)
 	return units[0].id;
 
 }	//---- End of GetGameData()
-
 
 #endif
 
@@ -1238,12 +1220,7 @@ void RequestPlacesIndex(LONG *index, BOOL fSend)
 
 }
 
-
-
-
-
 static LONG iNewResult;
-
 
 /* ========================================================================
    Function    - SendMyMods
@@ -1283,8 +1260,6 @@ void SendMyMods(LONG iWhichAction, LONG iWhichProvince, LONG iWhichHold, LONG mo
 	}
 #endif
 }
-
-
 
 /* ========================================================================
    Function    - SendResult
@@ -1393,8 +1368,6 @@ LONG WaitForResult(LONG iWhichAction, LONG iWhichProvince, LONG iWhichHolding)
 
        		WindowsMessages();
 
-//				Sleep(50);
-
 				Sleep(0);
 
 				#ifdef _DEBUG
@@ -1424,7 +1397,6 @@ LONG WaitForResult(LONG iWhichAction, LONG iWhichProvince, LONG iWhichHolding)
 	return iNewResult;
 }
 
-
 LONG iGlobRealm;
 
 /* ========================================================================
@@ -1444,7 +1416,6 @@ LONG AskAndWaitForTargetPlayer(LONG iWhichAction, LONG iWhichProvince, LONG iWhi
 	BOOL	fFirstTime = FALSE;
 	int	iPlayerId;
 	static LONG oldSuccess = 999;
-
 
 	// find the realm of the target
 	if(iWhichAction == DIPLOMACY)
@@ -1518,7 +1489,6 @@ LONG AskAndWaitForTargetPlayer(LONG iWhichAction, LONG iWhichProvince, LONG iWhi
 				// wait for mods to return
 				if ( AMultiPlayer.HaveEvent() == iWhichAction )
 				{
-					//iNewSuccess = EventTable.data1;
 					if (iWhichAction == DIPLOMACY)
 					{
 						iNewSuccess = EventTable.data1;
@@ -1535,16 +1505,6 @@ LONG AskAndWaitForTargetPlayer(LONG iWhichAction, LONG iWhichProvince, LONG iWhi
 				}
 
 				HandleMultiPlayerEvents();
-
-				//if ( iTTimeLimit != IX_TT_NONE )
-				//{
-				//	LONG time_;
-				//	CalcTimerBar();
-				//	RedrawProcessPanel();
-				//	time_ = (LONG)get_time() - (LONG)WaitingWhen - (LONG)lTimeLimit[iTTimeLimit];
-				//	if (time_ > 0 && time_ < (10*18) )
-				//		break;
-				//}
 
 				#ifdef _DEBUG
             if ( GetAsyncKeyState( VK_F10 ) & 0x8000 )
@@ -1642,8 +1602,6 @@ LONG AskAndWaitForTargetPlayer(LONG iWhichAction, LONG iWhichProvince, LONG iWhi
 			// add a sound "Waiting for opponent"
 			if (fFirstTime)
 			{
-//				print_textf(x+1, y+6, DKBROWN, "^F21^c%s",realm[iWhichRealm].mfGetName());
-//				print_textf(x, y+5, MDYELLOW, "^c%s",realm[iWhichRealm].mfGetName());
 
 				AddSndObj((BIRTHRT_SND)SND_UI_WAITING_FOR_AN_OPPONENT1,0,VOLUME_NINETY);
 				j = get_time()+20;
@@ -1657,8 +1615,6 @@ LONG AskAndWaitForTargetPlayer(LONG iWhichAction, LONG iWhichProvince, LONG iWhi
 
 	return iSuccess;
 }
-
-
 
 #ifdef _WINDOWS
 BOOL IsMulPlayerandRealm(int realm)
@@ -1713,8 +1669,6 @@ LONG WaitForSemiphore(LONG iWhichSemiphore)
 
 }
 #endif
-
-
 
 /* ========================================================================
    Function    - HandleMultiPlayerEvents

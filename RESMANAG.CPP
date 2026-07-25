@@ -18,13 +18,6 @@
 /* ------------------------------------------------------------------------
    Includes
    ------------------------------------------------------------------------ */
-//#ifdef _WINDOWS
-//#include <Windows.h>
-//#else
-//#include <i86.h>
-//#include <bios.h>
-//#include <malloc.h>
-//#endif
 
 #include <string.h>
 #include <stdio.h>
@@ -71,11 +64,6 @@ using namespace std;
    Macros
    ------------------------------------------------------------------------ */
 // heap allocations
-//#ifdef _WINDOWS
-//	#define malloc(size)	HeapAlloc(hHeap, 0, size)
-//	#define free(p)			HeapFree(hHeap, 0, p)
-//	extern HANDLE hHeap;
-//#endif
 
 /* ------------------------------------------------------------------------
    Prototypes
@@ -151,7 +139,6 @@ SHORT LoadFLCFromResFile (LONG iResFileSlot, BOOL fLockRes);
    ------------------------------------------------------------------------ */
 extern UBYTE antia_table[];
 
-
 //ULONG		*lResNameCRC;	/* hash of name of resource */
 //SHORT		*iResBlock;		/* index number of the memmanag block for this resource */
 //UBYTE		*iResExtIndex;	/* index into ResExtentions */
@@ -164,9 +151,6 @@ LONG  iMaxResSlots = 0;
 LONG  iMaxResSlotsInUse = 0;
 
 #if fUSE_RES_FILES
-//ULONG    *gcbResOffset;                // offset into file for resource
-//UBYTE    *giResFileNames;              // index into gszResFileNames
-//UBYTE		*gResFlags;
 ULONG    gcbResOffset[14000];                // offset into file for resource
 UBYTE    giResFileNames[14000];              // index into gszResFileNames
 UBYTE		gResFlags[14000];
@@ -316,8 +300,6 @@ SHORT	RegisterResExtention (
 	return fNOERR;
 }
 
-
-
 #if fUSE_RES_FILES
 // ---------------------------------------------------------------------------
 // Function		-	ProcessUnknownExtension
@@ -374,7 +356,6 @@ LONG GetOpenResFileSlot ()
 
 	return cMAXRESFILES;						// indicates failure
 }
-
 
 // ---------------------------------------------------------------------------
 // Function		-	OpenResFile_
@@ -593,7 +574,6 @@ UseThisSlot:
 	return fNOERR;
 }
 
-
 // ---------------------------------------------------------------------------
 // Function		-	ScanResFiles
 //	Description	-	Called from init_game in GAME.CPP to open the basic
@@ -647,7 +627,6 @@ static LONG FindExtensionIndex (CSTRPTR szResName)
 		return 0;
 	}
 }
-
 
 // ===========================================================================
 // Function    -	FindResourceSlot
@@ -843,7 +822,6 @@ static SHORT FindResourceSlot (
 	*piSlot = (SHORT)fERROR;
 	return fERROR;
 	
-
 UseThisSlot:
 	iMaxResSlotsUsed++;
 	iMaxResSlotsInUse++;
@@ -964,7 +942,6 @@ SHORT _GetResource_ (CSTRPTR szResName, BOOL fNoScale, BOOL fLockRes, BOOL fRota
 	return iBlk;
 }
 
-
 /* =======================================================================
 	Various resource query routines to help resource verification
 	======================================================================= */
@@ -988,7 +965,6 @@ SHORT Query_iResBlock (SHORT i)
 	
 	i &= RESOURCE_ID_MASK;
 
-	
 	if (i == fERROR ||
 		i > iMaxResSlots
 		)
@@ -1047,10 +1023,8 @@ SHORT Query_iResBlock (SHORT i)
 	}
 #endif
 
-
 	return iBlk;			/* index number of the memmanag block for this resource */
 }
-
 
 /* =======================================================================
 	DisposeRes
@@ -1176,7 +1150,6 @@ SHORT LoadUFF (CSTRPTR szFileName, BOOL fNoScale, BOOL fLockRes, BOOL fRotated, 
 	fRotated = 0;
 	return fERROR;
 }
-
 
 /* =======================================================================
 	Load LZSS compressed data from .RES files
@@ -1507,7 +1480,6 @@ BOOL RotateBitm (SHORT iBitmBlk, LONG w, LONG h)
 	return TRUE;
 }
 
-
 /* =======================================================================
 	Load PCX format files from resource file.
 	Procedure: take the LZSS-compressed data in the resource file and
@@ -1529,7 +1501,6 @@ SHORT LoadPCXFromResFile (CSTRPTR szFileName, BOOL fNoScale, BOOL fLockRes, BOOL
 	SHORT			iSrcBlk;
 	ULONG	   		cbSafety = 2048L;		/* default to a safety buffer of 2k bytes */
 	RESOURCE_HEADER resHeader;
-
 
 	iSrcBlk = LoadCompressedDataFromResFile (&resHeader, iResFileSlot, fLockRes);
 
@@ -1600,7 +1571,6 @@ SHORT LoadPCXFromResFile (CSTRPTR szFileName, BOOL fNoScale, BOOL fLockRes, BOOL
 		// UNCOMPRESSED LZSS data, which is the size of the COMPRESSED
 		// PCX data.
 		cBytes = resHeader.cbUncompressedData - 128L;
-	
 	
 		/* cbDecompressed is the size of the decompressed graphic */
 		cbDecompressed = (ULONG)PCX.cbLine * (ULONG)PCX.h;
@@ -1695,7 +1665,6 @@ SHORT LoadPCXFromResFile (CSTRPTR szFileName, BOOL fNoScale, BOOL fLockRes, BOOL
 }
 #endif
 
-
 SHORT LoadPCX (CSTRPTR szFileName, BOOL fNoScale, BOOL fLockRes, BOOL fRotated, LONG iResFileSlot)
 {
 	PCXHDR			PCX;
@@ -1713,7 +1682,6 @@ SHORT LoadPCX (CSTRPTR szFileName, BOOL fNoScale, BOOL fLockRes, BOOL fRotated, 
 		return LoadPCXFromResFile (szFileName, fNoScale, fLockRes, fRotated, iResFileSlot);
 	}
 #endif
-
 
 	file = DiskOpen(szFileName);	/* try to open the file */
 	if (file == fERROR)								/* Resource not found. Print an error */
@@ -1823,7 +1791,6 @@ SHORT LoadPCX (CSTRPTR szFileName, BOOL fNoScale, BOOL fLockRes, BOOL fRotated, 
 	else
 		scale = (USHORT)detect_scale(iBlk, PCX.w, PCX.h);
 
-
 	/* set width, height, x, and y */
 	pFinal = (USHORT *) BLKPTR (iBlk);
 	pFinal[0] = PCX.w;
@@ -1845,7 +1812,6 @@ SHORT LoadFLCFromResFile (LONG iResFileSlot, BOOL fLockRes)
 
 	return LoadCompressedDataFromResFile (&resHeader, iResFileSlot, fLockRes );
 }
-
 
 SHORT LoadFLC (CSTRPTR szFileName, BOOL fNoScale, BOOL fLockRes, BOOL fRotated, LONG iResFileSlot)
 {
@@ -1920,22 +1886,14 @@ BOOL InitResourceManager(USHORT MaxResRequested)
 	remove(HASH_COLLSION_FILE);
 #endif
 
-	//iResBlock	= (SHORT *) malloc (sizeof(SHORT)  * MaxResRequested);
-	//lResNameCRC = (ULONG *) malloc (sizeof(ULONG) * MaxResRequested);
-	//iResExtIndex = (UBYTE*) malloc (sizeof(UBYTE)  * MaxResRequested);
-
 #if fUSE_RES_FILES
 	/* offset into file for resource */
-	//gcbResOffset = (ULONG *) malloc(sizeof(LONG) * MaxResRequested);
 	
 	/* index into apFileNames */
-	//giResFileNames = (UBYTE *) malloc(sizeof(UBYTE) * MaxResRequested);
 
 	// [d4-13-97 JPC] Flags:
-	//gResFlags = (UBYTE *) malloc(sizeof(UBYTE) * MaxResRequested);
 #endif
 
-	
 	if (iResBlock == NULL ||
 	    lResNameCRC == NULL ||
 #if fUSE_RES_FILES
@@ -1948,11 +1906,9 @@ BOOL InitResourceManager(USHORT MaxResRequested)
 		return FALSE;
 	}
 	
-	
 	iMaxResSlots = MaxResRequested;
 	iMaxResSlotsUsed = 0;
 	iMaxResSlotsInUse = 0;
-	
 	
 	// Init the arrays to known values.
 	memset(iResBlock, 				 0, (sizeof(SHORT) * MaxResRequested));
@@ -2109,7 +2065,6 @@ USHORT CheckSum (SHORT iHandle)
 	
 	return Result;
 }
-
 
 /* ========================================================================
    Function    - LoadLump

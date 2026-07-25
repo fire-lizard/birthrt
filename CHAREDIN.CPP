@@ -49,16 +49,13 @@ extern AVA_FILE		gAvaData;
 	Macros
    ------------------------------------------------------------------------ */
 
-
 /* ------------------------------------------------------------------------
 	Structures
    ------------------------------------------------------------------------ */
 
-
 /* ------------------------------------------------------------------------
    Prototypes
    ------------------------------------------------------------------------ */
-
 
 /* ------------------------------------------------------------------------
    Global and Module-Level Variables
@@ -138,7 +135,6 @@ static LONG gBardMaxSpellLevel[] = {
 	6,					// 19
 	6					// 20
 };
-
 
 // More tables of SPELL MAXIMUMS.
 // Copied from SPELLPRO.CPP.
@@ -231,7 +227,6 @@ static void Sorry (const char *szFormat, ...)
 	MessageBox (NULL, szMessage, "Sorry", MB_OK | MB_TASKMODAL);
 }
 
-
 // ---------------------------------------------------------------------------
 static void PurgeDuplicateStrings (HWND hwnd)
 {
@@ -257,7 +252,6 @@ static void PurgeDuplicateStrings (HWND hwnd)
 	}
 }
 
-
 // ---------------------------------------------------------------------------
 static BOOL IsForbidden (int itemType)
 {
@@ -271,7 +265,6 @@ static BOOL IsForbidden (int itemType)
 	return FALSE;
 }
 
-
 // ---------------------------------------------------------------------------
 static void PutStringsInInventoryListBoxes (HWND hwnd)
 {
@@ -279,13 +272,11 @@ static void PutStringsInInventoryListBoxes (HWND hwnd)
 
 	ItemType		item;
 	int			i;
-	// HWND			hwndCtlMundane;
 	HWND			hwndCtlMagicItem;
 	HWND			hwndCtlSpell;
 	HWND			hwndCtlRealmSpell;
 	HWND			hwndCtlBloodAb;
 
-	// hwndCtlMundane    = GetDlgItem (hwnd, IDL_SELECT_ITEMS);
 	hwndCtlMagicItem  = GetDlgItem (hwnd, IDL_SELECT_MAGIC_ITEMS);
 	hwndCtlBloodAb    = GetDlgItem (hwnd, IDL_SELECT_BLOOD_ABILITIES);
 	hwndCtlSpell      = GetDlgItem (hwnd, IDL_SELECT_SPELLS);
@@ -299,8 +290,6 @@ static void PutStringsInInventoryListBoxes (HWND hwnd)
 		{
 			// Why fool with stuff like bowls?
 			// case IC_MUNDANE:
-			// 	ListBox_InsertString (hwndCtlMundane, -1, item.mfGetName ());
-			// 	break;
 
 			case IC_MAGITEM:
 				// The ITEM_DIERDRIENS_RING test excludes RELICS.
@@ -320,8 +309,6 @@ static void PutStringsInInventoryListBoxes (HWND hwnd)
                spell = SPELL_INFO::mfGetSpell (spellIndex);
 					if (spell.Level <= gmaxSpellLevel)
 					{
-						// ListBox_AddString (hwndCtlSpell, item.mfGetName ());
-						// ListBox_InsertString (hwndCtlSpell, -1, item.mfGetName ());
 						sprintf (szSpellName, "(%d) %s", spell.Level, item.mfGetName ());
 						ListBox_AddString (hwndCtlSpell, szSpellName);
 					}
@@ -358,7 +345,6 @@ static void PutStringsInInventoryListBoxes (HWND hwnd)
 	PurgeDuplicateStrings (hwndCtlRealmSpell);
 	PurgeDuplicateStrings (hwndCtlBloodAb   );
 }
-
 
 // ---------------------------------------------------------------------------
 static void PostCurrentInventory (HWND hwnd)
@@ -398,7 +384,6 @@ static void PostCurrentInventory (HWND hwnd)
 
 					spellIndex = (SPELL_INFO::TYPE) item.mfGetExtendedData ();
                spell = SPELL_INFO::mfGetSpell (spellIndex);
-					// ListBox_AddString (hwndCtlSpell, item.mfGetName ());
 					sprintf (szSpellName, "(%d) %s", spell.Level, item.mfGetName ());
 					gcSpellsThisLevel[spell.Level]++;
 					ListBox_AddString (hwndCtlSpell, szSpellName);
@@ -417,7 +402,6 @@ static void PostCurrentInventory (HWND hwnd)
 		}
 	}
 }
-
 
 // ---------------------------------------------------------------------------
 static int GetItemIndex (char * szItem, int iStart)
@@ -449,7 +433,6 @@ static int GetItemIndex (char * szItem, int iStart)
 
 	return 0;									// error
 }
-
 
 // ---------------------------------------------------------------------------
 static void PostOneWindow (HWND hwnd, int windowID, int iStart, BOOL fIndexed)
@@ -500,7 +483,6 @@ static void PostOneWindow (HWND hwnd, int windowID, int iStart, BOOL fIndexed)
 	}
 }
 
-
 // ---------------------------------------------------------------------------
 static void PostSelectedInventory (HWND hwnd)
 {
@@ -516,7 +498,6 @@ static void PostSelectedInventory (HWND hwnd)
 		PostOneWindow (hwnd, IDL_LIST_REALM_SPELLS, ITEM_SPELL_ALCHEMY, FALSE);
 	}
 }
-
 
 // ---------------------------------------------------------------------------
 static void CalculateMaxSpellsSub (LONG charClass, LONG charLevel)
@@ -551,7 +532,6 @@ static void CalculateMaxSpellsSub (LONG charClass, LONG charLevel)
 		}
 	}
 }
-
 
 static void CalculateMaxSpells ()
 {
@@ -588,8 +568,6 @@ static void CalculateMaxSpells ()
 		gcSpellsInData[spell.Level]++;
 	}
 }
-
-
 
 // ---------------------------------------------------------------------------
 static BOOL OnInitDialog (HWND hwnd, HWND hwndFocus, LPARAM lParam)
@@ -636,28 +614,11 @@ static BOOL OnInitDialog (HWND hwnd, HWND hwndFocus, LPARAM lParam)
 	SetWindowText (hwndChar, gAvaData.mfGetName ());
 	
 	gmaxMagicItems = 6;
-	// switch (GetBloodlineGrade ())
-	// {
-	// 	case (BLOODLINE_STRENGTH_INFO::TYPE) TAINTED:
-	// 		gmaxBloodAb = 0;
-	// 		break;
-	// 	case (BLOODLINE_STRENGTH_INFO::TYPE) MINOR:
-	// 		gmaxBloodAb = 1;
-	// 		break;
-	// 	case (BLOODLINE_STRENGTH_INFO::TYPE) MAJOR:
-	// 		gmaxBloodAb = 2;
-	// 		break;
-	// 	case (BLOODLINE_STRENGTH_INFO::TYPE) GREAT:
-	// 		gmaxBloodAb = 3;
-	// 		break;
-	// }
 	//GEH 9/97
 	if (GetBloodlineGrade() == (BLOODLINE_STRENGTH_INFO::TYPE) TAINTED)
 			gmaxBloodAb = 0;
 	else
 	// GEH limit to 6 to fit box and to limit power
-	// if (gAvaData.mfGetBloodlineStrength() >= 80 )
-	// 		gmaxBloodAb = 7;
 	// else
 	if (gAvaData.mfGetBloodlineStrength() >= 51 )
 			gmaxBloodAb = 6;
@@ -690,7 +651,6 @@ static BOOL OnInitDialog (HWND hwnd, HWND hwndFocus, LPARAM lParam)
 
 	return TRUE;
 }
-
 
 // ---------------------------------------------------------------------------
 static void DoRandom (HWND hwndSelections, HWND hwndList, int maxItemsToSelect)
@@ -733,7 +693,6 @@ static void DoRandom (HWND hwndSelections, HWND hwndList, int maxItemsToSelect)
 		cSelected[iSelected] = iRandom;
 	}
 }
-
 
 // ---------------------------------------------------------------------------
 static void DoRandomSpells (HWND hwndSelections, HWND hwndList)
@@ -796,7 +755,6 @@ static void DoRandomSpells (HWND hwndSelections, HWND hwndList)
 	}
 }
 
-
 // ---------------------------------------------------------------------------
 static void SelectRandomItems (HWND hwnd)
 {
@@ -811,7 +769,6 @@ static void SelectRandomItems (HWND hwnd)
 		DoRandom (GetDlgItem (hwnd, IDL_SELECT_REALM_SPELLS), GetDlgItem (hwnd, IDL_LIST_REALM_SPELLS),    gmaxRealmSpells);
 	}
 }
-
 
 // ---------------------------------------------------------------------------
 // WM_COMMAND dispatcher and helpers.
@@ -867,7 +824,6 @@ static void SelectSpell (HWND hwnd, HWND hwndCtl)
 		}
 	}
 }
-
 
 static void OnCommand (HWND hwnd, int id, HWND hwndCtl, UINT codeNotify)
 {
@@ -1022,7 +978,6 @@ static void OnCommand (HWND hwnd, int id, HWND hwndCtl, UINT codeNotify)
 	}
 }
 
-
 // ---------------------------------------------------------------------------
 BOOL CALLBACK SelectInventoryWndProc (
    HWND     hwnd,                      // handle to dialog box
@@ -1039,7 +994,6 @@ BOOL CALLBACK SelectInventoryWndProc (
 	}
 }
 
-
 // ---------------------------------------------------------------------------
 int SelectInventory (HWND hwnd)
 {
@@ -1054,8 +1008,6 @@ int SelectInventory (HWND hwnd)
 	}
 	return result;
 }
-
-
 
 // ---------------------------------------------------------------------------
 void ReadINVTextData (FILE * fp)
@@ -1112,7 +1064,6 @@ void ReadINVTextData (FILE * fp)
 	}
 }
 
-
 // ---------------------------------------------------------------------------
 BOOL WriteINVFile (char * szInvFileName)
 {
@@ -1125,7 +1076,6 @@ BOOL WriteINVFile (char * szInvFileName)
 	// Use fopen rather than FileOpen when we want to write a new file,
 	// which we're probably doing here.  (We read from CD but want to
 	// write to the local hard disk.)
-	// fp = FileOpen (szInvFileName, "wt");
 	fp = fopen (szInvFileName, "wt");
 	if (fp != NULL)
 	{
@@ -1137,13 +1087,10 @@ BOOL WriteINVFile (char * szInvFileName)
 			for (i = 0; i < giRelicIndex; i++)
 				fprintf (fp, "%d\n", giRelics[i]);
 		}
-		// FileClose (fp);
 		fclose (fp);
 		return TRUE;
 	}
 	return FALSE;
 }
 
-
 #endif
-

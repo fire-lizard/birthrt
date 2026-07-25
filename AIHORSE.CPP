@@ -9,7 +9,6 @@
    
    Contains the following general functions:
 
-   
    ======================================================================== */
 
 /* ------------------------------------------------------------------------
@@ -107,4 +106,3 @@ void CAvatar::Horse (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 		break;
 	}
 }
-

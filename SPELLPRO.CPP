@@ -9,7 +9,6 @@
    
    Contains the following general functions:
 
-   
    ======================================================================== */
 
 /* ------------------------------------------------------------------------
@@ -219,8 +218,6 @@ SHORT num_spells_of(SPELL_INFO::CASTERTYPE spell_type,
 		{
 //            printf("A Wizard of level %d gets %d spells of level %d\n",
 //                char_level,
-//                WizardSpellProgressionTable[char_level][spell_level],
-//                spell_level);
             return WizardSpellProgressionTable[char_level][spell_level];
         }
 	}		

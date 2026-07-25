@@ -9,7 +9,6 @@
 
    Contains the following general functions:
 
-
    ======================================================================== */
 
 /* ------------------------------------------------------------------------
@@ -70,7 +69,6 @@ void ArtThing::mfDefineArtThing(THINGTYPE const tt,
 		LONG const d = (aprox_dist(CAMERA_INT_VAL(camera.x),
 					   		       CAMERA_INT_VAL(camera.y), 
 					   		       x, y)) << PLAYER_FIXEDPT;
-		
 		
 		if (d > BALLOON_HIRES_DISTANCE)
 		{
@@ -147,12 +145,9 @@ void ArtThing::mfSetToDeathHeightWidth()
 	//note: mt is a reference... we're modifying the array, not a copy
 	MYTHING& mt=mythings[ThingIndex];
 
-	
-
 	if (mt.iAnim==fERROR)
 		return;
 	ANIMPTR pAnim=(ANIMPTR)BLKPTR(mt.iAnim);
-
 
 	//this moves memory, we need to reset pAnim afterwards.
 	load_FLC_sequence(mt.iAnim,mt.OriginalType,ANIMATION12SEQ,0);

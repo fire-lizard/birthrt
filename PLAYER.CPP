@@ -42,7 +42,6 @@
 #include "PLAYER.HXX"
 #include "SPECIAL.H"
 
-
 /* ------------------------------------------------------------------------
    Notes
    ------------------------------------------------------------------------ */
@@ -67,7 +66,6 @@
 #define MAX_XY_SPEED			(31 << PLAYER_FIXEDPT)   //prime
 #define MAX_A_SPEED				11   //prime
 #define MAX_P_SPEED				23   //prime
-// #define STAIR_HEIGHT			(2 * FALL_RATE) 		// [d3-16-97 JPC] vz must be
 																// >= this before we look
 																// up or down
 #define LOOK_PITCH			(3 * MAX_PITCH / 4)	// [d3-16-97 JPC] fixed amount
@@ -84,7 +82,6 @@
    Global Variables
    ------------------------------------------------------------------------ */
 extern LONG ssector_things[];
-
 
 // whether to allow player movement
 // whether to fall
@@ -343,11 +340,8 @@ void TeleportPlayer (ULONG sect)
 {
 	ULONG i=0;
 
-//	printf("scanning for exit\n");
-
 	for (i=0;i<tot_things;i++)
 	{
-//		printf("%li: type: %li sector: %li ssector: %li x:%li y:%li\n",i,mythings[i].type,mythings[i].sect,mythings[i].ssect,mythings[i].x,mythings[i].y);
 		if (mythings[i].type==14 &&	mythings[i].sect == sect)
 		{
 			SetPlayer(
@@ -363,7 +357,6 @@ void TeleportPlayer (ULONG sect)
 
 	if (i==tot_things)
 	{
-//		printf("couldn't find exit\n");
 	}
 
 }
@@ -629,11 +622,6 @@ LONG MovePlayer( LONG KeyState )
 	// else
 	else if (vz == 0 && player.p != 0)
 	{
-		// player.p = (player.p < -(MAX_P_SPEED+1))
-		// 					? player.p + MAX_P_SPEED
-		// 					: (player.p > (MAX_P_SPEED))
-		// 						? player.p - MAX_P_SPEED
-		// 						: 0;
 
 		// [d3-13-97 JPC] Reworked the above.
 		// This is the code that moves us back to 0 after looking up or down.
@@ -665,7 +653,6 @@ LONG MovePlayer( LONG KeyState )
 					player.p = 0;
 				}
 			}
-			// MonoDump ("Auto-changed player.p from %d to %d, vz = %d", oldP, player.p, vz);
 		}
 	}
 	
@@ -762,7 +749,6 @@ LONG MovePlayer( LONG KeyState )
 	// counter got reset.
 	if (!player.Flying && !fJumping)
 	{
-		// if (ABS (vz) >= STAIR_HEIGHT)
 		if (vz != 0)
 		{
 			player.p = (vz < 0) ? -LOOK_PITCH : LOOK_PITCH;
@@ -820,9 +806,6 @@ LONG MovePlayer( LONG KeyState )
 		vz += force_z;
 	}
 	//else
-	//{
-	//	printf("Airborn, no forced movement\n");
-	//}
 	
 	// you can always rotate, even when in the air
 	if (ABS(va) > ABS(force_a))
@@ -928,7 +911,6 @@ LONG MovePlayer( LONG KeyState )
 	if (vx != 0 || vy != 0 || vz != 0)
 	{
 		tp.dx = vx;
-		//tp.dy = -vy;
 		tp.dy = vy;
 		tp.dz = 0;	// GWP should use vz here.
 	
@@ -965,8 +947,6 @@ LONG MovePlayer( LONG KeyState )
 	
 #ifdef _DEBUG
 #ifdef _WINDOWS
-//   if (player.WalkThruWall == TRUE)
-//      WriteDebug ("Walk through wall is ON, not checking bumps");
 #endif
 #endif
 	
@@ -1043,8 +1023,6 @@ LONG MovePlayer( LONG KeyState )
 			}
 			if (vz >= PlayerTermVelocity)
 				vz = PlayerTermVelocity; 	// Never fall faster than terminal
-			// if (player.z - vz >= floor)		// Are they going to fall thru the floor?
-			//	vz = player.z - floor;		// If so, stop at the floor
 		}
 		else								// we're not above floor level
 		{
@@ -1065,7 +1043,6 @@ LONG MovePlayer( LONG KeyState )
 	//GEH speed up frame rate during movement
 	// GWP When Auto res works again, uncomment this.
 // [d10-26-96 JPC] Restore auto-res for Windows.
-//#if defined (_WINDOWS)
 // [d11-12-96 JPC] Only do autores in Windows; it's no help in DOS and
 // causes more bugs.
 	if( fAIAutoRes)
@@ -1203,8 +1180,6 @@ void ConvertScreenToFloor(LONG screen_x, LONG screen_y, LONG *sx, LONG *sy)
 	if (ty == 0)								/* prevent divide by zero */
 		ty = 1;
 	tx = screen_x - render_center_x;
-	//cz = point_to_floor_height(CAMERA_INT_VAL(camera.x),
-	//						   CAMERA_INT_VAL(camera.y))+camera.h;
 	cz = camera.z;
 	wy = (cz * render_perspect * 256) / ty;
 	wx = (tx * wy) / (render_perspect-1);

@@ -29,7 +29,6 @@
 #define MINVOL_DS               -100L     //---- min volume 
 #define MAXVOL_DS               0L        //---- max volume ( no amplification yet )
 
-
 #if defined (__cplusplus)
 extern "C" {
 #endif
@@ -58,6 +57,5 @@ BOOL PauseWave( USHORT usWave );
 #if defined (__cplusplus)
 }
 #endif
-
 
 #endif

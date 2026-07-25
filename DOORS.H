@@ -1,4 +1,3 @@
-
 /* ========================================================================
    Copyright (c) 1996  Synergistic Software
    All Rights Reserved
@@ -40,7 +39,6 @@ void DoorInfo (LONG special);
 #if defined (__cplusplus)
 }
 #endif
-
 
 #endif
 

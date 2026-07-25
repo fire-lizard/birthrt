@@ -22,7 +22,6 @@
 #include "gametype.hxx"
 #endif
 
-
 class CThing : public ArtThing {
 public:
 	typedef void (*PFVC)(CThing *);
@@ -63,8 +62,6 @@ private:
     void *operator new( size_t stAllocateBlock);
     void operator delete( void *p );
 };
-
-
 
 // This routine initializes the CThing data.
 inline void CThing::mfDefineCThing(THINGTYPE const tt, 
@@ -144,4 +141,3 @@ inline BOOL const CThing::mfIsRightButtonFnSet() const
 	return (RightButtonFn != 0);
 }
 #endif // _CTHING_HXX
-

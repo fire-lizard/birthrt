@@ -9,15 +9,11 @@
 #include "TMSGBOX.HXX"
 
 LONG InfoBox::Info=STR_NULL;
-//static PFVLLL InfoBox::pfPrevObjMouseCallback  =NULL;
-//static PFVLLL InfoBox::pfPrevWallMouseCallback =NULL;
-//static PFVLLL InfoBox::pfPrevFloorMouseCallback=NULL;
 BOOL InfoBox::fShowCalled=FALSE;
 
 void InfoBox::Show(GAME_STRING str)
 {
 	Info=str;
-
 
 #if defined (_WINDOWS)
 	if (!fHighRes)
@@ -28,22 +24,12 @@ void InfoBox::Show(GAME_STRING str)
 	}
 #endif
 
-	//POINT PrintPt={0,0};
-	//VECTOR PrintDim={0,0};
-	//
-	//GetButtonPosition(MenuId,INFOBOX_BUT_ALL,&PrintPt.x,&PrintPt.y);
-	//GetButtonSize(MenuId,INFOBOX_BUT_ALL,&PrintDim.dx,&PrintDim.dy);
-
 	SetButtonLabel (D_INFOBOX,INFOBOX_BUT_ALL,Info,BLACK);
 
 	ShowMenu(D_INFOBOX);
 	
 	fAnyKeyChanged=FALSE;
 
-//	pfPrevObjMouseCallback =   SetMouseClicked(iOBJECT,InfoBox::Hide);
-//	pfPrevWallMouseCallback =  SetMouseClicked(iWALL,  InfoBox::Hide);
-//	pfPrevFloorMouseCallback = SetMouseClicked(iFLOOR, InfoBox::Hide);
-	
 	if (!fShowCalled)
 		add_region(0,0,MAX_VIEW_WIDTH-1,MAX_VIEW_HEIGHT-1,NO_KEY,InfoBox::LLHide,0,0,0,-1);
 
@@ -56,13 +42,6 @@ void InfoBox::Hide()
 
 	if (fShowCalled)
 	{
-		//SetMouseClicked(iOBJECT,pfPrevObjMouseCallback);
-		//SetMouseClicked(iWALL,	pfPrevWallMouseCallback);
-		//SetMouseClicked(iFLOOR,	pfPrevFloorMouseCallback);
-		//
-		//pfPrevObjMouseCallback	=NULL;
-		//pfPrevWallMouseCallback	=NULL;
-		//pfPrevFloorMouseCallback=NULL;			
 		fShowCalled=FALSE;
 	}
 	
@@ -71,7 +50,6 @@ void InfoBox::Hide()
 	RunMenus();
 		
 	Info=STR_NULL;
-	
 	
 }
 

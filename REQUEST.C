@@ -82,7 +82,6 @@ void ShowRequest (LONG Index, LONG value)
 	LONG xOff = 0;
 	LONG yOff = 0;
 	
-	
 	// simple error test
 	if (!MaxMenu)
 		return;
@@ -151,7 +150,6 @@ void HideRequest(LONG Index)
 	clear_key_status(0);
 }
 
-
 /* ========================================================================
    Function    - IsRequestUp
    Description -
@@ -175,7 +173,6 @@ int IsRequestUp ( LONG Index )
 
 }
 
-
 /* ========================================================================
    Function    - AddActiveRequest
    Description -
@@ -187,14 +184,6 @@ static LONG AddActiveRequest( LONG Index )
 	LONG i;
 
 	// only one instance of each Request allowed
-//	for (i=0;i<MAX_ACTIVE_MENUS;++i)
-//	{
-//		if (Index == ActiveRequests[i])
-//		{
-//			return fERROR;
-//		}
-//	}
-
 
 	// try to add the new Request
 	for (i=0;i<MAX_ACTIVE_MENUS;++i)
@@ -223,7 +212,6 @@ static void RemoveActiveRequest( LONG Index )
 {
 	LONG i;
 	
-	//for (i=0;i<MAX_ACTIVE_MENUS;++i)
 	for (i=MAX_ACTIVE_MENUS-1; i>=0; --i)
 	{
 		if (i<0) break;
@@ -265,7 +253,6 @@ void RunRequests(void)
 {
 	PaintRequests();
 }
-
 
 /* ========================================================================
    Function    - Return the value of the top designated request type
@@ -383,8 +370,6 @@ static void PaintRequests(void)
 		
 			}
 
-			
-
 			// deal with the labels
 			if (Menus[CurRequest].Buttons[i].iLabel != fERROR &&
 				!(Menus[CurRequest].Buttons[i].Flags & D_LABEL_OFF))
@@ -465,7 +450,6 @@ static void PaintRequests(void)
 	}
 	
 	/* if we are rendering, we need to paint ourselves */
-	//GEH if(0)
 	if(fRender)
 	{
 		for (ARequest=0;ARequest < MAX_ACTIVE_MENUS;++ARequest)
@@ -487,5 +471,4 @@ static void PaintRequests(void)
 }
 
 /* ======================================================================== */
-
 

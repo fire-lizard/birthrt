@@ -23,7 +23,6 @@
 #include <string.h>
 #ifdef WINDOWS
 #include <windows.h>  
-//#include <mmsystem.h>	 //if you want to use the code in GetElapsedTicks, bring these back in
 extern void mMBox(char *,char *);
 DWORD		AudioFeedMSec = 2000;
 DWORD		AudioIOBytes = 65535;
@@ -135,17 +134,8 @@ int GetElapsedTicks()
 // Return the application's elapsed time in 60th seconds
 	return 1;
 
-	
 // Note: I used the code below for Windows	
 
-//	static int iStartTicks = 0;
-
-//	if (iStartTicks == 0)
-//	{
-//		iStartTicks = GetTickCount();
-//	}
-
-//	return( ((GetTickCount() - iStartTicks)*3) / 50 );
 }
 //-------------------------------------------------------------------------------
 // Input: none
@@ -307,5 +297,3 @@ MsgMgr::Fatal(char* fmt, ...) const
 	exit(1);
 }
 MsgMgr*	msgMgr;
-
-

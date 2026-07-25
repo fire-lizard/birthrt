@@ -17,7 +17,6 @@
    clip_span			 -???
    clip_object			 -???
 
-
    ======================================================================== */
 /* ------------------------------------------------------------------------
    Includes
@@ -51,7 +50,6 @@ LONG h_extent[MAX_VIEW_WIDTH];	// This is a LONG for speed of comparisions.
 LONG bot_extent[MAX_VIEW_WIDTH];
 LONG top_extent[MAX_VIEW_WIDTH];
 LONG sector_visible[MAX_SECTORS];		// This is a LONG for speed of comparisions.
-
 
 /* ========================================================================
    Function    - clear_extents
@@ -127,8 +125,6 @@ void add_extent(LONG x1,LONG x2)
 	memset(&bot_extent[x1], 0, (x2-x1)*sizeof(LONG));
 	
 	i=x1;
-	// while(x1<x2)
-	// 	bot_extent[x1++]=0;
 	while(i<x2)
 		top_extent[i++]=9999;
 }

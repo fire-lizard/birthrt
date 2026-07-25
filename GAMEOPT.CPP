@@ -280,7 +280,6 @@ void OptAdjLevel(LONG which, LONG what)
     return;
 }
 
-
 void OpenOptions   (LONG, LONG)
 {
 	if ( mouse_button == 2 )
@@ -291,14 +290,11 @@ void OpenOptions   (LONG, LONG)
     else //---- We need help
 	{
 		SHORT i;
-//		GAMEToggleMainMenu(FALSE,0);
-//		RunMenus();
 
 		// initialize the temporary variables for all of the options here
 		twitch = (COMBAT_MODE::mfGetMode() == COMBAT_MODE::ARCADE);
 
 		oldmusvol = musvol;
-//		musvol = oldmusvol / 12;
    
 		if (GetGlobalVolume() != fERROR)
 		{
@@ -321,7 +317,6 @@ void OpenOptions   (LONG, LONG)
    
 		old_screen_size = selected_screen_size;	// for cancel
 
-		//GEH 6/8 game_difficulty = (DIFFICULTY) (DIF_EASY + gWinningPoints / 100 - 3);
 		combat_firstperson_view = COMBAT_INITIAL_VIEWPT::mfIsModeFirstPerson();
    
 		//---- GDI or DDRAW
@@ -347,8 +342,6 @@ void OpenOptions   (LONG, LONG)
        return;
 
    }
-
-
 
 }
 
@@ -383,7 +376,6 @@ void OptionCancel  (LONG, LONG)
 
 // Let's use musvol as an index into a volume array in redbook.c
     UISetMusicVolume(oldmusvol );
-//   UISetMusicVolume(sound_levels[oldmusvol] );
     musvol = oldmusvol;
 
     SetGlobalVolume(oldsfxvol);
@@ -394,10 +386,8 @@ void OptionCancel  (LONG, LONG)
 	if (plusmin[1]!=fERROR) SetPurge(plusmin[1]);
     HideMenu(D_OPTION_MENU);
     RunMenus();
-//	GAMEToggleMainMenu(TRUE,0);
     return;
 }
-
 
 void UpdateOptionSettings(void)
 {
@@ -468,8 +458,6 @@ void UpdateOptionSettings(void)
 
 }
 
-
-
 void WriteOptionSettings(void)
 {
 	FILE *fp;
@@ -497,7 +485,6 @@ void WriteOptionSettings(void)
 	fwrite(&mundane_descriptions, sizeof(BOOL), 1, fp);
 	fclose(fp);
 }
-
 
 void ReadOptionSettings(void)
 {
@@ -552,8 +539,6 @@ void ReadOptionSettings(void)
 	return;
 }
 
-
-
 void OptionDo      (LONG, LONG)
 {
 	SHORT MenuId = D_OPTION_MENU;
@@ -581,7 +566,6 @@ void OptionDo      (LONG, LONG)
     UpdateOptionSettings();
     WriteOptionSettings();
     
-//	GAMEToggleMainMenu(TRUE,0);
     return;
 }
 
@@ -663,7 +647,6 @@ void PaintOptionAdj(LONG menu_x, LONG menu_y, SHORT row, OPT_ADJ_TYPE index)
 	add_region(menu_x, menu_y, 12, 18, 0, OptAdjLevel, index, 1, 0, -1);
 }
 
-
 void PaintOptionMenu (LONG MenuCombo, LONG LoadSave)
 {
 	LONG	i, j, num_buttons;
@@ -689,23 +672,16 @@ void PaintOptionMenu (LONG MenuCombo, LONG LoadSave)
 	    if (optmenuchoice == i)
 	    {
 	        SetButtonHilight(MenuId, i, TRUE);
-	        //print_text_centered(button_x + button_w/2 - 1,
-	        //                    button_y + button_h/2,
-	        //                    buffer, BTN_LABEL_HILITE_COLOR);
 	    }
 	    else
 	    {
 	        SetButtonHilight(MenuId, i, FALSE);
-	        //print_text_centered(button_x + button_w/2,
-	        //                    button_y + button_h/2 + 1,
-	        //                    buffer, BTN_LABEL_COLOR);
 	    }
 	}
 
     init_gfont(FONT_SANS_8PT);
 	
     del_region(OptAdjLevel, 0);
-	
 	
 	switch(optmenuchoice)
 	{

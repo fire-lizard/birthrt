@@ -53,7 +53,6 @@ extern HINSTANCE hInstApp;
 extern HPALETTE hpalApp;				// in WINSYS\SYSGRAPH.C
 extern HWND hwndApp;
 
-
 /* ------------------------------------------------------------------------
    Defines and Compile Flags
    ------------------------------------------------------------------------ */
@@ -68,7 +67,6 @@ extern HWND hwndApp;
 	Macros
    ------------------------------------------------------------------------ */
 
-
 /* ------------------------------------------------------------------------
 	Structures
    ------------------------------------------------------------------------ */
@@ -78,7 +76,6 @@ struct BITMAPHEADER
   BITMAPINFOHEADER  Header;
   RGBQUAD           aColors[256];
 };                                     // this is from WINSYS\SYSGRAPH.C
-
 
 /* ------------------------------------------------------------------------
    Prototypes
@@ -133,7 +130,6 @@ static struct {
 		"Thief",		6,
 		"Bard",		7
 };
-
 
 // gRaceGameToEditor converts from game enumeration to combo box index.
 // Purpose: don't allow users to choose halfling race.
@@ -221,7 +217,6 @@ static struct tagBATable {
 	ITEM_TRAVEL,               0,	0, 4, 4, 4, 4, 4
 };
 
-
 int gaAbilityIDs[CHAR_MAX_ABILITIES] = {
 	IDE_STRENGTH,
 	IDE_INTELLIGENCE,
@@ -230,7 +225,6 @@ int gaAbilityIDs[CHAR_MAX_ABILITIES] = {
 	IDE_CONSTITUTION,
 	IDE_CHARISMA
 };
-
 
 int gaMinAbility[MAX_CLASS_TYPES][CHAR_MAX_ABILITIES] = {
 // Note that we omit magicians.
@@ -243,7 +237,6 @@ int gaMinAbility[MAX_CLASS_TYPES][CHAR_MAX_ABILITIES] = {
 	 1,  1,  9,  1,  1,  1,    // CLASS_THIEF
 	 1, 13, 12,  1,  1, 15     // CLASS_BARD
 };
-
 
 // ---------------------------------------------------------------------------
 HBITMAP PCXtoDIBSection (HDC hdc, PSTR szFilename, void * pBuffer)
@@ -315,9 +308,6 @@ HBITMAP PCXtoDIBSection (HDC hdc, PSTR szFilename, void * pBuffer)
 	return hbitmap;
 }
 
-
-
-
 // ---------------------------------------------------------------------------
 // Miscellaneous functions.
 static void EnableClass2Windows (HWND hwnd)
@@ -336,8 +326,6 @@ static void EnableClass2Windows (HWND hwnd)
 	EnableWindow (GetDlgItem (hwnd, IDC_LEVEL2), fEnable);
 	EnableWindow (GetDlgItem (hwnd, IDB_ROLL_LEVEL2), fEnable);
 }
-
-
 
 static int GetAVAFileName ()
 {
@@ -364,7 +352,6 @@ static int GetAVAFileName ()
 	return result;
 }
 
-
 // ---------------------------------------------------------------------------
 int GetClassIndex (int iClass)
 {
@@ -382,7 +369,6 @@ int GetClassIndex (int iClass)
 	}
 	return 0;									// error--return something!
 }
-
 
 // ---------------------------------------------------------------------------
 // Initialization functions
@@ -461,7 +447,6 @@ static void InitFieldsFromAVAFile (HWND hwnd)
 	hwndCtl = GetDlgItem (hwnd, IDC_ALIGNMENT);
 	ComboBox_SetCurSel (hwndCtl, gAvaData.mfGetAlignment ());
 
-
 	hwndCtl = GetDlgItem (hwnd, IDC_ARMOR);
 	ComboBox_SetCurSel (hwndCtl, gAvaData.mfGetArmorType ());
 
@@ -473,19 +458,16 @@ static void InitFieldsFromAVAFile (HWND hwnd)
 
 	if (gAvaData.mfGetBloodlineGrade () == -1)
 	{
-		//GEH gAvaData.mfSetBloodlineGrade (regents[giRegent].BL_grade);
 		gAvaData.mfSetBloodlineGrade (regents[giRegent].mfGetBL_grade());
 	}
 
 	if (gAvaData.mfGetBloodlineDerivation () == -1)
 	{
-		//GEH gAvaData.mfSetBloodlineDerivation (regents[giRegent].BL_deriv);
 		gAvaData.mfSetBloodlineDerivation (regents[giRegent].mfGetBL_deriv());
 	}
 
 	if (gAvaData.mfGetBloodlineStrength () == -1)
 	{
-		//GEH gAvaData.mfSetBloodlineStrength (regents[giRegent].BL_strength);
 		gAvaData.mfSetBloodlineStrength (regents[giRegent].mfGetBL_strength());
 	}
 
@@ -495,9 +477,6 @@ static void InitFieldsFromAVAFile (HWND hwnd)
 	ComboBox_SetCurSel (hwndCtl, gAvaData.mfGetBloodlineGrade ());
 	SetDlgItemInt (hwnd, IDE_BLOOD_STRENGTH, gAvaData.mfGetBloodlineStrength (), SIGNED);
 }
-
-
-
 
 static void PutStringsInTitleComboBox (HWND hwnd)
 {
@@ -517,14 +496,11 @@ static void PutStringsInTitleComboBox (HWND hwnd)
 	}
 }
 
-
-
 static void PutStringsInRaceComboBox (HWND hwnd)
 {
 // [d5-16-97 JPC] Don't allow users to choose HALFLING, GOBLIN, or GNOLL.
 // Do this by excluding these races from the combo box.
 
-	// RACE_INFO::TYPE	iType;
 	int			iType;
 	HWND			hwndCtl;
 	char			szTypeName[128];
@@ -538,8 +514,6 @@ static void PutStringsInRaceComboBox (HWND hwnd)
 		ComboBox_InsertString (hwndCtl, -1, szTypeName);
 	}
 }
-
-
 
 static void PutStringsInAnyClassComboBox (HWND hwndCtl)
 {
@@ -555,8 +529,6 @@ static void PutStringsInAnyClassComboBox (HWND hwndCtl)
 	}
 }
 
-
-
 static void PutStringsInClassComboBox (HWND hwnd)
 {
 	HWND			hwndCtl;
@@ -565,8 +537,6 @@ static void PutStringsInClassComboBox (HWND hwnd)
 	PutStringsInAnyClassComboBox (hwndCtl);
 	ComboBox_SetCurSel (hwndCtl, 0);
 }
-
-
 
 static void PutStringsInClass2ComboBox (HWND hwnd)
 {
@@ -583,8 +553,6 @@ static void PutStringsInClass2ComboBox (HWND hwnd)
 	EnableClass2Windows (hwnd);
 }
 
-
-
 static void PutStringsInBloodlineComboBox (HWND hwnd)
 {
 	LONG			iType;
@@ -599,8 +567,6 @@ static void PutStringsInBloodlineComboBox (HWND hwnd)
 	}
 	ComboBox_SetCurSel (hwndCtl, 0);
 }
-
-
 
 static void PutStringsInBloodStrengthComboBox (HWND hwnd)
 {
@@ -617,8 +583,6 @@ static void PutStringsInBloodStrengthComboBox (HWND hwnd)
 	ComboBox_SetCurSel (hwndCtl, 0);
 }
 
-
-
 static void PutStringsInAlignmentComboBox (HWND hwnd)
 {
 	LONG			iType;
@@ -633,8 +597,6 @@ static void PutStringsInAlignmentComboBox (HWND hwnd)
 	}
 	ComboBox_SetCurSel (hwndCtl, 0);
 }
-
-
 
 static void PutStringsInArmorComboBox (HWND hwnd)
 {
@@ -651,8 +613,6 @@ static void PutStringsInArmorComboBox (HWND hwnd)
 	ComboBox_SetCurSel (hwndCtl, 0);
 }
 
-
-
 static void PutStringsInWeaponComboBox (HWND hwnd)
 {
 	LONG			iType;
@@ -668,8 +628,6 @@ static void PutStringsInWeaponComboBox (HWND hwnd)
 	}
 	ComboBox_SetCurSel (hwndCtl, 0);
 }
-
-
 
 static void PutStringsInLevelComboBox (HWND hwnd)
 {
@@ -688,8 +646,6 @@ static void PutStringsInLevelComboBox (HWND hwnd)
 	}
 }
 
-
-
 static void PutStringsInAttacksPerRoundComboBox (HWND hwnd)
 {
 	LONG			iType;
@@ -705,8 +661,6 @@ static void PutStringsInAttacksPerRoundComboBox (HWND hwnd)
 	ComboBox_SetCurSel (hwndCtl, 0);
 }
 
-
-
 static BOOL ReadAVAFile ()
 {
 	FILE *		fp;
@@ -721,8 +675,6 @@ static BOOL ReadAVAFile ()
 	return FALSE;
 }
 
-
-
 static BOOL ReadINVFile ()
 {
 	FILE *		fp;
@@ -736,8 +688,6 @@ static BOOL ReadINVFile ()
 	}
 	return FALSE;
 }
-
-
 
 static BOOL OnInitDialog (HWND hwnd, HWND hwndFocus, LPARAM lParam)
 {
@@ -789,8 +739,6 @@ static BOOL OnInitDialog (HWND hwnd, HWND hwndFocus, LPARAM lParam)
 	return TRUE;
 }
 
-
-
 // ---------------------------------------------------------------------------
 // Informational functions
 
@@ -804,8 +752,6 @@ static RACE_INFO::TYPE CharedGetRace (HWND hwnd)
 	race = gRaceEditorToGame[race];
 	return RACE_INFO::TYPE (race);
 }
-
-
 
 // ---------------------------------------------------------------------------
 // WM_COMMAND handling Functions
@@ -833,8 +779,6 @@ static void CharedRollLevel (HWND hwnd, int iClass)
 	ChangeHitPoints (hwnd);
 }
 
-
-
 static void CharedRollStrength (HWND hwnd)
 {
 	SBYTE			sValue;
@@ -842,8 +786,6 @@ static void CharedRollStrength (HWND hwnd)
 	sValue = RollStrength (CharedGetRace (hwnd));
 	SetDlgItemInt (hwnd, IDE_STRENGTH, sValue, SIGNED);
 }
-
-
 
 static void CharedRollIntelligence (HWND hwnd)
 {
@@ -853,8 +795,6 @@ static void CharedRollIntelligence (HWND hwnd)
 	SetDlgItemInt (hwnd, IDE_INTELLIGENCE, sValue, SIGNED);
 }
 
-
-
 static void CharedRollDexterity (HWND hwnd)
 {
 	SBYTE			sValue;
@@ -863,8 +803,6 @@ static void CharedRollDexterity (HWND hwnd)
 	SetDlgItemInt (hwnd, IDE_DEXTERITY, sValue, SIGNED);
 }
 
-
-
 static void CharedRollWisdom (HWND hwnd)
 {
 	SBYTE			sValue;
@@ -872,8 +810,6 @@ static void CharedRollWisdom (HWND hwnd)
 	sValue = RollWisdom (CharedGetRace (hwnd));
 	SetDlgItemInt (hwnd, IDE_WISDOM, sValue, SIGNED);
 }
-
-
 
 static void CharedRollConstitution (HWND hwnd)
 {
@@ -884,8 +820,6 @@ static void CharedRollConstitution (HWND hwnd)
 	ChangeHitPoints (hwnd);
 }
 
-
-
 static void CharedRollCharisma (HWND hwnd)
 {
 	SBYTE			sValue;
@@ -893,8 +827,6 @@ static void CharedRollCharisma (HWND hwnd)
 	sValue = RollCharisma (CharedGetRace (hwnd));
 	SetDlgItemInt (hwnd, IDE_CHARISMA, sValue, SIGNED);
 }
-
-
 
 static void CharedRollRace (HWND hwnd)
 {
@@ -909,8 +841,6 @@ static void CharedRollRace (HWND hwnd)
 	ComboBox_SetCurSel (hwndCtl, iRace);
 }
 
-
-
 static void CharedRollBloodline (HWND hwnd)
 {
 	HWND			hwndCtl;
@@ -920,8 +850,6 @@ static void CharedRollBloodline (HWND hwnd)
 	hwndCtl = GetDlgItem (hwnd, IDC_BLOODLINE);
 	ComboBox_SetCurSel (hwndCtl, iType);
 }
-
-
 
 static void CharedRollBloodStrength (HWND hwnd)
 {
@@ -937,8 +865,6 @@ static void CharedRollBloodStrength (HWND hwnd)
 	iStrength = RollBloodlineNumericalStrength (iType);
 	SetDlgItemInt (hwnd, IDE_BLOOD_STRENGTH, iStrength, SIGNED);
 }
-
-
 
 static void ChangeAppearance (HWND hwnd, HWND hwndCtl, int change)
 {
@@ -956,8 +882,6 @@ static void ChangeAppearance (HWND hwnd, HWND hwndCtl, int change)
 	}
 }
 
-
-
 static void ChangeClass2 (HWND hwnd, HWND hwndCtl, UINT codeNotify)
 {
 	if (codeNotify == CBN_SELCHANGE)
@@ -966,15 +890,12 @@ static void ChangeClass2 (HWND hwnd, HWND hwndCtl, UINT codeNotify)
 	}
 }
 
-
-
 static BOOL SaveAVAFile (HWND hwnd)
 {
 // Returns TRUE if it worked, FALSE if not.
 
 	// update the data structures
 	
-
 	if (!UpdateAvaData(hwnd))
 		return FALSE;	
 	
@@ -990,7 +911,6 @@ static BOOL SaveAVAFile (HWND hwnd)
 	{
 		// Now actually write the data.
 		gAvaData.mfWriteTextData (fp);
-		// FileClose (fp);
 		fclose (fp);
 		return TRUE;
 	}
@@ -1137,7 +1057,6 @@ static void SetClassFlags (HWND hwnd)
 	gAvaData.m_level2 = (int) GetDlgItemInt (hwnd, IDC_LEVEL2, &fTranslated, SIGNED);
 }
 
-
 // ---------------------------------------------------------------------------
 static void SetAbilitiesMinimaSub (HWND hwnd, LONG charClass)
 {
@@ -1166,7 +1085,6 @@ static void SetAbilitiesMinimaSub (HWND hwnd, LONG charClass)
 	}
 }
 
-
 static void SetAbilitiesMinima (HWND hwnd)
 {
 // Make sure abilities are the minimum required for the given class(es).
@@ -1186,7 +1104,6 @@ static void SetAbilitiesMinima (HWND hwnd)
 		SetAbilitiesMinimaSub (hwnd, iClass2 - 1);
 	}
 }
-
 
 // ---------------------------------------------------------------------------
 // WM_COMMAND dispatcher
@@ -1330,8 +1247,6 @@ static void OnCommand (HWND hwnd, int id, HWND hwndCtl, UINT codeNotify)
 	}
 }
 
-
-
 // ---------------------------------------------------------------------------
 // WM_PAINT handler and support functions.
 
@@ -1379,7 +1294,6 @@ static void ShowNewAppearance (HWND hwnd, int index)
 	w = bm.bmWidth;
 	h = bm.bmHeight;
 	//	[d5-14-97 JPC] Instead, do a StretchBlt for actual size of window.
-	// BitBlt (hdc, 0, 0, w, h, hdcMem, 0, 0, SRCCOPY);
 	StretchBlt (hdc, 0, 0, rect.right, rect.bottom, hdcMem, 0, 0, w, h, SRCCOPY);
 
 ErrExit:
@@ -1395,8 +1309,6 @@ ErrExit:
 		DeleteObject (hbitmap);
 }
 
-
-
 static void OnPaint (HWND hwnd)
 {
 	PAINTSTRUCT	ps;
@@ -1405,13 +1317,8 @@ static void OnPaint (HWND hwnd)
 
 	BeginPaint (hwnd, &ps);
 	EndPaint (hwnd, &ps);
-	// hwndCtl = GetDlgItem (hwnd, IDC_APPEARANCE);
-	// index = ComboBox_GetCurSel (hwndCtl);
-	// ShowNewAppearance (hwnd, index);
 	ShowNewAppearance (hwnd, giPortrait);
 }
-
-
 
 LONG GetBloodlineGrade ()
 {
@@ -1422,7 +1329,6 @@ LONG GetBloodlineGrade ()
 	hwndCtl = GetDlgItem (ghwndChar, IDC_BLOOD_GRADE);
 	return ComboBox_GetCurSel (hwndCtl);
 }
-
 
 /* ========================================================================
    Function    - IsBloodabAvail
@@ -1509,7 +1415,6 @@ static int CheckAccess (char * szPathname)
 	return retval;
 }
 
-
 // ---------------------------------------------------------------------------
 static void ChangeHitPoints (HWND hwnd)
 {
@@ -1584,7 +1489,6 @@ static void ChangeHitPoints (HWND hwnd)
 	SetDlgItemInt (hwnd, IDE_HIT_POINTS, result, SIGNED);
 }
 
-
 // ---------------------------------------------------------------------------
 static BOOL IsWarrior (int iClass)
 {
@@ -1594,7 +1498,6 @@ static BOOL IsWarrior (int iClass)
 	return (iClass == CLASS_FIGHTER || iClass == CLASS_PALADIN ||
 		iClass == CLASS_RANGER);
 }
-
 
 // ===========================================================================
 // Main entry point for Character Editor Dialog
@@ -1611,8 +1514,6 @@ void CharedDoEditorDialog ()
 	}
 }
 
-
-
 BOOL CALLBACK CharedWndProc (
    HWND     hwnd,                      // handle to dialog box
    UINT     uMsg,                      // message
@@ -1628,7 +1529,6 @@ BOOL CALLBACK CharedWndProc (
 			return FALSE;
 	}
 }
-
 
 static void PutStringsInRealmListBox (HWND hwnd)
 {
@@ -1647,7 +1547,6 @@ static void PutStringsInRealmListBox (HWND hwnd)
 	}
 	ListBox_SetCurSel (hwndCtl, 0);
 }
-
 
 static BOOL SelectRegentOnInitDialog (HWND hwnd, HWND hwndFocus, LPARAM lParam)
 {
@@ -1683,7 +1582,6 @@ static BOOL SelectRegentOnInitDialog (HWND hwnd, HWND hwndFocus, LPARAM lParam)
 	return TRUE;
 }
 
-
 int RealmNameToIndex (char * szRealm)
 {
 // Return index to realm, given a realm name in szRealm.
@@ -1705,7 +1603,6 @@ int RealmNameToIndex (char * szRealm)
 	return -1;									// not found
 }
 
-
 BOOL DisplayRegentsOfRealm (HWND hwnd, char * szRealm)
 {
 // Given a realm name, display the two regents for that realm.
@@ -1722,7 +1619,6 @@ BOOL DisplayRegentsOfRealm (HWND hwnd, char * szRealm)
 	for (iRegent = 1; iRegent < CHARACTER_COUNT; iRegent++)
 	{
 		sprintf (gszAvaFile, "SCENES\\ID%d.AVA", regents[iRegent].mfGetid());
-		// Not here: CheckAccess (gszAvaFile);
 		ReadAVAFile ();							// just to get the name
 	
 		strcpy(szNameAndRealm, gAvaData.mfGetName ());
@@ -1736,7 +1632,6 @@ BOOL DisplayRegentsOfRealm (HWND hwnd, char * szRealm)
 
 	return TRUE;
 }
-
 
 static void SelectRegentOnCommand (HWND hwnd, int id, HWND hwndCtl, UINT codeNotify)
 {
@@ -1786,7 +1681,6 @@ static void SelectRegentOnCommand (HWND hwnd, int id, HWND hwndCtl, UINT codeNot
 	}
 }
 
-
 BOOL CALLBACK SelectRegentWndProc (
    HWND     hwnd,                      // handle to dialog box
    UINT     uMsg,                      // message
@@ -1802,7 +1696,4 @@ BOOL CALLBACK SelectRegentWndProc (
 	}
 }
 
-
 #endif
-
-

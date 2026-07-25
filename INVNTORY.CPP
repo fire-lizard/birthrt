@@ -118,7 +118,6 @@ BOOL DoesPlayerHaveItem(THINGTYPE t)
 	return ADVENTURER::mfDoesAdventureTeamHave(t);
 }
 
-
 void PaintQuestItemFound(LONG MenuCombo,LONG b)
 {
 	LONG	X,Y;
@@ -129,7 +128,6 @@ void PaintQuestItemFound(LONG MenuCombo,LONG b)
 	CHAR	FormatBuf[256];
 	CHAR	LongDesc[512];
 	CHAR	Buf[512];
-	
 	
 	SPLIT_LONG(MenuCombo, MenuId, ButtonId);
 
@@ -148,10 +146,8 @@ void PaintQuestItemFound(LONG MenuCombo,LONG b)
 	
 	init_gfont(FONT_SANS_12PT);
 		
-	
 	strncpy(FormatBuf, STRMGR_GetStr(STR_QUESTITEM_CONGRATS), sizeof(FormatBuf));
 
-	
 	ITEMTYPE const QuestItem = ObjectList::mfGameTypetoItemType((THINGTYPE)GetQuestThing());
 	ItemType const &QuestItemData = ItemTypes[QuestItem];
 	strcpy(LongDesc, STRMGR_GetStr(QuestItemData.mfGetExtendedData()));
@@ -206,7 +202,6 @@ LONG GetLevelFiendIndex(void)
 	return -1;
 }
 	
-
 char const * const GivingRealms[]={
 {"braem_mw"},
 {"calri2kw"},
@@ -218,7 +213,6 @@ char const * const GivingRealms[]={
 //{"bord_kg"}, 2-03-97 WRC
 };
 #define NUM_GIVING_REALMS (sizeof(GivingRealms)/sizeof(char *))
-
 
 // GWP What a hack! This data should have come from the scene file.
 static BOOL TheftAffectsAlliance(void)
@@ -237,9 +231,6 @@ static BOOL TheftAffectsAlliance(void)
 	return TRUE;
 }
 		
-
-
-			
 /* -----------------------
     ObjectList Members
    ----------------------- */
@@ -281,8 +272,6 @@ BOOL const ObjectList::mfCatsMatch(ItemCategory const c1,ItemCategory const c2)
 	return FALSE;
 }
 
-
-
 /* ========================================================================
    Function    - ObjectList::mfMouseCallback()
    Description - this function is what the mouse calls when it gets a click
@@ -295,7 +284,6 @@ void ObjectList::mfMouseCallback(LONG but,LONG obj,LONG /* WadThingtype */)
 	SHORT hPlrStat=-1;
 	CAvatar* pAvatar;
 	
-	
 	//if they just want some information, not to pick it up.
   	if (but==2)
 	{
@@ -304,14 +292,10 @@ void ObjectList::mfMouseCallback(LONG but,LONG obj,LONG /* WadThingtype */)
 		return;
 	}
 
-
-
-
 	Itemtype=mfGameTypetoItemType((THINGTYPE)mythings[obj].OriginalType);
 	
 	if (Itemtype==MAX_ITEM_TYPES)  //if that gametype wasn't found.
 	{
-//		printf("The %s is not a gettable item!\n",GAME_TTYPE::mfGetDescription((THINGTYPE)mythings[obj].type));
 		
 		//this might be a dead player, so we check the player list
 		ADVENTURER_TEAM_ITOR AdvItor;
@@ -328,7 +312,6 @@ void ObjectList::mfMouseCallback(LONG but,LONG obj,LONG /* WadThingtype */)
 			}
 		}
 	
-
 		return;
 	}
 
@@ -340,7 +323,6 @@ void ObjectList::mfMouseCallback(LONG but,LONG obj,LONG /* WadThingtype */)
 		return;
 	}
 	
-		
 	pAvatar=((CAvatar*)BLKPTR(ADVENTURER::mfWhoGetsObjectsPickedUp()));
 	if (!IsPointerGood(pAvatar))
 	{
@@ -370,7 +352,6 @@ void ObjectList::mfMouseCallback(LONG but,LONG obj,LONG /* WadThingtype */)
 			purge_thing(obj);
 			remove_thing(obj);
 
-
 			#ifdef _WINDOWS
 
 				if ( IsMultiPlayer() )
@@ -381,7 +362,6 @@ void ObjectList::mfMouseCallback(LONG but,LONG obj,LONG /* WadThingtype */)
 				
 					AMultiPlayer.Chat(buffer);
 				}
-
 
 			#endif
 
@@ -413,7 +393,6 @@ void ObjectList::mfMouseCallback(LONG but,LONG obj,LONG /* WadThingtype */)
 				}
 			}
 
-
 			if (ItemTypes[Itemtype].mfCategory() == IC_MAGITEM)
 				AddSndObj(SND_PICKUP_MAGIC_ITEM1,0,-1);
 			else
@@ -430,7 +409,6 @@ void ObjectList::mfMouseCallback(LONG but,LONG obj,LONG /* WadThingtype */)
 			char buffer[80];
 			strcpy(buffer,STRMGR_GetStr(STR_INVENTORY));
 	
-			
 			if (ais&LIST_OVERFLOW)
 			{
 				TitledMessageBox::Display(buffer,STRMGR_GetStr(STR_ITEM_TOO_MANY));
@@ -447,7 +425,6 @@ void ObjectList::mfMouseCallback(LONG but,LONG obj,LONG /* WadThingtype */)
 	}
 }
 
-
 /* ========================================================================
    Function    - ObjectList::mfInitAllItems()
    Description - Initializes the AllItems table
@@ -462,13 +439,9 @@ void ObjectList::mfInitAllItems()
 	AllItemsInitted=TRUE;
 }
 
-
-
 /* ------------------------------------------------------------------------
    ObjectList Public Member Functions
    ------------------------------------------------------------------------ */
-
-
 
 /* ========================================================================
    Function    - ObjectList::mfInit
@@ -481,32 +454,18 @@ void ObjectList::mfInit(SHORT a,LONG ID)
 
 	if (!AllItemsInitted)
 	{
-		//printf("initting allitems\n");
 		mfInitAllItems();
 	}
-
-//	if (!MouseCallbackInitted)
-//	{
-//		//printf("setting MouseCallback to %p\n",ObjectList::mfMouseCallback);
-//	}
-//	if (!fBattleCombat)
-//	{
-//		SetMouseClicked(iOBJECT,ObjectList::mfMouseCallback);
-//		MouseCallbackInitted=TRUE;
-//	}
 
 	hAvatarStats=a;
 	mfSetAvatarID(ID);	
 	
-
 	HeadIndex=-1;
-	
 	
 	for (LONG i=0;i<MAX_SPELL_BOXES;++i)
 		SpellBoxes[i]= fERROR;
 
 }
-
 
 //Total, counting each one's quantity.
 LONG const ObjectList::mfTotalItems()
@@ -609,11 +568,9 @@ LONG const ObjectList::mfNonEmptyLength(ItemCategory const cat)
 	return i;
 }
 
-
 void ObjectList::mfLoad()
 {
 	FILE* DatFile;
-
 
 	char FileName[40];
 	SHORT Header;
@@ -621,22 +578,17 @@ void ObjectList::mfLoad()
 	SHORT Items;
 	LONG i;
 	
-		
 	SHORT ID=mfGetAvatarID();
-	//printf("mf Loading OlID=%li (AID=%li)\n",GetID(),AvatarID);
 
-	
 	sprintf(FileName,"%sid%li.inv",SAVEDIR,ID);
 	if(!Exists(FileName))
 	{
-		//printf("no inventory data file to load from!\n");
 		return;
 	}
 	
 	DatFile=fopen(FileName,"rb");
 	if (!DatFile)
 	{
-		//printf("file not found\n");
 		return;
 	}
 	
@@ -644,19 +596,11 @@ void ObjectList::mfLoad()
 
 	if (Header!=MAX_ITEM_TYPES)
 	{
-		//printf("wrong version! MIT=%li FileMIT=%li cannot load\n",MAX_ITEM_TYPES,Header);
 		return;
 	}
 	
 	fread(&Items,sizeof(SHORT),1,DatFile);
 	
-
-	// SHORT len;
-	// fseek(DatFile,0,SEEK_END);
-	// len=ftell(DatFile);
-	// fseek(DatFile,4,SEEK_SET);
-
-		
 	for (i=0;i<Items;++i)//!feof(DatFile))
 	{
 		fread(Data,sizeof(SHORT),2,DatFile);
@@ -762,8 +706,6 @@ void ObjectList::mfChangeSpellBox(LONG a, InvenIndex newI)
 	return;
 }		
 
-
-
 /* ========================================================================
    Function    - ObjectList::mfAddToSpellBoxes
    Description - adds the specified item to the next available spellbox
@@ -774,7 +716,6 @@ void ObjectList::mfAddToSpellBoxes(LONG const to,ItemCategory const cat)
 	LONG i;
 	LONG EmptyIndex;
 	
-
 	InventoryItor itor(*this);
 	
 	if (fDomainTurn || cat != IC_SPELL)
@@ -829,7 +770,6 @@ void ObjectList::mfAddToSpellBoxes(LONG const to,ItemCategory const cat)
 			return;
 		}
 
-
 		if (EquipTypes[(*itor)->mfType()]!=Unlimited)		
 		{
 			//get how many of that type of item he's wearing
@@ -858,7 +798,6 @@ void ObjectList::mfAddToSpellBoxes(LONG const to,ItemCategory const cat)
 	}
 }
 
-
 void ObjectList::mfClearSpellBox(LONG const a)
 {
 	if (SpellBoxes[a] < 0)
@@ -882,8 +821,6 @@ void ObjectList::mfClearSpellBox(LONG const a)
 		TitledMessageBox::Display(buffer,STRMGR_GetStr(STR_ITEM_CANT_UNEQUIP));
 	}
 }
-
-
 
 void ObjectList::mfActivateSpellBox(LONG const a)
 {
@@ -918,7 +855,6 @@ void ObjectList::mfActivateSpellBox(LONG const a)
 		fatal_error("Activated spellbox without corresponding inventory");
 	}
 #endif
-
 
 	LONG Result = mfActivateSpell(SpellType);
 	if (OK == Result)
@@ -958,7 +894,6 @@ void ObjectList::mfActivateSpellBox(LONG const a)
 	}
 }	
 
-
 InvenIndex const ObjectList::mfGetSpellBox(LONG const a) const
 {
 	if (a<0 || a>MAX_SPELL_BOXES)
@@ -966,7 +901,6 @@ InvenIndex const ObjectList::mfGetSpellBox(LONG const a) const
 
 	return SpellBoxes[a];
 }
-
 
 /* ========================================================================
    Function    - ObjectList::mfDoesContain(ITEMTYPE)
@@ -980,8 +914,6 @@ BOOL const ObjectList::mfDoesContain(ITEMTYPE const it)
 	return (itor.mfFind(it));
 }
 
-	
-
 /* ========================================================================
    Function    - ObjectList::mfGameTypetoItemType(LONG)
    Description - Finds an ItemType associated with a GameType
@@ -991,7 +923,6 @@ ITEMTYPE const ObjectList::mfGameTypetoItemType(THINGTYPE const GameType)
 {
 	if (!GAME_TTYPE::mfCanBePickedUp(GameType))
 		return MAX_ITEM_TYPES;
-
 
 	LONG i;
 	for (i=ITEM_NO_THING;i<MAX_ITEM_TYPES;++i)
@@ -1163,8 +1094,6 @@ AddItemStatus const ObjectList::mfAddItem(ITEMTYPE const Type)
     return mfAddItem(Type, (SHORT) 1, (SHORT)0, TRUE);
 }
 
-
-
 /* ========================================================================
    Function    - ObjectList::mfPrint()
    Description - Debug function, printf's the list
@@ -1273,7 +1202,6 @@ void ObjectList::AddPriestSpells(SHORT hPlayerStats)
 }
 LONG ObjectList::mfSellMundane(void)
 {
-//	const ItemCategory cat = IC_MUNDANE;
 	InventoryItor itor(*this);
 	LONG gold = 0;
 	
@@ -1393,7 +1321,6 @@ ObjectList::~ObjectList()
 	HeadIndex=-1;
 }
 
-
 LONG const InventoryItor::mfActivateCurrent()
 {
  	LONG Result = 0;
@@ -1496,7 +1423,6 @@ BOOL const InventoryItor::mfFind(ITEMTYPE const Type, ItemCategory const cat)
 	return Result;
 }
 
-
 /* ========================================================================
    Function    - mfFind(ITEMTYPE)
    Description - Advances Current to the next node with the specified type
@@ -1531,7 +1457,6 @@ BOOL const InventoryItor::mfFind(ITEMTYPE const Type)
 	
 	return Result;
 }	
-
 
 /* ========================================================================
    Function    - mfDeleteItem
@@ -1597,7 +1522,6 @@ void InventoryItor::mfDropItem(BOOL fSend)
 
 	LONG Arg=BUILD_LONG((mfData()->mfType()),fInventory.hAvatarStats);
 
-	
 	if (mfData()->mfHowMany() > 0)
 	{
 		mfData()->mfLoseOne();
@@ -1728,7 +1652,6 @@ void InventoryItor::mfDropItem(LONG const x, LONG const y, BOOL fWilliamTell)
 		else
 			NewThingZ=point_to_floor_height(x,y);
 			
-	
 		LONG const ThingIndex = create_thing((LONG)GameType,x,y,NewThingZ);
 		mythings[ThingIndex].angle = 0;
 		LONG const ss = find_ssector(mythings[ThingIndex].x,
@@ -1743,7 +1666,6 @@ void InventoryItor::mfChangeTo(ITEMTYPE it)
 	//need to check for this in the spellboxes
 
 	LONG SpellBoxToUpdate;
-
 
 	if (mfData()->mfHowMany()>1)
 	{
@@ -1931,5 +1853,3 @@ BOOL ObjectList::mfIsBattleSpell(LONG MySpellNumber)
 	SPELL_INFO::SPELL_ITEM const spell = SPELL_INFO::mfGetSpell(spellindex);
 	return ((spell.WhereCast & SPELL_INFO::BATTLE) != 0);
 }
-
-

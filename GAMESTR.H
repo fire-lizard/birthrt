@@ -20,7 +20,6 @@ extern char const * const gamestr[];
 }
 #endif
 
-
 // WARNING! This enum must match the order of the strings in gamestr.c!!!
 typedef enum {
 	NULL_INDEX = 0,
@@ -340,7 +339,6 @@ typedef enum {
 	REALM_HONEST_DEALING_INDEX,
 	REALM_INVESTITURE_INDEX,
 	
-	
 	CLERIC_INDEX,
 	FIGHTER_INDEX,
 	PALADIN_INDEX,
@@ -570,8 +568,6 @@ typedef enum {
 	CALIEDHE_DOSIERE_INDEX,
 	ADAERE_DONEIM_INDEX,
 
-
-
 	PATRIARCH_INDEX,
 	HIGH_HIEROPHANT_INDEX,
 	DUCHESS_INDEX,
@@ -588,8 +584,6 @@ typedef enum {
 	// Enter new strings above this line.
 	MAX_STRING_TABLE
 } STRING_TABLE_INDICES;
-
-
 
 /* ------------------------------------------------------------------------
    Enums

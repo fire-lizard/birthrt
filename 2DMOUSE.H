@@ -36,7 +36,6 @@
 extern "C" {
 #endif
 
-
 #if defined (__cplusplus)
 }
 #endif
@@ -53,7 +52,6 @@ void handle_2dmouse(void);
 PFVLLL SetMouseClicked (WadThingType Type, PFVLLL pfClickFunc );
 PFVL SetLeftButtonClicked(PFVL pfClickFunc );
 PFVL SetRightButtonClicked(PFVL pfClickFunc );
-
 
 #if defined (__cplusplus)
 }

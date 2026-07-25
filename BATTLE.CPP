@@ -17,7 +17,6 @@
 #include "SYSTEM.H"
 #include "MACHINE.H"
 #include "THINGTYP.H"
-//#include "btlstr.h"
 #include "STRMGR.H"
 #include "strenum.h"
 #include "AVATAR.HXX"
@@ -287,7 +286,6 @@ static LONG BattleExpPointsTable[NUM_OF_BTL_EXP_TYPES][NUM_OF_BTL_EXP_CLASSES] =
 /*	BTL_EXP_WIN_GREATER_STRENGTH,   */	{  1000,     500,     500,     500 },
 };
 
-
 /* ========================================================================
    Function    - ResolveBattleCard
    Description - Use Battle Tables to resolve a phase of conflict
@@ -418,7 +416,6 @@ SHORT GetBattleDefense( SHORT unit_icon )
 	return (BattleTroopInfo[unit_icon].Defend);
 }
 
-
 /* ========================================================================
    Function    - GetBattleMelee
    Description - returns data out of the battle array
@@ -433,7 +430,6 @@ SHORT GetBattleMelee( SHORT unit_icon )
 #endif
 	return (BattleTroopInfo[unit_icon].Melee);
 }
-
 
 /* ========================================================================
    Function    - GetBattleCharge
@@ -450,7 +446,6 @@ SHORT GetBattleCharge( SHORT unit_icon )
 	return (BattleTroopInfo[unit_icon].Charge);
 }
 
-
 /* ========================================================================
    Function    - GetBattleMissile
    Description - returns data out of the battle array
@@ -465,7 +460,6 @@ SHORT GetBattleMissile( SHORT unit_icon )
 #endif
 	return (BattleTroopInfo[unit_icon].Missile);
 }
-
 
 /* ========================================================================
    Function    - GetBattleMorale
@@ -482,7 +476,6 @@ SHORT GetBattleMorale( SHORT unit_icon )
 	return (BattleTroopInfo[unit_icon].Morale);
 }
 
-
 /* ========================================================================
    Function    - GetBattleMagic
    Description - returns data out of the battle array
@@ -498,7 +491,6 @@ SHORT GetBattleMagic( SHORT unit_icon )
 	return (BattleTroopInfo[unit_icon].Magic);
 }
 
-
 /* ========================================================================
    Function    - GetBattleBonus
    Description - returns data out of the battle array
@@ -513,7 +505,6 @@ SHORT GetBattleBonus( SHORT unit_icon )
 #endif
 	return (BattleTroopInfo[unit_icon].Bonus);
 }
-
 
 /* ========================================================================
    Function    - BattleExpPoints

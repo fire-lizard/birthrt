@@ -31,7 +31,6 @@ typedef VALIDATE_DLL_EXIT (*lpfnSNWValidateFunc)(char *GPName,
 												char *pcAppLaunch, 
 												HWND hMainWnd );
 
-  
 /**********	INPUT PARAMETERS
 *	GPName -	The game name. This value is predefined in the SIGS database
 *				It is used to determine the next three parameters to pass
@@ -82,8 +81,6 @@ typedef VALIDATE_DLL_EXIT (*lpfnSNWValidateFunc)(char *GPName,
 *		Borland5.0a:Options->Project->32-Compiler->Calling Convention->C
 *		Watcom:		Options->C++ Compiler Switches->Memory Module and Processor switches->80386 Stacked Based Calling
 */
-
-
 
 /*!!!!!!!!!!!!! Code sample !!!!!!!!!!!!!!!!!
 *
@@ -148,7 +145,6 @@ typedef VALIDATE_DLL_EXIT (*lpfnSNWValidateFunc)(char *GPName,
 *
 */
 
-
 /*	!!!!!!!!!!!!the following is for information only.!!!!!!!!!!!!!!
 *
 *	this is being supplied to indicate to the developers 
@@ -159,7 +155,6 @@ typedef VALIDATE_DLL_EXIT (*lpfnSNWValidateFunc)(char *GPName,
 #ifdef MAKE_DLL
 
 // this is now defined in SNTypes.h
-//#define DllExport	__declspec( dllexport )
 		
 DllExport VALIDATE_DLL_EXIT SNWValidate(char *GPName, 
 									char *GPIPAddr, 
@@ -172,5 +167,4 @@ DllExport VALIDATE_DLL_EXIT SNWValidate(char *GPName,
 #endif	//MAKE_DLL
 
 #endif  //_INC_SNWValidateSDK
-
 

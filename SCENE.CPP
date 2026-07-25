@@ -9,7 +9,6 @@
 
    Contains the following general functions:
 
-
    ======================================================================== */
 
 /* ------------------------------------------------------------------------
@@ -66,8 +65,6 @@ extern BOOL IsRelicFound( SHORT PlacesIndex );
    Global Variables
    ------------------------------------------------------------------------ */
 	
-
-// GWP char *EXIT_POINT::fcpDefaultScene = "worldmap";
 char *EXIT_POINT::fcpDefaultScene = "castle";
 
 /* ========================================================================
@@ -175,7 +172,6 @@ void SCENE::mfLoadScene(char * cpSceneFile,
 	SysHideCursor ();
 #endif
 	// Re-initialize the internal variables.
-	// fpData = 0;
 	StopRedBook();
 	TurnOffAllSounds();
 	SuspendMusic();
@@ -205,7 +201,6 @@ void SCENE::mfLoadScene(char * cpSceneFile,
 	fSceneAI.mfSetSceneState(SCENE_AI::INIT);
 }
 
-
 /* ========================================================================
    Function    - mfReadSceneFile
    Description - This loads a scene from file.
@@ -215,7 +210,6 @@ void SCENE::mfReadSceneFile(char *szName,
                             LONG playerStartLocation)
 {
 	FILE *fp;
-	//GEH char cpSceneFileName[20] = {"scenes\\"};
 	char cpSceneFileName[20] = { SCENEFILE_PATH };
 	char cpBuffer[128];
 	LONG fileResult;
@@ -224,7 +218,6 @@ void SCENE::mfReadSceneFile(char *szName,
 	printf("Loading scene %s\n", szName);
 
 	strcat(cpSceneFileName, szName);
-	//GEH strcat(cpSceneFileName, ".scn");
 	strcat(cpSceneFileName, SCENEFILE_EXT);
 	
 	fp = FileOpen(cpSceneFileName,"r");
@@ -344,7 +337,6 @@ void SCENE::mfReadSceneFile(char *szName,
 		}
 		
 	} while (fileResult != EOF);
-
 
 	FileClose(fp);
 	
@@ -546,8 +538,6 @@ LONG SCENE::mfReadQuestThingType(FILE *fp)
 		LONG	ThingNumber;
 		if ( 1 == sscanf(cpBuffer, "%ld", &ThingNumber))
 		{
-//			if(IsRelicFound(SCENE_MGR::PlacesIndex))
-//				SetQuestThing(0);		// no quest item
 //			else
 				SetQuestThing(ThingNumber);
 		}
@@ -617,8 +607,6 @@ LONG SCENE::mfReadNotes(FILE *fp)
 
 }
 
-
-
 /* ========================================================================
    Function    - mfReadWad
    Description - Read the Wad section of the scene file.
@@ -673,7 +661,6 @@ LONG SCENE::mfReadAvatars(FILE *fp)
 	char cpBuffer[128];
 	LONG count;
 	
-	
 	LONG Result = GetNextLine(fp, cpBuffer, sizeof(cpBuffer));
 	if (Result != EOF)
 		count = atol(cpBuffer);
@@ -704,7 +691,6 @@ LONG SCENE::mfReadAvatars(FILE *fp)
 				
 				if (Avatars[i] != fERROR)
 				{
-					//GEH SetBlockAttr(Avatars[i], LOCKED, LOCKED);
 					CAvatar *pAvatar = (CAvatar *) BLKPTR(Avatars[i]);
 					if (fERROR != (pAvatar->hPlayerStats = LoadStats(tID,Avatars[i])))
 					{
@@ -732,7 +718,6 @@ LONG SCENE::mfReadAvatars(FILE *fp)
 					pAvatar->Realm.HomeRealm = RealmType;
 			
 					Result = pAvatar->mfReadRestOfSceneData(fp);
-					//GEH ClrLock(Avatars[i]);
 					printf("Memory used after load...%ld\n", (lMemoryAvail - ReportFreeMem(TRUE)));
 				}
 			}
@@ -760,7 +745,6 @@ LONG SCENE::mfReadPlaces(FILE *fp)
 {
 	char cpBuffer[80];
 	LONG j;
-	
 	
 	LONG Result = GetNextLine(fp, cpBuffer, sizeof(cpBuffer));
 	if (Result != EOF)
@@ -802,7 +786,6 @@ LONG SCENE::mfReadPlaces(FILE *fp)
 LONG SCENE::mfReadSectors(FILE *fp)
 {
 	char cpBuffer[80];
-	
 	
 	LONG Result = GetNextLine(fp, cpBuffer, sizeof(cpBuffer));
 	if (Result != EOF)
@@ -855,7 +838,6 @@ LONG SCENE::mfReadAmbientSound(FILE *fp)
 		else
 			PlayEnvironmentalSounds = FALSE;
 
-
 	}
  		return Result;
 
@@ -870,7 +852,6 @@ LONG SCENE::mfReadMusicTrack(FILE *fp)
 {
 	char cpBuffer[12];
 	SHORT test;
-//	FILE *in, *out;
 	int in, out;
 	char n[256], o[256];
 
@@ -1385,7 +1366,6 @@ void SCENE::mfSceneButtonObject(
 					SHORT hAvatar = CAvatar::NewAvatar();
 					if (hAvatar != fERROR)
 					{
-						//GEH SetBlockAttr(hAvatar, LOCKED, LOCKED);
 						CAvatar *pAvatar = (CAvatar *) BLKPTR(hAvatar);
 						
 						pAvatar->attrib.RuntimeCreated = TRUE;	// Don't save!
@@ -1409,7 +1389,6 @@ void SCENE::mfSceneButtonObject(
 						
 						// Now call the buttonhandler.
 						pAvatar->LeftButtonFn(pAvatar);
-						//GEH ClrLock(hAvatar);
 						
 						pScene->Avatars[i] = hAvatar;
 					}
@@ -1449,7 +1428,6 @@ void SCENE::mfSceneButtonObject(
 					SHORT hAvatar = CAvatar::NewAvatar();
 					if (hAvatar != fERROR)
 					{
-						//GEH SetBlockAttr(hAvatar, LOCKED, LOCKED);
 						CAvatar *pAvatar = (CAvatar *) BLKPTR(hAvatar);
 						
 						pAvatar->attrib.RuntimeCreated = TRUE;	// Don't save!
@@ -1472,7 +1450,6 @@ void SCENE::mfSceneButtonObject(
 						
 						// Now call the buttonhandler.
 						pAvatar->RightButtonFn(pAvatar);
-						//GEH ClrLock(hAvatar);
 						
 						pScene->Avatars[i] = hAvatar;
 					}
@@ -1482,7 +1459,6 @@ void SCENE::mfSceneButtonObject(
 			
 		}
 #endif // DEMO_ONLY_CODE
-		//GEH ClrLock(SCENE_MGR::hCurrentScene);
 		
 	}
 }
@@ -1653,7 +1629,6 @@ void SCENE::mfAttachAutoAIsAndThingSnds ( void )
 				Avatars[i] = CAvatar::NewAvatar();
 				if (Avatars[i] != fERROR)
 				{
-					//GEH SetBlockAttr(Avatars[i], LOCKED, LOCKED);
 					CAvatar *pAvatar = (CAvatar *) BLKPTR(Avatars[i]);
 					
 					if (fERROR != (pAvatar->hPlayerStats = LoadStats(ttype, Avatars[i])))
@@ -1679,7 +1654,6 @@ void SCENE::mfAttachAutoAIsAndThingSnds ( void )
 											0,
 											0);
 											// GWP CAvatar::mfFakeLeftButton,
-											// GWP CAvatar::mfFakeRightButton);
 					
 					// GNOLLS were accidently made too big, so scale'm down here.
 					const LONG ScaleAdjust = (pAvatar->ThingType == GNOLL_1 ||
@@ -1754,7 +1728,6 @@ void SCENE::mfAttachAutoAIsAndThingSnds ( void )
 					// GWP and set the non monsters to that Realm.
 					// GWP they now default to REALM::NO_COUNTRY
 					
-					//GEH ClrLock(Avatars[i]);
 				}
 			}
 #if !defined(_WINDOWS)

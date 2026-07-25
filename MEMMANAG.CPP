@@ -48,14 +48,6 @@
 #include <limits.h>
 #include <memory>
 
-//#ifndef _WINDOWS
-//#include <i86.h>
-//#include <bios.h>
-//#include <malloc.h>
-//#else
-//#include <Windows.h>
-//#endif
-
 #include <conio.h>
 #include "SYSTEM.H"
 
@@ -69,11 +61,6 @@ using namespace std;
    ------------------------------------------------------------------------ */
 
 // heap allocations
-//#ifdef _WINDOWS
-//	#define malloc(size)	HeapAlloc(hHeap, 0, size)
-//	#define free(p)			HeapFree(hHeap, 0, p)
-//	extern HANDLE hHeap;
-//#endif
 
 /* ------------------------------------------------------------------------ */
 /* Defines and Compile flags */
@@ -131,13 +118,8 @@ static void 		ConcatinateMem();
 /* ------------------------------------------------------------------------ */
 /* Global Variables */
 
-//PTR		pHeap;
 shared_ptr<unsigned char[]> pHeap;
 
-//ULONG	*	apBlocks;
-//SHORT	*	aiNextBlk;
-//SHORT	*	aiPrevBlk;
-//ATTR_BLK_TYPE	*	abBlockAttr;
 ULONG		apBlocks[3072];
 SHORT		aiNextBlk[3072];
 SHORT		aiPrevBlk[3072];
@@ -183,10 +165,6 @@ ULONG InitMemManag (
 		printf("\n\n\nMemory Manager Initialization\n");
 
 	cNumBlkHeads = cNumBlkHeads_;
-	//apBlocks	 = (ULONG *)malloc((ULONG)(cNumBlkHeads*sizeof(ULONG *)));
-	//aiNextBlk	 = (SHORT *)malloc((ULONG)(cNumBlkHeads*sizeof(SHORT)));
-	//aiPrevBlk	 = (SHORT *)malloc((ULONG)(cNumBlkHeads*sizeof(SHORT)));
-	//abBlockAttr	 = (ATTR_BLK_TYPE *)malloc((ULONG)cNumBlkHeads *sizeof(ATTR_BLK_TYPE));
 
 	for (i=0; i<cNumBlkHeads; ++i)		/* init all blocks to unused */
 		abBlockAttr[i] = UNUSED;
@@ -218,13 +196,6 @@ ULONG InitMemManag (
 			puts(buffer);
 		}
 		
-		//FreeResourceManager();
-		
-		//free(pHeap);
-		//free(apBlocks);
-		//free(aiNextBlk);
-		//free(aiPrevBlk);
-		//free(abBlockAttr);
 		exit(EXIT_SUCCESS);
 	}
 
@@ -579,7 +550,6 @@ SHORT _NewBlock (ULONG cBytes)
 	SHORT		i;
 	LONG		alignment;
 	
-	// return int aligned data pointers, by allocating %sizeof(int);
 	alignment = cBytes % sizeof(int);
 	if (alignment)
 	{
@@ -704,7 +674,6 @@ SHORT _NewBlockHigh (ULONG cBytes)
 	if (cBytes == 0)					/* can't have zero size blocks */
 		return (SHORT)fERROR;
 
-	// return int aligned data pointers, by allocating %sizeof(int);
 	alignment = cBytes % sizeof(int);
 	if (alignment)
 	{
@@ -941,7 +910,6 @@ SHORT DisposBlock (SHORT iHandle)
    	// You can't concatinate the blocks, it disrupts the links
    	// in searches for purging etc. (GWP)
    	
-	
 	return fNOERR;
 }
 
@@ -1156,7 +1124,6 @@ ULONG ReportInUse(ULONG fPurgable)
 	return Result;
 }
 
-
 /* ========================================================================
 	ConcatinateMem		-	Combine all adjcent free blocks. (But don't
 	                        move memory.)
@@ -1219,7 +1186,6 @@ static ULONG CompactMem_ (ULONG cBytes, LONG iStartBlk, LONG *pLargestBlock)
 		/* Current block is free, if next blocks are free, concatinate them */
 		MergeBlocks(i);
 
-			
 		// current block is free
 		if (abBlockMask == FREEMEM)
 		{
@@ -1391,7 +1357,6 @@ static BOOL MoveFreeBlockUp (LONG i)
 	aiPrevBlk[i] = iNext;
 	aiPrevBlk[iNext] = iPrev;
 
-
 	return TRUE;
 }
 
@@ -1450,14 +1415,12 @@ SHORT SetBlockSize (SHORT i, ULONG cBytes)
 	}
 #endif
 
-	// return int aligned data pointers, by allocating %sizeof(int);
 	alignment = cBytes % sizeof(int);
 	if (alignment)
 	{
 		cBytes += (sizeof(int) - alignment);
 	}
 	
-
 SetHandleSizeLoop:
 
 	/* Attemp to join current and next blocks */
@@ -1535,7 +1498,6 @@ SHORT HandleOutOfMemory ()
 		CompactMem_(ULONG_MAX, aiNextBlk[START_BLOCK], &LargestBlock);
 	}
 	     
-
 	return Success;		/* no more memory availabe to release */
 }
 
@@ -1933,7 +1895,6 @@ static ULONG	FillFreeBlock(LONG iHandle)
 				aiPrevBlk[iNext] = iFillerHandle;
 				aiNextBlk[iFillerHandle] = iNext;
 				aiPrevBlk[iFillerHandle] = iPrev;
-				
 				
 				aiNextBlk[iFillPrev] = iHandle;
 				aiPrevBlk[iFillNext] = iHandle;

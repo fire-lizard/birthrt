@@ -19,7 +19,6 @@
 #include "spell.hxx"
 #endif
 
-
 /* ------------------------------------------------------------------------
    Defines and Compile Flags
    ------------------------------------------------------------------------ */
@@ -46,7 +45,6 @@ public:
 		SBYTE	sbBonusSpells[SPELL_INFO::MAX_PR_LEVELS+1];	// Only Priests can have these
 		                                        	// Note you can directly index these by level
 		SBYTE	sbChanceOfSpellFailure;				// Stored as a Percentage
-		// SBYTE	sSpellImmunity;					// Stored with the spell.
 	};
 
 	static const SBYTE mfGetMagicalDefenseAdjust(const SBYTE /* WisdomValue */);

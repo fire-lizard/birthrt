@@ -1,4 +1,3 @@
-
 /* ========================================================================
    Copyright (c) 1990,1996	Synergistic Software
    All Rights Reserved
@@ -23,7 +22,6 @@
 #include "fileutil.h"
 #endif
 
-//#include "gamestr.h"
 #if !defined(_ABILTIY_HXX)
 #include "ability.hxx"
 #endif
@@ -35,7 +33,6 @@
 #if !defined(_STRENUM_H)
 #include "strenum.h"   
 #endif
-
 
 /* ------------------------------------------------------------------------
    Defines and Compile Flags
@@ -50,7 +47,6 @@
    ------------------------------------------------------------------------ */
 // Note: The PLAYER_CLASS_TYPES are used as indices into other tables.
 //       Be careful if you modify either their order or number.
-
 
 class CLASS_HIT_DICE_TABLE {
 public:
@@ -152,7 +148,6 @@ CLASS_TEST_TYPE TestPlayerClassLimits( PLAYER_CLASS_INFO::TYPE,
 									   PTR_ABILITY,
 									   SBYTE /* sbLevel */);
 			
-
 /* ------------------------------------------------------------------------
    Global Variables
    ------------------------------------------------------------------------ */

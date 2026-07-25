@@ -17,11 +17,9 @@
 //---------------------------------------------------------------------------
 //
 
-
 #include "string.h"
 
 #include "MESSQUE.HXX"
-
 
 //---- @@@@@ Do this for now it needs to be working ( Bad programmer )
 
@@ -29,7 +27,6 @@ MESSQUE MessQue[MAX_MESSQUE];
 
 int Mess_Next = 0;
  
-
 //---- Initialize the message que 
 
 void Init_MessQue (void )
@@ -45,7 +42,6 @@ void Init_MessQue (void )
 
 }
 
-
 // always add to the bottom
 
 int Add_MessQue( PMESSQUE pMessBuf )
@@ -56,7 +52,6 @@ int Add_MessQue( PMESSQUE pMessBuf )
        return 0;    //---- Que is full 
    }
 
-
    memcpy ( &MessQue[Mess_Next], pMessBuf, sizeof ( MESSQUE ) );
 
    Mess_Next++;
@@ -65,13 +60,9 @@ int Add_MessQue( PMESSQUE pMessBuf )
 
 }
 
-
-
-
 int Del_MessQue ( int index )
 {
    int x;
-
 
    //---- if it is there 
 
@@ -101,9 +92,7 @@ int Del_MessQue ( int index )
 
 }
 
-
 //---- remove a message from the que ( first one of this type and subtype )
-
 
 int Get_MessQueTS( long type, long subtype, PMESSQUE pMessBuf )
 {
@@ -122,14 +111,9 @@ int Get_MessQueTS( long type, long subtype, PMESSQUE pMessBuf )
 
    }
 
-
    return 0;  
 
 }
-
-
-
-
 
 //---- Delete all messages of this type 
 
@@ -162,7 +146,6 @@ int DelAll_MessQue ( long /* type */ )
 
 }
 
-
 //
 //---- Special to remove a message based on first three params
 //
@@ -184,7 +167,6 @@ int Get_MessQueTS1( long type, long subtype, long data0, PMESSQUE pMessBuf )
        }
 
    }
-
 
    return 0;  
 

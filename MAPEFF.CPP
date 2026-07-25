@@ -10,7 +10,6 @@
 #include "BATTLEUI.HXX"
 #include "strenum.h"   
 
-
 //MAP EFFECTS
 
 LONG ItemEffects::MapHighlightEnemies(LONG Combo,LONG Arg,LONG Action)
@@ -43,7 +42,6 @@ LONG ItemEffects::MapHighlightEnemies(LONG Combo,LONG Arg,LONG Action)
 				mfSound(SND_GENERAL_MAGIC1,1,VOLUME_FULL);
 				SetMapHighlightEnemies(0,Arg);
 				
-
 				if (ItemTypes[Itemtype].mfCategory() == IC_MAGITEM)
 				{
 					ItemChargeHandler::mfDropCharge(Itemtype,hPlayerStats);
@@ -231,7 +229,6 @@ LONG ItemEffects::MapHighlightMagic(LONG Combo,LONG Arg,LONG Action)
 	return OK; //everything went ok	
 }
 
-
 LONG ItemEffects::MapHighlightTraps(LONG Combo,LONG Arg,LONG Action)
 {
 	ITEMTYPE Itemtype;  				//the index in ItemTypes of the Item 
@@ -341,8 +338,6 @@ LONG ItemEffects::MapHighlightSecretDoors(LONG Combo,LONG Arg,LONG Action)
 	}
 	return OK; //everything went ok	
 }
-
-
 
 LONG ItemEffects::MapTeleport(LONG Combo,LONG Arg,LONG Action)
 {

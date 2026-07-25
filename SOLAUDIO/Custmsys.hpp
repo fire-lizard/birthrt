@@ -85,7 +85,6 @@ public:
 	void* operator=(void* p);
 	void* operator*() const;
 	char& operator[](size_t s) const;
-//	operator int() const;
 	long IsAllocated() const;
 	int Load(char* fileName); // Only used in DOS, so you can ignore it for Windows
 

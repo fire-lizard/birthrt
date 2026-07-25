@@ -1,4 +1,3 @@
-
 /* ========================================================================
    Copyright (c) 1990,1996	Synergistic Software
    All Rights Reserved
@@ -17,7 +16,6 @@
 #include "dice.h"
 #endif
 
-//#include "gamestr.h"
 #if !defined(_PLAYRACE_HXX)
 #include "playrace.hxx"
 #endif
@@ -25,7 +23,6 @@
 #if !defined(_STRENUM_H)
 #include "strenum.h"   
 #endif
-
 
 /* ------------------------------------------------------------------------
    Defines and Compile Flags
@@ -142,7 +139,6 @@ private:
 	static const WEAPON_ITEM fpWeaponTableInfo[];
 };
 typedef  WEAPON_INFO *PTR_WEAPON_INFO;
-
 
 /* ------------------------------------------------------------------------
    Macros   

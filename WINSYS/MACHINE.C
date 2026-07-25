@@ -64,7 +64,6 @@ void WaitForMessageQueueToEmpty( void );
 int InitRedBook(void);
 int ShutdownRedBook(void);
 
-
 /* ------------------------------------------------------------------------
    Global Variables
    ------------------------------------------------------------------------ */
@@ -88,7 +87,6 @@ BOOL gDontFight = FALSE;
 							
 extern UINT wCDDeviceID;
 extern int iWhichTrack;
-
 
 #ifdef _WINDOWS
 BOOL fStartSIGS = FALSE;            //---- Means startup in SIGS
@@ -151,7 +149,6 @@ static char szClassName[] = "Birthright";
 		#endif
 	#endif
 
-
 // ABC removed minimize box per RC 7/18/97
 static LONG lStyle = WS_SYSMENU|WS_POPUP|WS_CAPTION;
 
@@ -159,8 +156,6 @@ static LONG lStyle = WS_SYSMENU|WS_POPUP|WS_CAPTION;
 // 640x480 internally; update_screen stretch-blits to this size.
 static LONG GameWindowClientW = MAX_VIEW_WIDTH;
 static LONG GameWindowClientH = MAX_VIEW_HEIGHT;
-
-
 
 // -------------------------------------------------------------------
 //
@@ -196,9 +191,6 @@ void CombineMouseMoveMessages( void )
 	}
 
 } // CombineMouseMoveMessages
-
-
-
 
 void AppIdle(void)
 {
@@ -271,7 +263,6 @@ BOOL AppInit( HINSTANCE hInst, HINSTANCE hPrev, LPSTR szCmdLine, int sw )
 	HWND hwndTemp;
 	JOYINFO joyInfo;
 	JOYCAPS joyCaps;
-
 
     //---- Is there another instance of BirthRight running
     hwndTemp = FindWindow( szClassName,	    // address of class name
@@ -399,21 +390,8 @@ BOOL AppInit( HINSTANCE hInst, HINSTANCE hPrev, LPSTR szCmdLine, int sw )
 	// 2 = english, 1 = french, 0 = german
 
 // FOREIGN LANGUAGES ARE NOT IN SEPERATE SUBDIRECTORIES [ABC] 9/23/97
-//	switch(InstallationType)
-//	{
 //		case 2:
 			strcpy(InstallPath,".\\");
-//			break;
-//		case 1:
-//			strcpy(InstallPath,"french\\");
-//			break;
-//		case 0:
-//			strcpy(InstallPath,"german\\");
-//			break;
-//		default:
-//			strcpy(InstallPath,".\\");
-//			break;
-//	}
 	fclose(fp);
 	#ifdef _WINDOWS
 	#ifdef _DEBUG
@@ -451,12 +429,10 @@ BOOL AppInit( HINSTANCE hInst, HINSTANCE hPrev, LPSTR szCmdLine, int sw )
 	JoyYPfact = (JoyYMax - JoyYCtr) / 100;
 	JoyYNfact = (JoyYMin - JoyYCtr) / 100;
 
-
 	GameMain();
 
 	hcStd = LoadCursor( hInstApp, chCursorName);
 	SetCursor(hcStd);
-
 
 	PostMessage(hwndApp, WM_SIZE, SIZE_RESTORED, MAKELPARAM(640, 480));
 	
@@ -464,8 +440,6 @@ BOOL AppInit( HINSTANCE hInst, HINSTANCE hPrev, LPSTR szCmdLine, int sw )
 
 } // AppInit
 #pragma on (unreferenced)
-
-
 
 // ===================================================================================================================
 //
@@ -544,7 +518,6 @@ void DefaultMainWindowSize( UINT flags )
 
 } // DefaultMainWindowSize
 
-
 // ===================================================================================================================
 //
 //	SetGameResolution
@@ -578,9 +551,6 @@ void SetGameResolution( LONG w, LONG h )
 
 } // SetGameResolution
 
-
-
-
 //--------------------------------------------------------------------------;
 //
 //  void WaitForMessageQueueToEmpty
@@ -612,8 +582,6 @@ void WaitForMessageQueueToEmpty( void )
 
 } // WaitForMessageQueueToEmpty
 
-
-
 /* ========================================================================
    Function    - change the windows cursor
    Description -
@@ -621,8 +589,6 @@ void WaitForMessageQueueToEmpty( void )
    ======================================================================== */
 void WinCursorSet()
 {
-	//POINT pt;
-
 
 	//---- Have to do this for the target cursor in adventures
 
@@ -691,7 +657,6 @@ int WINAPI WinMain( HINSTANCE hInstExe, HINSTANCE hInstPrev, LPSTR szCmdLine, in
 
 } // WinMain
 
-
 /* =======================================================================
    Function    - quit_sys
    Description - prints stats and removes the keyboard int, and shuts down
@@ -747,12 +712,10 @@ LONG WINAPI MainWndProc( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
          }
          break;
 
-
 		case WM_QUIT:
 		case WM_CLOSE:
 			fQuitting = TRUE;
 			break;
-
 
 		//---- DLJ modified this because it was the right thing to do
 
@@ -769,7 +732,6 @@ LONG WINAPI MainWndProc( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
 			update_screen();
 
 			EndPaint ( hwnd, &ps );
-
 
 			break;
 
@@ -824,7 +786,6 @@ LONG WINAPI MainWndProc( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
          }
          break;
 
-
 		case WM_SIZE:
 			if ( sDrawMode == iGDI )
 			{
@@ -834,7 +795,6 @@ LONG WINAPI MainWndProc( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
 			
 				set_screen_size(WindowWidth,WindowHeight);
 			}
-			//GEH FALL THROUGH!  break;
 
 		case WM_PALETTECHANGED:
 			if ( hwnd == (HWND) wParam )
@@ -845,7 +805,6 @@ LONG WINAPI MainWndProc( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
 			{
 				// fall through
 			}
-
 
 		case WM_QUERYNEWPALETTE:
 		   hdc = GetDC( hwnd );
@@ -870,7 +829,6 @@ LONG WINAPI MainWndProc( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
 			else
 			{
 				// GWP removed minimize box per RC 7/22/97
-				//lStyle = WS_MINIMIZEBOX|WS_SYSMENU|WS_POPUP|WS_CAPTION;
 				lStyle = WS_SYSMENU|WS_POPUP|WS_CAPTION;
 			}
 			SetWindowLong(hwnd, GWL_STYLE, lStyle);

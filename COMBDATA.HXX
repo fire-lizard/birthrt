@@ -17,7 +17,6 @@
 #include "system.h"
 #endif
 
-
 #if !defined(_COMBOPTS_HXX)
 #include "combopts.hxx"
 #endif
@@ -33,7 +32,6 @@
 #if !defined(_SCNMGR_HXX)
 #include "scnmgr.hxx"
 #endif
-
 
 /* ------------------------------------------------------------------------
    Defines and Compile Flags
@@ -104,11 +102,9 @@ public:
 	
 	inline BOOL mfCanGoToHighResArt() const;
 	
-	
 	RETREAT_DATA				fRetreatData;
 	
 private:
-
 
 	// No constructor calls.
 	COMBAT_SCENE_DATA();

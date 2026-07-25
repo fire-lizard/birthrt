@@ -60,7 +60,6 @@
 *	to unload the DLL to free memory.
 */
 
-
 #ifndef __SIERRANWAPI_H__
 #define __SIERRANWAPI_H__
 
@@ -73,7 +72,6 @@
 
 SIGSAPI BOOL DirectToGP(LPVOID data);
 typedef BOOL (*lpfnDirectToGPFunc)(LPVOID data);
-
 
 /************* InitializeDLL() **************
 * 
@@ -98,7 +96,6 @@ typedef BOOL (*lpfnDirectToGPFunc)(LPVOID data);
 SIGSAPI int InitializeDLL(char *GpServerIp, long GpInPort, long GpOutPort);
 typedef int (*lpfnInitializeDLLFunc)(char *GpServerIp, long GpInPort, long GpOutPort);
 
-
 /************* CloseDLL() **************
 *
 *	Close the DLL and exit SIGS
@@ -109,7 +106,6 @@ typedef int (*lpfnInitializeDLLFunc)(char *GpServerIp, long GpInPort, long GpOut
 SIGSAPI int CloseDLL(void);
 typedef int (*lpfnCloseDLLFunc)(void);
 
-
 /************* GameClose() **************
 *
 *	Close the current game connections and return the player to the room.  Does
@@ -119,7 +115,6 @@ typedef int (*lpfnCloseDLLFunc)(void);
 SIGSAPI int GameClose(void);
 typedef int (*lpfnGameCloseFunc)(void);
 
-
 /************* SuppressMsgBox() **************
 *
 *	Supress SIGS messages
@@ -128,7 +123,6 @@ typedef int (*lpfnGameCloseFunc)(void);
 
 SIGSAPI int SuppressMsgBox(void);
 typedef int (*lpfnSuppressMsgBoxFunc)(void);
-
 
 /************* CheckGameConnectStatus() **************
 *
@@ -156,7 +150,6 @@ typedef int (*lpfnCheckGameConnectStatusFunc)(void);
 */
 SIGSAPI int WasGameRunning(void);
 typedef int (*lpfnWasGameRunningFunc)(void);
-
 
 /************* SetGameState() **************
 *
@@ -220,7 +213,6 @@ typedef int (*lpfnGetNumberOfPlayersFunc)(LPVOID data);
 SIGSAPI int GetPlayerXName(char *data, HEADER_DATATYPE playerindex);
 typedef int (*lpfnGetPlayerXNameFunc)(char *data, HEADER_DATATYPE playerindex);
 
-
 /************* GetNewPlayerIndex() **************			//mf 8/2 %%%
 *	Get the player index of the first inactive player
 *	encountered in the player list. This should be passed 
@@ -233,7 +225,6 @@ typedef int (*lpfnGetPlayerXNameFunc)(char *data, HEADER_DATATYPE playerindex);
 */
 SIGSAPI int GetNewPlayersIndex(void);
 typedef int (*lpfnGetNewPlayersIndexFunc)(void);
-
 
 /************* ActivateNewPlayerX() **************			//mf 8/1 %%%
 *	If CheckGameConnectStatus() returns value greater than 
@@ -253,7 +244,6 @@ typedef int (*lpfnGetNewPlayersIndexFunc)(void);
 SIGSAPI int ActivateNewPlayerX(int PlayerIndex);
 typedef int (*lpfnActivateNewPlayerXFunc)(int PlayerIndex);
 
-
 /************* CheckPlayerConnectStatus() **************
 *	Returns the connection status of the player
 *	Input:
@@ -264,7 +254,6 @@ typedef int (*lpfnActivateNewPlayerXFunc)(int PlayerIndex);
 */
 SIGSAPI int CheckPlayerConnectStatus(int PlayerIndex);
 typedef int (*lpfnCheckPlayerConnectStatusFunc)(int PlayerIndex);
-
 
 /************* CheckPlayersJoiningStatus() **************
 *	Checks to see if there are any players in the process
@@ -277,8 +266,6 @@ typedef int (*lpfnCheckPlayerConnectStatusFunc)(int PlayerIndex);
 */
 SIGSAPI int CheckPlayersJoiningStatus(void);
 typedef int (*lpfnCheckPlayersJoiningStatusFunc)(void);
-
-
 
 /************* SendTCPMessage() **************
 *	Send a TCP message to all other players
@@ -293,7 +280,6 @@ typedef int (*lpfnCheckPlayersJoiningStatusFunc)(void);
 SIGSAPI int SendTCPMessage(BYTE *data, HEADER_DATATYPE datalengthinbytes);
 typedef int (*lpfnSendTCPMessageFunc)(BYTE *data, HEADER_DATATYPE datalengthinbytes);
 
-
 /************* WaitForTCPMessage() **************
 *	Wait until you receive a game message from a player
 *	Input:
@@ -307,7 +293,6 @@ typedef int (*lpfnSendTCPMessageFunc)(BYTE *data, HEADER_DATATYPE datalengthinby
 */
 SIGSAPI int WaitForTCPMessage(HEADER_DATATYPE playerindex);
 typedef int (*lpfnWaitForTCPMessageFunc)(HEADER_DATATYPE playerindex);
-
 
 /************* PeekForTCPMessage() **************
 *	Peek on the socket to see if there is a message waiting.  If there is a message,
@@ -329,7 +314,6 @@ typedef int (*lpfnWaitForTCPMessageFunc)(HEADER_DATATYPE playerindex);
 SIGSAPI int PeekForTCPMessage(BYTE *data, HEADER_DATATYPE buflen, int playerindex);
 typedef int (*lpfnPeekForTCPMessageFunc)(BYTE *data, HEADER_DATATYPE buflen, int playerindex);
 
-
 /************* RecvTCPMessage() **************
 *	Receive a TCP message from a player
 *
@@ -343,7 +327,6 @@ typedef int (*lpfnPeekForTCPMessageFunc)(BYTE *data, HEADER_DATATYPE buflen, int
 */
 SIGSAPI int RecvTCPMessage(BYTE *data, HEADER_DATATYPE buflen, int playerindex);
 typedef int (*lpfnRecvTCPMessageFunc)(BYTE *data, HEADER_DATATYPE buflen, int playerindex);
-
 
 /************* SendTCPPointMessage() **************
 *	Send a TCP message to a specific user
@@ -360,7 +343,6 @@ typedef int (*lpfnRecvTCPMessageFunc)(BYTE *data, HEADER_DATATYPE buflen, int pl
 SIGSAPI int SendTCPPointMessage(int playerIndex, BYTE *data, HEADER_DATATYPE datalengthinbytes );
 typedef int (*lpfnSendTCPPointMessageFunc)(int playerIndex, BYTE *data, HEADER_DATATYPE datalengthinbytes);
 
-
 /************* CheckForAnyTCPMessage() **************
 *	Checks to see if any of the other players have sent a TCP message
 *
@@ -371,7 +353,6 @@ typedef int (*lpfnSendTCPPointMessageFunc)(int playerIndex, BYTE *data, HEADER_D
 */
 SIGSAPI int CheckForAnyTCPMessage(void);
 typedef int (*lpfnCheckForAnyTCPMessageFunc)(void);
-
 
 /*
 *	UDP functions - unlike TCP, there is NO GUARANTEE of a successful transmission
@@ -390,7 +371,6 @@ typedef int (*lpfnCheckForAnyTCPMessageFunc)(void);
 SIGSAPI int SendUDPMessage(BYTE *data, HEADER_DATATYPE datalengthinbytes);
 typedef int (*lpfnSendUDPMessageFunc)(BYTE *data, HEADER_DATATYPE datalengthinbytes);
 
-
 /************* RecvUDPMessage() **************
 *	Receive a UDP message.  This function will change the value of playerindex
 *   to reflect who the received message came from.
@@ -406,7 +386,6 @@ typedef int (*lpfnSendUDPMessageFunc)(BYTE *data, HEADER_DATATYPE datalengthinby
 SIGSAPI int RecvUDPMessage(BYTE *data, HEADER_DATATYPE buflen, int *playerindex);
 typedef int (*lpfnRecvUDPMessageFunc)(BYTE *data, HEADER_DATATYPE buflen, int *playerindex);
 
-
 /************* SendUDPPointMessage() **************
 *	Send a UDP message to a specific user
 *
@@ -421,7 +400,6 @@ typedef int (*lpfnRecvUDPMessageFunc)(BYTE *data, HEADER_DATATYPE buflen, int *p
 SIGSAPI int SendUDPPointMessage(int playerIndex, BYTE *data, HEADER_DATATYPE datalengthinbytes );
 typedef int (*lpfnSendUDPPointMessageFunc)(int playerIndex, BYTE *data, HEADER_DATATYPE datalengthinbytes );
 
-
 /************* CheckForAnyUDPMessage() **************
 *	Checks to see if any of the other players have sent a UDP message
 *
@@ -432,8 +410,6 @@ typedef int (*lpfnSendUDPPointMessageFunc)(int playerIndex, BYTE *data, HEADER_D
 
 SIGSAPI int CheckForAnyUDPMessage(void);
 typedef int (*lpfnCheckForAnyUDPMessageFunc)(void);
-
-
 
 /************* GetGameOption() **************
 *	Return the game option value associated with a specific key
@@ -447,7 +423,6 @@ typedef int (*lpfnCheckForAnyUDPMessageFunc)(void);
 */
 SIGSAPI int GetGameOption(char *Opt, char *Val);
 typedef int (*lpfnGetGameOptionFunc)(char *Opt, char *Val);
-
 
 /************* InitializeCustomServer() **************
 *	Custom server functions
@@ -464,7 +439,6 @@ typedef int (*lpfnGetGameOptionFunc)(char *Opt, char *Val);
 SIGSAPI int InitializeCustomServer(HWND CallBack, UINT MsgNum);
 typedef int *(lpfnInitializeCustomServer)(HWND CallBack, UINT MsgNum);
 
-
 /************* SendCustomServerMessage() **************
 *	Send a message to the custom server
 *	Input:
@@ -474,7 +448,6 @@ typedef int *(lpfnInitializeCustomServer)(HWND CallBack, UINT MsgNum);
 */
 SIGSAPI int SendCustomServerMessage(char *Message, long MsgLen);
 typedef int (*lpfnSendCustomServerMessageFunc)(char *Message, long MsgLen);
-
 
 /************* FreeCustomServerMessage() **************
 *	When a message is received from the custom server, we post message
@@ -490,7 +463,6 @@ typedef int (*lpfnSendCustomServerMessageFunc)(char *Message, long MsgLen);
 
 SIGSAPI int FreeCustomServerMessage(char *Message);
 typedef int (*lpfnFreeCustomServerMessageFunc)(char *Message);
-
 
 /************* TellMeGameMessReceived() **************
 *	Notify the game every time a game message is received.  Make sure to 
@@ -530,7 +502,6 @@ typedef int (*lpfnFreeCustomServerMessageFunc)(char *Message);
 SIGSAPI int TellMeGameMessReceived(NOTIFY_METHOD notifyType, MESS_RECEIVED_PROC my_function, HWND my_window, UINT messageID = 0);			  
 typedef int (*lpfnTellMeGameMessReceivedFunc)(NOTIFY_METHOD notifyType, MESS_RECEIVED_PROC my_function, HWND my_window, UINT messageID);
 
-
 /************* FreeGameMessageBuffer() **************
 *	When a message is received from the game, we post message
 *	WM_MESSAGE_RECEIVED to window my_window, or call my_function.  One of the
@@ -542,8 +513,6 @@ typedef int (*lpfnTellMeGameMessReceivedFunc)(NOTIFY_METHOD notifyType, MESS_REC
 */
 SIGSAPI int FreeGameMessageBuffer(void);
 typedef int (*lpfnFreeGameMessageBufferFunc)(void);
-
-
 
 /************* TellMeChatMessReceived() **************
 *	This function has been implemented but has not yet been tested.
@@ -584,7 +553,6 @@ typedef int (*lpfnFreeGameMessageBufferFunc)(void);
 SIGSAPI int TellMeChatMessReceived(NOTIFY_METHOD notifyType, MESS_RECEIVED_PROC my_function, HWND my_window, UINT messageID = 0);			  
 typedef int (*lpfnTellMeChatMessReceivedFunc)(NOTIFY_METHOD notifyType, MESS_RECEIVED_PROC my_function, HWND my_window, UINT messageID );
 
-
 /************* SendChatMessage() **************
 *
 *	Send a chat message to all other players.
@@ -600,9 +568,6 @@ typedef int (*lpfnTellMeChatMessReceivedFunc)(NOTIFY_METHOD notifyType, MESS_REC
 */
 SIGSAPI int SendChatMessage(BYTE *data, HEADER_DATATYPE datalengthinbytes);
 typedef int (*lpfnSendChatMessageFunc)(BYTE *data, HEADER_DATATYPE datalengthinbytes);
-
-
-
 
 /************* TellMeGameConnected() **************
 *	Notify the game when a user's game starts.  Make sure to 
@@ -639,7 +604,6 @@ typedef int (*lpfnSendChatMessageFunc)(BYTE *data, HEADER_DATATYPE datalengthinb
 SIGSAPI int TellMeGameConnected(NOTIFY_METHOD notifyType, GAME_CONNECT_PROC my_function, HWND my_window, UINT messageID = 0);
 typedef int (*lpfnTellMeGameConnectedFunc)(NOTIFY_METHOD notifyType, GAME_CONNECT_PROC my_function, HWND my_window, UINT messageID );
 
-
 /************* TellMePlayerLeftGame() **************
 *	Notify the game when a player leaves a game in progress.  Make sure to 
 *	call this function with the first parameter when you no longer want
@@ -675,7 +639,6 @@ typedef int (*lpfnTellMeGameConnectedFunc)(NOTIFY_METHOD notifyType, GAME_CONNEC
 SIGSAPI int TellMePlayerLeftGame(NOTIFY_METHOD notifyType, PLAYER_STATUS_PROC my_function, HWND my_window, UINT messageID = 0);
 typedef int (*lpfnTellMePlayerLeftGameFunc)(NOTIFY_METHOD notifyType, PLAYER_STATUS_PROC my_function, HWND my_window, UINT messageID );
 
-
 /************* TellMeUserDisconnected() **************
 *	Notify the game when the local user is disconnected.  Make sure to 
 *	call this function with the first parameter when you no longer want
@@ -710,7 +673,6 @@ typedef int (*lpfnTellMePlayerLeftGameFunc)(NOTIFY_METHOD notifyType, PLAYER_STA
 */
 SIGSAPI int TellMeUserDisconnected(NOTIFY_METHOD notifyType, PLAYER_STATUS_PROC my_function, HWND my_window, UINT messageID = 0);
 typedef int (*lpfnTellMeUserDisconnectedFunc)(NOTIFY_METHOD notifyType, PLAYER_STATUS_PROC my_function, HWND my_window, UINT messageID );
-
 
 /************* TellMePlayerJoined() **************
 *	Notify the game when a player joins a game already in progress.  Make sure to 
@@ -791,7 +753,6 @@ typedef int (*lpfnTellMeUserPublicInfoFunc)(NOTIFY_METHOD notifyType, PUBLIC_INF
 SIGSAPI int SendUserComplaint(char *Offender, char *Complaint);
 typedef int (*lpfnSendUserComplaintFunc)(char *Offender, char *Complaint);
 
-
 /************* TellMeSpecialChatReceived() **************
 *	Notify the game every time a special chat message is received
 *   from the SYSOP.  If you do not register this function and are
@@ -831,8 +792,6 @@ typedef int (*lpfnSendUserComplaintFunc)(char *Offender, char *Complaint);
 
 SIGSAPI int TellMeSpecialChatReceived(NOTIFY_METHOD notifyType, SPECIAL_CHAT_PROC my_function, HWND my_window, UINT messageID = 0);			  
 typedef int (*lpfnTellMeSpecialChatReceivedFunc)(NOTIFY_METHOD notifyType, SPECIAL_CHAT_PROC my_function, HWND my_window, UINT messageID );
-
-
 
 /************* HideDLL() **************
 *	Hides the Gathering Place UI

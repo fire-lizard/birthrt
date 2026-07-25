@@ -11,7 +11,6 @@
 #include "MCIUTIL.H"
 #include "MUSIUTIL.H"
 
-
 #define MDS_MUSIC 1
 #define MID_MUSIC 2
 
@@ -19,7 +18,6 @@ static HANDLE hMds;
 
  // -- Include application specific stuff
 #include "MUSIUTIS.H"
-
 
 //---- MDS routines 
 
@@ -29,11 +27,7 @@ DWORD PlayMDS(HANDLE hImage, DWORD fdw);
 DWORD PauseMDS(HANDLE hImage);
 DWORD StopMDS(HANDLE hImage);
 
-
 static int iMusicType;           //---- Midi Streams or plain midi 
-
-
-
 
 //----------------------------------------------------------------------------
 //  ToggleMusic
@@ -62,8 +56,6 @@ void ToggleMusic(void)
       }         
 
 }   //---- End of ToggleMusic()
-
-
 
 //----------------------------------------------------------------------------
 //  StopMusic
@@ -94,7 +86,6 @@ void StopMusic (void)
     }
 }
 
-
 //----------------------------------------------------------------------------
 //  StartMusic
 //
@@ -115,7 +106,6 @@ void StartMusic (void)
 
     fMusic = TRUE;        //---- Start Music
 
-
     if ( iMusicType == MDS_MUSIC )
     {
         PlayMDS( hMds, MDS_F_LOOP );
@@ -125,8 +115,6 @@ void StartMusic (void)
         mci_Play();
     }
 }   //---- End of StartMusic()
-
-
 
 //----------------------------------------------------------------------------
 //  PauseMusic
@@ -155,9 +143,7 @@ void PauseMusic (void)
         mci_Stop();
     }
 
-
 }   //---- End of PauseMusic()
-
 
 //----------------------------------------------------------------------------
 //  RestoreMusic
@@ -190,9 +176,7 @@ void RestoreMusic (void)
 
     }
 
-
 }   //---- End of RestoreMusic()
-
 
 //----------------------------------------------------------------------------
 //  InitMusic
@@ -215,7 +199,6 @@ void InitMusic ( PSZ pszFilename, PSZ pszDir, BOOL fGeneralMidi )
     CHAR   szTemp[MAX_PATH];
     DWORD  dwResult;
     char   *p;
-
 
     iMusicType = MDS_MUSIC;				  
 
@@ -242,7 +225,6 @@ void InitMusic ( PSZ pszFilename, PSZ pszDir, BOOL fGeneralMidi )
 
     strcpy ( szTemp, szCurDir );
 
-
     if ( fWinNT == FALSE )
     {
 
@@ -258,12 +240,10 @@ void InitMusic ( PSZ pszFilename, PSZ pszDir, BOOL fGeneralMidi )
         dwResult = MDS_ERR_NOMEM;   //---- Force using mciutil because mds doesn't work
     }
 
-
     //---- If there was an error try mci plain midi files  
 
     if ( dwResult != MDS_SUCCESS )
     {
-//        debugf ( "LoadMDSImage - %s", szCurDir );
 
         strcpy ( szCurDir, szTemp );
 
@@ -303,11 +283,7 @@ void InitMusic ( PSZ pszFilename, PSZ pszDir, BOOL fGeneralMidi )
 
     }
 
-
 }   //---- End of InitMusic()
-
-
-
 
 //----------------------------------------------------------------------------
 //  FinalMusic
@@ -337,8 +313,6 @@ void FinalMusic( void )
         mci_Close();
     }
 
-
 }   //---- End of FinalMusic()
-
 
 // MusiUtil

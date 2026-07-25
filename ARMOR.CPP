@@ -9,7 +9,6 @@
    
    Contains the following general functions:
 
-   
    ======================================================================== */
 
 /* ------------------------------------------------------------------------
@@ -18,7 +17,6 @@
 #include <string.h>
 
 #include "ARMOR.HXX"
-//#include "gamestr.h"
 #include "strenum.h"   
 /* ------------------------------------------------------------------------
    Notes
@@ -104,7 +102,6 @@ const ARMOR_INFO::ARMOR_ITEM ARMOR_INFO::fpArmorInfoTable[] = {
 	{STR_ARMOR_STUDDED_LEATHER_ARMOR,	7, m[16], r[16]},
 	{STR_ARMOR_CHAIN_MAIL,				5, m[17], r[17]}
 };
-
 
 SBYTE shield[][11] = {
 	{ 1,1,1,1,1,1,1,1,1,1,1 },

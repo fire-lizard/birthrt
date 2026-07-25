@@ -25,7 +25,6 @@
 #include "strenum.h"
 #include "TMSGBOX.HXX"
 
-
 // from aibtlcap.cpp
 extern BOOL fBtlTurnUndead;
 
@@ -44,7 +43,6 @@ LONG ItemEffects::Jump(LONG Combo,LONG Arg,LONG Action)
 
 	ItemType& Item=ItemTypes[Itemtype]; //A reference to the item
 
-	
 	if(fDomainTurn)
 	{
 		return NOT_SUPPORTED;
@@ -74,7 +72,6 @@ LONG ItemEffects::Jump(LONG Combo,LONG Arg,LONG Action)
 					if (!mfAddActiveItem(Jump,Combo,Arg,Item.mfDuration(hAvatarStats)))
 						return CANT_COMPLETE;
 					
-	
 					Item.mfMessage(STR_ACTIVATE_JUMPx3);
 	
 					mfSound(SND_GENERAL_MAGIC1,NULL,pAvatar->ThingIndex);
@@ -115,7 +112,6 @@ LONG ItemEffects::Jump(LONG Combo,LONG Arg,LONG Action)
 					fatal_error("EffectSeparator::mfGetVal returned NULL  %s(%li)\n",__FILE__,__LINE__);
 #endif
 
-
 				// [d12-03-96 JPC] Applied to whole adventure team.
 				ADVENTURER_TEAM_ITOR AdvItor;
 				for (AdvItor = ADVENTURER::begin(); AdvItor != ADVENTURER::end();
@@ -153,7 +149,6 @@ LONG ItemEffects::Strength(LONG Combo,LONG Arg,LONG Action)
  	SPLIT_COMBO(Combo,Itemtype,hAvatarStats); //extract the data from the Combo
 
 	ItemType& Item=ItemTypes[Itemtype]; //A reference to the item
-
 
 	static EffectSeparator<LONG> Mods;
 	
@@ -245,8 +240,6 @@ LONG ItemEffects::StoneSkin(LONG Combo,LONG Arg,LONG Action)
 
 	ItemType& Item=ItemTypes[Itemtype]; //A reference to the item
 
-
-	
 	if(fDomainTurn)
 	{
 		return NOT_SUPPORTED;
@@ -304,7 +297,6 @@ LONG ItemEffects::StoneSkin(LONG Combo,LONG Arg,LONG Action)
 	return OK; //everything went ok	
 }
 
-
 LONG ItemEffects::BarkSkin(LONG Combo,LONG Arg,LONG Action)
 {
 	SHORT Itemtype;  				//the index in ItemTypes of the Item
@@ -314,7 +306,6 @@ LONG ItemEffects::BarkSkin(LONG Combo,LONG Arg,LONG Action)
  	SPLIT_COMBO(Combo,Itemtype,hAvatarStats); //extract the data from the Combo
 
 	ItemType& Item=ItemTypes[Itemtype]; //A reference to the item
-
 
 	static EffectSeparator<LONG> OldACs;
 	
@@ -353,11 +344,6 @@ LONG ItemEffects::BarkSkin(LONG Combo,LONG Arg,LONG Action)
 					return CANT_COMPLETE;
 
 				PriestLevel=pPlayerStats->mfGetLevel(PriestClass);
-//				ACSet=6-PriestLevel/4;
-//				if (ACSet<0)
-//					ACSet=0;
-//
-//				OldACs.mfAddEffect(hAvatarStats, pPlayerStats->StatsMod.mfSetStats(STATSMOD::ARMORCLASS_SET,ACSet));
 
 				pPlayerStats->StatsMod.mfSetStats(STATSMOD::ARMORCLASS_SET, 6);
 				pPlayerStats->StatsMod.mfModifyStats(STATSMOD::ARMORCLASS_MOD, -PriestLevel/4);
@@ -375,10 +361,6 @@ LONG ItemEffects::BarkSkin(LONG Combo,LONG Arg,LONG Action)
 	
 				PriestClass=pPlayerStats->mfGetSpellCastClass(SPELL_INFO::PRIEST);
 				PriestLevel=pPlayerStats->mfGetLevel(PriestClass);
-				
-//				ACSet=*OldACs.mfGetVal(hAvatarStats);
-//				pPlayerStats->StatsMod.mfSetStats(STATSMOD::ARMORCLASS_SET,ACSet);
-//				OldACs.mfRemoveEffect(hAvatarStats);
 				
 				pPlayerStats->StatsMod.mfSetStats(STATSMOD::ARMORCLASS_SET, 0);
 				pPlayerStats->StatsMod.mfModifyStats(STATSMOD::ARMORCLASS_MOD, PriestLevel/4);
@@ -413,8 +395,6 @@ LONG ItemEffects::MagicalVestement(LONG Combo,LONG Arg,LONG Action)
 
 	ItemType& Item=ItemTypes[Itemtype]; //A reference to the item
 
-
-
 	static EffectSeparator<LONG> OldACs;
 	
 	if(fDomainTurn)
@@ -437,13 +417,11 @@ LONG ItemEffects::MagicalVestement(LONG Combo,LONG Arg,LONG Action)
 				LONG PriestLevel=0;
 				LONG ACSet=0;
 
-
 				PriestClass=pPlayerStats->mfGetSpellCastClass(SPELL_INFO::PRIEST);
 				if (PriestClass==CANT_CAST_SPELLS)
 					return CANT_COMPLETE;
 
 				PriestLevel=pPlayerStats->mfGetLevel(PriestClass);
-				
 				
 				if (!mfAddActiveItem(ItemEffects::MagicalVestement,Combo,Arg,Item.mfDuration(hAvatarStats)))
 					return CANT_COMPLETE;
@@ -458,8 +436,6 @@ LONG ItemEffects::MagicalVestement(LONG Combo,LONG Arg,LONG Action)
 				pPlayerStats->StatsMod.mfSetStats(STATSMOD::ARMORCLASS_SET, 5);
 				pPlayerStats->StatsMod.mfModifyStats(STATSMOD::ARMORCLASS_MOD, -PriestLevel/3);
 				
-				
-
 			}
 				break;
 			case DEACTIVATE:
@@ -470,24 +446,10 @@ LONG ItemEffects::MagicalVestement(LONG Combo,LONG Arg,LONG Action)
 				LONG PriestClass=CANT_CAST_SPELLS;
 				LONG PriestLevel=0;
 
-				
 				Item.mfMessage(STR_DEACTIVATE_MAGICALVEST);
 				
-
 				PriestClass=pPlayerStats->mfGetSpellCastClass(SPELL_INFO::PRIEST);
 				PriestLevel=pPlayerStats->mfGetLevel(PriestClass);
-				
-//				pACSet=OldACs.mfGetVal(hAvatarStats);
-//				if (!pACSet)
-//				{
-//#ifdef DEBUG
-//					fatal_error("BadVal from GetVal %s(%li)\n",__FILE__,__LINE__);
-//#endif
-//					return CANT_COMPLETE;
-//				}
-//				
-//				pPlayerStats->StatsMod.mfSetStats(STATSMOD::ARMORCLASS_SET,*pACSet);
-//				OldACs.mfRemoveEffect(hAvatarStats);
 				
 				pPlayerStats->StatsMod.mfSetStats(STATSMOD::ARMORCLASS_SET, 0);
 				pPlayerStats->StatsMod.mfModifyStats(STATSMOD::ARMORCLASS_MOD, PriestLevel/3);
@@ -527,8 +489,6 @@ LONG ItemEffects::Shrink(LONG Combo,LONG Arg,LONG Action)
 	EffectSeparator<LONG> OldH;
 	
 	static BOOL fAlreadyShrunk=FALSE;
-
-	
 
 	if(fDomainTurn)
 	{
@@ -594,14 +554,11 @@ LONG ItemEffects::Shrink(LONG Combo,LONG Arg,LONG Action)
 						pAvatar->mfChangeScale(*pOldScale);
 				}
 				
-									
 				LONG const * pW=OldW.mfGetVal(hAvatarStats);
 				LONG const * pH=OldH.mfGetVal(hAvatarStats);
 				LONG W;
 				LONG H;
 				
-				
-						
 				if (!pW)
 					W=PLAYER_WIDTH;
 				else
@@ -637,7 +594,6 @@ LONG ItemEffects::Shrink(LONG Combo,LONG Arg,LONG Action)
 
 }
 
-
 LONG ItemEffects::MagicMissileSpell(LONG Combo,LONG Arg,LONG Action)
 {
 
@@ -648,7 +604,6 @@ LONG ItemEffects::MagicMissileSpell(LONG Combo,LONG Arg,LONG Action)
  	
 	ItemType&		Item=ItemTypes[IType];
 
-	
 	if(fDomainTurn)
 	{
 		return NOT_SUPPORTED;
@@ -690,7 +645,6 @@ LONG ItemEffects::MagicMissileSpell(LONG Combo,LONG Arg,LONG Action)
 
 				DICE			dice={0,0,0};
 				LONG			WizardLevel;
-				
 				
 				LONG const WizardClass=pPlayerStats->mfGetSpellCastClass(SPELL_INFO::WIZARD);
 				if (WizardClass!=CANT_CAST_SPELLS)
@@ -856,7 +810,6 @@ LONG ItemEffects::ConeOfColdSpell(LONG Combo,LONG Arg,LONG Action)
 
 				DICE			dice={0,0,0};
 				LONG			WizardLevel;
-				
 				
 				LONG const WizardClass=pPlayerStats->mfGetSpellCastClass(SPELL_INFO::WIZARD);
 				if (WizardClass!=CANT_CAST_SPELLS)
@@ -1044,7 +997,6 @@ LONG ItemEffects::DeathSpell(LONG Combo,LONG Arg,LONG Action)
 					DICE			dice={0,0,0};
 					LONG			WizardLevel = 0;
 					
-					
 					LONG const WizardClass=pPlayerStats->mfGetSpellCastClass(SPELL_INFO::WIZARD);
 					if (WizardClass!=CANT_CAST_SPELLS)
 						WizardLevel=pPlayerStats->mfGetLevel(WizardClass);
@@ -1117,14 +1069,11 @@ LONG ItemEffects::Blindness(LONG Combo,LONG Arg,LONG Action)
 					if (!mfAddActiveItem(ItemEffects::Blindness,Combo,Arg,Item.mfDuration(hAvatarStats)))
 						return CANT_COMPLETE;
 	
-					
 					DumbHandlePtr<CAvatar>		pEnemy(pAvatar->hEnemy);
 					DumbAutoLockPtr<PLAYER_STATS> const pEnemyStats(pEnemy->hPlayerStats);
 	
-					
 					OldhEnemies.mfAddEffect(hAvatarStats,pAvatar->hEnemy);
 		
-					
 					Item.mfMessage(STR_ACTIVATE_BLINDNESS);
 					
 					mfSound(SND_POWER_BLIND1,NULL,pAvatar->ThingIndex);
@@ -1151,7 +1100,6 @@ LONG ItemEffects::Blindness(LONG Combo,LONG Arg,LONG Action)
 				DumbAutoLockPtr<PLAYER_STATS> const pEnemyStats(pEnemy->hPlayerStats);
 				
 				Item.mfMessage(STR_DEACTIVATE_BLINDNESS);
-				
 				
 				pEnemyStats->StatsMod.mfModifyStats(STATSMOD::WEAPONHIT_MOD,4);
 				pEnemyStats->StatsMod.mfModifyStats(STATSMOD::ARMORCLASS_MOD,-4);
@@ -1235,13 +1183,11 @@ LONG ItemEffects::PowerBlindSpell(LONG Combo,LONG Arg,LONG Action)
 					if (!mfAddActiveItem(ItemEffects::Blindness,Combo,Arg,Item.mfDuration(hAvatarStats)))
 						return CANT_COMPLETE;
 	
-					
 					DumbHandlePtr<CAvatar>		pEnemy(pAvatar->hEnemy);
 					DumbAutoLockPtr<PLAYER_STATS> const pEnemyStats(pEnemy->hPlayerStats);
 			
 					OldhEnemies.mfAddEffect(hAvatarStats,pAvatar->hEnemy);
 		
-					
 					Item.mfMessage(STR_ACTIVATE_BLINDNESS);
 					
 					mfSound(SND_POWER_BLIND1,NULL,pAvatar->ThingIndex);
@@ -1267,9 +1213,7 @@ LONG ItemEffects::PowerBlindSpell(LONG Combo,LONG Arg,LONG Action)
 				DumbHandlePtr<CAvatar>		pEnemy(*phEnemy);
 				DumbAutoLockPtr<PLAYER_STATS> const pEnemyStats(pEnemy->hPlayerStats);
 				
-				
 				Item.mfMessage(STR_DEACTIVATE_BLINDNESS);
-				
 				
 				pEnemyStats->StatsMod.mfModifyStats(STATSMOD::WEAPONHIT_MOD,4);
 				pEnemyStats->StatsMod.mfModifyStats(STATSMOD::ARMORCLASS_MOD,-4);
@@ -1665,11 +1609,6 @@ LONG ItemEffects::HolyWordSpell(LONG Combo,LONG Arg,LONG Action)
 						if (pAvaTesting->hPlayerStats == fERROR)
 							continue;
 	
-						// GWP BOOL const AlreadyLocked = IsLocked(pAvaTesting->hPlayerStats);
-						// GWP
-						// GWP if (!AlreadyLocked)
-						// GWP 	SetQuickLock(pAvaTesting->hPlayerStats);
-						
 						DumbAutoLockPtr<PLAYER_STATS> pStatsTesting(pAvaTesting->hPlayerStats);
 							
 						if (GAME_TTYPE::mfIsEvil((THINGTYPE)mythings[pAvaTesting->ThingIndex].type))
@@ -1694,7 +1633,6 @@ LONG ItemEffects::HolyWordSpell(LONG Combo,LONG Arg,LONG Action)
 						}
 						
 						// GWP if (!AlreadyLocked)
-						// GWP 	ClrLock(pAvaTesting->hPlayerStats);
 					}
 				}
 				break;
@@ -1728,8 +1666,6 @@ LONG ItemEffects::MapShowAll(LONG Combo,LONG Arg,LONG Action)
 
 	ItemType& Item=ItemTypes[Itemtype]; //A reference to the item
 
-
-
 	if(fDomainTurn)
 	{
 		return NOT_SUPPORTED;
@@ -1746,7 +1682,6 @@ LONG ItemEffects::MapShowAll(LONG Combo,LONG Arg,LONG Action)
 			{
 				if (!mfAddActiveItem(ItemEffects::MapShowAll,Combo,Arg,Item.mfDuration(hAvatarStats)))
 					return CANT_COMPLETE;
-
 
 				DumbAutoLockPtr<PLAYER_STATS> const pPlayerStats(hAvatarStats);
 				
@@ -1785,8 +1720,6 @@ LONG ItemEffects::MapShowAll(LONG Combo,LONG Arg,LONG Action)
 	return OK; //everything went ok	
 }
 
-
-
 LONG ItemEffects::LocateObject(LONG Combo,LONG Arg,LONG Action)
 {
 	SHORT Itemtype;  				//the index in ItemTypes of the Item
@@ -1797,7 +1730,6 @@ LONG ItemEffects::LocateObject(LONG Combo,LONG Arg,LONG Action)
 
 	ItemType& Item=ItemTypes[Itemtype]; //A reference to the item
 
-	
 	if(fDomainTurn)
 	{
 		return NOT_SUPPORTED;
@@ -1859,7 +1791,6 @@ LONG ItemEffects::TurnUndead(LONG Combo,LONG Arg,LONG Action)
 
 	ItemType& Item=ItemTypes[Itemtype]; //A reference to the item
 
-	
 	if(fDomainTurn)
 	{
 		return NOT_SUPPORTED;
@@ -1901,7 +1832,6 @@ LONG ItemEffects::TurnUndead(LONG Combo,LONG Arg,LONG Action)
 					DamageDice.sbModifier=0;
 					LONG const DamageDone=RollDice(&DamageDice);
 					
-	
 					if(pEnemy->mfType()==ZOMBIE ||
 						pEnemy->mfType() == SKELETON ||
 						pEnemy->mfType() == SPECTRE)
@@ -1941,7 +1871,6 @@ LONG ItemEffects::StoneUndead(LONG Combo,LONG Arg,LONG Action)
 
 	ItemType& Item=ItemTypes[Itemtype]; //A reference to the item
 
-	
 	if(fDomainTurn)
 	{
 		return NOT_SUPPORTED;
@@ -1995,7 +1924,6 @@ LONG ItemEffects::StoneUndead(LONG Combo,LONG Arg,LONG Action)
 	return OK; //everything went ok	
 }
 
-
 LONG ItemEffects::FleshToStone(LONG Combo,LONG Arg,LONG Action)
 {
 	SHORT Itemtype;  				//the index in ItemTypes of the Item
@@ -2006,7 +1934,6 @@ LONG ItemEffects::FleshToStone(LONG Combo,LONG Arg,LONG Action)
 
 	ItemType& Item=ItemTypes[Itemtype]; //A reference to the item
 
-	
 	if(fDomainTurn)
 	{
 		return NOT_SUPPORTED;
@@ -2088,7 +2015,6 @@ LONG ItemEffects::ResistFire(LONG Combo,LONG Arg,LONG Action)
 
 				DumbAutoLockPtr<PLAYER_STATS> const pPlayerStats(hAvatarStats);
 		
-				
 				Item.mfMessage(STR_ACTIVATE_RESISTFIRE);
 				
 				if (pPlayerStats->hAvatar != fERROR)
@@ -2103,7 +2029,6 @@ LONG ItemEffects::ResistFire(LONG Combo,LONG Arg,LONG Action)
 			{
 				DumbAutoLockPtr<PLAYER_STATS> const pPlayerStats(hAvatarStats);
 
-				
 				Item.mfMessage(STR_DEACTIVATE_RESISTFIRE);
 				
 				pPlayerStats->StatsMod.mfModifyStats(STATSMOD::FIRE_RESIST_MOD,-100);
@@ -2198,7 +2123,6 @@ LONG ItemEffects::SpritualHammer(LONG Combo,LONG Arg,LONG Action)
 	return OK; //everything went ok	
 }
 
-
 LONG ItemEffects::ProtectionFromEvil(LONG Combo,LONG Arg,LONG Action)
 {
 	SHORT Itemtype;  				//the index in ItemTypes of the Item
@@ -2209,7 +2133,6 @@ LONG ItemEffects::ProtectionFromEvil(LONG Combo,LONG Arg,LONG Action)
 
 	ItemType& Item=ItemTypes[Itemtype]; //A reference to the item
 
-	
 	if(fDomainTurn)
 	{
 		return NOT_SUPPORTED;
@@ -2229,7 +2152,6 @@ LONG ItemEffects::ProtectionFromEvil(LONG Combo,LONG Arg,LONG Action)
 						
 				DumbAutoLockPtr<PLAYER_STATS> const pPlayerStats(hAvatarStats);
 		
-				
 				Item.mfMessage(STR_ACTIVATE_PROTFROMEVIL);
 				
 				if (pPlayerStats->hAvatar != fERROR)
@@ -2257,7 +2179,6 @@ LONG ItemEffects::ProtectionFromEvil(LONG Combo,LONG Arg,LONG Action)
 				
 				Item.mfMessage(STR_DEACTIVATE_PROTFROMEVIL);
 				
-
 				ADVENTURER_TEAM_ITOR AdvItor;
 				
 				for (AdvItor = ADVENTURER::begin();
@@ -2301,7 +2222,6 @@ LONG ItemEffects::Disintigrate(LONG Combo,LONG Arg,LONG Action)
 
 	ItemType& Item=ItemTypes[Itemtype]; //A reference to the item
 
-	
 	if(fDomainTurn)
 	{
 		return NOT_SUPPORTED;
@@ -2374,7 +2294,6 @@ LONG ItemEffects::SpellImmunity(LONG Combo,LONG Arg,LONG Action)
 
 	ItemType& Item=ItemTypes[Itemtype]; //A reference to the item
 
-	
 	if(fDomainTurn)
 	{
 		return NOT_SUPPORTED;
@@ -2441,7 +2360,6 @@ LONG ItemEffects::FlameStrike(LONG Combo,LONG Arg,LONG Action)
 
 	ItemType& Item=ItemTypes[Itemtype]; //A reference to the item
 
-	
 	if(fDomainTurn)
 	{
 		return NOT_SUPPORTED;
@@ -2509,9 +2427,6 @@ LONG ItemEffects::FlameStrike(LONG Combo,LONG Arg,LONG Action)
 	return OK; //everything went ok	
 }
 
-
-
-
 LONG ItemEffects::Shillelagh(LONG Combo,LONG Arg,LONG Action)
 {
 	SHORT Itemtype;  				//the index in ItemTypes of the Item
@@ -2522,7 +2437,6 @@ LONG ItemEffects::Shillelagh(LONG Combo,LONG Arg,LONG Action)
 
 	ItemType& Item=ItemTypes[Itemtype]; //A reference to the item
 
-	
 	if(fDomainTurn)
 	{
 		return NOT_SUPPORTED;
@@ -2542,7 +2456,6 @@ LONG ItemEffects::Shillelagh(LONG Combo,LONG Arg,LONG Action)
 				
 				DumbAutoLockPtr<PLAYER_STATS> const pPlayerStats(hAvatarStats);
 			
-				
 				Item.mfMessage(STR_ACTIVATE_SHILLELAGH);
 				
 				if (pPlayerStats->hAvatar != fERROR)
@@ -2582,8 +2495,6 @@ LONG ItemEffects::Shillelagh(LONG Combo,LONG Arg,LONG Action)
 	return OK; //everything went ok	
 }
 
-
-
 LONG ItemEffects::GlobeInvulnerability(LONG Combo,LONG Arg,LONG Action)
 {
 	SHORT Itemtype;  				//the index in ItemTypes of the Item
@@ -2594,7 +2505,6 @@ LONG ItemEffects::GlobeInvulnerability(LONG Combo,LONG Arg,LONG Action)
 
 	ItemType& Item=ItemTypes[Itemtype]; //A reference to the item
 
-	
 	if(fDomainTurn)
 	{
 		return NOT_SUPPORTED;
@@ -2615,14 +2525,12 @@ LONG ItemEffects::GlobeInvulnerability(LONG Combo,LONG Arg,LONG Action)
 
 				DumbAutoLockPtr<PLAYER_STATS> const pPlayerStats(hAvatarStats);
 
-				
 				if (pPlayerStats->hAvatar != fERROR)
 				{
 					DumbHandlePtr<CAvatar>		pAvatar(pPlayerStats->hAvatar);
 					mfSound(SND_GENERAL_MAGIC1,NULL,pAvatar->ThingIndex);
 				}
 
-				
 				if(Arg==GLOBE_MAJOR)
 				{
 					ResistLevel=4;
@@ -2676,7 +2584,6 @@ LONG ItemEffects::ShockingGrasp(LONG Combo,LONG Arg,LONG Action)
 
 	ItemType& Item=ItemTypes[Itemtype]; //A reference to the item
 
-	
 	if(fDomainTurn)
 	{
 		return NOT_SUPPORTED;
@@ -2736,9 +2643,6 @@ LONG ItemEffects::ShockingGrasp(LONG Combo,LONG Arg,LONG Action)
 	return OK; //everything went ok	
 }
 
-
-
-
 LONG ItemEffects::Confusion(LONG Combo,LONG Arg,LONG Action)
 {
 	SHORT Itemtype;  				//the index in ItemTypes of the Item
@@ -2749,12 +2653,9 @@ LONG ItemEffects::Confusion(LONG Combo,LONG Arg,LONG Action)
 
 	ItemType& Item=ItemTypes[Itemtype]; //A reference to the item
 
-
-
 	static EffectSeparator<CAvatar::AIFUNC> OldAIFuncs;
 	static EffectSeparator<SHORT> OldhEnemies;
 
-	
 	if(fDomainTurn)
 	{
 		return NOT_SUPPORTED;
@@ -2788,7 +2689,6 @@ LONG ItemEffects::Confusion(LONG Combo,LONG Arg,LONG Action)
 					DumbAutoLockPtr<PLAYER_STATS> const pEnemyStats(pEnemy->hPlayerStats);
 					LONG NewCombo=BUILD_LONG((SHORT)Itemtype,pEnemy->hPlayerStats);
 			
-	
 					if (!mfAddActiveItem(ItemEffects::Confusion,NewCombo,Arg,Item.mfDuration(hAvatarStats)))
 					{
 						Item.mfMessage(STR_DUDE_ALREADY_CONFUSED);
@@ -2826,7 +2726,6 @@ LONG ItemEffects::Confusion(LONG Combo,LONG Arg,LONG Action)
 				DumbAutoLockPtr<PLAYER_STATS> const pEnemyStats(hAvatarStats);
 				DumbHandlePtr<CAvatar>		pEnemy(pEnemyStats->hAvatar);
 
-				
 				Item.mfMessage(STR_DEACTIVATE_CONFUSION);
 				
 				pEnemy->SetAIFuncIndex(*pTempAIFunc);
@@ -2852,9 +2751,6 @@ LONG ItemEffects::Confusion(LONG Combo,LONG Arg,LONG Action)
 	return OK; //everything went ok	
 }
 
-
-
-
 LONG ItemEffects::Knock(LONG Combo,LONG Arg,LONG Action)
 {
 	SHORT Itemtype;  				//the index in ItemTypes of the Item
@@ -2865,7 +2761,6 @@ LONG ItemEffects::Knock(LONG Combo,LONG Arg,LONG Action)
 
 	ItemType& Item=ItemTypes[Itemtype]; //A reference to the item
 
-	
 	if(fDomainTurn)
 	{
 		return NOT_SUPPORTED;
@@ -2907,7 +2802,6 @@ LONG ItemEffects::Knock(LONG Combo,LONG Arg,LONG Action)
 }
 LONG ItemEffects::WaterWalk(LONG Combo,LONG Arg,LONG Action)
 {Arg=Combo=Action;return 0;}
-
 
 /* -----------------------------------------------------------------
 
@@ -2961,11 +2855,9 @@ LONG ItemEffects::UndeadTurn(LONG Combo,LONG Arg,LONG Action)
 				else
 				    level = DICE_NUMDICE(Arg);
 				
-				
 				dice.sbNumberOfSides=DICE_NUMSIDES(Arg);
 				dice.sbModifier=DICE_MODIFIER(Arg);
 				dice.sbNumberOfDice = level;
-				
 				
 				LONG const damage = RollDice(&dice);
 				
@@ -2998,8 +2890,6 @@ LONG ItemEffects::UndeadTurn(LONG Combo,LONG Arg,LONG Action)
 	}
 	return OK;
 }
-
-
 
 //Not used.
 LONG ItemEffects::ImprovedFireball(LONG Combo,LONG Arg,LONG Action)
@@ -3140,7 +3030,6 @@ LONG ItemEffects::ActInfravision(LONG Combo,LONG Arg,LONG action)
 
 }
 
-
 LONG ItemEffects::Resurrection(LONG Combo,LONG Arg,LONG Action)
 {
 	SHORT Itemtype;  				//the index in ItemTypes of the Item
@@ -3150,7 +3039,6 @@ LONG ItemEffects::Resurrection(LONG Combo,LONG Arg,LONG Action)
  	SPLIT_COMBO(Combo,Itemtype,hAvatarStats); //extract the data from the Combo
 
 	ItemType& Item=ItemTypes[Itemtype]; //A reference to the item
-
 
 	if(fDomainTurn)
 	{
@@ -3211,9 +3099,7 @@ void ResurrectionMenu::Paint(LONG MenuCombo, LONG Arg)
 	LONG ButtonID;
 	SPLIT_LONG(MenuCombo,MenuIdx,ButtonID);
 
-
 	ADVENTURER_TEAM_ITOR AdvItor;
-
 
 	AdvItor=ADVENTURER::begin();
 	i=RESURRECT_BUT_NAME1;
@@ -3234,9 +3120,6 @@ void ResurrectionMenu::Paint(LONG MenuCombo, LONG Arg)
 		
 			StatsHdls[i-RESURRECT_BUT_NAME1]=pAvatar->hPlayerStats;
 	
-	//		sprintf(NameBuf,"%s (%li)",PLAYER_NAME::mfGetName(pAvatarStats->NameClass.fName),pAvatarStats->HitPts);
-			// [d4-09-97 JPC] Changed the following because PLAYER_NAME is obsolete.
-			// sprintf(NameBuf,"%s",PLAYER_NAME::mfGetName(pAvatarStats->NameClass.fName));
 			sprintf(NameBuf,"%s",pAvatarStats->mfGetName());
 	
 			GetButtonPosition(MenuIdx,i,&NameX,&NameY);
@@ -3278,7 +3161,6 @@ void ResurrectionMenu::Resurrect(LONG MenuCombo, LONG Arg)
 		pAvatar->DoAI(CAvatar::AI_RESURRECTION);
 	}
 
-
 	//this section is so we only drop the item if they actually
 	//resurrect somebody.
 	DumbAutoLockPtr<PLAYER_STATS > const pCasterStats(hCasterStats);
@@ -3301,5 +3183,3 @@ void ResurrectionMenu::Display(SHORT hCastingPriestStats,ITEMTYPE Type)
 	SetButtonProc(D_RESURRECT_MENU, RESURRECT_BUT_ALL, ResurrectionMenu::Paint, 0, NO_KEY);
 	ShowSubMenu(0,D_RESURRECT_MENU);
 }
-
-

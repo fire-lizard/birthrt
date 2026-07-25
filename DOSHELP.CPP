@@ -71,7 +71,6 @@ void InitDOSHelp (HELP_TOPIC which, LONG where)
 			sprintf(help_fn, "%sqkeyshlp.txt",InstallPath);
 			break;
 			
-		
 		case H_TOPIC_ATLAS:
 		default:
 			sprintf(help_fn, "%sdoshelp.txt",InstallPath);
@@ -110,14 +109,12 @@ void InitDOSHelp (HELP_TOPIC which, LONG where)
 	ShowMenu(D_DOSHELP);
 }
 
-
 void HelpGetPage()
 {
 	long temp; //used in checking for eof
 	LONG menu_w, menu_h, start_font = 2;
 	char tmpbuf[2048];	//to compensate for gtext_height's sillyness.
 	
-		
 	GetButtonSize (D_DOSHELP, 1, &menu_w, &menu_h );
 	if (page_num > 0)
 		start_font = last_help_font[page_num-1];
@@ -159,9 +156,6 @@ void HelpGetPage()
 		last_help_font[page_num] = last_font_used;
 	}
 	
-
-
-
 	//see if the next page is valid....
 
 	fseek(help_fp,file_offset[page_num] + last_print_offset - strlen(help_header), SEEK_SET);
@@ -171,11 +165,9 @@ void HelpGetPage()
 	if (feof(help_fp))
 		file_offset[page_num+1] = -2;
 
-	
 	FileClose(help_fp);
 	help_fp = NULL;
 }
-
 
 void PaintDOSHelp (LONG MenuCombo, LONG)
 {

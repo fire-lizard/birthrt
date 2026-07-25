@@ -1,4 +1,3 @@
-
 /* ========================================================================
    Copyright (c) 1990,1996	  Synergistic Software
    All Rights Reserved
@@ -25,7 +24,6 @@ int iHackHasKey = FALSE;
 }
 
 // GWP hack for Testing purposes.
-//const UBYTE FOLLOW_PLAYER_DATA::fMaxEntourage = 3;
 const LONG SoundDelay = 7;
 static const LONG MaxChaseDistance = 1000;
 
@@ -77,7 +75,6 @@ void CAvatar::FollowPlayer (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 			pAvatar->fContactDistance = 90;
 			
 			goto MoveThisGuy;
-			//break;
 			
 	case AI_RELEASE:
 			pAvatar->Status = AI_INIT;
@@ -159,7 +156,6 @@ void CAvatar::FollowPlayer (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 					}
 					else
 					{
-					    //if (pAvatar->mfTestSequence2ndLastFrame())
 					    if (pAvatar->mfTestSequencePastHalf())
 					    {
 							pPlayerStats->Inventory.mfActivateSpellBox(pAvatar->fFollowPlayer.fCurrentSpellBox);
@@ -210,7 +206,6 @@ void CAvatar::FollowPlayer (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 					                                 pAvatarEnemy->mfX(),
 					                                 pAvatarEnemy->mfY());
 					
-					
 					if (pAvatar->mfCanIHitHim(pAvatarEnemy, distance, pAvatar->fContactDistance))
 					{
 						VECTOR	NewVector;
@@ -243,7 +238,6 @@ void CAvatar::FollowPlayer (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 											);
 											
 						// Now set the player to this location.
-						//pAvatar->mfUpdatePositionOfPlayer(*pAvatar->fFollowPlayer.fpPlayer);
 						
 						// GWP Later play the sound for this ArtThing instead of generic noise.
 						switch( Bump)
@@ -358,7 +352,6 @@ void CAvatar::FollowPlayer (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 										);
 										
 					// Now set the player to this location.
-					//pAvatar->mfUpdatePositionOfPlayer(*pAvatar->fFollowPlayer.fpPlayer);
 					
 					// GWP Later play the sound for this ArtThing instead of generic noise.
 					switch( Bump)
@@ -479,8 +472,6 @@ Start_Attack:
 				}
 				else
 				{
-					//pAvatar->Status = AI_SEARCH;
-					//pAvatar->mfStartAnimationOnce(STANDSEQ);
 					pAvatar->mfFreezeFrame(ATTACK1SEQ, 0);
 				}
 			}
@@ -497,7 +488,6 @@ Start_Attack:
 					pAvatar->Status = AI_SEARCH;
 					pAvatar->mfSethEnemy(fERROR);
 					pAvatarEnemy->mfDisEngage();
-					//pAvatar->mfStartAnimationOnce(STANDSEQ);
 				}
 				else
 				{
@@ -541,11 +531,9 @@ Start_Attack:
 						      || pAvatar->mfTestSequenceDone()
 						      )
 						{
-							//if (pAvatar->fFollowPlayer.fpPlayer->Flying == FALSE)
 							{
 								// [d12-10-96 JPC] Chenge mfMoveToXYZA to mfMoveToXYA
 								// so that player will sink over water, lava, and acid floors.
-								// pAvatar->mfGetSectorInfo(&FloorHeight, &CeilingHeight, &Special);
 								pAvatar->mfMoveToXYA(pAvatar->mfX(),
 													  pAvatar->mfY(),
 													  pAvatar->mfAngle());
@@ -580,7 +568,6 @@ StartDefend:
 				if (pAvatar->hEnemy == fERROR)
 				{
 					// No one found, wait.
-					//pAvatar->mfStartAnimationOnce(STANDSEQ);
 					pAvatar->mfFreezeFrame(ATTACK1SEQ, 0);
 				}
 			}
@@ -594,7 +581,6 @@ StartDefend:
 					pAvatar->Status = AI_SEARCH;
 					pAvatar->mfSethEnemy(fERROR);
 					pAvatarEnemy->mfDisEngage();
-					//pAvatar->mfStartAnimationOnce(STANDSEQ);
 				}
 				else
 				{
@@ -606,12 +592,10 @@ StartDefend:
 					pAvatar->FaceTo(pAvatarEnemy->mfX(),
 					                pAvatarEnemy->mfY());
 					
-					
 					if (distance > pAvatar->fContactDistance)
 					{
 						// we've disengaged.
 						pAvatar->Status = AI_SEARCH;
-						//pAvatar->mfStartAnimationOnce(STANDSEQ);
 						pAvatar->mfSethEnemy(fERROR);
 						pAvatarEnemy->mfDisEngage();
 					}
@@ -621,11 +605,9 @@ StartDefend:
 						    || pAvatar->mfTestSequenceDone()
 						      )
 						{
-							//if (pAvatar->fFollowPlayer.fpPlayer->Flying == FALSE)
 							{
 								// [d12-10-96 JPC] Chenge mfMoveToXYZA to mfMoveToXYA
 								// so that player will sink over water, lava, and acid floors.
-								// pAvatar->mfGetSectorInfo(&FloorHeight, &CeilingHeight, &Special);
 								pAvatar->mfMoveToXYA(pAvatar->mfX(),
 													  pAvatar->mfY(),
 													  pAvatar->mfAngle());
@@ -640,23 +622,18 @@ StartDefend:
 			break;
 			
 	case AI_DEAD:
-			//if (pAvatar->mfGetArtSequence() != DEADSEQ)
-			//{
 				// Bodies lie on the ground.
 				pAvatar->mfGetSectorInfo(&FloorHeight, &CeilingHeight, &Special);
 				pAvatar->mfMoveToXYZA(pAvatar->mfX(),
 									  pAvatar->mfY(),
 									  FloorHeight,
 									  pAvatar->mfAngle());
-			//}
 
 			if (pAvatar->attrib.DiedLastFrame)
 			{
-//				pAvatar->mfSpewAll();
 				pAvatar->attrib.DiedLastFrame=FALSE;
 			}
 
-			
 			if (pAvatar->CurSequence == EXPIRESEQ &&
 			     pAvatar->mfTestSequenceDone())
 			{
@@ -671,7 +648,6 @@ StartDefend:
 				}
 			}
 
-			
 			break;
 			
 MoveThisGuy:		
@@ -713,7 +689,6 @@ MoveThisGuy:
 
 				// [d4-25-97 JPC] Added new parameter startFallZ.
 				bump = pAvatar->fFollowPlayer.mfBumpAndFloor (&index, &floor, &fallHeight, &startFallZ);
-				// CHANGE: floor = pAvatar->mfZ();
 
 				// Now actually do the move.
 				pAvatar->mfMoveToXYZA(NewX, NewY, NewZ, NewA);  // calls set_thing, updates mythings[]
@@ -762,7 +737,6 @@ MoveThisGuy:
 					pAvatar->mfStartAnimationLoop(STANDSEQ);
 				}
 			}
-			
 			
 			break;
 	}

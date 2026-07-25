@@ -21,5 +21,4 @@ int WaveStartDataRead( HMMIO       *phmmioIn,
                        MMCKINFO    *pckIn,
                        MMCKINFO    *pckInRIFF );
 
-
 // wave.h

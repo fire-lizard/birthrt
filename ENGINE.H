@@ -87,7 +87,6 @@
 /* ingore this argument value */
 #define NO_CHANGE		LONG_MAX
 
-
 /* ------------------------------------------------------------------------
 	Key defines
    ------------------------------------------------------------------------ */
@@ -379,10 +378,6 @@ SHORT* get_blockm (long px1,long py1);
 
 //WRC Fixed Camera functions (mirrors etc...)  these are bad icky things.
 //do not use them.
-//SHORT NewVideoBuffer(LONG VWidth, LONG VHeight);
-//void RedirectVideo(SHORT buffer);
-//void RestoreVideo(void);
-//void CloseVideoBuffer(SHORT buffer);
 
 /* clip.c */
 LONG lines_intersect(LONG x1,LONG y1,LONG x2,LONG y2,LONG x3,LONG y3,LONG x4,LONG y4);
@@ -460,13 +455,9 @@ extern LONG			render_center_x, render_center_y;
 extern LONG			window_width;
 extern LONG			window_height;
 
-
 #ifdef _WINDOWS
 	extern SHORT 	sDrawMode;
 #endif
-//extern MAP_INFO		gMapInfo;  //use access functions...
-
-
 
 extern CSTRPTR 	sky_filenames[];
 extern SHORT	hSky_filenames;

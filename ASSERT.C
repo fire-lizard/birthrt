@@ -86,4 +86,3 @@ void fatal_exit(const char *format, ...)
 }
 
 #endif // !defined(_RELEASE)
-

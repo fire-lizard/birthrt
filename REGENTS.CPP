@@ -153,6 +153,5 @@ DEFINE_VECTOR_DATA_S(REGENT,regents, 1 + CHARACTER_COUNT) = {
 /* Remember to update CHARACTER_COUNT in gamemap.hxx, to be one higher than the last number listed above */
 };
 
-
 DEFINE_VECTOR_CLASS(REGENT,regents);
 

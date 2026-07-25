@@ -12,12 +12,9 @@
    Defines and Compile Flags
    ------------------------------------------------------------------------ */
 
-
-//#include "gamestr.h"
 #if !defined(_STRENUM_H)
 #include "strenum.h"
 #endif
-
 
 /* ------------------------------------------------------------------------
    Enums
@@ -31,7 +28,6 @@
 /* ------------------------------------------------------------------------
    Prototypes
    ------------------------------------------------------------------------ */
-
 
 // [d4-09-97, 4-23-97 JPC] Abolished PLAYER_NAME class.  For the character editor,
 // we need to be able to change the names, so we no longer need the enums,
@@ -70,7 +66,6 @@ private:
 	static GAME_STRING const player_title_table[];
 };
 
-
 class PLAYER_DESCRIPTION{
 public:
 	typedef enum{
@@ -89,7 +84,6 @@ public:
 private:
 	static GAME_STRING const player_des_table[];
 };
-
 
 #endif //_PLAYID_HXX_
 

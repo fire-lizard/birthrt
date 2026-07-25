@@ -9,7 +9,6 @@
    
    Contains the following general functions:
 
-   
    ======================================================================== */
 
 /* ------------------------------------------------------------------------
@@ -57,7 +56,6 @@ ITEMTYPE SpellTypeToItemTypeIdx(SPELL_INFO::TYPE t)
 				break;
 	return (ITEMTYPE)i;
 }
-
 
 /* ========================================================================
    Function    - ItemTypeToSpellType

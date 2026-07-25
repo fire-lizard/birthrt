@@ -15,7 +15,6 @@
 #include "wadthing.h"
 #endif
 
-
 /* ------------------------------------------------------------------------
    Defines and Compile Flags
    ------------------------------------------------------------------------ */
@@ -109,8 +108,6 @@ void InitPlayer (LONG , LONG , LONG );
 #if defined (__cplusplus)
 }
 #endif
-
-
 
 #if defined (__cplusplus)
 

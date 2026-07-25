@@ -9,7 +9,6 @@
    
    Contains the following general functions:
 
-   
    ======================================================================== */
 
 /* ------------------------------------------------------------------------
@@ -18,7 +17,6 @@
 #include "TYPEDEFS.H"
 
 #include "EXPERIEN.HXX"
-//#include "gamestr.h"
 #include "PLAYCLAS.HXX"
 #include "strenum.h"   
 
@@ -79,7 +77,6 @@ static const CLASS_HIT_DICE_TABLE FighterHitDiceTable[] = {
 	{{9, 10, 33},  1}	// 20
 };	
 
-	
 // Note: This is Table 20 from the AD&D Handbook p.40
 static const CLASS_HIT_DICE_TABLE WizardHitDiceTable[] = {
 	{{ 0, 0,  0}, 20},	//  Level 0	(So that Level is a direct access to this table.)
@@ -177,7 +174,6 @@ PLAYER_CLASS_INFO::PLAYER_CLASS_ITEM const PLAYER_CLASS_INFO::pPlayerClassInfoTa
 	{STR_CLASS_THIEF,		RogueHitDiceTable},
 	{STR_CLASS_BARD,		RogueHitDiceTable}
 };	
-
 
 class CLASS_ABILITY {
 public:
@@ -349,4 +345,3 @@ CLASS_TEST_TYPE TestPlayerClassLimits(
 
 	return cttResult;
 }
-

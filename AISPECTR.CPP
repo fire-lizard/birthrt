@@ -10,7 +10,6 @@
 #include "PLAYSTAT.HXX"
 #include "SOUND.HXX"
 
-
 // [d11-26-96 JPC] Changed mfMoveToXYZA to mfMoveToXYA for NON-FLYING
 // avatars in this file.
 
@@ -32,7 +31,6 @@ void CAvatar::Spectres (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 	if( player.ThingIndex != fERROR &&
 		!reject( pAvatar->mfGetSector(), mythings[player.ThingIndex].sect))
 	{
-//		pAvatar->mfStartAnimationLoop(STANDSEQ);
 		return;
 	}
 	
@@ -168,7 +166,6 @@ void CAvatar::Spectres (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 			
 			if (pAvatar->attrib.DiedLastFrame)
 			{
-//				pAvatar->mfSpewAll();
 				pAvatar->attrib.DiedLastFrame=FALSE;
 			}
 
@@ -191,7 +188,6 @@ void CAvatar::Spectres (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 				pAvatar->Status = AI_SEARCH;
 				if(pAvatar->attrib.IsFollowPath == TRUE)
 				{
-					//pAvatar->FaceTo(pAvatar->fFollowPath.oldP.x, pAvatar->fFollowPath.oldP.y);
 					pAvatar->SetAIFuncIndex(CAvatar::AI_FUNC_FOLLOW_PATH);
 					pAvatar->DoAI(CAvatar::AI_INIT);
 					break;
@@ -209,7 +205,6 @@ void CAvatar::Spectres (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 					pAvatar->hEnemy = fERROR;
 					if(pAvatar->attrib.IsFollowPath == TRUE)
 					{
-						//pAvatar->FaceTo(pAvatar->fFollowPath.oldP.x, pAvatar->fFollowPath.oldP.y);
 						pAvatar->SetAIFuncIndex(CAvatar::AI_FUNC_FOLLOW_PATH);
 						pAvatar->DoAI(CAvatar::AI_INIT);
 						break;
@@ -255,7 +250,6 @@ void CAvatar::Spectres (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 					pAvatar->Status = AI_SEARCH;
 					if(pAvatar->attrib.IsFollowPath == TRUE)
 					{
-						//pAvatar->FaceTo(pAvatar->fFollowPath.oldP.x, pAvatar->fFollowPath.oldP.y);
 						pAvatar->SetAIFuncIndex(CAvatar::AI_FUNC_FOLLOW_PATH);
 						pAvatar->DoAI(CAvatar::AI_INIT);
 						break;
@@ -273,7 +267,6 @@ void CAvatar::Spectres (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 						pAvatar->hEnemy = fERROR;
 						if(pAvatar->attrib.IsFollowPath == TRUE)
 						{
-							//pAvatar->FaceTo(pAvatar->fFollowPath.oldP.x, pAvatar->fFollowPath.oldP.y);
 							pAvatar->SetAIFuncIndex(CAvatar::AI_FUNC_FOLLOW_PATH);
 							pAvatar->DoAI(CAvatar::AI_INIT);
 							break;
@@ -319,7 +312,6 @@ void CAvatar::Spectres (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 				pAvatar->Status = AI_SEARCH;
 				if(pAvatar->attrib.IsFollowPath == TRUE)
 				{
-					//pAvatar->FaceTo(pAvatar->fFollowPath.oldP.x, pAvatar->fFollowPath.oldP.y);
 					pAvatar->SetAIFuncIndex(CAvatar::AI_FUNC_FOLLOW_PATH);
 					pAvatar->DoAI(CAvatar::AI_INIT);
 				}
@@ -344,10 +336,7 @@ void CAvatar::Spectres (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 						
 					if (distance <= CAvatar::ActivationDistance)
 					{
-					   //	pAvatar->mfStartAnimationOnce(STANDSEQ);
-					   //   break;
 					
-						
 						pAvatar->Status = AI_MOVING;
 						pAvatar->bumpTimer = 100;
 						pAvatar->attrib.IssuedChallange = TRUE;
@@ -399,17 +388,6 @@ void CAvatar::Spectres (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 					//GWP move Rate amount in a reflective direction
 					pAvatar->mfReflect(Angle, NewAngle);
 					
-					//if((pAvatar->lastBump == iWALL||
-					//	pAvatar->lastBump == iFLOOR ||
-					//	pAvatar->lastBump == iHOLE ||
-					//	pAvatar->lastBump == iCEILING)
-					//   && pAvatar->bumpTimer < 5)
-					//{
-					//	pAvatar->mfMoveToXYZA(pAvatar->mfX()+pAvatar->fSpectre.Movement.dx;
-					//						  pAvatar->mfY()+pAvatar->fSpectre.Movement.dy;
-					//						  pAvatar->mfZ(),
-					//						  pAvatar->mfAngle());
-					//}
 					//else
 					if((pAvatar->lastBump == iWALL||
 						pAvatar->lastBump == iFLOOR ||
@@ -459,7 +437,6 @@ void CAvatar::Spectres (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 				pAvatar->Status = AI_SEARCH;
 				if(pAvatar->attrib.IsFollowPath == TRUE)
 				{
-					//pAvatar->FaceTo(pAvatar->fFollowPath.oldP.x, pAvatar->fFollowPath.oldP.y);
 					pAvatar->SetAIFuncIndex(CAvatar::AI_FUNC_FOLLOW_PATH);
 					pAvatar->DoAI(CAvatar::AI_INIT);
 				}
@@ -494,7 +471,6 @@ void CAvatar::Spectres (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 					pAvatar->Status = AI_SEARCH;
 					if(pAvatar->attrib.IsFollowPath == TRUE)
 					{
-						//pAvatar->FaceTo(pAvatar->fFollowPath.oldP.x, pAvatar->fFollowPath.oldP.y);
 						pAvatar->SetAIFuncIndex(CAvatar::AI_FUNC_FOLLOW_PATH);
 						pAvatar->DoAI(CAvatar::AI_INIT);
 					}
@@ -514,7 +490,6 @@ void CAvatar::Spectres (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 				pAvatar->Status = AI_SEARCH;
 				if(pAvatar->attrib.IsFollowPath == TRUE)
 				{
-					//pAvatar->FaceTo(pAvatar->fFollowPath.oldP.x, pAvatar->fFollowPath.oldP.y);
 					pAvatar->SetAIFuncIndex(CAvatar::AI_FUNC_FOLLOW_PATH);
 					pAvatar->DoAI(CAvatar::AI_INIT);
 					break;

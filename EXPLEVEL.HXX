@@ -61,9 +61,6 @@ typedef enum {
    Functions
    ----------------------------------------------------------------------- */
 // put these in yourself... trying to avoid #include loops
-// extern BOOL ExpCheck(PLAYER_STATS * pPS);
-// extern void GainExp(PLAYER_STATS * pPS, const LONG ExpAmount,
-// 				const BOOL CanGainLevelNow);
 				
 extern BOOL SaveVs(const SHORT hPlayerStats,
                    SAVETYPE savetype, SBYTE modifier);

@@ -15,7 +15,6 @@
 
 BOOL PlayFlic(char * fn, LONG secondsToWaitAtEnd);
 
-
 #define MAX_FLC_FILENAME_LEN 128
 #define FLCERR_OK		 0
 #define FLCERR_FILE		-1
@@ -64,7 +63,6 @@ inline SimpleFLC::SimpleFLC() :		// The constructor sets initial (invalid) value
 inline SimpleFLC::~SimpleFLC()
 {
 	// Can't call this because the memory manager is already gone.
-	// mfDispose();
 }
 
 inline SHORT const SimpleFLC::mfTotalFrames() const
@@ -92,4 +90,3 @@ inline void SimpleFLC::mfMove(SHORT const delta_x, SHORT const delta_y)
 }
 
 #endif
-

@@ -20,10 +20,8 @@
 #ifndef _MESSQUE_H
 #define _MESSQUE_H
 
-
    #define MAX_MESSQUE  1000
    #define MAX_MESSDATA 4
-
 
    typedef struct
    {
@@ -33,8 +31,6 @@
        long  data[MAX_MESSDATA];
 
    }   MESSQUE, * PMESSQUE;
-
-
 
    //
    //---- Battle Message subtypes for type iMPT_BATTLE in mulplay.hxx
@@ -58,7 +54,6 @@
        iMPST_BATTLE_END            //---- end
    };
 
-
    //
    //---- Prototype
    //
@@ -67,15 +62,11 @@
 
    int Add_MessQue( PMESSQUE pMessBuf );
 
-   // int Del_MessQue ( int index );
-
    int Get_MessQueTS( long type, long subtype, PMESSQUE pMessBuf );
 
    int DelAll_MessQue ( long type );    
 
    int Get_MessQueTS1( long type, long subtype, long data0, PMESSQUE pMessBuf );
-
-
 
 #endif
 

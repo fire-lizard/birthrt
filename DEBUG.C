@@ -7,7 +7,6 @@
 //------------------------------------------------------------------------------
 //
 
-
 #include <stdio.h>
 
 #ifdef _WINDOWS
@@ -19,7 +18,6 @@
 //GEH not availible in Watcom #include <crtdbg.h>        // JPC
 
 // GWP The macro defines in debug.h toast the compile.
-//#include "debug.h"
 #include "SYSTEM.H"
 #include "MACHINE.H"
 
@@ -47,29 +45,13 @@ void InitDebug ( void );
 void InitDebug ( void )
 {
 
-//    int hCrt;
-//    FILE *hf;
-//    int i;
-
    //---- Allow printf etc to work
 
      AllocConsole();
 
-//   hCrt = _open_osfhandle( (long) GetStdHandle(STD_OUTPUT_HANDLE),
-//                           _O_TEXT );
-
-//   hf = _fdopen( hCrt, "w" );
-
-//   *stdout = *hf;
-
-//   i = setvbuf( stdout, NULL, _IONBF, 0 );
-
    iDebug = TRUE;
 
-
 }   //---- InitDebug ()
-
-
 
 //----------------------------------------------------------------------------
 //  debugf()
@@ -107,7 +89,6 @@ int debugf ( const char *format, ... )
     }
 
     return(0);
-
 
 }   //---- End of debugf()
 
@@ -154,7 +135,6 @@ void ErrorMessage (const char *format, ...)
 	MessageBox (NULL, szTemp, "Error", MB_OK);
 }
 
-
 // ---------------------------------------------------------------------------
 void SS_Assert (char * szSourceFile, int iLine)
 {
@@ -191,7 +171,6 @@ void ErrorMessage (const char *format, ...)
 	va_end (argp);
    printf (szTemp);
 }
-
 
 // ---------------------------------------------------------------------------
 // ---------------------------------------------------------------------------

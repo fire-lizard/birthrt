@@ -29,7 +29,6 @@
 #include "SOUND.HXX"
 #include "UNITS.HXX"
 #include "REALM.HXX"
-//#include "rlmspell.hxx"
 #include "GAMEMAP.HXX"
 #include "MAPAI.HXX"
 #include "MENU.H"
@@ -287,7 +286,6 @@ DEFINE_VECTOR_DATA(SHORT,UnitTypeID) = {
 };
 DEFINE_VECTOR_CLASS(SHORT, UnitTypeID);
 
-
 extern SHORT		iDRollFIc;
 extern LONG			TutorialActionNumber;
 extern LONG			TutorialScreenNumber;
@@ -295,7 +293,6 @@ extern BOOL			mundane_descriptions;
 
 static void DoDealMenu(LONG iRealm);
 DIPLOMACY_DATA dData;
-
 
 void SetCurAction(SHORT iAction)
 {
@@ -335,7 +332,6 @@ static LONG RealmExpPoints[NUM_OF_EXP_TYPES][NUM_OF_EXP_CLASSES] = {
 /* RLM_EXP_RULE_PASS,				  */	{	0,			0,			0,			0 },
 };
 
-
 /* ========================================================================
    Function    - 
    Description - Vassal of another realm?
@@ -355,8 +351,6 @@ BOOL CheckVassal ( REALM::REALM_TYPE rlm )
 
    return FALSE;
 }
-
-
 
 /* ========================================================================
    Function    - 
@@ -481,10 +475,6 @@ static BOOL ProcessGoldAndReg (LONG mode)
 	if (mode == CHECK_AND_UPDATE )
 	{
 		realm[HomeRealm].mfAddRegency(-RegencePoint);
-
-//		if(((iCurAction == REALM_SPELL && iSelectedOneHolding == ITEM_SPELL_ALCHEMY) ||
-//			 iCurAction == DIPLOMACY )
-//			&& GoldGained > 0)
 
 		// Handle the Diplomacy case upon success.
 		if ((iCurAction == REALM_SPELL & iSelectedOneHolding == ITEM_SPELL_ALCHEMY)
@@ -619,8 +609,6 @@ static UBYTE RollSuccess (UBYTE Chance, LONG x, LONG y, LONG lPrint)
 				AddSndObj((BIRTHRT_SND)SND_UI_DID_NOT_SUCCEED,0,VOLUME_NINETY);
 		}
 
-		//printf("ROLL SUCCESS - Chance:%d  roll:%d  result:%d\n",Chance,success_roll,fRollResult[iThisRoll]);
-
 		return fRollResult[iThisRoll];
 
 	}
@@ -644,8 +632,6 @@ static void DispSuccess (void)
 	DrawBitmap((SHORT)(xRollLocation+15-90), (SHORT)(yRollLocation+5-24), iDRollFIc, 0, 0, 999, 999);
 
 	// do sound once
-	//if(iWhichRoll==0)
-	//	AddSndObj((BIRTHRT_SND)SND_UI_DICE1,0,VOLUME_NINETY);
 
 	if(iWhichRoll==0 && firstRollFlag==0)
 	{
@@ -763,7 +749,6 @@ void Selection (LONG prov, LONG index)
 		startProvCount = 1;
 
 }
-
 
 /* ======================================================================== */
 void SelectMulProvince (LONG prov, LONG level)
@@ -1052,7 +1037,6 @@ void CheckAndFixPlaces (PROVINCE prov)
 	{
 		// ...terminate the list here
 		SetGameData(MP_PROVINCE, MPPROV_FIRSTPLACE, prov, 0, TRUE);
-//		fatal_error("ACTNMENU::CheckAndFixPlaces - province[%s (%ld)].FirstPlace > MAX_PLACES (%ld)",province[prov].name,prov,province[prov].FirstPlace);
 	}
 
 	i = j = province[prov].FirstPlace;
@@ -1071,14 +1055,12 @@ void CheckAndFixPlaces (PROVINCE prov)
 		if ( k > MAX_PLACES )
 		{
 			TerminatePlaceList(i);	// ...terminate the list here
-//			fatal_error("ACTNMENU::CheckAndFixPlaces - places[%ld].NextPlace bad, link (%ld) > MAX_PLACES",i,k);
 		}
 
 		// if NextPlace causes loop...
 		if ( fBeenHere[k] )
 		{
 			TerminatePlaceList(i);	// ...terminate the list here
-//			fatal_error("ACTNMENU::CheckAndFixPlaces - places[%ld].NextPlace loops back to %ld",i,k);
 		}
 
 		j = places[i].NextPlace;		// next place in province
@@ -1143,17 +1125,14 @@ void DeleteHolding (PROVINCE iProv, LONG iHold, BOOL fSend )
 			{
 				if (places[i].iRoute1 == iHold)
 				{
-					//places[i].iRoute1 = 0;
 					SetGameData(MP_PLACES, MPPLACE_IROUTE1, i, 0, fSend );
 				}
 				else if (places[i].iRoute2 == iHold)
 				{
-					//places[i].iRoute2 = 0;
 					SetGameData(MP_PLACES, MPPLACE_IROUTE2, i, 0, fSend );
 				}
 				else if (places[i].iRoute3 == iHold)
 				{
-					//places[i].iRoute3 = 0;
 					SetGameData(MP_PLACES, MPPLACE_IROUTE3, i, 0, fSend );
 				}
 			}
@@ -1210,18 +1189,12 @@ void DeleteHolding (PROVINCE iProv, LONG iHold, BOOL fSend )
 		SetGameData(MP_PLACES, MPPLACE_NEXTPLACE, j, places[j].NextPlace, fSend );
 	}
 
-//	places[iHold].Realm = REALM::NO_COUNTRY;
 	SetGameData(MP_PLACES, MPPLACE_REALM, iHold, REALM::NO_COUNTRY, FALSE );
 
-//	places[iHold].NextPlace = 0;
 	SetGameData(MP_PLACES, MPPLACE_NEXTPLACE, iHold, 0, FALSE );
-//	places[iHold].Contested	= 0;
 	SetGameData(MP_PLACES, MPPLACE_CONTESTED, iHold, 0, FALSE );
-//	places[iHold].iRoute1 = 0;
 	SetGameData(MP_PLACES, MPPLACE_IROUTE1, iHold, 0, FALSE );
-//	places[iHold].iRoute2 = 0;
 	SetGameData(MP_PLACES, MPPLACE_IROUTE2, iHold, 0, FALSE );
-//	places[iHold].iRoute3 = 0;
 	SetGameData(MP_PLACES, MPPLACE_IROUTE3, iHold, 0, FALSE );
 
 	//GWP
@@ -1255,7 +1228,6 @@ BOOL CreateHolding (LONG type, LONG route1, LONG route2, PROVINCE prov, REALM::R
 					&& places[j].y == (SHORT)(province[prov].y+place_y[i]-10) )
 			{
 				f[i] = FALSE;
-				//	printf("Create holding - found x:%d y:%d don't use %d\n",places[j].x,places[j].y,i);
 			}
 		}
 		prevPlace = j;
@@ -1264,27 +1236,22 @@ BOOL CreateHolding (LONG type, LONG route1, LONG route2, PROVINCE prov, REALM::R
 	}
 
 	// find the place to put the new holding(the end of places array)
-	//	for (tmp=0; places[tmp].Realm != REALM::NO_COUNTRY && tmp<MAX_PLACES; ++tmp){}
 	RequestPlacesIndex(&tmp, fSend);
 
 	if (tmp==MAX_PLACES)
 	{
-		//	fatal_error("ERROR - exceeded MAX_PLACES while creating a holding in ACTNMENU\n");
 		return FALSE;
 	}
 
 	// put the new holding into link
 	if (prevPlace != fERROR)
 	{
-		//	places[prevPlace].NextPlace = tmp - province[prov].FirstPlace;
 		SetGameData(MP_PLACES, MPPLACE_NEXTPLACE, prevPlace, tmp - province[prov].FirstPlace, fSend );
 	}
 	else
 	{
-		// province[prov].FirstPlace = tmp;
 		SetGameData(MP_PROVINCE, MPPROV_FIRSTPLACE, prov, tmp, fSend );
 	}
-	//	places[tmp].NextPlace = 0;
 	SetGameData(MP_PLACES, MPPLACE_NEXTPLACE, tmp, 0, FALSE );
 
 	// initialize the new holding
@@ -1293,36 +1260,22 @@ BOOL CreateHolding (LONG type, LONG route1, LONG route2, PROVINCE prov, REALM::R
 		if (f[i])
 		{
 			x = province[prov].x + place_x[i];
-//			places[tmp].y = (SHORT)(province[prov].y + place_y[i] - 10);
 			SetGameData(MP_PLACES, MPPLACE_Y, tmp, (SHORT)(province[prov].y + place_y[i] - 10), FALSE );
-//			printf("Create holding at x:%d y:%d\n",places[tmp].x,places[tmp].y);
 			break;
 		}
 	}
-//	places[tmp].Realm = realm;
 	SetGameData(MP_PLACES, MPPLACE_REALM, tmp, realm, FALSE );
-//	places[tmp].Level = 0;
 	SetGameData(MP_PLACES, MPPLACE_LEVEL, tmp, 0, FALSE );
-//	places[tmp].iRoute1 = route1;
 	SetGameData(MP_PLACES, MPPLACE_IROUTE1, tmp, route1, FALSE );
-//	places[tmp].iRoute2 = route2;
 	SetGameData(MP_PLACES, MPPLACE_IROUTE2, tmp, route2, FALSE );
-//	places[tmp].iRoute3 = 0;
 	SetGameData(MP_PLACES, MPPLACE_IROUTE3, tmp, 0, FALSE );
-//	places[tmp].iName = 0;
 	SetGameData(MP_PLACES, MPPLACE_INAME, tmp, 0, FALSE );
-//	places[tmp].Contested	= 0;
 	SetGameData(MP_PLACES, MPPLACE_CONTESTED, tmp, 0, FALSE );
-//	places[tmp].scene = NULL;
 	SetGameData(MP_PLACES, MPPLACE_SCENE, tmp, NULL, FALSE );
-//	places[tmp].Icon = (SHORT)InfoReqType[type];
 	SetGameData(MP_PLACES, MPPLACE_ICON, tmp, (SHORT)InfoReqType[type], FALSE );
-//	sprintf(n,"UI\\%s.PCX",GameIcons[places[tmp].Icon]);
-//	places[tmp].iIconBitm = GetResourceStd(n, FALSE);
 	SetGameData(MP_PLACES, MPPLACE_IICONBITM, tmp, places[tmp].Icon, FALSE );
 
 // setting the x coord tells the system the holding exists
-//	places[tmp].x = (SHORT)x;
 	SetGameData(MP_PLACES, MPPLACE_X, tmp, (SHORT)x, FALSE );
 
 	//GEH
@@ -1333,14 +1286,12 @@ BOOL CreateHolding (LONG type, LONG route1, LONG route2, PROVINCE prov, REALM::R
 	
 	// GWP szHoldType overflows its bounds
 	// WRC szHoldType was changed to gsHoldType, it has string enums instead of strings now
-	// GWP printf("Create holding %d - link:%d prov:%s type:%s iRoute1:%d iRoute2:%d\n", tmp, prevPlace, province[prov].name, STRMGR_GetStr(gsHoldType[type]), places[tmp].iRoute1, places[tmp].iRoute2);
 
 	CheckAndFixPlaces(prov);
 
 	++cntHolds;
 	return TRUE;
 }
-
 
 /* ========================================================================
    Function    - 
@@ -1396,8 +1347,6 @@ static LONG LargestSource (PROVINCE prov, LONG place, REALM::REALM_TYPE ThisReal
 {
 	LONG			j, k, i;
 	LONG			route, route2;
-
-	//printf("*");
 
 	// find a SOURCE we own in prov
 	if (prov)
@@ -1503,7 +1452,6 @@ void PaintForgeLeyLine (LONG x, LONG y, LONG h)
 				{
 					iSelectedHolding[i][0] = tmpIndex;
 					iSelectedHolding[i][1] = tmpIndex/256;
-//printf("Province Info:%s  holding:%d  Icon%s  Realm:%s  NextPlace:%d\n",province[i].name,tmpIndex,GameIcons[places[tmpIndex].Icon],realm[places[tmpIndex].Realm].name ,places[tmpIndex].NextPlace);
 				}
 			}
 			j = places[tmpIndex].NextPlace;		// next place in province
@@ -1602,9 +1550,6 @@ void PaintForgeLeyLine (LONG x, LONG y, LONG h)
 		fAllowRollButton = TRUE;
 		place  = iSelectedHolding[iSelectedRealm][0] + (iSelectedHolding[iSelectedRealm][1]*256);
 		place2  = iSelectedHolding[iSelectedProvince][0] + (iSelectedHolding[iSelectedProvince][1]*256);
-//printf("LEYLINE - start:%s place:%d (%d routes) end:%s place:%d (%d routes)\n",
-//	province[iSelectedRealm].name,place,iSelectedHolding[iSelectedRealm][2],
-//	province[iSelectedProvince].name,place2,iSelectedHolding[iSelectedProvince][2]);
 
 		success = 5 - places[place].Level - modRegency + modOpponent;
 		if (success < 1) success = 1;
@@ -1637,20 +1582,13 @@ void PaintForgeLeyLine (LONG x, LONG y, LONG h)
 			SyncRegencySpentInOpposition((REALM::REALM_TYPE)province[iSelectedRealm].Realm);
 			SyncRegencySpentInOpposition((REALM::REALM_TYPE)province[iSelectedProvince].Realm);
 			if (places[place].iRoute1==0)
-//				places[place].iRoute1 = place2;
 				SetGameData(MP_PLACES, MPPLACE_IROUTE1, place, place2, TRUE );
 			else if (places[place].iRoute2==0)
-//				places[place].iRoute2 = place2;
 				SetGameData(MP_PLACES, MPPLACE_IROUTE2, place, place2, TRUE );
 			else
-//				places[place].iRoute3 = place2;
 				SetGameData(MP_PLACES, MPPLACE_IROUTE3, place, place2, TRUE );
 
 			AddReport(SUBJ_LEY_LINE, iSelectedRealm, iSelectedProvince, 0);
-
-//printf("WON LEYL- start:%s place:%d route1:%d end:%s place:%d route1:%d\n",
-//	province[iSelectedRealm].name,place,places[place].iRoute1,
-//	province[iSelectedProvince].name,place2,places[place2].iRoute1);
 
 		}
 		if (result == 2)	// failure
@@ -1878,12 +1816,6 @@ static BOOL RecursiveRoadFollower_sub (PROVINCE prov)
 					rv = TRUE;
 
 				//LOGCOMMENTSLEEP
-				//if ( fLogComment )
-				//{
-				//	char temp[100];
-				//	sprintf ( temp, "   RecursiveRoadFollower_sub - found road from %s to %s",province[prov].name,province[province[prov].Border[j].Province].name );
-				//	RandomLogComment ( temp );
-				//}
 
 				if (RecursiveRoadFollower_sub((PROVINCE)province[prov].Border[j].Province))
 					rv = TRUE;
@@ -1893,20 +1825,9 @@ static BOOL RecursiveRoadFollower_sub (PROVINCE prov)
 	}
 
 	//LOGCOMMENTSLEEP
-	//if ( fLogComment )
-	//{
-	//	char temp[100];
-	//	if (rv)
-	//		sprintf ( temp, "   RecursiveRoadFollower_sub - prov:%s returns TRUE",province[prov].name );
-	//	else
-	//		sprintf ( temp, "   RecursiveRoadFollower_sub - prov:%s returns FALSE",province[prov].name );
-	//	RandomLogComment ( temp );
-	//}
 
 	return rv;
 }
-
-
 
 BOOL RecursiveRoadFollower (PROVINCE prov)
 {
@@ -1921,24 +1842,12 @@ BOOL RecursiveRoadFollower (PROVINCE prov)
 				|| province[prov].Border[j].MoveCost == RIVER_ROAD)
 		{
 			//LOGCOMMENTSLEEP
-			//if ( fLogComment )
-			//{
-			//	char temp[100];
-			//	sprintf ( temp, "   RecursiveRoadFollower - found road from %s to %s",province[prov].name,province[province[prov].Border[j].Province].name );
-			//	RandomLogComment ( temp );
-			//}
 
 			return RecursiveRoadFollower_sub(prov);
 		}
 	}
 
 	//LOGCOMMENTSLEEP
-	//if ( fLogComment )
-	//{
-	//	char temp[100];
-	//	sprintf ( temp, "   RecursiveRoadFollower - Failed, found no road borders");
-	//	RandomLogComment ( temp );
-	//}
 	return FALSE;
 }
 
@@ -1995,7 +1904,6 @@ void PaintTradeRoute (LONG x, LONG y, LONG h)
 				{
 					iSelectedHolding[i][0] = tmpIndex;
 					iSelectedHolding[i][1] = tmpIndex/256;
-//printf("Province Info:%s  holding:%d  Icon%s  Realm:%s  NextPlace:%d\n",province[i].name,tmpIndex,GameIcons[places[tmpIndex].Icon],realm[places[tmpIndex].Realm].name ,places[tmpIndex].NextPlace);
 				}
 			}
 			j = places[tmpIndex].NextPlace;		// next place in province
@@ -2020,7 +1928,6 @@ void PaintTradeRoute (LONG x, LONG y, LONG h)
 					if(counter < startProvCount)
 						continue;
 
-//printf("Start Province:%s  guild:%d  num_of_routes:%d\n",province[i].name,*((SHORT*)(&iSelectedHolding[i][0])),iSelectedHolding[i][2]);
 					init_gfont(FONT_SANS_8PT);
 					DrawLittleButton(x, y, xPROVWIDTH, 10, (iSelectedRealm==i));
 					add_region(x, y, xPROVWIDTH, 10, 0, SelectRealm,i,0,0, -1);
@@ -2098,10 +2005,8 @@ void PaintTradeRoute (LONG x, LONG y, LONG h)
 		else
 			fAllowRollButton = (ProcessGoldAndReg(CHECK_ONLY))?fAllowRollButton:0;
 		
-		//if(fAllowRollButton) // Need to be able to modify this.
 		{
 			place = iSelectedHolding[iSelectedRealm][0] + (iSelectedHolding[iSelectedRealm][1]*256);
-	//printf("Start Province:%s  guild:%d  num_of_routes:%d\n",province[iSelectedRealm].name,place,iSelectedHolding[iSelectedRealm][2]);
 	
 			success = 10 - places[place].Level - modRegency + modOpponent;
 	
@@ -2135,21 +2040,17 @@ void PaintTradeRoute (LONG x, LONG y, LONG h)
 			{
 				places[place].iRoute1 = iSelectedProvince;
 				SetGameData(MP_PLACES, MPPLACE_IROUTE1, place, iSelectedProvince, TRUE );
-//printf("Trade Route - holding:%d iRoute1 from %s to %s\n",place,province[iSelectedRealm].name,province[iSelectedProvince].name);
 			}
 			else if (places[place].iRoute2==0)
 			{
 				places[place].iRoute2 = iSelectedProvince;
 				SetGameData(MP_PLACES, MPPLACE_IROUTE2, place, iSelectedProvince, TRUE );
-//printf("Trade Route - holding:%d iRoute2 from %s to %s\n",place,province[iSelectedRealm].name,province[iSelectedProvince].name);
 			}
 			else
 			{
 				places[place].iRoute3 = iSelectedProvince;
 				SetGameData(MP_PLACES, MPPLACE_IROUTE3, place, iSelectedProvince, TRUE );
-//printf("Trade Route - holding:%d iRoute3 from %s to %s\n",place,province[iSelectedRealm].name,province[iSelectedProvince].name);
 			}
-//			AddReport(IMMEDIATE_TRADE_RT, iSelectedRealm, iSelectedProvince, 0);
 		}
 		if (result == 2)	// failure
 		{
@@ -2158,7 +2059,6 @@ void PaintTradeRoute (LONG x, LONG y, LONG h)
 			SendResult(TRADE_ROUTE, iSelectedProvince, 0, result);
 			SyncRegencySpentInOpposition((REALM::REALM_TYPE)province[iSelectedRealm].Realm);
 			SyncRegencySpentInOpposition((REALM::REALM_TYPE)province[iSelectedProvince].Realm);
-//			AddReport(IMMEDIATE_TRD_RT_FAIL, iSelectedRealm, iSelectedProvince, 0);
 		}
 /*
 		GoldBar = 1;
@@ -2185,7 +2085,6 @@ void PaintTradeRoute (LONG x, LONG y, LONG h)
    Description - 
    Returns     -
    ======================================================================== */
-//#define xPROVWIDTH			(125)			see above
 #define xUNITTYPES			(150)
 #define xUNITNUM				(270)
 
@@ -2287,11 +2186,7 @@ void PaintMuster (LONG x, LONG y, LONG h)
 						else
 							SetupMod(x+xUNITNUM, y, &iSelectedHolding[i][1], 0, province[iSelectedProvince].CivLevel - province[iSelectedProvince].LevyMustered-troops+iSelectedHolding[i][1], 1);
 
-						//modGoldBars += iSelectedHolding[i][1] * UnitMusterCost[i];
 						y+=16;
-						//if(iSelectedHolding[i][1])
-						//	done = TRUE;
-						//fAllowRollButton = done;
 						// print prev, next buttons if provinces are more than 13		
 						if(DoPageProvince(&startProvCount1, provCount1, 13, counter1, x+xUNITTYPES, y))
 							break;
@@ -2490,7 +2385,6 @@ void PaintAgitate (LONG x, LONG y, LONG h)
 									else if(iSelectedHolding[i][0]==3)
 										SetScrewed((REALM::REALM_TYPE)province[i].Realm, HomeRealm, TRUE );
 									SetGameData(MP_PROVINCE, MPPROV_LOYALTY, i, province[i].Loyalty, TRUE );
-	//								AddReport(IMMEDIATE_AGITATE, (iSelectedHolding[i][0]==3), i, province[i].Loyalty);
 									iSelectedHolding[i][0]+=2;		// don't add to printed loyalty anymore
 								}
 								if (result == 2)	// failure
@@ -2498,7 +2392,6 @@ void PaintAgitate (LONG x, LONG y, LONG h)
 									// multi-player support
 									SendResult(AGITATE, i, 0, result);
 									SyncRegencySpentInOpposition((REALM::REALM_TYPE)province[i].Realm);
-	//								AddReport(IMMEDIATE_AGITATE_FAIL, i, 0, 0);
 									iSelectedHolding[i][0]+=2;		// don't add to printed loyalty anymore
 								}
 							}
@@ -2654,20 +2547,6 @@ void CheckHolding(LONG place, REALM::REALM_TYPE realm_, BOOL fSend)
    Description - 
    Returns     -
    ======================================================================== */
-//CSTRPTR	szDiplomacySubj[] = {
-///*00*/	"Seek Permissive Alliance","needs 75%c",
-///*01*/	"Seek Full Alliance","needs 95%c",
-///*02*/	"Seek Oath of Fealty","needs 150%c",
-///*03*/	"Request Gold","-3%c per GB",
-///*04*/	"Demand Territory","varies",
-///*05*/	"Demand Holding","-10%c per level",
-///*06*/	"Demand Tribute","-10%c per GB",
-///*07*/	"Offer Territory","varies",
-///*08*/	"Offer Holding","+5%c per level",
-///*09*/	"Offer Tribute","+5%c per GB",
-///*10*/	"Offer Gold","+2%c per GB",
-///*09b*/	"Offer Salary","varies",
-///*  */	"Offer Regency", "",	};
 
 static DEFINE_STATIC_VECTOR_DATA(GAME_STRING,gsDiplomacySubj) = {
 /*00*/	STR_DIPLOMACY_SEEK_PERMISSIVE,STR_DIPLOMACY_NEEDS_75,
@@ -2684,7 +2563,6 @@ static DEFINE_STATIC_VECTOR_DATA(GAME_STRING,gsDiplomacySubj) = {
 /*09b*/	STR_DIPLOMACY_OFFER_SALARY,STR_DIPLOMACY_VARIES,
 /*  */	STR_DIPLOMACY_OFFER_REGENCY,STR_NULL };
 DEFINE_STATIC_VECTOR_CLASS(GAME_STRING, gsDiplomacySubj);
-
 
 //																				    ____Demand_____ _____Offer_____
 //																	    Prm Ful Vsl GBs Ter Hld Trb Ter Hld Trb GBs
@@ -2748,7 +2626,6 @@ UBYTE ReactionAndStatusColor(LONG Realm1, LONG Realm2)
 	if (RealmReaction[Realm2][Realm1] < 25) return ORANGE;
 	return StatusColor[(RealmStatus[Realm2][Realm1])&0x0F];
 }
-
 
 /* ======================================================================== 
    calculate the value of all the units in prov belongs to realm_
@@ -2845,7 +2722,6 @@ void PaintDiplomacy (LONG x, LONG y, LONG h)
 	static LONG	typAlliance = 0;
 	UBYTE	coReaction;
 
-
 	del_region(NextPrev,0);
  	if (playerstats[ActiveRegent] != fERROR)
  	{
@@ -2871,7 +2747,6 @@ void PaintDiplomacy (LONG x, LONG y, LONG h)
  	}
 	fAllowCancelButton = !fAllowDoneButton;
 
-
 	if (iSelectedRealm && iSelectedRealm >= LAND_REALM_COUNT
 			&& CheckVassal((REALM::REALM_TYPE)iSelectedRealm) && !ISVASSAL(iSelectedRealm, HomeRealm) )
 	{
@@ -2883,7 +2758,6 @@ DiplomacyRestart:
 		fAllowDoneButton = FALSE;
 		iSelectedRealm = REALM::NO_COUNTRY;
 	}
-
 
 	if (!iSelectedRealm)
 	{
@@ -2922,9 +2796,6 @@ DiplomacyRestart:
 				x+=145;
 			}
 
-//          if ( x < startX + 290 )
-//          {
-
 			   DrawLittleButton(x, y, (x>startX)?160:130, 10, (iSelectedRealm==i));
 			   DrawShield(x+2, y, (REALM::REALM_TYPE)i);
 			   xs = gtext_width(realm[i].mfGetName());
@@ -2935,7 +2806,6 @@ DiplomacyRestart:
 	    			print_textf(x+((x>startX)?145:115), y+6, DKBROWN, "^c%d%c", RealmReaction[i][HomeRealm],'%');
 		    	add_region(x, y-1, (x>startX)?160:130, 12, 0, SelectRealm,i,0,0, -1);
 			   y+=14;
-//          }
 		}
 	}
 
@@ -3031,7 +2901,6 @@ DiplomacyRestart:
 					}
 					else			// i==9 || i==10
 					{
-						//GEH SetupMod(x+258, y, &iSelectedHolding[i][0], 0, 20, 1);
 						SetupMod(x+258, y, &iSelectedHolding[i][0], 0, 45, 1);
 						GoldBar += iSelectedHolding[i][0];
 					}
@@ -3159,7 +3028,6 @@ DiplomacyRestart:
 					if (i==3 || i==6 || i==9 || i==10)
 					{
 						LONG	first, second;
-						//GEH mod = Modifiers[i] * iSelectedHolding[i][0];
 						first = iSelectedHolding[i][0];
 						second = 0;
 						if ( i==9 || i==10 )
@@ -3209,8 +3077,6 @@ DiplomacyRestart:
 				del_region(SelectUnit, 0);
 				del_region(SelectMulUnits, 0);
 				del_region(Selection, 0);
-//				DeleteActnMenuRegions();
-//				add_region(x, y, 145, 10, 0, SelectRealm,iSelectedRealm,0,0, -1);
 				
 				{
 					char RegentName[80];
@@ -3258,7 +3124,6 @@ DiplomacyRestart:
 	   	else
 				fAllowRollButton = (ProcessGoldAndReg(CHECK_ONLY))?fAllowRollButton:0;
 	
-			
 			if (curReact < minReact && !fAllowDoneButton && tmp >= 10
 #ifdef _WINDOWS
 			   && !(IsMultiPlayer() && realm[iSelectedRealm].mfIsPlayerCtrl())
@@ -3516,8 +3381,6 @@ DiplomacyRestart:
 					{
 						if(iSelection[3] == iSelection[5])
 						{
-							//places[province[iSelection[5]].FirstPlace].Realm = HomeRealm;
-							//SetGameData(MP_PLACES, MPPLACE_REALM, province[iSelection[5]].FirstPlace, HomeRealm, TRUE );
 							if(iSelection[6])
 								if(iSelection[6]==iSelection[8])
 									CheckHoldingConflict(province[iSelection[5]].FirstPlace, province[iSelection[8]].FirstPlace, TRUE);	 
@@ -3528,8 +3391,6 @@ DiplomacyRestart:
 						}
 						else
 						{
-							//places[province[iSelection[5]].FirstPlace+iSelection[3]].Realm = HomeRealm;
-							//SetGameData(MP_PLACES, MPPLACE_REALM, province[iSelection[5]].FirstPlace+iSelection[3], HomeRealm, TRUE );
 			   				if(iSelection[6])
 								if(iSelection[6]==iSelection[8])
 									CheckHoldingConflict(province[iSelection[5]].FirstPlace+iSelection[3], province[iSelection[8]].FirstPlace, TRUE);	 
@@ -3548,15 +3409,11 @@ DiplomacyRestart:
 					{
 						if(iSelection[6]==iSelection[8])
 						{
-							//places[province[iSelection[8]].FirstPlace].Realm = iSelectedRealm;
-							//SetGameData(MP_PLACES, MPPLACE_REALM, province[iSelection[8]].FirstPlace, iSelectedRealm, TRUE );
 							if(!(iSelection[3]))
 								CheckHolding(province[iSelection[8]].FirstPlace, (REALM::REALM_TYPE)iSelectedRealm, TRUE);
 						}
 						else
 						{
-							//places[province[iSelection[8]].FirstPlace+iSelection[6]].Realm = iSelectedRealm;
-							//SetGameData(MP_PLACES, MPPLACE_REALM, province[iSelection[8]].FirstPlace+iSelection[6], iSelectedRealm, TRUE );
 							if(!(iSelection[3]))
 								CheckHolding((province[iSelection[8]].FirstPlace+iSelection[6]), (REALM::REALM_TYPE)iSelectedRealm, TRUE);
 						}
@@ -3643,12 +3500,10 @@ DiplomacyRestart:
 									{
 										if(places[k].Realm == regents[iSelectedOneHolding].mfGetRealm())
 										{
-											//places[k].Realm = HomeRealm;
 											CheckHolding(k, HomeRealm, TRUE);
 										}
 									}
 								}
-								//	regents[iSelectedOneHolding].mfGetunit() = j;
 								SetGameData(MP_REGENT, MPREG_UNIT, iSelectedOneHolding, j, TRUE );
 
 								// set his maintenance
@@ -3663,7 +3518,6 @@ DiplomacyRestart:
 										SetGameData(MP_TRIBUTE, rlm, iSelectedRealm, 0, TRUE);
 										SetGameData(MP_TRIBUTE, iSelectedRealm, rlm, 0, TRUE);
 									}
-									//iSelectedHolding[9][0] = 0	// visual bug
 								}
 
 							}
@@ -3677,7 +3531,6 @@ DiplomacyRestart:
 						RealmReaction[iSelectedRealm][HomeRealm] = (curReact>150)?150:curReact;
 						if(ISATWAR(iSelectedRealm, HomeRealm)||ISATWAR(HomeRealm, iSelectedRealm))
 						{
-							//RealmStatus[iSelectedRealm][HomeRealm] = STATUS_NEUTRAL;
 							SetGameData(MP_REALMSTATUS, iSelectedRealm, HomeRealm, STATUS_NEUTRAL, TRUE );
 						}
 						SetGameData(MP_REALMREACTION, iSelectedRealm, HomeRealm, RealmReaction[iSelectedRealm][HomeRealm], TRUE);
@@ -3685,7 +3538,6 @@ DiplomacyRestart:
 						{
 							if(ISATWAR(iSelectedRealm, HomeRealm)||ISATWAR(HomeRealm, iSelectedRealm))
 							{
-								//RealmStatus[HomeRealm][iSelectedRealm] = STATUS_NEUTRAL;
 								SetGameData(MP_REALMSTATUS, HomeRealm, iSelectedRealm,STATUS_NEUTRAL, TRUE );
 							}
 							if(typAlliance == 3)
@@ -3719,8 +3571,6 @@ DiplomacyRestart:
 					if (iSelection[4] || iSelection[7])
 					{
 						TickDelay(20);
-						//ReconstructMap();
-						//CheckRealmStatus(investor,victim, TRUE );
 						SetGameData(MP_PROVINCE, MPPROV_INVESTED, investor, victim, TRUE );
 
 						if (realm[HomeRealm].mfExists() == FALSE)	// gave away the farm
@@ -3790,7 +3640,6 @@ DiplomacyRestart:
 						index = places[j].NextPlace;
 						j = province[i].FirstPlace + index;
 					}
-
 
 					if(((iNewScreen == 4 &&(province[i].Realm == iSelectedRealm) )
 					  ||(iNewScreen == 7 &&(province[i].Realm == HomeRealm))) && (index == 0))
@@ -3930,10 +3779,6 @@ DiplomacyRestart:
 	if (fAllowDoneButton || IsMenuActive(D_AVATAR_ATTRIBUTES2))
 		DeleteActnMenuRegions();
 
-
-//	fAllowCancelButton = TRUE;
-//	fAllowRollButton = FALSE;
-//	fAllowDoneButton = (iSelectedRealm != 0);
 }
 
 /* ========================================================================
@@ -4106,8 +3951,6 @@ void PaintEspionage (LONG x, LONG y, LONG h)
 		// type is Assassinate, now select unit
 		if (iSelectedOneHolding == 1 && iSelectedUnit == 0)
 		{
-//			x = startX+160;
-//			y = startY;
 			print_textf(x, y, DKBROWN, STRMGR_GetStr(STR_ACTNMENU_F00_UNITS));
 			init_gfont(FONT_SANS_8PT);
 			y += 12;
@@ -4122,11 +3965,6 @@ void PaintEspionage (LONG x, LONG y, LONG h)
 						&& units[i].Realm != HomeRealm
 						&& realm[units[i].Realm].mfExists()
 						&& (units[i].NotSpotted==FALSE || CanScry)
-//						&& (units[i].Icon<REG_M_FTR_UNIT_ICON
-//							|| units[i].Icon>REG_GOB_FTR_UNIT_ICON
-//							|| !realm[units[i].Realm].mfIsPlayerCtrl())
-					//	&& units[i].Icon != GORGON_UNIT_ICON
-					//	&& units[i].Icon != RHUOBHE_UNIT_ICON
 						)
 					{
 						for(iUnit = i; iUnit > 0; iUnit = units[iUnit].NextUnit)
@@ -4203,7 +4041,6 @@ assexit:   ;
 		y+=16;
 	}
 
-
 	// allow modification of success roll
    if (iSelectedOneHolding == 0
       || (iSelectedOneHolding==1 && iSelectedUnit != 0))
@@ -4219,7 +4056,6 @@ assexit:   ;
 		else
 			fAllowRollButton = (ProcessGoldAndReg(CHECK_ONLY))?fAllowRollButton:0;
 	
-		
 		if (iSelectedOneHolding == 1)
 		{
 			print_textf(x, y, DKBROWN, STRMGR_GetStr(STR_ACTNMENU_LOCATE_ASSASSIN));
@@ -4232,7 +4068,6 @@ assexit:   ;
 			y += 15;
 			print_textf(x, y-2, DKBROWN, STRMGR_GetStr(STR_MAPAI_MODIFY_SUCCESS));
 			print_textf(x, y+4, DKBROWN, STRMGR_GetStr(STR_MAPAI_USING_REGENCY));
-			//GEH 10/97 SetupMod(x+75, y, &modRegency, 0, 19-province[iSelectedProvince].CivLevel-level+modOpponent, 1);
 			SetupMod(x+95, y, &modRegency, 0, 19-province[iSelectedProvince].CivLevel-level+modOpponent, 1);
 		}
 
@@ -4247,7 +4082,6 @@ assexit:   ;
 
 		if (result == 2)	// failure
 		{
-//			AddReport(IMMEDIATE_SPY_FAIL, 0, 0, 0);	// "Majesty, your agents were unable to carry out your order."
 		}
 
 		if (result == 1 || result == 3)	// was successful
@@ -4285,7 +4119,6 @@ assexit:   ;
 									print_textf(x+16, y, DKBROWN, "%s", UnitName(iUnit) );
 									units[iUnit].NotSpotted = FALSE;
 									// -- Don't transmit this data change
-									//SetGameData(MP_UNITS, MPUNITS_NOTSPOTTED, iUnit, FALSE, TRUE );
 									y += 18;
 									++j;
 	
@@ -4302,7 +4135,6 @@ spyexit:	;
 				}
 				// give experience points
 				ActionExpPoints(ActiveRegent, RLM_EXP_ESPIONAGE_SPY, 0, TRUE );
-//				AddReport(IMMEDIATE_SPY, j, 0, 0);
 			}
 
 			// assassinate a unit
@@ -4378,13 +4210,10 @@ spyexit:	;
 								SendReportTo(whichRealm, IMMEDIATE_NPC_ASSASSIN, HomeRealm, whichProv, 0);
 							SetScrewed(whichRealm, HomeRealm, TRUE );
 				  			DeleteUnit(iSelectedUnit, TRUE );
-// 							AddReport(IMMEDIATE_ASSASSIN, 1, 0, 0);	// assassinate succeeds
-// 							AddReport(IMMEDIATE_ASSASSIN, 1, 0, 0);	// assassinate succeeds
 						}
 						else
 						{
 							AddSndObj((BIRTHRT_SND)SND_UI_DID_NOT_SUCCEED,0,VOLUME_NINETY);
-// 							AddReport(IMMEDIATE_ASSASSIN_FAIL, 0, 0, 0);	// assassinate fails
 						}
 					}
 					if (j > 180 && sequence < 10 && assassin_roll < a_chance)
@@ -4416,7 +4245,6 @@ spyexit:	;
 			}
 		}
 	}
-
 
 	if (iSelectedRealm)
 	{
@@ -4508,7 +4336,6 @@ void PaintRule (LONG x, LONG y, LONG h)
 
 	del_region(NextPrev,0);
 
-//	if (!fAllowDoneButton)
 	if (fCostUnlocked)
 		GoldBar = RegencePoint = 0;
 
@@ -4524,9 +4351,6 @@ void PaintRule (LONG x, LONG y, LONG h)
 		print_textf(x+xSECONDBTN+(i*dxBTN)+19, y+8, DKBROWN, "^c%s", STRMGR_GetStr(gsHoldType[i]));
 	y += 15;
 
-//	for (int h1=0; h1<2; ++h1)
-//	{
-
 		for (q=0; q<2; ++q)
 		{
 			for (i=FIRST_PROVINCE; i<PROVINCE_COUNT; ++i)
@@ -4541,8 +4365,6 @@ void PaintRule (LONG x, LONG y, LONG h)
 					      && province[i].Realm!=HomeRealm 
 					      && province[i].CastleSptd) )			// HACK This means you have holding in this province.
 				{
-//					if (h1)
-//					{
 						++counter;
 						if(counter < startProvCount || lPageDone || provCount == 0)
 							lPrint = FALSE;
@@ -4578,7 +4400,6 @@ void PaintRule (LONG x, LONG y, LONG h)
 							if (f)
 							{
 								level = province[i].CivLevel;
-								//if (!fAllowDoneButton)
 								if (fCostUnlocked)
 								{
 									GoldBar += level+1;
@@ -4636,14 +4457,12 @@ void PaintRule (LONG x, LONG y, LONG h)
 											CheckAndFixSourceLevels((PROVINCE)i);
 										}
 									}
-//									AddReport(IMMEDIATE_RULE_PROV, i, province[i].CivLevel, 0);
 								}
 								if (result == 2)	// failure
 								{
 									// multi-player support
 									SendResult(RULE, i, 0, result);
 									SyncRegencySpentInOpposition((REALM::REALM_TYPE)province[i].Realm);
-//									AddReport(IMMEDIATE_RULE_PR_FAIL, i, 0, 0);
 								}
 							}
 						}
@@ -4691,7 +4510,6 @@ void PaintRule (LONG x, LONG y, LONG h)
 										fAllowRollButton -= (iSelectedProvince!=0);
 										iSelectedProvince = NO_PROVINCE;
 
-										//if (!fAllowDoneButton)
 										if (fCostUnlocked)
 										{
 											++GoldBar;
@@ -4707,7 +4525,6 @@ void PaintRule (LONG x, LONG y, LONG h)
 
 										// success
 										success = 10 + level - (iSelectedHolding[i][j]-1);
-										//	printf("level:%d iSH:%d success:%d\n",level,iSelectedHolding[i][j],D20TOPERCENT(success));
 
 										if(lPrint)
 										{
@@ -4738,8 +4555,6 @@ void PaintRule (LONG x, LONG y, LONG h)
 											}
 											places[index].Contested = FALSE;
 											SetGameData(MP_PLACES, MPPLACE_CONTESTED, index, FALSE, TRUE);
-
-//											AddReport(IMMEDIATE_RULE_HOLD, j, i, places[index].Level);
 
 											// decide which type of holding was selected and deal exp points
 											switch ( places[index].Icon )
@@ -4799,7 +4614,6 @@ void PaintRule (LONG x, LONG y, LONG h)
 											// multi-player support
 											SendResult(RULE, 0, j, result);
 											SyncRegencySpentInOpposition((REALM::REALM_TYPE)places[j].Realm);
-//											AddReport(IMMEDIATE_RULE_HLD_FAIL, j, i, 0);
 										}
 									}
 								}
@@ -4833,19 +4647,16 @@ void PaintRule (LONG x, LONG y, LONG h)
 								lPageDone = TRUE;
 							}
 						}
-//					}
 //					else
 						++tmp_provCount;
 				}
 			}
 		}
-//	}
   	if(checkGoldReg)
 		fAllowRollButton = (ProcessGoldAndReg(CHECK_QUITE))?fAllowRollButton:0;
 	else
 		fAllowRollButton = (ProcessGoldAndReg(CHECK_ONLY))?fAllowRollButton:0;
 	
-
 	y = startY+h-67;
 	print_textf(x, y, DKBROWN, STRMGR_GetStr(STR_ACTNMENU_TOTAL_COST_FMT), GoldBar, RegencePoint);
 	y += 15;
@@ -5017,7 +4828,6 @@ void PaintCreateHolding (LONG x, LONG y, LONG h)
 	   	else
 				fAllowRollButton = (ProcessGoldAndReg(CHECK_ONLY))?fAllowRollButton:0;
 	
-
 			success = 10 + ((province[iSelectedProvince].Realm==HomeRealm)?-province[iSelectedProvince].CivLevel:province[iSelectedProvince].CivLevel) - modRegency + modOpponent;
 			if(success < 1)
 				success = 1;
@@ -5120,14 +4930,12 @@ void PaintCreateHolding (LONG x, LONG y, LONG h)
 						SetScrewed((REALM::REALM_TYPE)province[iSelectedProvince].Realm, HomeRealm, TRUE );
 					}
 				}
-//				AddReport(IMMEDIATE_CREATE_HOLD, iSelectedOneHolding, iSelectedProvince, iSelectedRealm);
 			}
 			if (result == 2)	// failure
 			{
 				// multi-player support
 				SendResult(CREATE_HOLDING, iSelectedProvince, 0, result);
 				SyncRegencySpentInOpposition((REALM::REALM_TYPE)province[iSelectedProvince].Realm);
-//				AddReport(IMMEDIATE_CREATE_HLD_FAIL, iSelectedOneHolding, iSelectedProvince, iSelectedRealm);
 			}
 		}
 	}
@@ -5297,7 +5105,6 @@ void PaintFortify (LONG x, LONG y, LONG h)
 	else
 		fAllowRollButton = (ProcessGoldAndReg(CHECK_ONLY))?fAllowRollButton:0;
 	
-
 	print_textf(x, startY+h-65, DKBROWN, STRMGR_GetStr(STR_ACTNMENU_TOTAL_COST_FMT), GoldBar, RegencePoint);
 	print_textf(x, startY+h-50, DKBROWN, STRMGR_GetStr(STR_ACTNMENU_FORTIFY_HELP));
 	fAllowCancelButton = TRUE;
@@ -5406,7 +5213,6 @@ void PaintContest (LONG x, LONG y, LONG h)
 			
 			CheckAndFixPlaces(iSelectedProvince);
 			tmpIndex = i = province[iSelectedProvince].FirstPlace;
-			//	i = places[tmpIndex].NextPlace;
 			for (; i!=0; i = places[tmpIndex].NextPlace,
 						 tmpIndex = province[iSelectedProvince].FirstPlace + i)
 			{
@@ -5478,9 +5284,6 @@ void PaintContest (LONG x, LONG y, LONG h)
 			succ -= pPS->StatsMod.mfGetMod(STATSMOD::CONTEST_MOD);
 		}
 	 	success = succ - modRegency;
-
-//		if(iSelectedOneHolding == 14)
-//			success = 10 + province[iSelectedProvince].CivLevel - max_holding;
 
 		print_textf(x, y + 20, DKBROWN,STRMGR_GetStr(STR_ACTNMENU_F02_SUCCESS));
 
@@ -5575,7 +5378,6 @@ void PaintContest (LONG x, LONG y, LONG h)
 				for (j=0; j<4; ++j)
 					if(InfoReqType[j]==places[iSelectedOneHolding].Icon)
 						break;
-//				AddReport(IMMEDIATE_CONTEST, places[iSelectedOneHolding].Realm, j, iSelectedProvince);
 			}
 	 	}
 		else if (result == 2)			// failure
@@ -5583,7 +5385,6 @@ void PaintContest (LONG x, LONG y, LONG h)
 			// multi-player support
 			SendResult(CONTEST, 0, iSelectedOneHolding, result);
 			SyncRegencySpentInOpposition((REALM::REALM_TYPE)places[iSelectedOneHolding].Realm);
-//		 	AddReport(IMMEDIATE_CONTEST_FAIL, iSelectedProvince, 0, 0);
 		}
 	}
 
@@ -5600,7 +5401,6 @@ void PaintContest (LONG x, LONG y, LONG h)
 	if (fAllowDoneButton)
 		DeleteActnMenuRegions();
 }
-
 
 /* ========================================================================
    Function    - PaintLieutenant
@@ -5772,7 +5572,6 @@ void PaintLieutenant(LONG x, LONG y, LONG h)
 					DrawLittleButton(x, y-1, 145, 12, TRUE);
 					iSelectedOneHolding = k;
 					Gold = (regents[k].mfGetLevel1() > regents[k].mfGetLevel2())?regents[k].mfGetLevel1():regents[k].mfGetLevel2();
-//					GoldBar = Gold/2;
 					GoldBar = Gold;
 				}
 				else
@@ -5812,7 +5611,6 @@ void PaintLieutenant(LONG x, LONG y, LONG h)
 		fAllowDoneButton = (ProcessGoldAndReg(CHECK_QUITE))?fAllowDoneButton:0;
 	else
 		fAllowDoneButton = (ProcessGoldAndReg(CHECK_ONLY))?fAllowDoneButton:0;
-	
 	
 	if (IsMenuActive(D_AVATAR_ATTRIBUTES) || IsMenuActive(D_AVATAR_INVENTORY))
 		DeleteActnMenuRegions();
@@ -5862,7 +5660,6 @@ void PaintHoldAction(LONG MenuCombo, LONG)
 	if (iButton != fERROR)
 		SetPurge(iButton);
 }
-
 
 /* ========================================================================
    Function    - 
@@ -6003,17 +5800,12 @@ void PaintInvestiture(LONG x, LONG y, LONG h)
 			SyncRegencySpentInOpposition((REALM::REALM_TYPE)province[iSelectedProvince].Realm);
 
 			victim = province[iSelectedProvince].Realm;
-			//province[iSelectedProvince].Realm = HomeRealm;
 			SetGameData(MP_PROVINCE, MPPROV_REALM, iSelectedProvince, HomeRealm, TRUE );
 
-			//province[iSelectedProvince].OccupRealm = 0;
 			SetGameData(MP_PROVINCE, MPPROV_OCCUPREALM, iSelectedProvince, 0, TRUE );
 
-			//ReconstructMap();
-			//CheckRealmStatus(HomeRealm, province[iSelectedProvince].Realm, TRUE );
 			SetGameData(MP_PROVINCE, MPPROV_INVESTED, HomeRealm, victim, TRUE );
 
-//			AddReport(IMMEDIATE_INVESTITURE, iSelectedProvince, 0, 0);	
 		}
 
 		if (result == 2)	// failure
@@ -6021,7 +5813,6 @@ void PaintInvestiture(LONG x, LONG y, LONG h)
 			// multi-player support
 			SendResult(INVESTITURE, iSelectedProvince, 0, result);
 			SyncRegencySpentInOpposition((REALM::REALM_TYPE)province[iSelectedProvince].Realm);
-//			AddReport(IMMEDIATE_INVESTITURE_FAIL, 0, 0, 0);	
 		}
 
 	}
@@ -6165,10 +5956,6 @@ void PaintRealmSpell(LONG x, LONG y, LONG h)
 				gprint_text(x, y,STRMGR_GetStr(STR_ACTNMENU_COOLNESS_FOR_PRIEST) , DKBROWN);
 		}
 
-
-
-
-
 	}
 
 	// print selected realm
@@ -6270,16 +6057,10 @@ void PaintRealmSpell(LONG x, LONG y, LONG h)
 
 		InventoryItor itor(pStat->Inventory);
 
-		// GWP pStat->Inventory.mfReset(IC_REALM_SPELL);
-		// GWP while(!pStat->Inventory.mfEndOfList())
-
 		for (itor.mfAdvance(IC_REALM_SPELL);
 			 itor != pStat->Inventory.end();
 			 itor.mfAdvanceToNext(IC_REALM_SPELL))
 		{
-
-		 	// GWP InventoryNode& dataIndex = pStat->Inventory.mfData();
-			// GWP item = dataIndex.mfType();
 
 			item = (*itor)->mfType();
 			spellindex=ItemTypes[item].mfGetExtendedData();
@@ -6313,7 +6094,6 @@ void PaintRealmSpell(LONG x, LONG y, LONG h)
 
 			y+=16;
 
-			// GWP pStat->Inventory.mfAdvance(IC_REALM_SPELL);
 		}
 		if(province[iSelectedProvince].Dispel>0)
 			RegencePoint += province[iSelectedProvince].DispelLvl+1;
@@ -6324,23 +6104,6 @@ void PaintRealmSpell(LONG x, LONG y, LONG h)
 	{
 		print_textf(x, y, DKBROWN, "^F00SPELL");
 		y += 15;
-
-//		// GWP pStat->Inventory.mfReset(IC_REALM_SPELL);
-//		// GWP while(!pStat->Inventory.mfEndOfList())
-//
-//		InventoryItor itor(pStat->Inventory);
-//		
-//		for (itor.mfAdvance(IC_REALM_SPELL);
-//		     itor != pStat->Inventory.end();
-//		     itor.mfAdvanceToNext(IC_REALM_SPELL))
-//		{
-//			// GWP InventoryNode& dataIndex = pStat->Inventory.mfData();
-//			// GWP item = dataIndex.mfType();
-//			
-//			item = (*itor)->mfType();
-//
-//			if((SHORT)item == iSelectedOneHolding)
-//			{
 
 		item = iSelectedOneHolding;
 		spellindex=ItemTypes[item].mfGetExtendedData();
@@ -6663,7 +6426,6 @@ md_exit: 		init_gfont(FONT_SANS_8PT);
 									print_textf(x+40, y+12, DKBROWN, "%s", province[units[i].province].name);
 									y += 24;
 								}
-//								SetGameData(MP_UNITS, MPUNITS_NOTSPOTTED, i, FALSE, TRUE );
 								++j;
 								++count;
 							}
@@ -7081,13 +6843,7 @@ trans_exit:
 				GoldBar = 1;
 				break;
 
-
 		}
-
-//			}
-//		 	++i; 
-//			// GWP pStat->Inventory.mfAdvance(IC_REALM_SPELL);
-//	   }
 
 		if (province[iSelectedProvince].Dispel > 0)
    		RegencePoint += province[iSelectedProvince].DispelLvl+1;
@@ -7114,7 +6870,6 @@ trans_exit:
 		fAllowDoneButton = (iSelectedOneHolding != 99);
 	}
 }
-
 
 /* ========================================================================
    Function    - PaintLieutenatAction
@@ -7196,8 +6951,6 @@ void PaintLieutenantAction(LONG x, LONG y, LONG h)
 	fAllowRollButton = FALSE;
 	fAllowDoneButton = (iSelectedRealm != 0);
 }
-
-
 
 /* ========================================================================
    Function    - 
@@ -7423,7 +7176,6 @@ void PaintDomainAction (LONG MenuCombo, LONG iAction)
 		else
 			print_text_centered(X,Y,STRMGR_GetStr(STR_DONE1),(fAllowDoneButton)?WHITE:GREY);
 
-
 		DispSuccess();
 	}
 }
@@ -7471,7 +7223,6 @@ void IncActionTurn (void)
 			}
 			else
 			{
-//printf("Advancing to next ActionTurn - from:%d to:%d\n",action_turn[HomeRealm],action_turn[HomeRealm]+1);
 				++action_turn[HomeRealm];
 				musterSkl = 0;
 				++TutorialActionNumber;
@@ -7480,13 +7231,11 @@ void IncActionTurn (void)
 		}
 		else
 		{
-//printf("Advancing to next ActionTurn - from:%d to:%d\n",action_turn[HomeRealm],action_turn[HomeRealm]+1);
 			++action_turn[HomeRealm];
 			musterSkl = 0;
 			++TutorialActionNumber;
 			TutorialScreenNumber = 0;
 		}
-
 
 	}
 	oldAction = action_turn[HomeRealm];
@@ -7495,7 +7244,6 @@ void IncActionTurn (void)
 		action_turn[HomeRealm] = 4;
 	}
 }
-
 
 /* ========================================================================
    Function    - AdjustHoldingLevel
@@ -7534,7 +7282,6 @@ void AdjustHoldingLevel (PROVINCE prov, BOOL fSend)
 			{
 				if (places[holding[i]].Level > 0)
 				{
-					//places[holding[i]].Level--;   // reduce all holding with the same type by 1
 					SetGameData(MP_PLACES, MPPLACE_LEVEL, holding[i], (places[holding[i]].Level-1), fSend);
 				}
 			}
@@ -7587,7 +7334,6 @@ void AdjustHoldingLevel (PROVINCE prov, BOOL fSend)
 	iCurAction = HOLD_ACTION;
 	IncActionTurn();
  }
-
 
 void WarDeclared(REALM::REALM_TYPE who, REALM::REALM_TYPE onWhom, BOOL fSend)
 {
@@ -7658,8 +7404,6 @@ void WarDeclared(REALM::REALM_TYPE who, REALM::REALM_TYPE onWhom, BOOL fSend)
 		}
 					
 		// cancel tributes
-//		Tribute[rlm][onWhom] = 0;
-//		Tribute[onWhom][rlm] = 0;
 		SetGameData(MP_TRIBUTE, rlm, onWhom, 0, TRUE);
 		SetGameData(MP_TRIBUTE, onWhom, rlm, 0, TRUE);
 
@@ -7770,8 +7514,6 @@ void WarDeclared(REALM::REALM_TYPE who, REALM::REALM_TYPE onWhom, BOOL fSend)
 		SetGameData(MP_REALMREACTION, who, rlm, tmp, fSend);
 		
 		// cancel tributes
-//		Tribute[rlm][who] = 0;
-//		Tribute[who][rlm] = 0;
 		SetGameData(MP_TRIBUTE, rlm, who, 0, TRUE);
 		SetGameData(MP_TRIBUTE, who, rlm, 0, TRUE);
 		
@@ -7820,7 +7562,6 @@ void DoneDomainAction (LONG MenuCombo, LONG)
 		update_screen();
 	}
 	
-
 	iCancel = 0;
 
 	ResumeTimeLimit();
@@ -7858,13 +7599,11 @@ void DoneDomainAction (LONG MenuCombo, LONG)
 
 		case DECLARE_WAR:			// Declare War
 
-//			fPlayerNeverDeclaredWar = FALSE;
 			SetGameData( MP_GAMEDATA, MPGAMESEMIPHORE_DECLAREDWAR, 
 						 0, FALSE, TRUE );
 
 //	this now happens in WarDeclared
 //			// the receipient of the declaration should know about it
-//			SendReportTo(iSelectedRealm, IMMEDIATE_NPC_DECLARE_WAR, HomeRealm, 0, 0);
 			
 			// if you declare war on an ally you are SCUM and should suffer!!
 			if (AREALLIED(HomeRealm, iSelectedRealm))
@@ -7923,22 +7662,17 @@ void DoneDomainAction (LONG MenuCombo, LONG)
 					if (dLevel == 0)
 					{
 						CreateHolding(4, iSelectedHolding[i][0], iSelectedHolding[i][1], (PROVINCE)i, HomeRealm, TRUE );
-						//printf("creating holding succeeded, province: %d, level: %d", i, iSelectedHolding[i][0]+dLevel);
 					}
 					else
 					{
 						places[count].iRoute1 = iSelectedHolding[i][0]+dLevel;
-						//SetGameData(MP_PLACES, MPPLACE_IROUTE1, count, places[count].iRoute1, TRUE);
 						places[count].iRoute2 = (dLevel*8) + iSelectedHolding[i][1];
-						//SetGameData(MP_PLACES, MPPLACE_IROUTE2, count, places[count].iRoute2, TRUE);
- 						//printf("improving an existed castle, province: %d, level: %d", i, iSelectedHolding[i][0]+dLevel);
 						//GWP
 						#ifdef _WINDOWS
 						if (IsMultiPlayer())
 							AMultiPlayer.PlacesMessage(count, (UBYTE *)&places[count]);
 						#endif
 					}
-//					AddReport(IMMEDIATE_FORTIFY, dLevel + iSelectedHolding[i][0], i, 0);
 				}
 			}
 			IncActionTurn();
@@ -8030,18 +7764,13 @@ void DoneDomainAction (LONG MenuCombo, LONG)
 						{
 							if(places[i].Realm == regents[iSelectedOneHolding].mfGetRealm())
 							{
-								//places[i].Realm = HomeRealm;
 								SetGameData(MP_PLACES, MPPLACE_REALM, i, HomeRealm, TRUE );
 							}
 						}
-//					regents[iSelectedOneHolding].mfSetunit(j);
 					SetGameData(MP_REGENT, MPREG_UNIT, iSelectedOneHolding, j, TRUE );
 					// HACK HACK HACK
 					// Because I didn't want to change the saved games, we don't
 					// update the regents realm.
-//					// GWP regents[iSelectedOneHolding].mfSetRealm(HomeRealm);
-					// GWP SetGameData(MP_REGENT, MPREG_REALM, iSelectedOneHolding, HomeRealm, TRUE );
-//	 				AddReport(IMMEDIATE_LIEUTENANT, iSelectedOneHolding, 0, 0);	// dummy report
 				}
 				IncActionTurn();
 			}
@@ -8050,21 +7779,6 @@ CantHire:
 
 		case MUSTER:        // muster troops
 			/* FREE ACTION */
-//			if (iSelectedProvince)
-//			{
-//				j = 0;
-//				for (i=1; i<C_HPY_UNIT_ICON; ++i)
-//				{
-//					while (iSelectedHolding[i][1])
-//					{
-//						CreateUnit(iSelectedProvince, i, 0, HomeRealm, TRUE );
-//						++province[iSelectedProvince].LevyMustered;
-//						--iSelectedHolding[i][1];
-//						++j;
-//					}
-//				}
-//// 				AddReport(IMMEDIATE_MUSTER, j, 0, 0);	// dummy report
-//			}
 			break;
 
  		case REALM_SPELL:
@@ -8078,7 +7792,6 @@ CantHire:
  			{
  			case ITEM_SPELL_DEATH_PLAGUE:
 				SetGameData(MP_PROVINCE, MPPROV_CIVLEVEL, iSelectedProvince, (province[iSelectedProvince].CivLevel-1), TRUE );
-				//province[iSelectedProvince].CivLevel --;
 				// adjust holding level
 				AdjustHoldingLevel(iSelectedProvince, TRUE);
  				SetScrewed((REALM::REALM_TYPE)iSelectedRealm, HomeRealm, TRUE );
@@ -8086,7 +7799,6 @@ CantHire:
  				{
  					if(iSelectedMulProvince[i]==TRUE)
  					{
- 						//province[province[iSelectedProvince].Border[i].Province].CivLevel --;
 						SetGameData(MP_PROVINCE, MPPROV_CIVLEVEL, province[iSelectedProvince].Border[i].Province, (province[province[iSelectedProvince].Border[i].Province].CivLevel-1), TRUE );
 						SetScrewed((REALM::REALM_TYPE)province[province[iSelectedProvince].Border[i].Province].Realm, HomeRealm, TRUE );
 						AdjustHoldingLevel((PROVINCE)province[iSelectedProvince].Border[i].Province, TRUE);
@@ -8258,10 +7970,6 @@ CantHire:
 						SetGameData(MP_PLACES, MPPLACE_LEVEL, tmpIndex, places[tmpIndex].Level, TRUE );
  					}
 
-//	 				if (iSelectedMulProvince[1])
-//		 				AddReport(SUBJ_STRONGHOLD1, iSelectedProvince, 0, 0);
-//					else
-//	 					AddReport(SUBJ_STRONGHOLD2, iSelectedProvince, places[tmpIndex].Level, 0);
 				}
 				break;
 
@@ -8310,43 +8018,35 @@ CantHire:
 						if((ITEMTYPE)iSelectedOneHolding==ITEM_SPELL_BLESS_LAND)
 						{
 							if(province[tmpIndex].Blighted==0)
-								//province[tmpIndex].Blessed = 2;
 								SetGameData(MP_PROVINCE, MPPROV_BLESSED, tmpIndex, 2, TRUE );
 							else
-								//province[tmpIndex].Blighted=0;
 								SetGameData(MP_PROVINCE, MPPROV_BLIGHTED, tmpIndex, 0, TRUE );
 							SetHelped((REALM::REALM_TYPE)province[tmpIndex].Realm, HomeRealm, TRUE );
 						}
 						else if((ITEMTYPE)iSelectedOneHolding == ITEM_SPELL_BLIGHT)
 						{
 							if(province[tmpIndex].Blessed==0)
-								//province[tmpIndex].Blighted = 2;
 								SetGameData(MP_PROVINCE, MPPROV_BLIGHTED, tmpIndex, 2, TRUE );
 							else
-								//province[tmpIndex].Blessed = 0;
 								SetGameData(MP_PROVINCE, MPPROV_BLESSED, tmpIndex, 0, TRUE );
 							SetScrewed((REALM::REALM_TYPE)province[tmpIndex].Realm, HomeRealm, TRUE );
 						}
 						else if((ITEMTYPE)iSelectedOneHolding == ITEM_SPELL_WARDING)
 						{	
-							//province[tmpIndex].Warded = 2;
 							SetGameData(MP_PROVINCE, MPPROV_WARDED, tmpIndex, 2, TRUE );
 							SetGameData(MP_PROVINCE, MPPROV_DISPELLVL, tmpIndex, HomeRealm, TRUE );
 							SetGameData(MP_PROVINCE, MPPROV_DISPEL, tmpIndex, 0, TRUE );
 							SetScrewed((REALM::REALM_TYPE)province[tmpIndex].Realm, HomeRealm, TRUE );
 						}
 						else
-							//province[tmpIndex].Honest = 2;
 							SetGameData(MP_PROVINCE, MPPROV_HONEST, tmpIndex, 2, TRUE );
 					}
 				}
 				if((ITEMTYPE)iSelectedOneHolding==ITEM_SPELL_BLESS_LAND)
 				{
 					if(province[iSelectedProvince].Blighted==0)
-						//province[iSelectedProvince].Blessed = 2;
 						SetGameData(MP_PROVINCE, MPPROV_BLESSED, iSelectedProvince, 2, TRUE );
 					else
-						//province[iSelectedProvince].Blighted = 0;
 						SetGameData(MP_PROVINCE, MPPROV_BLIGHTED, iSelectedProvince, 0, TRUE );
 					SetHelped((REALM::REALM_TYPE)iSelectedRealm, HomeRealm, TRUE );
 
@@ -8356,10 +8056,8 @@ CantHire:
 				else if((ITEMTYPE)iSelectedOneHolding == ITEM_SPELL_BLIGHT)
 				{
 					if(province[iSelectedProvince].Blessed == 0)
-						//province[iSelectedProvince].Blighted = 2;
 						SetGameData(MP_PROVINCE, MPPROV_BLIGHTED, iSelectedProvince, 2, TRUE );
 					else
-						//province[iSelectedProvince].Blessed = 0;
 						SetGameData(MP_PROVINCE, MPPROV_BLESSED, iSelectedProvince, 0, TRUE );
 					SetScrewed((REALM::REALM_TYPE)iSelectedRealm, HomeRealm, TRUE );
  					AddReport(SUBJ_BLIGHT, iSelectedProvince, 0, 0);
@@ -8455,7 +8153,6 @@ void CancelDomainAction (LONG MenuCombo, LONG)
 			SetGameData(MP_REALM, MPRLM_REGENCY, OldNPCRealm, OldNPCRegency, TRUE);
 	}
 	
-
 	if(iCurAction == LIEUTANANT)
 		++iCancel;
 
@@ -8480,7 +8177,6 @@ void AbortDomainAction (void)
 	if(iCurAction == LIEUTANANT)
 		++iCancel;
 
-	//IncActionTurn();
 	++action_turn[HomeRealm];
 
 	oldAction = action_turn[HomeRealm];
@@ -8531,7 +8227,6 @@ void RollDomainAction (LONG MenuCombo, LONG)
 		RunMenus();
 		update_screen();
 	}
-
 
 	if (!ProcessGoldAndReg(CHECK_ONLY))
 		return;
@@ -8590,23 +8285,13 @@ void RollDomainAction (LONG MenuCombo, LONG)
 		
 		for (i=0; i<7; ++i)		// set border one direction
 			if (province[iSelectedRealm].Border[i].Province == iSelectedProvince)
-				//province[iSelectedRealm].Border[i].MoveCost = PLAINS_ROAD;
 				SetGameData(MP_PROVINCE, MPPROV_BORDER0+i, iSelectedRealm, PLAINS_ROAD, TRUE);
 
 		for (i=0; i<7; ++i)		// set border other direction
 			if (province[iSelectedProvince].Border[i].Province == iSelectedRealm)
-				//province[iSelectedProvince].Border[i].MoveCost = PLAINS_ROAD;
 				SetGameData(MP_PROVINCE, MPPROV_BORDER0+i, iSelectedProvince, PLAINS_ROAD, TRUE);
 
 		// draw the road the same way it's done in GAMEMAP.CPP
-		//if (province[iSelectedRealm].x < province[iSelectedProvince].x
-		//	|| (province[iSelectedRealm].x==province[iSelectedProvince].x
-		//		&& province[iSelectedRealm].y < province[iSelectedProvince].y))
-		//	MapLine(province[iSelectedRealm].x,province[iSelectedRealm].y,province[iSelectedProvince].x,province[iSelectedProvince].y,MDBROWN,MDBROWN,TRUE);
-		//else
-		//	MapLine(province[iSelectedProvince].x,province[iSelectedProvince].y,province[iSelectedRealm].x,province[iSelectedRealm].y,MDBROWN,MDBROWN,TRUE);
-
-//		AddReport(IMMEDIATE_BUILDROAD, iSelectedRealm, iSelectedProvince, 0);
 
 		modGoldBars = 0;
 		iSelectedRealm = REALM::NO_COUNTRY;
@@ -8620,46 +8305,14 @@ void RollDomainAction (LONG MenuCombo, LONG)
 	lAskedTargetWhichRoll = iWhichRoll;
 }
 
-
 /* ========================================================================
 	Multi-player and computer AI Actions
    ======================================================================== */
-
-//LONG lFromId;
-//LONG lWhichRealm;
-//LONG lFromRealm;
-//LONG lWhichAction;
-//LONG lWhichProvince;
-//LONG lWhichHold;
-//LONG lSuccess;
-//LONG lResult;
 
 RESPONSE_DIALOG response[8];
 LONG	curResponse = 0;
 
 LONG WaitForResult(LONG iWhichAction, LONG iWhichProvince, LONG iWhichHolding);
-
-//CSTRPTR szWhichAction[19] = {
-///* NO_ACTION		 */	"",
-///* ADVENTURE		 */	"",
-///* AGITATE			 */	"agitating",
-///* BUILD_ROAD		 */	"building roads",
-///* CONTEST			 */	"contesting",
-///* CREATE_HOLDING	 */	"creating a holding",
-///* DECLARE_WAR		 */	"",
-///* DIPLOMACY		 */	"",
-///* ESPIONAGE		 */	"",
-///* FORGE_LEY_LINE	 */	"forging a ley line",
-///* FORTIFY			 */	"fortifying",
-///* HOLD_ACTION		 */	"",
-///* INVESTITURE		 */	"",
-///* LIEUTANANT		 */	"",
-///* LIEUTENANT_ACTION */	"",
-///* MUSTER			 */	"",
-///* REALM_SPELL		 */	"",
-///* RULE				 */	"ruling",
-///* TRADE_ROUTE		 */	"creating a trade route",
-//	};
 
 static DEFINE_STATIC_VECTOR_DATA_S(GAME_STRING,gsWhichAction,19) = {
 /* NO_ACTION		 */	STR_NULL,
@@ -8684,7 +8337,6 @@ static DEFINE_STATIC_VECTOR_DATA_S(GAME_STRING,gsWhichAction,19) = {
 	};
 DEFINE_STATIC_VECTOR_CLASS(GAME_STRING, gsWhichAction);
 
-
 /* ========================================================================
    Function    - DoneOthersAction
    Description - 
@@ -8694,8 +8346,6 @@ void DoneOthersAction (LONG, LONG)
 {
 	DeleteActnMenuRegions();
 
-	//SetButtonProc (D_MOREINFO, 0, PaintMoreInfo, 0, 0);
-	//SetButtonProc (D_MOREINFO, 4, HideSubMenu, D_MOREINFO, 0);
 	HideRequest(D_MOREINFO);
 
 	RunRequests();
@@ -8814,8 +8464,6 @@ void PaintOthersAction (LONG MenuCombo, LONG)
 
 	print_textf(X+110, Y, DKBROWN,   STRMGR_GetStr(STR_MAPAI_MODIFY_SUCCESS));
 	print_textf(X+110, Y+8, DKBROWN, STRMGR_GetStr(STR_MAPAI_USING_REGENCY));
-	//SetupMod(X+200, Y, &response[menuResponse].modRegency, 0, 20, 1);
-	//SetupMod(X+200, Y, &response[menuResponse].modRegency, 0, 20*((response[menuResponse].lSuccess+response[menuResponse].modRegency)<20), 1);
 	if (realm[HomeRealm].mfGetRegency() > response[menuResponse].modRegency
 		&& response[menuResponse].lSuccess + response[menuResponse].modRegency < 20)
 	{
@@ -8984,7 +8632,6 @@ void NeverOthersDiplomacy(LONG, LONG)
 
 #ifdef _WINDOWS
 	if ( fOtherDipMP )
-		//WaitSync( iMPS_SYNC5 );
 		MapAIPlayerResponseWaitSync();
 
 	fOtherDipMP = FALSE;
@@ -9008,10 +8655,8 @@ BOOL NPCResult(SHORT flag)
 			SetGameData(MP_REALMREACTION, dData.d1.iWhoFrom, HomeRealm, 75, TRUE);
 			SetGameData(MP_REALMSTATUS, dData.d1.iWhoFrom, HomeRealm, STATUS_PERMISSIVE_ALLIANCE, TRUE );
 			if(dData.d1.iOffHold)
-				//SetGameData(MP_PLACES, MPPLACE_REALM, dData.d1.iOffHold, HomeRealm, TRUE);
 				CheckHolding(dData.d1.iOffHold, HomeRealm, TRUE);
 			if(dData.d1.iReqHold)
-				//SetGameData(MP_PLACES, MPPLACE_REALM, dData.d1.iReqHold, CurrentRealm, TRUE);
 				CheckHolding(dData.d1.iReqHold, (REALM::REALM_TYPE)dData.d1.iWhoFrom, TRUE);
 			Tribute[dData.d1.iWhoFrom][HomeRealm] += dData.d1.iOffTrib;
 			SetGameData(MP_TRIBUTE,dData.d1.iWhoFrom, HomeRealm, Tribute[dData.d1.iWhoFrom][HomeRealm], TRUE);
@@ -9025,10 +8670,8 @@ BOOL NPCResult(SHORT flag)
 			SetGameData(MP_REALMREACTION, HomeRealm, dData.d1.iWhoFrom, 95, TRUE);
 			SetGameData(MP_REALMREACTION, dData.d1.iWhoFrom, HomeRealm, 95, TRUE);
 			if(dData.d1.iOffHold)
-				//SetGameData(MP_PLACES, MPPLACE_REALM, dData.d1.iOffHold, HomeRealm, TRUE);
 				CheckHolding(dData.d1.iOffHold, HomeRealm, TRUE);
 			if(dData.d1.iReqHold)
-				//SetGameData(MP_PLACES, MPPLACE_REALM, dData.d1.iReqHold, CurrentRealm, TRUE);
 				CheckHolding(dData.d1.iReqHold, (REALM::REALM_TYPE)dData.d1.iWhoFrom, TRUE);
 			
 			Tribute[dData.d1.iWhoFrom][HomeRealm] += dData.d1.iOffTrib;
@@ -9046,32 +8689,25 @@ BOOL NPCResult(SHORT flag)
 			Tribute[dData.d1.iWhoFrom][HomeRealm] += dData.d1.iOffTrib;
 			SetGameData(MP_TRIBUTE,dData.d1.iWhoFrom, HomeRealm, Tribute[dData.d1.iWhoFrom][HomeRealm], TRUE);
 			if(dData.d1.iOffHold)
-				//SetGameData(MP_PLACES, MPPLACE_REALM, dData.d1.iOffHold, HomeRealm, TRUE );
 				CheckHolding(dData.d1.iOffHold, HomeRealm, TRUE);
-			//ReconstructMap();
 			SetGameData(MP_PROVINCE, MPPROV_INVESTED, HomeRealm, victim, TRUE );
 		}
 		if (dData.d1.iReqProv)
 		{
 			victim = province[dData.d1.iReqProv].Realm;
 			SetGameData(MP_PROVINCE, MPPROV_REALM, dData.d1.iReqProv, dData.d1.iWhoFrom, TRUE );
-			//SetGameData(MP_PLACES, MPPLACE_REALM, dData.d1.iOffHold, HomeRealm, TRUE );
 			if(dData.d1.iOffHold)
 			{
 				CheckHolding(dData.d1.iOffHold, HomeRealm, TRUE);
 			}
 			Tribute[dData.d1.iWhoFrom][HomeRealm] += dData.d1.iOffTrib;
-			//ReconstructMap();
 			SetGameData(MP_PROVINCE, MPPROV_INVESTED, dData.d1.iWhoFrom, victim, TRUE );
 		}
 		if (dData.d1.iReqHold && !dData.d1.iAlliance)
 		{
-			//SetGameData(MP_PLACES, MPPLACE_REALM, dData.d1.iReqHold, dData.d1.iWhoFrom, TRUE );
 			CheckHolding(dData.d1.iReqHold, (REALM::REALM_TYPE)dData.d1.iWhoFrom, TRUE);
-			//SetGameData(MP_PLACES, MPPLACE_REALM, dData.d1.iOffHold, HomeRealm, TRUE );
 			if(dData.d1.iOffHold)
 			{
-				//SetGameData(MP_PLACES, MPPLACE_REALM, dData.d1.iOffHold, HomeRealm, TRUE );
 				CheckHolding(dData.d1.iOffHold, HomeRealm, TRUE);
 			}
 			Tribute[dData.d1.iWhoFrom][HomeRealm] += dData.d1.iOffTrib;
@@ -9081,7 +8717,6 @@ BOOL NPCResult(SHORT flag)
 		{
 			if(dData.d1.iOffHold)
 			{
-				//SetGameData(MP_PLACES, MPPLACE_REALM, dData.d1.iOffHold, HomeRealm, TRUE );
 				CheckHolding(dData.d1.iOffHold, HomeRealm, TRUE);
 			}
 			Tribute[HomeRealm][dData.d1.iWhoFrom] += dData.d1.iReqTrib;
@@ -9237,14 +8872,12 @@ void YesOthersDiplomacy(LONG, LONG)
 
 #ifdef _WINDOWS
 	if ( fOtherDipMP )
-		//WaitSync( iMPS_SYNC5 );
 		MapAIPlayerResponseWaitSync();
 
 	fOtherDipMP = FALSE;
 #endif
 
 	// take any regency offered
-	//realm[HomeRealm].regency += dData.d1.iOffRegy;
 	
 	// update tributes
 	Tribute[dData.d1.iWhoFrom][HomeRealm] += dData.d1.iOffTrib;
@@ -9253,8 +8886,6 @@ void YesOthersDiplomacy(LONG, LONG)
 	SetGameData(MP_TRIBUTE,HomeRealm,dData.d1.iWhoFrom,Tribute[HomeRealm][dData.d1.iWhoFrom], TRUE);
 
 	// NPC effect
-//	if(!realm[CurrentRealm].mfIsPlayerCtrl())
-//		NPCResult(TRUE);
 
 	if (!realm[dData.d1.iWhoFrom].mfIsPlayerCtrl())
 		NPCResult(TRUE);
@@ -9266,7 +8897,6 @@ void YesOthersDiplomacy(LONG, LONG)
 	{
 
 		DisposBlock(iLgMap);
-
 
 #ifdef _WINDOWS
 		if ( IsMultiPlayer() )
@@ -9317,11 +8947,9 @@ void NoOthersDiplomacy(LONG, LONG)
 	{
 		++curResponse;
 		NoFlag = NPCResult(FALSE);
-		//NoFlag = TRUE;
 	}
 	else
 		NoFlag = FALSE;
-
 
 	//----- Need to sync with other players that are waiting
 	//----- NoFlag means Diplomacy is back up 
@@ -9330,7 +8958,6 @@ void NoOthersDiplomacy(LONG, LONG)
 	if ( NoFlag == FALSE )
 	{
 		if ( fOtherDipMP )
-			//WaitSync( iMPS_SYNC5 );
 			MapAIPlayerResponseWaitSync();
 
 		fOtherDipMP = FALSE;
@@ -9472,12 +9099,6 @@ void PaintOthersDiplomacy (LONG MenuCombo, LONG)
 	if(dData.d1.iOffGold)
 		print_textf(x+220, y, DKBROWN, STRMGR_GetStr(STR_ACTNMENU_GB_FMT), dData.d1.iOffGold);
 	y += 13;
-
-//	DrawBitmap(x, (SHORT)y, iCheck[dData.d1.iOffRegy > 0], 0, 0, 20, 20);
-//	print_textf(x+30, y, DKBROWN, "^F02%s",STRMGR_GetStr(gsDiplomacySubj[24]));
-//	if(dData.d1.iOffRegy)
-//		print_textf(x+220, y, DKBROWN,STRMGR_GetStr(STR_ACTNMENU_RP_FMT), dData.d1.iOffRegy);
-//	y += 13;
 
 	crease(x, y, 310, 1);
 

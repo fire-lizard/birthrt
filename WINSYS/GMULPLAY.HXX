@@ -13,7 +13,6 @@
 #ifndef _GMULPLAY_H
 #define _GMULPLAY_H
 
-//#include <windows.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdarg.h>
@@ -26,22 +25,9 @@
 #include "Limits.h"
 #include "Direct.h"
 
-
 #include "FileXfer.hxx"
 
 // -- This needs to compile w/o the Windows.h stuff, so kludge away!
-// #ifndef HWND
-// typedef void *HWND;
-// #endif
-// #ifndef HINSTANCE
-// typedef void *HINSTANCE;
-// #endif
-// #ifndef BOOL
-// typedef int BOOL;
-// #endif
-// #ifndef PCHAR
-// typedef char *PCHAR;
-// #endif
 
 #ifndef USHORT
 typedef unsigned short USHORT;
@@ -63,7 +49,6 @@ typedef unsigned char BYTE;
 #endif
  // -- End of kludge section
 
-
  // -- User-PNetMod types
 #include "PNetType.h"
 
@@ -71,9 +56,7 @@ typedef unsigned char BYTE;
 
 typedef void (*FP_MISCPROC)( void );
 
-
  // -- Forward reference to imported class
-// class FileXfer;
 
 class /* PROCACCESS */ GenericMultiPlayer
 {
@@ -108,8 +91,6 @@ protected:
 	PlayType	ptType;				// type of multiplayer play
 	PSZ		    pszRunDir;			// pointer to run directory
 
-//	short		sMaxChatEntries;    // max. chat entries
-
 	FP_MISCPROC fpMsgProc;		    // Message processing procedure
 
 	BOOL		fSent;				// status of the last send/receive
@@ -128,11 +109,6 @@ protected:
 	char		cNetBuf[MAX_NETBUFF]; 	   // network message buffer
 	ULONG	    ulSndMsgNum;  			   // synchronization id for sending
 	ULONG	    ulRcvMsgNum[MAX_PLAYERS];  // synchronization id for receiving
-
-
-//   short       sNextMessage;             //---- Next slot to update
-//   SZCHAT      szChatMessages[iMaxChat]; //---- Should be allocated
-
 
 	// --
 	// --- Member Functions ---
@@ -161,36 +137,26 @@ public:
    int         ForceStart( void );
    void        DisablePlayers( void );
 
-//	void		SetupChat           ( void );
-
 	virtual BOOL	StopTheGame		( void ) = 0;
-
-//	void		UpdateChatList	    ( PCHAR pszText );
 
 	BOOL		WaitForPlayer		( void );
 	int			WaitForPlayers		( void );
 
 	FileXfer    *GetNetModule      	( void );
-//	short		GetMaxChatEntries	( void );
 
 	BOOL		IsAvailable			( void );
 	BOOL		WasConnectionLost	( void );
-
-//	void		SetMaxChatEntries	( short s );
 
 	void		SetMsgProc			( FP_MISCPROC f );
 	void		SetRunDir			( PSZ pszRunDir );
 
 	BOOL		IsModemGame			( void );
 
-
 protected:
-
 
 	virtual BOOL	HandleSpecialMessages( UCHAR usMsgId, long lMsgNum ) = 0;
 
 	virtual BOOL	LookForMessages( int fMulPlay = 1 )	= 0;
-
 
 	BOOL	ReceiveFile		( DWORD dwFrom, PSZ pNew );
 	BOOL	SendFile	    ( PSZ pszFile, unsigned int index );
@@ -202,7 +168,6 @@ protected:
 
 	BOOL	SendBroadcastMessage( USHORT usType, short sSize, BOOL fAck = TRUE );
 	BOOL	SendDirectMessage	( DWORD dwToWhom, USHORT usType, short sSize, BOOL fAck = TRUE );
-
 
    void  SetWaitTimes  ( USHORT usMultiplier = 1 );
 
@@ -233,10 +198,6 @@ private:
 
 }; // class MultiPlayer
 
-
-
 #endif
-
-
 
 //---- GMulPlay.hxx

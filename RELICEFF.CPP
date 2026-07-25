@@ -1,4 +1,3 @@
-
 #include "SYSTEM.H"
 
 #include "PLAYSTAT.HXX"
@@ -13,11 +12,9 @@
 #include "GAMEMAP.HXX"
 #include "strenum.h"   
 
-
 //Relics of Power!
 LONG ItemEffects::ChaliceOfDead(LONG Combo,LONG Arg,LONG Action)
 {Arg=Combo;Combo=Action;Action=Arg;return 0;}
-
 
 LONG ItemEffects::TomePrince(LONG Combo,LONG Arg,LONG Action)
 {
@@ -54,7 +51,6 @@ LONG ItemEffects::TomePrince(LONG Combo,LONG Arg,LONG Action)
 	return OK; //everything went ok	
 }
 
-
 LONG ItemEffects::Corgandal(LONG Combo,LONG Arg,LONG Action)
 {
 	SHORT Itemtype;
@@ -89,7 +85,6 @@ LONG ItemEffects::Corgandal(LONG Combo,LONG Arg,LONG Action)
 	
 	return OK; //everything went ok	
 }
-
 
 LONG ItemEffects::Danica(LONG Combo,LONG Arg,LONG Action)
 {
@@ -195,7 +190,6 @@ LONG ItemEffects::SwordOfRoele(LONG Combo,LONG Arg,LONG Action)
 
 	ItemType& Item=ItemTypes[Itemtype]; //A reference to the item
 
-
 	switch(Action)
 	{
 		case ACTIVATE:
@@ -238,7 +232,6 @@ LONG ItemEffects::SwordOfRoele(LONG Combo,LONG Arg,LONG Action)
 
 	return OK; //everything went ok	
 }
-
 
 /* -----------------------------------------------------------------
    
@@ -315,8 +308,6 @@ LONG ItemEffects::CandleOfInvocation(LONG Combo,LONG Arg,LONG Action)
 	return OK; //everything went ok	
 }
 
-
-
 /* -----------------------------------------------------------------
    
    ----------------------------------------------------------------- */
@@ -331,14 +322,6 @@ LONG ItemEffects::AmuletInspiration(LONG Combo,LONG Arg,LONG Action)
  	
 	ItemType&		Item=ItemTypes[IType];
 	
-	//if(fDomainTurn)
-	//{
-	//	return NOT_SUPPORTED;
-	//}
-	//if(fBattleCombat)
-	//{
-	//	return NOT_SUPPORTED;
-	//}
 	//else	// adventure level
 	// works in all modes
 	{
@@ -347,7 +330,6 @@ LONG ItemEffects::AmuletInspiration(LONG Combo,LONG Arg,LONG Action)
 			case ACTIVATE:
 				Item.mfMessage(STR_ITEM_ALWAYS_IN_EFFECT);
 				return DONT_DROP;
-				
 				
 			case DEACTIVATE:
 				break;
@@ -393,14 +375,6 @@ LONG ItemEffects::BannerOfRoele(LONG Combo,LONG Arg,LONG Action)
  	
 	ItemType&		Item=ItemTypes[IType];
 
-	//if(fDomainTurn)
-	//{
-	//	return NOT_SUPPORTED;
-	//}
-	//if(fBattleCombat)
-	//{
-	//	return NOT_SUPPORTED;
-	//}
 	//else	// adventure level
 	// works in all modes
 	{
@@ -440,8 +414,6 @@ LONG ItemEffects::BannerOfRoele(LONG Combo,LONG Arg,LONG Action)
 	return OK; //everything went ok	
 }
 
-
-
 /* -----------------------------------------------------------------
    
    ----------------------------------------------------------------- */
@@ -456,14 +428,6 @@ LONG ItemEffects::CrownOfCommand(LONG Combo,LONG Arg,LONG Action)
  	
 	ItemType&		Item=ItemTypes[IType];
 	
-	//if(fDomainTurn)
-	//{
-	//	return NOT_SUPPORTED;
-	//}
-	//if(fBattleCombat)
-	//{
-	//	return NOT_SUPPORTED;
-	//}
 	//else	// adventure level
 	{
 		switch(Action)
@@ -516,7 +480,6 @@ LONG ItemEffects::SceptreCuiraeecn(LONG Combo,LONG Arg,LONG Action)
  	
 	ItemType&		Item=ItemTypes[IType];
 
-	
 	if(fDomainTurn)
 	{
 		return NOT_SUPPORTED;
@@ -533,7 +496,6 @@ LONG ItemEffects::SceptreCuiraeecn(LONG Combo,LONG Arg,LONG Action)
 		{
 			case ACTIVATE:
 			{
-				//Item.mfMessage(STR_ITEM_ALWAYS_IN_EFFECT);
 				DumbAutoLockPtr<PLAYER_STATS> pAvatarStats(hPlayerStats);
 
 				DICE const d={12,8,0};	// damage 12->96
@@ -589,15 +551,6 @@ LONG ItemEffects::BarazadsTools(LONG Combo,LONG Arg,LONG Action)
  	
 	ItemType&		Item=ItemTypes[IType];
 
-	
-	//if(fDomainTurn)
-	//{
-	//	return NOT_SUPPORTED;
-	//}
-	//if(fBattleCombat)
-	//{
-	//	return NOT_SUPPORTED;
-	//}
 	//else	// adventure level
 	// works in all modes
 	{
@@ -638,7 +591,6 @@ LONG ItemEffects::BarazadsTools(LONG Combo,LONG Arg,LONG Action)
 	return OK; //everything went ok	
 }
 
-
 LONG ItemEffects::FaelesRing(LONG Combo,LONG Arg,LONG Action)
 {
 
@@ -649,15 +601,6 @@ LONG ItemEffects::FaelesRing(LONG Combo,LONG Arg,LONG Action)
  	
 	ItemType&		Item=ItemTypes[IType];
 
-	
-	//if(fDomainTurn)
-	//{
-	//	return NOT_SUPPORTED;
-	//}
-	//if(fBattleCombat)
-	//{
-	//	return NOT_SUPPORTED;
-	//}
 	//else	// adventure level
 	// works in all modes
 	{
@@ -708,15 +651,6 @@ LONG ItemEffects::GavelonStaff(LONG Combo,LONG Arg,LONG Action)
  	
 	ItemType&		Item=ItemTypes[IType];
 
-	
-	//if(fDomainTurn)
-	//{
-	//	return NOT_SUPPORTED;
-	//}
-	//if(fBattleCombat)
-	//{
-	//	return NOT_SUPPORTED;
-	//}
 	//else	// adventure level
 	// works in all modes
 	{
@@ -766,15 +700,6 @@ LONG ItemEffects::DierdriensRing(LONG Combo,LONG Arg,LONG Action)
  	
 	ItemType&		Item=ItemTypes[IType];
 
-	
-	//if(fDomainTurn)
-	//{
-	//	return NOT_SUPPORTED;
-	//}
-	//if(fBattleCombat)
-	//{
-	//	return NOT_SUPPORTED;
-	//}
 	//else	// adventure level
 	// works in all modes
 	{
@@ -814,7 +739,6 @@ LONG ItemEffects::DierdriensRing(LONG Combo,LONG Arg,LONG Action)
 	return OK; //everything went ok	
 }
 
-
 LONG ItemEffects::BrennasFavor(LONG Combo,LONG Arg,LONG Action)
 {
 
@@ -825,15 +749,6 @@ LONG ItemEffects::BrennasFavor(LONG Combo,LONG Arg,LONG Action)
  	
 	ItemType&		Item=ItemTypes[IType];
 
-	
-	//if(fDomainTurn)
-	//{
-	//	return NOT_SUPPORTED;
-	//}
-	//if(fBattleCombat)
-	//{
-	//	return NOT_SUPPORTED;
-	//}
 	//else	// adventure level
 	// works in all modes
 	{
@@ -884,15 +799,6 @@ LONG ItemEffects::StateCrownAnnuire(LONG Combo,LONG Arg,LONG Action)
  	
 	ItemType&		Item=ItemTypes[IType];
 
-	
-	//if(fDomainTurn)
-	//{
-	//	return NOT_SUPPORTED;
-	//}
-	//if(fBattleCombat)
-	//{
-	//	return NOT_SUPPORTED;
-	//}
 	//else	// adventure level
 	// works in all modes
 	{
@@ -943,15 +849,6 @@ LONG ItemEffects::EmperorsCrown(LONG Combo,LONG Arg,LONG Action)
  	
 	ItemType&		Item=ItemTypes[IType];
 
-	
-	//if(fDomainTurn)
-	//{
-	//	return NOT_SUPPORTED;
-	//}
-	//if(fBattleCombat)
-	//{
-	//	return NOT_SUPPORTED;
-	//}
 	//else	// adventure level
 	// works in all modes
 	{
@@ -1002,15 +899,6 @@ LONG ItemEffects::FaridsCoffer(LONG Combo,LONG Arg,LONG Action)
  	
 	ItemType&		Item=ItemTypes[IType];
 
-	
-	//if(fDomainTurn)
-	//{
-	//	return NOT_SUPPORTED;
-	//}
-	//if(fBattleCombat)
-	//{
-	//	return NOT_SUPPORTED;
-	//}
 	//else	// adventure level
 	// works in all modes
 	{
@@ -1061,15 +949,6 @@ LONG ItemEffects::RingOfWizardry(LONG Combo,LONG Arg,LONG Action)
  	
 	ItemType&		Item=ItemTypes[IType];
 
-	
-	//if(fDomainTurn)
-	//{
-	//	return NOT_SUPPORTED;
-	//}
-	//if(fBattleCombat)
-	//{
-	//	return NOT_SUPPORTED;
-	//}
 	//else	// adventure level
 	// works in all modes
 	{
@@ -1121,15 +1000,6 @@ LONG ItemEffects::RobesOfMasses(LONG Combo,LONG Arg,LONG Action)
  	
 	ItemType&		Item=ItemTypes[IType];
 
-	
-	//if(fDomainTurn)
-	//{
-	//	return NOT_SUPPORTED;
-	//}
-	//if(fBattleCombat)
-	//{
-	//	return NOT_SUPPORTED;
-	//}
 	//else	// adventure level
 	// works in all modes
 	{
@@ -1180,15 +1050,6 @@ LONG ItemEffects::RegaliaEmpire(LONG Combo,LONG Arg,LONG Action)
  	
 	ItemType&		Item=ItemTypes[IType];
 
-	
-	//if(fDomainTurn)
-	//{
-	//	return NOT_SUPPORTED;
-	//}
-	//if(fBattleCombat)
-	//{
-	//	return NOT_SUPPORTED;
-	//}
 	//else	// adventure level
 	// works in all modes
 	{
@@ -1239,15 +1100,6 @@ LONG ItemEffects::SielGemLarge(LONG Combo,LONG Arg,LONG Action)
  	
 	ItemType&		Item=ItemTypes[IType];
 
-	
-	//if(fDomainTurn)
-	//{
-	//	return NOT_SUPPORTED;
-	//}
-	//if(fBattleCombat)
-	//{
-	//	return NOT_SUPPORTED;
-	//}
 	//else	// adventure level
 	// works in all modes
 	{
@@ -1302,15 +1154,6 @@ LONG ItemEffects::SielGemSmall(LONG Combo,LONG Arg,LONG Action)
  	
 	ItemType&		Item=ItemTypes[IType];
 
-	
-	//if(fDomainTurn)
-	//{
-	//	return NOT_SUPPORTED;
-	//}
-	//if(fBattleCombat)
-	//{
-	//	return NOT_SUPPORTED;
-	//}
 	//else	// adventure level
 	// works in all modes
 	{
@@ -1351,7 +1194,6 @@ LONG ItemEffects::SielGemSmall(LONG Combo,LONG Arg,LONG Action)
 	return OK; //everything went ok	
 }
 
-
 LONG ItemEffects::NappolansTome(LONG Combo,LONG Arg,LONG Action)
 {
 
@@ -1362,15 +1204,6 @@ LONG ItemEffects::NappolansTome(LONG Combo,LONG Arg,LONG Action)
  	
 	ItemType&		Item=ItemTypes[IType];
 
-	
-	//if(fDomainTurn)
-	//{
-	//	return NOT_SUPPORTED;
-	//}
-	//if(fBattleCombat)
-	//{
-	//	return NOT_SUPPORTED;
-	//}
 	//else	// adventure level
 	// works in all modes
 	{
@@ -1421,15 +1254,6 @@ LONG ItemEffects::VaubenelsBook(LONG Combo,LONG Arg,LONG Action)
  	
 	ItemType&		Item=ItemTypes[IType];
 
-	
-	//if(fDomainTurn)
-	//{
-	//	return NOT_SUPPORTED;
-	//}
-	//if(fBattleCombat)
-	//{
-	//	return NOT_SUPPORTED;
-	//}
 	//else	// adventure level
 	// works in all modes
 	{
@@ -1480,15 +1304,6 @@ LONG ItemEffects::TorcSplendor(LONG Combo,LONG Arg,LONG Action)
  	
 	ItemType&		Item=ItemTypes[IType];
 
-	
-	//if(fDomainTurn)
-	//{
-	//	return NOT_SUPPORTED;
-	//}
-	//if(fBattleCombat)
-	//{
-	//	return NOT_SUPPORTED;
-	//}
 	//else	// adventure level
 	// works in all modes
 	{

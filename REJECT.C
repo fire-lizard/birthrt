@@ -45,7 +45,6 @@
 BOOL reject(LONG MySector, LONG HisSector)
 {
 	LONG	Index;
-	//LONG	i;
 	ULONG	ubValue, ubCount, ubMask;
 	
 	// the reject table is an bit-stream array of tot_sector X tot_sector 
@@ -58,11 +57,8 @@ BOOL reject(LONG MySector, LONG HisSector)
 	ubValue = rejects[(Index>>3)];
 	
 	ubCount = Index & 0x00000007;
-	//ubMask = 0x01;
-	//ubMask <<= ubCount;
 	ubMask = 0x01 << ubCount;
 
 	// in the reject table, a 1 means can't see and a 0 means can
 	return( !(ubValue & ubMask) );
 }
-

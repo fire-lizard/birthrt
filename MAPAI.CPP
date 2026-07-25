@@ -58,7 +58,6 @@ extern BOOL fLogComment;
 /* ------------------------------------------------------------------------
    Defines and Compile Flags
    ------------------------------------------------------------------------ */
-//#define  LOGCOMMENTSLEEP	Sleep(1);
 #define  LOGCOMMENTSLEEP	{;}
 #define FLOGCOMMENT 		// uncomment  & unquote to remove comments "if (0)
 
@@ -74,7 +73,6 @@ typedef enum {
 	ANY_WAY	= 2
 	} PATHTYPE;
 
-
 #define NOAUTOMP           1
 
 #define PERCENTCHAR			((mundane_descriptions)?'%':0)
@@ -87,7 +85,6 @@ typedef enum {
 
 #undef BLUE_GRAD
 #define BLUE_GRAD					0
-
 
 /* ------------------------------------------------------------------------
    Macros
@@ -123,8 +120,6 @@ extern void SysForceCursor (void);
 extern void RandomLogComment ( char * szString );
 extern "C" void RandomLogPrefix ( char * szString );
 
-
-
 /* ------------------------------------------------------------------------
    Global Variables
    ------------------------------------------------------------------------ */
@@ -145,7 +140,6 @@ DEFINE_VECTOR_DATA(CSTRPTR,szAIMode) = {
 	"SCREW_BACK_BIGGER","SCREW_BACK_SMALLER",
 	"INVEST" };
 DEFINE_VECTOR_CLASS(CSTRPTR, szAIMode);
-
 
 LONG		global_action_turn = 1;
 LONG		prev_action_turn[LAND_REALM_COUNT] = {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1};
@@ -179,7 +173,6 @@ static LONG		old_dist = 99999999;
 static BOOL		fDoneOthersAction;
 DEFINE_VECTOR_DATA_S(UBYTE,fProv,PROVINCE_COUNT);
 DEFINE_VECTOR_CLASS(UBYTE, fProv);
-//extern DECL_VECTOR_CLASS(CSTRPTR,szHoldType);
 extern DECL_VECTOR_CLASS(GAME_STRING,gsHoldType);
 LONG				BattleSync;
 LONG				OldNPCRegency;
@@ -387,10 +380,7 @@ void DoNPCAdmin (void)
 							iUnit = i;
 							while (iUnit != -1)		// list followers
 							{
-								//if (units[iUnit].Paid)
 									payroll += UnitMaintCost[units[iUnit].Icon];
-								//if (units[iUnit].Use_Regency)
-								//	payregency += UnitMaintCost[units[iUnit].Icon] * 5;
 								iUnit = units[iUnit].NextUnit;
 							}
 						}
@@ -402,16 +392,11 @@ void DoNPCAdmin (void)
 				else
 					domain_maint = MaintCost[cProvHolds] + cCastles + cOccupiedProv + CourtCost[realm[rlm].mfGetCourt()];
 
-				//printf("  Maint - total:%d  MaintCost:%d  Castles:%d  OccProv:%d  Court:%d\n",domain_maint,MaintCost[cProvHolds],cCastles,cOccupiedProv,CourtCost[realm[rlm].mfGetCourt()]);
 				realm_reg = MIN(domain_power,regents[realm[rlm].mfGetRegent()].mfGetBL_strength()) + realm[rlm].mfGetRegency() - payregency;
-				//printf("  Regency - total:%d  oldRegency:%d  addRegency:%d  payregency:%d\n",realm_reg,realm[rlm].mfGetRegency(),MIN(domain_power,regents[realm[rlm].mfGetRegent()].BL_strength),payregency);
 
-				//new_treasury = realm[rlm].mfGetTreasury() + ((realm_tax + law_holding_claims
-				//		+ trade_routes - payroll - domain_maint)*10);
 				realm[rlm].mfSetIncome(realm_tax + trade_routes - payroll - domain_maint);
 				surplus =  realm[rlm].mfGetTreasury();
 				new_treasury = realm[rlm].mfGetTreasury() + (realm[rlm].mfGetIncome() * 10);
-				//printf("  Treas - total:%d  oldTreasury:%d  +realmTax:%d  +trade:%d  -payroll:%d  -maint:%d\n",new_treasury,realm[rlm].mfGetTreasury(),realm_tax*10,trade_routes*10,payroll*10,domain_maint*10);
 
 				#ifdef _WINDOWS
 				LOGCOMMENTSLEEP
@@ -483,7 +468,6 @@ void DoNPCAdmin (void)
 					if (new_treasury < 5)
 						new_treasury = 5 + random(5);
 
-					//printf("NPC ADMIN - %s is FLAT BROKE.\n",realm[rlm].mfGetName());
 				}
 
 				// buy treasury to a balanced level
@@ -499,8 +483,6 @@ void DoNPCAdmin (void)
 				realm[rlm].mfSetRegency(realm_reg);
 				realm[rlm].mfSetTreasury(new_treasury);
 				realm[rlm].mfSetSurplusIncome( (surplus > 0) ? surplus : 0);
-
-				//printf("NPC ADMIN - %s regency:%d  treasury:%d\n",realm[rlm].name,realm[rlm].regency,realm[rlm].treasury);
 
 				#ifdef _WINDOWS
 				LOGCOMMENTSLEEP
@@ -647,8 +629,6 @@ void DoneNPCAction (LONG, LONG)
 	else
 		realm[HomeRealm].mfAddRegency(-RegencePoint);
 
-	//SetGameData(MP_REALM, MPRLM_REGENCY, HomeRealm, realm[HomeRealm].mfGetRegency(), TRUE);
-
 	#ifdef _WINDOWS
 	LOGCOMMENTSLEEP
 	FLOGCOMMENT
@@ -669,8 +649,6 @@ void DoneNPCAction (LONG, LONG)
 	del_region(RollNPCAction, 0);
 	del_region(DoneNPCAction, 0);
 
-	//SetButtonProc (D_MOREINFO, 0, PaintMoreInfo, 0, 0);
-	//SetButtonProc (D_MOREINFO, 4, HideSubMenu, D_MOREINFO, 0);
 	HideRequest(D_MOREINFO);
 
 	RunMenus();
@@ -714,8 +692,6 @@ void PaintNPCAction (LONG MenuCombo, LONG)
 	del_region(DoneNPCAction, 0);
 	del_region(IncNum,0);
 	del_region(DecNum,0);
-//	DeleteActnMenuRegions();
-//	iThisRoll = -1;
 
 	fAllowRollButton = TRUE;
 	fAllowDoneButton = FALSE;
@@ -833,7 +809,6 @@ void PaintNPCAction (LONG MenuCombo, LONG)
 		SetPurge(iButton);
 }
 
-
 /* ========================================================================
    Function    - 
    Description - 
@@ -848,10 +823,6 @@ BOOL RollNPCSuccess (LONG action, BOOL * fSync, BOOL * fSend )
 	*fSend = FALSE;
 
 	success = StartSuccess = 16 - SpendNPCRegency(CurrentRealm, 15, FALSE);
-
-	//printf("CurrentRealm:%s action:%s TargetProv:%s TargetPlace:%d success:%d\n",
-	//realm[CurrentRealm].name, szAIAction[action],
-	//province[TargetProvince].name, TargetPlace, success);
 
 	// find the realm of the target
 	if (TargetPlace)
@@ -900,7 +871,6 @@ DoItAgain:
 
 		RegencePoint += response[curResponse].modRegency;
 		response[curResponse].lSuccess = success = StartSuccess - opp_modRegency + RegencePoint;
-		//printf("RollNPCSuccess - start suc:%d  our RP:%d  Opp RP:%d  success:%d\n",StartSuccess,RegencePoint,opp_modRegency,success);
 
 		if (response[curResponse].modRegency)
 		{
@@ -946,7 +916,6 @@ DoItAgain:
 
 			if (additionalRP)
 			{
-				//AddSndObj((BIRTHRT_SND)SND_UI_SUCCESS_MODIFIED_BY_OPPONENT,0,VOLUME_NINETY);
 				AddSndObj((BIRTHRT_SND)(32362),0,VOLUME_NINETY);
 				opp_modRegency += additionalRP;
 				response[curResponse].lSuccess = success = StartSuccess - opp_modRegency + RegencePoint;
@@ -1029,10 +998,6 @@ DoItAgain:
 		if (random(20) >= success)
 			rv = TRUE;
 
-		//printf("CurrentRealm:%s action:%s TargetRealm:%s TargetProv:%s TargetPlace:%d\n",
-		//	realm[CurrentRealm].name, szAIAction[action],
-		//	realm[TargetRealm].name, province[TargetProvince].name, TargetPlace);
-		//printf("RollNPCSuccess - start suc:%d  TarRP:%d  CurRP:%d  success:%d\n",StartSuccess,tot_addTar,tot_addCur,success);
 	}
 
 	return rv;
@@ -1187,8 +1152,6 @@ LONG ProvDist (LONG cur_prov, LONG dest_prov, LONG cProvDist, BOOL fTerrainDontC
 	LONG	best_prov = 0;
 	LONG	best_border = 0;
 	LONG	min_dist = 99999999;
-
-//printf("?");
 
 	if (cProvDist==0)
 		Clear_fProv();
@@ -1672,11 +1635,6 @@ if (province[i].LevyMustered >= province[i].CivLevel)
 					&& province[i].LevyMustered < province[i].CivLevel
 					&& (c = UnitsHere((PROVINCE)i,CurrentRealm)) < j		// find min units
 					&& province[i].CivLevel >= LevelUnitReqt[t]
-//					&& (	(province[i].HumanPop	&& t>=A_INF_UNIT_ICON && t<=A_CAV_UNIT_ICON)
-//						||	(province[i].ElfPop		&& t>=E_INF_UNIT_ICON && t<=E_CAV_UNIT_ICON)
-//						||	(province[i].DwarfPop	&& t>=D_INF_UNIT_ICON && t<=D_BOW_UNIT_ICON)
-//						||	(province[i].GoblinPop	&& t>=G_INF_UNIT_ICON && t<=G_CAV_UNIT_ICON)
-//						||	(t>=M_INF_UNIT_ICON && t<=M_CAV_UNIT_ICON) )
 					)
 				{
 					j = c;
@@ -1765,7 +1723,6 @@ if (province[i].LevyMustered >= province[i].CivLevel)
 					
 				break;
 		
-
 			case ACTION_RULE_PROV:
 				if (province[i].Realm == CurrentRealm
 					&& (c = province[i].CivLevel) < j
@@ -1781,7 +1738,6 @@ if (province[i].LevyMustered >= province[i].CivLevel)
 		if (f)		// if current province is selected
 		{
 			TargetProvince = (PROVINCE)i;
-//printf("TPrv:%s ",province[TargetProvince].name);
 			return TRUE;
 		}
 	}
@@ -1789,7 +1745,6 @@ if (province[i].LevyMustered >= province[i].CivLevel)
 	if (pr)			// if a province was selected
 	{
 		TargetProvince = (PROVINCE)pr;
-//printf("TPrv:%s ",province[TargetProvince].name);
 		return TRUE;
 	}
 
@@ -2138,7 +2093,6 @@ LeaveFn:
 		Result = TRUE;
 	}
 	
-	
 	return Result;
 }
 /* ========================================================================
@@ -2171,7 +2125,6 @@ BOOL FindUnit (REALM::REALM_TYPE realm_, LONG action)
 				case ACTION_MOVE_BORDER_OWN:
 					UnitsHere(UnitProv, CurrentRealm);	// set cGroups
 					if (!IsBorder(UnitProv, TargetRealm, 0, ADJACENT)
-						//&& UnitProv != TargetProvince		// dont test vs TargetProvince
 						&& cGroups > j)			// find max groups
 						{
 							j = cGroups;
@@ -2256,7 +2209,6 @@ BOOL FindUnit (REALM::REALM_TYPE realm_, LONG action)
 		{
 			TargetUnit = i;
 			UnitProvince = up;
-			//printf("TUnt:%d ",TargetUnit);
 			return TRUE;
 		}
 	}
@@ -2265,7 +2217,6 @@ BOOL FindUnit (REALM::REALM_TYPE realm_, LONG action)
 	{
 		TargetUnit = u;
 		UnitProvince = up;
-	//printf("TUnt:%d ",TargetUnit);
 		return TRUE;
 	}
 
@@ -2939,7 +2890,6 @@ static BOOL FindSrcToRule(REALM::REALM_TYPE ourRealm, PROVINCE *inProv, USHORT *
 		*inPlace = levelZeroSrcPlace;
 	}
 	
-	
 	return Result;
 }
 /* ========================================================================
@@ -2976,15 +2926,12 @@ static BOOL FindDiffTerrain (PATHTYPE via, PROVINCE StartingProv, PROVINCE *foun
 			return TRUE;
 		}
 
-
 		return FALSE;
 	}
-
 
 	// VIA_ROAD
 	if (RecursiveRoadFollower(StartingProv) == FALSE)
 	{
-
 
 		return FALSE;
 	}
@@ -3078,8 +3025,6 @@ static void PayForIt (REALM::REALM_TYPE ThisRealm, LONG payGB, LONG payRegency, 
 		realm[ThisRealm].mfSetRegency(0);
 	else
 		realm[ThisRealm].mfAddRegency( -payRegency);
-
-	//SetGameData(MP_REALM, MPRLM_REGENCY, ThisRealm, realm[ThisRealm].regency, TRUE);
 
 	#ifdef _WINDOWS
 	LOGCOMMENTSLEEP
@@ -3189,11 +3134,7 @@ BOOL npc_move_ (PROVINCE cur_prov)
 		fTerrainPassable = (border_cost < 100);
 		fBorderPermitted = BorderPermitted(CurrentRealm,test_realm,test_prov);
 
-		//dist = dist * (border_cost + 2);		//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		dist = dist * (border_cost + 1);		//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-		//printf("%d:%d%d%d%d%d ",i,(dist<min_dist),(!fProv[test_prov]),fTerrainPassable,
-		//	fBorderPermitted,(!CheckUnit2ndMoveBlocked(TargetUnit, cur_prov, test_prov)) );
 
 		if (	dist < min_dist
 				&& !fProv[test_prov]			// don't backtrack
@@ -3260,16 +3201,12 @@ BOOL npc_move_ (PROVINCE cur_prov)
 		}
 
 		if (units[TargetUnit].DestProvince==0)
-			//units[TargetUnit].DestProvince = best_prov;
 			SetGameData(MP_UNITS, MPUNITS_DESTPROVINCE, TargetUnit, best_prov, FALSE);
 		else if (units[TargetUnit].DestPath1==0)
-			//units[TargetUnit].DestPath1 = best_border+1;
 			SetGameData(MP_UNITS, MPUNITS_DESTPATH1, TargetUnit, best_border+1, FALSE);
 		else if (units[TargetUnit].DestPath2==0)
-			//units[TargetUnit].DestPath2 = best_border+1;
 			SetGameData(MP_UNITS, MPUNITS_DESTPATH2, TargetUnit, best_border+1, FALSE);
 		else if (units[TargetUnit].DestPath3==0)
-			//units[TargetUnit].DestPath3 = best_border+1;
 			SetGameData(MP_UNITS, MPUNITS_DESTPATH3, TargetUnit, best_border+1, FALSE);
 		else
 		{
@@ -3332,7 +3269,6 @@ BOOL npc_move_ (PROVINCE cur_prov)
 	return FALSE;
 }
 
-
 /* ======================================================================== */
 BOOL npc_move (PROVINCE cur_prov)
 {
@@ -3383,15 +3319,10 @@ BOOL npc_move (PROVINCE cur_prov)
 		return FALSE;
 	}
 
-	//units[TargetUnit].DestProvince = 0;
 	SetGameData(MP_UNITS, MPUNITS_DESTPROVINCE, TargetUnit, 0, FALSE);
-	//units[TargetUnit].DestPath1 = 0;
 	SetGameData(MP_UNITS, MPUNITS_DESTPATH1, TargetUnit, 0, FALSE);
-	//units[TargetUnit].DestPath2 = 0;
 	SetGameData(MP_UNITS, MPUNITS_DESTPATH2, TargetUnit, 0, FALSE);
-	//units[TargetUnit].DestPath3 = 0;
 	SetGameData(MP_UNITS, MPUNITS_DESTPATH3, TargetUnit, 0, FALSE);
-	//units[TargetUnit].MovePart = 0;
 	SetGameData(MP_UNITS, MPUNITS_MOVEPART, TargetUnit, 0, FALSE);
 
 	// calculate the current distance to the target province
@@ -3455,10 +3386,8 @@ BOOL RecursiveRoadBuilder (PROVINCE cur_prov)
 		if (province[cur_prov].Border[best_border].MoveCost != PLAINS_ROAD
 			&& province[cur_prov].Border[best_border].MoveCost != RIVER_ROAD)
 		{
-//printf("Î");
 			// set border one direction
 			province[cur_prov].Border[best_border].MoveCost = PLAINS_ROAD;
-			//SetGameData(MP_PROVINCE, MPPROV_BORDER0+best_border, cur_prov, PLAINS_ROAD, TRUE);
 			DrawRoads_(cur_prov, best_border);
 
 			// set border other direction
@@ -3466,17 +3395,10 @@ BOOL RecursiveRoadBuilder (PROVINCE cur_prov)
 				if (province[best_prov].Border[i].Province == cur_prov)
 				{
 					province[best_prov].Border[i].MoveCost = PLAINS_ROAD;
-					//SetGameData(MP_PROVINCE, MPPROV_BORDER0+i, best_prov, PLAINS_ROAD, TRUE);
 					DrawRoads_(best_prov, i);
 				}
 
 			// draw the road the same way it's done in GAMEMAP.CPP
-			//if (province[cur_prov].x < province[best_prov].x
-			//	|| (province[cur_prov].x==province[best_prov].x
-			//		&& province[cur_prov].y < province[best_prov].y))
-			//	MapLine(province[cur_prov].x,province[cur_prov].y,province[best_prov].x,province[best_prov].y,MDBROWN,MDBROWN,TRUE);
-			//else
-			//	MapLine(province[best_prov].x,province[best_prov].y,province[cur_prov].x,province[cur_prov].y,MDBROWN,MDBROWN,TRUE);
 		}
 		return TRUE;
 	}
@@ -3503,19 +3425,16 @@ BOOL npc_traderoute (LONG place)
 	if (places[place].iRoute1==0)
 	{
 		places[place].iRoute1 = TargetProvince;
-		//printf("NPC Trade Route - holding:%d iRoute1 from %s to %s\n",place,province[StartProvince].name,province[TargetProvince].name);
 		return TRUE;
 	}
 	else if (places[place].iRoute2==0)
 	{
 		places[place].iRoute2 = TargetProvince;
-		//printf("NPC Trade Route - holding:%d iRoute2 from %s to %s\n",place,province[StartProvince].name,province[TargetProvince].name);
 		return TRUE;
 	}
 	else if (places[place].iRoute3==0)
 	{
 		places[place].iRoute3 = TargetProvince;
-		//printf("NPC Trade Route - holding:%d iRoute3 from %s to %s\n",place,province[StartProvince].name,province[TargetProvince].name);
 		return TRUE;
 	}
 
@@ -3649,7 +3568,6 @@ BOOL TestAdjacent (REALM::REALM_TYPE ActiveRealm, REALM::REALM_TYPE testRealm)
 	LONG	i, j;
 
 	for (i=1; i<PROVINCE_COUNT; ++i)
-		//if ((province[i].Realm == ActiveRealm || AREALLIED(province[i].Realm,ActiveRealm))
 		if ( province[i].Realm == ActiveRealm
 				&& IsBorder((PROVINCE)i, testRealm, 0, ADJACENT) )
 			return TRUE;
@@ -3694,7 +3612,6 @@ static BOOL TestAllyAtwar (REALM::REALM_TYPE thisRealm, REALM::REALM_TYPE testRe
 {
 	LONG	i;
 //////////////////////////////////
-//	static LONG	counter = 0;
 //////////////////////////////////
 
 	if (AREALLIED(thisRealm, testRealm))
@@ -3705,10 +3622,6 @@ static BOOL TestAllyAtwar (REALM::REALM_TYPE thisRealm, REALM::REALM_TYPE testRe
 				TestTargetRealm = (REALM::REALM_TYPE)i;
 	
 //////////////////////////////////
-//			if (CurrentRealm != REALM::GORGONSCROWN)
-//			{
-//				++counter;
-//			}
 /////////////////////////////////
 	
 				return TRUE;
@@ -3828,7 +3741,6 @@ REALM::REALM_TYPE TestTriggers (USHORT Triggers)
 
 		return (REALM::REALM_TYPE)i;					// return the triggering realm
 
-
 NOT_TRGD:
 
 		// ABC  Never change or remove this code. Its here to fix a compiler bug
@@ -3853,7 +3765,6 @@ BOOL FindRealm ()
 	LONG tmp;
 	REALM::REALM_TYPE realm_= REALM::NO_COUNTRY;
 	LONG i;
-
 
 	for (i=REALM::FIRST_REALM; i<REALM::REALM_COUNT; ++i)
 	{
@@ -3963,7 +3874,6 @@ BOOL FindFoe (REALM::REALM_TYPE realm_, LONG action )
 
 	return FALSE;
 }
-
 
 /* ======================================================================== */
 #if 01
@@ -4100,7 +4010,6 @@ LONG DemandHolding (REALM::REALM_TYPE realm_, SHORT oldDemand)
 		}
 	}
 
-
 	// found no place within our realm
 	if (!place)
 	{
@@ -4143,7 +4052,6 @@ LONG DemandHolding (REALM::REALM_TYPE realm_, SHORT oldDemand)
 			}
 		}
 	}
-
 
 	if (place)
 	{
@@ -4227,7 +4135,6 @@ BOOL DoNPCAction (void)
 					{
 						fRedrawAll = TRUE;
 
-
 						SetRemapTable(PURPLE_GRAD);
 						DrawBitmap (422, 409, iDMapBx, 22, 0, 216, 21);
 						ClearRemapTable();
@@ -4283,7 +4190,6 @@ BOOL DoNPCAction (void)
 								realm[i].mfGetTreasury(), TRUE );
 					}
 					//GEH
-					//BroadcastAllienceTable();
 				}
 				else
 				{
@@ -4312,7 +4218,6 @@ BOOL DoNPCAction (void)
 		}
 
 	}
-
 
 	//-----------------------------------------
 	// make the AI select an action for an NPC
@@ -4353,8 +4258,6 @@ GetNextRealm:				// if realm is invalid it loops here until a valid realm is fou
 				{
 					iCurrentRealmIndex = LAND_REALM_COUNT - 1;		// make it loop again
 					fRedrawAll = TRUE;
-
-
 
 					SetRemapTable(BLUE_GRAD);
 					DrawBitmap (422, 409, iDMapBx, 22, 0, 216, 21);
@@ -4506,7 +4409,6 @@ GetNextRealm:				// if realm is invalid it loops here until a valid realm is fou
 	//-------------------------------
 	if (realm[rlm].mfIsPlayerCtrl())		// single player
 	{
-		//printf("PC ACTION\n");
 		i = HomeRealm;
 		HomeRealm = rlm;
 		ActiveRegent = realm[HomeRealm].mfGetRegent();
@@ -4534,13 +4436,11 @@ GetNextRealm:				// if realm is invalid it loops here until a valid realm is fou
 	if (npc_ai[rlm].CurrentMode >= MODE_COUNT || random(100)<npc_ai[rlm].Fickleness)
 	{
 NewMode:
-		//npc_ai[rlm].CurrentMode = npc_ai[rlm].Modes[random(10)];
 
 		for (j=i=0; i<10; ++i)
 			j += (LONG)npc_ai[rlm].Chance[i];
 		k = random(j);
 
-		//printf("MODE CHANGE - Realm:%s chance_tot:%d choice:%d\n",realm[rlm].name,j,k);
 		for (i=0; i<10; ++i)
 		{
 			k -= npc_ai[rlm].Chance[i];
@@ -4550,7 +4450,6 @@ NewMode:
 				for (i=0; i< MAX_ACTIONS_PER_MODE;++i)			// Need to reset for being call via a goto
 					ActionTried[i] = FALSE;
 			
-
 				#ifdef _WINDOWS
 	       	LOGCOMMENTSLEEP
 				FLOGCOMMENT
@@ -4570,7 +4469,6 @@ NewMode:
 				break;
 			}
 		}
-		//printf("NPC ACTION - %s has changed modes to %s (%d)\n",realm[rlm].mfGetName(),szAIMode[npc_ai[rlm].CurrentMode],npc_ai[rlm].CurrentMode);
 	}
 
 	//-------------------------------------------
@@ -4587,8 +4485,6 @@ NewMode:
 			if (TriggeredTargetRealm != REALM::NO_COUNTRY)
 			{
 				//printf("TRIGGER - %s trigger %d (%s) set off by %s, mode now %s\n",
-				//realm[rlm].mfGetName(),i,szTriggerTest(npc_ai[rlm].Triggers[i].Tests),
-				//realm[TriggeredTargetRealm].mfGetName(),szAIMode[npc_ai[rlm].Triggers[i].Action]);
 	
 				LONG ModeChance = random(100);
 				if (ModeChance < npc_ai[rlm].Triggers[i].Chance 
@@ -4747,7 +4643,6 @@ Another:
 				if (FindProv(action)) break;
 			if(timeCount == 2) {logreroll(__LINE__); goto ReRoll_;}
 			npc_ai[rlm].CurrentAction = action;
-			//if(!RollNPCSuccess(action)) break;
 			++province[TargetProvince].Loyalty;
 			SetGameData(MP_PROVINCE, MPPROV_LOYALTY, TargetProvince, province[TargetProvince].Loyalty, FALSE );
 			PayForIt(rlm, 1, 1, 0);
@@ -4771,12 +4666,9 @@ Another:
 
 		case ACTION_BUILDROAD:
 			if (rlm == REALM::MONSTERS) {logreroll(__LINE__); goto ReRoll_;}
-			//printf("BUILD ROAD - start");
 			if (!FindHolding(rlm,rlm,ANY_PROVINCE,GUILD1_ICON, TRUE)) {logreroll(__LINE__); goto ReRoll_;} // if no guilds don't bother
-			//printf(" found:%s  end",province[TargetProvince].name);
 			StartProvince = TargetProvince;
 			if (!FindDiffTerrain(ANY_WAY, StartProvince, &TargetProvince)) {logreroll(__LINE__); goto ReRoll_;}	// must be to diff terrain
-			//printf(" found:%s ",province[TargetProvince].name);
 			if (!RecursiveRoadBuilder(StartProvince)) {logreroll(__LINE__); goto ReRoll_;}
 			npc_ai[rlm].CurrentAction = action;
 			ActionExpType = RLM_EXP_BUILD_ROAD;
@@ -4834,7 +4726,6 @@ FOUND_ONE:
 				   || places[TargetPlace].Contested == TRUE)
 				DeleteHolding(TargetProvince, TargetPlace, fSend);
 			else
-				//places[TargetPlace].Contested = TRUE;
 				SetGameData(MP_PLACES, MPPLACE_CONTESTED, TargetPlace, TRUE, fSend );
 			break;
 
@@ -4860,10 +4751,8 @@ FOUND_ONE:
 CreateHldng:
 			if (rlm == REALM::MONSTERS) {logreroll(__LINE__); goto ReRoll_;}
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-//			if (TriggeredTargetRealm)
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 			if (cntHolds > (MAX_PLACES-60)) {logreroll(__LINE__); goto ReRoll_;}
-			
 			
 			if (game_difficulty == DIF_EASY)
 			{
@@ -4895,7 +4784,6 @@ CreateHldng:
 			npc_ai[rlm].CurrentAction = action;
 			if (!RollNPCSuccess(action,&fSync, &fSend)) break;
 			//--- We can't goto ReRoll after RollNPCSuccess
-			//if (!CreateHolding(type, 0, 0, TargetProvince, rlm, fSend ) ) {logreroll(__LINE__); goto ReRoll_;}
 			CreateHolding(type, 0, 0, TargetProvince, rlm, fSend);
 			break;
 
@@ -4904,13 +4792,6 @@ CreateHldng:
 		case ACTION_DECLAREWAR_DIFTERRAIN:
 		case ACTION_DECLAREWAR_BACKSTAB:
 			if (rlm == REALM::MONSTERS) {logreroll(__LINE__); goto ReRoll_;}
-			//if (action_turn > 2			// don't declare war after 2nd action
-			//	||	(fPlayerNeverDeclaredWar
-			//		&&	(	(game_difficulty == DIF_EASY && date < 4)
-			//			||	(game_difficulty == DIF_MEDIUM && date < 3)
-			//			||	(game_difficulty == DIF_HARD && date < 2)
-			//	)	)	)
-			//	{logreroll(__LINE__); goto ReRoll_;}
 			
 			ActionExpType = RLM_EXP_DECLARE_WAR;
 			ActionExpModifier = 0;
@@ -5066,7 +4947,6 @@ CreateHldng:
 				// GWP I can't tell wheter its permissive or Full.
 				ActionExpType = RLM_EXP_DIPLOMACY_PERMISSIVE;
 				ActionExpModifier = 0;
-				//if (value < 10) {logreroll(__LINE__); goto ReRoll_;}				// not good enough
 			}
 
 			// going for Vassalage
@@ -5113,11 +4993,9 @@ CreateHldng:
 
 				ActionExpType = RLM_EXP_DIPLOMACY_VASSALAGE;
 				ActionExpModifier = 0;
-				//if (value < 10) {logreroll(__LINE__); goto ReRoll_;}				// not good enough
 			}
 
 			npc_ai[rlm].CurrentAction = action;
-
 
 			if (!realm[TargetRealm].mfIsPlayerCtrl())  //---- NPC vs. NPC
 			{
@@ -5132,22 +5010,17 @@ CreateHldng:
 					SetGameData(MP_REALMSTATUS, TargetRealm, CurrentRealm, STATUS_FULL_ALLIANCE, FALSE );
 					if (TargetRealm<LAND_REALM_COUNT)
 					{
-						//RealmStatus[CurrentRealm][TargetRealm] = STATUS_FULL_ALLIANCE;
 						SetGameData(MP_REALMSTATUS, CurrentRealm, TargetRealm, STATUS_FULL_ALLIANCE, FALSE );
-						//RealmReaction[CurrentRealm] [TargetRealm]= 95;
 						SetGameData(MP_REALMREACTION, CurrentRealm, TargetRealm, 95, FALSE );
 					}
-					// RealmReaction[TargetRealm][CurrentRealm] = 95;
 					SetGameData(MP_REALMREACTION, TargetRealm, CurrentRealm, 95, FALSE);
 
 					realm[CurrentRealm].mfAddTreasury(gold * 10);
 					realm[TargetRealm].mfAddTreasury( -(gold * 10));
 					// offer holding
 					if (TargetPlace)
-						//SetGameData(MP_PLACES, MPPLACE_REALM, TargetPlace, TargetRealm, FALSE );
 						CheckHolding(TargetPlace, TargetRealm, FALSE);
 					if (StartPlace)
-						//SetGameData(MP_PLACES, MPPLACE_REALM, StartPlace, CurrentRealm, FALSE );
 						CheckHolding(StartPlace, CurrentRealm, FALSE);
 				}
 				else if (RealmStatus[TargetRealm][CurrentRealm] == STATUS_FULL_ALLIANCE)
@@ -5165,8 +5038,6 @@ CreateHldng:
 						SetGameData(MP_REALMSTATUS, CurrentRealm, TargetRealm, STATUS_FULL_ALLIANCE, FALSE );
 						SetGameData(MP_REALMREACTION, CurrentRealm, TargetRealm, 95, FALSE );
 						// offer province
-						//GEH 11/20 SetGameData(MP_PROVINCE, MPPROV_REALM, StartProvince, TargetRealm, FALSE );
-						//GEH 11/20 ReconstructMap();
 					}
 					else		// non-landed vassal becomes lieutenant instead
 					{
@@ -5191,7 +5062,6 @@ CreateHldng:
 									SetGameData(MP_REGENT, MPREG_UNIT, TargetPlace, iUnit, FALSE );
 									// HACK HACK HACK HACK HACK
 									// GWP Don't set this anymore. (It's read from the units array.
-									// SetGameData(MP_REGENT, MPREG_REALM, TargetPlace, CurrentRealm, FALSE );
 								}
 								// even if we can't create a unit we have to stop.
 								break;
@@ -5206,13 +5076,10 @@ CreateHldng:
 
 					if (TargetRealm<LAND_REALM_COUNT)
 					{
-						//RealmStatus[CurrentRealm][TargetRealm] = STATUS_PERMISSIVE_ALLIANCE;
 						SetGameData(MP_REALMSTATUS, CurrentRealm, TargetRealm, STATUS_PERMISSIVE_ALLIANCE, FALSE );
-						// RealmReaction[CurrentRealm] [TargetRealm]= 75;
 						SetGameData(MP_REALMREACTION, CurrentRealm, TargetRealm, 75, FALSE );
 					}
 
-					//RealmReaction[TargetRealm][CurrentRealm] = 75;
 					SetGameData(MP_REALMREACTION, TargetRealm, CurrentRealm, 75, FALSE );
 
 					realm[CurrentRealm].mfAddTreasury(gold * 10);
@@ -5220,11 +5087,9 @@ CreateHldng:
 
 					// offer holding
 					if (TargetPlace)
-						//SetGameData(MP_PLACES, MPPLACE_REALM, TargetPlace, TargetRealm, FALSE );
 						CheckHolding(TargetPlace, TargetRealm, FALSE);
 
 					if (StartPlace)
-						//SetGameData(MP_PLACES, MPPLACE_REALM, StartPlace, CurrentRealm, FALSE );
 						CheckHolding(StartPlace, CurrentRealm, FALSE);
 				}
 			}
@@ -5300,7 +5165,6 @@ CreateHldng:
 			TargetRealm = (REALM::REALM_TYPE)province[TargetProvince].Realm;
 
 			tmpProvince = TargetProvince; //OfferHolding will change targetprovince to the province of the holding found
-			// GEH if(!OfferHolding()) {logreroll(__LINE__); goto ReRoll_;}
 
 			if(50 > (RealmReaction[TargetRealm][CurrentRealm]-70+35+15))
 				 reaction = 120-50-RealmReaction[TargetRealm][CurrentRealm];
@@ -5325,11 +5189,7 @@ CreateHldng:
 				}
 				province[tmpProvince].Realm = CurrentRealm;
 
-
 				// take care of the offered holding
-				//GEH places[TargetPlace].Realm = TargetRealm;
-				//GEH SetGameData(MP_PLACES, MPPLACE_REALM, TargetPlace, TargetRealm, FALSE );
-				//GEH CheckHolding(TargetPlace, TargetRealm, FALSE);
 
 				ReconstructMap();
 				CheckRealmStatus(rlm,TargetRealm, FALSE );
@@ -5384,7 +5244,6 @@ CreateHldng:
 			
 			break;
 
-
 		case ACTION_DIPLMCY_DMD_HOLD:
 			ActionExpType = RLM_EXP_PASS;
 			ActionExpModifier = 0;
@@ -5423,12 +5282,9 @@ CreateHldng:
  				PayForIt(CurrentRealm, gold, 1, 0);
 
 				// take care the demanded holding
-				// places[StartPlace].Realm = CurrentRealm;
-				//SetGameData(MP_PLACES, MPPLACE_REALM, StartPlace, CurrentRealm, FALSE );
 				CheckHolding(StartPlace, CurrentRealm, FALSE);
 				
 				// take care the offered TargetPlace
-				//SetGameData(MP_PLACES, MPPLACE_REALM, TargetPlace, TargetRealm, FALSE );
 				CheckHolding(TargetPlace, TargetRealm, FALSE);
 			}	 	
 			else if ( TargetRealm == HomeRealm )   // home realm is target
@@ -5557,7 +5413,6 @@ CreateHldng:
 			}
 
 			npc_ai[rlm].CurrentAction = action;
-			//if (!RollNPCSuccess(action)) break;
 			if(units[TargetUnit].Realm == HomeRealm && TargetProvince > NO_PROVINCE && TargetProvince < NO_PROVINCE2)
 				AddReport(	IMMEDIATE_NPC_ASSASSIN, CurrentRealm, TargetProvince, 0);
 
@@ -5705,15 +5560,6 @@ CreateHldng:
 				 {logreroll(__LINE__); goto ReRoll_;}
 
 			//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-			//i = TargetPlace;
-			//TargetPlace = 0;
-			//j = TargetProvince;
-			//TargetProvince = StartProvince;
-			//if (!RollNPCSuccess(action)) break;
-			//StartProvince = TargetProvince;
-			//TargetProvince = j;
-			//if (!RollNPCSuccess(action)) break;
-			//TargetPlace = i;
 			//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 			if(!CanAfford (minDist, minDist, 0, rlm)) {logreroll(__LINE__); goto ReRoll_;}
@@ -5788,15 +5634,11 @@ CreateHldng:
 			ActionExpModifier = 0;
 /*temp*/	{logreroll(__LINE__); goto ReRoll_;}				// can't do the action so try another
 //			effect here
-//			break;
 		case ACTION_LTACT_:
 			ActionExpType = RLM_EXP_PASS;
 			ActionExpModifier = 0;
 /*temp*/	{logreroll(__LINE__); goto ReRoll_;}				// can't do the action so try another
 //			effect here
-//			npcActionData[rlm].SetLtUsed();
-//			goto Another;				// action was free so do another
-
 
 		case ACTION_MOVE_ATTACK_FOE:
 		case ACTION_MOVE_ATTACK_OWN:
@@ -5854,7 +5696,6 @@ actmovelbl:
 			npc_ai[rlm].CurrentAction = action;
 			goto Another;				// action was free so do another
 
-		
 		case ACTION_MUSTER_INF:
 		case ACTION_MUSTER_EIN:
 		case ACTION_MUSTER_BOW:
@@ -6261,7 +6102,6 @@ actmovelbl:
 			if(!CanAfford (1, 1, 0, rlm)) {logreroll(__LINE__); goto ReRoll_;}
 			npc_ai[rlm].CurrentAction = action;
 			PayForIt(rlm, 1, 1, 0);
-			// units[TargetUnit].Blessed = TRUE;
 			SetGameData(MP_UNITS, MPUNITS_BLESSED, TargetUnit, TRUE, FALSE );
 			CurrentRegent = (REGENT_ENUM) realm[CurrentRealm].mfGetRegent();
 			if (CurrentRegent != NO_REGENT)
@@ -6410,9 +6250,7 @@ actmovelbl:
 			npc_ai[rlm].CurrentAction = action;
 			if (!RollNPCSuccess(action, &fSync, &fSend)) break;
 
-//			++province[TargetProvince].CivLevel;
 			SetGameData(MP_PROVINCE, MPPROV_CIVLEVEL, TargetProvince, (province[TargetProvince].CivLevel+1), fSend );
-//			province[TargetProvince].MagLevel--;
 			if (province[TargetProvince].MagLevel>0 && !province[TargetProvince].ElfPop)
 				SetGameData(MP_PROVINCE, MPPROV_MAGLEVEL, TargetProvince, (province[TargetProvince].MagLevel-1), fSend );
 			CheckAndFixSourceLevels(TargetProvince);
@@ -6435,7 +6273,6 @@ actmovelbl:
 			if (!RollNPCSuccess(action,&fSync, &fSend)) break;
 			SetGameData(MP_PLACES, MPPLACE_LEVEL, TargetPlace, (places[TargetPlace].Level+1), fSend );
 			SetGameData(MP_PLACES, MPPLACE_IICONBITM, TargetPlace, places[TargetPlace].Icon+(((places[TargetPlace].Level<8)?places[TargetPlace].Level:7)/2), fSend );
-//			++places[TargetPlace].Level;
 			break;
 		case ACTION_RULE_GLD:
 			if (rlm == REALM::MONSTERS) {logreroll(__LINE__); goto ReRoll_;}
@@ -6454,7 +6291,6 @@ actmovelbl:
 			if (!RollNPCSuccess(action, &fSync, &fSend)) break;
 			SetGameData(MP_PLACES, MPPLACE_LEVEL, TargetPlace, (places[TargetPlace].Level+1), fSend );
 			SetGameData(MP_PLACES, MPPLACE_IICONBITM, TargetPlace, places[TargetPlace].Icon+(((places[TargetPlace].Level<8)?places[TargetPlace].Level:7)/2), fSend );
-//			++places[TargetPlace].Level;
 			break;
 		case ACTION_RULE_TMP:
 			if (rlm == REALM::MONSTERS) {logreroll(__LINE__); goto ReRoll_;}
@@ -6473,7 +6309,6 @@ actmovelbl:
 			if (!RollNPCSuccess(action, &fSync, &fSend)) break;
 			SetGameData(MP_PLACES, MPPLACE_LEVEL, TargetPlace, (places[TargetPlace].Level+1), fSend );
 			SetGameData(MP_PLACES, MPPLACE_IICONBITM, TargetPlace, places[TargetPlace].Icon+(((places[TargetPlace].Level<8)?places[TargetPlace].Level:7)/2), fSend );
-//			++places[TargetPlace].Level;
 			break;
 		case ACTION_RULE_SRC:
 			if (rlm == REALM::MONSTERS) {logreroll(__LINE__); goto ReRoll_;}
@@ -6492,30 +6327,17 @@ actmovelbl:
 			if (!RollNPCSuccess(action, &fSync, &fSend )) break;
 			SetGameData(MP_PLACES, MPPLACE_LEVEL, TargetPlace, (places[TargetPlace].Level+1), fSend );
 			SetGameData(MP_PLACES, MPPLACE_IICONBITM, TargetPlace, places[TargetPlace].Icon+(((places[TargetPlace].Level<8)?places[TargetPlace].Level:7)/2), fSend );
-//			++places[TargetPlace].Level;
 			break;
 
 		case ACTION_TRADEROUTE:
 			ActionExpType = RLM_EXP_BUILD_TRADEROUTE;
 			ActionExpModifier = 0;
 			if (rlm == REALM::MONSTERS) {logreroll(__LINE__); goto ReRoll_;}
-			//printf("TRADE ROUTE - start");
 			if (!FindHolding(rlm,rlm,ANY_PROVINCE,GUILD1_ICON,TRUE)) {logreroll(__LINE__); goto ReRoll_;} // if no guilds don't bother
-			//printf(" found:%s  end",province[TargetProvince].name);
 			StartProvince = TargetProvince;
 			if (!FindDiffTerrain(VIA_ROAD, StartProvince, &TargetProvince)) {logreroll(__LINE__); goto ReRoll_;}	// must be to diff terrain
-			//printf(" found:%s\n",province[TargetProvince].name);
 
 			//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-			//i = TargetPlace;
-			//TargetPlace = 0;
-			//j = TargetProvince;
-			//TargetProvince = StartProvince;
-			//if (!RollNPCSuccess(action)) break;
-			//StartProvince = TargetProvince;
-			//TargetProvince = j;
-			//if (!RollNPCSuccess(action)) break;
-			//TargetPlace = i;
 			//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 			if (!npc_traderoute(TargetPlace)) {logreroll(__LINE__); goto ReRoll_;}
@@ -6537,7 +6359,6 @@ actmovelbl:
 			print_textf(320, 240, WHITE, STRMGR_GetStr(STR_MAPAI_UNSUPPORTED_ACTN_ERROR_FMT), realm[rlm].mfGetName(), action);
 			{logreroll(__LINE__); goto ReRoll_;}				// can't do the action so try another
 		}
-		
 		
 		CurrentRegent = (REGENT_ENUM) realm[CurrentRealm].mfGetRegent();
 		if (CurrentRegent != NO_REGENT && action != ACTION_PASS)
@@ -6598,7 +6419,6 @@ ReRoll_:
 
 	ActionTried[k] = TRUE;
 	goto ReRoll;
-
 
 Another_:
 	// ABC  Never change or remove this code. Its here to fix a compiler bug

@@ -16,7 +16,6 @@
    class definition
    ----------------------------------------------------------------- */
 
-
 class STUNNED_DATA
 {
 public:

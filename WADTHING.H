@@ -50,7 +50,6 @@ typedef enum
 extern "C" {
 #endif
 
-
 #if defined (__cplusplus)
 }
 #endif
@@ -61,7 +60,6 @@ extern "C" {
 #if defined (__cplusplus)
 extern "C" {
 #endif
-
 
 #if defined (__cplusplus)
 }

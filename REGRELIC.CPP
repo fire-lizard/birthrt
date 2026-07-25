@@ -19,19 +19,14 @@
 
 #if defined (_WINDOWS)
 
-
 /* ------------------------------------------------------------------------
    Includes
    ------------------------------------------------------------------------ */
 
 #include "TYPEDEFS.H"
-//#include "gamemap.hxx"
-//#include "regents.hxx"
-//#include "realm.hxx"
 #include "ITEMTYPE.HXX"
 #include "REGRELIC.HXX"
 #include "PLAYSTAT.HXX"
-
 
 /* ------------------------------------------------------------------------
    Defines
@@ -39,7 +34,6 @@
 
 #define ANY			0
 #define SPECIFIC	1
-
 
 /* ------------------------------------------------------------------------
    Data
@@ -71,7 +65,6 @@ static REGENT_ENUM gLieutenants[] = {
 	THE_SWAMP_MAGE,
 	TEMIAS_COUMAIN
 };
-
 
 // Relics
 //
@@ -116,10 +109,7 @@ DEFINE_VECTOR_DATA (REGRELIC_STRUCT, gRelics) = {
 
 DEFINE_VECTOR_CLASS (REGRELIC_STRUCT, gRelics);
 
-
 BOOL REGRELIC_STRUCT::fAssignedRelics = FALSE;
-
-
 
 void REGRELIC_STRUCT::ClearRelics ()
 {
@@ -138,8 +128,6 @@ void REGRELIC_STRUCT::ClearRelics ()
 
 	fAssignedRelics = FALSE;
 }
-
-
 
 void REGRELIC_STRUCT::AssignRelics ()
 {
@@ -241,6 +229,5 @@ BOOL REGRELIC_STRUCT::ItemAvailable (LONG iItem, LONG iRegent)
 	}
 	return FALSE;
 }
-
 
 #endif // _WINDOWS

@@ -9,7 +9,6 @@
 
    Contains the following general functions:
 
-
    ======================================================================== */
 
 /* ------------------------------------------------------------------------
@@ -35,7 +34,6 @@
    Defines and Compile Flags
    ------------------------------------------------------------------------ */
 
-
 #define LOOK_DOWN_PITCH				-180
 #define DISTANCE_AWAY				150
 #define YOU_DRIVE_DISTANCE_AWAY		200
@@ -50,7 +48,6 @@
 #define BEHIND_FRIEND_ANGLE		128
 #define BEHIND_FOE_ANGLE		0
 
-
 /* ------------------------------------------------------------------------
    Macros
    ------------------------------------------------------------------------ */
@@ -59,11 +56,9 @@
    Classes
    ------------------------------------------------------------------------ */
 
-
 /* ------------------------------------------------------------------------
    Global Variables
    ------------------------------------------------------------------------ */
-
 
 COMBAT_CAMERA gccCamera;
 
@@ -403,7 +398,6 @@ void COMBAT_CAMERA::mfUpdatePosition()
 			SetCameraPosition(&camera,
 							  pAvatar->mfX(),
 					          pAvatar->mfY(),
-					          //pAvatar->mfZ() + (pAvatar->mfHeight() - EYE_HEIGHT),
 					          pAvatar->mfZ() + (player.h - EYE_HEIGHT),
 					          pAvatar->mfAngle(),
 					          0 // Avatars have no pitch.
@@ -416,7 +410,6 @@ void COMBAT_CAMERA::mfUpdatePosition()
 			SetCameraPosition(&camera,
 							  pAvatar->mfX(),
 					          pAvatar->mfY(),
-					          //pAvatar->mfZ() + (pAvatar->mfHeight() - EYE_HEIGHT),
 					          pAvatar->mfZ() + (player.h - EYE_HEIGHT),
 					          Angle,
 					          0 // Avatars have no pitch.

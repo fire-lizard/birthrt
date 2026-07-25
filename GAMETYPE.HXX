@@ -21,8 +21,6 @@
 #include "strenum.h"
 #endif
 
-
-
 #if !defined(_TYPEDEFS_H)
 #include "typedefs.h"
 #endif
@@ -51,7 +49,6 @@
    Notes
    ------------------------------------------------------------------------ */
 //GEH will eventually be in system.h
-// JPC it is now in system.h: LONG FileAccess( CSTRPTR pszFile );
 
 /* ------------------------------------------------------------------------
    Defines and Compile Flags
@@ -72,23 +69,16 @@
 #define LG_AVATAR			0x01000000
 #define RELICOPOWER			0x02000000
 
-
 // Note: If you need a new attribute, just change the name "UNUSED" to
 //       something we can all understand and remove the "//" from in the front
 //       the line.
 //       Now in gametypes.cpp use this define for the attrib section of the data
 //       structure. To concatinate several attributes for one art object
 //       join the defines with a "|" symbol.
-//#define UNUSED	 			0x02000000
-//#define UNUSED	 			0x04000000
-//#define UNUSED	 			0x08000000
-//#define UNUSED	 			0x10000000
 
 // Note: the top three bits are used in things.h
 
-
 typedef UBYTE MOVEMENT_RATE;
-
 
 class GAME_TTYPE
 {
@@ -356,5 +346,3 @@ inline THINGTYPE const GAME_TTYPE::mfGetLowResType(THINGTYPE const type)
 }
 
 #endif // _GAMETYPE_HXX
-
-

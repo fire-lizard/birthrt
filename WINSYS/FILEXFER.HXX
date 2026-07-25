@@ -22,13 +22,6 @@ typedef struct {
    DWORD dwBlockcount ;   // size in blocks or packets
 } XFERSTARTBLOCK ;
 
-
-//#ifdef _DEFINE_EXPORT_PLATFORMNETWORKMODULE
-//class __declspec( dllexport ) FileXfer : public PlatformNetworkModule
-//#else
-//class __declspec( dllimport ) FileXfer : public PlatformNetworkModule
-//#endif
-
 class FileXfer : public PlatformNetworkModule
 
 {
@@ -47,9 +40,6 @@ private:
 
    BOOL StartFileReceive();
    BOOL ReceiveFileBlock(unsigned int index) ;
-
-	
-
 
 public:
    FileXfer(GamePrintFunction pPrintFunc, ErrCode *err)  ;
@@ -93,10 +83,5 @@ public:
                    // controls the wait for each data block ;
 } ;
 
-
-
-
-
 #endif // _H_FILEXFER
-
 

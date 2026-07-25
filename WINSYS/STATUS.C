@@ -95,7 +95,6 @@ BOOL CreateStatusBar (HWND hwnd, HANDLE hInst, int iId)
 	   // WS_CHILD | WS_BORDER | WS_VISIBLE,
 		WS_CAPTION | WS_POPUP | WS_BORDER | WS_VISIBLE,
 		x, y, w, h,
-		// hwnd, (HMENU)iId, hInst, NULL);
 		NULL, NULL, hInst, NULL);
 
 	if (!ghwndStatus)
@@ -111,7 +110,6 @@ int StatusBarHeight (HWND hwnd)
 	 GetClientRect (ghwndStatus, &rect);
 	 return (rect.bottom-rect.top);
 }
-
 
 // ---------------------------------------------------------------------------
 BOOL AdjustStatusBar (HWND hwnd)
@@ -200,7 +198,6 @@ LONG APIENTRY StatusProc (HWND hwnd, UINT msg, UINT wParam, LONG lParam)
 								VARIABLE_PITCH | FF_SWISS, "Arial");
 										  }
 								}
-
 
 				if (!hfontStatus) {
 					 MessageBox (GetFocus(), "Failed To Create Font", "StatusProc", MB_OK);
@@ -333,8 +330,6 @@ LONG APIENTRY StatusProc (HWND hwnd, UINT msg, UINT wParam, LONG lParam)
     }
     return 0L;
 }
-
-
 
 LONG APIENTRY StatusFieldProc (HWND hwnd, UINT msg, UINT wParam, LONG lParam)
 {

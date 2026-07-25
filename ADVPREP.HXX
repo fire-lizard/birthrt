@@ -13,7 +13,6 @@
 #include "typedefs.h"
 #endif
 
-
 /* ------------------------------------------------------------------------
    Defines and Compile Flags
    ------------------------------------------------------------------------ */
@@ -45,7 +44,4 @@ void AdvPrepListSel (LONG MenuCombo, LONG );
 void AdvPrepListScroll (LONG MenuCombo, LONG ButtonVal);
 void AdvPrepReturn (LONG, LONG);
 
-
 #endif	// _ADVPREP_HXX
-
-

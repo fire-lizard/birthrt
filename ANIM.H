@@ -17,10 +17,6 @@
 #include "system.h"
 #endif
 
-
-
-
-
 void init_anim();
 SHORT NextFrame (SHORT iAnim, SHORT sequence, SHORT rotation, UBYTE * pCtrl, SHORT * pflag, SHORT * psequenceEnd, SHORT * flag2);
 
@@ -40,8 +36,5 @@ void SpeedUp(LONG, LONG);
 void SlowDown(LONG, LONG);
 void CloseAnimationMenu(LONG, LONG);
 
-
 #endif
-
-
 

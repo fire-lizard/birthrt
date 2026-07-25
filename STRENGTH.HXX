@@ -15,15 +15,12 @@
 #include "typedefs.h"
 #endif
 
-
 /* ------------------------------------------------------------------------
    Defines and Compile Flags
    ------------------------------------------------------------------------ */
 // HUNGARIAN NOTE: All values are of type long unless specified.  So if
 // is doesn't start with a capital letter, the lower case should be a
 // prefix.  'u' means Ulong.
-
-
 
 // The Strength Table can be accessed directly by Pseudo Strength Rating.
 class STRENGTH {

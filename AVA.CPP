@@ -27,7 +27,6 @@
 
 #ifdef _WINDOWS								// Windows is required for these functions
 
-
 /* ========================================================================
    Function    - WarnMessage
    Description - Put a message in a message box and wait for a key.
@@ -38,8 +37,6 @@ static void WarnMessage (PSTR szMessage)
 {
 	MessageBox (NULL, szMessage, "Warning", MB_OK);
 }
-
-
 
 /* ========================================================================
    Function    - mfReadTextData
@@ -59,7 +56,6 @@ LONG AVA_FILE::mfReadTextData (FILE *fp)
 	LONG			lTemp5;
 	LONG			lTemp6;
 	char			cpBuffer[126];
-	
 	
 	if (EOF != GetNextLine(fp, cpBuffer, sizeof(cpBuffer)))
 	{
@@ -155,9 +151,6 @@ LONG AVA_FILE::mfReadTextData (FILE *fp)
 	}
    // [d4-30-97 JPC] Changed to new style: player name is a string in
 	// the AVA file, not merely a pointer.
-	// sscanf(cpBuffer, "%ld", &fName);
-	// PLAYER_STATS::NameClass.fName =(PLAYER_NAME::NAME) lTemp;
-	// strncpy (szName, cpBuffer, MAX_NAME_LEN);
 	mfSetName (cpBuffer);
 
 	Result = GetNextLine(fp, cpBuffer, sizeof(cpBuffer));
@@ -167,7 +160,6 @@ LONG AVA_FILE::mfReadTextData (FILE *fp)
 		goto Leave_fn;
 	}
 	sscanf(cpBuffer, "%ld", &fTitle);
-	// PLAYER_STATS::TitleClass.fTitle =(PLAYER_TITLE::TITLE) lTemp;
 
 	Result = GetNextLine(fp, cpBuffer, sizeof(cpBuffer));
 	if (EOF == Result)
@@ -176,7 +168,6 @@ LONG AVA_FILE::mfReadTextData (FILE *fp)
 		goto Leave_fn;
 	}
 	sscanf(cpBuffer, "%ld", &fDescription);
-	// PLAYER_STATS::DesClass.fDescription =(PLAYER_DESCRIPTION::DES) lTemp;
 
 	Result = GetNextLine(fp, cpBuffer, sizeof(cpBuffer));
 	if (EOF == Result)
@@ -185,7 +176,6 @@ LONG AVA_FILE::mfReadTextData (FILE *fp)
 		goto Leave_fn;
 	}
 	sscanf(cpBuffer, "%ld", &fAlignment);			/* ALIGNMENT_TYPE */	
-	// Alignment = (ALIGNMENT_INFO::TYPE) lTemp;
 	
 	Result = GetNextLine(fp, cpBuffer, sizeof(cpBuffer));
 	if (EOF == Result)
@@ -202,7 +192,6 @@ LONG AVA_FILE::mfReadTextData (FILE *fp)
 		goto Leave_fn;
 	}
 	sscanf(cpBuffer, "%ld", &fArmorClass);			/* LONG */	
-	// sbArmorClass = (SBYTE) lTemp;
 	
 	Result = GetNextLine(fp, cpBuffer, sizeof(cpBuffer));
 	if (EOF == Result)
@@ -211,7 +200,6 @@ LONG AVA_FILE::mfReadTextData (FILE *fp)
 		goto Leave_fn;
 	}
 	sscanf(cpBuffer, "%ld", &fArmorType);			/* ARMOR_TYPE */	
-	// DefaultArmor = (ARMOR_INFO::TYPE) lTemp;
 	
 	Result = GetNextLine(fp, cpBuffer, sizeof(cpBuffer));
 	if (EOF == Result)
@@ -220,7 +208,6 @@ LONG AVA_FILE::mfReadTextData (FILE *fp)
 		goto Leave_fn;
 	}
 	sscanf(cpBuffer, "%ld", &fWeapon);			/* WEAPON_TYPE */	
-	// DefaultWeapon = (WEAPON_INFO::TYPE) lTemp;
 	
 	Result = GetNextLine(fp, cpBuffer, sizeof(cpBuffer));
 	if (EOF == Result)
@@ -280,8 +267,6 @@ LONG AVA_FILE::mfReadTextData (FILE *fp)
 	}
 	sscanf(cpBuffer, "%ld", &fExperience);
 	
-	// Result = PlayerClassList.mfReadTextData (fp);
-	
 	Result = GetNextLine(fp, cpBuffer, sizeof(cpBuffer));
 	if (EOF == Result)
 	{
@@ -311,37 +296,9 @@ LONG AVA_FILE::mfReadTextData (FILE *fp)
 		goto Leave_fn;
 	}
 	sscanf(cpBuffer,"%ld", &fAttacksPerRound);
-	// NumberOfAttacks = (SBYTE) lTemp;
 	
 	// Now Calculate the other fields as necessary.
-	// if (fHitPoints == 0)
-	// {
-	// 	if (HitDice.sbNumberOfDice != 0)
-	// 	{
-	// 		fHitPoints = RollDice(&HitDice);
-	// 	}
-	// 	else
-	// 	{
-	// 		fHitPoints = PlayerClassList.mfRollHitPts();
-	// 	}
-	// 	
-	// }
 	
-	// if (fTotalHitPoints == 0)
-	// {
-	// 	fTotalHitPoints = fHitPoints;
-	// }
-	
-	// if (fArmorType != ARMOR_INFO::NO_ARMOR)
-	// {
-	// 	sbArmorClass = ARMOR_INFO::mfGetArmorClass(fArmorType);
-	// }
-	
-	// if (fTHAC0 == 0)
-	// {
-	// 	fTHAC0 = PlayerClassList.mfGetBestThac0();
-	// }
-
 	// Get bloodline information if present.  (It is not present in the
 	// "official" AVA files delivered with Birthright I.)
 	fBloodlineGrade = -1;					// [d5-07-97 JPC] -1 means "get info
@@ -480,6 +437,5 @@ LONG AVA_FILE::mfWriteTextData (FILE *fp)
 
 	return 0;
 }
-
 
 #endif

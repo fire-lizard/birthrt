@@ -14,7 +14,6 @@
 #define _MULTIMONO    //---- Comment out for no mono
 #endif
 
-//#define LOGCOMMENTSLEEP Sleep(1);
 #define LOGCOMMENTSLEEP {;}
 
 #include <Windows.h>
@@ -36,7 +35,6 @@ extern BOOL fLogComment;
 #define iMPT_UNIT		8
 #define iMPT_PING		6
 
-
 static int		DumpString				( char *s );
 
 enum
@@ -48,20 +46,12 @@ enum
 	iMPM_SENDFILE,
 };
 
-
 // ----------------------------------------------------------
 // -- Don't EVER mess with these wait numbers as you will ---
 // --  probably break things!!!!  This means you!			 ---
 // ----------------------------------------------------------
 //
 //                                                           DPlay   INN Internet
-//GEH DWORD dwMMsgWaitS[GenericMultiPlayer::iMP_NUMTYPES]       = {  700,  700,  700 };
-//GEH DWORD dwMMsgTriesS[GenericMultiPlayer::iMP_NUMTYPES]      = {    1,    1,    1 };
-//GEH DWORD dwMMsgWaitSR[GenericMultiPlayer::iMP_NUMTYPES]      = { 1400, 1400, 1400 }; 
-//GEH DWORD dwMMsgWaitR[GenericMultiPlayer::iMP_NUMTYPES]       = { 1000, 1000, 1000 };	 
-//GEH DWORD dwMMsgWaitRS[GenericMultiPlayer::iMP_NUMTYPES]      = { 1000, 1000, 1000 }; 
-//GEH DWORD dwMMsgMasterFudge[GenericMultiPlayer::iMP_NUMTYPES] = {  100,  100,  100 };
-//GEH DWORD dwMMsgMaxLoop[GenericMultiPlayer::iMP_NUMTYPES]     = {  120,  120,  120 };	  
 
 // -- GEH Just had to try to improve performance in the DPlay version
 DWORD dwMMsgWaitS[GenericMultiPlayer::iMP_NUMTYPES]       = {  400,  700,  700 };
@@ -72,28 +62,14 @@ DWORD dwMMsgWaitRS[GenericMultiPlayer::iMP_NUMTYPES]      = { 1000, 1000, 1000 }
 DWORD dwMMsgMasterFudge[GenericMultiPlayer::iMP_NUMTYPES] = {  100,  100,  100 };
 DWORD dwMMsgMaxLoop[GenericMultiPlayer::iMP_NUMTYPES]     = {   20,  120,  120 };	  
 
-//		iMSG_WAITS		= 700,		// send wait
-//		iMSG_TRIESS		= 1, 
-//		iMSG_WAITSR		= 1400,		// receive in send loop
-//		iMSG_WAITR		= 1000,		// rcv wait
-//		iMSG_WAITRS		= 1000, 	// receive in rvc loop 
-//		iMSG_MASTERFUDGE= 300,		// master side fudge factor
-//		iMAX_LOOP		= 120,		// max loops
-
-
 typedef FileXfer *(*PNEWFILEXFER) ( GamePrintFunction pPrintFunc, ErrCode *err );
 typedef void (*PDELETEFILEXFER) ( FileXfer * );
 
-// static GenericMultiPlayer *ChatObj = NULL;
-
 static FARPROC	fpOldEditWndProc = NULL;
-
 
 // -- End Local Stuff
 
 static ErrCode err = kNoError;
-
-
 
 // -----------------------------------------------------------------
 // -- Prototypes
@@ -103,8 +79,6 @@ void PaintAckLED(int k, DWORD id2, BOOL localAcks);
 
 extern void RandomLogComment ( char * szString );
 extern void RandomLogPrefix ( char * szString );
-
-
 
 // -----------------------------------------------------------------
 //
@@ -129,7 +103,6 @@ GenericMultiPlayer::GenericMultiPlayer( void ) :
 
 	fAvailable = TRUE;	// default for now!
 
-
  	// -- Setup default wait times
 
  	dwMsgWaitS			= dwMMsgWaitS[iMP_NETMODEM];			
@@ -140,10 +113,7 @@ GenericMultiPlayer::GenericMultiPlayer( void ) :
  	dwMsgMasterFudge	= dwMMsgMasterFudge[iMP_NETMODEM];
  	dwMsgMaxLoop		= dwMMsgMaxLoop[iMP_NETMODEM];
 
-
 } // GenericMultiPlayer::GenericMultiPlayer
-
-
 
 // -----------------------------------------------------------------
 //
@@ -167,13 +137,9 @@ void GenericMultiPlayer::SetWaitTimes( USHORT usMultiplier )
    dwMsgMasterFudge    = dwMMsgMasterFudge[ptType]* usMultiplier;;
    dwMsgMaxLoop        = dwMMsgMaxLoop[ptType];
 
-//     pnmGame.SetXferDelay( dwMsgWaitS * usMultiplier );
-
        pnmGame.SetXferDelay( dwMsgWaitR );
 
 } // GenericMultiPlayer::SetWaitTimes
-
-
 
 // -----------------------------------------------------------------
 //
@@ -196,9 +162,6 @@ GenericMultiPlayer::~GenericMultiPlayer( void )
 
 } // MultiPlayer::~GenericMultiPlayer
 
-
-
-
 // --
 // -- Data Retrieval
 // --
@@ -207,7 +170,6 @@ FileXfer *GenericMultiPlayer::GetNetModule( void )
 { 
 	return ( &pnmGame ); 
 }
-
 
 // --
 // -- Status Inquiries
@@ -218,12 +180,10 @@ BOOL GenericMultiPlayer::IsAvailable( void )
 	return ( fAvailable ); 
 }
 
-
 BOOL GenericMultiPlayer::WasConnectionLost	( void )
 {
 	return ( !fSent );
 }
-
 
 // --
 // -- Data Setting
@@ -238,7 +198,6 @@ void GenericMultiPlayer::SetRunDir( PSZ pszRunDirectory )
 {
 	pszRunDir = pszRunDirectory;
 }
-
 
 // -----------------------------------------------------------------
 //
@@ -256,9 +215,7 @@ int GenericMultiPlayer::CheckConnectStatus( void )
 
    return ( pnmGame.CheckConnectStatus ( ) );
 
-
 } // GenericMultiPlayer::CheckConnectStatus()
-
 
 // -----------------------------------------------------------------
 //
@@ -275,10 +232,7 @@ int GenericMultiPlayer::ForceStart( void )
 
    return ( pnmGame.ForceStart ( ) );
 
-
 } // GenericMultiPlayer::ForceStart()
-
-
 
 // -----------------------------------------------------------------
 //
@@ -296,9 +250,6 @@ void GenericMultiPlayer::DisablePlayers( void )
    pnmGame.DisablePlayers( );
 
 } // GenericMultiPlayer::DisablePlayers()
-
-
-
 
 // -----------------------------------------------------------------
 //
@@ -321,7 +272,6 @@ DWORD GenericMultiPlayer::GetPlayerId( void )
 
 } // GenericMultiPlayer::GetPlayerId()
 
-
 // -----------------------------------------------------------------
 //
 //	 GenericMultiPlayer::GetAPlayerId
@@ -343,7 +293,6 @@ DWORD GenericMultiPlayer::GetAPlayerId( int i )
    return (DWORD) Id;
 
 } // GenericMultiPlayer::GetAPlayerId()
-
 
 // -----------------------------------------------------------------
 //
@@ -376,8 +325,6 @@ int GenericMultiPlayer::GetAPlayerIndex( DWORD dwWhatId )
 
 } // GenericMultiPlayer::GetAPlayerIndex()
 
-
-
 // -----------------------------------------------------------------
 //
 //	 GenericMultiPlayer::GetDeletedPlayer
@@ -394,8 +341,6 @@ int GenericMultiPlayer::GetDeletedPlayer  ( int index )
 {
    return (pnmGame.GetDeletedPlayer ( index ));
 }
-
-
 
 // -----------------------------------------------------------------
 //
@@ -414,7 +359,6 @@ DWORD GenericMultiPlayer::GetDeletedPlayerId  ( int index )
    return (pnmGame.GetDeletedPlayerId ( index ));
 }
 
-
 // -----------------------------------------------------------------
 //
 //	 GenericMultiPlayer::DeletePlayer
@@ -431,8 +375,6 @@ void GenericMultiPlayer::DeletePlayer  ( DWORD dwDelPlayerId )
    pnmGame.DeletePlayer ( dwDelPlayerId );
 }
 
-
-
 // -----------------------------------------------------------------
 //
 //	 GenericMultiPlayer::IsModemGame
@@ -447,8 +389,6 @@ BOOL GenericMultiPlayer::IsModemGame( void )
 {
     return ( pnmGame.IsModemGame() );
 }
-
-
 
 // -----------------------------------------------------------------
 //
@@ -466,9 +406,6 @@ void GenericMultiPlayer::ResetDeletedPlayer  ( int index )
 {
    pnmGame.ResetDeletedPlayer ( index );
 }
-
-
-
 
 // -----------------------------------------------------------------
 //
@@ -493,9 +430,6 @@ BOOL GenericMultiPlayer::CreateAGame( PSZ pszPlayerName )
 
 } // GenericMultiPlayer::CreateAGame
 
-
-
-
 // -----------------------------------------------------------------
 //
 //	 GenericMultiPlayer::EnumerateGames
@@ -515,9 +449,6 @@ void GenericMultiPlayer::EnumerateGames( GameDisplayStringFunction DString, long
 	pnmGame.EnumerateNetworkGames( DString, lContext );
 
 } // GenericMultiPlayer::EnumerateGames
-
-
-
 
 // -----------------------------------------------------------------
 //
@@ -539,9 +470,6 @@ void GenericMultiPlayer::EnumeratePlayers( GameDisplayStringFunction DString, lo
 
 } // GenericMultiPlayer::EnumeratePlayers
 
-
-
-
 // -----------------------------------------------------------------
 //
 //	 GenericMultiPlayer::EnumerateProtocols
@@ -562,9 +490,6 @@ void GenericMultiPlayer::EnumerateProtocols( GameDisplayStringFunction DString,
 	pnmGame.EnumerateNetworkProtocols( DString, lContext );
 
 } // GenericMultiPlayer::EnumerateProtocols
-
-
-
 
 // -----------------------------------------------------------------
 //
@@ -596,9 +521,6 @@ BOOL GenericMultiPlayer::Finalize( void )
 
 } // GenericMultiPlayer::Finalize
 
-
-
-
 // -----------------------------------------------------------------
 //
 //	 GenericMultiPlayer::Initialize
@@ -612,19 +534,15 @@ BOOL GenericMultiPlayer::Finalize( void )
 // -----------------------------------------------------------------
 BOOL GenericMultiPlayer::Initialize( PlayType usType )
 {
-//	BOOL fOK = TRUE;
 
    ErrCode err = kNoError;
 	CHAR szName[MAX_PATH] = "";
 	PNEWFILEXFER pNew = NULL;
 	int x;
 
-
 	// -- Save the type
 
 	ptType = usType;
-
-
 
 	// -- Setup the correct wait times
 
@@ -638,7 +556,6 @@ BOOL GenericMultiPlayer::Initialize( PlayType usType )
 
 	pnmGame.SetXferDelay( dwMsgWaitS );
 
-
 	// SetupChat();	let MulPlay do this later
 
 	for ( x = 0; x < MAX_PLAYERS; x++ )
@@ -647,8 +564,6 @@ BOOL GenericMultiPlayer::Initialize( PlayType usType )
 	}
 
 	ulSndMsgNum = 0;
-
-
 
 	if ( usType == iMP_SIGS )
 	{
@@ -659,20 +574,11 @@ BOOL GenericMultiPlayer::Initialize( PlayType usType )
 		pnmGame.SetSigs( FALSE );
 	}
 
-
 	err =  pnmGame.IsNetworkingAvailable();
-
 
 	return( (err == kNoError) ? TRUE : FALSE );
 
-
-//	return ( fOK );
-
-
 }  // GenericMultiPlayer::Initialize
-
-
-
 
 // -----------------------------------------------------------------
 //
@@ -695,9 +601,6 @@ BOOL GenericMultiPlayer::IsNetworkingAvailable( void )
 
 } // GenericMultiPlayer::IsNetworkingAvailable
 
-
-
-
 // -----------------------------------------------------------------
 //
 //	 GenericMultiPlayer::JoinAGame
@@ -719,9 +622,6 @@ BOOL GenericMultiPlayer::JoinAGame( long lIndex, PSZ pszPlayerName )
 
 } // GenericMultiPlayer::JoinAGame
 
-
-
-
 // -----------------------------------------------------------------
 //
 //	 GenericMultiPlayer::PeekForNextMessage
@@ -739,9 +639,6 @@ BOOL GenericMultiPlayer::PeekForNextMessage( LPNETMSG pMsg )
 	return ( pnmGame.PeekNextMessage( pMsg ) ) ;
 
 } // GenericMultiPlayer::PeekForNextMessage
-
-
-
 
 // -----------------------------------------------------------------
 //
@@ -764,8 +661,6 @@ BOOL GenericMultiPlayer::SelectAProtocol( long lIndex )
 
 } // GenericMultiPlayer::SelectAProtocol
 
-
-
 // -----------------------------------------------------------------
 //
 //	 GenericMultiPlayer::WaitForPlayer
@@ -784,8 +679,6 @@ BOOL GenericMultiPlayer::WaitForPlayer( void )
 
 } // GenericMultiPlayer::WaitForPlayer
 
-
-
 // -----------------------------------------------------------------
 //
 //	 GenericMultiPlayer::WaitForPlayers
@@ -803,8 +696,6 @@ int GenericMultiPlayer::WaitForPlayers( void )
 	return( pnmGame.WaitForPlayers( ) );
 
 } // GenericMultiPlayer::WaitForPlayers
-
-
 
  // --
  // -- Protected functions
@@ -829,7 +720,6 @@ BOOL GenericMultiPlayer::ReceiveFile( DWORD dwFrom, PSZ pNew )
 
 	// -- Wait for the 'Want to send a file' message
 
-	//GEH !!!! fRes = ReceiveMessage( iMPT_FILE, dwMsgWaitR );
 	fRes = TRUE;
 
 	if ( fRes )
@@ -848,10 +738,7 @@ BOOL GenericMultiPlayer::ReceiveFile( DWORD dwFrom, PSZ pNew )
 
 	return ( fRes );
 
-
 } // GenericMultiPlayer::ReceiveFile
-
-
 
 // -----------------------------------------------------------------
 //
@@ -905,7 +792,6 @@ BOOL GenericMultiPlayer::ReceiveMessage( USHORT usType, DWORD dwWait,
 				RandomLogComment ( temp );
 			}
 		}
-
 
 		// -- Received a message without an error as a return code
 		if ( err == kNoError )
@@ -1048,7 +934,6 @@ BOOL GenericMultiPlayer::ReceiveMessage( USHORT usType, DWORD dwWait,
 			}
 		}
 
-
 		// -- Look for auxilliary messages, if we didn't find
 		// --  what we wanted already 
 
@@ -1091,7 +976,6 @@ BOOL GenericMultiPlayer::ReceiveMessage( USHORT usType, DWORD dwWait,
 
 	}
 
-
 LeaveRcv:
 
 	#ifdef _MULTIMONO					
@@ -1115,11 +999,7 @@ LeaveRcv:
 
 	return ( iRcvType == usType );
 
-
 } // GenericMultiPlayer::ReceiveMessage
-
-
-
 
 // -----------------------------------------------------------------
 //
@@ -1139,9 +1019,6 @@ void GenericMultiPlayer::SelectGuid( int i )
 
 } // GenericMultiPlayer::SelectGuid
 
-
-
-
 // -----------------------------------------------------------------
 //
 //	 GenericMultiPlayer::SendFile
@@ -1158,7 +1035,6 @@ BOOL GenericMultiPlayer::SendFile( PSZ pszFile, unsigned int p_index )
 	//GEH added the index to the arg list and moved loop up to mulplay.cpp
 	//    for better sync
 	unsigned int i = 0;
-	//GEH unsigned int p_index;
 	DWORD dwWait = dwMsgWaitS;
 	DWORD toWhom = kBroadcast;
 
@@ -1169,13 +1045,11 @@ BOOL GenericMultiPlayer::SendFile( PSZ pszFile, unsigned int p_index )
 		dwWait *= 3;
 	#endif
 
-
 #if !defined(BROADCAST_SENDFILE)
 	//GEH for (p_index=0; p_index < MAX_PLAYERS; p_index++)
 	{
 		DWORD id = GetAPlayerId( p_index );
 		if ( id == GetPlayerId() || id == kNoPlayer)
-			//GEH continue;
 			return TRUE;
 	
 		i = 0;
@@ -1201,7 +1075,6 @@ BOOL GenericMultiPlayer::SendFile( PSZ pszFile, unsigned int p_index )
 
 			//---- service sound
 			run_timers();
-
 
 			fSent = pnmGame.SendFile( toWhom, pszFile, iMPT_FILE, dwWait );
 
@@ -1231,24 +1104,17 @@ BOOL GenericMultiPlayer::SendFile( PSZ pszFile, unsigned int p_index )
 				break;
 			#endif
 
-		
 			Sleep(100);
 		}
 
 #if !defined(BROADCAST_SENDFILE)
 		//GEH if (!fSent)	// any failure is bad; just abort
-			//GEH break;
 	}
 #endif	
 
 	return ( fSent );
 
-
 } // GenericMultiPlayer::SendFile
-
-
-
-
 
 // -----------------------------------------------------------------
 //
@@ -1281,9 +1147,7 @@ BOOL GenericMultiPlayer::SendMessage( DWORD dwToWhom, USHORT usType,
 		dwWait = 0;
 	}
 
-
 	// -- Next message
-	//ulSndMsgNum++;
 
 	// assure that the message number is unique to this send
 	ulSndMsgNum++;
@@ -1301,8 +1165,6 @@ BOOL GenericMultiPlayer::SendMessage( DWORD dwToWhom, USHORT usType,
 
    #endif
 
-
-
 	while ( (err != kNoError) && ( i < dwMsgMaxLoop ) )
 	{
 		//---- service sound
@@ -1316,7 +1178,6 @@ BOOL GenericMultiPlayer::SendMessage( DWORD dwToWhom, USHORT usType,
 				 usType, (usType==iMPT_UNIT)?"iMPT_UNIT":" ", (usType==iMPT_PING)?"iMPT_PING":" " );
 			RandomLogComment ( temp );
 		}
-
 
 		err = pnmGame.SendMessage( dwToWhom, 
 									(byte) usType,
@@ -1363,12 +1224,6 @@ HandleErrorRetry:
 
 		//---- If there are not any players then fine
 
-//		if ( err == kNoPlayersInGame &&
-//		dwToWhom == kBroadcast     )
-//		{
-//			goto LeaveSend;
-//		}
-
 		//---- Player disconnected on send
 
 		if ( err == kPlayerDisconnected )
@@ -1394,7 +1249,6 @@ HandleErrorRetry:
 				run_timers();				//---- service sound
 				if (!LookForMessages(0))
 					goto LeaveSend;
-				//Sleep( 50 * GetAPlayerIndex( GetPlayerId() ));
 				Sleep( 50 );
 			}
 
@@ -1441,7 +1295,6 @@ HandleErrorRetry:
 						LOGCOMMENTSLEEP
 						if ( fLogComment )
 						{
-							//if (usType == iMPT_SYNC)
 							{
 								char temp[200];
 								if (err == kNoError)
@@ -1485,7 +1338,6 @@ HandleErrorRetry:
 						LOGCOMMENTSLEEP
 						if ( fLogComment )
 						{
-							//if (usType == iMPT_SYNC)
 							{
 								char temp[200];
 								sprintf ( temp, "GenericMultiPlayer::SendMessage - pointcast %d - received all sync ACKs", id);
@@ -1509,7 +1361,6 @@ HandleErrorRetry:
 
 LeaveSend:
 
-
    #ifdef _MULTIMONO					
 	if ( mono_getExist() )
 	{
@@ -1526,15 +1377,10 @@ LeaveSend:
 
 } // GenericMultiPlayer::SendMessage
 
-
-
-
-
 BOOL GenericMultiPlayer::SendBroadcastMessage( USHORT usType, short sSize, BOOL fAck )
 {
    return SendMessage( kBroadcast, usType, sSize, fAck );
 }
-
 
 BOOL GenericMultiPlayer::SendDirectMessage( DWORD dwToWhom, USHORT usType, short sSize, BOOL fAck )
 {
@@ -1542,7 +1388,6 @@ BOOL GenericMultiPlayer::SendDirectMessage( DWORD dwToWhom, USHORT usType, short
     return SendMessage( dwToWhom, usType, sSize, fAck );
 
 }
-
 
 /* ========================================================================
    Function    - PaintAckLED
@@ -1573,7 +1418,6 @@ void PaintAckLED(int k, DWORD id2, BOOL localAcks)
 //----  Dialog Windows
 //----
 
-
 #ifdef _MULTIMONO
 
 // -- Debug statements from NetPlay.dll
@@ -1589,9 +1433,5 @@ static int DumpString( char *s )
 } // DumpString
 
 #endif
-
-
-
-
 
 // GMulPlay.cpp

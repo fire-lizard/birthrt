@@ -49,7 +49,6 @@ long GetRegKey( HKEY key, char *subkey, char *retdata )
     return retval;
 }
 
-
 //-----------------------------------------------------------------------------
 //
 //	GotoURL()
@@ -69,8 +68,6 @@ BOOL GotoURL( const char *url, int showcmd )
 	BOOL retflag = FALSE;
 
    // if the ShellExecute() fails          
-
-
 
    if ( (long)ShellExecute(NULL,"open",url,NULL,NULL,showcmd) <= 32 )
    {
@@ -119,8 +116,6 @@ BOOL GotoURL( const char *url, int showcmd )
 
 }
 
-
-
 //-----------------------------------------------------------------------------
 //
 //	CheckURL()
@@ -143,7 +138,6 @@ BOOL CheckURL ( const char *url )
 		return TRUE;
 	}
 
-
    // get the .htm regkey and lookup the program 
 	if (GetRegKey(HKEY_CLASSES_ROOT,".htm",key) == ERROR_SUCCESS)
 	{
@@ -155,8 +149,6 @@ BOOL CheckURL ( const char *url )
       }
 	}
 
-
 	return FALSE;
 
 }
-

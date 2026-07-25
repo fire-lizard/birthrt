@@ -164,7 +164,6 @@ LONG Rate						// Motion rate for this player.
 	LONG		ThingHalfWidth;
 	LONG		ThingHeadHeight;
 	
-		
 	pPlayer->bump = iNOTHING;
 	pPlayer->BumpIndex = fERROR;
 	
@@ -180,7 +179,6 @@ LONG Rate						// Motion rate for this player.
 			continue;
 		}
 
-		
 		// if this is a dead body, just skip it
 		if (mythings[i].iSequence == ANIMATION12SEQ)
 			continue;
@@ -207,7 +205,6 @@ LONG Rate						// Motion rate for this player.
 			ThingHeadHeight = mythings[i].z + mythings[i].heiScaled;
 		}
 		
-		
 		if( (PlayerHalfWidth + ThingHalfWidth) > distance &&
 		     PlayerHeadHeight > mythings[i].z 	&&	// Our head is above their feet.
 		     pPlayer->z < ThingHeadHeight			// Our feet are below their head.
@@ -216,7 +213,6 @@ LONG Rate						// Motion rate for this player.
 			LONG BumpDistance = ThingHalfWidth;
 			const LONG DeltaOverZ = ThingHeadHeight - pPlayer->z;
 			const LONG DeltaUnderZ = PlayerHeadHeight - mythings[i].z;
-			
 			
 			// GWP should also check ceiling height here.
 			if (DeltaOverZ > 0 &&
@@ -331,7 +327,6 @@ LONG Rate						// Motion rate for this player.
 	return 0;
 }  // CheckBump
 
-
 // ---------------------------------------------------------------------------
 LONG LinePointDistance (LONG x, LONG y, LONG ax, LONG ay, LONG bx, LONG by)
 {
@@ -352,9 +347,6 @@ LONG LinePointDistance (LONG x, LONG y, LONG ax, LONG ay, LONG bx, LONG by)
 	double      y1;
 
 	const double dx1 = bx - ax;
-
-	//dx2 = x - ax;
-	//dy2 = y - ay;
 
 	// Special cases for vertical and horizontal lines AB.
 	// Since there are so many of these, this is a useful optimization;
@@ -404,7 +396,6 @@ LONG LinePointDistance (LONG x, LONG y, LONG ax, LONG ay, LONG bx, LONG by)
 	return (LONG) ((x1 - x) * (x1 - x) + (y1 - y) * (y1 - y));
 
 }  // LinePointDistance
-
 
 #ifdef _DEBUG
 // Global debug variables used in CheckLinesInBlock.
@@ -504,7 +495,6 @@ static WadThingType CheckLinesInBlock (const PLAYER * const pPlayer,				// )
 
 			// [d11-25-96 JPC] Added check for linedef special field to prevent
 			// AIs from attacking through closed doors.
-			// OLD: if(pPlayer->Flying == FALSE && linedefs[iLineDef].flags & IMPASSABLE_LINE)
 			if ((linedefs[iLineDef].flags & IMPASSABLE_LINE) &&
 			 	(!pPlayer->Flying || linedefs[iLineDef].special != 0))
 			{
@@ -529,8 +519,6 @@ static WadThingType CheckLinesInBlock (const PLAYER * const pPlayer,				// )
 			{
 				return iMONSTER_BOX;
 			}
-		
-		
 		
 			/* -----------------------------------------------------------------
 			   Check for special linedef actions.
@@ -631,7 +619,6 @@ static WadThingType CheckLinesInBlock (const PLAYER * const pPlayer,				// )
 			   check floor/ceiling interactions
 			   ----------------------------------------------------------------- */
 			// [d5-02-96 17:22 JPC]
-			// OLD CODE: if (!back_face_vertex(va,vb,PLAYER_INT_VAL(player.x), PLAYER_INT_VAL(player.y)))
 			//               ^
 			// We should swap the normal meaning of psdb and psdt only if we are
 			// facing the back side of this linedef.
@@ -781,7 +768,6 @@ static WadThingType CheckLinesInBlock (const PLAYER * const pPlayer,				// )
 	return iNOTHING;
 }  // CheckLinesInBlock
 
-
 /* ========================================================================
    Function    - CheckLineMove
    Description - checks for intersection/collision against the blockmap
@@ -824,7 +810,6 @@ static WadThingType CheckLineMove (PLAYER *pPlayer,
 		x2 = PLAYER_INT_VAL(pPoint->x );
 		y2 = PLAYER_INT_VAL(pPoint->y );
 		
-	
 		Result= CheckLinesInBlock (pPlayer,
 								sSpecial,
 								bm,
@@ -838,7 +823,6 @@ static WadThingType CheckLineMove (PLAYER *pPlayer,
 	
 		// Now find the blocks in the direction of travel and 45 degrees adjacent
 		// to direction of travel.
-		// lookAhead = 64;                     // 64 = 1/2 of blockmap width or height
 		lookAhead = 128;							// [d12-04-96 JPC] check full width of blockmap
 														// (CheckLongMove moves the test point
 														// by 100 pixels; sometimes this put
@@ -993,7 +977,6 @@ static WadThingType CheckLineMove (PLAYER *pPlayer,
 	return iNOTHING;
 }  // CheckLineMove
 
-
 /* ========================================================================
    Function    - CheckMove
    Description - checks for collisions with line segments.
@@ -1065,7 +1048,6 @@ ReTest:
 	targetp.y = pPlayer->y + pPoint->dy;
 	targetp.z = pPlayer->z + pPoint->dz;
 
-
 	Result = CheckLineMove (pPlayer, &targetp, sSpecial, minDist);
 	*BumpDistance = gBumpDistance;
 	// Always want small x coord to the left.
@@ -1079,7 +1061,6 @@ ReTest:
 	}
 	*Angle = LineAngle;
 
-	
 	if (Result == iWALL ||
 		 (Result == iFLOOR && (!pPlayer->Flying)))
 	{
@@ -1365,7 +1346,6 @@ ReTest:
 	return Result;
 }  // CheckMove
 
-
 /* ========================================================================
    Function    - CheckMoveSimple
    Description - checks for collisions with line segments.
@@ -1399,7 +1379,6 @@ WadThingType CheckMoveSimple (
 	pPlayer->bump = Result;
 	return Result;
 }  // CheckMoveSimple
-
 
 /* ========================================================================
    Function    - CheckLongMove
@@ -1471,10 +1450,7 @@ WadThingType CheckLongMove(
 	// [d12-12-96 JPC] We always want to know the actual bump distance
 	// (= square root).  No need to check whether tmpdist is different
 	// from distance.  If they're equal, we just add a zero.
-	// if(tmpdist != distance)
-	// {
 	 	*BumpDistance = (LONG)(sqrt(*BumpDistance)) + (distance-tmpdist);
-	// }
 	pPlayer->bump = tempPlayer.bump;
 	return tempPlayer.bump;
 } // CheckLongMove

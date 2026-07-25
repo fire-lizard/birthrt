@@ -28,7 +28,6 @@ extern "C" {
 	  												// (the lower the light number,
 													// the brighter it is)
 
-// #define INFRAVISION_THRESHHOLD	-1		// [d5-01-97 JPC] restore more dramatic
 													// infravision effect per CW RCC
 
 // Shade table and color remap defines.
@@ -108,12 +107,10 @@ extern BOOL gfTestGrayLight;				// [d9-05-96 JPC]
 extern LONG gcMagicTemporaryLight;  // defined in TEXTURES.C
 extern LONG gcFrames;               // defined in TEXTURES.C
 
-
 // Prototypes for lighting functions in various files.
 void TextureLightTest (LONG arg1, LONG arg2);
 void TextureFrameHandler (LONG arg);
 
-// void RenderChangeLight (LONG * light, BOOL fHeatSource);
 // Convert function into TWO macros, one that allows for heat sources,
 // one that does not.
 #define RenderChangeLight(light)							\
@@ -176,4 +173,3 @@ inline LONG RenderChangeLightHeat(LONG light, BOOL fHeatSource)
 #endif
 
 #endif
-

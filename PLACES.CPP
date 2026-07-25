@@ -694,7 +694,6 @@ DEFINE_VECTOR_DATA_S(PLACE_TYPE, places, MAX_PLACES) = {
 /* 599 */   { 0000,  0000,  REALM::N_IMPORTS_EXPORTS,                      2,  GUILD1_ICON,  0,0,0,0,0,1,0, 0,  4, NULL     , fERROR},
 /* 600 */   { 0000,  0000,  REALM::DHOESONE,                               5,  SOURCE1_ICON, 0,0,0,0,0,1,0, 0,  5, NULL     , fERROR},
 /* xxx */   { 0000,  0000,  REALM::DHOESONE,                               0,  RUINS_ICON,   0,0,0,0,0,0,0, 0,  0, NULL     , fERROR},
-///* xxx */   { 0000,  0000,  REALM::MONSTERS,                               1,  CASTLE1_ICON, 0,0,0,0,0,0,0,64,  0,"tutor"   , fERROR},
 /*---------- Sidhuire  (Dhoesone) ----------*/                                               
 /* 601 */   { 0000,  0000,  REALM::DHOESONE,                               1,  LAW1_ICON,    0,0,0,0,0,1,0, 0,  1, NULL     , fERROR},
 /* 502 */   { 0000,  0000,  REALM::N_IMPORTS_EXPORTS,                      0,  LAW1_ICON,    0,0,0,0,0,1,0, 0,  2, NULL     , fERROR},
@@ -1204,7 +1203,6 @@ BOOL IsRelicFound( SHORT NameIndex )
 		return TRUE;	// you can't get this relic if the place is gone
 }
 
-
 /* ========================================================================
    Function    - SetRelicFound
    Description - set the relic for this scene found
@@ -1238,7 +1236,6 @@ LONG GetCastleName( SHORT PlacesIndex )
 
 /*	======================================================================== */
 
-
 /* ========================================================================
    Function    - 
    Description - 
@@ -1254,6 +1251,5 @@ LONG HoldingValue (LONG iHold)
 	else
 		return (places[iHold].Level * 3);		// 3 gb per level for others
 }
-
 
 

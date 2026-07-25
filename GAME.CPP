@@ -102,10 +102,8 @@ void QuestItemFoundProc(LONG,LONG);
 void Sinners(LONG, LONG);
 BOOL BattlePrep(void);
 
-
 void SpinOutBitmap (SHORT x, SHORT y, SHORT iBitm, SHORT bx, SHORT by, SHORT w, SHORT h,SHORT hDest, POINT start, POINT bck, SHORT bckw, SHORT bckh);
 void SpinInBitmap (SHORT x, SHORT y, SHORT iBitm, SHORT bx, SHORT by, SHORT w, SHORT h,SHORT hDest, POINT start, POINT bck, SHORT bckw, SHORT bckh);
-
 
 void PaintHelpKeys (LONG MenuCombo, LONG arg);
 void ToggleDirectDraw(LONG, LONG);
@@ -124,15 +122,12 @@ static void PaintHello( LONG MenuCombo, LONG );
 
 void NextHelpKeys(LONG, LONG);
 
-
 extern void SetRedrawMainMapLevel (void);
 
 #if defined(_DEBUG)
 extern BOOL fWonGame;
 void PlayFinale(LONG,LONG);
 #endif
-
-//extern "C" { SHORT InitRedirectableVideo(LONG VWidth, LONG VHeight); }
 
 /* ------------------------------------------------------------------------
    Global Variables
@@ -144,7 +139,6 @@ static CHAR	ChatLine[CHAT_MAXLINES][CHAT_CHARS];
 static SHORT	ChatLineColor[CHAT_MAXLINES];
 static SHORT	ChatLineHead = 0;
 SHORT   ChatDisplaySize = 0;
-
 
 static CHAR		SysHelpTitle[80];
 static CHAR		SysHelpText[4096];
@@ -161,8 +155,6 @@ extern int iChatKey;
 char		pwad[40] = "";
 char		pInitScene[9] = "worldmap";
 void SetRedrawMainMapLevel (void);
-
-//SHORT hPlayerStats = fERROR;
 
 extern BOOL fVeryFirstTime;
 extern LONG new_treasury;
@@ -274,20 +266,16 @@ struct{
 	}anim;
 static char	action[] = {'S','W','D','A','F','X','C','E','L','G','B','M','Z'};
 
-
 /* status at the start of the game */
 BOOL char_selected = FALSE;
 
 void GoToBattleScene(LONG, LONG);
 
-
 LONG cheated = 0;
-
 
 // put here for now as JOHNC had game.cpp checked out
 extern SHORT iHelpHighlight;
 void DoSlideShow(LONG iWhich);
-
 
 void ShowHelpMenu ( LONG, LONG )
 {
@@ -313,7 +301,6 @@ void DoneHelpMenu(LONG , LONG)
 			InitDOSHelp(H_TOPIC_QUICK_KEYS, 0);
 			break;
 
-
 		case	RULES:
 
 #ifdef _WINDOWS
@@ -334,8 +321,6 @@ void DoneHelpMenu(LONG , LONG)
 			WinHelp(hwndApp, chFileName, HELP_CONTENTS, 0);
 			break;
 #else
-			//HideSubMenu(0, D_HELP);
-			//RunMenus();
 			InitDOSHelp(H_TOPIC_ATLAS, 0);
 			break;
 #endif
@@ -358,8 +343,6 @@ void DoneHelpMenu(LONG , LONG)
 			WinHelp(hwndApp, chFileName, HELP_CONTENTS, 0);
 			break;
 #else
-//			HideSubMenu(0, D_HELP);
-//			RunMenus();
 			InitDOSHelp(H_TOPIC_RULES, 0);
 			break;
 #endif
@@ -380,9 +363,6 @@ void DoSlideShow(LONG iWhich)
 	// mouse from drawing, because the mouse code is so screwed
 	// up that SysHideCursor/SysShowCursor doesn't actually
 	// stop the mouse from drawing!
-	//GEH remove_timer(draw_cursor);
-
-//	TurnOffAllSounds();
 
 	// save the background
 	hBitm = SaveBitmap(0, 0, 640, 480);
@@ -393,10 +373,7 @@ void DoSlideShow(LONG iWhich)
 	for(i = 1; i <= 15; i++)
 	{
 	
-		// FadeOut(10);
-		
 		// start zoom sound early
-		//AddSndObj(SND_UI_MENU_ZOOM_IN, 0, -1);
 		
 		// get the file
 		switch(iWhich)
@@ -488,7 +465,6 @@ End:
 
 	fAnyKeyChanged = FALSE;
 	clear_key_status(0);
-	//GEH add_timer(1,draw_cursor);
 	return;	
 }
 
@@ -559,8 +535,6 @@ void PaintHelpKeys (LONG MenuCombo, LONG arg)
 	}
 }
 
-
-
 /* =======================================================================
    Function    - init_game
    Description - initializes game related stuff, such as the mouse, and doors
@@ -568,7 +542,6 @@ void PaintHelpKeys (LONG MenuCombo, LONG arg)
    ======================================================================== */
 void init_game()
 {
-//	InitRedirectableVideo(256, 128);
 
 	init_doors();
 
@@ -577,7 +550,6 @@ void init_game()
 	InitMagicItems();
 	SetQuestThing(RING_OF_NIGHTVISION);
 
-	
 	// Show the system menu button first
 	InitMenuSys(&Menus[0], sizeof(Menus) / sizeof(MENU));
 	
@@ -601,7 +573,6 @@ void init_game()
 		add_task(1,TextureFrameHandler,0);  //once every frame check lighting effects
 	}
 }
-
 
 /* ========================================================================
    Function    - GameButtonPaint
@@ -629,16 +600,12 @@ void GameButtonPaint( LONG MenuCombo, LONG )
 		SetButtonArt ( MenuId, 1, STR_SHDWICON );
 	}
 
-
-
 #ifdef _WINDOWS
 	
 	AMultiPlayer.DisplayNetStatus ( X, Y );
 
 #endif
 
-
-	
 }
 
 /* ========================================================================
@@ -873,7 +840,6 @@ void HideStatus(LONG MenuCombo, LONG)
 	update_screen();
 	TickDelay(4);
 	
-
 	HideMenu(D_AVATAR_ATTRIBUTES);
     RunMenus();
 }
@@ -952,7 +918,6 @@ static BOOL CheckSequence (SHORT const iAnim)
 	return Result;
 }
 
-
 /* ========================================================================
 	Function    - getStatusRealm
 	Description	- Set home realm
@@ -962,9 +927,6 @@ void SetStatusRealm(REALM::REALM_TYPE realm)
 {
 	Realm = realm;
 }
-
-
-
 
 //this table correlates to the ordering of the help strings in the string table.
 static LONG StatusContextHelpTopics[]={
@@ -994,7 +956,6 @@ void ShowStatusContextHelp(LONG MC,LONG HelpStr)
 	if (mouse_button==2)
 		SystemHelp(STR_PLAIN_STATUS,HelpStr,StatusContextHelpTopics[HelpStr-FirstStatusHelpStr],NULL,0);
 }	
-
 
 /* ========================================================================
    Function    - PaintAttributes
@@ -1049,7 +1010,6 @@ void PaintAttributes (LONG MenuCombo, LONG )
 
 	gprint_text(mx,my,buffer,WHITE);
 
-	
 	for(i=6;i<21;i++)
 	{
 		// get position of button
@@ -1058,7 +1018,6 @@ void PaintAttributes (LONG MenuCombo, LONG )
 		
 		if ((regentNum == 33 || regentNum == 51 || regentNum == 57) &&
 			(i != 6 && i != 8 && i != 9))
-			//sprintf(buffer, "^F02unknown");
 			sprintf(buffer, STRMGR_GetStr(STR_UNKNOWN_CLASS));
 		else switch(i)
 		{
@@ -1069,7 +1028,6 @@ void PaintAttributes (LONG MenuCombo, LONG )
 			else if (pPlayerStats->mfGetClassType(0) >= 0)
 			    sprintf(buffer,"^F02%s", pPlayerStats->mfGetClass(0));
 			else
-				//sprintf(buffer, "^F02Monster");
 				sprintf(buffer, STRMGR_GetStr(STR_MONSTER_RACE));
 			break;
 		case 7:
@@ -1197,20 +1155,17 @@ void PaintAttributes (LONG MenuCombo, LONG )
 		return;
 
 	// print description here
-	//gprint_text(mx,my,"^F02Armor: ", 173);
 	gprint_text(mx,my,STRMGR_GetStr(STR_ARMOR_WORN), 173);
 
 	my += 12;
 	sprintf(buffer,"^F02       %s",ARMOR_INFO::mfGetName(pPlayerStats->mfGetCurrentArmor()) );
 	gprint_text(mx,my,buffer,WHITE);
 	my += 12;
-	//gprint_text(mx,my,"^F02Weapon: ", 173);
 	gprint_text(mx,my,STRMGR_GetStr(STR_WEAPON_CARRIED), 173);
 	my += 12;
 	sprintf(buffer,"^F02       %s",WEAPON_INFO::mfGetName(pPlayerStats->mfGetFirstWeapon()) );
 	gprint_text(mx,my,buffer,WHITE);
 	my += 12;
-	//gprint_text(mx,my,"^F02Gold: ", 173);
 	gprint_text(mx,my,STRMGR_GetStr(STR_GOLD_CARRIED), 173);
 	sprintf(buffer,"^F02^l100%d", pPlayerStats->mfGetGold());
 	gprint_text(mx,my,buffer,WHITE);
@@ -1221,28 +1176,6 @@ void PaintAttributes (LONG MenuCombo, LONG )
 
 //WRC  The Begin Rule button will never appear in the status window again
 //It's been moved....  Ken Williams strikes again!
-//	if(iDomainCharInfo != FALSE)
-//	{
-//		// if this is a multi-player game, and the realm is already
-//		// selected, dim the rule button and kill the function pointer
-//		// to the button.
-//#ifdef _WINDOWS
-//		if(IsMultiPlayer() && lRealmSelectedByPlayer[HomeRealm] != -1)
-//		{
-//			SetButtonProc ( D_BEGIN_RULE, (LONG) 3, NULL, (LONG) 0, 0);
-//			sprintf(buffer,"^T%s",STRMGR_GetStr(STR_RULE));
-// 			gprint_text(mx+4,my+4,buffer,128);	// DKBROWN
-//		}
-//		else
-//		{
-//#endif
-//			SetButtonProc ( D_BEGIN_RULE, (LONG) 3, BeginRule, (LONG) 1, KEY_B);
-//			sprintf(buffer,STRMGR_GetStr(STR_RULE));
-//			gprint_text(mx+4,my+4,buffer,173);
-//#ifdef _WINDOWS
-//		}
-//#endif
-//	}
 //	else
 	{
 		sprintf(buffer,STRMGR_GetStr(STR_INV));
@@ -1299,12 +1232,6 @@ void PaintAttributes (LONG MenuCombo, LONG )
 		run_timers();
 	}
 
-	//hBitm = GetResourceStd (buffer, FALSE);
-	//if (hBitm != fERROR)
-	//{
-	//	DrawBitmap ((SHORT)(mx), (SHORT)(my), hBitm, 0, 0, (SHORT)152, (SHORT)204);
-	//	SetPurge(hBitm);
-	//}
 }
 
 /* ========================================================================
@@ -1345,7 +1272,6 @@ void PlayAnimation (LONG MenuCombo, LONG)
 	SetAnimSequence(iAnim, (anim.seq * NUMROTATIONS));
 }
 
-
 /* ========================================================================
    Function    - GAMEToggleAnimation
    Description - Set the whole dang game to stop moving.
@@ -1376,7 +1302,6 @@ void BackToGame(LONG, LONG)
       }
 
    }
-
 
 }
 
@@ -1519,7 +1444,6 @@ void InitBattleCard_sub (LONG const ID )
 {
 	CHAR				buffer[80];
 
-	
 	sprintf(buffer,"UI\\PORTS_W\\wd%s.PCX", GAME_TTYPE::mfGetArtFileName(GetThingTypeFromID(ID)));
 	
 	run_timers();
@@ -1664,8 +1588,6 @@ void ShowChatWindow(LONG, LONG)
 	clear_key_status(0);
 	iChatKey = 0;
 
-//	ShowMenu(D_CHAT_INPUT);
-
    ShowChatSelectWindow(0,0);
 
 	// -- if at the map level, scoot the chat box over to the edge of
@@ -1684,7 +1606,6 @@ void ShowChatWindow(LONG, LONG)
 int isSpecial ( int key )
 {
 	// if key is one of the special non-printable keys,
-	// return (int)TRUE
 	if ( ( key >= 32 && key <= 90 ) 
 		|| key == 95        
 		|| ( key >=  97 && key <= 122 ) 
@@ -1710,9 +1631,6 @@ void InputHideMenu( void )
 {
   	HideMenu(D_CHAT_SELECT);
   	RunMenus();
-
-//  	HidePanel(D_CHAT_SELECT);
-//  	RunPanels();
 
 }
 
@@ -1812,7 +1730,6 @@ int PaintInputField(LONG lButtonId, char *szBuffer, LONG lBufLen, LONG lFont,
 							if (FieldsRead==1)
 								Quantity=1;
 							
-
 							fQuietItems=TRUE;
 							
 							AddItemStatus ais=((PLAYER_STATS*)BLKPTR(hPlayerStats))->Inventory.mfAddItem((ITEMTYPE)Item,Quantity, 0, FALSE);
@@ -2247,7 +2164,6 @@ int PaintInputField(LONG lButtonId, char *szBuffer, LONG lBufLen, LONG lFont,
 					LONG Item;
 					InputHideMenu();
 					
-					
 					LONG FieldsRead=sscanf(&szBuffer[6],"%ld", &Item);
 					
 					if(FieldsRead>0)
@@ -2394,18 +2310,10 @@ void PaintChatInput(LONG, LONG)
 			cheated++;
 
 // Don't auto hide anymore 
-//		if ( done == 1 )
-//		{
-//			HideMenu(D_CHAT_INPUT);
-//		   	RunMenus();
-//		}
 
 	}
 
-  	//HideMenu(D_CHAT_INPUT);
-
 }
-
 
 /* ========================================================================
    Function    - ToggleChatDisplayWindow
@@ -2438,7 +2346,6 @@ void ToggleChatDisplayWindow(LONG, LONG)
 	
 }
 
-
 /* ========================================================================
    Function    - SetChatPosition
    Description - Set our chat position 
@@ -2457,7 +2364,6 @@ void SetChatPosition ( LONG l_map )
    }
 
 }
-
 
 /* ========================================================================
    Function    - ShowChatDisplayWindow
@@ -2478,10 +2384,7 @@ void ShowChatDisplayWindow(LONG, LONG)
    	ShowPanel(D_CHAT_DISPLAY_WINDOW1);
    }
 
-
 }
-
-
 
 /* ========================================================================
    Function    - HideChatDisplayWindow
@@ -2519,9 +2422,6 @@ void MoveChatDisplayWindow(LONG X, LONG Y)
    {
    	SetButtonPosition(D_CHAT_DISPLAY_WINDOW1, 0, X, Y);
    }
-
-
-//	SetButtonPosition(D_CHAT_DISPLAY_WINDOW, 0, X, Y);
 
 }
 
@@ -2563,7 +2463,6 @@ void PaintChatDisplay(LONG MenuCombo, LONG)
 	SPLIT_LONG(MenuCombo, MenuId, ButtonId);
 
 	// print the title
-	//	GetButtonPosition( D_CHAT_DISPLAY_WINDOW, 0, &mx, &my );
 
 	GetButtonPosition( (ChatDisplaySize ? D_CHAT_DISPLAY_WINDOW1 :  D_CHAT_DISPLAY_WINDOW),
 		0, &mx, &my );
@@ -2936,7 +2835,6 @@ End:
 	SysShowCursor();
 	fAnyKeyChanged = FALSE;
 	clear_key_status(0);
-	//add_timer(1,draw_cursor);
 	return;	
 }
 
@@ -2987,7 +2885,6 @@ void BowToPlayer(LONG MenuCombo, LONG)
 
 }
 
-
 /* ========================================================================
    Function    - GetMoreInfo
    Description - Called when more help is asked for
@@ -3010,9 +2907,6 @@ void GetMoreInfo( LONG MenuCombo, LONG Context )
    //---- Put us in normal mode  ( well as normal as possible... )
    if (sDrawMode == iDDRAW)
        DDSetCooperative ( FALSE );
-
-//	if (sDrawMode == iDDRAW)
-//		ToggleDirectDraw(0, 0);
 
 	if( '\0' != CDDrive[0] )
 		sprintf(chFileName, "%s%s%s", CDDrive,InstallPath,  "GAMEPLAY.HLP");
@@ -3313,14 +3207,8 @@ void LoadingSceneProc( LONG MenuCombo, LONG )
 	if( GetButtonSize( MenuId, 0, &W, &H ) == fERROR)
 		return;
 		
-	//print_text_centered(X+(W/2),Y+(H/4),"^F07Loading Scene:",BLACK);
 	print_text_centered(X+(W/2),Y+(H/4),STRMGR_GetStr(STR_LOAD_SCENE),BLACK);
 
-	// color_edged_rect( X + (W/6), Y + (H/2), 4*(W/6), H/4, GREY);
-	// if (gLoadingPercent == 0)
-	// 	gLoadingPercent = 1;
-	// color_rect      ( X+(W/6)+1, Y+(H/2)+1, ((4*(W/6))*gLoadingPercent/100)-1, (H/4)-1, RED);
-	
 	// paint greyed sword
 	bitm = GetResourceStd ("ui\\SWORDD.PCX", FALSE);
 	DrawBitmap (X+SWORD_X, Y+SWORD_Y, bitm, 0, 0, SWORD_W, SWORD_H);
@@ -3346,4 +3234,3 @@ void SetLoadingProgress( LONG Percent )
 {
 	gLoadingPercent = Percent;
 }
-

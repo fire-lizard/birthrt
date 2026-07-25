@@ -274,7 +274,6 @@ DEFINE_VECTOR_DATA_S(ADV_SITE,advsite,MAX_ADV_SITES) = {
 };
 DEFINE_VECTOR_CLASS(ADV_SITE, advsite);
 
-
 typedef struct _ButtonInfo
 {
 	POINT Pos;
@@ -372,9 +371,6 @@ void DrawBorders (LONG x, LONG y, LONG map_x, LONG map_y, LONG w, LONG h, LONG /
 void UpdateHoldingFlag (void);
 void AdventurePrep(void);
 
-//void DoNPCAdmin(void);
-
-
 void SetRedrawMainMapLevel (void);
 
 void WriteOptionSettings(void);
@@ -382,7 +378,6 @@ void WriteOptionSettings(void);
 /* ------------------------------------------------------------------------
    Code
    ------------------------------------------------------------------------ */
-
 
 /* ========================================================================
    Function	- MultiSetAdvSite
@@ -405,7 +400,6 @@ void MultiSetAdvSite(void)
 	}
 
 }
-
 
 /* ========================================================================
    Function    - MakeAllRealmsSelectable
@@ -484,9 +478,6 @@ void SelectARealm(LONG arg, LONG)
 	SetRedrawMainMapLevel();
 }
 
-
-
-
 void NewGameConfirmed(LONG,LONG lMultiFlag);
 
 /* ========================================================================
@@ -525,8 +516,6 @@ void NewGameYNProc(LONG MenuCombo,LONG arg)
 		   OpenGameSelect(0,lMultiFlagGlobal);
 	}
 }	
-
-
 
 /* ========================================================================
    Function    - DomainNewGame
@@ -589,8 +578,6 @@ printf("DomainNewGame - char_selected:%d\n",char_selected);
 	}
 }
 
-
-
 void NewGameConfirmed2(BOOL fMulti)
 {
 	int i;
@@ -611,9 +598,6 @@ void NewGameConfirmed2(BOOL fMulti)
 	ReconstructMap();
 	
 	// make the menu go away
-//	fPause = FALSE;
-//	fRender = TRUE;
-//	HideMenu(D_MAINMENU);
 
 	if ( !fMulti )
 	{
@@ -627,7 +611,6 @@ void NewGameConfirmed2(BOOL fMulti)
 	// make sure data area is the correct size
 	if (l_map != DATA_AREA_MID)
 	{
-		//AddSndObj((BIRTHRT_SND)SND_UI_STATUS_REPORT,0,VOLUME_NINETY);
 		req_l_map = DATA_AREA_MID;
 	}
 
@@ -647,17 +630,7 @@ void NewGameConfirmed2(BOOL fMulti)
 	dturn_mode = CHARSEL_MODE;
 	SetButtonFlag(D_GAMEBUTTON, 0, D_INVISIBLE);
 	
-//	activate_region(regDOMAIN_TURN_MODE,	FALSE);		// domain turn mode OFF
-//	activate_region(regACTION_MODE,			FALSE);		// action mode OFF
-//	activate_region(regMINIMIZED,			FALSE);		// minimized OFF
-//	activate_region(regMAXIMIZED,			FALSE);		// maximized OFF
-//	activate_region(regTAX_ROLLS,			FALSE);		// tax rolls OFF
-//	activate_region(regSWITCH_TO_ACTIONS,	FALSE);		// switch to actions OFF
-//	activate_region(regADJUST_TAXES,		FALSE);		// adjust taxes OFF
-//	activate_region(1008, FALSE);						// map display buttons OFF
-
 	// clear the borders
-//	DrawBorders(0, 0, 0, 0, ((BITMPTR)BLKPTR(iLgMap))->w, ((BITMPTR)BLKPTR(iLgMap))->h, FULL_SCALE);
 
 	iRegn1 = GetResourceStd ("UI\\REGBTN1A.PCX", FALSE);
 	iRegn2 = GetResourceStd ("UI\\REGAREA1.PCX", FALSE);
@@ -665,15 +638,9 @@ void NewGameConfirmed2(BOOL fMulti)
 
 }
 
-
 void NewGameConfirmed(LONG,LONG lMultiFlag)
 {
 	LONG i;
-//printf("DomainNewGame: ");
-//for (i=0; i<10; i++) printf("%d ",region_state[i]);
-//printf("\n");
-
-
 
 #ifdef _WINDOWS
 
@@ -685,14 +652,9 @@ void NewGameConfirmed(LONG,LONG lMultiFlag)
 	   ShowMultiQuit(iMPQ_BEGINNEW, 0);
 	   return;
 	
-//	   AMultiPlayer.Finalize();
-
 	}
 
-
 #endif
-
-
 
 	if (!fDomainTurn)  // New Game only allowed at map level
 	    return;
@@ -712,8 +674,6 @@ void NewGameConfirmed(LONG,LONG lMultiFlag)
 	NewGameConfirmed2( FALSE );
 
 }
-
-
 
 DEFINE_MATRIX_DATA_S(GAME_STRING,TypesDiffs,LAND_REALM_COUNT,2) =
 {
@@ -798,7 +758,6 @@ STR_REALM_DATA_TUORNEN,
 #define REG_BEGIN_RULE 2
 #define REG_MORE_INFO 3
 
-
 //This func shows the info on a regent and sets some parameters dealing with
 //that regent. You have to pass in tons of output params so the function knows
 //where to put the data, and because of all the silly globals in this file.
@@ -825,11 +784,9 @@ static void ShowRegentInfo(ULONG x,ULONG y,LONG RegentIdx,LONG iWhichRegent,LONG
 
 	SHORT hPortraitBack = GetResourceStd ("UI\\REGAREA1.PCX", FALSE);
 	
-
 	add_region(x, y+15, 72, 92,  0, SelectRegent, iWhichRegent, REG_MORE_INFO, 1009, STR_CS_SELECT_REGENT);
 	add_region(x, y+112, 84, 28,   0, SelectRegent, iWhichRegent, REG_SHOW_STATUS,1009, -1);
 	add_region(x+85,y+112, 84, 28,0, SelectRegent, iWhichRegent, REG_BEGIN_RULE, 1009, -1);
-
 
 	// get the pictures for the potential regents
 	itUnit = regents[RegentIdx].mfGetunit();
@@ -871,7 +828,6 @@ static void ShowRegentInfo(ULONG x,ULONG y,LONG RegentIdx,LONG iWhichRegent,LONG
 	print_textf(x+82, y+89, DKBROWN, "^F02%s", STRMGR_GetStr(gsBL_deriv[pRegent->mfGetBL_deriv()]));
 	print_textf(x+82, y+99, DKBROWN, STRMGR_GetStr(STR_CS_STRENGTH), pRegent->mfGetBL_strength());
 
-
 	// draw Portrait
 	DrawBitmap (x,y+15, hPortraitBack, 0, 0, 72, 92);
 	SetPurge(hPortraitBack);
@@ -884,10 +840,8 @@ static void ShowRegentInfo(ULONG x,ULONG y,LONG RegentIdx,LONG iWhichRegent,LONG
 		ClearRemapTable();
 	}
 
-	
 	if (pCharButton)
 	{
-		//pCharButton->Bkgnd=SaveBitmap(x-3,y+109,90,34);
 		pCharButton->Pos.x=x;
 		pCharButton->Pos.y=y+112;
 		pCharButton->Text=STR_3PT_CHARACTER;
@@ -912,7 +866,6 @@ static void ShowRegentInfo(ULONG x,ULONG y,LONG RegentIdx,LONG iWhichRegent,LONG
 	DrawBitmap (x, y+112, pCharButton->hButtonArt, 0, 0, 84, 28);
 	print_textf(x+11, y+119, BTN_LABEL_COLOR, STRMGR_GetStr(STR_3PT_CHARACTER));
 
-	
 	LONG BeginRuleColor=BTN_LABEL_COLOR;
 #ifdef _WINDOWS
 	if(IsMultiPlayer() && lRealmSelectedByPlayer[pRegent->mfGetRealm()] != -1)
@@ -921,7 +874,6 @@ static void ShowRegentInfo(ULONG x,ULONG y,LONG RegentIdx,LONG iWhichRegent,LONG
 
 	if (pBeginRuleButton)
 	{
-		//pBeginRuleButton->Bkgnd=SaveBitmap(x+84,y+109,90,34);
 		pBeginRuleButton->Pos.x=x+87;
 		pBeginRuleButton->Pos.y=y+112;
 		pBeginRuleButton->Text=STR_3PT_BEGIN_RULE;
@@ -968,11 +920,6 @@ extern LONG		map_y;
 extern LONG		desired_scale;
 extern LONG		max_scale;
 extern LONG		map_scale;
-
-
-
-
-
 
 void DisplayRealmSelection(void)
 {
@@ -1161,19 +1108,14 @@ void DoneMoreInfo (LONG, LONG)
 {
 	del_region(DoneMoreInfo, 0);
 
-	//SetButtonProc (D_MOREINFO, 0, PaintMoreInfo, 0, 0);
-	//SetButtonProc (D_MOREINFO, 4, HideSubMenuWithClick, D_MOREINFO, 0);
 	HideMenu(D_MOREINFO);
 
 	RunMenus();
 }
 
-
-
 void ButtonClickSound(BOOL fDelay)
 {
 	// The region code already does a click!
-	//AddSndObj( SND_UI_BUTTON_CLICK, NULL, VOLUME_NINETY);
 	if(!fDelay)
 		return;
 	
@@ -1204,8 +1146,6 @@ void DepressRegentInfoButtons(LONG iWhichRegent,LONG iWhichButton)
 	update_screen();
 }
 		
-	
-
 /* ========================================================================
    Function	- SelectRegent
    Description - Callback from region for regents picture
@@ -1285,7 +1225,6 @@ void SelectRegent(LONG arg1, LONG arg2)
 
 			SysShowCursor();
 
-
 		}
 			break;
 
@@ -1308,7 +1247,6 @@ void BeginRule(LONG, LONG)
 
 	ScenarioInfo.IsScenario = 0;		// turn off IsScenario flag
 
-
 #ifdef _WINDOWS
 
 	if( IsMultiPlayer() )
@@ -1328,12 +1266,7 @@ void BeginRule(LONG, LONG)
 
 	ClearButtonFlag(D_GAMEBUTTON, 0, D_INVISIBLE);
 	
-	// HideCharacter(0,0); // GWP HideMenu(D_BEGIN_RULE);
-
 	//---- wait for menu to minimize
-
-	// GWP RunMenus();
-
 
 #ifdef _WINDOWS
 
@@ -1368,7 +1301,6 @@ void BeginRule(LONG, LONG)
 	ResumeSuspendedMusic();
 }
 
-
 /* ========================================================================
    Function	- BeginRule2
    Description -
@@ -1388,7 +1320,6 @@ void BeginRule2(LONG, LONG)
 	#ifdef _WINDOWS
 		AMultiPlayer.StartSeed();		
 	#endif
-
 
 	iDomainCharInfo = FALSE;
 	del_region(SelectRegent, 0);
@@ -1485,13 +1416,6 @@ void BeginRule2(LONG, LONG)
 	char_selected = TRUE;
 
 	SelectAdvSite();
-	//SetAdvSite("tutor");
-
-//	dturn_mode = START_NEW_OR_LOAD;
-//	if (fDomainTurn)
-//		InitDomainTurn(0);
-//	dturn_mode = START_NEW_OR_LOAD;
-//	InitDomainTurn(0);
 
    //---- Set what type of controls a available for multiplayer games
    SetMPControlMode();
@@ -1506,7 +1430,6 @@ void BeginRule2(LONG, LONG)
 	GiveReport(0);
 	report_done_dturn_mode = REPORT_DONE_MODE;
 	fLoadedNewGame = TRUE;
-
 
 }
 
@@ -1650,7 +1573,6 @@ void EndAdvParty(LONG i, LONG j)
 
 #endif
 
-
 		iAdvMode = ADV_NONE;
 
 		// clean up
@@ -1686,10 +1608,7 @@ void EndAdvParty(LONG i, LONG j)
 			RESTORE_REGION_STATE(regTAX_ROLLS					   );
 			RESTORE_REGION_STATE(regSWITCH_TO_ACTIONS	   );
 			RESTORE_REGION_STATE(regADJUST_TAXES			);
-			//	  RESTORE_REGION_STATE(1008);
 
-			//action_turn--;
-			//AddSndObj((BIRTHRT_SND)SND_UI_STATUS_REPORT,0,VOLUME_NINETY);
 			dturn_mode = ACTN_MODE;
 			if (fLTAction == DURING_LTACTION)
 			{
@@ -1836,7 +1755,6 @@ void ReturnFromAdventure(LONG, LONG)
 		}
 	}
 
-//	IncActionTurn();
 	TutorialActionNumber++;
 	TutorialScreenNumber = 0;
 
@@ -1849,7 +1767,6 @@ void ReturnFromAdventure(LONG, LONG)
    ======================================================================== */
 void ToggleShowParty(LONG i, LONG)
 {
-//	  AddSndObj((BIRTHRT_SND)SND_UI_NOT_PERMITTED,0,VOLUME_NINETY);
     SHORT activeRegentUnit = regents[localActiveRegent].mfGetunit();
     SHORT realRegentUnit = regents[realm[HomeRealm].mfGetRegent()].mfGetunit();
 
@@ -1879,7 +1796,6 @@ void ShowPartyStatus(LONG i, LONG)
 			// show character stats
 			fPreparingSpells=TRUE;
 			SetStatusRealm((REALM::REALM_TYPE) units[i].Realm);
-			//ShowStatus(units[i].id, 0);
 			LONG const hPlayerStats = LoadStats(units[i].id, fERROR);
 			StaticInventoryGUI::mfDisplay(0, hPlayerStats);
 	}
@@ -1893,8 +1809,6 @@ void ShowPartyStatus(LONG i, LONG)
 void SelectSite(LONG i, LONG multi )
 {
 	iSiteChosen = i;
-
-//	if(mouse_button == 1)
 
 	if ( mouse_button == 1 || multi == 77777 )
 	{
@@ -1916,13 +1830,11 @@ void SelectSite(LONG i, LONG multi )
 
 #endif 				
 
-
 		// clean up region
 		del_region(SelectSite,0);
 		del_region(EndAdvParty,0);
 			
 		// goto adventure site
-		//EndAdvParty(3, i);
 		iAdvMode = ADV_SITE_GO;
 		iAdvCountdown = 2;
 		SetRedrawMainMapLevel();
@@ -1963,7 +1875,6 @@ void DisplayAdvParty(void)
 					SuspendMusic();
 				}
 
-				//AddSndObj((BIRTHRT_SND)SND_UI_STATUS_REPORT,0,VOLUME_NINETY);
 				req_l_map = DATA_AREA_MAX;
 			}
 			SetRedrawMainMapLevel();
@@ -1974,7 +1885,6 @@ void DisplayAdvParty(void)
 	{
 		if (req_l_map != DATA_AREA_MIN)
 		{
-			//AddSndObj((BIRTHRT_SND)SND_UI_STATUS_REPORT,0,VOLUME_NINETY);
 			req_l_map = DATA_AREA_MIN;
 		}
 		SetRedrawMainMapLevel();
@@ -2002,7 +1912,6 @@ void DisplayAdvParty(void)
 
 		crease(10, y, 144, 1);				  // separator
 		y += 8;
-
 
 		// show the possible party, regent first, then active
 		// regent if this is a lieutenant action
@@ -2185,7 +2094,6 @@ void DisplayAdvParty(void)
 		del_region(SelectSite,0);
 		del_region(EndAdvParty, 0);
 
-
 		for(i=0; i<MAX_SITES; i++)
 			if(stricmp((char *)advsite[i].name, (char *)places[iSiteChosen].scene) == 0)
 				break;
@@ -2220,8 +2128,6 @@ void DisplayAdvParty(void)
 			FileClose(in);
 			gprint_text(10, 40, textbuf, DKBROWN);
 
-
-			 	
 			if (advsite[i].realm!=REALM::FIVEPEAKS)	
 				if (((RealmStatus[HomeRealm][advsite[i].realm])&0x0F) > STATUS_NEUTRAL)
 				{
@@ -2331,7 +2237,6 @@ void SelectAdvSite(void)
 	if(iNewSite >= 0)
 	{
 		iOldSite = iNewSite;
-//		SetAdvSite(advsite[iNewSite].name);
 		SetAdvSite(iNewSite);
 		sitecount[iNewSite]++;
 		WriteOptionSettings();
@@ -2432,12 +2337,6 @@ void PaintBattleMagicPrep(LONG, LONG)
 	do
 	{
 	    // a player type
-	    // GWP if ((units[UnitIndex].id >= 1000 && units[UnitIndex].id < 3000)
-		// GWP 	&& GetBattleMagic( units[UnitIndex].Icon )
-		// GWP 	)
-	    // GWP {
-		// GWP     whoIndex[count++] = UnitIndex;
-	    // GWP }
 	    if (units[UnitIndex].id >= 1000 && units[UnitIndex].id < 3000)
 	    {
 		    SHORT const hPlayerStats = LoadStats(units[UnitIndex].id, fERROR);

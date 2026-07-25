@@ -17,7 +17,6 @@
    decode_one_frame (SHORT iHead, ANIMPTR pAnim);
    OpenFlcAnim (SHORT iAnim, CSTRPTR szFileName, SHORT Type, BOOL *ffirst, BOOL *fend);
 
-
    ======================================================================== */
 /* ------------------------------------------------------------------------
    Includes
@@ -41,15 +40,11 @@
 #include "HANDLE.HXX"
 #include "SOUND.HXX"
 #include "FLICPLAY.HXX"
-//#if defined (AUDIO_LIB)
-//#include "KERNAUD.HPP"
-//#endif
 #include "MAIN.HXX"
 
 #ifdef _WINDOWS
 	extern BOOL fQuitting;					// [d1-07-97 JPC] defined in WINSYS\MACHINE.C
 #endif
-
 
 #define fFILE_NOT_FOUND   -2
 
@@ -125,7 +120,6 @@ void ClearFlicSound(void)
 BOOL PlayFlic(char * fn, LONG secondsToWaitAtEnd)
 {
 	SHORT iAnim;
-	// char  fn[40];
 	BOOL endflag=FALSE;
 	BOOL ffirst=TRUE;
 	BOOL fend=FALSE;
@@ -156,7 +150,6 @@ BOOL PlayFlic(char * fn, LONG secondsToWaitAtEnd)
 		if(fend)
 			break;
 			
-		
 		run_timers();
 		if (pAnim->hiData > 0)
 		{
@@ -217,12 +210,6 @@ BOOL PlayFlic(char * fn, LONG secondsToWaitAtEnd)
 				AddSndObj((BIRTHRT_SND)frameSound[frameSoundIndex].lWhichSound,0,VOLUME_PRIORITY);
 				// GEH you can't do the following.  You loose all Game Volume
 				// control.
-//				kernel->AudioPlay(	(int) frameSound[frameSoundIndex].lWhichSound,
-//								(BOOL) 0, 		// looped
-//								(int) 110,    // volume
-//								(int) 127,    // volume
-//								(int) tag++,  // INSTANCE TAG
-//								(long) FALSE); 		// paused
 		}
 			frameSoundIndex++;
 		}
@@ -461,20 +448,10 @@ ERRCODE decode_one_frame (SHORT iHead, ANIMPTR pAnim)
 			switch (pChunk->type)
 			{
 //				case COLOR_256:
-//					decode_color((PTR)(pChunk+1), pAnim, COLOR_256);
-//					break;
   				case DELTA_FLC:
   					decode_delta_flc((PTR)(pChunk+1), pAnim);
   					break;
 //				case COLOR_64:
-//					decode_color((PTR)(pChunk+1), pAnim, COLOR_64);
-//					break;
-//				case DELTA_FLI:
-//					decode_delta_fli((PTR)(pChunk+1), pAnim);
-//					break;
-//				case BLACK_FRM:
-//					FillRect(pAnim->iBuff, 0, 0, pAnim->width, pAnim->height, coTRANSP);
-//					break;
   				case BYTE_RUN:
   					decode_byte_run((PTR)(pChunk+1), pAnim);
   					break;
@@ -482,7 +459,6 @@ ERRCODE decode_one_frame (SHORT iHead, ANIMPTR pAnim)
   					decode_literal((PTR)(pChunk+1), pAnim);
   					break;
   				default:
-//				printf("OTHER CHUNK: %d\n",pChunk->type);
   					break;
 			}
 		}
@@ -575,10 +551,8 @@ SHORT OpenFlcAnim (SHORT iAnim, CSTRPTR szFileName, SHORT Type, BOOL *ffirst, BO
 
 	pBuff->scale = scale;
 
-
 	return iAnim;
 }
-
 
 //-----------------------------------------------------
 // SimpleFLC member functions
@@ -592,8 +566,6 @@ SHORT SimpleFLC::mfInit(char *fn, SHORT x, SHORT y)
 		return FLCERR_FILE;
 	
 	strncpy(filename, fn, MAX_FLC_FILENAME_LEN);	
-//	if (FileAccess(fn))
-//		return FLCERR_FILE;
 	
 	if ((iAnim = NewBlock(sizeof(ANIMHDR))) == fERROR)
 	{
@@ -667,8 +639,6 @@ void SimpleFLC::mfDispose()
 	coord_y = 0;
 }
 
-
-
 void SimpleFLC::mfSetCurFrame(SHORT frameno)
 {
 	if (iAnim == fERROR || 
@@ -686,14 +656,9 @@ void SimpleFLC::mfSetCurFrame(SHORT frameno)
 		pAnim->offData = pHead->oframe1;
 	}
 	
-	// FRAMEHEADPTR pFramehd;
-	// FLICHEADPTR nondumb_pHead = pHead;
-	
 	while (pAnim->frame < frameno)
 	{
 		run_timers();
-		// pFramehd = (FRAMEHEADPTR)((PTR)nondumb_pHead + pAnim->offData);
-		// GWP BAD! Decode frame does this. pAnim->offData += pFramehd->size;
 		pAnim->frame++;
 		decode_frame(pAnim, pHead);
 		frame_in_buffer = pAnim->frame;
@@ -701,7 +666,6 @@ void SimpleFLC::mfSetCurFrame(SHORT frameno)
 	
 	pAnim->frame = frameno;
 }
-
 
 SHORT SimpleFLC::mfNextFrame()
 {
@@ -723,7 +687,6 @@ SHORT SimpleFLC::mfNextFrame()
 	
 	return pAnim->frame;	
 }
-
 
 void SimpleFLC::mfDrawFrame(SHORT x, SHORT y)
 {
@@ -749,4 +712,3 @@ void SimpleFLC::mfDrawFrame(SHORT x, SHORT y)
 	}
 	DrawBitmap(x, y, pAnim->iBuff, 0, 0, pAnim->width, pAnim->height);
 }
-

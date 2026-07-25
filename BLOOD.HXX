@@ -21,7 +21,6 @@
 #include "dice.h"
 #endif
 
-//#include "gamestr.h"
 #if !defined(_STRENUM_H)
 #include "strenum.h"
 #endif
@@ -203,7 +202,6 @@ inline char const * const BLOOD_ABILITY_INFO::mfGetName(
 {
 	return STRMGR_GetStr(fpBloodAbilityInfo[bloodAbility]);
 }
-
 
 #endif // _BLOOD_H
 

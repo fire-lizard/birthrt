@@ -32,7 +32,6 @@ typedef struct
  // -- Get Application-Specific items
 #include "REGISTRS.H"
 
-
 //------------------------------------------------------------------------------------
 // Function:   OpenRegistry() 
 //
@@ -58,7 +57,6 @@ BOOL OpenRegistry( PHKEY phKey )
 								     phKey,	                    
 									  &dwDisp );                
 
-
 	 //---- If registry wasn't here before 
 	if ( dwDisp == REG_CREATED_NEW_KEY	)
 	{
@@ -71,9 +69,6 @@ BOOL OpenRegistry( PHKEY phKey )
 
    return ( TRUE );
 } //---- End of OpenRegistry()
-
-
-
 
 //------------------------------------------------------------------------------------
 // Function:   CloseRegistry() 
@@ -88,7 +83,6 @@ BOOL OpenRegistry( PHKEY phKey )
 BOOL CloseRegistry( HKEY hKey, BOOL fSaveOptions )
 {
 	LONG lReturn;
-
 
 	 //---- Save all vars on close 
 	SaveRegistry( hKey, fSaveOptions );
@@ -106,9 +100,6 @@ BOOL CloseRegistry( HKEY hKey, BOOL fSaveOptions )
 	}
 
 }   //---- End of CloseRegistry();
-
-
-
 
 //------------------------------------------------------------------------------------
 // Function:   InitRegistry() 
@@ -140,7 +131,6 @@ BOOL InitRegistry ( HKEY hKey )
                                          (PUCHAR) RegTable[x].lpVar,
                                          strlen ( (PCHAR) RegTable[x].lpVar ) + 1 );
 				break;
-
 
 			case REG_DWORD: 
                 //---- How do we need to convert 
@@ -177,7 +167,6 @@ BOOL InitRegistry ( HKEY hKey )
 
 	}   //---- End of for table entries 
 
-	
 	if ( lReturn == ERROR_SUCCESS )
 	{
 		return ( TRUE );
@@ -188,9 +177,6 @@ BOOL InitRegistry ( HKEY hKey )
 	}
 
 }   //---- End of InitRegistry()
-
-
-
 
 //------------------------------------------------------------------------------------
 // Function:   LoadRegistry() 
@@ -237,10 +223,8 @@ BOOL LoadRegistry ( HKEY hKey )
                                              (PUCHAR) RegTable[x].lpVar,
                                              strlen ( (PCHAR) RegTable[x].lpVar ) + 1 );
 
-
 				}
 			break;
-
 
 			case REG_DWORD:
 				//---- Load the value  
@@ -271,7 +255,6 @@ BOOL LoadRegistry ( HKEY hKey )
 					}
 
 				}
-
 
 				 //---- Couldn't Find varible so initialize   
 				if ( lReturn != ERROR_SUCCESS )
@@ -314,13 +297,9 @@ BOOL LoadRegistry ( HKEY hKey )
 
 	}   //---- for regtable
 
-
     return ( TRUE );
 
 }   //---- End of LoadRegistry()
-
-
-
 
 //------------------------------------------------------------------------------------
 // Function:   SaveRegistry() 
@@ -390,13 +369,9 @@ BOOL SaveRegistry ( HKEY hKey, BOOL fSaveOptions )
 		} //---- End of if
 	}   //---- End of for table entries 
    
-
     return ( TRUE );
 
 }   //---- End of SaveRegistry()
-
-
-
 
 //------------------------------------------------------------------------------------
 // Function:   DelRegistry() 
@@ -423,9 +398,6 @@ BOOL DelRegistry ( void )
 		return ( FALSE );
 	}
 
-
 }   //---- End of DelRegistry()
-
-
 
 //---- End of Registry.c

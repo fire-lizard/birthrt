@@ -96,7 +96,6 @@ DEFINE_VECTOR_DATA_S(REALM_STRUCT,realm,REALM::REALM_COUNT) = {
 
 DEFINE_VECTOR_CLASS(REALM_STRUCT,realm);
 
-
 DEFINE_MATRIX_DATA_S(UBYTE,RealmReaction,REALM::REALM_COUNT,LAND_REALM_COUNT) = {
 
 //									  N              B                                   G                                   S           T     

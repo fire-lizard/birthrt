@@ -9,8 +9,6 @@
 #include "strenum.h"
 #endif
 
-
-
 #define MAX_THELP_STRINGS_PER_ENTRY 9
 
 class TutorialHelpMgr
@@ -28,7 +26,6 @@ class TutorialHelpMgr
 		static GAME_STRING const GetHelp(long const,long const);
 };
 
-
 inline BOOL TutorialHelpMgr::InBounds(long const i,long const j)
 {
 	if (i>=HelpEntries || i<0)
@@ -39,6 +36,4 @@ inline BOOL TutorialHelpMgr::InBounds(long const i,long const j)
 	return TRUE;
 }
 
-
 #endif
-

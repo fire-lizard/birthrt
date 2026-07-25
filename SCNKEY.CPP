@@ -9,7 +9,6 @@
    
    Contains the following general functions:
 
-   
    ======================================================================== */
 
 /* ------------------------------------------------------------------------
@@ -135,11 +134,9 @@ void KEY::mfCreateKey(char *cpBuffer, HDL_KEY hKey)
 							break;
 						
 						case '1':
-							// GWP KeyId = KEY_F11;
 							break;
 						
 						case '2':
-							// GWP KeyId = KEY_F12;
 							break;
 						}
 					}
@@ -259,7 +256,6 @@ void KEY::mfCreateKey(char *cpBuffer, HDL_KEY hKey)
 					printf("         LoadScene\n");
 				}
 			
-				
 				strncpy(fcpKeyIdStr, cpKeyIdStr, sizeof(fcpKeyIdStr) - 1);
 				fcpKeyIdStr[sizeof(fcpKeyIdStr) - 1] = 0;
 				strncpy(fcpKeyFuncName, cpFuncIdStr, sizeof(fcpKeyFuncName) - 1);
@@ -346,11 +342,9 @@ HDL_KEY KEY::mfCreateMoveCamera (char *cpKeyIdStr,
 		strncpy(pKey->fcpKeyFuncName, "MoveCamera", sizeof(pKey->fcpKeyFuncName) - 1);
 		pKey->fcpKeyFuncName[sizeof(pKey->fcpKeyFuncName) - 1] = 0;
 
-		
 	}
 	return hKey;
 }
-
 
 /* ========================================================================
    Function    - mfCallBackSetCamera

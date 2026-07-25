@@ -11,7 +11,6 @@
 NOTE: To compile this module you must be pointing to the DirectX include
 		directory and link to "dsound.lib"
 
-
 Interface to the Microsoft Direct Sound functions
 -------------------------------------------------
 		This module provides a simplified interface for using Direct Sound.
@@ -44,8 +43,6 @@ Interface to the Microsoft Direct Sound functions
 	are two groups: 1) general Direct Sound control calls, and 2) methods
 	associated with the DSound class instance for individual samples.
 
-
-
 Summary:
 
 Control calls:
@@ -56,7 +53,6 @@ Control calls:
 	GetPrimaryFormat	- get format of primary playback buffer
 	SetPrimaryFormat	- set format of primary playback buffer
 	GetCaps				- get capabilities of direct sound device
-
 
 DSound object methods:
 
@@ -76,9 +72,6 @@ DSound object methods:
 	GetErrorMsg			- retrieve the text of last error message
 	DumpBuffer			- dump the contents of secondary buffer to disk
 
-
-
-
 --------------------------
 Direct Sound control calls
 --------------------------
@@ -88,7 +81,6 @@ BOOL	DetectDSound(void)
 
 	To determine if Direct Sound is installed and useable on the system.
 	Returns TRUE if available, FALSE otherwise.
-
 
 ----------------------------------------------------------------------------
 BOOL	InitDSound(HWND hMyWnd);
@@ -102,7 +94,6 @@ BOOL	InitDSound(HWND hMyWnd);
 	return:
 		TRUE if successful.
 
-
 ----------------------------------------------------------------------------
 BOOL	TermDSound(void);
 
@@ -111,7 +102,6 @@ BOOL	TermDSound(void);
 
 	return:
 		TRUE if successful.
-
 
 ----------------------------------------------------------------------------
 BOOL	GetPrimaryFormat(DWORD *rate, WORD *bits, WORD *channels);
@@ -129,7 +119,6 @@ BOOL	GetPrimaryFormat(DWORD *rate, WORD *bits, WORD *channels);
 
 	return:
 		TRUE if successful.
-
 
 ----------------------------------------------------------------------------
 BOOL	SetPrimaryFormat(DWORD *rate, WORD *bits, WORD *channels);
@@ -149,7 +138,6 @@ BOOL	SetPrimaryFormat(DWORD *rate, WORD *bits, WORD *channels);
 	return:
 		TRUE if successful.  FALSE if device not capable.
 
-
 ----------------------------------------------------------------------------
 BOOL	GetCaps(LPDSCAPS lpDsCaps);
 
@@ -161,7 +149,6 @@ BOOL	GetCaps(LPDSCAPS lpDsCaps);
 
 	return:
 		TRUE if successful.
-
 
 ----------------------------------------------------------------------------
 
@@ -213,7 +200,6 @@ DSound::Init(DWORD	buffSize,
 	return:
 		TRUE if successful.
 
-
 ----------------------------------------------------------------------------
 void
 DSound::SetLoop(BOOL loop)
@@ -223,7 +209,6 @@ DSound::SetLoop(BOOL loop)
 
 	loop
 		TRUE to loop the sample, FALSE to not loop.
-
 
 ----------------------------------------------------------------------------
 BOOL
@@ -238,7 +223,6 @@ DSound::Play(LPSTR sampPtr)
 
 	return:
 		TRUE if successful.
-
 
 ----------------------------------------------------------------------------
 BOOL
@@ -255,7 +239,6 @@ DSound::Service(LPSTR sampPtr)
 		TRUE if successful.  If not successful, GetErrorMsg should be called
 			to get the text of the error message.
 
-
 ----------------------------------------------------------------------------
 BOOL
 DSound::Stop(void)
@@ -264,7 +247,6 @@ DSound::Stop(void)
 
 	return:
 		TRUE if successful.
-
 
 ----------------------------------------------------------------------------
 BOOL
@@ -275,7 +257,6 @@ DSound::Pause(void)
 	return:
 		TRUE if successful.
 
-
 ----------------------------------------------------------------------------
 BOOL
 DSound::Resume(void)
@@ -284,7 +265,6 @@ DSound::Resume(void)
 
 	return:
 		TRUE if successful.
-
 
 ----------------------------------------------------------------------------
 BOOL
@@ -297,7 +277,6 @@ DSound::SetVolume(WORD vol)
 
 	return:
 		TRUE if successful.
-
 
 ----------------------------------------------------------------------------
 BOOL
@@ -312,7 +291,6 @@ DSound::SetPan(WORD panPercent)
 	return:
 		TRUE if successful.
 
-
 ----------------------------------------------------------------------------
 DWORD
 DSound::GetReadPos(void)
@@ -321,14 +299,12 @@ DSound::GetReadPos(void)
 	next into the DSound buffer.  I.e. bytes prior to this have already been
 	processed and may be overwritten.
 
-
 ----------------------------------------------------------------------------
 DWORD
 DSound::GetBytesRead(void)
 
 	Return the total number of bytes which have been read so far.  This is
 	useful for tracking looping buffers which must be back-filled.
-
 
 ----------------------------------------------------------------------------
 DWORD
@@ -338,13 +314,11 @@ DSound::GetBytesPlayed(void)
 	always less than or equal to GetBytesRead and represents the current
 	play position.
 
-
 ----------------------------------------------------------------------------
 BOOL
 DSound::IsPlaying(void)
 
 	Returns TRUE if the sample is currently playing.
-
 
 ----------------------------------------------------------------------------
 LPSTR
@@ -356,7 +330,6 @@ DSound::GetErrorMsg(void)
 	timer callback thread, error messages don't display correctly and so
 	must be displayed later from outside the thread.
 
-
 ----------------------------------------------------------------------------
 void
 DSound::DumpBuffer(int dumpCount, int n)
@@ -364,12 +337,8 @@ DSound::DumpBuffer(int dumpCount, int n)
 	Dump the contents of the secondary buffer to disk file disk file
 	"dsound.<dumpCount><n>".  Used for debugging.
 
-
-
 ****************************************************************************
 */
-
-
 
 BOOL	DetectDSound(void);
 BOOL	InitDSound(HWND);
@@ -377,7 +346,6 @@ BOOL	TermDSound(void);
 BOOL	GetPrimaryFormat(DWORD *rate, WORD *bits, WORD *channels);
 BOOL	SetPrimaryFormat(DWORD *rate, WORD *bits, WORD *channels);
 BOOL	GetCaps(LPDSCAPS lpDsCaps);
-
 
 class DSound
 {

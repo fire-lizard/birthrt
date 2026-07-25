@@ -15,7 +15,6 @@
    scrape                -???
    hscrape               -???
 
-
    ======================================================================== */
 /* ------------------------------------------------------------------------
    Includes
@@ -44,10 +43,8 @@
    Defines and Compile Flags
    ------------------------------------------------------------------------ */
 // height expanded x1.43  (1/.70)
-//#define SCRAPE_Y_FACTOR		70		// hacked back by Bob's request 8-29-96
 #define SCRAPE_Y_FACTOR		100		// {55} JPC per Wes's request 8-08-96
 
-//#define FIRST_LINE_TOP_OF_SCRAPE		46
 #define FIRST_LINE_TOP_OF_SCRAPE		0
 
 // BATTLE_WAD_ADJUST is used to move the sky panels up when the render
@@ -77,7 +74,6 @@ BOOL     gfInfraVision;                // [d7-02-96 JPC]
 LONG		gcMagicTemporaryLight;			// [d7-02-96 JPC]
 LONG		gcFrames;							// [d7-03-96 JPC] a simple frame counter
 
-// [d7-11-96 JPC] extern	LONG	wall_scale;
 extern	long	col_hei;          // height of the column we need to draw
                                  // --it is computed in RENDER.C as
                                  // ABS (ceiling height - floor height)
@@ -138,8 +134,6 @@ long get_texture (char *in, ULONG * o_status)
 	
 	n[8]=0;
 	
-	// GWP Moved to inside copy loop. strupr(n);
-
 	/* scan for duplicate texture */
 	for(i=0;i<last_texture;++i)
 	{
@@ -174,7 +168,6 @@ long get_texture (char *in, ULONG * o_status)
 		return(t);
 	}
 	
-
 #if WRC_CAMERA_TEST
 	if (!strncmp(n,"CAMERA",6))
 	{
@@ -183,7 +176,6 @@ long get_texture (char *in, ULONG * o_status)
 		textures[t].h =       TexNametoCamBufHeight(n);
 		textures[t].scale = UNITARY_SCALE;
 		textures[t].type = CAMERA_TEX;
-//		printf("Found Camera Texture! (%lix%li)\n",textures[t].w,textures[t].h);
 		*o_status = GT_CAMERA_TEXTURE;
 		return t;
 	}
@@ -192,7 +184,6 @@ long get_texture (char *in, ULONG * o_status)
 	sprintf(tn,"%s%s.pcx",TEXTURE_PATH,n);
 	// [d3-19-97 JPC] Now that we are using resource files,
 	// we can't check whether the actual file exists.
-	// if(Exists(tn))
 	{
 		printf("Loading texture %s\n", tn);
 		textures[t].t = tex = GetResourceRot(tn);
@@ -210,7 +201,6 @@ long get_texture (char *in, ULONG * o_status)
 			if (tptr[0] == 0)								/* check for see-through */
 				textures[t].type = TRANSP_TEX;
 //!!!!!!!!!!!!!!!!!!!!
-//			printf("Texture:%14s  iBlk:%3d  type:%d (0x%02X)\n",tn,tex,(tptr[0] == 0),tptr[0]);
 //!!!!!!!!!!!!!!!!!!!!
          *o_status = GT_LOADED_TEXTURE;
 
@@ -288,9 +278,6 @@ void load_sky_textures (void)
 		char *cpFileName;
 		SHORT *phSkyFileNames;
 
-		//GEH SetBlockAttr(hSky_filenames, LOCKED, LOCKED);
-		//GEH phSkyFileNames = (SHORT *) BLKPTR(hSky_filenames);
-
 		for (i=0; i<cSKY_TEXTURES; ++i)
 		{
 			phSkyFileNames = (SHORT *) BLKPTR(hSky_filenames);
@@ -300,7 +287,6 @@ void load_sky_textures (void)
 				// Sky filler: grass on top 48, sky on bottom 208.
 				// We no longer use the grass on the top 48, but it never
 				// shows up so we're ignoring it.
-				// cpFileName = "BACK01Z";
 				strcpy (cpFileName, szBaseName);
 				cpFileName[iLastChar] = 'Z';
 			}
@@ -308,7 +294,6 @@ void load_sky_textures (void)
 			{
 				// Ground section (grass, rock, swamp, as specified by
 				// the base file name).
-				// cpFileName = "BACK01X";		// [d11-08-96 JPC] all grass
 				strcpy (cpFileName, szBaseName);
 				cpFileName[iLastChar] = 'X';
 			}
@@ -336,7 +321,6 @@ void load_sky_textures (void)
 
 			// Don't rotate the sky ceilings.
 				sky_textures[i].t = tex = GetResourceStd(tn, FALSE);
-			//	sky_textures[i].t = tex = GetResourceRot(tn);
 			
 			if (tex == fERROR)
 				fatal_error("Unable to load texture %s in load_sky_textures (1)\n",tn);
@@ -351,7 +335,6 @@ void load_sky_textures (void)
 				sky_textures[i].h = bptr->w;
 			}
 		}
-		//GEH ClrLock(hSky_filenames);
 	}
 	else
 	{
@@ -368,7 +351,6 @@ void load_sky_textures (void)
 
 			// Don't rotate the sky ceilings.
 				sky_textures[i].t = tex = GetResourceStd(tn,FALSE);
-			//	sky_textures[i].t = tex = GetResourceRot(tn);
 			
 			if (tex == fERROR)
 				fatal_error("Unable to load texture %s in load_sky_textures (2)\n",tn);
@@ -427,14 +409,11 @@ long get_floor_texture(char *in)
 	}
 
 	// [d12-04-96 JPC] Old location of SKY code; moved it up.
-	// if (strstr(n,"SKY"))
-	// 	return (get_texture(in, &status));
 
 	sprintf(textures[t].name,"%s",n);
 
 	sprintf(tn,"%s%s.pcx",TEXTURE_PATH,n);
 
-	// if(Exists(tn))
 	{
 		// Hard-code the names of animated textures here.
 		if(strcmp (n, "F_WATR01") == 0 ||
@@ -643,11 +622,9 @@ void scrape(LONG x,			// column to draw in
 	SHORT		panel = 0;
 	ULONG		tsy = 0;
 	ULONG		sptr_inc;
-	//ULONG		tptr_inc = 1;		// = (SCRAPE_Y_FACTOR << 16) / 100;
 	ULONG		tptr_inc = wid;		// = (SCRAPE_Y_FACTOR << 16) / 100;
 	LONG 		margin_left, margin_right, margin_top, margin_bottom;
 	ULONG		t_size = wid * sky_textures[0].h;
-	// ULONG	t_size = wid <<16;
 
 	// GWP for Low res skip scan lines.
 #if !defined(_WINDOWS)
@@ -691,7 +668,6 @@ void scrape(LONG x,			// column to draw in
 		x -= margin_left;
 	}
 	panel = x >> 8;
-	// x &= 0xff;
 	x &= (wid - 1);
 	if (panel > 9)
 		panel-=10;
@@ -723,12 +699,10 @@ void scrape(LONG x,			// column to draw in
 	// If yStart < 0, then we need to draw some sky above the sky panel.
 	if (yStart < 0)
 	{
-		//tsy = wid + yStart;					// wid is 256 for all sky textures
 		tsy = t_size - ((wid * yStart) + x);	// wid is 256 for all sky textures
 		// textures[10] is BACK01Z.PCX, which has grass on top and sky
 		// on bottom.
 		skyPtr = ((PTR)BLKPTR((SHORT)sky_textures[10].t)) + sizeof(BITMHDR);
-		//skyPtr = &skyPtr[x*wid];
 		// Draw the last "yStart" lines of the generic sky texture
 		// above our panel.
 #if !defined(_WINDOWS)
@@ -754,8 +728,6 @@ void scrape(LONG x,			// column to draw in
 
 	// Now draw our panel and grass below it if necessary.
 	tptr = ((PTR)BLKPTR((SHORT)sky_textures[panel].t)) + sizeof(BITMHDR);
-	//tptr = &tptr[x*wid];
-	//tptr = &tptr[x];
 	tsy = (yStart*wid) + x;
 	
 #if !defined(_WINDOWS)
@@ -764,12 +736,10 @@ void scrape(LONG x,			// column to draw in
 		do {
 			if (tsy >= t_size)
 			{
-				//tsy -= wid;
 				tsy = x;
 				// textures[11] is BACK01X.PCX, which is all grass.
 				// on bottom.
 				tptr = ((PTR)BLKPTR((SHORT)sky_textures[11].t)) + sizeof(BITMHDR);
-				//tptr = &tptr[x*wid];
 			}
 			*(sptr+1)=*sptr = tptr[tsy];
 			sptr += sptr_inc;
@@ -782,12 +752,10 @@ void scrape(LONG x,			// column to draw in
 		do {
 			if (tsy >= t_size)
 			{
-				//tsy -= t_size;
 				tsy = x;
 				// textures[11] is BACK01X.PCX, which is all grass.
 				// on bottom.
 				tptr = ((PTR)BLKPTR((SHORT)sky_textures[11].t)) + sizeof(BITMHDR);
-				//tptr = &tptr[x*wid];
 			}
 			*sptr = tptr[tsy];
 			sptr += sptr_inc;
@@ -808,13 +776,11 @@ void hscrape(LONG x,LONG y,LONG xe)
 	PTR		sptr_end;						// stop when we reach this point
 	ULONG	wid = sky_textures[0].w;
 	ULONG height = sky_textures[0].h;
-	//ULONG	t_size = wid * sky_textures[0].h;
 	ULONG	tsx = 0;
 #if WRC_CAMERA_TEST
 	ULONG	sptr_inc;
 #endif
 	SHORT	panel = 0;
-	//ULONG	tsx_inc = wid;
 	ULONG   tsx_inc = 1;
 	LONG 	margin_left;
 	LONG	margin_right;
@@ -849,7 +815,6 @@ void hscrape(LONG x,LONG y,LONG xe)
 	// Handle look up and down.
 	y -= (camera.p * render_height) / MAX_VIEW_HEIGHT;
 
-
 #if 01
 // [d10-21-96 JPC] Re-enabled this code.  (For auto-res.)
 	if (!fHighRes)		// handle low res
@@ -882,9 +847,7 @@ void hscrape(LONG x,LONG y,LONG xe)
 	// Since width and height are both 256, the following code will work
 	// even if we are not using the right terms.  If the code breaks,
 	// check whether the width and height are now different from 256.
-	// x &= 0xff;
 	x &= (wid - 1);
-	// if (y<=(256<<12) && y>=0)
 	if (y<=(height<<12) && y>=0)
 	{
 		if (panel > 9) panel-=10;
@@ -893,16 +856,13 @@ void hscrape(LONG x,LONG y,LONG xe)
 	else
 	{
 		tptr = ((PTR)BLKPTR((SHORT)sky_textures[10].t)) + sizeof(BITMHDR);
-		// y = (y+(256<<12)) % (256<<12);
 		y = (y+(height<<12)) % (height<<12);
 		panel = 99;
 	}
 
 	if (!fHighRes)
-		//tsx = (y>>12) + ((x-margin_left)&0xFF) * wid;
 		tsx = ((y>>12)*wid) + ((x-margin_left) & (wid - 1)); // 0xFF -> (wid - 1)
 	else
-		//tsx = (y>>12) + (x * wid);
 		tsx = ((y>>12)*wid) + x;
 
 	// GWP I moved the panel test outside the loop for speed optimization.
@@ -924,7 +884,6 @@ void hscrape(LONG x,LONG y,LONG xe)
 		
 				if (tsx >= t_end)
 				{
-					//tsx -= t_size;
 					tsx = (y >> 12)*wid;
 					t_end = tsx + wid;
 				}
@@ -942,7 +901,6 @@ void hscrape(LONG x,LONG y,LONG xe)
 					memcpy(sptr, &tptr[tsx], texturepixLeft);
 					sptr += texturepixLeft;
 					
-					//tsx -= t_size;
 					tsx = (y>>12)*wid;
 				 	texturepixLeft = wid;
 				}
@@ -970,7 +928,6 @@ void hscrape(LONG x,LONG y,LONG xe)
 		
 				if (tsx >= t_end)
 				{
-					//tsx -= t_size;
 					tsx = (y >> 12)*wid;
 					if (++panel > 9)
 					{
@@ -993,7 +950,6 @@ void hscrape(LONG x,LONG y,LONG xe)
 					memcpy(sptr, &tptr[tsx], texturepixLeft);
 					sptr += texturepixLeft;
 					
-					//tsx -= t_size;
 					tsx = (y>>12)*wid;
 					if (++panel > 9)
 					{
@@ -1044,7 +1000,6 @@ void TextureFrameHandler (LONG arg)
 	}
 }
 
-
 /* ========================================================================
    Function    - LoadAnimatedTextureStub
    Description - Creates a dummy resource to hold current animated
@@ -1089,6 +1044,5 @@ SHORT LoadAnimatedTextureStub (																// )
 
 	return iBlk;
 }
-
 
 // ---------------------------------------------------------------------------

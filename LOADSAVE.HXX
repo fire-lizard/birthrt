@@ -54,7 +54,6 @@ void LoadGameMulti(LONG, LONG);
 
 void LoadGameDoMulti(void);
 
-
 BOOL GetHelpBit(SHORT bitno);	// true if user doesn't need to see this one
 void SetHelpBit(SHORT bitno);
 void SetAllHelpBits(void);

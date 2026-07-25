@@ -9,7 +9,6 @@
    
    Contains the following general functions:
 
-   
    ======================================================================== */
 
 /* ------------------------------------------------------------------------
@@ -106,7 +105,6 @@ LONG GetNextLine(FILE *fp, char *cpNewLine, LONG len)
 		
 		result = strlen(cpNewLine);
 		
-		
 		// Trim off the trailing <LF> <CR> and white space
 		for (LastCharIndex = result - 1;
 		     LastCharIndex > - 1 && 
@@ -121,4 +119,3 @@ LONG GetNextLine(FILE *fp, char *cpNewLine, LONG len)
 	
 	return result;
 }
-

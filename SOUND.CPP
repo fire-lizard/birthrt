@@ -9,7 +9,6 @@
 
    Contains the following general functions:
 
-
    ======================================================================== */
 
 /* ------------------------------------------------------------------------
@@ -26,7 +25,6 @@
 #if defined (WINDOWS_SOUND)
 	#include <windows.h>
 #else
-	//#include <bios.h>
 #endif
 
 #include "SYSTEM.H"
@@ -86,12 +84,10 @@ void RemoveLoopingSoundFromArray(LONG);
 
 #ifdef WINDOWS_SOUND
 extern "C" {
-//BOOL  SetWavePan( USHORT usWave, int Pan );
 extern HWND	hwndApp;
 extern HINSTANCE hInstApp;
 }
 #ifdef AUDIO_LIB
-//void FAR PASCAL ServiceAudio(UINT, UINT, DWORD DlgPtr, DWORD, DWORD);
 #endif
 #endif
 /* ------------------------------------------------------------------------
@@ -111,14 +107,12 @@ extern BOOL SlideShowPlaying;
 /* ------------------------------------------------------------------------
    Local Variables
    ------------------------------------------------------------------------ */
-//int AdventureMusic[] = {	500,	500,	500,	500,	500,	500,	500,	500,	500,	500,	500,	500,	500,	500,	500,	500,	500,	500,	500,	500,	500,};
 
 static SHORT FullVolumeDistance = 100;
 static SHORT HalfVolumeDistance = 200;
 static SHORT SFXVolumeIndex = 10;
 static BOOL PauseAllSounds_Hits = 0;
 static BOOL AudioInitialized = FALSE;
-//static SHORT FrameCount;
 static LONG TotalEnvironSnds = 0;
 static LONG TotalLoopingSounds = 0;
 
@@ -152,10 +146,7 @@ unsigned long SndRandom ( LONG val )
 
 #endif
 
-
-
 }
-
 
 /***********************************************************************************
 Function AddSndObj
@@ -166,7 +157,6 @@ return  the unique tag if the sound is actually played, else fERROR
 extern "C"
 SHORT AddSndObj( BIRTHRT_SND  WaveID, SHORT randomCount, LONG MyThingsIndex)
 {
-	//static SHORT numChallenges = 0;
 	LONG volume;
 	int pan = 50;
 
@@ -255,10 +245,6 @@ SHORT AddSndObj( BIRTHRT_SND  WaveID, SHORT randomCount, LONG MyThingsIndex)
 
 		if( (kernel->AudioActiveSamples() < UserNumSFXPlaying ) && (WaveID > 0) )
 		{
-//#ifndef _WINDOWS
-//			kernel->AudioDefaultBits();
-//			kernel->AudioSetRate(22050);
-//#endif// _windows	
 			InstanceTag = (SHORT)((InstanceTag > 30000) ? 1 : ++InstanceTag);
 			if(kernel->AudioPlay(	(int) WaveID,
 							(BOOL) looped, 		// looped
@@ -267,15 +253,11 @@ SHORT AddSndObj( BIRTHRT_SND  WaveID, SHORT randomCount, LONG MyThingsIndex)
 							(long) FALSE) )		// paused
 			{
 				Instance = InstanceTag;
-				// kernel->AudioPan((int)WaveID, pan,(int)InstanceTag);
 			}
 		}
 		else
 			Instance = fERROR;
 #endif  // AUDIO_LIB
-//#ifdef WINDOWS_SOUND
-//		PlayWaveEx( WaveID, looped, pan * 32,-(MAX_VOLUME - volume) * 16,0 );
-//#endif //WINDOWS_SOUND
 	}
 	return(Instance);
 
@@ -306,7 +288,6 @@ int CalculatePan(LONG MyThingsIndex)
     angle = RelativeAngle(camera.a, objectangle);
 
 //    printf("Sound System: camera %d, object %d, relative angle %d\n",
-  //      camera.a, objectangle, angle);
 
     // calculate the balance
     pan = PAN_CENTER +
@@ -354,9 +335,7 @@ void ModifySndObject(LONG tag, int volume, int pan)
 	
 	if(AudioInitialized && (SFXVolumeIndex > 0))
 	{
-		//SHORT WaveID;
 		SHORT i;
-		//SHORT k;
 
 		// find this tag
 		for(i=0;i<MAX_SOUND_THINGS;i++)
@@ -380,7 +359,6 @@ void ModifySndObject(LONG tag, int volume, int pan)
 					kernel->AudioVolume((int)LoopingSoundThing[i].wave, (int)volume* GetGlobalVolume() / 10, (int)LoopingSoundThing[i].InstanceTag);
 #endif
 #ifdef WINDOWS_SOUND
-//					SetWaveVolume( (USHORT) LoopingSoundThing[i].wave, (int) -(MAX_VOLUME - volume) * 78 ) ;
 					SetWaveVolume( (USHORT) LoopingSoundThing[i].wave, (int) -(MAX_VOLUME - volume) * 16 ) ;
 #endif
 					if(pan != NULL)
@@ -395,11 +373,9 @@ void ModifySndObject(LONG tag, int volume, int pan)
 				}
 				break;
 
-
 			}
 		}
 	}
-
 
 }
 /**************************************************************
@@ -528,7 +504,6 @@ Arguments  the index into the array returned by AddLoopingSound (above)
 extern "C"
 void RemoveLoopingSound(LONG ArrayIndex)
 {
-	//int i;
 
 	if(LoopingSoundThing[ArrayIndex].InstanceTag != fERROR)
 	{
@@ -582,7 +557,6 @@ void InitializeSoundSystem(void)
 
 	if(KernelAudioInitialize() )
 	{
-		//GEH kernel->AudioSetVolReduction(FALSE);
 		// Please leave this as TRUE unless you talk with
 		// Greg about why you need to change it.
 #ifdef _WINDOWS
@@ -593,7 +567,6 @@ void InitializeSoundSystem(void)
 		AudioInitialized = TRUE;
 		kernel->AudioSetChannels(2);
 
-//		kernel->AudioVolumeAll(127);
 #ifndef _WINDOWS
 		kernel->AudioDefaultBits();
 		kernel->AudioSetRate(22050);
@@ -748,7 +721,6 @@ LONG FadeToReset ( void )
 	return 0;
 }
 
-
 /*************************************************************************
 Function Check for sound playing
 Purpose
@@ -788,10 +760,7 @@ BOOL CheckASound(int sound, int tag)
 	return rv;
 #endif
 
-
-
 }
-
 
 /*************************************************************************
 Function
@@ -819,7 +788,6 @@ void	StopASound (int reqSound, int SoundTag)
 
 void TurnOffAllSounds(void)
 {
-	//SoundFade = 12 * ( (SFXVolumeIndex < GetMusicVolume() ) ? SFXVolumeIndex : GetMusicVolume() );
 	KillSoundsNoFade();
 }
 /*?????????????????????????????????????????????????????????????????
@@ -840,7 +808,6 @@ void KillSoundsNoFade(void)
 #endif
 #endif
 	SoundFade = fERROR;
-//	SuspendMusic();
 }
 /********************************************************
 	Function PauseAllSounds

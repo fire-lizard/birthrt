@@ -43,7 +43,6 @@ private:
 	static BOOL	fOptionsChanged;
 };
 
-
 // Class to hold the mode of combat play.
 class COMBAT_MODE 
 {
@@ -76,7 +75,6 @@ public:
 	inline static void mfSetNewValue(SBYTE const NewSpeed );
 	inline static SBYTE const mfGetCurrValue();
 	inline static SHORT const mfGetDelayValue();
-	
 	
 private:
 	// No objects, copies or assignments
@@ -144,7 +142,6 @@ inline void RECHECK_OPTIONS::mfInitOptions()
 	fOptionsChanged = FALSE;
 }
 
-
 inline BOOL const COMBAT_MODE::mfIsModeRPG()
 {
 	return (( fMode == RPG)? TRUE : FALSE); 
@@ -160,7 +157,6 @@ inline void COMBAT_MODE::mfSetMode(MODE const NewMode)
 	fMode = NewMode; 
 	RECHECK_OPTIONS::mfNewOptions();
 }
-
 
 inline void COMBAT_ARCADE_SPEED::mfSetNewValue(SBYTE const NewSpeed )
 { 

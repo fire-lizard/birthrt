@@ -33,7 +33,6 @@
 #include "mapicon.hxx"
 #endif
 
-
 /* ------------------------------------------------------------------------
    Defines and Compile Flags
    ------------------------------------------------------------------------ */
@@ -47,7 +46,6 @@
 #define HI_LOY				3
 
 #define START_NEW_OR_LOAD		999
-
 
 #define BEFORE_LTACTION			0
 #define DURING_LTACTION			1
@@ -66,7 +64,6 @@
 #define fSCENEBATTLE					1
 #define fAUTOBATTLE					2
 #define fNPCBATTLE					4
-
 
 #define RESTORE_REGION_STATE(a) activate_region((a),region_state[a-regFIRST_REGION_STATE])
 
@@ -124,7 +121,6 @@ void WriteRealmStartData ( void );
 //       more than one GAME going at a time. I used a class just to encapsulate
 //       the data and fns.
 
-
 class GAME_MAP {
 
 public:
@@ -166,20 +162,11 @@ void SetupAdvsitePlaces(void);	// from charsel.cpp
    ------------------------------------------------------------------------ */
 extern DECL_VECTOR_CLASS_S(CSTRPTR,GameIcons,MAP_ICON_COUNT);
 extern DECL_VECTOR_CLASS(PROV_TYPE,province);
-//extern DECL_VECTOR_CLASS(CSTRPTR,UnitTitle);
-//extern DECL_VECTOR_CLASS(CSTRPTR,IconAbbriv);
-//extern DECL_VECTOR_CLASS(CSTRPTR,szRace);
-//extern DECL_VECTOR_CLASS(CSTRPTR, szBL_grade);
-//extern DECL_VECTOR_CLASS(CSTRPTR, szClass);
-//extern DECL_VECTOR_CLASS(CSTRPTR, szBL_deriv);
 extern DECL_VECTOR_CLASS(SHORT,region_state);
-//extern DECL_VECTOR_CLASS(CSTRPTR,TaxLevel);
 extern DECL_VECTOR_CLASS(SHORT,LoyaltyAdj);
 extern DECL_VECTOR_CLASS(SHORT,NoLawLoyaltyAdj);
 extern DECL_VECTOR_CLASS(UBYTE,LoyaltyColor);
 extern DECL_VECTOR_CLASS(UBYTE,MaintCost);
-//extern DECL_VECTOR_CLASS(CSTRPTR, Court);
-//extern DECL_VECTOR_CLASS(CSTRPTR, Terrain);
 extern DECL_VECTOR_CLASS(SHORT,TerrainCost);
 extern DECL_VECTOR_CLASS(SHORT,place_x);
 extern DECL_VECTOR_CLASS(SHORT,place_y);
@@ -253,8 +240,6 @@ extern REALM::REALM_TYPE		CurrentRealm;
 /* ------------------------------------------------------------------------
    inline functions
    ------------------------------------------------------------------------ */
-
-
 
 #endif // _GAMEMAP_HXX
 

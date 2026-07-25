@@ -19,18 +19,15 @@
 
 #include "GAMETYPE.HXX"
 #include "THINGS.H"
-//#include "game.h"
 #include "ANIM.H"
 #include "MENU.H"
 #include "STRMGR.H"
 #include "strenum.h"
 #include "GMENUENM.H"
 
-//#define NUMROTATIONS 8
 #define NUMROT 8
 #define MAXWINSPEED 50
 #define MAXDOSSPEED	1
-
 
 static LONG index = FIRST_GAME_THING;
 static char fn[128];
@@ -44,11 +41,9 @@ static SHORT sequenceEnd;
 static char cAction[] = {'S', 'W', 'D', 'A', 'F', 'X', 'C', 'L', 'G', 'B', 'M', 'Z'};
 static char cRotation[] = {'0', '3', '5', '7', '9', '7', '5', '3'};
 static char cRotationValue[] = {0, 3, 5, 7, 9, -7, -5, -3};
-//char cRot[] = {'0', '3', '5', '7', '9'};
 static SHORT iAnim = fERROR;
 static SHORT playInit = 0;
 static USHORT speedRate;
-//SHORT flag2;
 
 void init_anim()
 {  	GAME_TTYPE::mfRegisterTTypes();
@@ -70,14 +65,6 @@ void init_anim()
 			not_found = FALSE;
 
 // removed for HD/CD access by cdb
-//	 	if (0 != access(fn, F_OK))
-//	 	{
-//	 		index++;
-//	 	}
-//	 	else
-//	 	{
-//	 		not_found = FALSE;
-//	 	}
  	}
  	iAnim = AllocateAnim(TYPE_FLIC, index);
 	load_FLC_sequence(iAnim, index, seq, rot);
@@ -88,7 +75,6 @@ void init_anim()
 
 	sequenceEnd=0; // set flag to track each sequence in playall 
    	speedRate = 1;
-//  	dframe = mframes = 0;  //things.c nextframe()
 
 }	
 /* =======================================================================
@@ -103,7 +89,6 @@ SHORT NextFrame (SHORT iAnim, SHORT sequence, SHORT rotation, UBYTE * pCtrl, SHO
 	SHORT     		r;
 	SHORT			old_sequence;
 	SHORT			old_rotation;
-//	SHORT			dframe;
 	SHORT			continue_flag = 0;
 	SHORT			rv = fERROR;
  	SHORT      		dframe;
@@ -125,7 +110,6 @@ SHORT NextFrame (SHORT iAnim, SHORT sequence, SHORT rotation, UBYTE * pCtrl, SHO
 	}
 	seq_and_rot = (SHORT)((sequence * NUMROTATIONS ) + r);
 
-
 	/* not looping and not changing seq or rot and already did one pass */
 	if (*pCtrl == 0 && pAnim->sequence == seq_and_rot && *pflag == SAMEANIM )
 		goto exit;
@@ -143,13 +127,11 @@ SHORT NextFrame (SHORT iAnim, SHORT sequence, SHORT rotation, UBYTE * pCtrl, SHO
 //!!!!!!!!!!!!!!!!!!!!!!!!!! try to reload here !!!!!!!!!!!!!!!!!!!
 		goto error_exit;
 
-	
 	if (pAnim->type == TYPE_PCX)			/* check for PCX rotation frames */
 	{
 		pAnim->iBuff = iHead;				/* make iBuff point to correct PCX frame */
 		goto exit;							/* skip animation stuff */
 	}
-	
 	
 	pHead = (FLICHEADPTR)BLKPTR(iHead);
 	
@@ -160,7 +142,6 @@ SHORT NextFrame (SHORT iAnim, SHORT sequence, SHORT rotation, UBYTE * pCtrl, SHO
     old_sequence = (SHORT)(pAnim->sequence / NUMROTATIONS);
 	old_rotation = (SHORT)(pAnim->sequence % NUMROTATIONS);
 	dframe = pAnim->frame;
-
 
 	/* check for sequence change */
 	if ((pAnim->sequence != seq_and_rot)||mirror) 
@@ -182,13 +163,9 @@ SHORT NextFrame (SHORT iAnim, SHORT sequence, SHORT rotation, UBYTE * pCtrl, SHO
 		if (!IsPointerGood(pHead))
 			goto error_exit;
 			
-
-		//decode_frame(pAnim, pHead); 
 		fdecode = (SHORT)1;	   				/* decode 1st frame */
- 		//detect_scale(pAnim->iBuff, pAnim->width, pAnim->height);	/* scan for scale factor */
   		dframe = 0;
   		continue_flag = START_FLAG;
-  		//SetPurge(iHead);
 	}
 	else 
 		dframe++;
@@ -215,14 +192,10 @@ SHORT NextFrame (SHORT iAnim, SHORT sequence, SHORT rotation, UBYTE * pCtrl, SHO
 		if (pHead == 0)
 			goto error_exit;
 			
-		//decode_frame(pAnim, pHead);
 		fdecode = 1;
-		//detect_scale(pAnim->iBuff, pAnim->width, pAnim->height);
 	    dframe = 0;
 	 	continue_flag = START_FLAG;
-  		//SetPurge(iHead);
 	}
-
 
 	/* check for end of sequence and looping */
 	if ((dframe >= pHead->frames) && (pAnim->frame != 0)) /* after last frame */
@@ -245,7 +218,6 @@ SHORT NextFrame (SHORT iAnim, SHORT sequence, SHORT rotation, UBYTE * pCtrl, SHO
 
 	/* advance to desired frame */
 
-	
 	if(fdecode == 0 && (pAnim->frame < dframe))
 	{
 
@@ -262,7 +234,6 @@ SHORT NextFrame (SHORT iAnim, SHORT sequence, SHORT rotation, UBYTE * pCtrl, SHO
 		goto exit;
 	}
 	
-  
   }	
 	
 /* set control frame number */
@@ -273,7 +244,6 @@ error_exit:
 	ClrLock(iAnim);
 	return rv;
 }
-
 
 /* =======================================================================
 	get_center_point   
@@ -356,7 +326,6 @@ void PaintAnimation (LONG MenuCombo, LONG )
 {
 	SHORT	i;
 	LONG	X,Y;
-	//LONG	Z;
 	LONG	mx,my;
 	LONG	MenuId, ButtonId;
 	CHAR	color = 200;
@@ -369,7 +338,6 @@ void PaintAnimation (LONG MenuCombo, LONG )
 	SPLIT_LONG(MenuCombo, MenuId, ButtonId);
 	static LONG lastTime = 0;
 	LONG   timedif;
-//	SHORT   iHead;
 	LONG    tmp;
 	static SHORT flag2 = 0;
 	static LONG lastRot=rot; 	
@@ -390,7 +358,6 @@ void PaintAnimation (LONG MenuCombo, LONG )
 	X += mx/2;
 	Y += 10;
 
-
 	init_gfont(FONT_TITL_10PT);
 
   	print_text_centered(X,Y,STRMGR_GetStr(STR_ANIM_1), 60);
@@ -398,7 +365,6 @@ void PaintAnimation (LONG MenuCombo, LONG )
 	print_text_centered(X,Y,STRMGR_GetStr(STR_ANIM_2), 60);
 	Y += 20;
 	print_text_centered(X,Y,STRMGR_GetStr(STR_ANIM_3), 60);
-
 
 	// paint the control buttons
 	init_gfont(FONT_TITL_10PT);
@@ -497,7 +463,6 @@ void PaintAnimation (LONG MenuCombo, LONG )
 
 		  	sequenceEnd = 0;
 	   	
-		
 		}
 	 }
 	tmp = rot;
@@ -516,7 +481,6 @@ void PaintAnimation (LONG MenuCombo, LONG )
 			;
 	}
 
-  
 	OpenAnim(iAnim, (SHORT)((seq*5)+rot), fn, TYPE_FLIC);
 	
   	if(((tmp == 5)&&(lastRot == 3))
@@ -545,7 +509,6 @@ void PaintAnimation (LONG MenuCombo, LONG )
 		}
 	}
 	
-//	SetUpdate(MenuId, 0);
 	playInit = 0;
 	lastRot = rot;
 	
@@ -580,15 +543,12 @@ void PaintAnimation (LONG MenuCombo, LONG )
 	print_text_centered(X, Y, fn, 60);
 	Y += 20;
 	
-	
-
 	sprintf(xCntr, STRMGR_GetStr(STR_ANIM_STR1),xCenter, speedRate, index);
    	print_text_centered(X, Y, xCntr, 60);  
 	Y += 20;
 	sprintf(S, STRMGR_GetStr(STR_ANIM_STR2), scale, wid, hei);
 	print_text_centered(X, Y, S, 60);
 
-	
 }
 
 /*=========================================================================
@@ -604,12 +564,10 @@ void GetNextAnimation(LONG, LONG)
 	  if(index > LAST_GAME_THING)
 			index = FIRST_GAME_THING;
 	  
-
 	  n = GAME_TTYPE::mfGetArtFileName((THINGTYPE)index);
    	  sprintf(tmp, "%s------\\------%c%c.flc", THING_PATH, cAction[seq], cRotation[rot]);
 	  sprintf(fn, "%s%s\\%s%c%c.FLC", THING_PATH, n,n, cAction[seq], cRotation[rot]);
 
-   
    	  while((0==(strcmp(fn, tmp)))||(0!=FileAccess(fn)) )	  
 	  {
 		index++;
@@ -645,7 +603,6 @@ void GetPrevAnimation(LONG, LONG)
     n = GAME_TTYPE::mfGetArtFileName((THINGTYPE)index);
  	sprintf(fn, "%s%s\\%s%c%c.FLC", THING_PATH, n,n, cAction[seq], cRotation[rot]);
 
-	
 	while((0==(strcmp(fn, tmp)))||(0!=FileAccess(fn) ))	
 	{
 		index--;
@@ -684,7 +641,6 @@ void GetNextSequence(LONG, LONG)
 		seq = 0;
 	sprintf(fn, "%s%s\\%s%c%c.FLC", THING_PATH, n,n, cAction[seq],cRotation[rot]);  	
 
-
 	while(0 != FileAccess(fn) )
 	{
 		for(r=0; r<NUMROT; r++)
@@ -710,7 +666,6 @@ void GetNextSequence(LONG, LONG)
 			seq = 0;
 		sprintf(fn, "%s%s\\%s%c%c.FLC", THING_PATH, n,n, cAction[seq],cRotation[rot]);  	
 	}
-
 
 }
 
@@ -750,7 +705,6 @@ void GetPrevSequence(LONG, LONG)
 	}
 	
 }
-
 
 /* ========================================================================
    Function    -GetNextRotation

@@ -58,15 +58,10 @@ void SysHideCursor(void);
    ------------------------------------------------------------------------ */
 long	old_cursor_x,old_cursor_y;
 long	cursor_x,cursor_y,mouse_button;
-// GWP LONG	hot_x = 0;
-// GWP LONG	hot_y = 0;
 char	chCursorName[32];
 long	location_x,location_y;
 long	mouse_click = 0;
 long	mouse_present = TRUE;
-//long mouse_need_seg = 0;
-//long mouse_found_seg = -1;
-//long mouse_found_type;
 long	current_cursor;
 long	need_cursor_draw=FALSE;
 
@@ -81,7 +76,6 @@ extern HWND	hwndApp;
 extern LONG WindowWidth;
 extern LONG WindowHeight;
 
-
 /* ========================================================================
    Function    - init_mouse
    Description - initializes the mouse and then sets the maxes and mins for it
@@ -90,9 +84,6 @@ extern LONG WindowHeight;
 
 void init_mouse (CSTRPTR name, BOOL Centered)
 {
-	// GWP PTR	p;
-	// GWP LONG w,h;
-//	char cursor_path[256];
 	char path[256];
 
 	// set windows cursor
@@ -138,7 +129,6 @@ void read_mouse()
 	RECT rc;
 	POINT pt;
 
-
 	GetClientRect(hwndApp, &rc);
 
 									  // because if your shutting down these are 0 and the app traps
@@ -148,8 +138,6 @@ void read_mouse()
 		GetCursorPos(&pt);
 		SetCursorPos(pt.x,pt.y);
 		ScreenToClient(hwndApp, &pt);
-		// GWP cursor_x = pt.x + hot_x;
-		// GWP cursor_y = pt.y + hot_y;
 		cursor_x = pt.x;
 		cursor_y = pt.y;
 	
@@ -157,7 +145,6 @@ void read_mouse()
 		cursor_x = cursor_x * WindowWidth / rc.right;
 		cursor_y = cursor_y * WindowHeight / rc.bottom;
 	
-		//GEH MUST BE CLEARED IN MAIN LOOP: mouse_button = FALSE;
 		mouse_button = FALSE;		// [GEH 9/25]
 	
 		if(GetAsyncKeyState(VK_RBUTTON) & 0x8000)
@@ -226,7 +213,6 @@ void SysHideCursor (void)
 	memset(&st[0], 0, 1024);
 	
 	// force this new data to the display
-	//GEH ScreenCopy(iDispBuffer,cursor_x,cursor_y,w,h,SC_DEFAULT_RES);
 #endif
 }
 
@@ -261,7 +247,6 @@ void ForceCursor (void)
 				plot(cursor_x+x, cursor_y+y, antia_table[(pix*256)+(st[xy]=get_pixel(cursor_x+x, cursor_y+y))] );
 	
 	// force this new data to the display
-	//GEH ScreenCopy(iDispBuffer,cursor_x,cursor_y,w,h,SC_DEFAULT_RES);
 #endif
 }
 

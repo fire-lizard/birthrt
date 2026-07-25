@@ -1,4 +1,3 @@
-
 /*#######################################################################\
 #
 #	Synergistic Software
@@ -27,7 +26,6 @@
 
 #define F_OK 0
 
-//void (__interrupt __far *prev_int_24)();
 void SetRedrawMainMapLevel (void);
 
 // this is the drive letter of the cdrom as in "d:"
@@ -129,7 +127,6 @@ void CheckHandles ()
 	}
 }
 
-
 // directly replaces the fopen call, first tests the hard drive
 // then checks the CDROM
 // [d4-01-97 JPC] First check whether file is already in our "open" array.
@@ -141,8 +138,6 @@ FILE * FileOpen(
 	FILE	*pFile = NULL;
 	char	chFileName[_MAX_PATH] = "";
 
-	// printf ("FileOpen: %s\n", pszFile);
-	// fflush (stdout);
 //top:
 	run_timers();
 	if ((pFile = FileInQueue (pszFile, pszAccess)) != NULL)
@@ -170,7 +165,6 @@ FILE * FileOpen(
 			}
 			else
 			{
-				// printf ("  ERROR: Could not open file, no CD, pFile = %P.\n", pFile);
 				return( pFile );
 			}
 		}
@@ -194,7 +188,6 @@ FILE * FileOpen(
 		}
 		else
 		{
-			// printf ("  ERROR: Could not open file, no CD, pFile = %P.\n", pFile);
 			return( pFile );
 		}
 	}
@@ -202,7 +195,6 @@ FILE * FileOpen(
 	{
 		strcpy(chFileName, pszFile);
 	}
-	
 	
 	// Returns -1 if file doesn't exist
 	if( ( access( chFileName, ( F_OK ) ) ) == 0 )
@@ -255,7 +247,6 @@ SHORT DiskOpen(
 		}
 		else
 		{
-			// printf ("  ERROR: Could not open file, no CD, iFile = %d.\n", iFile);
 			return( iFile );
 		}
 	}
@@ -281,7 +272,6 @@ SHORT DiskOpen(
 			RecordOpen (pszFile, "", NULL, iFile);
 	}
 
-		
 	return( iFile );
 }
 
@@ -325,7 +315,6 @@ LONG FileAccess(
 	return( iFile );
 }
 
-
 int DiskClose (short handle)
 {
 // [d3-21-97 JPC] Call this function to close a file you opened with DiskOpen.
@@ -346,7 +335,6 @@ int DiskClose (short handle)
 	}
 	return Result;
 }
-
 
 int FileClose (FILE * fp)
 {
@@ -370,7 +358,6 @@ int FileClose (FILE * fp)
 	return Result;
 }
 
-
 static LONG FindUnusedRecord ()
 {
 // Helper of FindOpenRecord.
@@ -385,7 +372,6 @@ static LONG FindUnusedRecord ()
 
 	return -1;
 }
-
 
 static LONG FindOpenRecord ()
 {
@@ -406,14 +392,11 @@ static LONG FindOpenRecord ()
 	return i;
 }
 
-
 static void RecordOpen (CSTRPTR pszFile, CSTRPTR pszAccess, FILE * fp, int handle)
 {
 // Save information about files we opened.
 
 	LONG			i;
-
-	// return;
 
 	if (!gfUseFileSystem)
 		return;
@@ -436,9 +419,7 @@ static void RecordOpen (CSTRPTR pszFile, CSTRPTR pszAccess, FILE * fp, int handl
 	gFileRecord[i].fp      = fp;
 	gFileRecord[i].handle  = handle;
 	gFileRecord[i].time    = get_time ();
-	// printf ("RecordOpen: record %d is %s\n", i, pszFile);
 }
-
 
 static void RecordClose (FILE * fp, int handle)
 {
@@ -456,12 +437,10 @@ static void RecordClose (FILE * fp, int handle)
 		{
 			gFileRecord[i].fOpened = FALSE;
 			// printf ("RecordClose: marking record %d (%s) as closed\n",
-			// 	i, gFileRecord[i].szFilename);
 			break;
 		}
 	}
 }
-
 
 static void CloseOldestFile ()
 {
@@ -476,14 +455,8 @@ static void CloseOldestFile ()
 	time = get_time() + 1;					
 	iOldest = -1;
 
-	// printf ("CloseOldestFile:\n");
 	for (i = 0; i < gcMaxRecords; i++)
 	{
-		// printf ("  %2d (%14s) use: %d open: %d\n",
-		// 	i,
-		// 	gFileRecord[i].szFilename,
-		// 	gFileRecord[i].fInUse,
-		// 	gFileRecord[i].fOpened);
 
 		if (gFileRecord[i].fInUse && !gFileRecord[i].fOpened)
 		{
@@ -497,7 +470,6 @@ static void CloseOldestFile ()
 
 	if (iOldest >= 0)
 	{
-		// printf ("  Closing oldest = %d (%s)\n", iOldest, gFileRecord[iOldest].szFilename);
 
 		if (gFileRecord[iOldest].fp != NULL)
 		{
@@ -526,7 +498,6 @@ static void CloseOldestFile ()
 	}
 }
 
-
 static FILE * FileInQueue (CSTRPTR pszFile, CSTRPTR pszAccess)
 {
 // These are the tests a file must pass to be returned by this function:
@@ -551,13 +522,11 @@ static FILE * FileInQueue (CSTRPTR pszFile, CSTRPTR pszAccess)
 					{
 						gFileRecord[i].fOpened = TRUE;
 						gFileRecord[i].time    = get_time ();
-						// printf ("FileInQueue: returning record %d (%s)\n", i, gFileRecord[i].szFilename);
 						return gFileRecord[i].fp;
 					}
 					else
 					{
 						gFileRecord[i].fInUse = FALSE;
-						// printf ("FileInQueue: record %d (%s) had fp = NULL\n", i, gFileRecord[i].szFilename);
 						return NULL;
 					}
 				}
@@ -568,17 +537,14 @@ static FILE * FileInQueue (CSTRPTR pszFile, CSTRPTR pszAccess)
 					if (gFileRecord[i].fp != NULL)
 						fclose (gFileRecord[i].fp);
 					gFileRecord[i].fInUse = FALSE;
-					// printf ("FileInQueue: record %d (%s) had different access\n", i, gFileRecord[i].szFilename);
 					return NULL;
 				}
 			}
 		}
 	}
 
-	// printf ("FileInQueue: %s not found\n", pszFile);
 	return NULL;								// not found
 }
-
 
 static SHORT DiskInQueue (CSTRPTR pszFile)
 {
@@ -601,23 +567,19 @@ static SHORT DiskInQueue (CSTRPTR pszFile)
 				{
 					gFileRecord[i].fOpened = TRUE;
 					gFileRecord[i].time    = get_time ();
-					// printf ("DiskInQueue: returning record %d (%s)\n", i, gFileRecord[i].szFilename);
 					return gFileRecord[i].handle;
 				}
 				else
 				{
 					gFileRecord[i].fInUse = FALSE;
-					// printf ("DiskInQueue: record %d filename (%s) had handle of -1\n", i, gFileRecord[i].szFilename);
 					return -1;
 				}
 			}
 		}
 	}
 
-	// printf ("DiskInQueue: %s not found\n", pszFile);
 	return -1;									// not found
 }
-
 
 void CloseAllFiles ()
 {
@@ -662,4 +624,3 @@ FILE_MODE SetFileMode ( FILE_MODE NewFileMode )
 	fmCurrentFileMode = NewFileMode;
 	return OldMode;
 }
-

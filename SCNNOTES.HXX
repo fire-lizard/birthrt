@@ -21,7 +21,6 @@
 #include "strenum.h"
 #endif
 
-
 /* ------------------------------------------------------------------------
    Defines and Compile Flags
    ------------------------------------------------------------------------ */
@@ -64,7 +63,6 @@ private:
 
 typedef SHORT HDL_SCN_NOTES;
 
-
 /* ========================================================================
    Function    - mfSetNoteData
    Description - Fill in the note data fields.
@@ -96,7 +94,6 @@ inline SBYTE const SCN_NOTE::mfGetNoteNumber() const
 {
 	return fNoteNumber;
 }
-
 
 /* ========================================================================
    Function    - mfInitVals

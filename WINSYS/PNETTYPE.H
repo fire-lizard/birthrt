@@ -21,7 +21,6 @@ typedef struct
   // -- Session information
    char szGameName[32];      // name of the game
 	char szGameNamePlus[50];	 // extra space for realm version for just Birthright
-//   GAMEDESC szGameDesc;      // description of game
 
    USHORT usMaxPlayers;      // maximum number of players for this game
 

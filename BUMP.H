@@ -72,7 +72,6 @@ WadThingType CheckMoveSimple (
 	SHORT sSpecial,
 	LONG *BumpDistance);	// distance to line squared;
 
-
 // [d8-13-96 JPC] LinePointDistance is now also called from SECTORS: activate_seg.
 LONG LinePointDistance (LONG x, LONG y,
 						LONG ax, LONG ay,

@@ -14,7 +14,6 @@
 #include "itemtype.hxx"
 #endif
 
-
 #define RESURRECT_BUT_ALL	1
 #define RESURRECT_BUT_TITLE	2
 #define RESURRECT_BUT_NAME1	3

@@ -1,4 +1,3 @@
-
 #include "SYSTEM.H"
 #include "PLAYSTAT.HXX"
 #include "AVATAR.HXX"
@@ -13,11 +12,9 @@
 #include "REGENTS.HXX"
 #include "strenum.h"   
 
-
 LONG ItemEffects::BAHealing(LONG Combo,LONG AbilityStrength,LONG Action)
 {
 	//recursion...
-	//static BOOL AlreadyCalled=FALSE;
 	
 	SHORT Itemtype;  			//the index in ItemTypes of the Item 
 									//being activated
@@ -67,7 +64,6 @@ LONG ItemEffects::BAHealing(LONG Combo,LONG AbilityStrength,LONG Action)
 	return OK; //everything went ok	
 }
 
-
 //blood abilities
 // 10% more success in diplomacy
 LONG ItemEffects::BABloodMark(LONG Combo,LONG Arg,LONG Action)	
@@ -83,7 +79,6 @@ LONG ItemEffects::BAIronWill(LONG Combo,LONG Arg,LONG Action)
 // Character editors just add 2!
 	return NOT_SUPPORTED;
 }
-
 
 // Since it affects the whole party, the adventure part is in playhit.cpp
 LONG ItemEffects::BAProtectionEvil(LONG Combo,LONG Arg,LONG Action)
@@ -160,27 +155,6 @@ LONG ItemEffects::BARegeneration(LONG Combo,LONG Arg,LONG Action)
 				Item.mfMessage(STR_ITEM_ALWAYS_IN_EFFECT);
 				return DONT_DROP;
 			case DEACTIVATE:
-//				{
-//					PLAYER_STATS* pAvStats=NULL;
-//
-//					DumbAutoLockPtr<PLAYER_STATS> pAvatarStats(hPlayerStats);
-//					pAvStats=pAvatarStats;
-//							    
-//					if (pAvatarStats->hAvatar == fERROR)
-//						break;
-//
-//					DumbAutoLockPtr<CAvatar> pAvatar(pAvatarStats->hAvatar);
-//					CAvatar* pCAv=pAvatar;
-//						
-//					// This power doesn't help you when you're dead.
-//					if (pAvatarStats->HitPts < pAvatarStats->FullHitPts &&
-//						pAvatarStats->HitPts > 0 &&
-//						pAvatar->Status != CAvatar::AI_DEAD)
-//						++pAvatarStats->HitPts;
-//	
-//					ActiveItem* pai=mfGetActiveItem(BARegeneration,Combo,Arg);
-//					pai->TimeToStop = SCENE_MGR::gTick + 60*18.2;
-//				}
 				break;
 				
 			case PICKUP:
@@ -202,7 +176,6 @@ LONG ItemEffects::BARegeneration(LONG Combo,LONG Arg,LONG Action)
 	return OK; //everything went ok	
 
 }
-
 
 LONG ItemEffects::BATravel(LONG Combo,LONG Arg,LONG Action)
 {
@@ -275,8 +248,6 @@ LONG ItemEffects::BAResistance(LONG Combo,LONG Arg,LONG Action)
 	return OK; //everything went ok	
 }
 
-
-
 //essentially, MapHighlightSecretDoors
 LONG ItemEffects::BADetectIllusion(LONG Combo,LONG Arg,LONG Action)
 {
@@ -313,8 +284,6 @@ LONG ItemEffects::BADetectIllusion(LONG Combo,LONG Arg,LONG Action)
 	return OK;
 }
 
-
-
 LONG ItemEffects::BABattleWise(LONG Combo,LONG Arg,LONG Action)
 {
 
@@ -325,15 +294,6 @@ LONG ItemEffects::BABattleWise(LONG Combo,LONG Arg,LONG Action)
  	
 	ItemType&		Item=ItemTypes[IType];
 
-	
-	//if(fDomainTurn)
-	//{
-	//	return NOT_SUPPORTED;
-	//}
-	//if(fBattleCombat)
-	//{
-	//	return NOT_SUPPORTED;
-	//}
 	//else	// adventure level
 	// works in all modes
 	{
@@ -381,15 +341,6 @@ LONG ItemEffects::BACourage(LONG Combo,LONG Arg,LONG Action)
  	
 	ItemType&		Item=ItemTypes[IType];
 
-	
-	//if(fDomainTurn)
-	//{
-	//	return NOT_SUPPORTED;
-	//}
-	//if(fBattleCombat)
-	//{
-	//	return NOT_SUPPORTED;
-	//}
 	//else	// adventure level
 	// works in all modes
 	{
@@ -436,15 +387,6 @@ LONG ItemEffects::BADevineWrath(LONG Combo,LONG Arg,LONG Action)
  	
 	ItemType&		Item=ItemTypes[IType];
 
-	
-	//if(fDomainTurn)
-	//{
-	//	return NOT_SUPPORTED;
-	//}
-	//if(fBattleCombat)
-	//{
-	//	return NOT_SUPPORTED;
-	//}
 	//else	// adventure level
 	// works in all modes
 	{
@@ -506,7 +448,6 @@ LONG ItemEffects::BAEnhancedSense(LONG Combo,LONG Arg,LONG Action)
  	
 	ItemType&		Item=ItemTypes[IType];
 	
-
 	if(fDomainTurn)
 	{
 		switch (Action)
@@ -601,7 +542,6 @@ LONG ItemEffects::BAFear(LONG Combo,LONG Arg,LONG Action)
  	
 	ItemType&		Item=ItemTypes[IType];
 
-	
 	if(fDomainTurn)
 	{
 		return NOT_SUPPORTED;

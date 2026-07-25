@@ -29,7 +29,6 @@ typedef struct
 	DWORD   dwLastTick;                //---- Last tickcount played
 }   WAVECLASS;
 
-
 typedef struct
 {
     UCHAR                szWaveName[9]; //---- wave name without extension
@@ -57,28 +56,21 @@ WAVECLASS WaveClass [ MAX_WAVE_CLASS ] = { 0,      0,     //---- Never use this
 
 #include "SNDUTILS.H"
 
-
 static LPDIRECTSOUND        lpDS        = NULL;        //---- Direct sound object
 static LPDIRECTSOUNDBUFFER  lpDSPrimary = NULL;        //---- Primary direct sound buffer 
 
 int			iSoundType		= 0;
 static HINSTANCE	hSound			= NULL;
-//static HCURSOR		ghWaitCursor	= NULL;
-//static BOOL			fSoundEnable	= TRUE;      //---- This varible tells whether sounds should be made
                                //---- This has nothing to do with whether sound is enable on 
                                //---- the menu or not 
 
 typedef HRESULT (__stdcall *FP_DSND)( IID FAR *, LPDIRECTSOUND *, IUnknown FAR * );
 static FP_DSND        fp_DSnd = NULL;
 
-
  // -- local prototype
 BOOL InitializeWaveDevice	( HWND hwndApp );
 BOOL SetWavePan				( USHORT usWave, int Pan );
 BOOL SetWaveFreq				( USHORT usWave, DWORD dwFreq );
-
-
-
 
 //----------------------------------------------------------------------------
 //  ShowWaitCursor
@@ -95,23 +87,10 @@ BOOL SetWaveFreq				( USHORT usWave, DWORD dwFreq );
 //----------------------------------------------------------------------------
 HCURSOR ShowWaitCursor ( void ) 
 {
-//    HCURSOR hPrev;
 
-//    if ( ghWaitCursor == NULL )
-//    {
-//        ghWaitCursor =  LoadCursor( NULL,
-//                                    IDC_WAIT );
-//    }
-
-//    hPrev = SetCursor ( ghWaitCursor );
-
-//    return ( hPrev );
 	  return 0;
 
 } //---- End of ShowWaitCursor()
-
-
-
 
 //----------------------------------------------------------------------------
 //  RestoreCursor
@@ -129,11 +108,7 @@ HCURSOR ShowWaitCursor ( void )
 //----------------------------------------------------------------------------
 void RestoreCursor ( HCURSOR hPrevCur )
 {
-//     SetCursor ( hPrevCur );
 } // RestoreCursor
-
-
-
 
 //----------------------------------------------------------------------------
 //  InitializeWaveDevice
@@ -184,18 +159,8 @@ BOOL InitializeWaveDevice ( HWND hwndApp )
 				mmResult = IDirectSound_SetCooperativeLevel( lpDS, hwndApp, DSSCL_NORMAL );
 				if( mmResult == DS_OK )
 				{
-//                    PCMWAVEFORMAT pcmwf;
 
                     // Set up wave format structure. 11 8 mono
-
-//                    memset( &pcmwf, 0, sizeof(PCMWAVEFORMAT) );
-//                    pcmwf.wf.wFormatTag = WAVE_FORMAT_PCM;
-//                    pcmwf.wf.nChannels = 1;
-//                    pcmwf.wf.nSamplesPerSec = 22050L;
-//                    pcmwf.wf.nBlockAlign = 1;
-//                    pcmwf.wf.nAvgBytesPerSec = pcmwf.wf.nSamplesPerSec * pcmwf.wf.nBlockAlign;
-//                    pcmwf.wBitsPerSample = 8;
-
 
 					 //---- Set up the primary direct sound buffer. 
 					memset( &dsbdesc, 0, sizeof(DSBUFFERDESC) );
@@ -224,7 +189,6 @@ BOOL InitializeWaveDevice ( HWND hwndApp )
 
 				} // end if can set CooperativeLevel
 			} // end if can create DirectSound device
-
 
 			 //---- Someone is using the wave device
 			if ( mmResult == DSERR_ALLOCATED )
@@ -261,7 +225,6 @@ BOOL InitializeWaveDevice ( HWND hwndApp )
 	 // -- fall-back position
 	iSoundType = SNDPLAY_SOUND;
 
-//	if ( KillSplash() )
 	{
 #if defined (_FRENCH)
 		MessageBox( hwndApp,"Mélange sonore non supporté.", 
@@ -278,9 +241,6 @@ BOOL InitializeWaveDevice ( HWND hwndApp )
     return FALSE;
 } // InitializeWaveDevice
 
-
-
-
 BOOL CreateSDS( USHORT   usWave )            //---- Wave number 
 {
     DSBUFFERDESC    dsbd;
@@ -293,7 +253,6 @@ BOOL CreateSDS( USHORT   usWave )            //---- Wave number
     DWORD           dwWrapBSize;
     UINT            cbActualRead = 0;
 
-
     dwDataSize = WaveInfo[usWave].dwDataSize;
 
     //---- Set up a secondary direct sound buffer. 
@@ -304,7 +263,6 @@ BOOL CreateSDS( USHORT   usWave )            //---- Wave number
     dsbd.dwFlags = DSBCAPS_STATIC;  //---- Buffer capabilities
     dsbd.dwBufferBytes = dwDataSize;
 
-            
     //---- Setup buffer format first 
 
     dw = WaveInfo[usWave].lpwfx->cbSize + sizeof(WAVEFORMATEX);
@@ -313,7 +271,6 @@ BOOL CreateSDS( USHORT   usWave )            //---- Wave number
     {
        return FALSE;
     }
-
 
     //---- Setup the format, frequency, volume, etc.
 
@@ -328,14 +285,12 @@ BOOL CreateSDS( USHORT   usWave )            //---- Wave number
         return FALSE;
     }
 
-
     //----- Release temp format buffer used in creation of DS Buffer 
 
     if ( dsbd.lpwfxFormat != NULL )
     {
         GlobalFree( dsbd.lpwfxFormat );
     }
-
 
     //---- Need to lock the buffer so that we can write to it!
 
@@ -357,18 +312,13 @@ BOOL CreateSDS( USHORT   usWave )            //---- Wave number
 
     CopyMemory( lpData, WaveInfo[usWave].lpDSWave, dwDataSize );
 
-
     //---- Unlock secondary DS buffer 
 
     IDirectSoundBuffer_Unlock( WaveInfo[usWave].lpDSBuffer,
 														&lpData, cbActualRead, NULL, 0 );
 
-
     return TRUE;
 } // CreateSDS
-
-
-
 
 //----------------------------------------------------------------------------
 //  LoadWaveData
@@ -388,13 +338,8 @@ BOOL LoadWaveData( USHORT usWave, PSZ pszFirstDir, PSZ pszSecondDir  )          
 {
     CHAR   sz1Dir[MAX_PATH];              //--- first directory
     CHAR   sz2Dir[MAX_PATH];              //--- second directory
-    //LPSTR  lpsz1Dir     = &sz1Dir[0];
-    //LPSTR  lpsz2Dir     = &sz2Dir[0];
 
-    //LPBYTE          lpData    = NULL;
-    //LPWAVEHDR       lpWaveHdr = NULL;
     DWORD           dwDataSize = 0;
-
 
     //---- If null wave return
 
@@ -406,7 +351,6 @@ BOOL LoadWaveData( USHORT usWave, PSZ pszFirstDir, PSZ pszSecondDir  )          
     //---- Get the current processes directory
 	MakeQualifiedFilename( sz1Dir, pszFirstDir, "Wave", (char *)WaveInfo[usWave ].szWaveName, ".wav" );
 	MakeQualifiedFilename( sz2Dir, pszSecondDir, "Wave", (char *)WaveInfo[usWave ].szWaveName, ".wav" );
-
 
     //---- For sndPlaySound, we just read the whole file into a buffer
 	if ( iSoundType == SNDPLAY_SOUND )
@@ -426,7 +370,6 @@ BOOL LoadWaveData( USHORT usWave, PSZ pszFirstDir, PSZ pszSecondDir  )          
 
 			if ( hFile == INVALID_HANDLE_VALUE )
 			{
-//                debugf ( "LoadWave - %s", sz1Dir );
 
 				hFile = CreateFile( sz2Dir, 
                                     GENERIC_READ, 
@@ -438,7 +381,6 @@ BOOL LoadWaveData( USHORT usWave, PSZ pszFirstDir, PSZ pszSecondDir  )          
 
 				if ( hFile == INVALID_HANDLE_VALUE )
 				{
-//                    debugf ( "LoadWave - %s", sz2Dir );
 					return( FALSE );
 				}
 			}
@@ -489,19 +431,15 @@ BOOL LoadWaveData( USHORT usWave, PSZ pszFirstDir, PSZ pszSecondDir  )          
 			 //---- parse the data in it.    
 			if ( WaveOpenFile( sz1Dir, &hmmioIn, &WaveInfo[usWave].lpwfx, &ckInRiff ) != 0)
 			{
-//                debugf ( "LoadWave - %s", sz1Dir );
 
 				if ( WaveOpenFile( sz2Dir, &hmmioIn, &WaveInfo[usWave].lpwfx, &ckInRiff ) != 0)
 				{
 					if ( WaveInfo[usWave].lpwfx != NULL )
 						HeapFree( GetProcessHeap(), 0, WaveInfo[usWave].lpwfx );
 
-//                    debugf ( "LoadWave - %s", sz2Dir );
-    
 					return( FALSE );
 				}
 			}
-
 
 			 //---- Position the wave file for reading the wave data
 			if ( WaveStartDataRead(&hmmioIn, &ckIn, &ckInRiff) != 0)
@@ -513,7 +451,6 @@ BOOL LoadWaveData( USHORT usWave, PSZ pszFirstDir, PSZ pszSecondDir  )          
 
 				return( FALSE );
 			}
-
 
 			 //---- Ok, size of wave data is in ckIn, allocate that buffer.
 
@@ -531,7 +468,6 @@ BOOL LoadWaveData( USHORT usWave, PSZ pszFirstDir, PSZ pszSecondDir  )          
 				return( FALSE );
 
 			}
-
 
 			 //---- Now read the actual wave data into the data buffer.
 			mmResult = WaveReadFile( hmmioIn, 
@@ -552,17 +488,12 @@ BOOL LoadWaveData( USHORT usWave, PSZ pszFirstDir, PSZ pszSecondDir  )          
 
 	}   //--- End of if Direct Sound or sndPlaySound
 
-
-
     //---- Last tick count wave was played at
 	WaveInfo[usWave].dwLastTick = GetTickCount();
 	WaveInfo[usWave].fLoaded = TRUE;
 
 	return (TRUE);
 } // LoadWaveDate
-
-
-
 
 //----------------------------------------------------------------------------
 //  ToggleWave
@@ -590,9 +521,6 @@ void ToggleWave( void )
    }
 }   //---- End of ToggleWave()
 
-
-
-
 //----------------------------------------------------------------------------
 //  ToggleSpeech
 //
@@ -619,9 +547,6 @@ void ToggleSpeech( void )
    }
 }   //---- End of ToggleSpeech()
 
-
-
-
 //----------------------------------------------------------------------------
 //  StartWave
 //
@@ -645,9 +570,6 @@ void StartWave( void )
        IDirectSoundBuffer_Play( lpDSPrimary, 0, 0, DSBPLAY_LOOPING );
    }
 }   //---- StartWave() 
-
-
-
 
 //----------------------------------------------------------------------------
 //  StopWave
@@ -673,9 +595,6 @@ void StopWave( void )
        IDirectSoundBuffer_Stop( lpDSPrimary );
    }
 }   //---- StopWave()
-
-
-
 
 //----------------------------------------------------------------------------
 //  PauseWaves
@@ -705,9 +624,6 @@ void PauseWaves( void )
     }
 }   //---- PauseWaves()
 
-
-
-
 //----------------------------------------------------------------------------
 //  RestoreWaves
 //
@@ -735,9 +651,6 @@ void RestoreWaves( void )
         }
     }
 }   //---- RestoreWaves()
-
-
-
 
 //----------------------------------------------------------------------------
 //  BOOL PlayWave
@@ -772,7 +685,6 @@ BOOL  PlayWave( USHORT usWave, BOOL fLoop )
             return FALSE;
         }
 
-
         //---- If a sound delay then only play if ticks are greater than delay
 
         if ( WaveInfo[usWave].dwDelay > 0 )
@@ -786,7 +698,6 @@ BOOL  PlayWave( USHORT usWave, BOOL fLoop )
             WaveInfo[usWave].dwLastTick = dwTempTick;
 
         }
-
 
         if ( iSoundType == DIRECT_SOUND )
         {
@@ -826,9 +737,6 @@ BOOL  PlayWave( USHORT usWave, BOOL fLoop )
 
     return TRUE;
 }
-
-
-
 
 //----------------------------------------------------------------------------
 //  BOOL PlayWaveClass 
@@ -880,7 +788,6 @@ BOOL  PlayWaveClass( USHORT usWave, BOOL fLoop, USHORT usClass )
 
         }
 
-
         if ( iSoundType == DIRECT_SOUND )
         {
             if( fLoop == TRUE )
@@ -927,7 +834,6 @@ BOOL  PlayWaveClass( USHORT usWave, BOOL fLoop, USHORT usClass )
     return TRUE;
 }
 
-                       
 //----------------------------------------------------------------------------
 //  BOOL PlayWaveEx
 //
@@ -983,15 +889,11 @@ BOOL PlayWaveEx( USHORT usWave,
 
         }
 
-
-
         if ( iSoundType == DIRECT_SOUND )
         {
-          //  debugf("Volume %ld Pan %ld\n", Volume, Pan );
 
             SetWaveVolume ( usWave, Volume );
             SetWavePan ( usWave, Pan );
-         //   SetWaveFreq ( usWave, Freq );
 
             if( fLoop == TRUE)
             {
@@ -1030,8 +932,6 @@ BOOL PlayWaveEx( USHORT usWave,
 
 }   //---- PlayWaveEx()
 
-
-
 //----------------------------------------------------------------------------
 //  BOOL PlayWavePos
 //
@@ -1060,11 +960,8 @@ BOOL PlayWavePos ( USHORT usWave, int iObjx, int iObjy, int iThexx, int iThexy )
     long iPan    = MIDPAN_DS;
     long iVolume = MAXVOL_DS;
 
-
-
     if ( iSoundType == DIRECT_SOUND )
     {
-
 
         iX = iObjx - iThexx;
         iY = iObjy - iThexy;
@@ -1082,15 +979,12 @@ BOOL PlayWavePos ( USHORT usWave, int iObjx, int iObjy, int iThexx, int iThexy )
             if ( iPan < MINPAN_DS ) iPan = MINPAN_DS;
         }
         
-
         iVolume -= ( (abs(iX) + abs( iY )) * 45  );    //---- Another magic number 
-
 
         if ( iVolume < -2000  ) iVolume = -2000;        // minimum is 1/4 normal -40 db
 
         if ( iVolume > -300 )  iVolume = -300;
     }
-
 
     PlayWaveEx( usWave, 
                 FALSE,
@@ -1100,10 +994,7 @@ BOOL PlayWavePos ( USHORT usWave, int iObjx, int iObjy, int iThexx, int iThexy )
 
     return TRUE;
 
-
 }   //---- PlayWavePos()
-
-
 
 //----------------------------------------------------------------------------
 //  BOOL StopAllWave
@@ -1130,11 +1021,8 @@ BOOL StopAllWave ( void )
         PauseWave ( x );
     }
 
-
     return TRUE;
 }
-
-
 
 //----------------------------------------------------------------------------
 //  BOOL PauseWave
@@ -1171,9 +1059,6 @@ BOOL  PauseWave( USHORT usWave )
     return TRUE;
 }
 
-
-
-
 //----------------------------------------------------------------------------
 //  BOOL PanWave
 //
@@ -1204,7 +1089,6 @@ BOOL  SetWavePan( USHORT usWave, int Pan )
     return TRUE;
 }
 
-
 //----------------------------------------------------------------------------
 //  BOOL SetWaveVolume
 //
@@ -1234,7 +1118,6 @@ BOOL  SetWaveVolume( USHORT usWave, int Volume )
 
     return TRUE;
 }
-
 
 //----------------------------------------------------------------------------
 //  BOOL SetWaveFreq
@@ -1272,8 +1155,6 @@ BOOL  SetWaveFreq( USHORT usWave, DWORD dwFreq )
 
 }
 
-
-
 //----------------------------------------------------------------------------
 //
 //  WavesLoad ( ) 
@@ -1295,8 +1176,6 @@ void WavesLoad ( PSZ pszFirstDir, PSZ pszSecondDir )
     DWORD    dwTemp;
     DWORD    dwTemp2;
 
-
-
     dwTemp2 = GetTickCount();
 
     //---- Load the waves into memory 
@@ -1310,10 +1189,6 @@ void WavesLoad ( PSZ pszFirstDir, PSZ pszSecondDir )
 
     }
 
-
-//    debugf ( "Sound load time %lu", ( GetTickCount() - dwTemp2 ) );
-
-
     //---- Set so sounds don't play over themselves ( for classes )
 
     dwTemp = GetTickCount();
@@ -1325,10 +1200,7 @@ void WavesLoad ( PSZ pszFirstDir, PSZ pszSecondDir )
         WaveClass[x].dwLastTick = dwTemp;
     }
 
-
-
 }   //---- End of WavesLoad()
-
 
 //------------------------------------------------------------------------------------
 // Function:  DialogWaveWait() 
@@ -1370,7 +1242,6 @@ BOOL CALLBACK DialogWaveWait( HWND hwnd, UINT message, WPARAM wParam, LPARAM lPa
 
 }
 
-
 //----------------------------------------------------------------------------
 //
 //  InitSound ( ) 
@@ -1395,41 +1266,22 @@ void InitSound ( HINSTANCE hInstApp, HWND hwndApp, PSZ pszFirstDir, PSZ pszSecon
 
     if ( lpDS == NULL )
     {
-//        HCURSOR hPrev;
-//        HWND    hwndWave;
 
 //        hwndWave = CreateDialogParam( hInstApp, "WAVEWAIT", hwndApp, 
-//													(DLGPROC) DialogWaveWait, (LPARAM) hwndApp );
-//
-//        ShowWindow( hwndWave,	      // handle of window
-//                    SW_SHOWNORMAL ); // show state of window
-
 
         //---- Throw up the wait cursor ( it can take awhile loading sounds )
-
-//        hPrev = ShowWaitCursor ();
-
 
         InitializeWaveDevice( hwndApp );
 
         WavesLoad( pszFirstDir, pszSecondDir );
 
-
         //---- Destroy WaveWait screen
 
-//	    if( hwndWave )
-//		    DestroyWindow( hwndWave );
-
         //---- Restore the previous cursor 
-
-//        RestoreCursor( hPrev );
 
     }    
                     
 }   //---- End of InitSound()
-
-
-
 
 //----------------------------------------------------------------------------
 //
@@ -1448,7 +1300,6 @@ void InitSound ( HINSTANCE hInstApp, HWND hwndApp, PSZ pszFirstDir, PSZ pszSecon
 void FinalSound ( void )
 {
     int x;
-
 
     //---- Release memory for waves 
 
@@ -1486,7 +1337,6 @@ void FinalSound ( void )
     
     }
 
-
     //---- Get rid of the primary DS Buffer 
 
     if ( lpDSPrimary != NULL )
@@ -1499,7 +1349,6 @@ void FinalSound ( void )
         lpDSPrimary = NULL;
 
     }
-
 
     //---- Destroy the direct sound object
 
@@ -1514,12 +1363,7 @@ void FinalSound ( void )
 
    return;
 
-
 }   //---- FinalSound()
-
-
-
-
 
 //----------------------------------------------------------------------------
 //
@@ -1553,9 +1397,7 @@ void SuspendSound ( void )
 
         }
 
-    
     }
-
 
     //---- Get rid of the primary DS Buffer 
 
@@ -1570,7 +1412,6 @@ void SuspendSound ( void )
 
     }
 
-
     //---- Destroy the direct sound object
 
     if ( lpDS != NULL)
@@ -1579,12 +1420,8 @@ void SuspendSound ( void )
         lpDS = NULL;
     }
 
-
    return;
-
 
 }   //---- SuspendSound()
 
 //---- End of SndUtil.cpp
-
-

@@ -3,17 +3,7 @@
 #ifndef AUDIO_HPP
 #define AUDIO_HPP
 
-//#ifdef AUDIO_LIB
-
 #include "custmsys.hpp"
-
-//#else		// !AUDIO_LIB
-
-//#ifndef RESTYPE_HPP
-//#include "restype.hpp"
-//#endif
-
-//#endif	// #ifdef AUDIO_LIB
 
 const unsigned MAXSAMPLES = 8;
 const unsigned MAXVOLUME = 127;
@@ -139,7 +129,6 @@ extern int		audVolFD;
 extern int		sfxVolFD;
 extern int		activeSamples;
 
-
 class AudioMgr {
 
 public:
@@ -251,6 +240,4 @@ public:
 
 extern	AudioMgr	*	audioMgr;
 
-
 #endif
-

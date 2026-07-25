@@ -12,7 +12,6 @@
    RedirectVideo  			-redirects rendering to a buffer
    RestoreVideo				-restores rendering to the screen
 
-   
    Contains the following general functions:
 
    TexNametoCamBufHandle	-Finds the appropriate buffer for a dynam. texture
@@ -26,7 +25,6 @@
    DTCheckLinedefs			-Checks the linedefs for Dynamic Textures
    RenderCameraView			-Renders the view from a Camera in the level
    RenderCameras			-Checks which cams need rendering and renders them 
-
 
    ======================================================================== */
 
@@ -55,7 +53,6 @@
 #define CAMERA256x128 3			//unused
 #define CAMERA256x256 4			//unused
 
-
 /* ------------------------------------------------------------------------
    Globals
    ------------------------------------------------------------------------ */
@@ -65,7 +62,6 @@ BufferInfo CamBufs[MAX_DYNTEX_BUFFERS]={{"CAMERA11",128,128,-1},
 											   {"CAMERA12",128,256,-1},
 											   {"CAMERA21",256,128,-1},
 											   {"CAMERA22",256,256,-1}};
-
 
 char DynTexDrawn[MAX_TEXTURES];			//unused
 
@@ -81,8 +77,6 @@ LONG CurrDynTex=0;									//where we are in the
 
 BOOL VideoCurrentlyRedirected=FALSE;			//are we currently drawing
 												//to a buffer?
-
-
 
 /* ========================================================================
    Function    - TexNametoCamBufHandle
@@ -135,7 +129,6 @@ LONG TexNametoCamBufHeight(char *tname)
 	return -1;
 }
 
-
 /* ========================================================================
    Function    - ResetDynTexDrawn
    Description - clears the DynTexDrawn table	(unused)
@@ -159,9 +152,7 @@ void ResetDynTexFrameData(void)
 		DynTexFrameData[i]=-1;
 	}
 		
-//	memset(DynTexFrameData,-1,MAX_TEXTURES);	//does this work?
 }	
-
 
 /* ========================================================================
    Function    - CrossRefCameras
@@ -172,17 +163,13 @@ void ResetDynTexFrameData(void)
 void CrossRefCameras(void)
 {
 	LONG i=0,j=0,LDtemp;
-//	printf("Entered CrossRefCameras CurrCam=%li, CurrDynTex=%li\n",CurrCam,CurrDynTex);
-
 
 	for (i=0;i<CurrCam;i++)
 		for(j=0;j<CurrDynTex;j++)
 		{
 			LDtemp=DynamicTextures[j].LDidx;
-//			printf("checking sectors (camera %li vs dtex %li) %li vs %li\n",i,j,point_to_sector(CAMERA_INT_VAL(Cameras[i].x),CAMERA_INT_VAL(Cameras[i].y)),tag_to_sector(linedefs[LDtemp].tag));
 			if (point_to_sector(CAMERA_INT_VAL(Cameras[i].x),CAMERA_INT_VAL(Cameras[i].y))==tag_to_sector(linedefs[LDtemp].tag))
 			{
-//				printf("cross reffing Camera %li (sector %li) with DTex %li (linedef %li)\n",i,point_to_sector(CAMERA_INT_VAL(Cameras[i].x),CAMERA_INT_VAL(Cameras[i].y)),j,DynamicTextures[j].LDidx);
 				linedefs[LDtemp].tag=i;
 				linedefs[LDtemp].special=j;
 			}
@@ -202,14 +189,11 @@ void NewCameraThing(LONG t)
 	if (CurrCam>MAX_LEVEL_CAMERAS)
 		fatal_error("\n too many Cameras %s(%li)\n",__FILE__,__LINE__);
 
-//	printf("found Camera in Sector %li\n",point_to_sector(things[t].x,things[t].y));
-
 	Cameras[CurrCam].x=things[t].x << CAMERA_FIXEDPT;
 	Cameras[CurrCam].y=things[t].y << CAMERA_FIXEDPT;
 	Cameras[CurrCam].z=point_to_floor_height(things[t].x,things[t].y)+80;
 	Cameras[CurrCam].p=0;
 	
-
     //there's gotta be an easier way to convert angles than this!
 
 	ta=((0xffff/360)*things[t].angle)/256;
@@ -218,16 +202,9 @@ void NewCameraThing(LONG t)
 
 	ta+=1;  //all the converted angles are 1 less than they should be...
 
-
 	Cameras[CurrCam++].a=ta;
 	
-	//printf("converted %i to %li\n",things[t].angle,Cameras[CurrCam-1].a);		   
-	//while (!key_status(KEY_SPACE));
-
 }
-
-
-
 
 /* ========================================================================
    Function    - NewCameraLinedef
@@ -241,7 +218,6 @@ void NewCameraLinedef(LONG l)
 	if (CurrDynTex>MAX_DYNAMIC_TEXTURES)
 		fatal_error("\n too many dynamic Textures %s(%li)\n",__FILE__,__LINE__);
 
-		
 	DynamicTextures[CurrDynTex].LDidx=l;
 
 	for (i=0;i<MAX_DYNTEX_BUFFERS;i++)		//find which buffer to use
@@ -256,11 +232,9 @@ void NewCameraLinedef(LONG l)
 	if (i==MAX_DYNTEX_BUFFERS)
 		fatal_error("\n invalid camera type %s(%li)\n",__FILE__,__LINE__);
 		
-
 	if(CamBufs[DynamicTextures[CurrDynTex].BufferType].buffer==-1)
 		NewVideoBuffer(DynamicTextures[CurrDynTex].BufferType);
 	
-		
 	CurrDynTex++;
 
 }
@@ -277,16 +251,13 @@ void DTCheckLinedefs(void)
 
 	for (i=0;i<tot_linedefs;i++)
 	{
-//		printf("checking linedef %li for Dynamic Textureness (%-6.6s)\n",i,sidedefs[linedefs[i].psdb].n3);
 		if (!strncmp(sidedefs[linedefs[i].psdb].n3,"CAMERA",6))
 		{
-//			printf("calling NewCameraLinedef\n");
 			NewCameraLinedef(i);
 		}
 	}
 }
 	
-
 /* ========================================================================
    Function    - RenderCameras
    Description - Checks the DynTexFrameData Table to see if a camera needs 
@@ -307,13 +278,10 @@ LONG RenderCameras(void)
 		FirstRend=0;
 	}
 
-
 	while(i<MAX_TEXTURES)
 	{
 		if (DynTexFrameData[i]!=-1)
 		{
-//			printf("Calling RCV(%li,%li)",linedefs[DynTexFrameData[i]].special,
-//						linedefs[DynTexFrameData[i]].tag);
 
 			RenderCameraView(linedefs[DynTexFrameData[i]].special,
 							linedefs[DynTexFrameData[i]].tag);
@@ -327,10 +295,6 @@ LONG RenderCameras(void)
 	return count;
 }
 
-
-
-
-
 /* ========================================================================
    Function    - RenderCameraView
    Description - Renders the view from a specified camera and sticks the 
@@ -341,19 +305,7 @@ void RenderCameraView(SHORT DynTexIdx,SHORT CameraHdl)
 {
 	
 	CAMERA OldCam=camera;
-//	SHORT BufferType=DynamicTextures[DynTexIdx].BufferType;
 
-//	printf("rendering Camera %li to DynamTex %li (%s)(%lix%li) (buffer: %li)\n",CameraHdl,DynTexIdx,
-//		CamBufs[DynamicTextures[DynTexIdx].BufferType].name,
-//		CamBufs[DynamicTextures[DynTexIdx].BufferType].w,
-//		CamBufs[DynamicTextures[DynTexIdx].BufferType].h,
-//		CamBufs[DynamicTextures[DynTexIdx].BufferType].buffer);
-
-	//printf("camera %li facing %li\n",CameraHdl,Cameras[CameraHdl].a);
-
-
-
-	
 	if (CameraHdl>CurrCam)
 		fatal_error("Invalid Camera %li specified! %s(%li)\n",CameraHdl,__FILE__,__LINE__);
 	
@@ -415,15 +367,12 @@ static void RedirectVideo(SHORT BufferIdx)
 	if (CamBufs[BufferIdx].buffer==-1)
 		fatal_error("\nInvalid Buffer %s(%li)\n",__FILE__,__LINE__);
 
-
 	SaveVideoSet();
 	VideoCurrentlyRedirected=TRUE;
 	screen_buffer_width=CamBufs[BufferIdx].w;
 	screen_buffer_height=CamBufs[BufferIdx].h;
 
 	screen=((PTR)BLKPTR(CamBufs[BufferIdx].buffer))+sizeof(BITMHDR);
-	
-//	printf("changed screen to (%lix%li)(%li)\n",CamBufs[BufferIdx].w,CamBufs[BufferIdx].h,CamBufs[BufferIdx].buffer);
 	
 	set_view_size(0,0,screen_buffer_width,screen_buffer_height);
 	set_view();
@@ -478,10 +427,6 @@ void CloseAllVideoBuffers(void)
 			CloseVideoBuffer(i);
 }
 
-
 #endif // WRC_CAMERA_TEST
 
 /*	======================================================================== */
-
-
-

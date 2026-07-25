@@ -5,10 +5,7 @@
 #include "system.h"
 #endif
 
-
 #define LISTBOX_REGION_ID 972
-
-
 
 class Rect
 {
@@ -41,14 +38,9 @@ class Rect
 		
 };
 
-
-
 class ListBox
 {
 	private:
-		
-		//const SHORT ID;
-		//const char * const * Entries;
 		
 		SHORT hStrings;
 		UBYTE DispStart;
@@ -74,17 +66,10 @@ class ListBox
 		void Paint() const;
 };
 
-
 SHORT NewListBox(Rect&,Rect&,Rect&,SHORT,SHORT,SHORT,SHORT,PFVL);
 void ListBoxScroll(LONG,LONG);
 void ListBoxSetHighlight(LONG,LONG);
 void ListBoxPaint(LONG,LONG);
-
-
-
-
-
-
 
 inline POINT Rect::Corner(Rect::CornerType c) const
 {
@@ -95,10 +80,6 @@ inline POINT Rect::Corner(Rect::CornerType c) const
 	
 	return p;
 }
-
-//#define SLB_BUT_LB 1
-//#define SLB_BUT_SU 2
-//#define SLB_BUT_SD 3
 
 inline ListBox::ListBox()//SHORT a)
 :DispStart(0),Lines(0),LineH(0),Linechars(0),numStrings(0),Font(fERROR),HighlightedLine(0),hStrings(fERROR)

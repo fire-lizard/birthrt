@@ -29,7 +29,6 @@
 #define RM_PURGABLE	   				0x10
 #define RM_MULTI_USER				0x20
 
-
 /* ------------------------------------------------------------------------
    Enums
    ------------------------------------------------------------------------ */
@@ -67,13 +66,10 @@ typedef struct _RESTYPE
 extern "C" {
 #endif
 
-//extern SHORT				*iResBlock;		   		/* resmanag.c */
 extern SHORT				iResBlock[];		   		/* resmanag.c */
 #if fUSE_RES_FILES
 //GWP This is really bad but I don't want to write the access fns.
 //    And the memory manager needs access to this data.
-//extern UBYTE				*gResFlags;
-//extern UBYTE				*giResFileNames;
 extern UBYTE				gResFlags[];
 extern UBYTE				giResFileNames[];
 #endif

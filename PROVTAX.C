@@ -9,7 +9,6 @@
    
    Contains the following general functions:
 
-   
    ======================================================================== */
 
 /* ------------------------------------------------------------------------
@@ -189,7 +188,6 @@ SHORT RollGuildTempleTaxes(
 		else
 			sTaxReceived = RollDice(&GuildTaxRateTable[sProvinceRating - 1].TaxRateDice[sHoldingLevel - 1]);
 		
-		
 		if (sTaxReceived < 0)
 		{
 			sTaxReceived = 0;	// No negative taxes.
@@ -224,8 +222,6 @@ SHORT AveGuildTempleTaxes(
 			sProvinceRating = (sizeof(GuildTaxRateTable) / sizeof(GUILD_TAX_RATE)) - 1;
 		}
 
-		// printf("Civ:%d Holding:%d - ",sProvinceRating,sHoldingLevel);
-
 		sTaxReceived = AveDice(&GuildTaxRateTable[sProvinceRating - 1].TaxRateDice[sHoldingLevel - 1]);
 		if (sTaxReceived < 0)
 		{
@@ -236,6 +232,5 @@ SHORT AveGuildTempleTaxes(
 }
 
 /* ======================================================================= */
-
 
 

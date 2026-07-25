@@ -18,7 +18,6 @@
    Defines and Compile Flags
    ------------------------------------------------------------------------ */
 
-
 //enum table for objects in Birthright
 // Note: The numbers assigned to the enumeration are the same as the indices
 //       as the values in mythings[objectindex].type.
@@ -26,12 +25,6 @@
 typedef enum {
 	NOLOW			 		=	-1,
 	NO_THING         		=    0,	// (nothing)
-//	PLAYERSTART1     		=    1,	// Player 1 start
-//	PLAYERSTART2     		=    2,	// Player 2 start
-//	PLAYERSTART3     		=    3,	// Player 3 start
-//	PLAYERSTART4     		=    4,	// Player 4 start
-//	DEATHMATCH       		=   11,	// Deathmatch start positions.
-//	TELEPORT         		=   14,	// teleport to the SECTOR containing this thing
 	FIRST_GAME_THING 		=   15,	// first game thing
 	GARGOYLE_1				=	15,	// Gargoyle
 	T_GARGOYLE_1			=	16,	// Troop Gargoyle
@@ -169,7 +162,6 @@ typedef enum {
 	ROYAL_GUARD_X	 		=  148,	// Royal Guard Intro
 	LORD_THRONE		 		=  149,	// Lord Throne
 	LAST_GAME_AVATAR 		=  149,	// 
-	
 	
 	BARREL_1         		=  150,	// Barrel 1
 	BOWL_1           		=  151,	// Bowl 1
@@ -314,7 +306,6 @@ typedef enum {
 	VASE_7					= 278,
 	VASE_8					= 279,
 	
-	
 	AMULET_OF_FEATHER_FALL  			= 280,						
 	AMULET_OF_SPEED         			= 281,						
 	AMULET_OF_STRIDING_AND_SPRINGING   	= 282,						
@@ -373,7 +364,6 @@ typedef enum {
 	OIL_OF_SHARPNESS_4  				= 330,						
 	OIL_OF_SHARPNESS_5  				= 331,						
 							
-							
 	POTION_OF_HILL_GIANT_STRENGTH   	= 334,						
 	POTION_OF_STONE_GIANT_STRENGTH   	= 335,
 	POTION_OF_FROST_GIANT_STRENGTH   	= 336,
@@ -414,7 +404,6 @@ typedef enum {
 	STAFF_OF_CURING   					= 368,
 	
 	GAVELONS_STAFF_OF_PROSPERITY   		= 370,
-	
 	
 	VIAL_OF_HOLY_WATER	 				= 372,
 	WAND_OF_ENEMY_DETECTION_3			= 373,
@@ -569,7 +558,6 @@ typedef enum {
 	LOCATE_OBJECT_1						= 508,
 	POISON_ARROW_1						= 509,
 	STRENGTH_1							= 510,
-//	FIREBALL_1							= 511,  //already above
 	FLY_1								= 512,
 	STONE_UNDEAD_1						= 513,
 	INFRAVISION_1						= 514,
@@ -593,7 +581,6 @@ typedef enum {
 	POWER_KILL_1						= 532,
 	TIME_STOP_1							= 533,
 
-	
 // MORE CHARACTERS							  
 											  
 	MERC_ARCHER							= 551,
@@ -604,7 +591,6 @@ typedef enum {
 	MERC_IRREGULAR						= 556,
 	CAV_HORSE							= 557,
 	KNIGHT_HORSE						= 558,
-											  
 											  
 // HINTS											  
 	
@@ -732,11 +718,9 @@ typedef enum {
 	WAND_OF_SECRET_DETECTION_2			= 689,
 	WAND_OF_SECRET_DETECTION_1			= 690,
 	
-
 LAST_GAME_THING  						= 690		// keep this up-to-date!!!
 											
 } THINGTYPE;								
-											
 											
 // JHC HACK for doors.c						
 #define KEY_RED_RUBY		KEY_RED			
@@ -750,4 +734,3 @@ LAST_GAME_THING  						= 690		// keep this up-to-date!!!
 #define KEY_PURPLE			KEY_BLACK
 											
 #endif // _THINGTYPE_H						
-											

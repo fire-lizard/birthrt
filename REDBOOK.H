@@ -52,7 +52,6 @@ int CheckCDBusy (void);
 int PlayCDMusic (unsigned short tune);
 void LoadMusicFromCD(short);
 
-
 #if defined (__cplusplus)
 }
 #endif

@@ -9,7 +9,6 @@
    
    Contains the following general functions:
 
-   
    ======================================================================== */
 
 /* ------------------------------------------------------------------------
@@ -84,7 +83,6 @@ void COMBAT_TARGETTING::mfSetupTargetting(SHORT const hAvatar)
 		add_key(GAME_KEYS::mfGetKey(GAME_KEYS::COMBAT_CAMERA_RIGHTFRIEND), CombatAutoViewFriendRight, 0, 0);
 		add_key(GAME_KEYS::mfGetKey(GAME_KEYS::COMBAT_CAMERA_LEFTFRIEND), CombatAutoViewFriendLeft, 0, 0);
 		
-		
 		add_key(GAME_KEYS::mfGetKey(GAME_KEYS::COMBAT_HIGH_ATTACK), CombatHighAttackKey, 0, 0);
 		add_key(GAME_KEYS::mfGetKey(GAME_KEYS::COMBAT_LOW_ATTACK), CombatLowAttackKey, 0, 0);
 		
@@ -123,13 +121,11 @@ void COMBAT_TARGETTING::mfSetupTargetting(SHORT const hAvatar)
 		{
 			if (pCurrentScene->Avatars[i] != fERROR)
 			{
-				//GEH SetBlockAttr(rScene.Avatars[i], LOCKED, LOCKED);
 				CAvatar * const pAvatar = (CAvatar * const) BLKPTR(pCurrentScene->Avatars[i]);
 				pAvatar->DoAI(CAvatar::AI_BEGIN_PAUSE);
 				
 				// Just incase he died.
 				//GEH if (rScene.Avatars[i] != fERROR)
-				//GEH 	ClrLock(rScene.Avatars[i]);
 				
 			}
 		}
@@ -174,13 +170,11 @@ void COMBAT_TARGETTING::mfStopTargeting()
 		{
 			if (pCurrentScene->Avatars[i] != fERROR)
 			{
-				//GEH SetBlockAttr(rScene.Avatars[i], LOCKED, LOCKED);
 				CAvatar * const pAvatar = (CAvatar * const) BLKPTR(pCurrentScene->Avatars[i]);
 				pAvatar->DoAI(CAvatar::AI_END_PAUSE);
 				
 				// Just incase he died.
 				//GEH if (rScene.Avatars[i] != fERROR)
-				//GEH 	ClrLock(rScene.Avatars[i]);
 				
 			}
 		}
@@ -222,13 +216,11 @@ void COMBAT_TARGETTING::TargetClick(LONG but,LONG obj,LONG WadThingtype)
 			{
 				if (pCurrentScene->Avatars[i] != fERROR)
 				{
-					//GEH SetBlockAttr(rScene.Avatars[i], LOCKED, LOCKED);
 					CAvatar * const pAvatar = (CAvatar * const) BLKPTR(pCurrentScene->Avatars[i]);
 					pAvatar->DoAI(CAvatar::AI_END_PAUSE);
 					
 					// Just incase he died.
 					//GEH if (rScene.Avatars[i] != fERROR)
-					//GEH 	ClrLock(rScene.Avatars[i]);
 					
 				}
 			}

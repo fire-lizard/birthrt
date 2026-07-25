@@ -40,7 +40,6 @@ void remove_keyint(void);
    Global Variables
    ------------------------------------------------------------------------ */
 
-
 /* ========================================================================
    Function    - _fatal_test
    Description - do bool expression check, fatal_exit on FALSE value

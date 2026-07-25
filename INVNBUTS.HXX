@@ -66,7 +66,6 @@
 #define INV_BUT_LBMINUS5 54
 #define INV_BUT_LBMINUS6 55
 
-
 #define INV_BUT_HELPAST 56
 
 #endif

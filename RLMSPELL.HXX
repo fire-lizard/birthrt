@@ -23,7 +23,6 @@
 #include "playclas.hxx"
 #endif
 
-
 /* ------------------------------------------------------------------------
    Defines and Compile Flags
    ------------------------------------------------------------------------ */
@@ -93,9 +92,6 @@ class REALM_SPELL_INFO
 			DURATION_AR,		//?? (see subversion realm_spell)
 			DURATION_ONE_TURN,
 		}	DURATION;
-
-			
-			
 
  		class REALM_SPELL_ITEM
 		{

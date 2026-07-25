@@ -260,7 +260,6 @@ inline void ADVENTURER::ADVENTURER_POSITION::mfFillReversePlayerInfo (
 
 	// [d11-20-96 JPC]
 	// If crouching, height is halved, so we need to know the height.
-	// OLD: pPlayer->h = player.h;
 	pPlayer->h = fPlayer.h;
 	pPlayer->Flying = FALSE;
 	pPlayer->ThingIndex = ThingIndex;

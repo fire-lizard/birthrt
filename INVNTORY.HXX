@@ -16,7 +16,6 @@
                   It points to a certain type of object and says how many
                   the character is currently carrying.
 
-
    Contains the following general inline functions:
    (arguments only specified in overloaded cases)
 
@@ -32,8 +31,6 @@
     mfData(InvenIndex) -returns the specified item
     mfLength       -returns the length of the list (not tested)
 
-
-
    InventoryNode::
     InventoryNode  -Constructor
     mfInit         -Initializes the structure and points it to a node
@@ -47,7 +44,6 @@
     mfType         -returns the type
     mfNext         -returns the index of the next node
     mfSetNext      -sets the next node link to a specified index
-
 
    Contains the following private inline functions:
    ObjectList::
@@ -84,7 +80,6 @@
 #include "vector.hxx"
 #endif
 
-
 /* ------------------------------------------------------------------------
    Defines
    ------------------------------------------------------------------------ */
@@ -102,9 +97,6 @@
 
 typedef ULONG	AddItemStatus;
 typedef SHORT  InvenIndex;
-//typedef UBYTE  Category;
-
-
 
 /* ------------------------------------------------------------------------
    Classes
@@ -113,9 +105,6 @@ class InventoryNode;
 class ItemType;
 class InventoryGUI;
 extern BOOL fDomainTurn;
-
-
-
 
 extern BOOL DoesPlayerHaveItem(THINGTYPE);
 
@@ -148,8 +137,6 @@ class InventoryNode
 		static UBYTE const fHidden;		//mfFind can't find me
 
 	public:
-
-
 
 		inline InventoryNode();
 
@@ -188,10 +175,8 @@ class InventoryNode
 		
 		inline BOOL mfHidden() const;
 		
-		
 		void mfChangeTo(ITEMTYPE);
 };
-
 
 /* ========================================================================
    Class       - ObjectList
@@ -220,7 +205,6 @@ class ObjectList
 		LONG		AvatarID;
 		InvenIndex	SpellBoxes[MAX_SPELL_BOXES+1];
 		InvenIndex	HeadIndex;
-
 
 		//member functions
 		inline void mfMakeHead(ITEMTYPE const,SHORT const, SHORT const);
@@ -253,7 +237,6 @@ class ObjectList
 		LONG const mfLength();		  		//counts number of different items
 		LONG const mfLength(ItemCategory const);//counts number of instances of a certain category
 		LONG const mfCountItems();			//counts different items, ignoring items with charges
-
 
 		LONG const mfNonEmptyLength(ItemCategory const);
 		BOOL const mfDoesContain(ITEMTYPE const);
@@ -299,7 +282,6 @@ class ObjectList
 		void mfChangeSpellBox(LONG a, InvenIndex newI);
 };
 
-	 
 // Class to go through the inventory.
 class InventoryItor 
 {
@@ -365,7 +347,6 @@ class InventoryItor
 		
 		BOOL mfIgnoreCurrent();
 		
-		
 	protected:
 	private:
 		ObjectList &       fInventory;
@@ -373,37 +354,29 @@ class InventoryItor
 		InvenIndex 		   fPrevIndex;
 };
 
-
 /* ------------------------------------------------------------------------
    Inline Member Functions
    ------------------------------------------------------------------------ */
-
 
 inline ObjectList::ObjectList()
 {
 	mfInit(fERROR,fERROR);
 }
 
-
 inline void ObjectList::mfDeinit()
 {
 	this->~ObjectList();
 }	
 	
-
 inline SHORT const ObjectList::mfGetAvatarID()      
 {
-	//printf("Ol%i: Getting AvatarID=%li from AvSt %li\n",OLID,AvatarID,hAvatarStats);
 	return AvatarID;
 }
 
 inline void ObjectList::mfSetAvatarID(SHORT const a)
 {
-	//printf("Ol%i: Setting AvatarID=%li from AvSt %li\n",OLID,a,hAvatarStats);
 	AvatarID=a;
 }
-
-
 
 inline BOOL const ObjectList::mfisEmpty()
 {
@@ -425,8 +398,6 @@ inline InvenIndex const ObjectList::end() const
 	return fERROR;
 }
 
-
-
 inline LONG const ObjectList::mfActivateSpell(ITEMTYPE const itype)
 {
 	LONG MakeMe=BUILD_LONG(itype,hAvatarStats);
@@ -437,7 +408,6 @@ inline UBYTE ObjectList::GetID() const
 {
 	return OLID;
 }
-
 
 inline InventoryNode::InventoryNode()
 :Itemtype(ITEM_NO_THING),Quantity(0),NextItem(-1),Attribs(0),Charges(0)
@@ -499,7 +469,6 @@ inline void InventoryNode::mfUnIgnore()
 	Attribs&=(~fIgnorable);
 }
 
-
 inline void InventoryNode::mfInit(
 	ITEMTYPE const it,
 	SHORT const quan,
@@ -517,7 +486,6 @@ inline void InventoryNode::mfInit(
 	else
 		mfInvalidate();
 }
-
 
 inline void InventoryNode::mfValidate()
 {
@@ -539,7 +507,6 @@ inline ItemCategory const InventoryNode::mfCategory() const
 	return (ItemTypes[Itemtype].mfCategory());
 }
 			
-
 inline void InventoryNode::mfGainOne()
 {
 	if (Quantity < SHRT_MAX)
@@ -574,7 +541,6 @@ inline void InventoryNode::mfSetNext(InvenIndex const n)
 {
 	NextItem=n;
 }
-
 
 inline InventoryItor::InventoryItor(ObjectList & Inventory) :
 	fInventory(Inventory),
@@ -785,7 +751,6 @@ inline InvenIndex const InventoryItor::mfGetCurrentInvIndex()
 {	
 	return fCurrentIndex; 
 }
-
 
 /* ========================================================================
    Function    - ObjectList::mfMakeHead()

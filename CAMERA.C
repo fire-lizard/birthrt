@@ -33,7 +33,6 @@ extern BOOL gfCheckCameraMove;
 	#define WriteDebug 1?0:printf
 #endif
 
-
 /* ------------------------------------------------------------------------
    Notes
    ------------------------------------------------------------------------ */
@@ -82,8 +81,6 @@ extern BOOL fAIAutoRes;
 char gszTemp[80];
 #endif
 
-
-
 // [d12-09-96 JPC] Some debugging functions.
 
 #if defined (_STATUS)
@@ -116,7 +113,6 @@ BOOL DebugCameraMove (CAMERA *pCamera, FIXED_VECTOR_3D NewPoint)
 	return TRUE;
 }
 
-
 /* =======================================================================
    Function    - ShowCameraPosition
    Description - Updates status bar with camera position.
@@ -124,7 +120,6 @@ BOOL DebugCameraMove (CAMERA *pCamera, FIXED_VECTOR_3D NewPoint)
    ======================================================================== */
 void ShowCameraPosition (CAMERA *pCamera)
 {
-	// LONG 			iSector;
 	LONG			x, y;
 
 	if (!fGraphInitialized)
@@ -132,7 +127,6 @@ void ShowCameraPosition (CAMERA *pCamera)
 
 	x = pCamera->x >> CAMERA_FIXEDPT;
 	y = pCamera->y >> CAMERA_FIXEDPT;
-	// iSector = point_to_sector (x, y);
 
    wsprintf (gszTemp, "X %d", x);
    SetWindowText (ghwndSBx, gszTemp);
@@ -144,8 +138,6 @@ void ShowCameraPosition (CAMERA *pCamera)
    SetWindowText (ghwndSBa, gszTemp);
    wsprintf (gszTemp, "P %d", pCamera->p);
    SetWindowText (ghwndSBp, gszTemp);
-//    wsprintf (gszTemp, "S %d",iSector);
-//    SetWindowText (ghwndSBs, gszTemp);
 }
 #endif
 
@@ -255,8 +247,6 @@ void SetCameraCurrentPosition(
 	}
 }
 	
-
-
 /* =======================================================================
    Function    - SetCameraTarget
    Description - Request the position of the active camera
@@ -302,7 +292,6 @@ void SetCameraRotateTarget(
 	const BOOL swoop)
 {
 	pCamera->TargetRequested = (swoop == TRUE) ? ROTATE_SWOOP_CAMERA : ROTATE_CAMERA_EVENLY;
-	//pCamera->TargetFactor = INITIAL_TARGET_FACTOR;
 	
 	pCamera->RTarget.x = TargetPtX;
 	pCamera->RTarget.y = TargetPtY;
@@ -603,8 +592,6 @@ void MoveCamera(CAMERA *pCamera, const LONG KeyState)
 		{
 			FIXED_VECTOR_3D NewVector;
 			
-			//NewVector.dx = pCamera->vx << PLAYER_FIXEDPT;
-			//NewVector.dy = pCamera->vy << PLAYER_FIXEDPT;
 			NewVector.dx = pCamera->vx;
 			NewVector.dy = pCamera->vy;
 			NewVector.dz = pCamera->vz;
@@ -621,8 +608,6 @@ void MoveCamera(CAMERA *pCamera, const LONG KeyState)
 				PLAYER TempPlayer;
 				LONG BumpDistance;
 				
-				//TempPlayer.x = pCamera->x << PLAYER_FIXEDPT;
-				//TempPlayer.y = pCamera->y << PLAYER_FIXEDPT;
 				TempPlayer.x = pCamera->x;
 				TempPlayer.y = pCamera->y;
 				TempPlayer.z = pCamera->z;
@@ -636,8 +621,6 @@ void MoveCamera(CAMERA *pCamera, const LONG KeyState)
 				TempPlayer.BumpIndex = fERROR;
 				
 				CheckMoveSimple(&TempPlayer, &NewVector, 0, &BumpDistance);
-				// NewVector.dx << PLAYER_FIXEDPT;
-				// NewVector.dy << PLAYER_FIXEDPT;
 				
 				switch(TempPlayer.bump)
 				{
@@ -652,8 +635,6 @@ void MoveCamera(CAMERA *pCamera, const LONG KeyState)
 					break;
 				case iFLOOR:
 				case iCEILING:
-					//pCamera->x += NewVector.dx;
-					//pCamera->y += NewVector.dy;
 					pCamera->z += NewVector.dz;
 					break;
 					
@@ -765,12 +746,7 @@ void SwoopCamera(CAMERA *pCamera)
    	NewPoint.dx = ((tx+((tx>0)?TargetFactor2 << CAMERA_FIXEDPT:-TargetFactor2 << CAMERA_FIXEDPT)) / pCamera->TargetFactor);
    	NewPoint.dy = ((ty+((ty>0)?TargetFactor2 << CAMERA_FIXEDPT:-TargetFactor2 << CAMERA_FIXEDPT)) / pCamera->TargetFactor);
 	
-	//NewPoint.dx <<= PLAYER_FIXEDPT;
-	//NewPoint.dy <<= PLAYER_FIXEDPT;
-	
 	// If Camera's become fixed point be sure and fix these next two lines.
-	//TempPlayer.x = camera.x << PLAYER_FIXEDPT;
-	//TempPlayer.y = camera.y << PLAYER_FIXEDPT;
 	TempPlayer.x = camera.x;
 	TempPlayer.y = camera.y;
 	TempPlayer.z = camera.z;
@@ -783,8 +759,6 @@ void SwoopCamera(CAMERA *pCamera)
 	TempPlayer.BumpIndex = fERROR;
    	
    	CheckMoveSimple(&TempPlayer, &NewPoint, 0, &BumpDistance);
-   	//NewPoint.dx >>= PLAYER_FIXEDPT;
-   	//NewPoint.dy >>= PLAYER_FIXEDPT;
    	
    	switch(TempPlayer.bump)
    	{
@@ -852,7 +826,6 @@ void MoveCameraEvenly(CAMERA *pCamera)
 	Difference[2] = ABS(ta);	// Angle difference
 	Difference[3] = ABS(tp);	// Pitch difference		
 
- 		 			
 	if( Difference[0] <= pCamera->Rate[0] &&
 		Difference[1] <= pCamera->Rate[1] &&
 		Difference[2] <= pCamera->Rate[2] &&
@@ -894,7 +867,6 @@ void MoveCameraEvenly(CAMERA *pCamera)
 	if (pCamera->a < 0 )
 		pCamera->a += 256;
 		
-	
 	// If the camera is at the target position stop moving.
 	if (CAMERA_INT_VAL(pCamera->x) == pCamera->LTarget.x &&
 	    CAMERA_INT_VAL(pCamera->y) == pCamera->LTarget.y &&
@@ -1006,8 +978,6 @@ void RotateCameraEvenly(CAMERA *pCamera)
    	     Difference[3] != 0)
    	{
 	
-		//while(Difference[MaxIndex] <= pCamera->Rate[MaxIndex]) MaxIndex++;
-		
 		MaxIndex = 0;
 		for( i=0; i<4; i++)
 		{
@@ -1029,7 +999,6 @@ void RotateCameraEvenly(CAMERA *pCamera)
 					            pCamera->RTarget.x,
 					            pCamera->RTarget.y);
 		distanceToTarget = ABS(distanceToTarget);
-		
 		
 		if (distanceToTarget < pCamera->RTarget.radius)
 		{
@@ -1211,7 +1180,6 @@ void RotateSwoopCamera(CAMERA *pCamera)
 				            pCamera->RTarget.y);
 	distanceToTarget = ABS(distanceToTarget);
 	
-	
 	if (distanceToTarget < pCamera->RTarget.radius)
 	{
 		POINT EdgePoint;
@@ -1260,7 +1228,6 @@ void RotateSwoopCamera(CAMERA *pCamera)
 	TempPlayer.currentSector = 0;
 	TempPlayer.fallHeight = 0;
    	
-   	//CheckMoveSimple(&TempPlayer, &NewPoint, 0, &BumpDistance);
    	CheckMove(&TempPlayer, &NewPoint, 0, &Angle, &BumpDistance);
    	
    	switch(TempPlayer.bump)
@@ -1284,8 +1251,6 @@ void RotateSwoopCamera(CAMERA *pCamera)
 	   	pCamera->z += NewPoint.dz;
 	   	break;
    	case iCEILING:
-	   	//pCamera->x += NewPoint.dx;
-	   	//pCamera->y += NewPoint.dy;
    		if (NewPoint.dz < 0) // going down.
    		{
 	   		pCamera->z += NewPoint.dz;
@@ -1431,26 +1396,6 @@ void RotateCameraAroundPoint(CAMERA * pCamera, LONG KeyState )
 		fPosition = TRUE;
 	}
 	
-//	if( pCamera->RTarget.z != pCamera->Current.z )
-//	{
-//		Temp = pCamera->RTarget.z - pCamera->Current.z;
-//   		pCamera->Current.z += ((Temp>0) ? pCamera->Rate[1] : -pCamera->Rate[1] );
-		// halt the wobble
-//		if (abs(Temp) <= pCamera->Rate[1]*2)
-//			pCamera->Current.z = pCamera->RTarget.z;
-//		fPosition = TRUE;
-//	}
-//	
-//	if( pCamera->RTarget.p != pCamera->Current.p )
-//	{
-//		Temp = pCamera->RTarget.p - pCamera->Current.p;
-//   		pCamera->Current.p += ((Temp>0) ? pCamera->Rate[3] : -pCamera->Rate[3] );
-//		// halt the wobble
-//		if (abs(Temp) <= pCamera->Rate[3]*2)
-//			pCamera->Current.p = pCamera->RTarget.p;
-//		fPosition = TRUE;
-//	}
-	
 	// get the point relative to the target that
 	// we need to move and rotate to
 	TempPoint.x = 0;
@@ -1491,12 +1436,10 @@ void RotateCameraAroundPoint(CAMERA * pCamera, LONG KeyState )
 			(pCamera->Current.radius*pCamera->Rate[3])/1000
 			+ PitchDelta;
 
-	
 	/* -----------------------------------------------------------------
 	   Finally, calculate where to look and move there
 	   ----------------------------------------------------------------- */
 
-	
 	TempPlayer.x = pCamera->x;
 	TempPlayer.y = pCamera->y;
 	TempPlayer.z = pCamera->z;

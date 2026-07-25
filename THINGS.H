@@ -47,9 +47,6 @@
 
 // Note the next part of the word's bits are set in gametype.hxx
 
-
-
-
 /* animation sequence defines */
 typedef enum {
 	ANIMATION0SEQ = 0,
@@ -71,7 +68,6 @@ typedef enum {
 } ANIM_SEQUENCE_ENUM;
 #define INITSEQ	STANDSEQ
 
-
 /* ------------------------------------------------------------------------
    Typedefs and Structures
    ------------------------------------------------------------------------ */
@@ -80,8 +76,6 @@ typedef struct{
 	LONG			y;
 	SHORT			z;
 	LONG			dist;					// 24.8 value
-//	LONG			xDrawn;
-//	LONG			yDrawn;
 	unsigned int	OriginalType: 10;
 	unsigned int	valid		: 1;
 	unsigned int	fDrawn		: 1;
@@ -148,16 +142,13 @@ typedef struct{
 
 typedef struct
 {
-	// LONG	t;
 	SHORT	t;										// [d6-26-96 JPC]
-	// SHORT	sector;								// [d6-26-96 JPC]
 	SHORT	light;								// [d6-26-96 JPC]
 	LONG	sx;				
 	LONG	dx,dy,dye;		
 	LONG	clip;			
 	LONG	src_inc;		
 } THING_SPAN;
-
 
 /* ------------------------------------------------------------------------
    Prototypes
@@ -174,7 +165,6 @@ extern TTYPE		ttypes[];
 extern PTR        	TTypePtr;
 extern LONG       	G_TTypeSize;
 extern LONG       	G_NumberOfTTypes;
-
 
 //GEH try to get this out of stuff!
 extern MYTHING *	mythings;

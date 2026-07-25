@@ -121,7 +121,6 @@ LONG point_relation(LONG n,LONG x1,LONG y1)
 	BR_NODE * const pNode = &nodes[n];	// GWP
 
 	// GWP Added optimzation to remove the array index addition.
-	// GWP r= ( nodes[n].a *( y1-nodes[n].y ) ) - ( ( x1-nodes[n].x) * nodes[n].b );
 	
 	LONG const r= ( pNode->a *( y1-pNode->y ) ) - ( ( x1-pNode->x) * pNode->b );
 	
@@ -148,12 +147,10 @@ LONG back_face_point(POINT *a,POINT *b, LONG x, LONG y)
 	LONG const dx=(b->x-a->x);
 	LONG const dy=(b->y-a->y);
 	// Old line:
-	// r= ( dx *( CAMERA_INT_VAL(camera.y)-a.y ) ) - ( ( CAMERA_INT_VAL(camera.x)-a.x) * dy );
 	LONG const r =  dx * (y - a->y) - (x - a->x) * dy;
 			                          // x,y is in front of line from a to b
    return ((r < 0) ? FRONT : BACK);   // x,y is in back of line from a to b
 }
-
 
 /* =======================================================================
    Function    - back_face_vertex
@@ -175,7 +172,6 @@ LONG back_face_vertex (LONG a, LONG b, LONG x, LONG y)
 	LONG const dx=(vertexs[b].x-vertexs[a].x);
 	LONG const dy=(vertexs[b].y-vertexs[a].y);
 	// Old line:
-	// r= ( dx *( CAMERA_INT_VAL(camera.y)-vertexs[a].y ) ) - ( ( CAMERA_INT_VAL(camera.x)-vertexs[a].x) * dy );
 	LONG const r =  dx * (y - vertexs[a].y)  -  (x - vertexs[a].x) * dy;
 	
                        // FRONT = 0; x,y is in front of line a to b
@@ -254,7 +250,6 @@ void xlatePoint(POINT *p,POINT a)
 	p->x=p->x-a.x;
 	p->y=p->y-a.y;
 }
-
 
 /* =======================================================================
    Function    - rot8
@@ -404,7 +399,6 @@ void rot8_r_angle (POINT *p,ULONG OldAngle, ULONG DeltaAngle, LONG radius)
 		 + (RadiusxSinOldAngle * cos_table[DeltaAngle])) / ANGLE_MULTI;
 }
 
-
 /* =======================================================================
    Function    - proj
    Description - Project a 3d point into 2d space.
@@ -415,7 +409,6 @@ void proj(POINT *p,LONG z)
 	/*make sure no div by 0*/
 	if(!p->y)
 	{
-		//p->y++;
 
 		p->x=(p->x*(render_perspect))+render_center_x;
 		p->y=(z*(render_perspect))+render_center_y;
@@ -606,7 +599,6 @@ LONG AngleFromPoint2 ( LONG X1, LONG Y1, LONG X2, LONG Y2, LONG Resolution)
 	return RetVal;
 }
 
-
 /* ========================================================================
    Function    - RelativeAngle
    Description - Return the differance between one angle and another
@@ -627,7 +619,6 @@ LONG RelativeAngle( LONG Angle1, LONG Angle2 )
 	return delta;
 }
 
-
 // ---------------------------------------------------------------------------
 void RotateAnglePoint (POINT *p, POINT *origin, ULONG a)
 {
@@ -639,7 +630,6 @@ void RotateAnglePoint (POINT *p, POINT *origin, ULONG a)
 // ---------------------------------------------------------------------------
 
 	LONG			oldx;
-
 
 	oldx = p->x;
 
@@ -653,9 +643,7 @@ void RotateAnglePoint (POINT *p, POINT *origin, ULONG a)
 		origin->y * (1024 - cos_table[a]) - origin->x * sin_table[a]) / ANGLE_MULTI;
 }
 
-
 /*	======================================================================== */
-
 
 //sine, cosine and tan tables...
 
@@ -1432,7 +1420,3 @@ LONG tan_table[]={
 	-50,
 	-25,
 };
-
-
-
-

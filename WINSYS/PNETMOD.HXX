@@ -11,7 +11,6 @@
 //
 // -------------------------------------------------------------------
 
-
 #ifndef _H_PlatformNetworkModule
 #define _H_PlatformNetworkModule
 
@@ -33,8 +32,6 @@ const DWORD kNoWait = 0;               //---- Dont wait for receive
 const DWORD kNoPlayer = 777777777;		//---- No player here in dwPlayers[]
 
 const DWORD kHaveAll = 123;		 	//---- All players have joined
-
-
 
 typedef enum ErrCode
 {
@@ -63,7 +60,6 @@ typedef enum ErrCode
 	 kSpecial = 65536,
 } PNET_ERRCODE_TYPE ;
 
-
 // -- Message id's
 
 const int NETMSGID_ALL   = 0;
@@ -79,13 +75,9 @@ const DWORD dwBroadcast  = 999;
 
 typedef char GBoolean;
 
-
-
-
 #include "PNetType.h"
 
 typedef int (*GamePrintFunction)(char* s);
-
 
 #define	IDIRECTPLAY2_OR_GREATER
 #include "DPlay.h"
@@ -99,9 +91,7 @@ const int iMAXGUIDS		= (3);
 typedef HRESULT (__stdcall *FP_DPENUM)   ( LPDPENUMDPCALLBACKA, LPVOID );
 typedef HRESULT (__stdcall *FP_DPCREATE) ( LPGUID , LPDIRECTPLAY *, IUnknown *);
 
-
 const int	PLAYERNAME_LEN	= 256;
-
 
 class PlatformNetworkModule
 {
@@ -121,8 +111,6 @@ private:
 
 	GUID						gGuid;			//---- this object's GUID
 
-
-
 protected:
 
    ErrCode   ReceiveMessages ( DWORD dwWait, 
@@ -137,7 +125,6 @@ protected:
 
    LPNETMSG      lpGenericMsgBuf;             // pointer to generic message buffer
    char          szLastErrorMessage[256] ;
-
 
    // -- Internal game information
 
@@ -166,10 +153,7 @@ protected:
 
    GamePrintFunction  pPrintFunction ;        // pointer to game specific string display func
 
-
-
    BOOL      AddPlayer					( DWORD dwNewPlayerId );
-//   void      DeletePlayer				( DWORD dwDelPlayerId );
    void      InitVars					( void );
    int       PrintString				( char * ) ;
    ErrCode   ReleaseDPlay				( void );
@@ -207,12 +191,10 @@ public:
 
    virtual void PlatformNetworkModule::DisablePlayers( void );
 
-
    virtual ErrCode GetLocalPlayerID    ( long* thePlayerID );
    virtual ErrCode GetOtherPlayerID		( long* thePlayerID, int index ) ;
 
 //   virtual ErrCode GetMessage				( LPNETMSG theMessage, DWORD dwWait, 
-//											const char bRemove, BOOL fAck = TRUE );
 
    virtual PNETGAMEINFO GetNetworkGameInfo( void ) ;
 
@@ -255,9 +237,6 @@ public:
 								char *pszFormalName,
 								char *pszFriendlyName );
 
-
-
-
     // -- These cannot be member functions; DirectPlay hates that!
    friend BOOL FAR PASCAL EnumPlayers   ( DPID dpID,
 														DWORD dwPlayerType,
@@ -282,9 +261,7 @@ public:
 								  		            DWORD dwFlags,
 								                  LPVOID lpContext );
 
-
 }; // PlatformNetworkModule
-
 
 // -- low level error value setting code
 void SetErrorNum ( PNET_ERRCODE_TYPE ErrorVal );
@@ -292,7 +269,6 @@ PNET_ERRCODE_TYPE GetErrorNum ( void );
 PNET_ERRCODE_TYPE ClearErrorNum ( void );
 
 #endif // _H_PlatformNetworkModule
-
 
 // -- PNetMod.h
 

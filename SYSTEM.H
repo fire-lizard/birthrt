@@ -18,7 +18,6 @@
 #include <stdlib.h>		// for rand.
 
 #ifdef _WINDOWS
-//#include <windows.h>
 #endif
 
 #if !defined(_TYPEDEFS_H)
@@ -56,7 +55,6 @@
 #if defined(_WINDOWS) && !defined(_RANDOM_H)			//---- random override for logging
 #include "random.h"
 #endif
-
 
 /* ------------------------------------------------------------------------
 	Misc Defines
@@ -110,7 +108,6 @@
 #define FONT_TIMS_10PT		(11)
 #define FONT_TIMS_30PT		(12)
 
-
 /* ------------------------------------------------------------------------
 	Defines for resource manager functions
    ------------------------------------------------------------------------ */
@@ -152,7 +149,6 @@
 #define fLEFTKERN			0x40
 #define fRIGHTKERN		0x20
 
-
 /************************************************************
 	Defines for type of installation selected by user, CD-ROM drive letter
 ************************************************************/
@@ -179,7 +175,6 @@ typedef struct bitmhdr
 	SHORT		x_ctr_pt;	/* center point discovered */
 	SHORT		type;			/* set to TYPEBITM */
 } BITMHDR, *BITMPTR, ARECT, *RECTPTR;
-
 
 /* On-disk FLC file structures — CHUNKHEAD is 6 bytes in the file; without
    pack(1) MSVC pads it to 8 and (pChunk+1) overshoots the chunk data. */
@@ -221,12 +216,9 @@ typedef struct
 #define MIN(a,b)			( ((a) < (b)) ? (a) : (b) )
 
 // adjusts a value for screen resolution
-//GEH #define X_RES_ADJ(x)	((x) * window_width / MAX_VIEW_WIDTH)
-//GEH #define Y_RES_ADJ(y)	((y) * window_height / MAX_VIEW_HEIGHT)
 // I fixed the screen to always be MAX_VIEW_WIDTH/HEIGHT
 #define X_RES_ADJ(x)	((x))
 #define Y_RES_ADJ(y)	((y))
-
 
 #define ResetSplitScreen()	SetSplitScreen(0x3FF,0)
 #define ASetPalette()		SetPalRegs((PTR)CurPal); MakeCompPal()
@@ -268,7 +260,6 @@ void add_timer(LONG freq,PFV func);
 void remove_timer(PFV func);
 void run_timers();
 void TickDelay(LONG);
-
 
 /* system.c */
 void SaveVideoSet (void);
@@ -355,7 +346,6 @@ extern PTR				screen;
 extern LONG				lens_factor;
 
 /*	======================================================================= */
-
 
 #if defined (__cplusplus)
 }

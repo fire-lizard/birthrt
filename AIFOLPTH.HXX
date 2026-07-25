@@ -12,7 +12,6 @@
    additional includes
    ----------------------------------------------------------------- */
 
-
 #include <stdio.h>
 
 #if !defined(_TYPEDEFS_H)

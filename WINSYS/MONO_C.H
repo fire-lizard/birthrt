@@ -2,8 +2,6 @@
 #ifndef  _MONO_C_H_
 #define  _MONO_C_H_
 
-
-
 #if defined ( __cplusplus )
 
 #include "mono.h"
@@ -16,8 +14,6 @@
 
 void       mono_setAttrib( MonoAttrib aVal );
 MonoAttrib mono_getAttrib( void );
-
-
 
 int   mono_getExist ( void      );
 int   mono_getEnable( void      );
@@ -40,7 +36,6 @@ void  mono_c_puts  ( short x, short y, const char *str );
 void  mono_c_printf( short x, short y, const char *format, ... );
 
 #endif
-
 
 #endif
 #endif

@@ -52,7 +52,6 @@ extern UBYTE				shade_table[];
 	//		8	- peg to ceiling
 	//		16	- peg to floor
 
-
 /* ------------------------------------------------------------------------
    Defines and Compile Flags
    ------------------------------------------------------------------------ */
@@ -116,7 +115,6 @@ static LONG front_sect;
 static LONG back_sect;
 static LONG flat_sect;		// sector containing floor or ceiling
 static LONG current_seg;	// current line segment (index to the segs array)
-// LONG current_light;
 
 POINT orig_a,orig_b;
 POINT clipped_a,clipped_b;
@@ -189,12 +187,9 @@ void scale_col_ttop(long sx,long dx,long dy,long dye,
 		return;
 #endif
 
-//dye=dy;
-
 #if !defined(_WINDOWS)
 	if (fAIMoving)
 	{
-		//dx=dx<<1;
 	    if (dx & 1)
 	 	 	return;									// skip every other column
  	}
@@ -245,7 +240,6 @@ void scale_col_ttop(long sx,long dx,long dy,long dye,
 	// At this point, "tptr" points to the start of the texture row we'll use.
 	// Remember that a row in the source texture becomes a column on screen.
 	// "tsy" is the y offset into the texture graphic in fixed-point 16:16.
-
 
 	// OLD: Check pegging.  Note that it's possible to set both upper peg and
 	// lower peg in DCK, but they are mutually exclusive in BIRTHRIGHT.
@@ -354,10 +348,6 @@ void scale_col_ttop(long sx,long dx,long dy,long dye,
 	}
 }
 
-
-
-
-
 // FKA local_clip_span.  The original clip_span was in EXTENT.C
 LONG clip_span (LONG x, LONG* y1, LONG* y2, LONG* clipped)
 {
@@ -393,12 +383,6 @@ LONG clip_span (LONG x, LONG* y1, LONG* y2, LONG* clipped)
 
 	return(TRUE);								// something was left after clipping
 }
-
-
-
-
-
-
 
 #if ANIMATED_TEXTURES
 /* =======================================================================
@@ -461,7 +445,6 @@ void render_view(LONG fskipmap)
 {
 	int			iTexture;					// [d10-08-96 JPC] for animated textures
 
-
 #if ANIMATED_TEXTURES
 	for (iTexture = 0; iTexture < last_texture; ++iTexture)
 	{
@@ -483,7 +466,6 @@ void render_view(LONG fskipmap)
 	local_camera_x=CAMERA_INT_VAL(camera.x);
 	local_camera_y=CAMERA_INT_VAL(camera.y);
 
-
 	clear_extents();
 	clear_spans();
 	clear_thing_spans();
@@ -496,7 +478,6 @@ void render_view(LONG fskipmap)
 	
 	first=TRUE;
 	gfFindFirstSeg = TRUE;		// [d7-24-96 JPC]
-
 
 	// draw_node is a recursive procedure that will draw all the normal walls.
 	// It also records information about floors, ceilings, transparent
@@ -511,8 +492,6 @@ void render_view(LONG fskipmap)
 	// Draw the floors and ceilings, using information recorded in draw_node.
 	draw_spans();
 
-	//run_timers();
-	
 	// Draw objects and "transparent" walls, using information recorded
 	// in draw_node.
 	draw_thing_spans();
@@ -546,9 +525,6 @@ void render_view(LONG fskipmap)
 
 	++frames;
 }
-
-
-
 
 /* =======================================================================
    Function    - LineInFrustrum
@@ -608,7 +584,6 @@ void draw_node(LONG n)
 #if 01
 		// Original code, not using reject table.
 		draw_ssector(n&0x7fff);
-		// GWP return;
 #else
 		// Reject table enhancement.  Turns out it slows things down if
 		// we also do node visibility checking.  Node visibility checking
@@ -672,7 +647,6 @@ void draw_node(LONG n)
 			draw_ssector(n&0x7fff);
 		}
 		gDepth--;
-		// GWP return;
 #endif
 	}
 	else
@@ -682,7 +656,6 @@ void draw_node(LONG n)
 		LONG nr;
 		LONG nf;
 		LONG NodeGoto;
-		
 		
 		NodeStack[0].NodeId = 0; // marker for top of the stack.
 		NodeStack[0].NodeGoto = EXIT_ROUTINE;
@@ -694,8 +667,6 @@ reTest:
 		// of the nodes, but only gives a modest increase in performance.
 		if(point_relation(n,local_camera_x,local_camera_y)==FRONT)
 		{
-			//if (IsNodeVisible (n, FRONT))
-				// GWP draw_node(nodes[n].f);
 			// GWP Replace recursion.
 			nf = nodes[n].f;
 			if (nf & 0x00008000)
@@ -712,8 +683,6 @@ reTest:
 			}
 			
 reStartAtFrontFirst:
-			//if (IsNodeVisible (n, BACK))
-				// GWP draw_node(nodes[n].r);
 			// GWP Replace recursion.
 			nr = nodes[n].r;
 			if (nr & 0x00008000)
@@ -731,8 +700,6 @@ reStartAtFrontFirst:
 		}
 		else
 		{
-			//if (IsNodeVisible (n, BACK))
-				//draw_node(nodes[n].r);
 			// GWP Replace recursion.
 			nr = nodes[n].r;
 			if (nr & 0x00008000)
@@ -749,8 +716,6 @@ reStartAtFrontFirst:
 			}
 			
 reStartAtBackFirst:
-			//if (IsNodeVisible (n, FRONT))
-				//draw_node(nodes[n].f);
 			// GWP Replace recursion.
 			nf = nodes[n].f;
 			if (nf & 0x00008000)
@@ -838,11 +803,6 @@ void draw_ssector(LONG sect)
 	}
 }
 
-
-
-
-// #define ANGLE_MULTI	(1024)
-
 /* =======================================================================
    Function    - process_seg
    Description - ???
@@ -859,7 +819,6 @@ void process_seg(LONG iSegment)
 
 	LONG const iLinedef = segs[iSegment].lptr;                // [d6-10-96 JPC] move here
 
-
 	/*If this is the not first sector drawn see if an adj sector was
 	  drawn. If it was this sector MIGHT be visible... if not it IS NOT
 	  visible*/
@@ -871,15 +830,12 @@ void process_seg(LONG iSegment)
 	segFront = sidedefs[linedefs[iLinedef].psdb].sec_ptr;
 	// [d10-02-96 JPC] Don't calculate sectBack until we're sure there
    // is a side 2.
-	//segBack = sidedefs[linedefs[iLinedef].psdt].sec_ptr;
 
 	if (!first)
 	{
-		//GEH if(seg_two_sided(iSegment))
 		if(linedefs[iLinedef].psdt!=-1)
 		{
 			// SECT_VISIBLE is a macro defined as follows in ENGINT.H:
-			// 	#define SECT_VISIBLE(x)	(sector_visible[x])
 			if(!SECT_VISIBLE(segFront)  )
 				if(!SECT_VISIBLE(sidedefs[linedefs[iLinedef].psdt].sec_ptr)  )
 				{
@@ -904,24 +860,12 @@ void process_seg(LONG iSegment)
 		}
 	}
 
-
    //cmp maybe use use memcpy for this( GWP the structures are now the same size).
-	// GWP a.x=vertexs[segs[iSegment].a].x;
-	// GWP a.y=vertexs[segs[iSegment].a].y;
-	// GWP b.x=vertexs[segs[iSegment].b].x;
-	// GWP b.y=vertexs[segs[iSegment].b].y;
 	a=vertexs[segs[iSegment].a];
 	b=vertexs[segs[iSegment].b];
 
-
-//	if( line_clip_to_frust(&temp_line) )
-//	   debug_draw_seg_line(a.x,a.y,b.x,b.y,85);
-
-
-   	
       //CMP clips the seg against the view frustrum and
       //(maybe)front clip plane.
-
 
 //59fps
 	if(segs[iSegment].flip)
@@ -933,7 +877,6 @@ void process_seg(LONG iSegment)
 	NSEWLight = NS_EW_DIFF * (abs(a.x-b.x)>abs(a.y-b.y));
 
 //52fps
-
 
 		//xlate.
 	a.x=a.x-local_camera_x;
@@ -984,7 +927,6 @@ void process_seg(LONG iSegment)
 	/* check for single sided walls */
 	//GEH if(!seg_two_sided(iSegment))    /*single sided. ie a wall*/
 
-
 	if(linedefs[iLinedef].psdt==-1)
 	{
 		if(side==BACK)   /*backface and single sided..CULL!!*/
@@ -1025,9 +967,7 @@ void process_seg(LONG iSegment)
 		back_sect=segBack;
 	}
 
-	
 	/*first do lower post*/
-	//GEH if(sector_to_fh(back_sect) => sector_to_fh(front_sect) )
 
 	if(sectors[back_sect].fh >= sectors[front_sect].fh )
 	{
@@ -1053,7 +993,6 @@ void process_seg(LONG iSegment)
 	}
 
 	/*Now do upper post*/
-	//GEH if(sector_to_ch(back_sect) <= sector_to_ch(front_sect) )
 	if(sectors[back_sect].ch <= sectors[front_sect].ch )
 	{
 		flat_sect=back_sect;
@@ -1082,8 +1021,6 @@ void process_seg(LONG iSegment)
 	{
 	LONG MiddleTextureIndex = seg_to_texture_num(iSegment, side, MIDDLE_TEXTURE);
 
-	//if (seg_to_texture_num(iSegment, side, MIDDLE_TEXTURE) &&
-	//	!(textures[seg_to_texture_num(iSegment,side,MIDDLE_TEXTURE)].type == TRANSP_TEX &&
 	if (MiddleTextureIndex &&
 		!(textures[MiddleTextureIndex].type == TRANSP_TEX &&
 		  segs[iSegment].flip)
@@ -1097,11 +1034,8 @@ void process_seg(LONG iSegment)
 			linedefs[iLinedef].flags |= DRAW_ON_MAP_BIT;
 
 			/* test for transparent wall */
-			// if (textures[seg_to_texture_num(iSegment,FRONT,MIDDLE_TEXTURE)].type == TRANSP_TEX)
-			//if (textures[seg_to_texture_num(iSegment,side,MIDDLE_TEXTURE)].type == TRANSP_TEX)
 			if (textures[MiddleTextureIndex].type == TRANSP_TEX)
 			{
-				// printf("found truetranstex %li\n",iLinedef);
 				mark_sect_visible(back_sect);
 			}
 			first=FALSE;
@@ -1109,7 +1043,6 @@ void process_seg(LONG iSegment)
 	}
 	// [d7-12-96 JPC] Don't use this method. See comment above.
 	// else
-	// 	linedefs[iLinedef].flags &= 0xFFFD;		/* clear DON'T DRAW */
 	}
 #endif
 
@@ -1133,7 +1066,6 @@ LONG CalcXTextureInfo (LONG *xsrc_inc,LONG *src_x, LONG side, LONG fFlip)
 	LONG clipped_off;
 	LONG xOffset;
 	SEG  *CurrentSegPtr;
-
 
 	new_w = dist(clipped_a.x,clipped_a.y,clipped_b.x,clipped_b.y);
 	clipped_off = dist(clipped_a.x,clipped_a.y,orig_a.x,orig_a.y);
@@ -1304,7 +1236,6 @@ void add_ceil_span(LONG x,LONG y,LONG sect)
 	LONG y2;
 	LONG clipped;								// not used
 
-//return;
 	sect=sect|0x00008000;		/* mark as ceil */
 
   /*assume y2 is screen bottom (it will probably be clipped)*/
@@ -1402,12 +1333,9 @@ static LONG draw_wall(LONG seg, LONG side)
 	LONG	tz;
 	LONG	floorHeight;				// JPC intermediate variable for clarity
 	LONG	ceilingHeight;          // JPC intermediate variable for clarity
-	// const LONG texture=seg_to_texture_num(seg,FRONT,MIDDLE_TEXTURE);
 	// [d7-12-96 JPC] Specify "side"--same as in draw_upper_wall and
 	// draw_lower_wall.
 	LONG texture;
-
-
 
 	// In this case, we have a one-sided linedef and front_sect is the only
 	// sector for it.
@@ -1446,14 +1374,10 @@ static LONG draw_wall(LONG seg, LONG side)
 	texture=seg_to_texture_num(seg,side,MIDDLE_TEXTURE);
 	
 	// [d7-11-96 JPC] Don't do this here! Wait until after wall_scale is calculated (below).
-	// if (wall_scale)
-	//	floor_z = (floor_z * wall_scale) / UNITARY_SCALE;
 
-	//gtxoff = seg_to_txoff(seg, FRONT);  // [d6-07-96 JPC]
 	seg_to_txoff_tyoff(seg, FRONT, &gtxoff, &tyoff);	// GWP
    while (gtxoff < 0)
       gtxoff += textures[texture].h;   // not .w because of 90 degree rotation of texture graphic
-	//tyoff = seg_to_tyoff(seg, FRONT);
 
 	// Middle texture cannot be "pegged," so set gPeggedValue to 0.
 	gPeggedValue = 0;		// line up on ground-zero
@@ -1491,16 +1415,6 @@ static LONG draw_wall(LONG seg, LONG side)
 
 	/*project bottom of wall*/
    // GWP Moved to higher in the fn.
-   // GWP 	ba=clipped_a;
-   // GWP 	bb=clipped_b;
-   // GWP 	proj(&ba,bz);
-   // GWP 	proj(&bb,bz);
-   // GWP 
-   // GWP 	/* Check wall against extent list */
-   // GWP 	if(!extent_visible(ba.x,bb.x))
-   // GWP 	{
-   // GWP 		return(NOT_DRAWN);
-   // GWP 	}
 
 	/* project top of wall */
 	ta=clipped_a;
@@ -1531,14 +1445,12 @@ static LONG draw_wall(LONG seg, LONG side)
 
 	/* get x texture constants */
 	// [d11-05-96 JPC] Add side parameter.
-	// new_w = calc_x_texture_info(&xsrc_inc,&src_x.lval);
 	new_w = CalcXTextureInfo (&xsrc_inc,&src_x.lval,side, segs[seg].flip);
 
 	/* set sector lighting */
 	SectLight = sector_to_light(front_sect);
 	// [d9-23-96 JPC] The following seems to be redundant (duplicated in
 	// scale_col_ttop).
-	// if (!SectLight) SetLight(0);
    SetLightDelta (seg, 0);                // [d6-04-96 JPC] [draw_wall]
 
 	// [d9-23-96 JPC] Added gAdjustLight to speed up scale_col_ttop.
@@ -1605,7 +1517,6 @@ static LONG draw_wall(LONG seg, LONG side)
 		return(DRAWN);
 	}
 
-//	if(segs[seg].lptr!=2)
 //GWP no need for this test.	if(TRUE)
 	{
 		LONG const shift_16_colhei = col_hei << 16;
@@ -1823,7 +1734,6 @@ static LONG draw_lower_wall(LONG seg, LONG side)
 	}
 //33fps
 
-
 	/*close out floors*/
 	if(last_post_x!=0xffff)         /*add an end*/
 		add_span_event_end(last_post_x,last_post_y,last_post_ye,flat_sect);
@@ -1861,7 +1771,6 @@ static LONG draw_lower_wall(LONG seg, LONG side)
 	/* Tell caller we drew at least some part of wall */
 	return(DRAWN);
 }
-
 
 /* =======================================================================
    Function    - draw_upper_wall
@@ -1946,7 +1855,6 @@ static LONG draw_upper_wall(LONG seg, LONG side)
 		pTexture = ((PTR)BLKPTR((SHORT)textures[texture].t)) + sizeof(BITMHDR);
 	}
 
-
 	// [d6-19-96 JPC] We are again treating the upper/lower pegging as
 	// independent, but note that we have reversed the meanings of pegged
 	// and unpegged from what they are in DOOM and DCK.
@@ -1954,14 +1862,6 @@ static LONG draw_upper_wall(LONG seg, LONG side)
 
 	/*project bottom of wall*/
 	// GWP Moved this exclusion test higher in the fn.
-	// GWP ba=clipped_a;
-	// GWP bb=clipped_b;
-	// GWP proj(&ba,bz);
-	// GWP proj(&bb,bz);
-	// GWP 
-	// GWP /*Check wall against extent list*/
-	// GWP if(!extent_visible(ba.x,bb.x))
-	// GWP 	return(NOT_DRAWN);
 
 	/*project bottom of wall*/
 	ta=clipped_a;tb=clipped_b;
@@ -1987,14 +1887,10 @@ static LONG draw_upper_wall(LONG seg, LONG side)
 
 	/* get x texture constants */
 	// [d11-05-96 JPC] Add side parameter.
-	// calc_x_texture_info(&xsrc_inc,&src_x.lval);
 	CalcXTextureInfo (&xsrc_inc,&src_x.lval, side, segs[seg].flip);
 
 	/* set sector lighting */
-//	SectLight = sector_to_light(front_sect);
 	SectLight = sector_to_light(back_sect);
-
-	// if (!SectLight) SetLight(0);			// [d11-06-96 JPC] omit
 
 	SetLightDelta (seg, side);          // [d6-04-96 JPC]
 
@@ -2061,7 +1957,6 @@ static LONG draw_upper_wall(LONG seg, LONG side)
 	/* Tell caller we drew at least some part of wall */
 	return(DRAWN);
 }
-
 
 /* =======================================================================
    Function    - draw_backface

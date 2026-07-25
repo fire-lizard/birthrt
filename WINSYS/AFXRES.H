@@ -80,7 +80,6 @@
 
 #define CBRS_ALL            0xFFFFL
 
-
 // the CBRS_ style is made up of an alignment style and a draw border style
 //  the alignment styles are mutually exclusive
 //  the draw border styles may be combined
@@ -336,7 +335,6 @@
 #define AFX_IDS_PRINTFILTER             0xF047
 #define AFX_IDS_PRINTCAPTION            0xF048
 #define AFX_IDS_PRINTTOFILE             0xF049
-
 
 // OLE strings
 #define AFX_IDS_OBJECT_MENUITEM         0xF080

@@ -22,7 +22,6 @@
 #include "strenum.h"
 #include "COMBATUI.HXX" //for ForceHires
 
-
 char TitledMessageBox::Message[]="\0";
 char TitledMessageBox::Title[]="\0";
 BOOL TitledMessageBox::fAlreadyUp=FALSE;
@@ -91,9 +90,6 @@ void TitledMessageBox::SetTitle(const char* t)
 		sprintf(Title,"^F%02i%s",font,t);
 	} while (gtext_width(Title)>Width(MSGBOX_BUT_TITLE)-2*LRMargin && font--!=5);
 
-//	strcpy(Title,"^F08");
-//	strncat(Title,t,TITLE_LEN-5);
-
 }
 
 void TitledMessageBox::SetMessage(const char* m)
@@ -105,8 +101,6 @@ void TitledMessageBox::SetMessage(const char* m)
 	sprintf(Message,"^W%03i^F03",Width(MSGBOX_BUT_TITLE)-2*LRMargin-BadWrapFunctionConstant);
 	strcat(Message,m);
 }
-
-
 
 void TitledMessageBox::PrintMessage(LONG mc,LONG)
 {
@@ -140,11 +134,9 @@ void TitledMessageBox::PrintMessage(LONG mc,LONG)
 
 	print_text_centered(TitleTLX+TitleW/2,TitleTLY+TitleH/2-5,Title,BLACK);
 	
-
 	print_textf(MessageTLX+MarginX,MessageTLY+MarginY,BLACK,Message);
 	
 #ifdef _DEBUG
-//	OutlineAllRegions();
 #endif
 }
 

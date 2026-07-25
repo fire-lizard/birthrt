@@ -9,7 +9,6 @@
    
    Contains the following general functions:
 
-   
    ======================================================================== */
 
 /* ------------------------------------------------------------------------
@@ -57,7 +56,6 @@ public:
 	
 	const ABILITY		&fDwarf;
 	const ABILITY		&fElf;
-	//const ABILITY		&fGnome;
 	const ABILITY		&fHalfElf;
 	const ABILITY		&fHalfling;
 };
@@ -111,7 +109,6 @@ static const ABILITY	RaceAdjustment[] = {
 
 static const SBYTE GetExceptionalStrength(
 	const SHORT RollValue);
-
 
 /* =======================================================================
    Function    - static LimitAdjustment

@@ -19,7 +19,6 @@
 #include "typedefs.h"
 #endif
 
-
 #if !defined (_MENUPROT_H)
 #include "menuprot.h"
 #endif
@@ -35,7 +34,6 @@
 
 #define TITLE_LEN	60
 #define MESSAGE_LEN	1000
-
 
 class TitledMessageBox
 {
@@ -70,6 +68,5 @@ inline LONG TitledMessageBox::Height(LONG Area)
 	return H;
 }
 	
-
 #endif
 

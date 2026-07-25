@@ -9,7 +9,6 @@
    
    Contains the following general functions:
 
-   
    ======================================================================== */
 
 /* ------------------------------------------------------------------------
@@ -231,8 +230,6 @@ void MARGIN_CONTROL::mfResetCurrentSize()
 	
 	fUpdatePanels = TRUE;
 }
-
-
 
 extern "C"
 LONG GetMarginReductionCount(void)

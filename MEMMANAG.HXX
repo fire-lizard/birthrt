@@ -93,7 +93,6 @@ typedef USHORT ATTR_BLK_TYPE;
 #define IsResourceHandle(i)		((i) & RESOURCE_ID_BIT)
 #define GetResourceHandleBlk(i)	((i) & RESOURCE_ID_MASK)
 
-	
 #define NewLockedBlock(i)		SetBlockAttr(NewBlockHigh(i),LOCKED,LOCKED)
 
 /* ------------------------------------------------------------------------

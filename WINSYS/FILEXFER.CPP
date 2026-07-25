@@ -24,7 +24,6 @@
 #include "Windows.h"
 #include "../SYSTEM.H"
 
-// #define _DEFINE_EXPORT_PLATFORMNETWORKMODULE // header is for export use
 #include "FILEXFER.HXX"
 #include "MULPLAY.HXX"
 
@@ -58,7 +57,6 @@ typedef struct
 	int	      iSync;                //---- which Sync are we at
 } FBRSync, *FPBRSync;
 
-
 FileXfer::FileXfer(GamePrintFunction pPrintFunc, ErrCode *err) :
                   PlatformNetworkModule(pPrintFunc, err)
 {
@@ -70,16 +68,10 @@ FileXfer::~FileXfer()
 {
 }
 
-
-
-
 void FileXfer::SetXferDelay(DWORD dwWait)
 { 
 	m_dwXferDelay = dwWait ; 
 } // FileXfer::SetXferDelay
-
-
-
 
 /* ========================================================================
    Function    - FileXfer
@@ -126,7 +118,6 @@ BOOL FileXfer::SendFile(DWORD dwTo, char *fname, USHORT filetype, DWORD dwWait)
 		return FALSE ;
 	}
 	
-	
 	// send all blocks
 	for (unsigned int lcv = 1 ; lcv <= m_sbStartBlock.dwBlockcount ; lcv++) 
 	{
@@ -170,8 +161,6 @@ BOOL FileXfer::SendFile(DWORD dwTo, char *fname, USHORT filetype, DWORD dwWait)
 	
 }
 
-
-
 BOOL FileXfer::RequestToSend(DWORD dwWait, USHORT filetype)
 {
    DWORD dwTimeOut ;
@@ -196,7 +185,6 @@ BOOL FileXfer::RequestToSend(DWORD dwWait, USHORT filetype)
 	}
 #endif
 #endif
-   //GEH dwTimeOut = GetTickCount() + dwWait ;
    dwTimeOut = GetTickCount() + 15000 ;
 
    do 
@@ -284,7 +272,6 @@ BOOL FileXfer::RequestToSend(DWORD dwWait, USHORT filetype)
 
 }
 
-
 BOOL FileXfer::StartFileSend(USHORT filetype)
 {
    ErrCode Err ;
@@ -328,8 +315,6 @@ BOOL FileXfer::SendFileBlock(unsigned int index)
    // fill the xfer buffer
    if ( (ReadFile(m_hFile, m_cXferBuf, DATABLOCKSIZE, &dwBytesRead, NULL) != TRUE) || (dwBytesRead == 0) ) 
 	{
-//      PrintString("From FileXfer::SendFileBlock a ReadFile Error !") ;
-//      MessageBox( NULL, "From FileXfer::SendFileBlock a ReadFile Error !", "FileXfer", MB_OK | MB_ICONEXCLAMATION ) ;
       return FALSE ;
    }
 
@@ -340,8 +325,6 @@ BOOL FileXfer::SendFileBlock(unsigned int index)
    {
       return FALSE ;
    }
-
-//	PrintString( "Sending a file block" );
 
    if (kNoError != SendMessage(m_dwTo,
                                NETMSGID_FILEDATA,
@@ -357,7 +340,6 @@ BOOL FileXfer::SendFileBlock(unsigned int index)
    }
    return TRUE ;
 }
-
 
 BOOL FileXfer::ReceiveFile(DWORD dwFrom, char *fname, DWORD dwWait)
 {
@@ -398,15 +380,12 @@ BOOL FileXfer::ReceiveFile(DWORD dwFrom, char *fname, DWORD dwWait)
    // Get the file start block.  Fill in m_sbStartBlock.
    if (!StartFileReceive()) 
 	{
-//      PrintString("from FileXfer::ReceiveFile StartFileReceive() failed") ;
       return FALSE ;
    }
 
    // Create a temporary file and put the name in fname
    if (!GetTempFileName(".","fx_",0,fname))
 	{
-//      PrintString("from FileXfer::ReceiveFile GetTempFileName() failed") ;
-//      MessageBox( NULL, "from FileXfer::ReceiveFile GetTempFileName() failed", "FileXfer", MB_OK | MB_ICONEXCLAMATION ) ;
 #ifdef _WINDOWS
 #ifdef _DEBUG
 	{
@@ -423,8 +402,6 @@ BOOL FileXfer::ReceiveFile(DWORD dwFrom, char *fname, DWORD dwWait)
    // write all received data to it.
    if ( (m_hFile = CreateFile(fname,GENERIC_WRITE,0,NULL,CREATE_ALWAYS,FILE_ATTRIBUTE_NORMAL,NULL))  == INVALID_HANDLE_VALUE)
    {
-//      PrintString("from FileXfer::ReceiveFile CreateFile() failed") ;
-//      MessageBox( NULL, "from FileXfer::ReceiveFile CreateFile() failed", "FileXfer", MB_OK | MB_ICONEXCLAMATION ) ;
 #ifdef _WINDOWS
 #ifdef _DEBUG
 	{
@@ -443,8 +420,6 @@ BOOL FileXfer::ReceiveFile(DWORD dwFrom, char *fname, DWORD dwWait)
         SetFilePointer(m_hFile,m_sbStartBlock.dwFileSize,NULL, FILE_BEGIN)
       )
    {
-//      PrintString("from FileXfer::ReceiveFile SetFilePointer() failed") ;
-//      MessageBox( NULL, "from FileXfer::ReceiveFile SetFilePointer() failed", "FileXfer", MB_OK | MB_ICONEXCLAMATION ) ;
 #ifdef _WINDOWS
 #ifdef _DEBUG
 	{
@@ -462,8 +437,6 @@ BOOL FileXfer::ReceiveFile(DWORD dwFrom, char *fname, DWORD dwWait)
 
    if( !SetEndOfFile(m_hFile) ) 
 	{
-//      PrintString("from FileXfer::ReceiveFile SetEndOfFile() failed") ;
-//      MessageBox( NULL, "from FileXfer::ReceiveFile SetEndOfFile() failed", "FileXfer", MB_OK | MB_ICONEXCLAMATION ) ;
       CloseHandle(m_hFile) ;
       DeleteFile(fname) ;
       fname[0] = '\0' ;
@@ -530,7 +503,6 @@ BOOL FileXfer::ReceiveFile(DWORD dwFrom, char *fname, DWORD dwWait)
    CloseHandle(m_hFile) ;
    return TRUE ;
 }
-
 
 BOOL FileXfer::StartFileReceive()
 {
@@ -610,14 +582,12 @@ BOOL FileXfer::StartFileReceive()
    return TRUE ;
 }
 
-
 BOOL FileXfer::ReceiveFileBlock(unsigned int index)
 {
    DWORD dwBytesWritten = 0 ;
    DWORD dwTimeOut;
    ErrCode Err ;
 
-	//GEH dwTimeOut = GetTickCount() + (3*m_dwXferDelay) ;
 	dwTimeOut = GetTickCount() + 15000;
 	do 
 	{
@@ -693,7 +663,6 @@ BOOL FileXfer::ReceiveFileBlock(unsigned int index)
         (index != m_sbStartBlock.dwBlockcount)
       )
    {
-//		PrintString( "ReceiveFileBlock - Block too small" );
       return FALSE ;
    }
 
@@ -703,15 +672,10 @@ BOOL FileXfer::ReceiveFileBlock(unsigned int index)
    // Write the data
    if ( (WriteFile(m_hFile, lpGenericMsgBuf->cData, lpGenericMsgBuf->usDataSize, &dwBytesWritten, NULL) != TRUE) || (dwBytesWritten == 0) )
    {
-//      char errstr[256] ;
-//      wsprintf(errstr,"From FileXfer::ReceiveFileBlock a WriteFile Error ! %d bytes written ",dwBytesWritten) ;
-//      PrintString(errstr) ;
-//      MessageBox( NULL, errstr, "FileXfer", MB_OK | MB_ICONEXCLAMATION ) ;
       return FALSE ;
    }
    return TRUE ;
 }
-
 
 ErrCode
 FileXfer::GetMessage(LPNETMSG ptheMessage, DWORD dwWait, const char bRemove, 
@@ -739,15 +703,11 @@ FileXfer::GetMessage(LPNETMSG ptheMessage, DWORD dwWait, const char bRemove,
 
 } // PlatformNetworkModule::GetMessage
 
-
-
-
 void FileXfer::SetFileProgressCallback( PFNFILECALLBACK pfnFunc )
 {
 	pfnFileProgressFunc = pfnFunc;
 } // FileXfer::SetFileProgressCallback
 	
-
 /* ========================================================================
    Function    - Sync record routines
 	Description - save sync points for later digestion by a higher source

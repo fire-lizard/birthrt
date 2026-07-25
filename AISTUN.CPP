@@ -9,7 +9,6 @@
    
    Contains the following general functions:
 
-   
    ======================================================================== */
 
 /* ------------------------------------------------------------------------
@@ -101,8 +100,6 @@ void CAvatar::Stunned (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 			pAvatar->Status = CAvatar::AI_MOVING;
 			pAvatar->mfStartAnimationLoop(WALKSEQ);
 			
-			
-
 		}
 			break;
 		case AI_RELEASE:
@@ -131,18 +128,14 @@ void CAvatar::Stunned (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 			
 		case AI_DEAD:
 			// Dead is dead. Don't move.
-			//if (pAvatar->mfGetArtSequence() != DEADSEQ)
-			//{
 				pAvatar->mfGetSectorInfo(&FloorHeight, &CeilingHeight, &Special);
 				pAvatar->mfMoveToXYZA(pAvatar->mfX(),
 									  pAvatar->mfY(),
 									  FloorHeight,
 									  pAvatar->mfAngle());
-			//}
 			
 			if (pAvatar->attrib.DiedLastFrame)
 			{
-//				pAvatar->mfSpewAll();
 				pAvatar->attrib.DiedLastFrame=FALSE;
 			}
 
@@ -183,7 +176,6 @@ void CAvatar::Stunned (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 				pAvatar->fStunned.Target.z += pAvatar->fStunned.Home.z;
 			}
 		
-		
 			LONG distance = aprox_dist(0,0,pAvatar->fStunned.Target.x,pAvatar->fStunned.Target.y);
 		
 			LONG FloorHeight;
@@ -200,8 +192,6 @@ void CAvatar::Stunned (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 			LONG dz,dx,dy ;
 			LONG BumpIndex;
 
-
-		
 			WadThingType bump;
 		
 			bump=pAvatar->mfMoveTowardWithBump(distance,

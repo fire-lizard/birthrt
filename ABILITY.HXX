@@ -176,7 +176,6 @@ inline LONG ABILITY::mfReadData(FILE *fp)
 	return Result;
 }
 
-
 // Write the text data to the .ava files.
 inline void ABILITY::mfWriteData(FILE *fp) const
 {

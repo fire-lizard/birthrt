@@ -66,9 +66,6 @@ void ResumeTimeLimit (void);
 SHORT	sMenusUp = 0;
 BOOL	fMenuClosed = FALSE;
 
-// GWP static BOOL gPrevAIAutoRes;
-// GWP static LONG gCountAllMenusUp;
-
 BOOL  fZoom[MAX_ACTIVE_MENUS];
 BOOL  fSpin[MAX_ACTIVE_MENUS];
 BOOL  fScroll[MAX_ACTIVE_MENUS];
@@ -92,7 +89,6 @@ PMENU Menus = 0;
 LONG  MaxMenu = 0;
 
 extern BOOL fIsFadedOut;
-
 
 /* ========================================================================
    Function    - InitMenuSys
@@ -167,18 +163,14 @@ void ShowMenu(LONG Index)
 	LONG xOff = 0;
 	LONG yOff = 0;
 	
-	
 	// simple error test
 	if (!MaxMenu)
 		return;
 	
-	// SysHideCursor();
-
 	// add this guy's index to the list of active menu
 	// NOTE: remember you can only have MAX_ACTIVE_MENUS of these
 	if (fERROR == AddActiveMenu(Index))
 	{
-		// SysShowCursor();
 		return;
 	}
 	
@@ -220,8 +212,6 @@ void ShowMenu(LONG Index)
 				);
 		}
 	}
-	
-	//SysShowCursor();
 	
 }
 /* ========================================================================
@@ -289,8 +279,6 @@ void HideMenu(LONG Index)
 		return;
 	}
 	
-	// SysHideCursor();
-		
 	// play a zoom sound
 	if(fRemove[Index] != TRUE)
 		if(Menus[Index].Buttons[0].Flags & D_ZOOM)
@@ -301,7 +289,6 @@ void HideMenu(LONG Index)
 		RemoveActiveMenu(Index);
 		if(fRemove[Index] == TRUE)
 		{
-			// SysShowCursor();
 			return;		// zoom out
 		}
 	}
@@ -321,10 +308,8 @@ void HideMenu(LONG Index)
 		pop_regions();
 	}
 	
-	
 	//clear any keys pending that we didn't handle
 	clear_key_status(0);
-	// SysShowCursor();
 }
 
 /* ========================================================================
@@ -382,10 +367,6 @@ LONG AddActiveMenu( LONG Index )
 
 			break;
 		}
-//		if( amenu == -1)
-//			continue;
-//		else
-//			Menus[amenu].Buttons[0].Flags |= D_UPDATE;
 	}
 	
 	if (i == MAX_ACTIVE_MENUS)
@@ -449,8 +430,6 @@ void RemoveActiveMenu( LONG Index )
 				}
 			}
 			
-
-
 			break;
 
 		}
@@ -600,9 +579,6 @@ void PaintActiveMenu(LONG AMenu)
 							h = (hSaveBkgnd == fERROR) ? fERROR : hDest[AMenu];
 							if (h != fERROR)
 							{
-	//							ZoomOutBitmap(X + xOff, Y + yOff, hBitm, 0, 0, W, H,
-	//												hDest[AMenu], fStart[AMenu],
-	//												backGround[AMenu].st, backGround[AMenu].w, backGround[AMenu].h);
 								ZoomOutBitmap(X + xOff, Y + yOff, hBitm, 0, 0, W, H,
 													h, fStart[AMenu],
 													backGround[AMenu].st, backGround[AMenu].w, backGround[AMenu].h);
@@ -683,7 +659,6 @@ void PaintActiveMenu(LONG AMenu)
 									backGround[AMenu].h = fStart[AMenu].y - Y - yOff;
 							}
 
-
 							if (CurMenu != D_INFOBOX)
 							{
 								if (hSaveBkgnd == fERROR)
@@ -709,7 +684,6 @@ printf("MENU.C - Zoom - cntSaveBkgnd: %d\n",cntSaveBkgnd);
 					break;
 				}
 			}
-
 
 			if(fScroll[AMenu])
 			{
@@ -744,9 +718,6 @@ printf("MENU.C - Zoom - cntSaveBkgnd: %d\n",cntSaveBkgnd);
 								fUpdatePanels = TRUE;
 								SetRedrawMainMapLevel();
 
-								
-//								if (CurMenu != D_INFOBOX)
-//								{
 									cntSaveBkgnd--;
 printf("MENU.C -	 SpinOut - cntSaveBkgnd: %d\n",cntSaveBkgnd);
 									if (hSaveBkgnd != fERROR && cntSaveBkgnd < 1)
@@ -758,7 +729,6 @@ printf("MENU.C -	 SpinOut - cntSaveBkgnd: %d\n",cntSaveBkgnd);
 										DisposBlock(hSaveBkgnd);
 										hSaveBkgnd = fERROR;
 									}
-//								}
 					
 								if (Menus[CurMenu].Buttons[0].Flags & D_FREEZE)
 								{
@@ -811,10 +781,6 @@ printf("MENU.C -	 SpinOut - cntSaveBkgnd: %d\n",cntSaveBkgnd);
 								backGround[AMenu].w++;//have to do this because of the uncertainty in sin.
 								backGround[AMenu].h++;
 
-
-
-//									if (CurMenu != D_INFOBOX)
-//									{
 										if (hSaveBkgnd == fERROR)
 										{
 											hSaveBkgnd = SaveBitmap(0,0,640,480);
@@ -826,7 +792,6 @@ printf("MENU.C -	 SpinOut - cntSaveBkgnd: %d\n",cntSaveBkgnd);
 											SysShowCursor();
 										}
 										cntSaveBkgnd++;
-//									}
 					
 								hDest[AMenu] = SaveBitmap(backGround[AMenu].st.x, backGround[AMenu].st.y, backGround[AMenu].w, backGround[AMenu].h);
 								ScrollOpenBitmap(X + xOff, Y + yOff, hBitm, 0, 0, W, H,
@@ -879,9 +844,6 @@ printf("MENU.C -	 SpinOut - cntSaveBkgnd: %d\n",cntSaveBkgnd);
 								fUpdatePanels = TRUE;
 								SetRedrawMainMapLevel();
 
-								
-//								if (CurMenu != D_INFOBOX)
-//								{
 									cntSaveBkgnd--;
 printf("MENU.C -	 SpinOut - cntSaveBkgnd: %d\n",cntSaveBkgnd);
 									if (hSaveBkgnd != fERROR && cntSaveBkgnd < 1)
@@ -893,7 +855,6 @@ printf("MENU.C -	 SpinOut - cntSaveBkgnd: %d\n",cntSaveBkgnd);
 										DisposBlock(hSaveBkgnd);
 										hSaveBkgnd = fERROR;
 									}
-//								}
 					
 								if (Menus[CurMenu].Buttons[0].Flags & D_FREEZE)
 								{
@@ -946,10 +907,6 @@ printf("MENU.C -	 SpinOut - cntSaveBkgnd: %d\n",cntSaveBkgnd);
 								backGround[AMenu].w++;//have to do this because of the uncertainty in sin.
 								backGround[AMenu].h++;
 
-
-
-//									if (CurMenu != D_INFOBOX)
-//									{
 										if (hSaveBkgnd == fERROR)
 										{
 											hSaveBkgnd = SaveBitmap(0,0,640,480);
@@ -961,7 +918,6 @@ printf("MENU.C -	 SpinOut - cntSaveBkgnd: %d\n",cntSaveBkgnd);
 											SysShowCursor();
 										}
 										cntSaveBkgnd++;
-//									}
 					
 								hDest[AMenu] = SaveBitmap(backGround[AMenu].st.x, backGround[AMenu].st.y, backGround[AMenu].w, backGround[AMenu].h);
 								SpinInBitmap(X + xOff, Y + yOff, hBitm, 0, 0, W, H,
@@ -980,7 +936,6 @@ printf("MENU.C -	 SpinOut - cntSaveBkgnd: %d\n",cntSaveBkgnd);
 						break;
 				}
 			}
-
 
 		}
 		else
@@ -1067,7 +1022,6 @@ printf("MENU.C -	 SpinOut - cntSaveBkgnd: %d\n",cntSaveBkgnd);
 			if (Menus[CurMenu].Buttons[i].Flags & D_TEXT_LEFT)
 			{
 				LONG labelColor;
-				// const LONG tOff = Y_RES_ADJ(4);
 				
 				if(	Menus[CurMenu].Buttons[i].Flags & D_HILIGHTED )
 				{
@@ -1105,7 +1059,6 @@ printf("MENU.C -	 SpinOut - cntSaveBkgnd: %d\n",cntSaveBkgnd);
 			}
 		}
 
-		//GEH Menus[CurMenu].Buttons[i].Flags &= ~D_UPDATE;	
 	}
 	
 	if( Menus[CurMenu].Buttons[0].pfFunction != NULL )
@@ -1129,16 +1082,13 @@ printf("MENU.C -	 SpinOut - cntSaveBkgnd: %d\n",cntSaveBkgnd);
 			goto End;
 				
 		// Restore the following line when done with tests:
-		// ScreenCopy(0, Menus[CurMenu].Buttons[0].X, Menus[CurMenu].Buttons[0].Y, Menus[CurMenu].Buttons[0].W, Menus[CurMenu].Buttons[0].H,SC_HIGH_RES);
 		x = Menus[CurMenu].Buttons[0].X, y = Menus[CurMenu].Buttons[0].Y, w = Menus[CurMenu].Buttons[0].W, h = Menus[CurMenu].Buttons[0].H;
 		ScreenCopy(0, x, y, w, h, SC_HIGH_RES);
 	}
 
 	#ifndef _WINDOWS
-	//if (fIsFadedOut && CurMenu != 5)
 	if (fIsFadedOut)
 	{
-		//printf("FadedOut in MENU - CurMenu:%d\n",CurMenu);
 		fIsFadedOut--;
 		if (fIsFadedOut==0)
 			FadeIn(100);
@@ -1203,8 +1153,6 @@ LONG GetButtonValue ( LONG MenuIndex, LONG ButtonId )
 	return Menus[MenuIndex].Buttons[i].Arg;
 }
 
-
-
 /* ========================================================================
    Function    - GetButtonProc
    Description - returns the function pointer of that button
@@ -1224,14 +1172,6 @@ PFVLL GetButtonProc ( LONG MenuIndex, LONG ButtonId)
 		
 	return Menus[MenuIndex].Buttons[i].pfFunction;
 }
-
-
-
-
-
-
-
-
 
 /* ========================================================================
    Function    - SetButtonProc
@@ -1295,7 +1235,6 @@ LONG ChangeButtonProc ( LONG MenuIndex, LONG ButtonId, PFVLL pFunc, LONG Val, LO
 	Menus[MenuIndex].Buttons[i].pfFunction = pFunc;
 	Menus[MenuIndex].Buttons[i].Arg = Val;
 	Menus[MenuIndex].Buttons[i].Key = Key;
-	
 	
 	return fNOERR;
 }
@@ -1442,7 +1381,6 @@ LONG SetButtonPosition ( LONG MenuIndex, LONG ButtonId, LONG X, LONG Y )
 			}
 		}
 		
-		// height = Y_RES_ADJ(Menus[MenuIndex].Buttons[i].H);
 		if ((Y + height) > window_height)
 		{
 			Y = (window_height - height);
@@ -2022,12 +1960,10 @@ void InvToStats(LONG a,LONG b)
 			i/=multiplier;
 		}
 			
-			
 	}
 	ShowMenu(D_AVATAR_ATTRIBUTES);
 
 	Menus[D_AVATAR_INVENTORY].Buttons[0].Flags |=D_ZOOM;
 	Menus[D_AVATAR_ATTRIBUTES].Buttons[0].Flags |=D_ZOOM;
-
 
 }

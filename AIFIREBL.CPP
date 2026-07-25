@@ -9,7 +9,6 @@
 
    Contains the following general functions:
 
-
    ======================================================================== */
 
 /* ------------------------------------------------------------------------
@@ -163,7 +162,6 @@ void CAvatar::FireBall (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 	case AI_DEAD:
 			if (pAvatar->attrib.DiedLastFrame)
 			{
-//				pAvatar->mfSpewAll();
 				pAvatar->attrib.DiedLastFrame=FALSE;
 			}
 
@@ -178,8 +176,6 @@ void CAvatar::FireBall (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 			
 	case AI_CONSUME:
 			 // fire ball disappears
-			// GEH if (pAvatar->mfGetArtSequence() == EXPIRESEQ &&
-			// GEH      pAvatar->mfTestSequenceDone())
 			if (pAvatar->mfType() == ARROWS ||
 				pAvatar->mfTestSequenceDone())
 			{
@@ -339,7 +335,6 @@ void CAvatar::FireBall (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 									CAvatar * const pEnemy = (CAvatar * const) BLKPTR(pAvatar->hEnemy);
 									pCastAvatar->mfInflictMagicDamage(pEnemy, pAvatar->mfType(), pAvatar->fDamage);
 
-
 									pAvatar->Status = AI_CONSUME;
 									if (pAvatar->mfType() != ARROWS)
 									{
@@ -377,7 +372,6 @@ void CAvatar::FireBall (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 										LONG  MinDistIdx=-1;
 										SCENE const * const pScene=(SCENE const * const)BLKPTR(SCENE_MGR::hCurrentScene);
 										
-							
 										for (i = 0;i<MAX_AVATARS;i++)
 										{
 											if (pScene->Avatars[i]!=fERROR)// && pScene->Avatars[i]!=hOldEnemy)
@@ -389,12 +383,8 @@ void CAvatar::FireBall (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 												if (pTestAva->mfType() >=FIRST_PROJECTILE_EFFECT && pTestAva->mfType()<=LAST_PROJECTILE_EFFECT)
 													continue;
 			
-
 												if (pTestAva->Status==AI_DEAD)
 													continue;
-												
-												
-												
 												
 												//now make sure it doesn't come back and hit the party										
 												ADVENTURER_TEAM_ITOR AdvItor;
@@ -457,7 +447,6 @@ void CAvatar::FireBall (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 
 										pCastAvatar->mfInflictMagicDamage(pEnemy, pAvatar->mfType(), pAvatar->fDamage/2);
 
-
 									pAvatar->Status = AI_CONSUME;
 									if (pAvatar->mfType() != ARROWS)
 									{
@@ -467,7 +456,6 @@ void CAvatar::FireBall (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 								}
 							}
 							
-
 							break;
 						}
 					}
@@ -625,7 +613,6 @@ static void BlastTheNeighbors(
 		SCENE * const pCurrentScene = (SCENE * const) BLKPTR(SCENE_MGR::hCurrentScene);
 		pCurrentScene->mfGetSceneAIState(&OldSceneState,
 						                 &OldSceneType);
-		
 		
 		if (OldSceneType == SCENE_AI::BATTLE_SCENE)
 		{

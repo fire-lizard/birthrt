@@ -25,15 +25,12 @@ LONG tag_to_sector(LONG tag);
 LONG TagToNextSector (LONG iStart, LONG tag);
 LONG tag_to_line(LONG tag, LONG notline);
 void activate_seg(LONG arg);
-// [d11-14-96 JPC] Removed: BOOL GetSectorDamage (LONG iSector, LONG *damageNumber);
-// [d11-29-96 JPC] Removed: BOOL GetCrusherDamage (LONG iSector, LONG *damageNumber, LONG avatarHeight, LONG avatarZ);
 BOOL IsSplashSector (LONG iSector);
 BOOL IsLavaSector (LONG iSector);
 
 #if defined (__cplusplus)
 }
 #endif
-
 
 #endif
 

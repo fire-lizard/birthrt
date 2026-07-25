@@ -25,8 +25,6 @@
 #include "gamemap.hxx"
 #endif
 
-
-
 /* ------------------------------------------------------------------------
    Defines and Compile Flags
    ------------------------------------------------------------------------ */
@@ -43,8 +41,6 @@
    Prototypes
    ------------------------------------------------------------------------ */
 typedef SHORT HDL_SRDEMO_DATA;
-
- 
 
 class SRDEMO_DATA {
 public:
@@ -271,7 +267,6 @@ public:
 	private:
 	};
 
-
 	// The current command data.
 	class CMD_DATA {
 	public:
@@ -332,7 +327,6 @@ inline void SRDEMO_DATA::WAIT_CMD::mfInitVals()
 {
 	fsWaitTime = 0;
 }
-
 
 // Wait until the tick count (Frame rate) has elasped.
 // GWP Replace with real time wait??

@@ -63,14 +63,11 @@
 static ULONG point_ssector;
 static LONG point_ssector_x,point_ssector_y;
 // GWP I Don't see the use of this variable.
-//     static ULONG ptss_last_front;
 static void point_to_ssector(LONG n);
 
 extern LONG first_seg;
 extern BOOL	gfWadLoaded;
 								
-//short sInside = TRUE;
-
 /* =======================================================================
    Function    - raise_sector_floor
    Description - raises the floor of a sector
@@ -180,11 +177,6 @@ void ssector_to_sector_info(
 	{
 	LONG const r= ( sa *( y-sy ) ) - ( ( x-sx) * sb );
 
-	//if(r<0)
-	//	return(seg_to_height(seg,FRONT));
-	//else
-	//	return(seg_to_height(seg,BACK));
-	
 	{
 	LONG const l=(LONG)pSeg->lptr;
 
@@ -290,8 +282,6 @@ The_Begining:
 	if(point_relation(n,point_ssector_x,point_ssector_y)==FRONT)
 	{
 		// GWP ptss_last_front doesn't appear to have a use at this time.
-		// ptss_last_front=TRUE;
-		//point_to_ssector(nodes[n].f);
 		
 		n = nodes[n].f;
 		goto The_Begining;
@@ -299,8 +289,6 @@ The_Begining:
 	}
 	else
 	{
-		// ptss_last_front=FALSE;
-		// point_to_ssector(nodes[n].r);
 		
 		n = nodes[n].r;
 		goto The_Begining;
@@ -363,7 +351,6 @@ LONG tag_to_line (LONG tag, LONG notline)
 	return(0);
 }
 
-
 /* =======================================================================
    Function    - DistanceToSeg
    Description - determines distance squared from a point to a line segment
@@ -378,7 +365,6 @@ static LONG DistanceToSeg (LONG seg, LONG x, LONG y)
 	return LinePointDistance (x, y, vertexs[segs[seg].a].x, vertexs[segs[seg].a].y,
 		vertexs[segs[seg].b].x, vertexs[segs[seg].b].y);
 }
-
 
 /* =======================================================================
    Function    - activate_seg
@@ -491,11 +477,6 @@ void activate_seg(LONG DistanceSquared)
 			// right out of the water.  If you want into another wad
 			// set the fExitLevel value to the Player start location
 			// and let the scene load itself
-			//if(sInside)
-			//	load_new_wad("new2.wad",1);
-			//else
-			//	load_new_wad("castle86.wad",1);
-			//sInside = !sInside;
 			break;
 		
 		case LSP_TELE_1WAY:
@@ -539,7 +520,6 @@ BOOL IsSplashSector (LONG iSector)
 	return (special == SSP_WATER || special == SSP_DEEP_WATER || special == SSP_ACID_FLOOR);
 }
 
-
 // ---------------------------------------------------------------------------
 BOOL IsLavaSector (LONG iSector)
 {
@@ -549,7 +529,6 @@ BOOL IsLavaSector (LONG iSector)
 
 	return (sectors[iSector].special == SSP_LAVA);
 }
-
 
 // ---------------------------------------------------------------------------
 // ---------------------------------------------------------------------------

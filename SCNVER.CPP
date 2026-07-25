@@ -9,7 +9,6 @@
    
    Contains the following general functions:
 
-   
    ======================================================================== */
 
 /* ------------------------------------------------------------------------
@@ -27,7 +26,6 @@
 
 #include "FILEUTIL.H"
 #include "SCNVER.HXX"
-
 
 /* ------------------------------------------------------------------------
    Notes
@@ -74,4 +72,3 @@ LONG SCENE_FILE_VERSION::mfReadVersion(FILE *fp)
 		
 	return Result;
 }
-

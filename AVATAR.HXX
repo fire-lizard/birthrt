@@ -197,7 +197,6 @@ void mfWriteTextType(FILE *, THINGTYPE);
 class SCENE;
 class PLAYER_STATS;
 
-
 class CAvatar : public CThing
 {
 public:				// Public for the dialog editor
@@ -292,7 +291,6 @@ public:				// Public for the dialog editor
 		SBYTE		TotalFrames;
 	} AVATAR_SND_DATA;
 	
-
 	LONG    		Version;            // which game version this avatar belongs with
 	LONG    		Id;                 // Unique identifier for this avatar.
 	LONG			UnitIndex;			// my index in the units array
@@ -325,7 +323,6 @@ public:				// Public for the dialog editor
 	
 	AVATAR_SND_DATA	SndData[MAX_SND_QUEUE];			// snds to play on a given seq frame
 	
-
 	// Any mutually exclusive data should be stored here.
 	union {
 		FOLLOW_ID_DATA		fFollowId;
@@ -383,7 +380,6 @@ public:				// Public for the dialog editor
 			   LONG Id,
 			   THINGTYPE Type) const;
 			
-
 	inline void mfSetOriginalRemapColor(LONG const /* remapColor */);
 	inline void CAvatar::mfSetBeingControlled(BOOL const /* flag */);
 	
@@ -469,7 +465,6 @@ public:				// Public for the dialog editor
 	void mfSetAttackMode(FIGHT_SEQUENCE::ATTACK_MODE const);
 	void mfSetAttackSequence(FIGHT_SEQUENCE::ATTACK_MODE const);
 	
-	
 	inline BOOL const mfIsAllDamageDone() const;
 	void mfSetDamageFlag();
 	
@@ -521,7 +516,6 @@ public:				// Public for the dialog editor
 	inline void mfTurnHighlightOff();
 	inline void mfDoHighlight();
 	
-	
 protected:
 private:
 
@@ -549,7 +543,6 @@ private:
                     LONG    /* Bump */ ,
                     LONG	/* Rate */);
 
-
 	WadThingType mfMoveTowardWithBump(LONG	 /* distance */,
 							LONG	 /* lTargetX */,	// 24.8
 							LONG	 /* lTargetY */,	// 24.8
@@ -572,7 +565,6 @@ private:
 	LONG AvatarNear( THINGTYPE /* type */,
 	                 LONG & /* Distance */,
 	                 SHORT & /* HandleToAvatar */);
-
 
 	// Subroutines to help make noise for combat.
 	void mfFightMissSounds(PLAYER_STATS const * const /* pAvatarStats */,
@@ -618,7 +610,6 @@ private:
     void operator delete( void *p );
 };
 
-
 // set my kingdom alliance
 inline void CAvatar::mfSetRealm(REALM::REALM_TYPE const NewRealm)
 {
@@ -628,7 +619,6 @@ inline void CAvatar::mfSetRealm(REALM::REALM_TYPE const NewRealm)
 // returns TRUE if Him is an ally of Me
 inline const BOOL CAvatar::mfIsAlly(CAvatar const * const Him) const
 {
-//	return( Realm.mfIsMyAlly(Him->Realm.HomeRealm) );
 	return AREALLIED(Realm.HomeRealm,Him->Realm.HomeRealm);	// changed 9/3 ABC
 }
 
@@ -659,7 +649,6 @@ inline CAvatar::AISTATUS CAvatar::DoAI(CAvatar::AISTATUS st)
 	mfCheckSnds();
 	return (Status);
 }
-
 
 // This routine provide access for dlg_edit
 inline CAvatar::AIFUNC CAvatar::GetAIFuncIndex() const
@@ -790,7 +779,6 @@ inline BOOL CAvatar::mfTestFrame(LONG const frame)
 	return Result;
 }
 
-
 // Begin a Listening Sequence
 inline void CAvatar::mfBeginListen()
 {
@@ -798,7 +786,6 @@ inline void CAvatar::mfBeginListen()
 	Status = AI_BEGIN_LISTEN_BOW;
 	FaceTo(CAMERA_INT_VAL(camera.x), CAMERA_INT_VAL(camera.y));
 	fPrev.TimeLastRotate = 0; // so that we'll rotate on the first pass.
-	//fFreeze = TRUE; // Stop the camera movement.
 }
 
 // Wait for Bow to complete.
@@ -832,7 +819,6 @@ inline void CAvatar::mfEndListen()
     // Since we currently recieve no messages just resume like AI_END_PAUSE
 	Status = AI_END_LISTEN_BOW;
 	mfPlayAnimationOnce(BOWSEQ); // Bow once again.
-	//	fFreeze = FALSE; // Let go of the camera.
 }
 
 // Get the avatar facing back where he was before we clicked on them.
@@ -863,7 +849,6 @@ inline void CAvatar::mfEndPause()
 	}
 }
 
-
 // While waiting figet every so often.
 inline void CAvatar::mfStandAndFidget()
 {
@@ -877,8 +862,6 @@ inline void CAvatar::mfStandAndFidget()
             mfPlayAnimationOnce(STANDSEQ);
             break;
         // GWP case 1:
-        // GWP     mfStartAnimationStand(WALKSEQ);
-        // GWP     break;
         case 1:
             mfPlayAnimationOnce(GEST1SEQ);
             break;
@@ -993,7 +976,6 @@ inline const LONG CAvatar::mfDistanceToPlayer() const
 									   PLAYER_INT_VAL(player.x),
 									   PLAYER_INT_VAL(player.y)));
 }
-
 
 /* ========================================================================
    Function    - mfCanIHitHim
@@ -1159,7 +1141,6 @@ inline void  CAvatar::mfSetMeToThePlayer() const
 	player.Flying = attrib.IsFlying;
 }
 
-
 inline BOOL const CAvatar::mfAmIImmoblized() const
 {
 	return (((Status == AI_DEAD ||
@@ -1203,7 +1184,6 @@ inline BOOL CAvatar::mfIsNastySector (LONG const x, LONG const y)
 		sectors[iSector].special == SSP_ACID_FLOOR;
 }
 
-
 inline void CAvatar::mfSetOriginalRemapColor(LONG const remapColor )
 {
 	fOriginalRemapColor = remapColor;
@@ -1245,7 +1225,6 @@ inline void CAvatar::mfSetBeingControlled(BOOL const flag)
 {
 	attrib.BeingControlled = flag;
 }
-
 
 // Compute the point at which the sword will hit.
 // In BR2 get the distance in front from the art.

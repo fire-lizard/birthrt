@@ -9,7 +9,6 @@
 //
 // -------------------------------------------------------------------
 
-//#include "Global.h"
 #include "Windows.h"
 
 /* ========================================================================
@@ -33,22 +32,12 @@ BYTE NextCRC (BYTE c)
 }
 
 //USHORT HashCRC (CSTRPTR sz)
-//{
-//	USHORT		i;
-//
-//	i = 0;
-//	accumCRC = 0;
-//	while (NextCRC(sz[i++])) ;
-//	NextCRC(0);
-//	return accumCRC;
-//}
 USHORT HashCRC ( PUCHAR lpMsg, USHORT usSize )
 {
 	USHORT		i;
 
 	i = 0;
 	accumCRC = 0;
-//	while (NextCRC(lpMsg[i++])) ;
 	for ( i = 0; i < usSize; i++ )
 		NextCRC(lpMsg[i]);
 	NextCRC(0);
@@ -60,7 +49,5 @@ USHORT HashCRC ( PUCHAR lpMsg, USHORT usSize )
 	======================================================================== */
 
 	/* use CRC to hash the name into a USHORT */
-//	wNameHash = HashCRC(szResName);
-
 
 // Crc.cpp

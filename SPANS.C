@@ -51,7 +51,6 @@ extern UBYTE				shade_table[];
 #define SPAN_OPEN		(1)
 #define SPAN_CLOSED	(0)
 
-
 #define ABSURD_SECTOR (99999)
 #define LUDICROUS_SECTOR (-1)
 
@@ -62,8 +61,6 @@ extern UBYTE				shade_table[];
 // [d7-02-96 JPC] Removed xe, wx, and wy from SPAN struct because these
 // members aren't used.
 typedef struct{
-//	LONG x,xe;
-//	LONG wx,wy;
 	LONG x;			// This is a screen coordinate x value.
 	ULONG	sector;
 	LONG status;	// Open or closed.
@@ -75,7 +72,6 @@ typedef struct{
 typedef struct{
 	SHORT y;		// y screen coordinate that begins the post. (Wall)
 	SHORT ye;		// y screen coordinate that ends this post.
-//	SHORT wx,wy;
 	USHORT sector;
 	SHORT type;
 	}POST;
@@ -357,7 +353,6 @@ static void draw_span (
 	if (sy.lval == 0)								/* prevent divide by zero */
 		sy.lval = 1;
 	/* reverse the proj() function, use 28.4bit fixed point math */
-	//wy = (cz * render_perspect * floor_scale * 16) / (sy.lval * UNITARY_SCALE);
 	wy = cz / (sy.lval * UNITARY_SCALE);
 	wx = (sx.lval * wy);							/* wx,wy are map posn of span start */
 
@@ -366,7 +361,6 @@ static void draw_span (
 	rot8dbl(&a);
 
 	b.x = wy;
-	//wx += (wy << 16);
 	b.y = (wx + (wy << 16))/ (render_perspect-1);
 	rot8dbl(&b);
 
@@ -392,7 +386,6 @@ static void draw_span (
 			{
 				// This is done so the textures don't line up and cause
 				// vertical strips in the floor.
-				//LONG tex_start = ((sx.lval>>16) - ((sy.lval>>16)*tex_size)) & tex_mask;
 				
 				do {
 					LONG const tex_drawn = tex_mask - tex_start;
@@ -407,7 +400,6 @@ static void draw_span (
 					else
 					{
 						memcpy(sptr,&tex[tex_start],w);
-						// GWP MARK END of Span  sptr += w;
 						w = 0;
 					}
 				} while (w > 0);
@@ -420,7 +412,6 @@ static void draw_span (
 					// GWP I did an optimization that assumed that sy.lval>>16 and sy.lval>>16
 					// GWP didn't change every loop. That was worse. (You'll notice it isn't
 					// GWP still in the code!
-					//*sptr = tex[ ((sx.lval>>16) - ((sy.lval>>16)*tex_size) ) & tex_mask];
 					*sptr = tex[ (sx.TwoHalves.sHigh - (sy.TwoHalves.sHigh*tex_size) ) & tex_mask];
 					sx.lval += dx;
 					sy.lval += dy;
@@ -437,7 +428,6 @@ static void draw_span (
 			// GWP If you want a shaded texture, well you just have to do
 			//     the lookup.
 			do {
-				//*sptr = shade[tex[ ((sx.lval>>16) - ((sy.lval>>16)*tex_size) ) & tex_mask]];
 				*sptr = shade[tex[ (sx.TwoHalves.sHigh - (sy.TwoHalves.sHigh*tex_size) ) & tex_mask]];
 				sx.lval += dx;
 				sy.lval += dy;
@@ -464,7 +454,6 @@ static void draw_span (
 	}
 	// GWP This will draw white dots at the end of the floor span. Useful
 	//     for debugging. (Be sure and uncomment the line above too.)
-	// MARK THE END OF THE SECTOR *(sptr - 1) = WHITE;
 }
 
 /* ========================================================================
@@ -514,14 +503,12 @@ static void draw_cspan (
 					 			   //have this extra substraction, but it works,
 								   //so don't mess with it
 					
-
 	/* get map x,y from screen x,y */
 	sy.lval = isy - render_center_y;			/* translate center to 0,0 */
 	sx.lval = isx - render_center_x;
 	if (sy.lval == 0)								/* prevent divide by zero */
 		sy.lval = 1;
 	/* reverse the proj() function, use 28.4bit fixed point math */
-	//wy = (cz * render_perspect * floor_scale * 16) / (sy.lval * UNITARY_SCALE);
 	wy = cz / (sy.lval * UNITARY_SCALE);
 	wx = (sx.lval * wy);							/* wx,wy are map posn of span start */
 
@@ -530,18 +517,15 @@ static void draw_cspan (
 	rot8dbl(&a);
 
 	b.x = wy;
-	//wx += (wy << 16);
 	b.y = (wx + (wy << 16))/ ((render_perspect)-1);
 	rot8dbl(&b);
 
 	/* diff is delta. convert 28.4fixed to integer */
-	//dx = (b.x - a.x) / 16;
 	dx = (a.x - b.x) / 16;
 	dy = (b.y - a.y) / 16;
 
 	/* switch a.x  & a.y from 28.4bit fixed point to 16.16bit */
 	sx.lval = (camera_offset << 16) - (a.x << 12);
-	//sx = camera_offset - (a.x << 12);
 	sy.lval = (a.y << 12);
 
 	w = isx_end - isx + 1;
@@ -551,7 +535,6 @@ static void draw_cspan (
 		if (light == 0)
 		{
 			do {
-				//*sptr = tex[ ((sx.lval>>16) - ((sy.lval>>16)*tex_size) ) & tex_mask];
 				*sptr = tex[ (sx.TwoHalves.sHigh - (sy.TwoHalves.sHigh*tex_size) ) & tex_mask];
 				sx.lval += dx;
 				sy.lval += dy;
@@ -565,7 +548,6 @@ static void draw_cspan (
 		else
 		{
 			do {
-				//*sptr = shade[tex[ ((sx.lval>>16) - ((sy.lval>>16)*tex_size) ) & tex_mask]];
 				*sptr = shade[tex[ (sx.TwoHalves.sHigh - (sy.TwoHalves.sHigh*tex_size) ) & tex_mask]];
 				sx.lval += dx;
 				sy.lval += dy;
@@ -620,7 +602,6 @@ void draw_spans (void)
 			{
 				for (y=(ULONG)pPost->y; y<=postYeVal; ++y)
 				{
-					//close_span(x,y,Sector);
 					// GWP Unrolled close_span.
 					if ( y >= MAX_VIEW_HEIGHT)
 						break; // GWP y won't get any smaller! continue;
@@ -640,7 +621,6 @@ void draw_spans (void)
 				// open a span.
 				for (y=(ULONG)pPost->y; y<=postYeVal; ++y)
 				{
-					//open_span(x,y,Sector);
 					// GWP Unrolled open_span.
 					SPAN *s;
 				
@@ -765,7 +745,6 @@ static void closeout_span (LONG y)
 							goto MemError;
 						
 						c_tex = (UBYTE*)pTex + sizeof(BITMHDR);
-						//GEH c_z = sector_to_ch(c_sect) + camera.z;
 						c_z = sector_to_ch(c_sect) - camera.z;
 						c_size = pTex->w;
 						c_scale = pTex->scale;
@@ -773,11 +752,7 @@ static void closeout_span (LONG y)
 						// moved here from draw_cspan.
 						c_tex_mask = (c_size*c_size)-1;
 						c_z *= render_perspect * c_scale * 16;
-						//c_camera_offset = (camera.y*c_scale)/UNITARY_SCALE + (camera.x*c_scale*c_size)/UNITARY_SCALE;
-						//c_camera_offset <<= 16;
-//						printf("* ");
 					}
-//					printf("CSPAN - x:%ld->%ld  y:%ld  sect:%ld  tex:%ld\n",xx,x,y,sect,tex);
 					draw_cspan(xx, y, x, c_tex, c_z, c_size, c_scale, c_tex_mask, c_light);
 				}
 			}
@@ -811,7 +786,6 @@ static void closeout_span (LONG y)
 					if (!IsPointerGood(pTex))
 						goto MemError;
 					tex = (UBYTE*)pTex + sizeof(BITMHDR);
-					//GEH z = sector_to_fh(sect) + camera.z;
 					z = sector_to_fh(sect) - camera.z;
 					size = pTex->w;
 					scale = pTex->scale;
@@ -819,11 +793,7 @@ static void closeout_span (LONG y)
 					// moved here from draw_span.
 					tex_mask = (size*size)-1;
 					z *= render_perspect * scale * 16;
-					//camera_offset = (CAMERA_INT_VAL(camera.y)*scale)/UNITARY_SCALE + (CAMERA_INT_VAL(camera.x)*scale*size)/UNITARY_SCALE;
-					//camera_offset <<= 16;
-//					printf("* ");
 				}
-//				printf(" SPAN - x:%ld->%ld  y:%ld  sect:%ld  tex:%ld  z:%ld\n",xx,x,y,sect,tex,z, light);
 				draw_span(xx, y, x, tex, z, size, scale, tex_mask, light, c_Homogenous, span_random_start[y]);
 			}
 		}
@@ -832,6 +802,5 @@ MemError:
 		gSpans[y].status = SPAN_CLOSED;
 	}
 }
-
 
 /* ======================================================================== */

@@ -38,11 +38,9 @@
 #define INIT_REPORT_MODE		8
 #define MAX_MODE        99
 
-
 /* ------------------------------------------------------------------------
    Enums
    ------------------------------------------------------------------------ */
-
 
 typedef enum
 {
@@ -139,7 +137,6 @@ extern DIFFICULTY		battle_difficulty;
 extern DIFFICULTY		adventure_difficulty;
 extern SPEED			battle_speed;
 #endif
-
 
 /* ------------------------------------------------------------------------
    Inline functions   

@@ -13,7 +13,6 @@
 #ifndef DYNAMTEX_H
 #define DYNAMTEX_H
 
-
 // GWP off for BR1. 
 #define WRC_CAMERA_TEST 00
 
@@ -29,7 +28,6 @@ typedef struct
 	SHORT buffer;
 }	BufferInfo;
 
-
 typedef	CAMERA CameraDescriptor;
 
 typedef struct 
@@ -44,7 +42,6 @@ typedef struct
 	long LDidx;
 	SHORT BufferType;
 } DynamicTexture;
-
 
 /* ------------------------------------------------------------------------
    Prototypes
@@ -66,7 +63,6 @@ void  ResetDynTexDrawn(void);
 void  ResetDynTexFrameData(void);
 LONG  RenderCameras(void);
 
-
 extern CameraDescriptor Cameras[];
 extern long CurrCam;
 extern DynamicTexture TempCameraLinedefTable[];
@@ -79,4 +75,3 @@ extern char DynTexFrameData[];
 
 #endif // WRC_CAMERA_TEST
 #endif
-

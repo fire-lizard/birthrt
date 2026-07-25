@@ -9,7 +9,6 @@
    
    Contains the following general functions:
 
-   
    ======================================================================== */
 
 /* ------------------------------------------------------------------------
@@ -122,7 +121,6 @@ void CONTROL_PANELS::CURRENT_CONTROL::mfSetEndCombat()
 		{
 			// GWP Until I figure a way to reattach to the adventure team.
 			// GWP don't let me leave them wandering in the Wad.
-			// GWP pAvatar->Status = fOriginalStatus;
 			pThisAvatar->Status = CAvatar::AI_RUNNING;
 			pThisAvatar->mfSetAngle(fOriginalAngle);
 		}
@@ -268,7 +266,6 @@ void CONTROL_PANELS::CURRENT_CONTROL::mfPaintPanel()
 		char 	cpFormatBuffer[128];
 		char	cpNameBuffer[80];
 						
-		
 		GetButtonPosition ( fhMenu, BUTNO_AVATAR_HEALTH, &x, &y );
 		
 		GetButtonSize ( fhMenu, BUTNO_AVATAR_HEALTH, &width, &height );
@@ -323,7 +320,6 @@ void CONTROL_PANELS::CURRENT_CONTROL::mfPaintPanel()
 			ClearRemapTable();
 			SetPurge(hBitm);
 		}
-		
 		
 		// Now paint the attack buttons.
 		GetButtonPosition(fhMenu, BUTNO_HIGH_ATTACK, &x, &y);
@@ -455,7 +451,6 @@ void CONTROL_PANELS::CURRENT_CONTROL::mfPaintPanel()
 			DrawBitmap ((SHORT)x, (SHORT)y, hBitm, 0, 0, (SHORT)width, (SHORT)height);
 			SetPurge(hBitm);
 		}
-		
 		
 		switch (pAvatar->Status)
 		{
@@ -1037,7 +1032,6 @@ void CONTROL_PANELS::mfUpdateOptions()
 	}
 }		
 
-
 /* ========================================================================
    Function    - mfSetNewCurrent
    Description - Cover fn to assign a new current avatar.
@@ -1084,7 +1078,6 @@ void CONTROL_PANELS::mfSetNewCurrent(SHORT const i)
 			SetButtonArt(fccActive[fsccIndex].fhMenu, 0, COMBAT_REGULAR_HIGHLIGHT_PANEL);
 		}
 	}
-	
 	
 	if (fccActive[fsccIndex].fhAvatar != fERROR)
 	{

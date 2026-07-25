@@ -9,7 +9,6 @@
    
    Contains the following general functions:
 
-   
    ======================================================================== */
 
 #if !defined(_COMBCNTL_HXX)
@@ -17,7 +16,6 @@
 /* ------------------------------------------------------------------------
    Includes
    ------------------------------------------------------------------------ */
-
 
 #if !defined(_TYPEDEFS_H)
 #include "typedefs.h"
@@ -248,7 +246,6 @@ inline LONG const CONTROL_PANELS::CURRENT_CONTROL::mfConvertPanel(LONG const pan
 	return NewPanel;
 }
 
-			
 // Test for speech flag and utter accordlingly.
 inline void CONTROL_PANELS::CURRENT_CONTROL::mfSpeakAcknowledgement( ) const
 {
@@ -322,7 +319,6 @@ inline void CONTROL_PANELS::mfCheckAllPanels()
 	}
 }
 
-
 inline void CONTROL_PANELS::mfPaintThisMenu(SHORT MenuIndex)
     {
     	for (LONG i = 0; i < MAX_NUMBER_CONTROLS; i++)
@@ -383,6 +379,5 @@ inline void CONTROL_PANELS::mfSetAllDefend()
 		}
 	}
 }
-
 
 #endif // _COMBCNTL_HXX

@@ -44,7 +44,6 @@
 volatile unsigned char key_stat[256];
 volatile BOOL fAnyKeyChanged;
 
-
 /* =======================================================================
    Function    - install_keyint 
    Description - installs the keyboard interrupt
@@ -88,10 +87,8 @@ long key_status(long k)
         return rv;
 }
 
-
 long async_key_status(long k)
 {
-//      return(GetAsyncKeyState(k) & 0x8000);
         return(key_stat[k] & 0x40);
 }
 

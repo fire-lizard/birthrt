@@ -23,7 +23,6 @@
    Contains the following general functions:
    load_level          -handles the loading of a doom-style wad.
 
-
    ======================================================================== */
 
 /* ------------------------------------------------------------------------
@@ -77,7 +76,6 @@ static void load_ssectors(IWAD_ENTRY *ent, FILE *);
 static void load_nodes(IWAD_ENTRY *ent, FILE *);
 static void load_sectors(IWAD_ENTRY *ent, FILE *);
 static void load_wall_textures(void);
-// static void load_flats(void );
 
 /* ------------------------------------------------------------------------
    Global Variables
@@ -161,7 +159,6 @@ IWAD_ENTRY ent;
 			sprintf(pwad_name,"%s",name);
 		}
 	}
-//	printf("trying to load %s\n",pwad_name);
 
 	fit=FileOpen(pwad_name,"rb");
 	if(fit==NULL)
@@ -229,7 +226,6 @@ IWAD_ENTRY ent;
 	load_reject(&ent, DataReadFit);
 	SetLoadingProgress(85);
 	RunMenus();
-	//reject( 10, 20 ); //TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST!
 	fread(&ent,sizeof(IWAD_ENTRY),1,fit);	/*blockm*/
 	load_blockmap(&ent, DataReadFit);
 	FileClose(fit);
@@ -246,7 +242,6 @@ IWAD_ENTRY ent;
 	CrossRefCameras();
 #endif
 	PlayerArrival(&PlayerStart);
-
 
 	debugf("Free memory before textures...%ld\n", ReportFreeMem(TRUE));
 	load_sky_textures();
@@ -290,11 +285,9 @@ static void load_blockmap(IWAD_ENTRY *ent, FILE *fi)
 // the blockmap header.
 // ---------------------------------------------------------------------------
 
-	//FILE *fi;
 	LONG	size;
 	LONG	numRead;
 
-	//fi=FileOpen(pwad_name,"rb");
 	fseek(fi,ent->offset,SEEK_SET);
 	fread(&blockm_header,sizeof(BLOCKMAP),1,fi);
 	size = ent->size - sizeof(BLOCKMAP);
@@ -308,9 +301,6 @@ static void load_blockmap(IWAD_ENTRY *ent, FILE *fi)
 	}
 	blockm_offs = (USHORT*) &blockm[4];
 	// GWP EXPAND_FACTOR == 1.
-	// GWP blockm_header.xo*=EXPAND_FACTOR;
-	// GWP blockm_header.yo*=EXPAND_FACTOR;
-	//fclose(fi);
 }
 
 /* ========================================================================
@@ -320,10 +310,8 @@ static void load_blockmap(IWAD_ENTRY *ent, FILE *fi)
    ======================================================================== */
 static void load_reject(IWAD_ENTRY *ent, FILE *fi)
 {
-	//FILE *fi;
 	LONG numRead;
 
-	//fi=FileOpen(pwad_name,"rb");
 	fseek(fi,ent->offset,SEEK_SET);
 	tot_rejects = ent->size;
 	rejects = (UBYTE *)zalloc(ent->size);
@@ -332,7 +320,6 @@ static void load_reject(IWAD_ENTRY *ent, FILE *fi)
 	{
 		tot_rejects = numRead;
 	}
-	//fclose(fi);
 }
 
 /* ========================================================================
@@ -342,33 +329,20 @@ static void load_reject(IWAD_ENTRY *ent, FILE *fi)
    ======================================================================== */
 static void load_things(IWAD_ENTRY *ent, FILE *fi)
 {
-// GWP THING t;
-//FILE *fi;
-//ULONG i=0;
 LONG numRead;
 
-	//fi=FileOpen(pwad_name,"rb");
 	fseek(fi,ent->offset,SEEK_SET);
 	tot_things=ent->size/sizeof(THING);
 	if (tot_things==0 || tot_things > 10000)
 		fatal_error("LEVEL ERROR - Total things=%ld in wad %s\n",tot_things,pwad_name);
 	things=(THING *)zalloc(ent->size+1);
 
-	// GWP while(ftell(fi)<ent->offset+ent->size)
-	// GWP 	{
-	// GWP 	fread(&t,sizeof(THING),1,fi);
-	// GWP 	// GWP EXPAND_FACTOR == 1.
-	// GWP 	// GWP t.x*=EXPAND_FACTOR;
-	// GWP 	// GWP t.y*=EXPAND_FACTOR;
-	// GWP 	things[i++]=t;
-	// GWP 	}
 	numRead = fread(&things[0],sizeof(THING), tot_things,fi);
 	if (numRead < tot_things)
 	{
 		tot_things = numRead;
 	}
 	
-	//fclose(fi);
 }
 
 /* ========================================================================
@@ -379,29 +353,19 @@ LONG numRead;
 
 static void load_linedefs(IWAD_ENTRY *ent, FILE * fi)
 {
-// GWP LINEDEF t;
-//FILE *fi;
-// GWP ULONG i=0;
 LONG numRead;
 
-	//fi=FileOpen(pwad_name,"rb");
 	fseek(fi,ent->offset,SEEK_SET);
 	tot_linedefs=ent->size/sizeof(LINEDEF);
 	if (tot_linedefs==0 || tot_linedefs > 10000)
 		fatal_error("LEVEL ERROR - Total linedefs=%ld in wad %s\n",tot_linedefs,pwad_name);
 	linedefs=(LINEDEF *)zalloc(ent->size+1);
 
-	// GWP while(ftell(fi)<ent->offset+ent->size)
-	// GWP 	{
-	// GWP 	fread(&t,sizeof(LINEDEF),1,fi);
-	// GWP 	linedefs[i++]=t;
-	// GWP 	}
 	numRead = fread(&linedefs[0], sizeof(LINEDEF), tot_linedefs, fi);
 	if (numRead < tot_linedefs)
 	{
 		tot_linedefs = numRead;
 	}
-	//fclose(fi);
 }
 
 /* ========================================================================
@@ -414,12 +378,10 @@ static void load_sidedefs(IWAD_ENTRY *ent, FILE * fi)
 {
 SIDEDEF *t;
 SHORT	SidedefHandle;
-//FILE *fi;
 ULONG i=0;
 ULONG status;                          // [d6-06-96 JPC]--ignore status for now
 LONG numRead;
 
-	//fi=FileOpen(pwad_name,"rb");
 	fseek(fi,ent->offset,SEEK_SET);
 	tot_sidedefs=ent->size/sizeof(SIDEDEF);
 	if (tot_sidedefs==0 || tot_sidedefs > 10000)
@@ -429,11 +391,6 @@ LONG numRead;
 	SetBlockAttr(SidedefHandle, LOCKED, LOCKED);
 	t = (SIDEDEF *) BLKPTR(SidedefHandle);
 
-	// GWP while(ftell(fi)<ent->offset+ent->size)
-	// GWP 	{
-	// GWP 	fread(&t,sizeof(SIDEDEF),1,fi);
-	// GWP 	sidedefs[i++]=t;
-	// GWP 	}
 	numRead = fread(&t[0], sizeof(SIDEDEF), tot_sidedefs, fi);
 	if (numRead < tot_sidedefs)
 	{
@@ -453,7 +410,6 @@ LONG numRead;
 	}
 	
 	DisposBlock(SidedefHandle);
-	//fclose(fi);
 }
 
 /* ========================================================================
@@ -466,29 +422,17 @@ static void load_vertexes(IWAD_ENTRY *ent, FILE * fi)
 {
 SHORT VertexHandle;
 VERTEX *t;
-//FILE *fi;
 ULONG i=0;
 ULONG numRead;
 
-	//fi=FileOpen(pwad_name,"rb");
 	fseek(fi,ent->offset,SEEK_SET);
 	tot_vertexs=ent->size/sizeof(VERTEX);
 	if (tot_vertexs==0 || tot_vertexs > 10000)
 		fatal_error("LEVEL ERROR - Total vertexs=%ld in wad %s\n",tot_vertexs,pwad_name);
-	// GWP vertexs=(SPOINT *)zalloc(ent->size+1);
 	VertexHandle = NewBlock(sizeof(VERTEX) * tot_vertexs);
 	SetBlockAttr(VertexHandle, LOCKED, LOCKED);
 	t = (VERTEX *) BLKPTR(VertexHandle);
 
-	// GWP while(ftell(fi)<ent->offset+ent->size)
-	// GWP 	{
-	// GWP 	fread(&t,sizeof(SPOINT),1,fi);
-	// GWP 	// GWP EXPAND_FACTOR == 1
-	// GWP 	// GWP t.x*=EXPAND_FACTOR;
-	// GWP 	// GWP t.y*=EXPAND_FACTOR;
-	// GWP 	vertexs[i++]=t;
-	// GWP 	}
-	
 	numRead = fread(&t[0],sizeof(VERTEX),tot_vertexs,fi);
 	if (numRead < tot_vertexs)
 	{
@@ -502,7 +446,6 @@ ULONG numRead;
 		vertexs[i].x=t[i].x;
 		vertexs[i].y=t[i].y;
 	}
-	//fclose(fi);
 	DisposBlock(VertexHandle);
 }
 
@@ -514,30 +457,21 @@ ULONG numRead;
 
 static void load_segs(IWAD_ENTRY *ent, FILE * fi)
 {
-	// GWP SEG t;
-	//FILE *fi;
 	ULONG i=0;
 	ULONG j;
 	ULONG numRead;
 
-	//fi=FileOpen(pwad_name,"rb");
 	fseek(fi,ent->offset,SEEK_SET);
 	tot_segs=ent->size/sizeof(SEG);
 	if (tot_segs==0 || tot_segs > 10000)
 		fatal_error("LEVEL ERROR - Total segs=%ld in wad %s\n",tot_segs,pwad_name);
 	segs=(SEG *)zalloc(ent->size+1);
 
-	// GWP while(ftell(fi)<ent->offset+ent->size)
-	// GWP 	{
-	// GWP 	fread(&t,sizeof(SEG),1,fi);
-	// GWP 	segs[i++]=t;
-	// GWP 	}
 	numRead = fread(&segs[0], sizeof(SEG), tot_segs, fi);
 	if (numRead < tot_segs)
 	{
 		tot_segs = numRead;
 	}
-	//fclose(fi);
 
 	// [d10-21-96 JPC] Implement Chris Phillips's idea about avoiding
 	// redundant draws of mirrored segs.
@@ -596,8 +530,6 @@ ULONG i=0;
 SSECTOR *t;
 ULONG numRead;
 
-//FILE *fi;
-	//fi=FileOpen(pwad_name,"rb");
 	fseek(fi,ent->offset,SEEK_SET);
 	tot_ssectors=ent->size/sizeof(SSECTOR);
 	if (tot_ssectors==0 || tot_ssectors > 10000)
@@ -607,11 +539,6 @@ ULONG numRead;
 	SetBlockAttr(SsectorHandle, LOCKED, LOCKED);
 	t = (SSECTOR *) BLKPTR(SsectorHandle);
 
-	// GWP while(ftell(fi)<ent->offset+ent->size)
-	// GWP 	{
-	// GWP 	fread(&t,sizeof(SSECTOR),1,fi);
-	// GWP 	ssectors[i++]=t;
-	// GWP 	}
 	numRead = fread(&t[0], sizeof(SSECTOR), tot_ssectors, fi);
 	if (numRead < tot_ssectors)
 	{
@@ -628,7 +555,6 @@ ULONG numRead;
 	}
 	
 	DisposBlock(SsectorHandle);
-	//fclose(fi);
 }
 
 /* ========================================================================
@@ -683,11 +609,9 @@ static void load_sectors(IWAD_ENTRY *ent, FILE * fi)
 {
 SECTOR *t;
 SHORT SectorHandle;
-//FILE *fi;
 ULONG i=0;
 LONG numRead;
 
-	//fi=FileOpen(pwad_name,"rb");
  	fseek(fi,ent->offset,SEEK_SET);
 	tot_sectors=ent->size/sizeof(SECTOR);
 	if (tot_sectors==0 || tot_sectors > 10000)
@@ -698,14 +622,6 @@ LONG numRead;
 	t = (SECTOR *) BLKPTR(SectorHandle);
 	
 	gSectorLight = (BYTE *)zalloc(tot_sectors); // [d10-08-96 JPC]
-	// GWP while(ftell(fi)<ent->offset+ent->size)
-	// GWP 	{
-	// GWP 	fread(&t,sizeof(SECTOR),1,fi);
-	// GWP 	// GWP EXPAND_FACTOR == 1;
-	// GWP 	// GWP t.fh*=EXPAND_FACTOR;
-	// GWP 	// GWP t.ch*=EXPAND_FACTOR;
-	// GWP 	sectors[i++]=t;
-	// GWP 	}
 	numRead = fread(&t[0], sizeof(SECTOR), tot_sectors, fi);
 	if (numRead < tot_sectors)
 	{
@@ -714,7 +630,6 @@ LONG numRead;
 	
 	sectors=(BR_SECTOR *)zalloc(sizeof(BR_SECTOR) * tot_sectors);
 	
-	//fclose(fi);
 	for (i = 0; i < tot_sectors; ++i)
 	{
 		sectors[i].fh		= t[i].fh;
@@ -735,7 +650,6 @@ LONG numRead;
    Returns     - void
    ======================================================================== */
 
-
 static void load_wall_textures(void)
 {
 ULONG status;                          // [d6-06-96 JPC]--ignore status for now
@@ -750,7 +664,6 @@ ULONG status;                          // [d6-06-96 JPC]--ignore status for now
 	get_texture ("DUNGCSW2", &status);
 #endif
 }
-
 
 /* ========================================================================
    Function    - PurgeLevel
@@ -769,7 +682,6 @@ void PurgeLevel(void)
 	remove_task(HandleFloors);
 	remove_task(HandleCeilings);
 	remove_task(TextureFrameHandler);
-	// no longer used: remove_task(SectorFrameHandler);
 
 	printf("Freemem at end of level: %ld\n", ReportFreeMem(TRUE));
 	init_doors();								// [d11-14-96 JPC] removes all sounds
@@ -820,7 +732,6 @@ void PurgeLevel(void)
 
 void load_new_wad(char *name, LONG PlayerStart)
 {
-	// GWP printf("Freemem at end of level: %ld\n", ReportFreeMem(TRUE));
 
 	// GWP Copied from PurgeLevel
 	//     Why don't we call PurgeLevel here instead of duplicating 90%
@@ -829,16 +740,6 @@ void load_new_wad(char *name, LONG PlayerStart)
 	// GWP // [d8-08-96 JPC]
 	// GWP // We need to remove tasks immediately!
 	// GWP // Note that this is harmless if function is not a registered task.
-	// GWP remove_task(handle_doors);
-	// GWP remove_task(HandleLifts);
-	// GWP remove_task(HandleFloors);
-	// GWP remove_task(HandleCeilings);
-	// GWP remove_task(TextureFrameHandler);
-	// GWP 
-	// GWP // no longer used: remove_task(SectorFrameHandler);
-	// GWP init_doors ();								// [d11-14-96 JPC] removes all sounds
-	// GWP purge_all_things();
-	// GWP purge_all_textures();
 	// GWP SetPurgeClass(CLASS2);			/* purge all things and textures */
 	// GWP DisposClass(CLASS1);				/* remove all zallocED memory */
 
@@ -905,7 +806,6 @@ void CreateResourceScript ()
 	for (i = 0; i < cThings; ++i)
 	{
 		filepos = ftell (fit);
-		// fseek (fit, filepos, SEEK_SET);
 		fread (&t, sizeof(THING), 1, fit);
 		printf ("Thing %d type = %d\n", i, t.type);	
 	}
@@ -914,5 +814,3 @@ void CreateResourceScript ()
 #endif
 
 // ===========================================================================
-
-

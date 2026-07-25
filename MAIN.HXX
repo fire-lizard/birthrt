@@ -1,4 +1,3 @@
-
 /* ========================================================================
    Copyright (c) 1990,1996	Synergistic Software
    All Rights Reserved

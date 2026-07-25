@@ -9,7 +9,6 @@
 
    Contains the following general functions:
 
-
    ======================================================================== */
 
 /* ------------------------------------------------------------------------
@@ -102,7 +101,6 @@ void CAvatar::Harpies (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 			pAvatar->fHarpy.Movement.dy = pAvatar->mfGetWalkRate();
 			pAvatar->fHarpy.Movement.dz = 0;
 
-			
 			if (pAvatar->mfTeleportHome())
 			{
 				// Remember where "Home" is.
@@ -159,11 +157,8 @@ void CAvatar::Harpies (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 			pAvatar->mfReturnToPosition();
 			break;
 	
-			
 	case AI_DEAD:
 			// Dead is dead. Don't move.
-			//if (pAvatar->mfGetArtSequence() != DEADSEQ)
-			//{
 				pAvatar->attrib.IsFlying = FALSE;
 				pAvatar->mfClearLoopingSnd(SND_HARPY_WINGFLAP1);
 				pAvatar->mfGetSectorInfo(&FloorHeight, &CeilingHeight, &Special);
@@ -171,10 +166,8 @@ void CAvatar::Harpies (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 									  pAvatar->mfY(),
 									  FloorHeight,
 									  pAvatar->mfAngle());
-			//}
 			if (pAvatar->attrib.DiedLastFrame)
 			{
-//				pAvatar->mfSpewAll();
 				pAvatar->attrib.DiedLastFrame=FALSE;
 			}
 
@@ -197,10 +190,8 @@ void CAvatar::Harpies (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 			if (pAvatar->hEnemy == fERROR)
 			{
 				pAvatar->Status = AI_SEARCH;
-				//pAvatar->attrib.IssuedChallange = FALSE;
 				if(pAvatar->attrib.IsFollowPath == TRUE)
 				{
-					//pAvatar->FaceTo(pAvatar->fFollowPath.oldP.x, pAvatar->fFollowPath.oldP.y);
 					pAvatar->SetAIFuncIndex(CAvatar::AI_FUNC_FOLLOW_PATH);
 					pAvatar->DoAI(CAvatar::AI_INIT);
 					break;
@@ -213,7 +204,6 @@ void CAvatar::Harpies (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 				if (pAvatarTarget->mfAmIImmoblized())
 				{
 					pAvatar->Status = AI_SEARCH;
-					//pAvatar->attrib.IssuedChallange = FALSE;
 					pAvatar->mfStartAnimationOnce(WALKSEQ);
 			   		pAvatar->mfQueueSnd(SND_HARPY_WINGFLAP1, SND_HARPY_WINGFLAP_TOTAL, WingFlappingFrame);
 			   		pAvatar->mfSetLoopingSnd(SND_HARPY_WINGFLAP1, 9);
@@ -222,7 +212,6 @@ void CAvatar::Harpies (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 					pAvatar->hEnemy = fERROR;
 					if(pAvatar->attrib.IsFollowPath == TRUE)
 					{
-						//pAvatar->FaceTo(pAvatar->fFollowPath.oldP.x, pAvatar->fFollowPath.oldP.y);
 						pAvatar->SetAIFuncIndex(CAvatar::AI_FUNC_FOLLOW_PATH);
 						pAvatar->DoAI(CAvatar::AI_INIT);
 						break;
@@ -279,15 +268,12 @@ void CAvatar::Harpies (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 				if (pAvatar->hEnemy == fERROR)
 				{
 					pAvatar->Status = AI_SEARCH;
-					//pAvatar->attrib.IssuedChallange = FALSE;
 					if(pAvatar->attrib.IsFollowPath == TRUE)
 					{
-						//pAvatar->FaceTo(pAvatar->fFollowPath.oldP.x, pAvatar->fFollowPath.oldP.y);
 						pAvatar->SetAIFuncIndex(CAvatar::AI_FUNC_FOLLOW_PATH);
 						pAvatar->DoAI(CAvatar::AI_INIT);
 						break;
 					}
-
 
 				}
 				else
@@ -297,7 +283,6 @@ void CAvatar::Harpies (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 					if (pAvatarTarget->mfAmIImmoblized())
 					{
 						pAvatar->Status = AI_SEARCH;
-						//pAvatar->attrib.IssuedChallange = FALSE;
 						pAvatar->mfStartAnimationOnce(WALKSEQ);
 			   			pAvatar->mfQueueSnd(SND_HARPY_WINGFLAP1, SND_HARPY_WINGFLAP_TOTAL, WingFlappingFrame);
   						pAvatar->mfSetLoopingSnd(SND_HARPY_WINGFLAP1, 9);
@@ -306,7 +291,6 @@ void CAvatar::Harpies (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 						pAvatar->hEnemy = fERROR;
 						if(pAvatar->attrib.IsFollowPath == TRUE)
 						{
-							//pAvatar->FaceTo(pAvatar->fFollowPath.oldP.x, pAvatar->fFollowPath.oldP.y);
 							pAvatar->SetAIFuncIndex(CAvatar::AI_FUNC_FOLLOW_PATH);
 							pAvatar->DoAI(CAvatar::AI_INIT);
 							break;
@@ -328,7 +312,6 @@ void CAvatar::Harpies (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 							                pAvatarTarget->mfY());
 							// [d12-11-96 JPC] Don't start a sequence here.
 							// Doing so prevents the harpy from hitting us.
-							// pAvatar->mfStartAnimationOnce(WALKSEQ);
 				   			pAvatar->mfQueueSnd(SND_HARPY_WINGFLAP1, SND_HARPY_WINGFLAP_TOTAL, WingFlappingFrame);
 
 							pAvatar->mfTestAndGiveDamage(pAvatar->hEnemy);
@@ -359,10 +342,8 @@ void CAvatar::Harpies (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 			{
 				// GWP You have no Player stats....Hit Points????
 				pAvatar->Status = AI_SEARCH;
-				//pAvatar->attrib.IssuedChallange = FALSE;
 				if(pAvatar->attrib.IsFollowPath == TRUE)
 				{
-					//pAvatar->FaceTo(pAvatar->fFollowPath.oldP.x, pAvatar->fFollowPath.oldP.y);
 					pAvatar->SetAIFuncIndex(CAvatar::AI_FUNC_FOLLOW_PATH);
 					pAvatar->DoAI(CAvatar::AI_INIT);
 				}
@@ -383,15 +364,6 @@ void CAvatar::Harpies (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 										 pAvatarTarget->mfX(), pAvatarTarget->mfY());
 			
 				// If you can be seen you are active no matter what.
-				//if (pAvatar->mfIsVisible())
-				//{
-				//	pAvatar->Status = AI_MOVING;
-				//	pAvatar->mfMoveToXYZA(pAvatar->mfX(),
-				//						  pAvatar->mfY(),
-				//						  (FloorHeight+FlyHeight),
-				//						  pAvatar->mfAngle());
-				//	
-				//}
 				//else
 				if (pAvatar->mfCanSeeAvatar(pAvatarTarget) &&
 					pAvatarTarget->Engaged <= 3)
@@ -440,7 +412,6 @@ void CAvatar::Harpies (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 			if (pAvatar->Status == AI_SEARCH)
 			{
 				pAvatar->hEnemy = fERROR;
-				//pAvatar->attrib.IssuedChallange = FALSE;
 				// No foes seen yet.
 				if (pAvatar->mfStandWaiting())
 				{
@@ -464,12 +435,6 @@ void CAvatar::Harpies (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 					else
 						tz = 0;
 					// GWP Do we really need to set our position twice?
-					//pAvatar->mfStartAnimationOnce(WALKSEQ);
-					
-					//pAvatar->mfMoveToXYZA(pAvatar->mfX(),
-					//					  pAvatar->mfY(),
-					//					  (FloorHeight+FlyHeight),
-					//					  pAvatar->mfAngle());
 					
 					pAvatar->mfStartAnimationOnce(WALKSEQ);
 					pAvatar->mfQueueSnd(SND_HARPY_WINGFLAP1, SND_HARPY_WINGFLAP_TOTAL, WingFlappingFrame);
@@ -525,7 +490,6 @@ void CAvatar::Harpies (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 			if (pAvatar->hEnemy == fERROR)
 			{
 				pAvatar->Status = AI_SEARCH;
-				//pAvatar->attrib.IssuedChallange = FALSE;
 				pAvatar->bumpTimer = 100;
 				pAvatar->mfStartAnimationOnce(WALKSEQ);
 				pAvatar->mfQueueSnd(SND_HARPY_WINGFLAP1, SND_HARPY_WINGFLAP_TOTAL, WingFlappingFrame);
@@ -533,7 +497,6 @@ void CAvatar::Harpies (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 
 				if(pAvatar->attrib.IsFollowPath == TRUE)
 				{
-					//pAvatar->FaceTo(pAvatar->fFollowPath.oldP.x, pAvatar->fFollowPath.oldP.y);
 					pAvatar->SetAIFuncIndex(CAvatar::AI_FUNC_FOLLOW_PATH);
 					pAvatar->DoAI(CAvatar::AI_INIT);
 				}
@@ -544,14 +507,11 @@ void CAvatar::Harpies (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 			{
 				// We're being attacked from the back. find'm and attack back.
 				pAvatar->hEnemy = pAvatar->mfFindClosestFoe();
-				//CAvatar * pAvatarTarget = (CAvatar *) BLKPTR(pAvatar->hEnemy);
 
 				pAvatar->mfStartAnimationOnce(MARCHSEQ);
 				pAvatar->mfQueueSnd(SND_HARPY_WINGFLAP1, SND_HARPY_WINGFLAP_TOTAL, WingFlappingFrame);
 				pAvatar->mfSetLoopingSnd(SND_HARPY_WINGFLAP1, 9);
 
-				//const LONG distance = aprox_dist(pAvatar->mfX(), pAvatar->mfY(),
-				//							 pAvatarTarget->mfX(), pAvatarTarget->mfY());
 				if (pAvatar->hEnemy == fERROR)
 				{
 					// Error condition. Should probably disengage myself.
@@ -573,7 +533,6 @@ void CAvatar::Harpies (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 					pAvatar->Status = AI_SEARCH;
 					if(pAvatar->attrib.IsFollowPath == TRUE)
 					{
-						//pAvatar->FaceTo(pAvatar->fFollowPath.oldP.x, pAvatar->fFollowPath.oldP.y);
 						pAvatar->SetAIFuncIndex(CAvatar::AI_FUNC_FOLLOW_PATH);
 						pAvatar->DoAI(CAvatar::AI_INIT);
 					}
@@ -581,7 +540,6 @@ void CAvatar::Harpies (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 					break;
 				}
 			}
-
 
 			CAvatar * pAvatarTarget = (CAvatar *) BLKPTR(pAvatar->hEnemy);
 			
@@ -593,10 +551,8 @@ void CAvatar::Harpies (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 			if (distance > CAvatar::ActivationDistance && !pAvatar->mfCanSeeAvatar(pAvatarTarget)) // Got away
 			{
 				pAvatar->Status = AI_SEARCH;
-				//pAvatar->attrib.IssuedChallange = FALSE;
 				if(pAvatar->attrib.IsFollowPath == TRUE)
 				{
-					//pAvatar->FaceTo(pAvatar->fFollowPath.oldP.x, pAvatar->fFollowPath.oldP.y);
 					pAvatar->SetAIFuncIndex(CAvatar::AI_FUNC_FOLLOW_PATH);
 					pAvatar->DoAI(CAvatar::AI_INIT);
 					break;
@@ -666,7 +622,6 @@ void CAvatar::Harpies (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 					tp.dz = 0;
 					if(pAvatar->dAngle > 64)
 					{	
-						//Rotate((POINT*)&tp, pAvatar->mfAngle());
 						pAvatar->mfStartAnimationOnce(WALKSEQ);
 						pAvatar->mfQueueSnd(SND_HARPY_WINGFLAP1, SND_HARPY_WINGFLAP_TOTAL, WingFlappingFrame);
 						pAvatar->mfSetLoopingSnd(SND_HARPY_WINGFLAP1, 9);
@@ -674,7 +629,6 @@ void CAvatar::Harpies (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 						pAvatar->Status = AI_SEARCH;
 						if(pAvatar->attrib.IsFollowPath == TRUE)
 						{
-							//pAvatar->FaceTo(pAvatar->fFollowPath.oldP.x, pAvatar->fFollowPath.oldP.y);
 							pAvatar->SetAIFuncIndex(CAvatar::AI_FUNC_FOLLOW_PATH);
 							pAvatar->DoAI(CAvatar::AI_INIT);
 							break;
@@ -682,10 +636,6 @@ void CAvatar::Harpies (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 						pAvatar->dAngle=8;
 
 						pAvatar->attrib.IssuedChallange = FALSE;
-						//pAvatar->mfMoveToXYZA((pAvatar->mfX()+PLAYER_INT_VAL(tp.dx)),
-						//					  (pAvatar->mfY()+PLAYER_INT_VAL(tp.dy)),
-						//					  pAvatar->mfZ() + tp.dz,		//Hack
-						//					   (pAvatar->mfAngle()+128));
 
 					}
 					else
@@ -756,37 +706,6 @@ WadThingType CAvatar::mfFlyTowardWithBump(
 		else
 			distance += Bump;
 		
-		
-	   //	if (Bump > 2)
-	   //	{
-			// Introduce some randomness as to exactly where
-			// we endup within "Bump" distance of the target.
-			// Determine whether we are to the N/S of the target or E/W
-			// So we woble on the short axis.
-	   //		if (ABS(dx) > ABS(dy))
-	   //		{
-	   //			if (random(2))
-	   //			{
-	   //				dy += random(Bump - 1);
-	   //			}
-	   //			else
-	   //			{
-	   //				dy -= random(Bump - 1);
-	   //			}
-	   //		}
-	   //		else
-	   //		{
-	   //			if (random(2))
-	   //			{
-	   //				dx += random(Bump - 1);
-	   //			}
-	   //			else
-	   //			{
-	   //				dx -= random(Bump - 1);
-	   //			}
-	   //		}
-	   //	}
-		
 		FaceTo(TargetX, TargetY);
 		mfConvertPositionToPlayer(TempPlayer);
 		
@@ -820,11 +739,9 @@ WadThingType CAvatar::mfFlyTowardWithBump(
 		NewVector.dx <<= PLAYER_FIXEDPT;
 		NewVector.dy <<= PLAYER_FIXEDPT;
 		
-		
 		// For now ignore the noise we make if we hit something.
 		// GWP optimize by not doing this check if we're not "visible."
 		// GWP if we can't be seen bumping objects who cares?
-		//if (mfIsVisible())
 		{
 			CheckBump(&TempPlayer, &NewVector, Rate);
 		}
@@ -895,7 +812,6 @@ WadThingType CAvatar::mfFlyTowardWithBump(
 		NewVector.dx<<=PLAYER_FIXEDPT;
 		NewVector.dy<<=PLAYER_FIXEDPT;
 		
-
 		if (mfIsVisible())
 		{
 			CheckBump(&TempPlayer, &NewVector, Rate);

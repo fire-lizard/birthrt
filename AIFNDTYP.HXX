@@ -68,4 +68,3 @@ inline void FIND_TYPE_DATA::mfInitVals(THINGTYPE Target)
 }
 
 #endif
-

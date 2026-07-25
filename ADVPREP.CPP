@@ -192,7 +192,6 @@ void AdventurePrep(void)
 	BuildAdventureList();
 	
 	// just for grins, rebuild the advsite[].iPlaces
-	// SetupAdvsitePlaces();
 	
 	// build site list
 	iSite = 0;
@@ -219,9 +218,6 @@ void AdventurePrep(void)
 			BUTTON_REGION);
 	}
 	
-	// SetButtonType(D_ADVENTURE_PREP, BA_LIST_01 + AdvSiteListboxSel, BUTTON_COLORBEVEL);
-	// SetButtonType(D_ADVENTURE_PREP, BA_LIST_09 + PartyListboxSel, BUTTON_COLORBEVEL);
-		
 	// add check regions
 	del_region(TogglePartyCheck, 0);
 	x = START_PARTY_LIST_X + LIST_CHECK_REGION_X;
@@ -269,8 +265,6 @@ void AdvPrepPaint (LONG MenuCombo, LONG )
 	
 	// current site title
 	init_gfont(FONT_SANS_16PT);
-	
-	//print_text_centered(420,30,STRMGR_GetStr(SiteTitle[iSite]), BLACK);
 	
 	init_gfont(FONT_SANS_8PT);
 	// select an adventure site
@@ -505,7 +499,6 @@ static void DescribeAdvPrep(void)
 			SetPurge(iButton);
 			iButton = fERROR;
 
-
 			char buf[80];
 			if (GameSpecificGlobal_type == 5)
 				strcpy(buf, STRMGR_GetStr(STR_GM_TUT_BUTS_MORE));
@@ -571,11 +564,9 @@ void AdvPrepDone (LONG MenuCombo, LONG )
 	   ----------------------------------------------------------------- */
 	if(mouse_button == 2)
 	{
-		//SystemHelp(STR_BA_HELP_DONE_TITLE, STR_BA_HELP_DONE_TITLE, -1, NULL, 0);
 	}
 	else
 	{
-		//++action_turn;		[abc 8/18] removed
 		if (fLTAction == DURING_LTACTION)
 		{
 			ActiveRegent = realm[HomeRealm].mfGetRegent();
@@ -583,7 +574,6 @@ void AdvPrepDone (LONG MenuCombo, LONG )
 		}
 		else						// [abc 8/18] added
 			++action_turn[HomeRealm];		// [abc 8/18] added
-	
 	
 		// first, clean up the linked lists
 		
@@ -603,44 +593,20 @@ void AdvPrepDone (LONG MenuCombo, LONG )
 				{
 					LONG MyLeader = GetUnitLeader(me);
 					MakeUnitSingleStack(me, fSend);
-					// GWPif (units[me].Joined)
-					// GWP{
-					// GWP    for (unit = 1; unit < MAX_UNITS; ++unit)
-					// GWP    {
-					// GWP       if (units[unit].NextUnit == me)
-					// GWP       {
-					// GWP	       SetGameData(MP_UNITS, MPUNITS_NEXTUNIT,unit,units[me].NextUnit,fSend);
-					// GWP	       did_break = TRUE;
-					// GWP	       break;
-					// GWP       }
-					// GWP    }
-					// GWP}
-					// GWPelse
-					// GWP{
-					// GWP    if (units[me].NextUnit > 0)
-					// GWP	{
-					// GWP		units[units[me].NextUnit].Joined = FALSE;
-					// GWP		units[units[me].NextUnit].province = units[me].province;
-					// GWP	}
-					// GWP}
-					// GWPunits[me].NextUnit = -1;
 					
 					if (lastGuy < 0)
 					{
 						iPartyLead = me;
 						/* make sure I don't get lost coming home */
 						// GWP Don't change where I was.
-						// GWP units[me].DestProvince = units[me].province;
 						
 						// GWP MakeUnitSingleStack already did this.
-						// GWP units[me].Joined = FALSE;
 					}
 					else
 					{
 						SetGameData(MP_UNITS, MPUNITS_NEXTUNIT, lastGuy, me, fSend);
 						/* we all follow the leader home */
 						// GWP Don't change where I was.
-						// GWP units[me].DestProvince = units[iPartyLead].DestProvince;
 						SetGameData(MP_UNITS, MPUNITS_JOINED, me, TRUE, fSend);
 						// Don't reorder the stack here, as then we would lose
 						// our original province data.
@@ -648,7 +614,6 @@ void AdvPrepDone (LONG MenuCombo, LONG )
 					
 					/* pull me out of the province I'm in */
 					// GWP Don't change my province. I'm going back at the end of the adventure.
-					// GWP units[me].province = NO_PROVINCE;
 						
 					// GWP Make sure I return to where I started from.
 					// GWP Since only the leader of my stack had valid province data, update mine now.
@@ -804,7 +769,6 @@ void AdvPrepCancel (LONG MenuCombo, LONG )
 	   ----------------------------------------------------------------- */
 	if(mouse_button == 2)
 	{
-		//SystemHelp(STR_BA_HELP_DONE_TITLE, STR_BA_HELP_DONE_TITLE, -1, NULL, 0);
 	}
 	else
 	{
@@ -860,8 +824,6 @@ void AdvPrepListSel (LONG MenuCombo, LONG )
 			for(i=BA_LIST_01;i<=BA_LIST_08;++i)
 				SetButtonType(MenuId, i, BUTTON_REGION);
 			
-			// SetButtonType(MenuId, ButtonId, BUTTON_COLORBEVEL);
-			
 			iSite = AdvSiteListboxSel = AdvSiteListboxFirst+index;
 		}
 		else
@@ -880,8 +842,6 @@ void AdvPrepListSel (LONG MenuCombo, LONG )
 			for(i=BA_LIST_09;i<=BA_LIST_16;++i)
 				SetButtonType(MenuId, i, BUTTON_REGION);
 			
-			//SetButtonType(MenuId, ButtonId, BUTTON_COLORBEVEL);
-		
 			PartyListboxSel = PartyListboxFirst+index;
 			
 			if (mouse_button == 1)
@@ -1007,14 +967,12 @@ void TogglePartyCheck(LONG i, LONG)
 		if (count < 4)
 		{
 			inParty[index] = TRUE;	
-			//GEH MagicPrep(index);
 		}
 		else
 			AddSndObj(BIRTHRT_SND::SND_UI_NOT_PERMITTED,0,VOLUME_NINETY);
 	}
 	fUpdatePanels = TRUE;
 }
-
 
 /* ========================================================================
    Function    - BuildAdventureList
@@ -1088,10 +1046,8 @@ static void MagicPrep(SHORT AdvIndex)
 	    // show 'stuff' for fighter types and spells for magic types
 	    SHORT const hPlayerStats = LoadStats(Id, fERROR);
 	    DumbHandlePtr<PLAYER_STATS const> const dhPlayerStats(hPlayerStats);
-//	    if (dhPlayerStats->mfIsMagicUser())
 			fPreparingSpells=TRUE;
 //		else
-//			fPreparingSpells=FALSE;
 		SetStatusRealm((REALM::REALM_TYPE) regents[Adventures[AdvIndex]].mfGetRealm());
 		StaticInventoryGUI::mfDisplay(0, hPlayerStats);
     }

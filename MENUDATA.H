@@ -61,7 +61,6 @@ void DOSHelpControl( LONG, LONG );
 void RollDomainAction( LONG, LONG );
 void DoneDomainAction( LONG, LONG );
 
- 
 /* ------------------------------------------------------------------------
    Global Variables
    ------------------------------------------------------------------------ */
@@ -70,21 +69,13 @@ BUTTON Help[] = {
 {0,BUTTON_BITMAP,D_FREEZE|D_ZOOM, 0,-1,             0,"UI\\DIALPNL1.PCX",0,"", 200,132,236,208,NO_KEY,PaintHelpScreen,0, -1},
 {1,BUTTON_REGION,D_TEXT_LEFT|D_SANS_8,0,STR_HELP_1,  31,"",               31, "", 44, 78,152, 20,NO_KEY,0, 1, -1},
 {2,BUTTON_REGION,D_TEXT_LEFT|D_SANS_8,0,STR_HELP_2, 173,"",               31, "", 44,110,152, 17,NO_KEY,UpdateHighlight, 2, -1},
-//{3,BUTTON_REGION,D_TEXT_LEFT|D_SANS_8,0,STR_HELP_8,  16,"",               31, "", 44,127,152, 17,NO_KEY,NULL, 3, -1},
 {4,BUTTON_REGION,D_TEXT_LEFT|D_SANS_8,0,STR_HELP_9A,173,"",               31, "", 44,144,152, 17,NO_KEY,UpdateHighlight, 4, -1},
-//{5,BUTTON_REGION,0,             0,-1,             173,"",               31, "", 44,161,152, 17,NO_KEY,UpdateHighlight, 5, -1},
-//{6,BUTTON_REGION,0,             0,-1,             173,"",               31, "", 44,178,152, 17,NO_KEY,UpdateHighlight, 6, -1},
-//{7,BUTTON_REGION,0,             0,-1,             173,"",               31, "", 44,195,152, 17,NO_KEY,UpdateHighlight, 7, -1},
-//{8,BUTTON_REGION,0,             0,-1,             173,"",               31, "", 44,212,152, 17,NO_KEY,UpdateHighlight, 8, -1},
-//{9,BUTTON_REGION,0,             0,-1,             173,"",               31, "", 44,229,152, 17,NO_KEY,UpdateHighlight, 9, -1},
 {10,BUTTON_REGION,0,    		  0,STR_HELP_DONE, BTN_LABEL_COLOR,"",BTN_LABEL_HILITE_COLOR,"UI\\HLPBTNCB.PCX", 76,172, 84, 28,KEY_F ,HideSubMenuWithClick, D_HELP, -1},
 {11,BUTTON_REGION,0,              0,-1,             0,"",                0,"",  0,  0,  0,  0,KEY_ESCAPE,HideSubMenu, D_HELP, -1},
 };
 LONG HelpSize = sizeof(Help) / sizeof(BUTTON);
 
-
 BUTTON DomainAction[] = {
-//{0,BUTTON_BITMAP,D_FREEZE|D_ZOOM,0,-1,0,"UI\\HELP_LG.PCX",0,"",160, 50,356,372,NO_KEY,PaintDomainAction,0, -1},
 {0,BUTTON_BITMAP,D_FREEZE|D_ZOOM,0,-1,0,"UI\\HELP_LG.PCX",0,"", 15, 90,356,372,NO_KEY,PaintDomainAction,0, -1},
 {1,BUTTON_REGION,0,              0,-1,0,"",                0,"", 24, 24,305,320,NO_KEY,0, 0, -1},
 {2,BUTTON_REGION,D_HILIGHTED,    0,-1,0,"",0,"UI\\HLPBTNAA.PCX",  28,340, 100, 28,KEY_ESCAPE,CancelDomainAction, 0, -1},
@@ -99,12 +90,9 @@ BUTTON AdvisorMenu[] = {
 LONG AdvisorMenuSize = sizeof(AdvisorMenu) / sizeof(BUTTON);
 
 BUTTON ReportMenu[] = {
-//{0,BUTTON_BITMAP,D_FREEZE|D_ZOOM, 0,-1,            0,"UI\\HELP_LG.PCX",0,"",160, 50,356,372,NO_KEY,PaintReportMenu,0, -1},
 {0,BUTTON_BITMAP,D_FREEZE, 0,-1,            0,"UI\\REPORT1.PCX",0,"",142, 50,356,372,NO_KEY,PaintReportMenu,0, -1},
-//{1,BUTTON_REGION,0,               0,-1,            0,"",0,"",                 24, 24,305,320,NO_KEY,0, 0, -1},
 {1,BUTTON_REGION,0,               0,-1,            0,"",0,"",  0, 0,356,372,NO_KEY,DoneReportMenu, 0, -1},
 {2,BUTTON_REGION,0,               0,-1,            0, "",0,"", 0, 0,0,0,KEY_ESCAPE,DoneReportMenu1, 1,-1},
-//{4,BUTTON_REGION,D_HILIGHTED,     0,STR_HELP_DONE,31,"",31,"UI\\HLPBTNAA.PCX", 228,336, 100, 28,NO_KEY,DoneReportMenu, 0, -1},
 };
 LONG ReportMenuSize = sizeof(ReportMenu) / sizeof(BUTTON);
 
@@ -211,21 +199,13 @@ BUTTON Help[] = {
 {0,BUTTON_BITMAP,D_FREEZE|D_ZOOM, 0,-1,             0,"UI\\DIALPNL1.PCX",0,"", 200,132,236,208,NO_KEY,PaintHelpScreen,0, -1},
 {1,BUTTON_REGION,D_TEXT_LEFT|D_SANS_8,0,STR_HELP_1,  31,"",               31, "", 44, 78,152, 20,NO_KEY,0, 1, -1},
 {2,BUTTON_REGION,D_TEXT_LEFT|D_SANS_8,0,STR_HELP_2, 173,"",               31, "", 44,110,152, 17,NO_KEY,UpdateHighlight, 2, -1},
-//{3,BUTTON_REGION,D_TEXT_LEFT|D_SANS_8,0,STR_HELP_8,  16,"",               31, "", 44,127,152, 17,NO_KEY,NULL, 3, -1},
 {4,BUTTON_REGION,D_TEXT_LEFT|D_SANS_8,0,STR_HELP_9A,173,"",               31, "", 44,144,152, 17,NO_KEY,UpdateHighlight, 4, -1},
-//{5,BUTTON_REGION,0,             0,-1,             173,"",               31, "", 44,161,152, 17,NO_KEY,UpdateHighlight, 5, -1},
-//{6,BUTTON_REGION,0,             0,-1,             173,"",               31, "", 44,178,152, 17,NO_KEY,UpdateHighlight, 6, -1},
-//{7,BUTTON_REGION,0,             0,-1,             173,"",               31, "", 44,195,152, 17,NO_KEY,UpdateHighlight, 7, -1},
-//{8,BUTTON_REGION,0,             0,-1,             173,"",               31, "", 44,212,152, 17,NO_KEY,UpdateHighlight, 8, -1},
-//{9,BUTTON_REGION,0,             0,-1,             173,"",               31, "", 44,229,152, 17,NO_KEY,UpdateHighlight, 9, -1},
 {10,BUTTON_REGION,0,    		  0,STR_HELP_DONE, BTN_LABEL_COLOR,"",BTN_LABEL_HILITE_COLOR,"UI\\HLPBTNCB.PCX", 76,172, 84, 28,KEY_O ,HideSubMenuWithClick, D_HELP, -1},
 {11,BUTTON_REGION,0,              0,-1,             0,"",                0,"",  0,  0,  0,  0,KEY_ESCAPE,HideSubMenu, D_HELP, -1},
 };
 LONG HelpSize = sizeof(Help) / sizeof(BUTTON);
 
-
 BUTTON DomainAction[] = {
-//{0,BUTTON_BITMAP,D_FREEZE|D_ZOOM,0,-1,0,"UI\\HELP_LG.PCX",0,"",160, 50,356,372,NO_KEY,PaintDomainAction,0, -1},
 {0,BUTTON_BITMAP,D_FREEZE|D_ZOOM,0,-1,0,"UI\\HELP_LG.PCX",0,"", 15, 90,356,372,NO_KEY,PaintDomainAction,0, -1},
 {1,BUTTON_REGION,0,              0,-1,0,"",                0,"", 24, 24,305,320,NO_KEY,0, 0, -1},
 {2,BUTTON_REGION,D_HILIGHTED,    0,-1,0,"",0,"UI\\HLPBTNAA.PCX",  28,340, 100, 28,KEY_ESCAPE,CancelDomainAction, 0, -1},
@@ -240,12 +220,9 @@ BUTTON AdvisorMenu[] = {
 LONG AdvisorMenuSize = sizeof(AdvisorMenu) / sizeof(BUTTON);
 
 BUTTON ReportMenu[] = {
-//{0,BUTTON_BITMAP,D_FREEZE|D_ZOOM, 0,-1,            0,"UI\\HELP_LG.PCX",0,"",160, 50,356,372,NO_KEY,PaintReportMenu,0, -1},
 {0,BUTTON_BITMAP,D_FREEZE, 0,-1,            0,"UI\\REPORT1.PCX",0,"",142, 50,356,372,NO_KEY,PaintReportMenu,0, -1},
-//{1,BUTTON_REGION,0,               0,-1,            0,"",0,"",                 24, 24,305,320,NO_KEY,0, 0, -1},
 {1,BUTTON_REGION,0,               0,-1,            0,"",0,"",  0, 0,356,372,NO_KEY,DoneReportMenu, 0, -1},
 {2,BUTTON_REGION,0,               0,-1,            0, "",0,"", 0, 0,0,0,KEY_ESCAPE,DoneReportMenu1, 1,-1},
-//{4,BUTTON_REGION,D_HILIGHTED,     0,STR_HELP_DONE,31,"",31,"UI\\HLPBTNAA.PCX", 228,336, 100, 28,NO_KEY,DoneReportMenu, 0, -1},
 };
 LONG ReportMenuSize = sizeof(ReportMenu) / sizeof(BUTTON);
 
@@ -353,19 +330,12 @@ BUTTON Help[] = {
 {2,BUTTON_REGION,D_TEXT_LEFT|D_SANS_8,0,STR_HELP_2, 173,"",               31, "", 44,110,152, 17,NO_KEY,UpdateHighlight, 2, -1},
 {3,BUTTON_REGION,D_TEXT_LEFT|D_SANS_8,0,STR_HELP_8, 173,"",               31, "", 44,127,152, 17,NO_KEY,UpdateHighlight, 3, -1},
 {4,BUTTON_REGION,D_TEXT_LEFT|D_SANS_8,0,STR_HELP_9A,173,"",               31, "", 44,144,152, 17,NO_KEY,UpdateHighlight, 4, -1},
-//{5,BUTTON_REGION,0,             0,-1,             173,"",               31, "", 44,161,152, 17,NO_KEY,UpdateHighlight, 5, -1},
-//{6,BUTTON_REGION,0,             0,-1,             173,"",               31, "", 44,178,152, 17,NO_KEY,UpdateHighlight, 6, -1},
-//{7,BUTTON_REGION,0,             0,-1,             173,"",               31, "", 44,195,152, 17,NO_KEY,UpdateHighlight, 7, -1},
-//{8,BUTTON_REGION,0,             0,-1,             173,"",               31, "", 44,212,152, 17,NO_KEY,UpdateHighlight, 8, -1},
-//{9,BUTTON_REGION,0,             0,-1,             173,"",               31, "", 44,229,152, 17,NO_KEY,UpdateHighlight, 9, -1},
 {10,BUTTON_REGION,0,    		  0,STR_HELP_DONE, BTN_LABEL_COLOR,"",BTN_LABEL_HILITE_COLOR,"UI\\HLPBTNCB.PCX", 76,172, 84, 28,KEY_D ,HideSubMenuWithClick, D_HELP, -1},
 {11,BUTTON_REGION,0,              0,-1,             0,"",                0,"",  0,  0,  0,  0,KEY_ESCAPE,HideSubMenu, D_HELP, -1},
 };
 LONG HelpSize = sizeof(Help) / sizeof(BUTTON);
 
-
 BUTTON DomainAction[] = {
-//{0,BUTTON_BITMAP,D_FREEZE|D_ZOOM,0,-1,0,"UI\\HELP_LG.PCX",0,"",160, 50,356,372,NO_KEY,PaintDomainAction,0, -1},
 {0,BUTTON_BITMAP,D_FREEZE|D_ZOOM,0,-1,0,"UI\\HELP_LG.PCX",0,"", 15, 90,356,372,NO_KEY,PaintDomainAction,0, -1},
 {1,BUTTON_REGION,0,              0,-1,0,"",                0,"", 24, 24,305,320,NO_KEY,0, 0, -1},
 {2,BUTTON_REGION,D_HILIGHTED,    0,-1,0,"",0,"UI\\HLPBTNAA.PCX",  28,340, 100, 28,KEY_ESCAPE,CancelDomainAction, 0, -1},
@@ -380,12 +350,9 @@ BUTTON AdvisorMenu[] = {
 LONG AdvisorMenuSize = sizeof(AdvisorMenu) / sizeof(BUTTON);
 
 BUTTON ReportMenu[] = {
-//{0,BUTTON_BITMAP,D_FREEZE|D_ZOOM, 0,-1,            0,"UI\\HELP_LG.PCX",0,"",160, 50,356,372,NO_KEY,PaintReportMenu,0, -1},
 {0,BUTTON_BITMAP,D_FREEZE, 0,-1,            0,"UI\\REPORT1.PCX",0,"",142, 50,356,372,NO_KEY,PaintReportMenu,0, -1},
-//{1,BUTTON_REGION,0,               0,-1,            0,"",0,"",                 24, 24,305,320,NO_KEY,0, 0, -1},
 {1,BUTTON_REGION,0,               0,-1,            0,"",0,"",  0, 0,356,372,NO_KEY,DoneReportMenu, 0, -1},
 {2,BUTTON_REGION,0,               0,-1,            0, "",0,"", 0, 0,0,0,KEY_ESCAPE,DoneReportMenu1, 1,-1},
-//{4,BUTTON_REGION,D_HILIGHTED,     0,STR_HELP_DONE,31,"",31,"UI\\HLPBTNAA.PCX", 228,336, 100, 28,NO_KEY,DoneReportMenu, 0, -1},
 };
 LONG ReportMenuSize = sizeof(ReportMenu) / sizeof(BUTTON);
 

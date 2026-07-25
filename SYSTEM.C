@@ -181,7 +181,6 @@ FONT_DATA font_info[] ={
 /* 20 */	{"magic40.pcx"	,40,-1,19},		//
 /* 21 */	{"sans7.pcx"	, 8,FONT_SANS_6PT ,FONT_SANS_8PT }};	// FONT_SANS_7PT
 
-
 SHORT		xCharWidth[256+32];
 SHORT		xCharPosn[256+32];
 SHORT		iCurFont = fERROR;
@@ -293,10 +292,6 @@ void set_view_size (LONG vx,LONG vy,LONG vw,LONG vh)
    ======================================================================== */
 void set_lens (LONG lens)
 {
-//	if (lens < NORMAL_LENS)
-//		lens = NORMAL_LENS;
-
-//printf("set_lens - lens_factor: %d\n",lens);
 
 	lens_factor = lens;
 	render_perspect = (lens_view_width * lens_factor) / (2 * NORMAL_LENS);
@@ -582,7 +577,6 @@ ULONG detect_scale (SHORT t, SHORT h, SHORT w)
 	return UNITARY_SCALE;					/* default if no dot */
 }
 
-
 /* =======================================================================
    Function    - 
    Description - 
@@ -625,7 +619,6 @@ LONG gtext_width_sub (char *txt, BOOL DoWrap)
 	{
 		if (c==' ') lastspace = i-1;
 		
-
 		if (c=='^')											/* handle commands */
 		{
 			c=text[i++];
@@ -731,7 +724,6 @@ zero:
 	return max_wid;
 }
 
-
 LONG gtext_width(char *text)
 {
 	inter_char_space = INTER_CHAR_SPACE;
@@ -770,7 +762,6 @@ LONG gtext_height(char *txt)
 		{
 			c = text[i++];
 
-				
 			if (c == 'F')								/* change font */
 			{
 				LONG j;
@@ -798,9 +789,6 @@ LONG gtext_height(char *txt)
 				for (ii=i; ii != 0; ii = gtext_width_sub(&text[ii],TRUE))
 				{
 				}
-				//ii = i;
-				//while ( (ii = gtext_width_sub(&text[ii])) )  // wrap is built into gtext_width
-				//	ii = ii;		// dummy
 				wrap_width = -1;		// turn it off
 			}
 			
@@ -893,7 +881,6 @@ SHORT gprint_text (LONG x, LONG y, char *text, LONG color)
 			y += max_h+1;
 			yb += max_h+1;
 			yHeight += max_h+1;
-//			i++;
 
 			++tmp;
 			if (tmp==3 && tmp2) {x -= 5; margin_x = x;}
@@ -1316,8 +1303,6 @@ SHORT gprint_text (LONG x, LONG y, char *text, LONG color)
 				{
 					ii += tmp;
 				}
-				//while ( (ii = gtext_width_sub(&text[ii])) )  // wrap is built into gtext_width
-				//	ii = ii;		// dummy
 				wrap_width = -1;		// turn it off
 			}
 			else if (c == 'H')								/* height limited */
@@ -1630,7 +1615,6 @@ zero:
 								if (pix==31)
 									*sptr = (char)color;
 								else if (pix==8)
-									//*sptr = antia_table[(antia_table[antialias2+*sptr]*256)+*sptr];
 									*sptr = lighten[*sptr];
 								else
 									*sptr = antia_table[antialias+*sptr];
@@ -1675,9 +1659,6 @@ zero:
 						else
 						{
 							LONG yt = ys>>8;
-//							pix = av[fptr[yt]] + av[fptr[yt+hCurFont]] + av[fptr[yt+1]] + av[fptr[yt+hCurFont+1]];
-//							if (pix < 3) pix = 0;
-//							else if (pix > 5) pix = 31;
 							pix = fptr[yt] + fptr[yt+hCurFont] + fptr[yt+1] + fptr[yt+hCurFont+1];
 							if (pix < 48) pix = 0;
 							else if (pix > 61) pix = 31;
@@ -1717,7 +1698,6 @@ zero:
 								if (pix==31)
 									*sptr = (char)color;
 								else if (pix==8)
-									//*sptr = antia_table[(antia_table[antialias2+*sptr]*256)+*sptr];
 									*sptr = lighten[*sptr];
 								else
 									*sptr = antia_table[antialias+*sptr];
@@ -1781,7 +1761,6 @@ void init_gfont (SHORT type_and_size)
 	LONG		  	x;
 	LONG		  	xO;
 	LONG		  	y;
-	//LONG			yO;
 	LONG			ascii_val;
 	SHORT			iFont;
 	PTR			p;
@@ -1791,7 +1770,6 @@ void init_gfont (SHORT type_and_size)
 // GWP all fonts.
 
 // GWP	if (!fHighRes)											// use stand-in if in lores
-// GWP		type_and_size = font_info[type_and_size].lores_index;
 
 	if (cur_type_and_size == type_and_size)		// don't try to reload current font
 		return;
@@ -1811,9 +1789,6 @@ void init_gfont (SHORT type_and_size)
 	wCurFont = ((BITMPTR)BLKPTR(iCurFont))->h;
 	hCurFont = ((BITMPTR)BLKPTR(iCurFont))->w;
 
-//if(type_and_size==13)
-//printf("FONT: %d %s - w:%d h:%d\n",iCurFont,n,wCurFont,hCurFont);
-
 	p = ((PTR)BLKPTR(iCurFont)) + sizeof(BITMHDR);
 
 	for (y=0; y<hCurFont; ++y)				/* scan for font base */
@@ -1828,19 +1803,12 @@ void init_gfont (SHORT type_and_size)
 				xCharWidth[ascii_val-1] = (SHORT)(x - xO);
 			xCharPosn[ascii_val] = (SHORT)x;
 
-//if(type_and_size==13)
-//printf("%c:%d ",ascii_val+32,x);
-
 			xO = x;
 			++ascii_val;
 		}
 	}
-//if(type_and_size==13)
-//printf("\n");
 
 }
-
-
 
 /* ========================================================================
    Function    -
@@ -2181,7 +2149,6 @@ void DrawBitm (SHORT x, SHORT y, SHORT iBitm, SHORT bx, SHORT by, SHORT w, SHORT
 		}
 	}
 
-
 }
 
 /* ====================================================================
@@ -2358,7 +2325,6 @@ static void ScaleBitmap_fine (SHORT x, SHORT y, SHORT iBitm, SHORT bx, SHORT by,
 	xinc = ABS(Xscale);					// set independant x & y scales
 	yinc = ABS(Yscale);					// set independant x & y scales
 
-
 	// negative width is used as a flag to say that bitm needs to be mirrored
 	if (w < 0)
 	{
@@ -2397,7 +2363,6 @@ static void ScaleBitmap_fine (SHORT x, SHORT y, SHORT iBitm, SHORT bx, SHORT by,
 			bx += i;
 	}
 
-
 	/* clipping */
 	if (x>screen_buffer_width-1 || x+w-1<0 || y>screen_buffer_height-1 || y+h-1<0)
 		return;
@@ -2424,18 +2389,14 @@ static void ScaleBitmap_fine (SHORT x, SHORT y, SHORT iBitm, SHORT bx, SHORT by,
 	if (x < 0)
 	{
 		w += x;
-		//bx -= x;
 		bx -= (x * ABS(Xscale)) / FULL_SCALE_FINE;
-		//x = startX;
 		x = 0;
 	}
 
 	if (y < 0)
 	{
 		h += y;
-		//by -= y;
 		by -= (y * ABS(Yscale)) / FULL_SCALE_FINE;
-		//y = startY;
 		y = 0;
 	}
 
@@ -2459,13 +2420,11 @@ static void ScaleBitmap_fine (SHORT x, SHORT y, SHORT iBitm, SHORT bx, SHORT by,
 				for (xx=0; xx < w; ++xx)				// copy bitmap
 				{
 					sptr_ = sptr + xx;
-					//bptr = &tptr[(tsx>>SCALE_SHIFT_FINE)*wid];
 					bptr = &tptr[tsx.TwoHalves.sHigh*wid];
 					tsx.lval += xinc;
 					tsy.lval = 0;
 					for (yy=0; yy < h; ++yy)
 					{
-						//pix = bptr[tsy>>SCALE_SHIFT_FINE];
 						pix = bptr[tsy.TwoHalves.sHigh];
 						tsy.lval += yinc;
 
@@ -2644,7 +2603,6 @@ static void ScaleBitmap_fine (SHORT x, SHORT y, SHORT iBitm, SHORT bx, SHORT by,
 	}		// not rotated
 
 }
-
 
 void ScaleBitmap (SHORT x, SHORT y, SHORT iBitm, SHORT bx, SHORT by, SHORT w, SHORT h, SHORT scale)
 {

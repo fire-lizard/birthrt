@@ -18,7 +18,6 @@
    class definition
    ----------------------------------------------------------------- */
 
-
 /* -----------------------------------------------------------------
    inline member functions
    ----------------------------------------------------------------- */
@@ -88,7 +87,6 @@ LONG FOLLOW_PATH_DATA::mfReadData(FILE *fp)
 	return Result;
 }
 
-
 BOOL FOLLOW_PATH_DATA::mfGetNextPt(LONG &X, LONG &Y, LONG &Z, LONG &A)
 {
 	BOOL retVal = TRUE;
@@ -127,12 +125,6 @@ void CAvatar::FollowPath (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 			pAvatar->fFollowPath.Wave = 0;
 			if (pAvatar->fFollowPath.PathCount > 0)
 			{
-				//LONG X;
-				//LONG Y;
-				//LONG Z;
-				//LONG A;
-				
-				//pAvatar->fFollowPath.mfGetCurrentPt(X, Y, Z, A);
 				
 				pAvatar->Status = AI_MOVING;
 
@@ -302,8 +294,6 @@ Continue_Follow_Path:
 					}
 					pAvatar->FaceTo(X, Y);
 
-
-
 				}
 				const LONG dx = X - pAvatar->mfX();
 				const LONG dy = Y - pAvatar->mfY();
@@ -327,10 +317,7 @@ Continue_Follow_Path:
 				NewVector.dx <<= PLAYER_FIXEDPT;
 				NewVector.dy <<= PLAYER_FIXEDPT;
 			
-				//if (pAvatar->mfIsVisible())
-				//{
 					CheckBump(&TempPlayer, &NewVector, pAvatar->mfGetWalkRate());
-				//}
 
 				if(pAvatar->fFollowPath.oldP.x != 0 || pAvatar->fFollowPath.oldP.y != 0)
 					pAvatar->mfMoveToXYZA(
@@ -345,7 +332,6 @@ Continue_Follow_Path:
 						 pAvatar->mfZ() + NewVector.dz,
 						 A);
 		
-				
 				}
 			}
 			break;
@@ -395,4 +381,3 @@ Continue_Follow_Path:
 			pAvatar->Status = AI_PAUSED;
 	}
 }
-

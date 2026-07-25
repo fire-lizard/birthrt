@@ -18,7 +18,6 @@
 #if !defined(_PLAYRACE_HXX)
 #include "playrace.hxx"
 #endif
-//#include "gamestr.h"
 
 #if !defined(_WEAPON_HXX)
 #include "weapon.hxx"
@@ -34,7 +33,6 @@
 // HUNGARIAN NOTE: All values are of type LONG unless specified.  So if
 // is doesn't start with a capital letter, the lower case should be a
 // prefix.  'u' means ULONG.
-
 
 class ARMOR_INFO {
 public:
@@ -154,7 +152,6 @@ inline const SBYTE ARMOR_INFO::mfGetArmorClass(
 	return fpArmorInfoTable[ArmorType].fbArmorClass;
 }
 
-
 // Test whether a player of this race can use this kind of armor.
 inline const BOOL ARMOR_INFO::mfIsArmorAllowed(
 	const ARMOR_INFO::TYPE ArmorType, 
@@ -190,4 +187,3 @@ inline const BOOL SHIELD_INFO::mfIsShieldAllowed(
 }
 
 #endif // _ARMOR_HXX
-

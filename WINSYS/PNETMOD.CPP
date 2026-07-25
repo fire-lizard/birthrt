@@ -22,7 +22,6 @@
 // --- way slow
 //GEH #define ACKSIGS
 
-//#define LOGCOMMENTSLEEP Sleep(1);
 #define LOGCOMMENTSLEEP {;}
 
 #define iMPT_PING		6
@@ -43,7 +42,6 @@
 #include "../MACHINE.H"
 #include "../MENU.H"
 
-
 //!!!!!!!!!!!!!!!!!!!!!!!!
 #include "../UNITS.HXX"
 
@@ -51,11 +49,9 @@
 
 #include "..\WINSYS\MONO_C.H"
 
-
 #include "..\WINSYS\SNTYPES.H"
 #include "..\WINSYS\SIERRANW.H"
 #include "..\WINSYS\SNWVALID.H"
-
 
 extern BOOL fLogComment;
 
@@ -75,30 +71,24 @@ PNET_ERRCODE_TYPE gErrorVal = kNoError;
 
 USHORT HashCRC ( PUCHAR lpMsg, USHORT usSize );
 
-
 //---- Give me the null GUID 
 
 DEFINE_GUID(GUID_NULL, 0L, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 
-
 //---- Birthright GUID #1
 //
-// {EA7CC2E0-0C7B-11d0-81B8-00AA00470BE8}
 DEFINE_GUID( GAME_GUID1, 
              0xea7cc2e0, 0xc7b, 0x11d0, 0x81, 0xb8, 0x0, 0xaa, 0x0, 0x47, 0xb, 0xe8);
 
 //---- Birthright GUID #2
 //
-// {EA7CC2E1-0C7B-11d0-81B8-00AA00470BE8}
 DEFINE_GUID( GAME_GUID2, 
              0xea7cc2e1, 0xc7b, 0x11d0, 0x81, 0xb8, 0x0, 0xaa, 0x0, 0x47, 0xb, 0xe8);
 
 //---- Birthright GUID #3
 //
-// {EA7CC2E2-0C7B-11d0-81B8-00AA00470BE8}
 DEFINE_GUID( GAME_GUID3, 
              0xea7cc2e2, 0xc7b, 0x11d0, 0x81, 0xb8, 0x0, 0xaa, 0x0, 0x47, 0xb, 0xe8);
-
 
 const int MAX_ENUM_TIMEOUT  = (2500);   //---- Wait for 2 1/2 seconds the first time
 const int MAX_ENUM_TIMEOUT2 = (2500);   //---- Wait for another 2 1/2 seconds
@@ -121,9 +111,7 @@ static lpfnGetPlayerXNameFunc 		   lpfnSNWGetPlayerXName = NULL;
 
 static lpfnTellMeSpecialChatReceivedFunc	lpfnSNWTellMeSpecialChatReceived 	= NULL;
 
-
 const int WM_SIGSPCHAT = (WM_USER+5000);
-
 
 static long GPInPort	= 0;
 static long GPOutPort	= 0;
@@ -133,8 +121,6 @@ char GPServerIP[]="XXX.XXX.XXX.XXX";
 char szGameName[] = "Birthright";
 
 BOOL fSigs = FALSE;   // are we smokin ?
-
-
 
 // -- structure for the service provider/session enumeration
 
@@ -147,8 +133,6 @@ typedef struct
 
 } ENUMINFO, *LPENUMINFO;
 
-
-
 // -- structure for the player enumeration
 typedef struct
 {
@@ -158,8 +142,6 @@ typedef struct
 	PlatformNetworkModule *pnmThis;
 
 } ENUMPINFO, *LPENUMPINFO;
-
-
 
 typedef struct
 {
@@ -173,19 +155,13 @@ typedef struct
 	int	      iSync;                //---- which Sync are we at
 } BRSync, *PBRSync;
 
-
-
  // -- local prototypes
 void ErrorDPlay (PlatformNetworkModule *pPlatform, HRESULT hResult );
 
-
 extern void RandomLogComment ( char * szString );
-
 
 FP_DPENUM	PlatformNetworkModule::fp_DPEnum = NULL;		// DirectEnumProviders()
 FP_DPCREATE	PlatformNetworkModule::fp_DPCreate = NULL;	// DirectPlayCreate()
-
-
 
 // -----------------------------------------------------------------
 //
@@ -211,16 +187,11 @@ PlatformNetworkModule::PlatformNetworkModule(GamePrintFunction pPrintFunc, ErrCo
 
    pPrintFunction = pPrintFunc;
 
-
 	fSigs = FALSE;
 
 	gGuid = GAME_GUID1;
 
-
 } // PlatformNetworkModule::PlatformNetworkModule
-
-
-
 
 // -----------------------------------------------------------------
 //
@@ -240,13 +211,11 @@ PlatformNetworkModule::~PlatformNetworkModule( void )
 
    ReleaseDPlay() ;
 
-
 	if ( !fSigs )
 	{
 		if ( hDPlay != NULL )
 			FreeLibrary( hDPlay );
 	}
-
 
 	if ( lpGenericMsgBuf != NULL )
 		HeapFree( GetProcessHeap(), 0, lpGenericMsgBuf );
@@ -257,10 +226,7 @@ PlatformNetworkModule::~PlatformNetworkModule( void )
 	if ( lpSndBuff != NULL )
 		HeapFree ( GetProcessHeap(), 0, lpSndBuff );
 
-
 } // PlatformNetworkModule::~PlatformNetworkModule
-
-	
 
 // -----------------------------------------------------------------
 //
@@ -280,8 +246,6 @@ void PlatformNetworkModule::SetSigs( BOOL fPassSigs )
 
 }
 
-
-
 // -----------------------------------------------------------------
 //
 //  PlatformNetworkModule::GetSigs
@@ -299,8 +263,6 @@ BOOL PlatformNetworkModule::GetSigs( void )
    return fSigs; 
 
 }
-
-
 
 // -----------------------------------------------------------------
 //
@@ -329,8 +291,6 @@ int PlatformNetworkModule::CheckConnectStatus( void )
 
 }
 
-
-
 // -----------------------------------------------------------------
 //
 //  PlatformNetworkModule::AddPlayer
@@ -349,8 +309,6 @@ BOOL PlatformNetworkModule::AddPlayer( DWORD dwNewPlayerId )
 	BOOL fFound = FALSE;
 	int y;
 
-
-
    //---- Don't add ourself to the list ( we don't want to talk to ourself )
 
    if ( dwNewPlayerId == dwPlayerId )
@@ -358,15 +316,12 @@ BOOL PlatformNetworkModule::AddPlayer( DWORD dwNewPlayerId )
        return ( FALSE );
    }
 
-
 	// -- we cannot add new players once the game has started
 
 	if ( TRUE == fGameInProgress )
    {
 		return( FALSE );
    }
-
-
 
 	//---- Make sure we don't have this player
 
@@ -378,8 +333,6 @@ BOOL PlatformNetworkModule::AddPlayer( DWORD dwNewPlayerId )
 			break;
 		}
 	}
-
-
 
 	//---- Don't add them again
 
@@ -403,11 +356,8 @@ BOOL PlatformNetworkModule::AddPlayer( DWORD dwNewPlayerId )
 
 	return ( TRUE );
 
-
 } // PlatformNetworkModule::AddPlayer
 	
-	
-
 // -----------------------------------------------------------------
 //
 //  PlatformNetworkModule::CancelNetworkGame
@@ -427,19 +377,15 @@ ErrCode PlatformNetworkModule::CancelNetworkGame( void )
 
    ReleaseDPlay() ;
 
-
 	if ( !fSigs )
 	{
 		if ( hDPlay != NULL )
 			FreeLibrary( hDPlay );
 	}
 
-
 	return ( kNoError );
 
 } // PlatformNetworkModule::CancelNetworkGame
-
-	
 
 // -----------------------------------------------------------------
 //
@@ -475,10 +421,8 @@ ErrCode PlatformNetworkModule::CreateNetworkGame ( char *playername )
 			ecError = kNoProtocolSelected;
 	}
 
-
 	if ( TRUE == fGameInProgress )
 		ecError = kCannotCreateGame;
-
 
 	//---- If this is SIGS 
 
@@ -542,7 +486,6 @@ ErrCode PlatformNetworkModule::CreateNetworkGame ( char *playername )
                                // -- Deal with a message, if any
                                MSG msg;
 
-
                                if ( !fQuitting && PeekMessage( &msg, NULL, 0, 0, PM_REMOVE ) != 0 )
                                {
                                    TranslateMessage( &msg );
@@ -563,7 +506,6 @@ ErrCode PlatformNetworkModule::CreateNetworkGame ( char *playername )
 							}
 							#endif
 
-                       
                            //----- If they quit then exit 
     
 							if ( fQuitting )
@@ -573,7 +515,6 @@ ErrCode PlatformNetworkModule::CreateNetworkGame ( char *playername )
 							}
 
 						} while ( i == _GAME_STAT_PENDING );
-
 
 						// -- Did they just leave the gathering place?
 
@@ -585,8 +526,6 @@ ErrCode PlatformNetworkModule::CreateNetworkGame ( char *playername )
 						{
 							lpfnHideGatheringPlaceFunc lpfnSNWHideGatheringPlace = (lpfnHideGatheringPlaceFunc)
 											GetProcAddress( (HINSTANCE) hDPlay, "HideGatheringPlace" );
-
-// dlj 6-10-97 don't hide 	     lpfnSNWHideGatheringPlace();
 
 						}
 
@@ -615,7 +554,6 @@ ErrCode PlatformNetworkModule::CreateNetworkGame ( char *playername )
 
 		} // if OK to create
 
-
 		 // --
 		 // -- Set information
 		 // --
@@ -636,7 +574,6 @@ ErrCode PlatformNetworkModule::CreateNetworkGame ( char *playername )
 
 			dwPlayerId = (DWORD) lpfnSNW();
 
-
 			if ( dwPlayerId == 0 )
 			{
 				fGameCreator = TRUE;
@@ -653,17 +590,13 @@ ErrCode PlatformNetworkModule::CreateNetworkGame ( char *playername )
 
 		    lpfnSNWGetPlayerXName( &szPlayerName[0], dwPlayerId );
 
-
            //---- HACK move in the player name received  dlj 6-10-97
 
            strncpy( playername, szPlayerName, 19 );
            playername[19] = 0;
 
-
-
 			lpfnSNWNumPlayers = (lpfnGetNumberOfPlayersFunc)
 								GetProcAddress( (HINSTANCE) hDPlay, "GetNumberOfPlayers" );
-
 
 			// -- Get all the player's ID's
 
@@ -671,7 +604,6 @@ ErrCode PlatformNetworkModule::CreateNetworkGame ( char *playername )
 			{
 				AddPlayer( i ); 	//--- add player will skip our player id 
 			}
-
 
 			// -- Get the ProcAddresses for a bunch of items
 
@@ -696,22 +628,17 @@ ErrCode PlatformNetworkModule::CreateNetworkGame ( char *playername )
 			lpfnSNWCheckPlayerConnectStatus = (lpfnCheckPlayerConnectStatusFunc)
 												 GetProcAddress( (HINSTANCE) hDPlay, "CheckPlayerConnectStatus" );
 
-
 			// -- Disable private chat
 			lpfnSNWTellMeSpecialChatReceived = (lpfnTellMeSpecialChatReceivedFunc)
 										GetProcAddress( (HINSTANCE) hDPlay, "TellMeSpecialChatReceived" );
 
 			lpfnSNWTellMeSpecialChatReceived( SIGS_POST_MESSAGE, NULL, hwndApp, WM_SIGSPCHAT );
 		
-		
 		} // end if we are playing!
-
-
 
 	}
 	else   //---- Direct Play
 	{
-
 
 		if ( kNoError == ecError ) 
 		{
@@ -719,10 +646,8 @@ ErrCode PlatformNetworkModule::CreateNetworkGame ( char *playername )
 			DPSESSIONDESC2 dpDesc2;
 			char   szUserName[PLAYERNAME_LEN + 1];
 			DWORD  dwUNSize = PLAYERNAME_LEN + 1;
-//			DPCAPS dpCaps;
 
 			memset ( szUserName, 0, PLAYERNAME_LEN + 1 );
-
 
 			memset( &dpDesc2, 0x00, sizeof(DPSESSIONDESC2) );
 			dpDesc2.dwSize = sizeof(dpDesc2);
@@ -743,7 +668,6 @@ ErrCode PlatformNetworkModule::CreateNetworkGame ( char *playername )
 			dpDesc2.dwUser3 = ngiInfo.dwUser3;
 			dpDesc2.dwUser4 = ngiInfo.dwUser4;
 
-       
 			//---- Create a new networked game
 
 			hResult = lpDP3A->Open( &dpDesc2, DPOPEN_CREATE );
@@ -775,7 +699,6 @@ ErrCode PlatformNetworkModule::CreateNetworkGame ( char *playername )
 					ecError = kCannotCreatePlayer;
 	                ErrorDPlay( hResult );
 
-
 	 				hResult = lpDP3A->Close();
 
 					if( hResult != DP_OK )
@@ -806,14 +729,9 @@ ErrCode PlatformNetworkModule::CreateNetworkGame ( char *playername )
 
 	}	//---- If SIGS or DPLAY
 
-
 	return ( ecError );
 
-
-
 } // PlatformNetworkModule::CreateNetworkGame
-	
-
 	
 // -----------------------------------------------------------------
 //
@@ -834,7 +752,6 @@ int PlatformNetworkModule::GetDeletedPlayer  ( int index )
 
 }
 
-
 // -----------------------------------------------------------------
 //
 //  PlatformNetworkModule::GetDeletedPlayerId
@@ -853,7 +770,6 @@ DWORD PlatformNetworkModule::GetDeletedPlayerId  ( int index )
 	 return	dwDeletedId[index]; 
 
 }
-
 
 // -----------------------------------------------------------------
 //
@@ -874,8 +790,6 @@ void PlatformNetworkModule::ResetDeletedPlayer  ( int index )
 	 dwDeleted[index] = 0; 
 
 }
-
-
 
 // -----------------------------------------------------------------
 //
@@ -908,14 +822,12 @@ void PlatformNetworkModule::DeletePlayer( DWORD dwDelPlayerId )
 			dwDeletedId[y] = dwPlayers[y];	//---- Set deleted id
 			dwPlayers[y]   = kNoPlayer; 	//---- Set to empty slot
 
-
 			break;
 		}
 
 	} // for each player
 
 } // PlatformNetworkModule::DeletePlayer
-	
 	
 // -----------------------------------------------------------------
 //
@@ -946,7 +858,6 @@ BOOL FAR PASCAL EnumSession(LPCDPSESSIONDESC2	lpDPSGameDesc2,
 		PlatformNetworkModule* pNM = (PlatformNetworkModule*)lpInfo->pnmThis;
 		char szChar[256];
 
-
 		//----- If we timeout something is wrong ? so abort
 		if (dwFlags & DPESC_TIMEDOUT)
 		{
@@ -960,7 +871,6 @@ BOOL FAR PASCAL EnumSession(LPCDPSESSIONDESC2	lpDPSGameDesc2,
 			return(FALSE);
 		}
 
-
 		// Determine if this sessions GUID is already in our list; if so,
 		// return TRUE to continue, but don't add a second copy of it.
 
@@ -970,26 +880,12 @@ BOOL FAR PASCAL EnumSession(LPCDPSESSIONDESC2	lpDPSGameDesc2,
 				return TRUE;
 		}
 
-
 		lpInfo->pnmThis->fModem = FALSE;
-
-
 
 		//
 		//---- This is a modem game so fake out some values for direct play
 		//---- Since DP fills max players with 16 we have to change this to 2
 		//
-
-  //      if (strncmp(lpDPSGameDesc->szSessionName, "Dial", 4 ) == 0) 
-  //	   {
-  //			peiInfo->pnmThis->fModem = TRUE;
-  //       	peiInfo->pnmThis->ngiInfos[peiInfo->pnmThis->usSessionIdx].usMaxPlayers = 2; // (unsigned short) lpDPSGameDesc->dwMaxPlayers;
-  //		}
-  //		else 
-  //   	{
-  //       	peiInfo->pnmThis->ngiInfos[peiInfo->pnmThis->usSessionIdx].usMaxPlayers = (unsigned short) lpDPSGameDesc->dwMaxPlayers;
-  //		}
-
 
 		sprintf(szChar, "%-32.32s", lpDPSGameDesc2->lpszSessionNameA);
 
@@ -1022,8 +918,6 @@ BOOL FAR PASCAL EnumSession(LPCDPSESSIONDESC2	lpDPSGameDesc2,
 	}
 
 } // PlatformNetworkModule::EnumSession
-
-
 
 // -----------------------------------------------------------------
 //
@@ -1092,9 +986,7 @@ ErrCode PlatformNetworkModule::EnumerateNetworkGames
 
 	}
 
-
 } // PlatformNetworkModule::EnumerateNetworkGames
-	
 	
 // -----------------------------------------------------------------
 //
@@ -1123,7 +1015,6 @@ BOOL FAR PASCAL EnumPlayers(DPID dpID,
 	{
 		LPENUMPINFO pepiInfo = (LPENUMPINFO)lpContext;
 
-
 		if (dwPlayerType == DPPLAYERTYPE_PLAYER)
 		{
 
@@ -1136,11 +1027,9 @@ BOOL FAR PASCAL EnumPlayers(DPID dpID,
 
 		}
 
-
 		return(TRUE);
 
 	}
-
 
 } // PlatformNetworkModule::EnumPlayers
 
@@ -1186,7 +1075,6 @@ BOOL FAR PASCAL EnumServiceProvider(LPGUID lpSPGuid,
 
 			pUnk->Release();
 
-
 			LPENUMINFO peiInfo = (LPENUMINFO)lpContext;
 			PlatformNetworkModule* pNM = (PlatformNetworkModule*)peiInfo->pnmThis;
 
@@ -1214,9 +1102,7 @@ BOOL FAR PASCAL EnumServiceProvider(LPGUID lpSPGuid,
 
 	}
 
-
 } // PlatformNetworkModule::EnumServiceProvider
-
 
 // -----------------------------------------------------------------
 //
@@ -1267,12 +1153,8 @@ ErrCode PlatformNetworkModule::EnumerateNetworkProtocols
 
 	}
 
-
 } // PlatformNetworkModule::EnumerateNetworkProtocols
 	
-	
-
-
 // -----------------------------------------------------------------
 //
 //  PlatformNetworkModule::EnumeratePlayers
@@ -1296,13 +1178,11 @@ ErrCode PlatformNetworkModule::EnumeratePlayers
 	{
 		char szBuff[MAX_PATH] = "";
 
-
 		if ( hDPlay == NULL )
 			return ( kGenericError );
 
 		if ( lpfnSNWNumPlayers == NULL )
 			return ( kGenericError );
-
 
 		//---- Get all the players names
 
@@ -1326,7 +1206,6 @@ ErrCode PlatformNetworkModule::EnumeratePlayers
 		HRESULT hResult = DP_OK;
 		ENUMPINFO	epiInfo;
 
-
 		if ( dwPlayerId != kNoPlayer )
 		{
 			epiInfo.pEnumFunc = theEnumeratePlayersFunc;
@@ -1349,13 +1228,6 @@ ErrCode PlatformNetworkModule::EnumeratePlayers
 	}
 
 } // PlatformNetworkModule::EnumeratePlayers
-
-
-	
-
-
-
-	
 
 // -----------------------------------------------------------------
 //
@@ -1418,8 +1290,6 @@ void PlatformNetworkModule::BuildDPNameA( LPDPNAME pdpName,
 	pdpName->lpszLongNameA		= pszFormalName;
 	pdpName->lpszShortNameA		= pszFriendlyName;
 } /* BuildDPNameA */
-
-
 
 //----------------------------------------------------------------------------
 //  PlatformNetworkModule::ErrorDPlay
@@ -1591,8 +1461,6 @@ void PlatformNetworkModule::ErrorDPlay (HRESULT hResult )
 
 }  //---- End of ErrorDPlay ()
 
-
-
 // -----------------------------------------------------------------
 //
 //  PlatformNetworkModule::GetLocalPlayerId
@@ -1616,7 +1484,6 @@ ErrCode PlatformNetworkModule::GetLocalPlayerID ( long* thePlayerID )
 		return ( kNoGameStarted );
 
 } // PlatformNetworkModule::GetLocalPlayerID
-
 
 // -----------------------------------------------------------------
 //
@@ -1662,9 +1529,6 @@ PNETGAMEINFO PlatformNetworkModule::GetNetworkGameInfo  ()
 
 } // PlatformNetworkModule::GetNetworkGameInfo
 	
-
-
-
 // -----------------------------------------------------------------
 //
 //  PlatformNetworkModule::InitVars
@@ -1697,12 +1561,9 @@ void PlatformNetworkModule::InitVars( void )
 	   dwDeletedId[x] = kNoPlayer;
 	}
 
-
 	ngiInfo.usMaxPlayers = 2;    //---- Default to 2 players
 
-
 	hDPlay		= NULL;
-
 
 	// -- DirectPlay items
 
@@ -1724,13 +1585,8 @@ void PlatformNetworkModule::InitVars( void )
 
 	lpSndBuff		= (LPNETMSG) HeapAlloc ( GetProcessHeap(), 0, MAX_NETBUFF );
 
-
-
 } // PlatformNetworkModule::InitVars
 	
-
-
-
 // -----------------------------------------------------------------
 //
 //  PlatformNetworkModule::IsModemGame
@@ -1751,9 +1607,6 @@ BOOL PlatformNetworkModule::IsModemGame( void )
 
 } // PlatformNetworkModule::IsModemGame
 	
-
-
-
 // -----------------------------------------------------------------
 //
 //  PlatformNetworkModule::IsNetworkingAvailable
@@ -1814,7 +1667,6 @@ ErrCode PlatformNetworkModule::IsNetworkingAvailable( void )
 
                FreeLibrary( hDPlay );
 
-
 				if ( bRet == DLL_EXIT_CONTINUE_TO_CONNECT )
 				{
 					ecError = kNoError;
@@ -1841,18 +1693,13 @@ ErrCode PlatformNetworkModule::IsNetworkingAvailable( void )
 
 			}
 
-
-
-
 		} // else if found dll
-
 
 		// -- set the flag
 
 		fNetworkAvailable = (kNoError == ecError) ? TRUE : FALSE;
 
 		return ( ecError );
-
 
 	}
 	else
@@ -1882,7 +1729,6 @@ ErrCode PlatformNetworkModule::IsNetworkingAvailable( void )
 				ecError = kNetworkingSetupError;
 			}		
 
-
        	// --
    	    // -- Get the proc address for direct play creation
 	       // --
@@ -1896,7 +1742,6 @@ ErrCode PlatformNetworkModule::IsNetworkingAvailable( void )
 
 		} // else if found DPlay.dll
 
-
 	 	// -- set the flag
 		fNetworkAvailable = (kNoError == ecError) ? TRUE : FALSE;
 
@@ -1905,9 +1750,6 @@ ErrCode PlatformNetworkModule::IsNetworkingAvailable( void )
 
 } // PlatformNetworkModule::IsNetworkingAvailable
 	
-	
-
-
 // -----------------------------------------------------------------
 //
 //  PlatformNetworkModule::JoinNetworkGame
@@ -1950,7 +1792,6 @@ ErrCode PlatformNetworkModule::JoinNetworkGame (long theGameIndex, char *playern
 			DPSESSIONDESC2 dpDesc2;
 			char          szUserName[PLAYERNAME_LEN + 1];
 			DWORD         dwUNSize = PLAYERNAME_LEN + 1;
-	//		DPCAPS        dpCaps;
 
 			memset ( szUserName, 0, PLAYERNAME_LEN + 1 );
 
@@ -1963,8 +1804,6 @@ ErrCode PlatformNetworkModule::JoinNetworkGame (long theGameIndex, char *playern
 	
 	        //---- Which game we are joining
 			dpDesc2.guidInstance = guidSessions[ theGameIndex ];
-
-//           sprintf( dpDesc.szPassword, "%3.2f", RealmAIVersionNumber );
 
 			//----- Open the game session
 			hResult= lpDP3A->Open( &dpDesc2, DPOPEN_JOIN );
@@ -1980,7 +1819,6 @@ ErrCode PlatformNetworkModule::JoinNetworkGame (long theGameIndex, char *playern
 
 				DPNAME dpName;
 				BuildDPNameA( &dpName, szUserName, playername );
-
 
             //---- Create our player
 				hResult = lpDP3A->CreatePlayer( &dwPlayerId, 
@@ -2035,10 +1873,6 @@ ErrCode PlatformNetworkModule::JoinNetworkGame (long theGameIndex, char *playern
 					ngiInfo.dwUser3 = ngiInfos[theGameIndex].dwUser3;
 					ngiInfo.dwUser4 = ngiInfos[theGameIndex].dwUser4;
 
-
-	//				ResetGameInformation();
-
-
 					fGameCreator = FALSE;
 
   	            strncpy(szPlayerName, playername, 256) ;
@@ -2058,7 +1892,6 @@ ErrCode PlatformNetworkModule::JoinNetworkGame (long theGameIndex, char *playern
 
 } // PlatformNetworkModule::JoinNetworkGame
 
-
 // -----------------------------------------------------------------
 //
 //  PlatformNetworkModule::PrintString
@@ -2075,11 +1908,6 @@ ErrCode PlatformNetworkModule::JoinNetworkGame (long theGameIndex, char *playern
 int PlatformNetworkModule::PrintString(char *s)
 {
 
-//   if (pPrintFunction == NULL)
-//      return 0 ;
-//   return (pPrintFunction)(s) ;
-
-
      #ifdef _MULTIMONO
 		 if ( s )
 	        mono_puts ( 40, 21, s );
@@ -2088,8 +1916,6 @@ int PlatformNetworkModule::PrintString(char *s)
      return 0;
 
 }
-
-
 
 // -----------------------------------------------------------------
 //
@@ -2161,7 +1987,6 @@ int PlatformNetworkModule::PeekNextMessage( LPNETMSG pMsg )
 
 }  //---- End of PeekNextMessage()
 
-
 // -----------------------------------------------------------------
 //
 //  PlatformNetworkModule::ReceiveMessages
@@ -2212,7 +2037,6 @@ ErrCode PlatformNetworkModule::ReceiveMessages (	DWORD dwWait,
 	int		iError = RETURN_ERR;
 	int		iReadCount = 0;
 
-
 	if ( fSigs )
 	{
 	
@@ -2246,7 +2070,6 @@ ErrCode PlatformNetworkModule::ReceiveMessages (	DWORD dwWait,
 			return( kConnectionLost );
 		}
 
-
 		// --
 		// -- Getting a message here
 		// --
@@ -2262,7 +2085,6 @@ ErrCode PlatformNetworkModule::ReceiveMessages (	DWORD dwWait,
 			iError = RETURN_ERR;
 			iReadCount = 0;
 
-	
 			if ( bRemove == kPEEKONLY ) 
 			{
 			    // -- Only peeking here
@@ -2300,12 +2122,9 @@ ErrCode PlatformNetworkModule::ReceiveMessages (	DWORD dwWait,
 
 						}  //---- For every player 
 
-
 					} // any messages?
 
 				} // end if not already peeked
-
-
 
 				if ( fPeekedAlready )
 				{
@@ -2340,7 +2159,6 @@ ErrCode PlatformNetworkModule::ReceiveMessages (	DWORD dwWait,
 												MAX_NETBUFF, dwPlayers[iPlayer] );
 					fPeekedAlready = FALSE;
 
-
 				}
 				else if ( lpfnSNWCheckForTCP() == RETURN_OK )
 				{
@@ -2355,7 +2173,6 @@ ErrCode PlatformNetworkModule::ReceiveMessages (	DWORD dwWait,
 						{
 							iError = lpfnSNWPeekForTCP( (unsigned char *)(&lpRecBuff[0]), 
 														MAX_NETBUFF, dwPlayers[iPlayer] );
-
 
 							if ( iError >= 0 ) 
 							{
@@ -2382,7 +2199,6 @@ ErrCode PlatformNetworkModule::ReceiveMessages (	DWORD dwWait,
 
 			} // end else get from the queue
 
-
 			//---- We have received a message 
 
 			if ( 0 != iReadCount )
@@ -2408,12 +2224,10 @@ ErrCode PlatformNetworkModule::ReceiveMessages (	DWORD dwWait,
 							RandomLogComment ( temp );
 						}
 
-						
 						ecError = kCheckSumError;
 						goto receivemessagesendwhileSigs;
 					}
 				}
-
 
 				LOGCOMMENTSLEEP
 				if ( fLogComment )
@@ -2450,8 +2264,6 @@ ErrCode PlatformNetworkModule::ReceiveMessages (	DWORD dwWait,
 					}
 				}
 
-
-
 				// -- copy it to our generic buffer and set the
 				// --  flag alerting the game that it is here!
 				memcpy( lpGenericMsgBuf, lpRecBuff, dwBytes);
@@ -2460,7 +2272,6 @@ ErrCode PlatformNetworkModule::ReceiveMessages (	DWORD dwWait,
 
 				// -- Don't be sending the ack per Brick
 				ecError = kNoError;
-
 
 	#ifdef ACKSIGS
 
@@ -2493,7 +2304,6 @@ ErrCode PlatformNetworkModule::ReceiveMessages (	DWORD dwWait,
                }
 	#endif
 
-
 				#ifdef _MULTIMONO
 				if ( strlen(errstr) != 0 )
 				{
@@ -2513,8 +2323,6 @@ ErrCode PlatformNetworkModule::ReceiveMessages (	DWORD dwWait,
 		    	ecError = kMessageNotReceived ;
 			}
 
-
-
 receivemessagesendwhileSigs:
 
 			//---- Check to see if we expired
@@ -2525,15 +2333,11 @@ receivemessagesendwhileSigs:
 				dwExit = TRUE;
 			}
 
-
 		}   //---- End of while( dwExit )
-
 
 		return ( ecError );
 
-
 	}
-
 
 	//--------------------------------------------------------------
 	//---  Direct Play section of code
@@ -2550,7 +2354,6 @@ receivemessagesendwhileSigs:
 		}
 		
 		dwFlag = DPRECEIVE_ALL ;
-
 
 		//---- Doing a peek only 
 
@@ -2625,12 +2428,10 @@ receivemessagesendwhileSigs:
 							if( lpdpMsgDestroy->dwPlayerType==DPPLAYERTYPE_GROUP )
 								break;
 
-
 							// -- Delete the player from our local list
 							DeletePlayer( lpdpMsgDestroy->dpId );
 							break;
 						}
-
 
 						case DPSYS_SESSIONLOST:
 							ecError = kConnectionLost;
@@ -2661,7 +2462,6 @@ receivemessagesendwhileSigs:
 						goto receivemessagesendwhile;
 					}
 
-
 					// -- don't save this message if we sent it
 			
 					if ( dpFromId == dwPlayerId ) 
@@ -2672,7 +2472,6 @@ receivemessagesendwhileSigs:
 						}
 						goto receivemessagesendwhile;
 					}
-
 
 					// -- copy it to our generic buffer and set the
 					// --  flag alerting the game that it is here!
@@ -2770,7 +2569,6 @@ receivemessagesendwhile:
 
 } // PlatformNetworkModule::ReceiveMessages
 
-
 // -----------------------------------------------------------------
 //
 //  PlatformNetworkModule::ReleaseDPlay
@@ -2791,7 +2589,6 @@ ErrCode PlatformNetworkModule::ReleaseDPlay( void )
 
 	if ( fSigs )
 	{
-
 
 		if ( hDPlay != NULL )
 		{
@@ -2817,9 +2614,6 @@ ErrCode PlatformNetworkModule::ReleaseDPlay( void )
 			hDPlay = NULL;
 		}
 
-//       fSigs = FALSE;
-
-
 	}
 	else
 	{
@@ -2844,7 +2638,6 @@ ErrCode PlatformNetworkModule::ReleaseDPlay( void )
 		lpDP = NULL;
 	}
 
-
 	dwPlayerId = kNoPlayer;
 	guidInstance = GUID_NULL;
 	fGameInProgress = FALSE;
@@ -2860,17 +2653,11 @@ ErrCode PlatformNetworkModule::ReleaseDPlay( void )
 	   dwDeletedId[x] = kNoPlayer;
 	}
 
-
 	ngiInfo.usMaxPlayers = 2;    //---- Default to 2 players
-
 
 	return ( ecError );
 
-
 } // PlatformNetworkModule::ReleaseDPlay
-
-
-
 
 // -----------------------------------------------------------------
 //
@@ -2904,9 +2691,6 @@ void PlatformNetworkModule::SelectGuid( int i )
 	}
 } // PlatformNetworkModule::SelectGuid
 
-
-
-
 // -----------------------------------------------------------------
 //
 //  PlatformNetworkModule::ResetAcks
@@ -2926,15 +2710,12 @@ void PlatformNetworkModule::ResetAcks( void )
 
 	//---- Clear out ack array for a broadcast 
 
-             	
 	for ( x = 0; x < MAX_PLAYERS; x++ )
 	{
 		dwAcks[x] = 0;  //---- haven't received an ack
 	}            
 
-
 }	//---- End of ResetAcks()
-
 
 // -----------------------------------------------------------------
 //
@@ -2951,21 +2732,10 @@ void PlatformNetworkModule::ResetAcks( void )
 //BOOL PlatformNetworkModule::CheckOneAck( DWORD dwPlayerId )
 BOOL PlatformNetworkModule::CheckOneAck( DWORD ArrayPosition )
 {
-	//int x;
-	//
-	//for ( x=0; x < MAX_PLAYERS; x++ )
-	//{
-	//	//---- if we have this player have they acked yet ?
-	//	if ( dwPlayers[x] == dwPlayerId )
-	//		return dwAcks[x];
-	//}
-	//
-	//return FALSE;
 
 	return !!dwAcks[ArrayPosition];
 
 }
-
 
 // -----------------------------------------------------------------
 //
@@ -2984,7 +2754,6 @@ BOOL PlatformNetworkModule::UpdateandCheckAcks( DWORD dwPlayerId )
 	int x; 
 	BOOL fOk = TRUE;   //---- All have acked 
 
-
 	for ( x=0; x < MAX_PLAYERS; x++ )
 	{
 
@@ -2996,7 +2765,6 @@ BOOL PlatformNetworkModule::UpdateandCheckAcks( DWORD dwPlayerId )
 		}
 
 	} 
-
 
 	// check if everyone has acked yet 
    
@@ -3012,15 +2780,9 @@ BOOL PlatformNetworkModule::UpdateandCheckAcks( DWORD dwPlayerId )
 
 	}
 
-
-
 	return fOk;
 
-
-
 }	//---- End of UpdateandCheckAcks()
-
-
 
 // -----------------------------------------------------------------
 //
@@ -3053,7 +2815,6 @@ ErrCode PlatformNetworkModule::SendMessage (	DWORD  dpToId,
 															BYTE   bRetryCount
 															)
 {
-
 
 	ErrCode ecError   = kMessageNotReceived ;
 	HRESULT hResult   ;
@@ -3489,7 +3250,6 @@ out:
 	}		//---- End of If it is Direct Play
 }			// PlatformNetworkModule::SendMessage
 
-
 // -----------------------------------------------------------------
 //
 //  PlatformNetworkModule::SetNetworkProtocol
@@ -3530,7 +3290,6 @@ ErrCode PlatformNetworkModule::SetNetworkProtocol ( long theProtocolIndex )
 				hResult = lpDP->QueryInterface( IID_IDirectPlay3A, (void **)&lpDP3A );
 			}
 
-
 			if ( hResult != DP_OK )
 			{
 				ReleaseDPlay();
@@ -3564,9 +3323,6 @@ ErrCode PlatformNetworkModule::SetNetworkProtocol ( long theProtocolIndex )
 
 } // PlatformNetworkModule::SetNetworkProtocol
 
-
-
-
 // -----------------------------------------------------------------
 //
 // PlatformNetworkModule::WaitForPlayer
@@ -3584,7 +3340,6 @@ ErrCode PlatformNetworkModule::SetNetworkProtocol ( long theProtocolIndex )
 BOOL PlatformNetworkModule::WaitForPlayer(DWORD dwWait)
 {
    int lcv, initialplayercount, finalplayercount ;
-
 
 	for ( lcv = 0; lcv < MAX_PLAYERS; lcv++ )
 	{
@@ -3606,7 +3361,6 @@ BOOL PlatformNetworkModule::WaitForPlayer(DWORD dwWait)
       ReceiveMessages(0,kPEEKONLY) ;
    }
 
-
    for ( lcv = 0; lcv < MAX_PLAYERS; lcv++ )
 	{
 		if (dwPlayers[lcv] == kNoPlayer)
@@ -3619,11 +3373,7 @@ BOOL PlatformNetworkModule::WaitForPlayer(DWORD dwWait)
 
    return (initialplayercount < finalplayercount) ;
 
-
 }  //---- End of PlatformNetworkModule::WaitForPlayer() 
-
-
-
 
 //---------------------------------------------------------------------------
 //
@@ -3641,7 +3391,6 @@ int PlatformNetworkModule::WaitForPlayers( void )
 {
    int    y;
    USHORT usNumPlayers = 0;
-
 
 	ReceiveMessages( 0, kPEEKONLY, FALSE );
 
@@ -3665,21 +3414,14 @@ int PlatformNetworkModule::WaitForPlayers( void )
 
    }
 
-
    if ( ( usNumPlayers+1 ) >= ngiInfo.usMaxPlayers )
    {
            return kHaveAll;
    }
 
-   
-
    return usNumPlayers+1;
 
-
 }  //---- End of PlatformNetworkModule::WaitForPlayers
-
-
-
 
 //---------------------------------------------------------------------------
 //
@@ -3716,11 +3458,9 @@ int PlatformNetworkModule::ForceStart( void )
        }
    }
 
-
    //---- Reset the max players 
 
    ngiInfo.usMaxPlayers = usNumPlayers+1;
-
 
    //---- Make sure we have a Direct play object
 
@@ -3728,7 +3468,6 @@ int PlatformNetworkModule::ForceStart( void )
    {
 		return ( 0 );
 	}
-
 
 	{
 		DPSESSIONDESC2 dpDesc2;
@@ -3752,7 +3491,6 @@ int PlatformNetworkModule::ForceStart( void )
 		return ( 0 );
 	}
 
-
 	//---- Setup message header
 
 	lpSndBuff->MsgId	  = NETMSGID_START;
@@ -3761,7 +3499,6 @@ int PlatformNetworkModule::ForceStart( void )
 	lpSndBuff->usDataSize = 1;
    lpSndBuff->bNeedsAck  = 0; // turn wait time into a BOOL
 
-
    lpSndBuff->cData[0] = usNumPlayers+1;
   	dwLenMsg += 1;
 
@@ -3769,9 +3506,7 @@ int PlatformNetworkModule::ForceStart( void )
 
 	lpSndBuff->usCheckSum = HashCRC( (PUCHAR) lpSndBuff, (USHORT) dwLenMsg );
 
-
 	dwFlag = 0; 
-
 
    //---- Broadcast message 
 
@@ -3781,7 +3516,6 @@ int PlatformNetworkModule::ForceStart( void )
    return 1;
 
 }
-
 
 //---------------------------------------------------------------------------
 //
@@ -3839,7 +3573,6 @@ void SetErrorNum ( PNET_ERRCODE_TYPE ErrorVal )
 	gErrorVal = ErrorVal;
 }
 
-
 /* ========================================================================
    Function    - GetErrorNum
 	Description - retrieve the global error code
@@ -3850,7 +3583,6 @@ PNET_ERRCODE_TYPE GetErrorNum ( void )
 {
 	return gErrorVal;
 }
-
 
 /* ========================================================================
    Function    - ClearErrorNum

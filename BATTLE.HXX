@@ -114,7 +114,5 @@ LONG BattleExpPoints(
    ------------------------------------------------------------------------ */
 
 extern BATTLE_TROOP_INFO BattleTroopInfo[];
-//extern CHAR BattleCardBonusStrings[BTL_LASTBONUS][128];
 
 #endif // _BATTLE_HXX
-

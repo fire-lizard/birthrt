@@ -232,12 +232,6 @@ LONG sector_to_light(ULONG sect)
 
       case SSP_BLINK:
 	      // blink every second (actually 10 frames)
-			// if ((gcFrames % 20) < 10)
-			// 	light = 0;
-			// Change: randomly flicker every frame.  Did not work because
-			// EVERY span calls this routine (which we should look into
-			// for possible speedup).
-			// light -= random (10);
 			count = (BYTE) (gcFrames & 0x07);
 			if ((gSectorLight[sect] & 0x7) == count || gSectorLight[sect] == 0)
 			{
@@ -253,7 +247,6 @@ LONG sector_to_light(ULONG sect)
 			else
 			{
 				light = gSectorLight[sect] >> 3;
-				// ASSERT (light < 32);
 			}
 			break;
 
@@ -263,7 +256,6 @@ LONG sector_to_light(ULONG sect)
 	// fix it.  Should this be changed?  Probably not--too delicate.)
 	return 32 - light;
 }
-
 
 /* =======================================================================
    Function    - seg_two_sided
@@ -305,13 +297,10 @@ LONG seg_to_texture_num(LONG seg,LONG side,LONG pos)
 		{
 		case LOWER_TEXTURE:
 			return((ULONG)sidedefs[sided].n2); // was n3
-			//break;
 		case MIDDLE_TEXTURE:
 			return((ULONG)sidedefs[sided].n3); // was n2
-			//break;
 		case UPPER_TEXTURE:
 			return((ULONG)sidedefs[sided].n1);
-			//break;
 		}
 	return(0);
 }
@@ -367,7 +356,6 @@ LONG seg_to_txoff(LONG seg,LONG side)
 	return(sidedefs[sided].xoff);
 }
 
-
 /* =======================================================================
    Function    - seg_to_tyoff
    Description - finds the y-offset of the texture on a side of the seg
@@ -388,5 +376,4 @@ LONG l,sided;
 		return(0);
 	return(sidedefs[sided].yoff);
 }
-
 

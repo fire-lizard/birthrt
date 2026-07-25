@@ -158,4 +158,3 @@ void handle_2dmouse()
 		typeClicked = (WadThingType) - 1;
 	}
 }
-

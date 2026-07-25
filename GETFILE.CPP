@@ -11,7 +11,6 @@
 #include <Windows.h>
 #include "GETFILE.HXX"
 
-
 // ---------------------------------------------------------------------------
 BOOL GetFileName (HWND i_hwnd, LPCSTR i_szDirName, LPCSTR i_szFilter,
 	LPCSTR i_szExt, LPSTR o_szReturnName, LPSTR o_szReturnTitle,
@@ -24,28 +23,11 @@ BOOL GetFileName (HWND i_hwnd, LPCSTR i_szDirName, LPCSTR i_szFilter,
 //
 // Example of use:
 //
-// 	char 		szFilename[128];
-// 	char 		szTitle[128];
-//
-//
-// 	szFilename[0] = 0;
-// 	szTitle[0] = 0;
-//
-// 	if (GetFileName (hwnd, NULL, "BMP Files (*.BMP)\0*.BMP", "BMP",
-// 			szFilename, szTitle, OFN_PATHMUSTEXIST, GFN_OPEN))
-// 	{
-// 		hDIB = GetDIB (szFilename);
-// 		if (hDIB)
-// 		{
-// 			return hDIB;
-// 		}
-// 	}
 //
 // ---------------------------------------------------------------------------
 
    OPENFILENAME   ofn;
    BOOL           retval;
-
 
    // Set all structure members to zero.
    memset(&ofn, 0, sizeof(OPENFILENAME));
@@ -72,7 +54,5 @@ BOOL GetFileName (HWND i_hwnd, LPCSTR i_szDirName, LPCSTR i_szFilter,
    return retval;
 }
 
-
 #endif
-
 

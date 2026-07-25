@@ -1,4 +1,3 @@
-
 /* ========================================================================
    Copyright (c) 1990,1996	  Synergistic Software
    All Rights Reserved
@@ -129,13 +128,10 @@ void CAvatar::HellHounds (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 	
 	case AI_DEAD:
 			// Dead is dead. Don't move.
-			//if (pAvatar->mfGetArtSequence() != DEADSEQ)
-			//{
 				pAvatar->mfGetSectorInfo(&FloorHeight, &CeilingHeight, &Special);
 				pAvatar->mfMoveToXYA(pAvatar->mfX(),
 									  pAvatar->mfY(),
 									  pAvatar->mfAngle());
-			//}
 			
 			if(pAvatar->mfTestSequenceDone() &&
 			     pAvatar->CurSequence != DEADSEQ)
@@ -154,7 +150,6 @@ void CAvatar::HellHounds (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 				pAvatar->Status = AI_SEARCH;
 				if(pAvatar->attrib.IsFollowPath == TRUE)
 				{
-					//pAvatar->FaceTo(pAvatar->fFollowPath.oldP.x, pAvatar->fFollowPath.oldP.y);
 					pAvatar->SetAIFuncIndex(CAvatar::AI_FUNC_FOLLOW_PATH);
 					pAvatar->DoAI(CAvatar::AI_INIT);
 					break;
@@ -172,7 +167,6 @@ void CAvatar::HellHounds (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 					pAvatar->hEnemy = fERROR;
 					if(pAvatar->attrib.IsFollowPath == TRUE)
 					{
-						//pAvatar->FaceTo(pAvatar->fFollowPath.oldP.x, pAvatar->fFollowPath.oldP.y);
 						pAvatar->SetAIFuncIndex(CAvatar::AI_FUNC_FOLLOW_PATH);
 						pAvatar->DoAI(CAvatar::AI_INIT);
 						break;
@@ -220,7 +214,6 @@ void CAvatar::HellHounds (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 					pAvatar->Status = AI_SEARCH;
 					if(pAvatar->attrib.IsFollowPath == TRUE)
 					{
-						//pAvatar->FaceTo(pAvatar->fFollowPath.oldP.x, pAvatar->fFollowPath.oldP.y);
 						pAvatar->SetAIFuncIndex(CAvatar::AI_FUNC_FOLLOW_PATH);
 						pAvatar->DoAI(CAvatar::AI_INIT);
 						break;
@@ -238,7 +231,6 @@ void CAvatar::HellHounds (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 						pAvatar->hEnemy = fERROR;
 						if(pAvatar->attrib.IsFollowPath == TRUE)
 						{
-							//pAvatar->FaceTo(pAvatar->fFollowPath.oldP.x, pAvatar->fFollowPath.oldP.y);
 							pAvatar->SetAIFuncIndex(CAvatar::AI_FUNC_FOLLOW_PATH);
 							pAvatar->DoAI(CAvatar::AI_INIT);
 							break;
@@ -290,7 +282,6 @@ void CAvatar::HellHounds (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 				}
 				if(pAvatar->attrib.IsFollowPath == TRUE)
 				{
-					//pAvatar->FaceTo(pAvatar->fFollowPath.oldP.x, pAvatar->fFollowPath.oldP.y);
 					pAvatar->SetAIFuncIndex(CAvatar::AI_FUNC_FOLLOW_PATH);
 					pAvatar->DoAI(CAvatar::AI_INIT);
 				}
@@ -307,7 +298,6 @@ void CAvatar::HellHounds (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 					pAvatar->Status = AI_SEARCH;
 					if(pAvatar->attrib.IsFollowPath == TRUE)
 					{
-						//pAvatar->FaceTo(pAvatar->fFollowPath.oldP.x, pAvatar->fFollowPath.oldP.y);
 						pAvatar->SetAIFuncIndex(CAvatar::AI_FUNC_FOLLOW_PATH);
 						pAvatar->DoAI(CAvatar::AI_INIT);
 						break;
@@ -325,7 +315,6 @@ void CAvatar::HellHounds (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 						pAvatar->hEnemy = fERROR;
 						if(pAvatar->attrib.IsFollowPath == TRUE)
 						{
-							//pAvatar->FaceTo(pAvatar->fFollowPath.oldP.x, pAvatar->fFollowPath.oldP.y);
 							pAvatar->SetAIFuncIndex(CAvatar::AI_FUNC_FOLLOW_PATH);
 							pAvatar->DoAI(CAvatar::AI_INIT);
 							break;
@@ -377,7 +366,6 @@ void CAvatar::HellHounds (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 				}
 				if(pAvatar->attrib.IsFollowPath == TRUE)
 				{
-					//pAvatar->FaceTo(pAvatar->fFollowPath.oldP.x, pAvatar->fFollowPath.oldP.y);
 					pAvatar->SetAIFuncIndex(CAvatar::AI_FUNC_FOLLOW_PATH);
 					pAvatar->DoAI(CAvatar::AI_INIT);
 				}
@@ -392,11 +380,6 @@ void CAvatar::HellHounds (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 				CAvatar * pAvatarTarget = (CAvatar *) BLKPTR(pAvatar->hEnemy);
 			
 				// If you can be seen you are active no matter what.
-				// if (pAvatar->mfIsVisible())
-				// {
-				// 	pAvatar->Status = AI_MOVING;
-				// 	// May want to add a Blech Goto here.
-				// }
 				// else
 				if (pAvatar->mfCanSeeAvatar(pAvatarTarget))
 				{
@@ -490,7 +473,6 @@ void CAvatar::HellHounds (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 				pAvatar->Status = AI_SEARCH;
 				if(pAvatar->attrib.IsFollowPath == TRUE)
 				{
-					//pAvatar->FaceTo(pAvatar->fFollowPath.oldP.x, pAvatar->fFollowPath.oldP.y);
 					pAvatar->SetAIFuncIndex(CAvatar::AI_FUNC_FOLLOW_PATH);
 					pAvatar->DoAI(CAvatar::AI_INIT);
 				}
@@ -520,7 +502,6 @@ void CAvatar::HellHounds (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 					pAvatar->Status = AI_SEARCH;
 					if(pAvatar->attrib.IsFollowPath == TRUE)
 					{
-						//pAvatar->FaceTo(pAvatar->fFollowPath.oldP.x, pAvatar->fFollowPath.oldP.y);
 						pAvatar->SetAIFuncIndex(CAvatar::AI_FUNC_FOLLOW_PATH);
 						pAvatar->DoAI(CAvatar::AI_INIT);
 					}
@@ -542,7 +523,6 @@ void CAvatar::HellHounds (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 				pAvatar->Status = AI_SEARCH;
 				if(pAvatar->attrib.IsFollowPath == TRUE)
 				{
-					//pAvatar->FaceTo(pAvatar->fFollowPath.oldP.x, pAvatar->fFollowPath.oldP.y);
 					pAvatar->SetAIFuncIndex(CAvatar::AI_FUNC_FOLLOW_PATH);
 					pAvatar->DoAI(CAvatar::AI_INIT);
 					break;
@@ -572,7 +552,6 @@ void CAvatar::HellHounds (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 				LONG myThingBumped;
 				LONG MoveAngle;
 				FIXED_VECTOR_3D tp;
-				//static int iAlreadySaidHalted = FALSE;
 				
 				// Chase the Target.
 				
@@ -595,7 +574,6 @@ void CAvatar::HellHounds (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 				    bump == iOBJECT))
 				{
 					// we're stuck.
-					//pAvatar->mfStartAnimationOnce(STANDSEQ);
 					// we're stuck.
 					tp.dx = 0;
 					tp.dy = (pAvatar->mfGetMarchRate())<<PLAYER_FIXEDPT;
@@ -605,7 +583,6 @@ void CAvatar::HellHounds (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 						pAvatar->Status = AI_SEARCH;
 						if(pAvatar->attrib.IsFollowPath == TRUE)
 						{
-							//pAvatar->FaceTo(pAvatar->fFollowPath.oldP.x, pAvatar->fFollowPath.oldP.y);
 							pAvatar->SetAIFuncIndex(CAvatar::AI_FUNC_FOLLOW_PATH);
 							pAvatar->DoAI(CAvatar::AI_INIT);
 							break;
@@ -629,7 +606,6 @@ void CAvatar::HellHounds (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 												  (pAvatar->mfY()+PLAYER_INT_VAL(tp.dy)),
 												  pAvatar->mfAngle());
 						}
-
 
 						if(pAvatar->dAngle>0)
 							pAvatar->dAngle = -(pAvatar->dAngle);

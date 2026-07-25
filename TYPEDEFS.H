@@ -57,7 +57,6 @@ typedef void	(*PFVLLB)(LONG,LONG,BOOL);
 typedef LONG	(*PFLLLL)(LONG,LONG,LONG);
 
 // match graphics structs
-//#ifndef _WINDOWS
 #ifndef _WINDEF_
 	typedef struct _RECT
 	{
@@ -111,8 +110,6 @@ typedef LONG	(*PFLLLL)(LONG,LONG,LONG);
  	UBYTE		reserved3[40];	/* Set to zero. */
  } FLICHEAD, *FLICHEADPTR;
 
-
-
 // Note: X & Y for the 3D POINT & VECTOR types must be the first
 //       two data items so we can call the 2D rotate point fns on them.
 
@@ -135,7 +132,6 @@ typedef struct _VECTOR_3D
 	LONG dy;
 	LONG dz;
 } VECTOR_3D, *PTR_VECTOR_3D;
-
 
 typedef struct
 {
@@ -167,6 +163,5 @@ typedef union
 #pragma warning 389 4
 // unused variables
 #pragma warning  14 4
-
 
 #endif // _TYPEDEFS_H

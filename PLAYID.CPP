@@ -9,16 +9,13 @@
 
    Contains the following general functions:
 
-
    ======================================================================== */
 
 /* ------------------------------------------------------------------------
    Includes
    ------------------------------------------------------------------------ */
-//#include "gamestr.h"
 #include "PLAYID.HXX"
 #include "strenum.h"
-
 
 /* ------------------------------------------------------------------------
    Notes
@@ -39,7 +36,6 @@
 /* ------------------------------------------------------------------------
    Global Variables
    ------------------------------------------------------------------------ */
-
 
 GAME_STRING const PLAYER_TITLE::player_title_table[] = {
 	  STR_NULL,						
@@ -63,4 +59,3 @@ GAME_STRING const PLAYER_TITLE::player_title_table[] = {
 GAME_STRING const PLAYER_DESCRIPTION::player_des_table[] = {
 	  STR_NULL
 	  };
-				

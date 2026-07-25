@@ -15,7 +15,6 @@
 #include "spell.hxx"
 #endif
 
-
 class PLAYER_STATS;
 /* ------------------------------------------------------------------------
    Defines and Compile Flags

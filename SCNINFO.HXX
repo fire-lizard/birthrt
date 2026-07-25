@@ -14,8 +14,6 @@
 #include "filename.hxx"
 #endif
 
-
-
 /* ------------------------------------------------------------------------
    Defines and Compile Flags
    ------------------------------------------------------------------------ */
@@ -97,6 +95,5 @@ inline void SCENE_INFO::mfWriteSceneName(FILE *fp)
 {
 	fcpSceneName.mfWriteFileName(fp);
 }
-
 
 #endif // _SCNINFO_HXX

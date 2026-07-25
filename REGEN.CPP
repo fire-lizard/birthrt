@@ -7,7 +7,6 @@
 #include "strenum.h"
 #include "SCNMGR.HXX"
 
-
 BOOL Regenerator::fListInitted=FALSE;
 
 static Regenerator RegenList[MAX_REGENERATORS];
@@ -48,7 +47,6 @@ BOOL Regenerator::mfRegister(SHORT hAvStats,LONG time)
 		{
 			RegenList[i].hAvatarStats=hAvStats;
 			RegenList[i].NextTick=0;
-					// was SCENE_MGR::gTick+(((double)time)*18.2);
 			RegenList[i].Time=time;
 			RegenList[i].fValid=TRUE;
 			return TRUE;
@@ -101,7 +99,6 @@ void Regenerator::Service()
 			{
 				// Just because you didn't come on the adventure, doesn't mean
 				// you have to be dropped from the list.
-				// RegenList[i].fValid=FALSE;
 				continue;
 			}
 

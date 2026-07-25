@@ -32,8 +32,6 @@
 #include "WINSYS\MONO_C.H"
 #endif
 
-
-
 /* ------------------------------------------------------------------------
    Notes
    ------------------------------------------------------------------------ */
@@ -133,7 +131,6 @@ DEFINE_VECTOR_DATA(NPC_ACTION_DATA, npcActionData) =
 /* TUORNEN		*/ NPC_ACTION_DATA()  
 };
 DEFINE_VECTOR_CLASS(NPC_ACTION_DATA, npcActionData);
-
 
 /* ENTRENCH		*/	
 static DEFINE_STATIC_VECTOR_DATA(AI_ACTION,modeNT) = {
@@ -1107,7 +1104,6 @@ static DEFINE_STATIC_VECTOR_DATA(AI_ACTION,modeDN) = {
 };
 DEFINE_STATIC_VECTOR_CLASS(AI_ACTION, modeDN);
 
-
 VECTOR_ARRAY_DATA(AI_ACTION, Modes) = {
 									modeNT,modeEF,modeET,modeEP,modeEW,
 									modeBF,modeBT,modeBP,modeBW,modeCF,
@@ -1121,8 +1117,6 @@ VECTOR_ARRAY_DATA(AI_ACTION, Modes) = {
 									modeDN,modeSB,modeSS,modeIN};		// The screw backs are in the
 									                                    // same order as the enum.
 DEFINE_VECTOR_ARRAY_CLASS ( AI_ACTION, Modes);
-
-
 
 DEFINE_VECTOR_DATA(ACTION_STR,szAIAction) = {
 			STR_ACTN_STR_NONE				 ,
@@ -1225,5 +1219,4 @@ void ResetNPCActionData()
 	}
 }
 /* ======================================================================== */
-
 

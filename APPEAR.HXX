@@ -13,8 +13,6 @@
    ------------------------------------------------------------------------ */
 #include "typedefs.h"
 
-// #include "playrace.hxx"
-// #include "weapon.hxx"
 #include "strenum.h"
 #include "thingtyp.h"
 
@@ -95,5 +93,3 @@ inline const THINGTYPE APPEARANCE_INFO::mfGetType (
 }
 
 #endif // _APPEARANCE_HXX
-
-

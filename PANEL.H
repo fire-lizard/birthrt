@@ -43,7 +43,6 @@ void ShowPanel(LONG Index);
 void HidePanel(LONG Index);
 int IsPanelUp ( LONG Index );
 
-
 #if defined (__cplusplus)
 }
 

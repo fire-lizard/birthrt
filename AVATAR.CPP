@@ -1,4 +1,3 @@
-
 /* ========================================================================
    Copyright (c) 1990,1996	  Synergistic Software
    All Rights Reserved
@@ -466,7 +465,6 @@ void CAvatar::DeleteAvatar(SHORT hAvatar)
 	DisposBlock(hAvatar);
 }
 
-
 /* ========================================================================
    Function	- CreateAvatar
    Description - Create an avatar of a given type at given location
@@ -485,7 +483,6 @@ LONG CAvatar::CreateAvatar(
 )
 {
 	LONG	i;
-	
 	
 	// find an empty Avatar slot, assume for now that we never run out
 	// if find a NULL pointer, allocate space for AVATAR structure
@@ -508,7 +505,6 @@ LONG CAvatar::CreateAvatar(
 		{
 			printf("Creating Avatar Id = %ld\n", Id);
 			
-			//GEH SetBlockAttr(pScene->Avatars[i],LOCKED, LOCKED);
 			CAvatar *pAvatar = (CAvatar *) BLKPTR(pScene->Avatars[i]);
 		
 			pAvatar->Id = Id;
@@ -521,7 +517,6 @@ LONG CAvatar::CreateAvatar(
 			pAvatar->mfSetOriginalRemapColor(Realm);
 			printf("Used memory = %ld\n", (lMemoryAvail - ReportFreeMem(TRUE)));
 			
-			//GEH ClrLock(pScene->Avatars[i]);
 		}
 		else
 		{
@@ -732,7 +727,6 @@ HDL_AVATAR CAvatar::mfFindClosestFoe() const
 	HDL_AVATAR Result = fERROR;
 	LONG prevDistance = LONG_MAX;
 	
-	
 	for (i = 0; i < MAX_AVATARS; ++i)
 	{
 		if (pCurrentScene->Avatars[i] != fERROR)
@@ -781,7 +775,6 @@ HDL_AVATAR CAvatar::mfFindClosestVisibleFoe() const
 	LONG prevDistance = LONG_MAX;
 	HDL_AVATAR HackOnMe = fERROR;
 	LONG prevHackOnMeDistance = LONG_MAX;
-	
 	
 	for (i = 0; i < MAX_AVATARS; ++i)
 	{
@@ -909,7 +902,6 @@ WadThingType CAvatar::mfMoveTowardWithBump(
 		else
 			distance += Bump;
 		
-		
 		if (Bump > 2)
 		{
 			// Introduce some randomness as to exactly where
@@ -957,11 +949,9 @@ WadThingType CAvatar::mfMoveTowardWithBump(
 		NewVector.dy <<= PLAYER_FIXEDPT;
 		NewVector.dz = 0;
 		
-		
 		// For now ignore the noise we make if we hit something.
 		// GWP optimize by not doing this check if we're not "visible."
 		// GWP if we can't be seen bumping objects who cares?
-		//if (mfIsVisible())
 		{
 			bumpObjectType = CheckBump(&TempPlayer, &NewVector, Rate);
 		}
@@ -1009,7 +999,6 @@ WadThingType CAvatar::mfMoveTowardWithBump(
 		FaceTo(TargetX, TargetY);
 	}
 	
-	
 	*pmyThingBumped = TempPlayer.BumpIndex;
 	return (TempPlayer.bump);
 }
@@ -1035,7 +1024,6 @@ BOOL CAvatar::mfWackEm(const HDL_AVATAR hEnemyTarget)
 		return FALSE;
 	}
 	
-	//GEH SetBlockAttr(hEnemyTarget, LOCKED, LOCKED);
 	CAvatar * const pEnemyTarget = (CAvatar * const) BLKPTR(hEnemyTarget);
 	
 	if (pEnemyTarget->mfAmIImmoblized())
@@ -1049,8 +1037,6 @@ BOOL CAvatar::mfWackEm(const HDL_AVATAR hEnemyTarget)
 	SET_NOT_FRIENDLY(Realm.HomeRealm, pEnemyTarget->Realm.HomeRealm);
 	if (pEnemyTarget->hPlayerStats != fERROR && hPlayerStats != fERROR)
 	{
-		//GEH SetBlockAttr(hPlayerStats, LOCKED, LOCKED);
-		//GEH SetBlockAttr(pEnemyTarget->hPlayerStats, LOCKED, LOCKED);
 		DumbAutoLockPtr<PLAYER_STATS> const pAvatarStats(hPlayerStats);
 		DumbAutoLockPtr<PLAYER_STATS> const pEnemyStats(pEnemyTarget->hPlayerStats);
 		
@@ -1103,8 +1089,6 @@ BOOL CAvatar::mfWackEm(const HDL_AVATAR hEnemyTarget)
 				mfKillAvatar(pEnemyTarget);
 			}
 		}
-		//GEH ClrLock(pEnemyTarget->hPlayerStats);
-		//GEH ClrLock(hPlayerStats);
 	}
 	else
 	{
@@ -1113,8 +1097,6 @@ BOOL CAvatar::mfWackEm(const HDL_AVATAR hEnemyTarget)
 	
 	fDamageFlag = 0;
 		
-	//GEH ClrLock(hEnemyTarget);
-	
 	return TRUE;
 }
 /* ========================================================================
@@ -1207,17 +1189,12 @@ void CAvatar::mfKillAvatar(CAvatar * const pEnemyAvatar)
 	
 	DumbAutoLockPtr<PLAYER_STATS> const pMyPlayerStats(hPlayerStats);
 	
-
 	// Deactivate all enemy's items
 	ItemEffects::DeactivateAvatarsItems(pEnemyAvatar->hPlayerStats);
 
-
-
 	// Then drop them
-//	pEnemyAvatar->mfSpewAll();
 	//They now get dropped in their AI function....
 
-	
 	// You've killed'em.
 	pEnemyAvatarStats->mfKillem();
 	if(ThingType == SPECTRE || ThingType == T_SPECTRE
@@ -1227,7 +1204,6 @@ void CAvatar::mfKillAvatar(CAvatar * const pEnemyAvatar)
 	// [d11-05-96 JPC] Add dead thing to adjacent subsectors to help with
 	// clipping problem.
 #if EXTRATHINGS
-	//AddThingToAdjacentSubsectors (pEnemyAvatar->ThingIndex);
 #endif
 
 	// If the Enemy had a target DisEngage that one.
@@ -1344,7 +1320,6 @@ void CAvatar::mfFightSounds(HDL_AVATAR const hEnemyTarget)
 		return;
 	}
 	
-	//GEH SetBlockAttr(hEnemyTarget, LOCKED, LOCKED);
 	CAvatar * const pEnemyTarget = (CAvatar * const) BLKPTR(hEnemyTarget);
 	
 	if (pEnemyTarget->mfAmIImmoblized())
@@ -1356,12 +1331,9 @@ void CAvatar::mfFightSounds(HDL_AVATAR const hEnemyTarget)
 	
 	if (pEnemyTarget->hPlayerStats != fERROR && hPlayerStats != fERROR)
 	{
-		//GEH SetBlockAttr(hPlayerStats, LOCKED, LOCKED);
-		//GEH SetBlockAttr(pEnemyTarget->hPlayerStats, LOCKED, LOCKED);
 		DumbAutoLockPtr<PLAYER_STATS> const pAvatarStats(hPlayerStats);
 		DumbAutoLockPtr<PLAYER_STATS> const pEnemyStats(pEnemyTarget->hPlayerStats);
 		SBYTE AttackRoll;
-		
 		
 		PLAYER_HIT const PlayerHitObj(pAvatarStats, pEnemyStats);
 		
@@ -1379,8 +1351,6 @@ void CAvatar::mfFightSounds(HDL_AVATAR const hEnemyTarget)
 		    mfFightMissSounds(pAvatarStats, pEnemyTarget, pEnemyStats);
 		}
 		
-		//GEH ClrLock(pEnemyTarget->hPlayerStats);
-		//GEH ClrLock(hPlayerStats);
 	}
 	else
 	{
@@ -1401,7 +1371,6 @@ void CAvatar::mfFightSounds(HDL_AVATAR const hEnemyTarget)
 		}
 	}
 	
-	//GEH ClrLock(hEnemyTarget);
 }
 /* ========================================================================
    Function	- mfFightMissSounds
@@ -1761,7 +1730,6 @@ BOOL CAvatar::mfFallingDamage (WadThingType bump, LONG floor, LONG fallHeight)
 	return retval;								// [d4-18-97, 4-25-97 JPC]
 }
 
-
 /* ========================================================================
    Function		- GetSectorDamage
    Description	- compute damage to Avatar from being in this sector
@@ -1871,7 +1839,6 @@ void CAvatar::mfCheckCrush()
 	LONG sector=mfGetSector();
 	BOOL fDamagedByLava=FALSE;
 	
-	// crush = GetCrusherDamage(sector, &damageNumber,mfHeight(), mfZ());
 	crush = GetSectorDamage(sector, &damageNumber, this, &fDamagedByLava);
 	if(crush)
 	{
@@ -2130,11 +2097,9 @@ void CAvatar::mfSetAttackSequence(FIGHT_SEQUENCE::ATTACK_MODE const Mode)
 const BOOL CAvatar::mfCanSeeAvatar(const CAvatar *pTarget) const
 {
 	LONG distance, HearingDistance = 100;
-	//FIXED_VECTOR_3D	TempVector;
 	PLAYER	TempPlayer;
 	LONG Angle;
 	LONG BumpDistance;
-	
 	
 	// should we concider this guy at all
 	if(!reject( mfGetSector(), pTarget->mfGetSector()))
@@ -2165,11 +2130,7 @@ const BOOL CAvatar::mfCanSeeAvatar(const CAvatar *pTarget) const
 	
 	// now check a line of sight calculation
 	// Test line to this guy
-	//TempVector.dx = 0;
-	//TempVector.dy = distance << PLAYER_FIXEDPT;
-	//TempVector.dz = 0;
 	Angle = AngleFromPoint2 ( mfX(), mfY(), pTarget->mfX(), pTarget->mfY(), RESOLUTION_1);
-	//Rotate((POINT *)&TempVector, Angle);
 	
 	TempPlayer.x = mfX() << PLAYER_FIXEDPT;
 	TempPlayer.y = mfY() << PLAYER_FIXEDPT;
@@ -2354,22 +2315,13 @@ WadThingType const CAvatar::mfCheckNewPosition2(
 	PLAYER			AvatarPlayer;
 	LONG   			Angle;
 	LONG			BumpDistance;
-	//LONG			BumpObjectType;
 	WadThingType	BumpWadThing;
 	
 	mfConvertPositionToPlayer(AvatarPlayer);
 	
-	//BumpObjectType = CheckBump(&AvatarPlayer, tp, Rate);
-	//if (BumpObjectType == iOBJECT)
-	//{
-	//	BumpWadThing = iOBJECT;
-	//}
-	//else
-	//{
 		BumpWadThing = CheckMove(&AvatarPlayer, tp,
 				(SHORT)((TRUE == mfStayInMonsterBox())
 								? CHECKLINE_MONSTER:0), &Angle, &BumpDistance);
-	//}
 	
 	return (BumpWadThing);
 }
@@ -2874,7 +2826,6 @@ BOOL const CAvatar::mfTestSequenceDone() const
 	}
 	
 	// GWP When the engine does this correctly do the following instead
-	// return (TestSequenceDone(CurSequence);
 	return Result;
 }
 
@@ -2959,7 +2910,6 @@ BOOL const CAvatar::mfTestSequencePastHalf() const
 	}
 	
 	// GWP When the engine does this correctly do the following instead
-	// return (TestSequenceDone(CurSequence);
 	return Result;
 }
 // GWP Cover fn until the engine can do this correctly.
@@ -3200,10 +3150,7 @@ BOOL const CAvatar::mfIsHomeTeam() const
 {
 	//Use the scene manager instead of the units info.
 	//GEH wrong question
-	// return (SCENE_MGR::Visitors == Realm.HomeRealm);
 	
 	return (units[SCENE_MGR::HomeIndex].Realm == Realm.HomeRealm);
 	
 }
-
-

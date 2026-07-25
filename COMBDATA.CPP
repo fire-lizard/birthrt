@@ -9,7 +9,6 @@
    
    Contains the following general functions:
 
-   
    ======================================================================== */
 
 /* ------------------------------------------------------------------------
@@ -227,7 +226,6 @@ BOOL const COMBAT_SCENE_DATA::RETREAT_DATA::mfGetNextPt(PLAYER *const pPlayer)
 				DisposBlock(fhRetreatingPositions);
 				fhRetreatingPositions = fERROR;
                   // Q for GARY: what do we do, if anything, with fCurrentPosition?
-				// fCurrentPosition = 0;
 			}
 		}
 		else
@@ -293,7 +291,6 @@ void COMBAT_SCENE_DATA::mfRestoreCombatVals()
 	SetLeftButtonClicked(NULL);
 	SetRightButtonClicked(NULL);
 		
-	
 	replace_key_vals(GAME_KEYS::mfGetKey(GAME_KEYS::PLAYER_OPENDOOR),
 					OldDoorKey.func,
 					OldDoorKey.val,
@@ -353,7 +350,6 @@ void COMBAT_SCENE_DATA::mfInitSceneVals()
 	fOldCameraState = SCENE_MGR::fgCamera.mfGetCurrentState();
 	fOldEnvSoundState = PlayEnvironmentalSounds;
 	
-	// fOldHighResState = fHighRes;
 	fOldAutoResState = fAIAutoRes;
 	
 	fLiftTaskIndex = find_task(HandleLifts);
@@ -361,4 +357,3 @@ void COMBAT_SCENE_DATA::mfInitSceneVals()
 	fCeilingTaskIndex = find_task(HandleCeilings);
 	
 }
-	

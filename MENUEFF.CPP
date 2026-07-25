@@ -19,7 +19,6 @@ void SpinOutBitmap (SHORT x, SHORT y, SHORT iBitm, SHORT bx, SHORT by, SHORT w, 
 	long CenterX=x+pBitm->w/2;
 	long Width=pBitm->w;
 	 
-	
 	AddSndObj(SND_INTRO_VOX1,0,VOLUME_EIGHTY);	//renamed sound.... gotta fix it.
 
 	// spin out a menu
@@ -46,7 +45,6 @@ void SpinOutBitmap (SHORT x, SHORT y, SHORT iBitm, SHORT bx, SHORT by, SHORT w, 
 	DirectDrawPreFrame();
 }	
 
-
 void SpinInBitmap (SHORT x, SHORT y, SHORT iBitm, SHORT bx, SHORT by, SHORT w, SHORT h,SHORT hDest, POINT start, POINT bck, SHORT bckw, SHORT bckh)
 {
  
@@ -56,7 +54,6 @@ void SpinInBitmap (SHORT x, SHORT y, SHORT iBitm, SHORT bx, SHORT by, SHORT w, S
 	BITMPTR pBitm=(BITMPTR)BLKPTR(iBitm);
 	long CenterX=x+pBitm->w/2;
 	long Width=pBitm->w;
-
 
 	// spin in a menu
 	for (LONG i=63;i>=0;i-=6)
@@ -87,7 +84,6 @@ void SpinInBitmap (SHORT x, SHORT y, SHORT iBitm, SHORT bx, SHORT by, SHORT w, S
 	AddSndObj(SND_INTRO_VOX2,0,VOLUME_EIGHTY);	//renamed sound.... gotta fix it.
 	
 }	
-
 
 void ScrollOpenBitmap (SHORT x, SHORT y, SHORT iBitm, SHORT bx, SHORT by, SHORT w, SHORT h,SHORT hDest, POINT start, POINT bck, SHORT bckw, SHORT bckh)
 {

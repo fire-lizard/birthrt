@@ -48,7 +48,6 @@ extern "C" void RandomLogPrefix ( char * szString );
 extern void ReconstructMap(void);
 extern void UpdateHoldingFlag (void);
 
-
 /* -----------------------------------------------------------------------
    Defines and Compile Flags
    ------------------------------------------------------------------------ */
@@ -124,10 +123,6 @@ static SHORT	iScrollBitm[5];
 static SHORT	iDoneBitm;
 
 static SHORT	oldCountBuilt = FALSE;
-
-//static DECL_VECTOR_DATA(char,n,REPORT_BUFFER_SIZE);
-//static DECL_VECTOR_DATA(char,n1,REPORT_BUFFER_SIZE);
-//static DECL_VECTOR_DATA(char,szReport,REPORT_BUFFER_SIZE * 2);
 
 static char n[REPORT_BUFFER_SIZE];
 static char n1[REPORT_BUFFER_SIZE];
@@ -322,28 +317,16 @@ DEFINE_VECTOR_DATA(SUBJECT,Subject) = {
 };
 DEFINE_VECTOR_CLASS(SUBJECT,Subject);
 
-//DEFINE_VECTOR_DATA(CSTRPTR,szHoldingType) = {"law","guild","temple","source","castle"};
-//DEFINE_VECTOR_CLASS(CSTRPTR, szHoldingType);
-
 DEFINE_VECTOR_DATA(GAME_STRING,gsHoldingType) = {STR_REPORT_HOLDING_TYPE_LAW,STR_REPORT_HOLDING_TYPE_GUILD,STR_REPORT_HOLDING_TYPE_TEMPLE,STR_REPORT_HOLDING_TYPE_SOURCE,STR_REPORT_HOLDING_TYPE_CASTLE,};
 DEFINE_VECTOR_CLASS(GAME_STRING,gsHoldingType);
 
 CSTRPTR szDigits[10] = {"0","1","2","3","4","5","6","7","8","9"};
 
-//DEFINE_VECTOR_DATA(CSTRPTR,szNumberWord) = {"zero","one","two","three","four","five","six","seven","eight","nine"};
-//DEFINE_VECTOR_CLASS(CSTRPTR, szNumberWord);
-
 DEFINE_VECTOR_DATA (GAME_STRING,gsNumberWord) = {STR_NUM_ZERO,STR_NUM_ONE,STR_NUM_TWO,STR_NUM_THREE,STR_NUM_FOUR,STR_NUM_FIVE,STR_NUM_SIX,STR_NUM_SEVEN,STR_NUM_EIGHT,STR_NUM_NINE};
 DEFINE_VECTOR_CLASS(GAME_STRING,gsNumberWord);
 
-//DEFINE_VECTOR_DATA(CSTRPTR,szLoyalty) = {"rebellion","poor","average","high"};
-//DEFINE_VECTOR_CLASS(CSTRPTR, szLoyalty);
-
 DEFINE_VECTOR_DATA(GAME_STRING,gsReportLoyalty) = {STR_REPORT_LOYALTY_REBEL,STR_REPORT_LOYALTY_POOR,STR_REPORT_LOYALTY_AVG,STR_REPORT_LOYALTY_HIGH	};
 DEFINE_VECTOR_CLASS(GAME_STRING, gsReportLoyalty);
-
-//DEFINE_VECTOR_DATA(CSTRPTR,szAlliance) = {"neutual", "permissive ally","full ally","vassal","liege lord"};
-//DEFINE_VECTOR_CLASS(CSTRPTR, szAlliance);
 
 DEFINE_VECTOR_DATA (GAME_STRING,gsAlliance) =
 	{STR_REPORT_ALLY_TYPE_NEUT,
@@ -353,12 +336,8 @@ DEFINE_VECTOR_DATA (GAME_STRING,gsAlliance) =
 	 STR_REPORT_ALLY_TYPE_LIEGE};
 DEFINE_VECTOR_CLASS(GAME_STRING,gsAlliance);
 
-//DEFINE_VECTOR_DATA(CSTRPTR,szSeason) = {"Sarimiere","Haelynir","Erntenir","Keltier"};
-//DEFINE_VECTOR_CLASS(CSTRPTR, szSeason);
-
 DEFINE_VECTOR_DATA(GAME_STRING,gsSeason) = {STR_REPORT_SEASON_SAR,STR_REPORT_SEASON_HAE,STR_REPORT_SEASON_ERN,STR_REPORT_SEASON_KEL};
 DEFINE_VECTOR_CLASS(GAME_STRING,gsSeason);
-
 
 DEFINE_VECTOR_DATA_S(BIRTHRT_SND,sndHuman,11) =
 {SND_COUNSELLOR_INTRO1,           SND_GENERAL_INTRO1,        SND_WIZARD_INTRO1,            SND_SPY_INTRO1,
@@ -456,7 +435,6 @@ extern void ResumeTimeLimit (void);
 
 static	long lReportTimeout = 0;
 
-
 DEFINE_STATIC_VECTOR_DATA_S(int,iAdvButtonStr,13) = {
 	STR_RPTBTN_0,
 	STR_RPTBTN_1,
@@ -501,11 +479,6 @@ void CopyReactionTable(void)
 			oldRealmReaction[i][j] = RealmReaction[i][j];
 
 	// copy the province count to old
-//	for(i=1; i<LAND_REALM_COUNT; i++)
-//	{
-//		investOldProvCount[i].realm = investProvCount[i].realm;
-//		investOldProvCount[i].count = investProvCount[i].count;
-//	}
 }
 
 /* ========================================================================
@@ -562,7 +535,6 @@ void PaintProvinceLose(LONG MenuCombo, LONG)
  	// paint dialog title
 	gprint_text(X,Y,STRMGR_GetStr(STR_DEFEAT), 31);
 	
-
 	// build some text that says why you lost
 	init_gfont(FONT_SANS_16PT);
 	sprintf(cpBuffer,"%s",STRMGR_GetStr(STR_PROV_LOSE));
@@ -570,9 +542,6 @@ void PaintProvinceLose(LONG MenuCombo, LONG)
 	TextHeight=gtext_height(cpBuffer);
 	X = mx + 30;
 	Y = my + mh/2 - TextHeight/2;
-	
-	
-	
 	
 	gprint_text(X,Y,cpBuffer ,color);
 	
@@ -645,7 +614,6 @@ void PaintRegentLose(LONG MenuCombo, LONG)
  	// paint dialog title
 	gprint_text(X,Y,STRMGR_GetStr(STR_DEFEAT), 31);
 	
-
 	// build some text that says why you lost
 	init_gfont(FONT_SANS_16PT);
 	sprintf(cpBuffer,"%s",STRMGR_GetStr(COMBAT_STR_END_MSG_13));
@@ -653,9 +621,6 @@ void PaintRegentLose(LONG MenuCombo, LONG)
 	TextHeight=gtext_height(cpBuffer);
 	X = mx + 30;
 	Y = my + mh/2 - TextHeight/2;
-	
-	
-	
 	
 	gprint_text(X,Y,cpBuffer ,color);
 	
@@ -746,8 +711,6 @@ void CheckForImmediateReports(void)
 			SetButtonLabel  (D_QUESTION1, QUESTION_BTN1, STR_OK, BTN_LABEL_COLOR );
 			SetButtonProc (D_QUESTION1, QUESTION_BTN1, HideSubMenuWithClick, D_QUESTION1, D_KEY_OK);
 			
-
-
            // We need to time out this menu in multiplayer
 
 #ifdef _WINDOWS
@@ -821,8 +784,6 @@ void AddReport (LONG subject, LONG index1, LONG index2, LONG index3)
 	iNextReport++;
 }
 
-
-
 /* ========================================================================
    Function    - SendReportTo
    Description -
@@ -859,8 +820,6 @@ void SendReportTo (LONG iRealm, LONG subject, LONG index1, LONG index2, LONG ind
 
 }
 
-
-
 /* ========================================================================
    Function    - AddReportTo
    Description -
@@ -879,8 +838,6 @@ void AddReportTo (LONG iRealm, LONG subject, LONG index1, LONG index2, LONG inde
 	}
 
 }
-
-
 
 /* ========================================================================
    Function    - ReportString
@@ -1107,7 +1064,6 @@ void GiveReport (LONG lArg)
 	// sort the province difference table
 	// after sorting the 0th element of sortProvCount is valid
 	qsort(&sortProvCount[0], LAND_REALM_COUNT, sizeof(INVEST_COUNT), compare1);
-
 
 	// count the holdings
 	for (i=1; i<MAX_PLACES; i++)
@@ -1482,7 +1438,6 @@ void AdvisorButton(LONG iWhichButton, LONG)
 	}
 	SysShowCursor();
 	
-
 	HideMenu(D_ADVISOR);
 	RunMenus();
 	SysHideCursor();
@@ -1680,7 +1635,6 @@ void PaintReportButtons (LONG MenuCombo, LONG)
 	DrawBitmap(0, 0, ReportBkgndBitm, 0, 0, 999, 999);
 	AdvisorReportOn = TRUE;
 
-	
 	{
 		LONG i, now = get_time();
 		
@@ -1795,7 +1749,6 @@ void PaintReportButtons (LONG MenuCombo, LONG)
 		AdvisorButton(12,0);
 	}
 
-
 	SysShowCursor();
 }
 
@@ -1901,7 +1854,6 @@ void PaintReportMenu (LONG MenuCombo, LONG)
 		goto DoTutorial;
 	}
 
-
 	if(iWhichReport == 11)	// DM toolkit
 	{
 		del_region(WhoControls, 0);
@@ -1941,7 +1893,6 @@ void PaintReportMenu (LONG MenuCombo, LONG)
 		print_textf(X, Y, DKBROWN, "^fsans8.pcx^B130,0,60,10,`,0,0,0,0,0DONE|");
 		goto DoTutorial;
 	}
-
 
 	// ---------------------------------
 	// print body of menu here
@@ -2041,17 +1992,7 @@ static void PaintImmediateReport (LONG MenuCombo, LONG)
 	SHORT	bitm;
 	char	szBitm[40];
 
-//	LONG X;
-//	LONG Y;
-//	LONG W;
-//	LONG H;
-	
 	SPLIT_LONG(MenuCombo, MenuId, ButtonId);
-
-//	X = X_RES_ADJ(Menus[MenuId].Buttons[QUESTION_TEXT].X);
-//	Y = Y_RES_ADJ(Menus[MenuId].Buttons[QUESTION_TEXT].Y);
-//	W = X_RES_ADJ(Menus[MenuId].Buttons[QUESTION_TEXT].W);
-//	H = Y_RES_ADJ(Menus[MenuId].Buttons[QUESTION_TEXT].H);
 
 	xOff = Menus[MenuId].Buttons[0].X;
 	yOff = Menus[MenuId].Buttons[0].Y;
@@ -2068,7 +2009,6 @@ static void PaintImmediateReport (LONG MenuCombo, LONG)
 				
 	// paint the message
 	init_gfont(FONT_SANS_12PT);
-	//print_textf(90+xOff, 50+yOff, DKBROWN, "^W220%s",n);
 	print_textf(90+xOff, 38+yOff, DKBROWN, "^W220%s",n);
 
 #ifdef _WINDOWS
@@ -2252,7 +2192,6 @@ static void DrawPointsBar (REALM::REALM_TYPE iRealm, SHORT scaleWidth, LONG x, L
 	sMyOther = sOtherPoints;
 
 	// scale it to 100% = scaleWidth points = 185 pixels
-	// i.e.	width = (185 * value) / scaleWidth;
 
 	// my provinces
 	x += 140;
@@ -2328,7 +2267,6 @@ static void PaintProvinceTable (LONG x, LONG y, LONG w, LONG h)
 	
 	y += 50;
 	// print "score"
-	//GEH print_textf(x+117, y+20, DKBROWN, "^F00%s", STRMGR_GetStr(STR_SCORE));
 	print_textf(x+76, y+20, DKBROWN, "^F00%s", STRMGR_GetStr(STR_SCORE));
 
 	// display the results
@@ -2385,7 +2323,6 @@ static void PaintUnitsTable (LONG x, LONG y, LONG w, LONG h)
 	y += 20;
 	print_textf(x+(w/2), y, DKBLUE, "^F11^c%s", STRMGR_GetStr(iAdvButtonStr[iWhichReport]));
 	print_textf(x+w-100, y-8, DKBLUE, STRMGR_GetStr(STR_SCORE_HEADER), date+1);
-//	print_textf(x+(w/2), y, DKBLUE, "^F11^c%s", STRMGR_GetStr(STR_UNITS_HEADER));
 
 	y += 10;
 	x += 10;
@@ -2474,7 +2411,6 @@ static int PrintAllies(REALM::REALM_TYPE iRealm, LONG x, LONG y, LONG endy, LONG
   			if(realm[k].mfExists() == FALSE)
 				continue;
 
-
 			if (AREFULLALLIES(k,allies[iRealm].realm) && k != allies[iRealm].realm && !ISVASSAL(k,allies[iRealm].realm))
 			{
 				DrawShield (x+18+(column*CWIDTH), y, (REALM::REALM_TYPE)k);
@@ -2499,7 +2435,6 @@ static int PrintAllies(REALM::REALM_TYPE iRealm, LONG x, LONG y, LONG endy, LONG
 			if(realm[k].mfExists() == FALSE)
 				continue;
 
-
 			if (AREALLIED(k,allies[iRealm].realm) && k != allies[iRealm].realm && !AREFULLALLIES(k,allies[iRealm].realm) && !ISVASSAL(k,allies[iRealm].realm))
 			{
 				DrawShield (x+18+(column*CWIDTH), y, (REALM::REALM_TYPE)k);
@@ -2514,7 +2449,6 @@ static int PrintAllies(REALM::REALM_TYPE iRealm, LONG x, LONG y, LONG endy, LONG
 	}
 	return y;
 }
-
 
 static SHORT ShowAtWar(REALM::REALM_TYPE me, BOOL hasBeenShown[], LONG x, LONG y)
 {
@@ -2559,7 +2493,6 @@ static SHORT ShowAtWar(REALM::REALM_TYPE me, BOOL hasBeenShown[], LONG x, LONG y
 	}
 	return count;
 }
-
 
 /* ========================================================================
    Function    - PaintWarReport
@@ -2672,7 +2605,6 @@ static void PaintAllianceReport(LONG x, LONG y, LONG w, LONG h)
 	y += 20;
 	print_textf(x+(w/2), y, DKBLUE, "^F11^c%s", STRMGR_GetStr(iAdvButtonStr[iWhichReport]));
 	print_textf(x+w-100, y-8, DKBLUE, STRMGR_GetStr(STR_SCORE_HEADER), date+1);
-//	print_textf(x+(w/2), y, DKBLUE, "^F11^c%s", STRMGR_GetStr(STR_REPORT_ALLIANCE_REPORT));
 
 	y += 10;
 	x += 10;
@@ -2801,7 +2733,6 @@ static void PaintInvestitureReport(LONG x, LONG y, LONG w, LONG h)
 	y += 20;
 	print_textf(x+(w/2), y, DKBLUE, "^F11^c%s", STRMGR_GetStr(iAdvButtonStr[iWhichReport]));
 	print_textf(x+w-100, y-8, DKBLUE, STRMGR_GetStr(STR_SCORE_HEADER), date+1);
-//	print_textf(x+(w/2), y, DKBLUE, "^F11^c%s",STRMGR_GetStr(STR_REPORT_INVESTITURE_REPORT));
 
 	y += 10;
 	x += 10;

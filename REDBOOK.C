@@ -44,7 +44,6 @@ int StopRedBook (void);
 int PlayTrack (SHORT track);
 unsigned long FindTrackStart (unsigned char track);
 int CheckCDBusy (void);
-//int PlayCDMusic (unsigned short tune);
 
 /*#######################################################################\
 #    Defines
@@ -98,7 +97,6 @@ static int MusicVolume[] = {
 	VOLUME_FULL
 };
 static int VolumeIndex = 10;
-//static int FadeMusic = fERROR;
 /*#######################################################################\
 #    Routines
 \#######################################################################*/
@@ -123,8 +121,6 @@ void PrintRedError (void)
 	else
 	if (*int6a == 0xC0000000)
 	{
-		//mprintf ("Drive busy.  CDbusy = %d\n", CDbusy);
-		//mprintf ("Drive busy.\n");
 	}
 	else
 	if (*int6a == 0xA0000000)
@@ -155,9 +151,6 @@ int InitRedBook(void)
 		else
 			fCDAvailible = FALSE;
 #endif
-	//}
-	//else
-	//	fCDAvailible = TRUE;
 	
 	if(fCDAvailible)
 		fMusic = 1;
@@ -219,14 +212,10 @@ int PlayRedBook (unsigned long start, unsigned long length)
 #    Function
 \#######################################################################*/
 
-
 int StopRedBook (void)
 {
 	// redbook not used in birthright I
 #ifdef UseTheCD
-	//	if(CurrentTag != fERROR)
-//			StopASound(CurrentSong,CurrentTag);
-//	FadeMusic = MusicVolume[VolumeIndex];
 	if( (InstallationType == INSTALL_LARGE) && GetCDTrack() )
 	{
 
@@ -254,7 +243,6 @@ int StopRedBook (void)
 /*#######################################################################\
 #    Function
 \#######################################################################*/
-
 
 int PlayTrack (SHORT track)
 {
@@ -375,12 +363,9 @@ unsigned long FindTrackStart (unsigned char track)
 #    Function
 \#######################################################################*/
 
-
 int CheckCDBusy (void)
 {
 #ifdef UseTheCD
-//	if(MusicSuspended)
-//		return(0);
 
 		if(!fCDAvailible)
 			return 0;
@@ -388,10 +373,8 @@ int CheckCDBusy (void)
 		if(!fMusic)
 			return 0;
 
-
 	if(0) // InstallationType == INSTALL_LARGE && GetCDTrack() )
 	{
-
 
 #ifdef _WINDOWS
 		if((BOOL)mci_CheckCDBusy())
@@ -413,7 +396,6 @@ int CheckCDBusy (void)
 			return (0);
 		}
 	}
-//	return (0);
 }
 /* ========================================================================
    Function    - CheckCDError
@@ -509,7 +491,6 @@ int PlayCDMusic (unsigned short tune)
 
 #if _SYS_DEBUG
 	//mprintf ("\nCD tune = %d   starttrack = %08lx\noffset = %08lx   length = %08lx   start = %08lx\n",
-	//		tune / 7, starttrack, offset, length, start);
 #endif
 
 		return (PlayRedBook (start, length));
@@ -565,9 +546,6 @@ void LoadMusicFromCD(short track)
 	if(!fCDAvailible)
 		return;
 		
-//	if(InstallationType == INSTALL_LARGE && GetCDTrack() )
-//		return;
-
 	sprintf(n, "%s%s%d.wav",CDDrive,"music\\",ucWhichTrack + 100);
 	in = FileOpen(n,"rb");
 	if(in != NULL)
@@ -641,7 +619,6 @@ SHORT GetCDTrack()
 
 void SuspendMusic(void)
 {
-//	StopRedbook();
 	MusicSuspended = TRUE;
 }
 
@@ -649,7 +626,6 @@ void ResumeSuspendedMusic(void)
 {
 	MusicSuspended = FALSE;
 }
-
 
 int GetMusicVolume(void)
 {

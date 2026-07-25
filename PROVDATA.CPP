@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 #include <string.h>
 
@@ -7,9 +6,7 @@
 #include "GAMEMAP.HXX"
 #include "REALM.HXX"
 
-
 /* PROVINCE LIST AND WHAT ITS STATS ARE */
-
 
 //			 Province   			name x,y			Realm   	 cCv mCv Mg Tx Loylt  C O B  B Ho Wd Dm DL LC Ca Hm El Dw Gb Lv Terrain   Borders   NamedPlaces   
 //                                                                          o c l  l                    

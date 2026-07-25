@@ -21,7 +21,6 @@ extern FONT_DATA font_info[];
 
 void ListBox::Init(SHORT hThis,Rect& box,Rect& scrUp,Rect& scrDn,SHORT LineHeight,SHORT font,SHORT EntryBlock,SHORT LineChars, PFVL Callback)
 {
-	//ListBox();
 	
 	DispStart=0;
 
@@ -55,13 +54,11 @@ void ListBox::Init(SHORT hThis,Rect& box,Rect& scrUp,Rect& scrDn,SHORT LineHeigh
 	
 }
 
-
 void ListBox::DeInit()
 {
 	del_region(ListBoxScroll,0);
 	del_region(ListBoxSetHighlight,0);
 }
-
 
 SHORT ListBox::Scroll(SHORT delta)
 {
@@ -86,7 +83,6 @@ SHORT ListBox::Scroll(SHORT delta)
 	return i;
 }
 
-
 const char *ListBox::GetHighlightedLine() const
 {
 	if (HighlightedLine>=numStrings || HighlightedLine<0)
@@ -100,14 +96,12 @@ const char *ListBox::GetHighlightedLine() const
 	return &pString[HighlightedLine*Linechars];
 }
 
-
 void ListBox::SetHighlightedLine(SHORT delta) 
 {
 	printf("highlight %li\n",delta);
 
 	HighlightedLine=(SHORT)(DispStart+delta);
 }
-
 
 void ListBox::Paint() const
 {
@@ -133,7 +127,6 @@ void ListBox::Paint() const
 	}
 }
 
-
 void ListBoxScroll(LONG hlb,LONG delta)
 {
 	SHORT hListBox=(SHORT)hlb&0xFFFF;
@@ -148,7 +141,6 @@ void ListBoxScroll(LONG hlb,LONG delta)
 	pLB->Scroll((SHORT)(delta&0xFFFF));
 }
 
-
 void ListBoxSetHighlight(LONG hlb,LONG LfromTop)
 {
 	SHORT hListBox=(SHORT)hlb&0xFFFF;
@@ -156,7 +148,6 @@ void ListBoxSetHighlight(LONG hlb,LONG LfromTop)
 	
 	pLB->SetHighlightedLine(LfromTop);
 }
-
 
 const char* ListBoxGetHighlight(LONG hlb,LONG)
 {
@@ -166,7 +157,6 @@ const char* ListBoxGetHighlight(LONG hlb,LONG)
 	return pLB->GetHighlightedLine();
 }
 
-
 void ListBoxPaint(LONG hlb,LONG)
 {
 	SHORT hListBox=(SHORT)hlb&0xFFFF;
@@ -175,7 +165,6 @@ void ListBoxPaint(LONG hlb,LONG)
 	pLB->Paint();
 	
 }
-
 
 SHORT NewListBox(Rect& box,Rect& scrUp,Rect& scrDn,SHORT EntryBlock,SHORT LineHeight,SHORT font,SHORT LineChars, PFVL Callback)
 {
@@ -191,4 +180,3 @@ SHORT NewListBox(Rect& box,Rect& scrUp,Rect& scrDn,SHORT EntryBlock,SHORT LineHe
 	return hLB;
 
 }
-

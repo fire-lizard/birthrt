@@ -9,7 +9,6 @@
 
    Contains the following general functions:
 
-
    ======================================================================== */
 
 /* ------------------------------------------------------------------------
@@ -43,7 +42,6 @@
 #include "SCENE.HXX"
 #include "SCNAI.HXX"
 #include "REGENTS.HXX"
-//#include "btlstr.h"
 #include "BATTLE.HXX"
 #include "BATTLEUI.HXX"
 #include "STRMGR.H"
@@ -66,7 +64,6 @@ extern void RandomLogComment ( char * szString );
 /* ------------------------------------------------------------------------
    Defines and Compile Flags
    ------------------------------------------------------------------------ */
-//#define  LOGCOMMENTSLEEP	Sleep(1);
 #define  LOGCOMMENTSLEEP	{;}
 
 #define NPCBATTLE_ACTION 199
@@ -382,7 +379,6 @@ void InitBattleUI(SCENE &rScene)
 	   Put the display in hires, no auto res, and add a lower margin
 	   for the control panel
 	   ----------------------------------------------------------------- */
-	//printf("Begin Battle Init...");
 	fflush(stdout);
 	
 	SuspendMusic();
@@ -403,23 +399,18 @@ void InitBattleUI(SCENE &rScene)
 	   ----------------------------------------------------------------- */
 	AddGameKeys();
 	
-	//GEH add_key(KEY_F4,BattleCameraHighView, 0, 0);
-	
 	add_key(GAME_KEYS::mfGetKey(GAME_KEYS::EXPAND_VIEWING_AREA), IncreaseBattleScreen, 0, 0);
 	add_key(GAME_KEYS::mfGetKey(GAME_KEYS::SHRINK_VIEWING_AREA), DecreaseBattleScreen, 0, 0);
 		
 	/* -----------------------------------------------------------------
 	   Clear the battle data array
 	   ----------------------------------------------------------------- */
-	// GWP memset(WhosWhere, -1, sizeof(WhosWhere));
-	// GWP memset(Reserves, -1, sizeof(Reserves));
 	memset(WhosWhere, -1, sizeof(GRID) * GRID_MAX_ROWS * GRID_MAX_COLS);
 	memset(Reserves, -1, sizeof(SHORT) * 2 * MAX_RESERVES);
 			
 	/* -----------------------------------------------------------------
 	   set up the misc battle stuff
 	   ----------------------------------------------------------------- */
-	//hUnitInfo = units[SCENE_MGR::HomeIndex].iHandle;
 	hUnitInfo = fERROR;
 	battleTroops= fERROR;
 	BattleCameraHighView(0, 0);
@@ -460,7 +451,6 @@ void InitBattleUI(SCENE &rScene)
 	BtlSoundTag = AddSndObj(SND_BATTLE_LOOP1, 0, VOLUME_EIGHTY);
 	
 	// play the battle track
-//	PlayTrack(REDBOOK_BATTLE);
 	
 	// init the flags that control voice queues
 	BtlPrompted = FALSE;
@@ -555,7 +545,6 @@ void BattleMoveCamera(void)
 	static	POINT	TempPoint = {0,-1500};
 	static 	BOOL fOldMoving = !fUnitsStillMoving;
 		
-	
 	// run battle clock
 	BattleUpdateTime();
 	
@@ -914,14 +903,6 @@ void BattleCameraFollow(LONG, LONG)
 		2500, 		// Radius
 		1);			// swoop
 		
-//	SetCameraCurrentPosition( &camera,
-//		NO_CHANGE,	// x
-//		NO_CHANGE,	// y
-//		NO_CHANGE,	// z
-//		Angle,		// angle
-//		NO_CHANGE,	// p
-//		2500);		// radius
-				
 }
 
 /* #################################################################
@@ -1126,7 +1107,6 @@ void BattleControlGrid(LONG MenuCombo, LONG DataCombo)
 				if (GetWhosWhere(r,c,WW_HOME) != fERROR)
 				{
 					// can't move to here, already occupied!
-					// BattleCancelMove(0,0);
 					AddSndObj(SND_UI_INVALID_BUTTON_CLICK ,0,VOLUME_SEVENTY);
 					break;
 				}
@@ -1140,9 +1120,7 @@ void BattleControlGrid(LONG MenuCombo, LONG DataCombo)
 				pAvatar->fBtlCap.Rate = 40;
 				pAvatar->fBtlCap.OnBtlField = TRUE;
 				
-				
 				SetWhosWhere(r,c,WW_HOME,battleTroops);
-				//hUnitInfo = (SHORT)battleTroops;
 				fBattleReserves = TRUE;
 				
 				// change out of move troops mode
@@ -1420,22 +1398,6 @@ void BattleReservesGrid(LONG MenuCombo, LONG unused)
 			w = 64;	// dimension of a reserve grid
 			h = 30;
 			
-			//GEHfor(i=0;i<MAX_RESERVES;i++)
-			//GEH{
-			//GEH	x = mx + ReservesGridX[i];
-			//GEH	y = my + ReservesGridY[i];
-			//GEH	if(cursor_x>x&&cursor_y>y&&cursor_x<(x+w)&&cursor_y<(y+h))
-			//GEH		break;
-			//GEH}
-			
-			//GEHif(i < MAX_RESERVES && Reserves[1][i] != fERROR)
-			//GEH{
-			//GEH	CAvatar *pAvatar = (CAvatar *) BLKPTR((SHORT) Reserves[1][i]);
-			//GEH	if (pAvatar->fBtlCap.OfficerIcon >= REG_M_FTR_UNIT_ICON)
-			//GEH		StaticInventoryGUI::mfDisplay(0, pAvatar->hPlayerStats);
-			//GEH	else
-			//GEH		InitBattleCard( pAvatar->fBtlCap.UnitIndex );
-			//GEH}
 			//GEHelse
 			{
 				SystemHelp(STR_BTLUI_HELP_RESERVES_TITLE,STR_BTLUI_HELP_RESERVES_TEXT, H_Reserves, NULL, 0);
@@ -1494,8 +1456,6 @@ void BattleReservesGrid(LONG MenuCombo, LONG unused)
 					pAvatar->fBtlCap.mfFallBack(pAvatar->hThis);
 					
 					// GWP And this no longer needs to be called.
-					// GWP BattleMoveToReservesArea(pAvatar->hThis);
-					// GWP BattlePutInReserves(1, battleTroops);
 					
 					battleTroops = fERROR;
 					// always go to reserves mode at this point
@@ -1580,7 +1540,6 @@ void BattleReservesGrid(LONG MenuCombo, LONG unused)
    #################################################################
    #################################################################
    ################################################################# */
-
 
 /* ========================================================================
    Function    - BattleControlPaint
@@ -2047,8 +2006,6 @@ void BattleUnitInfoPaint(LONG MenuCombo)
 				scale = (W<<8)/w;
 			}
 			
-			//scale = 1<<8;
-			
 			SetRemapTable( units[pAvatar->UnitIndex].Realm );
 			ScaleBitmap (
 				BTLUI_UNITINFO_PICTURE_X+mx+(BTLUI_UNITINFO_PICTURE_W/2),
@@ -2067,7 +2024,6 @@ void BattleUnitInfoPaint(LONG MenuCombo)
 	   ----------------------------------------------------------------- */
 	init_gfont(FONT_SANS_16PT);
 	
-	//sprintf(buffer,"%s", STRMGR_GetStr(gsUnitTitle[pAvatar->fBtlCap.UnitIcon]));
 	sprintf(buffer,"%s", STRMGR_GetStr(gsUnitTitle[pAvatar->fBtlCap.OfficerIcon]));
 	gprint_text( BTLUI_UNITINFO_NAME_X+mx, BTLUI_UNITINFO_NAME_Y+my,
 		buffer, LT_BLUE );
@@ -2151,7 +2107,6 @@ void BattleUnitInfoPaint(LONG MenuCombo)
 	ty = BTLUI_UNITINFO_INFO_Y2;
 	
 	/* Charge	*/
-	//ty += BTLUI_UNITINFO_INFO_H;
 	sprintf( buffer, STRMGR_GetStr(BTLUI_UNITINFO_INFO_CHARGE), GetBattleCharge(type));
 	gprint_text( tx+mx, ty+my, buffer, LT_BLUE );
 	
@@ -2792,7 +2747,6 @@ void CheckMissileRange()
 							fDoTutArchers )
 						{
 							fDoTutArchers = FALSE;
-							//SystemHelp("TUTORIAL TEST", "One of your missile units is ready. Click on them and then the red hilighted square", -1, NULL, 0);
 							DescribeBtlArchers();
 						}
 					}
@@ -2833,8 +2787,6 @@ BOOL BattleMagicReady(CAvatar *pAvatar)
 	DumbHandlePtr<PLAYER_STATS const> const dhPlayerStats(pAvatar->hPlayerStats);
 	
 	// -- let's let anyone with stuff in their hotbox give it a shot
-	// -- if (dhPlayerStats->mfIsMagicUser() && 
-	// -- 	pAvatar->fBtlCap.MagicCount < BattleTick)
 	if ( pAvatar->fBtlCap.MagicCount < BattleTick )
 	{
 		SHORT i;
@@ -2888,7 +2840,6 @@ void CheckMagicRange()
 				if(CheckMissileRangeSub(pAvatar->fBtlCap.Row, pAvatar->fBtlCap.Column))
 				{
 					pAvatar->fBtlCap.HasSpoken = TRUE;
-					// GWP if(1 == GetBattleMagic(pAvatar->fBtlCap.OfficerIcon))
 					if (dhPlayerStats->mfIsType(PLAYER_CLASS_INFO::WIZARD))
 						AddVoxSnd(VOX_WIZARD_READY,pAvatar->ThingIndex);
 					else
@@ -3036,7 +2987,6 @@ SHORT GetWhosWhere(SHORT Row, SHORT Col, BOOL Home)
 	assert(Col <= 4);
 #endif
 	
-	
 	if( Row >= 0 &&
 		Row <= 2 &&
 		Col >= 0 &&
@@ -3054,7 +3004,6 @@ SHORT GetWhosWhere(SHORT Row, SHORT Col, BOOL Home)
 
 	return retVal;
 }
-
 
 /* ========================================================================
    Function    - FixUnitsArray
@@ -3219,7 +3168,6 @@ SHORT HilightShooter(
 				return TRUE;
 		}
 			
-			
 		// only if in searching mode
 		if( pAvatar->Status != CAvatar::AI_SEARCH)
 			return TRUE;
@@ -3259,7 +3207,6 @@ void BattlePanelMode( LONG MenuCombo, LONG WhichMode )
 	SHORT	i;
 	CAvatar *pAvatar;
 	// static storage of the current cursor type
-	//static	SHORT	save_cursor = cursor_bitmap;
 	
 	SPLIT_LONG(MenuCombo, MenuId, ButtonId);
 	
@@ -3283,9 +3230,6 @@ void BattlePanelMode( LONG MenuCombo, LONG WhichMode )
 		SetButtonFlag   (D_BTL_CONTROL, BTL_FALLBACK_ID, D_LABEL_OFF);
 		
 		// reset cursor
-		//SysHideCursor();
-		//cursor_bitmap = save_cursor;
-		//SysShowCursor();
 		
 		// clear out old modes hilights
 		switch(sBattleMode)
@@ -3330,7 +3274,6 @@ void BattlePanelMode( LONG MenuCombo, LONG WhichMode )
 			SetButtonArt(D_BTL_CONTROL, 0, BTLUI_BATLPNL1);
 			break;
 			
-		
 		case BTLUI_MODE_MISSILE:
 		case BTLUI_MODE_FALLBACK:
 		case BTLUI_MODE_MOVE:
@@ -3435,12 +3378,6 @@ void BattleChatMode( LONG chatToggle, LONG first)
 	/* -----------------------------------------------------------------
 	   Handle right clicks help
 	   ----------------------------------------------------------------- */
-//	if(mouse_button == 2)
-//	{
-//		SystemHelp(STR_BTLUI_HELP_CHAT_TITLE,STR_BTLUI_HELP_CHAT_TEXT, H_Chat, NULL, 0);
-//	}
-//	else
-//	{
 		LONG	ChatDisplayWidth,ChatDisplayHeight;
 		if ( !ChatDisplaySize )
 		{
@@ -3471,8 +3408,6 @@ void BattleChatMode( LONG chatToggle, LONG first)
 			if(!first)
 				MARGIN_CONTROL::mfResetCurrentSize();
 		}
-
-//	}
 
 }
 
@@ -3507,8 +3442,6 @@ void BattleFallBack(LONG, LONG )
 			pAvatar->fBtlCap.TargetCol);
 		pAvatar->fBtlCap.mfFallBack(pAvatar->hThis);
 		
-		// GWP BattleMoveToReservesArea(pAvatar->hThis);
-		// GWP BattlePutInReserves(1, battleTroops);
 		//
 		//
 		
@@ -3659,7 +3592,6 @@ void SetMagicRegions(void)
 	
 	init_gfont(FONT_SANS_8PT);
 	
-	
 	// first column
 	x = mx + BTL_MAGIC_SPELL_LIST_X1;
 	y = my + BTL_MAGIC_SPELL_LIST_Y;
@@ -3746,7 +3678,6 @@ void ClearMagicRegions(void)
 	del_region(BattleMissileBox,0);
 }
 
-
 // This code is not called right now. I removed it because it was using context
 // numbers that were removed from the help file. dlj 5/30/97
 
@@ -3787,7 +3718,6 @@ SHORT HilightMissile(
 	
 	return TRUE;	// ok move, keep looking
 }
-
 
 /* #################################################################
    #################################################################
@@ -4262,7 +4192,6 @@ void PaintChooseBattleField(LONG, LONG)
    #################################################################
    ################################################################# */
 
-
 /* ========================================================================
    Function    - BattleLoose
    Description - Tell you that you lost the battle
@@ -4272,7 +4201,6 @@ void BattleLoose(LONG, LONG)
 {
 	fUpdatePanels = TRUE;
 	RunPanels();
-
 
 	if(BtlWithdraw == FALSE)
 	{
@@ -4409,7 +4337,6 @@ void PaintBattleLose (LONG MenuCombo, LONG )
 	SHORT	UnitIndex;
 	SHORT	Count = 0;
 	char RealmName[80];
-	
 	
 	SPLIT_LONG(MenuCombo, MenuId, ButtonId);
 
@@ -4686,7 +4613,6 @@ void PaintBattleWin (LONG MenuCombo, LONG )
 	SHORT	PFBM, Troops, dummy;
 	SHORT	UnitIndex;
 	SHORT	Count = 0;
-	//CAvatar *pAvatar;
 	char RealmName[80];
 	
 	SPLIT_LONG(MenuCombo, MenuId, ButtonId);
@@ -4826,7 +4752,6 @@ void BattleRetreat(LONG, LONG)
 	   ----------------------------------------------------------------- */
 	if(mouse_button == 2)
 	{
-		//BattleHelpDialog(0,STR_BTLUI_HELP_RETREATBUTTON);
 		SystemHelp(STR_BTLUI_HELP_RETREAT_TITLE,STR_BTLUI_HELP_RETREAT_TEXT, H_Retreat, NULL, 0);
 	}
 	else
@@ -4884,7 +4809,6 @@ void BattleRetreatProc(LONG MenuCombo, LONG button)
 		BattleLoose(0,0);
 	}
 }
-
 
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 void BattleSelMissile(LONG , LONG )
@@ -4953,7 +4877,6 @@ static void CheckBattleGrid()
 					// -- out of the grid system.
 					if (!Found)
 					{
-						//GEH fatal_error("ERROR! Lost Battle captain on the grid.\n");
 						SendToReserves(pAvatar);
 						BattleMoveToReservesArea(pAvatar->hThis);
 						BattlePutInReserves(pAvatar->mfIsHomeTeam(), pAvatar->hThis);
@@ -4990,4 +4913,3 @@ void BattleNextTurn (LONG, LONG)
 		}
 	}						
 }
-

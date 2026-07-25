@@ -9,7 +9,6 @@
 
    Contains the following general functions:
 
-
    ======================================================================== */
 
 /* ------------------------------------------------------------------------
@@ -279,7 +278,4 @@ LONG RollBloodlineNumericalStrength (BLOODLINE_STRENGTH_INFO::TYPE BloodStrength
 
 	return RollDice (&dice);
 }
-
-
-
 

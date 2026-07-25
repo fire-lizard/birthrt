@@ -56,7 +56,6 @@ void TransferRegentIconsToUnitsArray(void)
 	}
 }
 
-
 /* ========================================================================
    Function    - GetNextUnitInstance
    Description - Helper function for LinkUnits and ProvinceIsLinked:  This
@@ -82,8 +81,6 @@ static LONG GetNextUnitInstance(
 			return i;
 }
 	
-
-
 /* ========================================================================
    Function    - ProvinceIsLinked
    Description - determines whether there are two armies in the units table
@@ -98,7 +95,6 @@ static BOOL ProvinceIsLinked(REALM::REALM_TYPE MatchingRealm, PROVINCE Prov)
 	Unit1=GetNextUnitInstance(MatchingRealm, Prov,1);
 	if (Unit1==MAX_UNITS)
 		return TRUE;  //no armies for that prov so it's not un-linked...
-
 
 	//find next instance
 	Unit2=GetNextUnitInstance(MatchingRealm, Prov,Unit1+1);
@@ -149,14 +145,10 @@ SHORT RegentUnitOfRealm(REALM::REALM_TYPE RealmId)
 {
 	SHORT unitId = 0;
 	
-	//i = RealmId * 2 - 1;
-	
 	// if this is not the regent, next guy is
 
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 // NO LONGER WORKS AS A TEST OF WHO THE REGENT IS
-//	if (regents[i].mfGeticon() >= REG_LORDM3_UNIT_ICON)
-//		i++;
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	if (RealmId <= REALM::REALM_COUNT)
 	{
@@ -176,13 +168,9 @@ SHORT RegentUnitOfRealm(REALM::REALM_TYPE RealmId)
    ======================================================================== */
 BOOL IsRegent (LONG UnitIndex)
 {
-	// GWP return (units[UnitIndex].Icon >= REG_M_FTR_UNIT_ICON &&
-	// GWP  	units[UnitIndex].Icon <= REG_GOB_FTR_UNIT_ICON) ||
-	// GWP  	units[UnitIndex].Icon == SPIDERKING_UNIT_ICON;
 	
 	return (RegentUnitOfRealm((REALM::REALM_TYPE)units[UnitIndex].Realm) == UnitIndex);
 }
-
 
 /* ========================================================================
    Function    - IsLieutenant
@@ -191,14 +179,10 @@ BOOL IsRegent (LONG UnitIndex)
    ======================================================================== */
 BOOL IsLieutenant (LONG UnitIndex)
 {
-	// GWP return (units[UnitIndex].Icon >= REG_M_FTR_UNIT_ICON &&
-	// GWP  	units[UnitIndex].Icon <= REG_GOB_FTR_UNIT_ICON) ||
-	// GWP  	units[UnitIndex].Icon == SPIDERKING_UNIT_ICON;
 	
 	return (RegentUnitOfRealm((REALM::REALM_TYPE)units[UnitIndex].Realm) != UnitIndex &&
 	        units[UnitIndex].id > 1000);
 }
-
 
 /* ========================================================================
    Function    - IsRegentOrLieutenant
@@ -207,12 +191,8 @@ BOOL IsLieutenant (LONG UnitIndex)
    ======================================================================== */
 BOOL IsRegentOrLieutenant (LONG UnitIndex)
 {
-	// GWP return (units[UnitIndex].Icon >= REG_M_FTR_UNIT_ICON &&
-	// GWP 	units[UnitIndex].Icon <= GOB_FTR_UNIT_ICON) ||
-	// GWP  	units[UnitIndex].Icon == SPIDERKING_UNIT_ICON;
 	return (IsRegent(UnitIndex) || IsLieutenant(UnitIndex));
 }
-
 
 /* ========================================================================
    Function    - mfGetname

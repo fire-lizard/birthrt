@@ -37,7 +37,6 @@
 #include "../MENU.H"
 #include "DDRAWPRO.H"
 
-
 /* ------------------------------------------------------------------------
    Defines and Compile Flags
    ------------------------------------------------------------------------ */
@@ -142,8 +141,6 @@ void ClearSystemPalette(void)
 		Palette.aEntries[Counter].peGreen = 0;
 		Palette.aEntries[Counter].peBlue = 0;
 
-		// Palette.aEntries[Counter].peFlags = PC_RESERVED;
-
 		Palette.aEntries[Counter].peFlags = PC_NOCOLLAPSE;
 	}
 	
@@ -209,7 +206,6 @@ void set_hires(LONG unused, LONG UnusedAlso)
 	
 		PlayerSpeed = PlayerHiresSpeed;
 	
-		// [d10-27-96 JPC] Move earlier: fHighRes = TRUE;
 	}
 }
 
@@ -251,7 +247,6 @@ void set_lowres(LONG unused, LONG UnusedAlso)
 	
 		PlayerSpeed = (SHORT)PlayerLoresSpeed;
 	
-		// [d10-27-96 JPC] Move earlier: fHighRes = FALSE;
 	}
 }
 
@@ -499,7 +494,6 @@ void load_pal(char *n)
 	fread(&CurPal[0],sizeof(char),8,f);
 	fread(&CurPal[0],sizeof(char),768,f);
 	FileClose(f);
-
 
 	set_pal((char *)&CurPal[0]);
 }
@@ -749,7 +743,6 @@ void update_screen(void)
 		{
 			HDC hdcDD = DDGetDC( TRUE );
 
-
 			if ( hdcDD != NULL )
 			{
    			DDRealizePalette();
@@ -764,7 +757,6 @@ void update_screen(void)
    				StretchBlt( hdcDD, 0, 0, render_width*2, render_height*2,
 	   							gViewDC, 0, 0, render_width, render_height, SRCCOPY );
             }
-
 
 				DDReleaseDC( hdcDD );
 
@@ -823,7 +815,6 @@ void clear_screen_to(int c)
 	if ( (sDrawMode == iGDI) || (sDrawType != iDIRECTTOCARD) )
 		memset(screen, c, MAX_VIEW_WIDTH * MAX_VIEW_HEIGHT);
 }
-
 
 /* ========================================================================
    Function    - clear_display
@@ -887,12 +878,8 @@ void ScreenCopy (
 
    }
 
-
 #endif
 }
-
-
-
 
 void DirectDrawSaveScreen( void )
 {

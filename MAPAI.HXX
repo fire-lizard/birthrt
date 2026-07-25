@@ -33,7 +33,6 @@
 #include "realm.hxx"
 #endif
 
-
 /* ------------------------------------------------------------------------
    Notes
    ------------------------------------------------------------------------ */
@@ -270,7 +269,6 @@
 #define	SCRADJSML			(TEST_SCREWED+TEST_ADJACENT+TEST_ECONSMALLER)
 #define	SCRBIG				(TEST_SCREWED+TEST_ECONBIGGER)
 #define	SCR					(TEST_SCREWED)
-
 
 /* ------------------------------------------------------------------------
    Macros

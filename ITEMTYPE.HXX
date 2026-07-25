@@ -12,7 +12,6 @@
    ItemEffects -This is a wrapper class to keep all the various item effect
                 functions out of the global namespace
 
-   
    Contains the following general inline functions:
    ItemType::
     ItemType()    -the constructor, nothing interesting
@@ -34,19 +33,12 @@
 #include "typedefs.h"
 #endif
 
-
 #if !defined(_GAMETYPE_HXX)
 #include "gametype.hxx"   
 #endif
 
-// Not Used #if !defined(_ARMOR_HXX)
-// Not Used #include "armor.hxx"
-// Not Used #endif
-// Not Used 
-// Not Used #if !defined(_WEAPON_HXX)
 // Not Used #include "weapon.hxx"
 // Not Used #endif
-
 
 #if !defined(_STRENUM_H)
 #include "strenum.h"
@@ -76,11 +68,9 @@
 #include "tmsgbox.hxx"   
 #endif
 
-
 /* ------------------------------------------------------------------------
    Typedefs and defines
    ------------------------------------------------------------------------ */
-
 
 typedef enum 
 {
@@ -290,8 +280,6 @@ typedef enum
 /* 190 */	ITEM_SPELL_HOLY_WORD,			
 /* 191 */	ITEM_SPELL_RESURRECTION,		
 
-
-
 // Wizard Realm Spells
 
 /* 192 */	ITEM_SPELL_ALCHEMY,
@@ -307,7 +295,6 @@ typedef enum
 /* 202 */	ITEM_SPELL_TRANSPORT,
 /* 203 */	ITEM_SPELL_WARDING,
 	  
-
 // Priest Realm Spells
 
 /* 204 */	ITEM_SPELL_BLESS_LAND,
@@ -316,7 +303,6 @@ typedef enum
 /* 207 */	ITEM_SPELL_DISPEL_REALM_MAGIC_PRIESTVER,
 /* 208 */	ITEM_SPELL_HONEST_DEALING,
 /* 209 */	ITEM_SPELL_INVESTITURE,
-
 
 // Blood Abilities
 
@@ -381,7 +367,6 @@ typedef enum
 /* 264 */	MAX_ITEM_TYPES
 } ITEMTYPE;
 
-
 //action types for ItemEffects
 #define ACTIVATE	0x01
 #define DEACTIVATE	0x02
@@ -414,18 +399,13 @@ typedef enum
 //return codes for equipping stuff
 #define ALWAYS_IN_EFFECT 0xFB00 //Puts up the "always in effect" message
 
-
 #define PER_LEVEL     0x8000
-
 
 #define MAX_ACTIVE_ITEMS 80
 #define INDEFINATE_DUR	 0
 
-
-
 #define SPLIT_COMBO(l,s1,s2)	{((s1) = (ITEMTYPE)((0xFFFF0000 & (l))>>16));\
 								 ((s2) = (short)(0x0000FFFF & (l)));}
-
 
 //Item categories
 typedef enum {
@@ -439,7 +419,6 @@ typedef enum {
 	IC_ALL,
 } ItemCategory;
 
-
 //Defines for effects...
 
 #define FALL_RATE               6	// GEH HACK ALERT, THESE ARE ALREADY DEFINED
@@ -448,7 +427,6 @@ extern LONG PlayerFallRate;
 extern LONG PlayerTermVelocity;
 
 #define PARTY  0x12345678
-
 
 #define AT_STR				0x00010000
 #define AT_INT				0x00020000
@@ -480,13 +458,10 @@ extern LONG PlayerTermVelocity;
 #define REGEN_TURN			0x01000000
 #define REGEN10SECS			0x0A000000
 
-
 #define MAKE_DICE(sb1,sb2,sb3)	(((sb1)<<16|(sb2)<<8|(sb3))&0x00FFFFFF)
 #define DICE_NUMDICE(a)			((a&0x00FF0000) >> 16)
 #define DICE_NUMSIDES(a)		((a&0x0000FF00) >> 8)
 #define DICE_MODIFIER(a)		((a&0x000000FF) >> 0)
-//#define CHARGES(a)			((a&0xF0000000) >>28)
-
 
 #define HEAL_DATA(a)		a&0x00FFFFFF
 #define HEAL_MASK			0x0F000000
@@ -495,20 +470,15 @@ extern LONG PlayerTermVelocity;
 #define HEAL_RANDOM			0x03000000
 #define HEAL_FULLY			0x04000000
 
-
-
-
 #define MAKE_ADD_SPELL(num,low,hi) MAKE_DICE(num,low,hi)
 #define ADD_REALM 0x01000000
 
 #define PROT_RING 	0x00010000
 #define PROT_CLOAK	0x00020000
 
-
 /* ------------------------------------------------------------------------
    Global Variable
    ------------------------------------------------------------------------ */
-
 
 /* ------------------------------------------------------------------------
    External Functions
@@ -545,8 +515,6 @@ class ItemChargeHandler
 		static LONG mfCharges(ITEMTYPE ItemTypeIdx);
 };
 		
-	
-
 /* ========================================================================
    Class       - ItemType
    Description - This contains information about a type of gettable
@@ -572,17 +540,13 @@ class ItemType
 		LONG  EffectArg;
 		SHORT  Duration;
 		char  IconFile[13];
-//		const char* MiscInfo; //short description for Description Box
 		LONG MiscInfo; //short description for Description Box
-
 
 		SHORT ExtendedDataIdx; //this is used to index into a table
 							   //appropriate to the category.
 
 	public:
 		
-
-
 		ItemType(ItemCategory,UBYTE,SHORT,THINGTYPE,PFLLLL,LONG,SHORT,char*,LONG);
 		ItemType();
 
@@ -605,9 +569,6 @@ class ItemType
 			
 		void mfMessage(GAME_STRING) const;
 };
-
-
-
 
 /* ========================================================================
    Class       - ItemEffects
@@ -643,24 +604,16 @@ class ItemEffects
 				LONG mfSecondsLeft();
 		};
 		
-			
-				
-				
-
 		static DECL_VECTOR_CLASS(ActiveItem, ActiveItems);
-		//static ActiveItem ActiveItems[MAX_ACTIVE_ITEMS];
 				
 		static void ServiceDurations(LONG);
 		static BOOL mfAddActiveItem(PFLLLL,LONG,LONG,LONG,BOOL=FALSE);
-
 
 		static ActiveItem* mfGetActiveItem(PFLLLL,LONG,LONG);
 		static void mfRemoveActiveItem(PFLLLL,LONG,LONG);
 
 		static void mfMessageBox(char const *,char const*);
 		static void mfSound( BIRTHRT_SND  , SHORT , LONG);
-
-		
 
 	public:
 		static void WipeActiveItems(); 
@@ -709,7 +662,6 @@ class ItemEffects
 		static LONG Invisibility		(LONG,LONG,LONG);
 		static LONG RingJump			(LONG,LONG,LONG);
 		static LONG RingProtect			(LONG,LONG,LONG);
-		//static LONG Regenerate			(LONG,LONG,LONG);
 		static LONG ActResistance		(LONG,LONG,LONG);
 		static LONG Resistance			(LONG,LONG,LONG);
 		static LONG RingResistance		(LONG,LONG,LONG);
@@ -727,13 +679,7 @@ class ItemEffects
 		static LONG MapShowAll			(LONG,LONG,LONG);
 		static LONG MapTeleport			(LONG,LONG,LONG);
 
-//		static LONG TomeMysticMagics	(LONG,LONG,LONG);
-//		static LONG TomeSorcererLore	(LONG,LONG,LONG);
-//		static LONG TomeHighWizards		(LONG,LONG,LONG);
-//		static LONG TomeMageLords		(LONG,LONG,LONG);
-
 		static LONG TomeAddRandomSpells	(LONG,LONG,LONG);
-
 
 		static LONG HurlFireBall		(LONG,LONG,LONG);
 		static LONG FrostCone			(LONG,LONG,LONG);
@@ -774,11 +720,9 @@ class ItemEffects
 		// wizard spells
 		
 		static LONG Jump				(LONG,LONG,LONG);
-		//static LONG Shrink				(LONG,LONG,LONG);
 		static LONG ShockingGrasp		(LONG,LONG,LONG);
 		static LONG Blindness			(LONG,LONG,LONG);
 		static LONG Knock				(LONG,LONG,LONG);
-		//static LONG Levitate			(LONG,LONG,LONG);
 		static LONG LocateObject		(LONG,LONG,LONG);
 		static LONG Strength			(LONG,LONG,LONG);
 		static LONG StoneUndead			(LONG,LONG,LONG);
@@ -813,13 +757,10 @@ class ItemEffects
 		static LONG Shillelagh			(LONG,LONG,LONG);
 		static LONG TurnUndead			(LONG,LONG,LONG);
 		static LONG BarkSkin			(LONG,LONG,LONG);
-		//static LONG ResistFire			(LONG,LONG,LONG);
 		static LONG SpritualHammer		(LONG,LONG,LONG);
 		static LONG MagicalVestement	(LONG,LONG,LONG);
-		//static LONG WaterWalk			(LONG,LONG,LONG);
 		static LONG ProtectionFromEvil	(LONG,LONG,LONG);
 		static LONG FlameStrike			(LONG,LONG,LONG);
-		//static LONG MapShowAll			(LONG,LONG,LONG);
 		static LONG Resurrection		(LONG,LONG,LONG);
 		static LONG FireStormSpell		(LONG,LONG,LONG);
 		static LONG HolyWordSpell		(LONG,LONG,LONG);
@@ -831,7 +772,6 @@ class ItemEffects
 		static LONG BADevineWrath		(LONG,LONG,LONG);
 		static LONG BAHeightendAbility	(LONG,LONG,LONG);
 		static LONG BABloodMark			(LONG,LONG,LONG);
-		//static LONG BADetectIllusion	(LONG,LONG,LONG);
 		static LONG BADivineAura		(LONG,LONG,LONG);
 		static LONG BAEnhancedSense		(LONG,LONG,LONG);
 		static LONG BAFear				(LONG,LONG,LONG);
@@ -849,12 +789,7 @@ class ItemEffects
 		
 };
 
-	
-
-
 extern DECL_VECTOR_CLASS(ItemType,ItemTypes);
-//extern ItemType ItemTypes[];
-
 
 inline ItemType::ItemType()
 {
@@ -866,7 +801,6 @@ inline ItemType::ItemType()
 	MiscInfo=STR_NULL;
 	IconFile[0]=0;
 }
-
 
 inline ItemType::ItemType(ItemCategory cat,UBYTE attr,SHORT edi,THINGTYPE Type,PFLLLL func,LONG arg,SHORT dur,char* icon,LONG info)
 	:Category(cat),
@@ -882,9 +816,6 @@ inline ItemType::ItemType(ItemCategory cat,UBYTE attr,SHORT edi,THINGTYPE Type,P
 	{
 		strncpy(IconFile,icon,12);
 		IconFile[12]=0;
-		//hIcon=GetResourceStd(icon,FALSE);
-		//if (hIcon==-1)
-			//printf("warning! can't find Icon for %s\n",GAME_TTYPE::mfGetDescription(Type));
 	}
 }
 
@@ -952,7 +883,6 @@ inline SHORT ItemType::mfInfo() const
 	return MiscInfo;
 }
  
-
 inline const char* ItemType::mfIconFile() const
 {
 	return IconFile;
@@ -992,9 +922,6 @@ inline void ItemType::mfMessage(GAME_STRING message) const
 	ItemEffects::mfMessageBox(buffer,STRMGR_GetStr(message));
 }
 
-
-
-
 inline void ItemEffects::mfMessageBox(char const * t,char const * m)
 {
 	if (!fQuietItems)
@@ -1003,15 +930,11 @@ inline void ItemEffects::mfMessageBox(char const * t,char const * m)
 		printf("message stifled: %s: %s\n",t,m);
 }
 
-
 inline void ItemEffects::mfSound(BIRTHRT_SND s, SHORT r, LONG t)
 {
 	if (!fQuietItems)
 		AddSndObj(s,r,t);
 }
-
-
-
 
 inline ItemEffects::ActiveItem::ActiveItem() :
 	Func(0),

@@ -9,7 +9,6 @@
 
    Contains the following general functions:
 
-
    ======================================================================== */
 
 /* ------------------------------------------------------------------------
@@ -27,7 +26,6 @@
 
 #include "SYSTEM.H"
 #include "ENGINE.H"
-//#include "machine.h"
 
 #include "ADVENTUR.HXX"
 #include "AVATAR.HXX"
@@ -43,7 +41,6 @@
 #include "SLFRDEMO.HXX"
 #include "TUTRMENU.HXX"
 #include "LOADSAVE.HXX"
-//#include "sound.hxx"
 #include "UNITS.HXX"
 
 #ifdef _WINDOWS
@@ -124,13 +121,11 @@ void SCENE_AI::mfScenePause (SCENE &rScene)
 	    // This is a sparsly filled array.
 	    if (rScene.Avatars[i] != fERROR)
 	    {
-		    //GEH SetBlockAttr(rScene.Avatars[i], LOCKED, LOCKED);
 		    CAvatar * const pAvatar = (CAvatar * const ) BLKPTR(rScene.Avatars[i]);
 		    pAvatar->DoAI();
 	
 		   // Hey he could have died!
 		   //GEH if (rScene.Avatars[i] != fERROR)
-		   //GEH     ClrLock(rScene.Avatars[i]);
 	    }
 	}
 }
@@ -223,7 +218,6 @@ void SCENE_AI::mfSceneFadeOut (SCENE &rScene)
 	// Clear out the background buffer to solve a number
 	// of bugs with the main map showing through.  Note that fRealmTurn
 	// is FALSE at this point.
-	// clear_screen ();
 	clear_screen_to (1);						// [d3-13-97 JPC]
 	MARGIN_CONTROL::mfResetCurrentSize();
 	update_screen ();
@@ -279,13 +273,11 @@ void SCENE_AI::mfBattleInit ( SCENE &rScene)
 	{
 		if (rScene.Avatars[i] != fERROR)
 		{
-			//GEH SetBlockAttr(rScene.Avatars[i], LOCKED, LOCKED);
 			CAvatar * const pAvatar = (CAvatar * const) BLKPTR(rScene.Avatars[i]);
 			pAvatar->DoAI(CAvatar::AI_INIT);
 			
 			// Hey he could have died!
 			//GEH if (rScene.Avatars[i] != fERROR)
-			//GEH 	ClrLock(rScene.Avatars[i]);
 		}
 	}
 	
@@ -311,8 +303,6 @@ void SCENE_AI::mfBattleRelease (SCENE &rScene)
 	rScene.mfReleaseScene();
 	
 	TurnOffAllSounds();
-	//StopASound(SND_UI_MAP_NAVIGATE_LOOP,BtlSoundTag);
-	//BtlSoundTag = fERROR;
 	
 	init_mouse("DAGGER",CURSOR_HOTSPOT_UL);
 	
@@ -337,13 +327,11 @@ void SCENE_AI::mfBattlePlay (SCENE &rScene)
 			// This is a sparsly filled array.
 			if (rScene.Avatars[i] != fERROR)
 			{
-				//GEH SetBlockAttr(rScene.Avatars[i], LOCKED, LOCKED);
 				CAvatar * const pAvatar = (CAvatar * const ) BLKPTR(rScene.Avatars[i]);
 				pAvatar->DoAI();
 				
 				// Hey he could have died!
 				//GEH if (rScene.Avatars[i] != fERROR)
-				//GEH 	ClrLock(rScene.Avatars[i]);
 			}
 		}
 	}
@@ -361,13 +349,11 @@ void SCENE_AI::mfBattlePause (SCENE &rScene)
 	    // This is a sparsly filled array.
 	    if (rScene.Avatars[i] != fERROR)
 	    {
-		    //GEH SetBlockAttr(rScene.Avatars[i], LOCKED, LOCKED);
 		    CAvatar * const pAvatar = (CAvatar * const) BLKPTR(rScene.Avatars[i]);
 		    pAvatar->DoAI();
 	
 		   // Hey he could have died!
 		   //GEH if (rScene.Avatars[i] != fERROR)
-		   //GEH     ClrLock(rScene.Avatars[i]);
 	    }
 	}
 
@@ -404,7 +390,6 @@ void SCENE_AI::mfBattleFadeOut (SCENE &rScene)
 	// Clear out the background buffer to solve a number
 	// of bugs with the main map showing through.  Note that fRealmTurn
 	// is FALSE at this point.
-	// clear_screen ();
 	clear_screen_to (1);						// [d3-13-97 JPC]
 	update_screen ();
 	rScene.mfSetSceneState(SCENE_AI::PLAY);
@@ -434,13 +419,11 @@ void SCENE_AI::mfCombatInit ( SCENE &rScene)
 	{
 		if (rScene.Avatars[i] != fERROR)
 		{
-			//GEH SetBlockAttr(rScene.Avatars[i], LOCKED, LOCKED);
 			CAvatar *pAvatar = (CAvatar *) BLKPTR(rScene.Avatars[i]);
 			pAvatar->DoAI(CAvatar::AI_BEGIN_PAUSE);
 			
 			// Just incase he died.
 			//GEH if (rScene.Avatars[i] != fERROR)
-			//GEH 	ClrLock(rScene.Avatars[i]);
 			
 		}
 	}
@@ -488,15 +471,11 @@ void SCENE_AI::mfCombatPause (SCENE &rScene)
 	    // This is a sparsly filled array.
 	    if (rScene.Avatars[i] != fERROR)
 	    {
-		    //GEH SetBlockAttr(rScene.Avatars[i], LOCKED, LOCKED);
 		    CAvatar * const pAvatar = (CAvatar * const ) BLKPTR(rScene.Avatars[i]);
 		    pAvatar->DoAI();
 	
 		    // Hey he could have died!
 		    //GEH if (rScene.Avatars[i] != fERROR)
-		    //GEH {
-		    //GEH     ClrLock(rScene.Avatars[i]);
-		    //GEH }
 	    }
 	}
 	
@@ -534,7 +513,6 @@ void SCENE_AI::mfCombatFadeOut (SCENE &rScene)
 	// Clear out the background buffer to solve a number
 	// of bugs with the main map showing through.  Note that fRealmTurn
 	// is FALSE at this point.
-	// clear_screen ();
 	clear_screen_to (1);						// [d3-13-97 JPC]
 	update_screen ();
 	rScene.mfSetSceneState(SCENE_AI::PLAY);
@@ -559,7 +537,6 @@ void SCENE_AI::mfAdventureInit ( SCENE &rScene)
 	//make sure we can pick up objects
 	SetMouseClicked(iOBJECT,ObjectList::mfMouseCallback);
 
-	
 	if (TRUE == AdventureAllocateData(rScene))
 	{
 		LONG 	i;
@@ -611,31 +588,17 @@ void SCENE_AI::mfAdventureInit ( SCENE &rScene)
 		}
 		
 	   // Need a location and an AI not FOLLOW_PLAYER for the enemys.
-	   //	if(SCENE_MGR::AwayIndex != -1)
-	   //	{
-	   //		// convert the game avatars to the away team.
-	   //		SHORT UnitIndex = SCENE_MGR::AwayIndex;
-	   //		do
-	   //		{
-	   //			CAvatar * const pAvatar = (CAvatar * const) BLKPTR(units[UnitIndex].iHandle);
-	   //			pAvatar->SetAIFuncIndex(CAvatar::AI_FUNC_FOLLOW_PLAYER);
-	   //			pAvatar->mfInitVals();
-	   //			UnitIndex = (SHORT) units[UnitIndex].NextUnit;
-	   //		} while(UnitIndex != -1);
-	   //	}
 		
 		// Run through all INIT AI's
 		for (i=0; i<MAX_AVATARS; i++)
 		{
 			if (rScene.Avatars[i] != fERROR)
 			{
-				//GEH SetBlockAttr(rScene.Avatars[i], LOCKED, LOCKED);
 				CAvatar * const pAvatar = (CAvatar * const) BLKPTR(rScene.Avatars[i]);
 				pAvatar->DoAI(CAvatar::AI_INIT);
 				
 				// Hey he could have died!
 				//GEH if (rScene.Avatars[i] != fERROR)
-				//GEH 	ClrLock(rScene.Avatars[i]);
 			}
 		}
 		
@@ -650,7 +613,6 @@ void SCENE_AI::mfAdventureInit ( SCENE &rScene)
 		SCENE_MGR::mfReleaseSceneToMap(0,0);
 	}
 	SysForceCursor();
-//	ResumeSuspendedMusic();
 }
 /* ========================================================================
    Function    - mfAdventureRelease
@@ -662,18 +624,6 @@ void SCENE_AI::mfAdventureRelease (SCENE &rScene)
 	AdventureFixUnitsArray(SCENE_MGR::HomeIndex);
 	
 	// GWP We'll disconnect these player stats when we delete the avatars.
-	// GWP ADVENTURER_TEAM_ITOR AdvItor;
-	// GWP for (AdvItor = ADVENTURER::begin(); AdvItor != ADVENTURER::end();
-	// GWP 	AdvItor++)
-	// GWP {
-	// GWP 	DumbHandlePtr<CAvatar> const pAvatar(*AdvItor);
-	// GWP 	SHORT const hPS = pAvatar->hPlayerStats;
-	// GWP 	if (hPS < 0)
-	// GWP 		continue;
-	// GWP 	
-	// GWP 	DumbHandlePtr<PLAYER_STATS> const pPS(hPS);
-	// GWP 	pPS->hAvatar = fERROR;
-	// GWP }	
 	
 	ADVENTURER::mfReleaseAdventureTeam();
 	
@@ -726,16 +676,12 @@ void SCENE_AI::mfAdventurePlay (SCENE &rScene)
 				// This is a sparsly filled array.
 				if (rScene.Avatars[i] != fERROR)
 				{
-					//GEH SetBlockAttr(rScene.Avatars[i], LOCKED, LOCKED);
 					CAvatar * const pAvatar = (CAvatar * const ) BLKPTR(rScene.Avatars[i]);
 					
 					pAvatar->DoAI();
 					
 					// Hey he could have died!
 					//GEH if (rScene.Avatars[i] != fERROR)
-					//GEH {
-					//GEH 	ClrLock(rScene.Avatars[i]);
-					//GEH }
 				}
 			}
 		
@@ -746,8 +692,6 @@ void SCENE_AI::mfAdventurePlay (SCENE &rScene)
 	{
 		AdventureEndDialog(0);
 	}
-
-
 
 #ifdef _WINDOWS
 
@@ -763,8 +707,6 @@ void SCENE_AI::mfAdventurePlay (SCENE &rScene)
 	}
 
 #endif
-
-
 
 }
 

@@ -27,7 +27,6 @@
 #include "explevel.hxx" // for saving throw types
 #endif
 
-
 #define TRAVELINGSEQ	STANDSEQ
 #define IMPACTSEQ		ANIMATION3SEQ
 #define EFFECTSEQ		ANIMATION5SEQ
@@ -115,7 +114,6 @@ class SPELL_INFO
 			BATTLE=4,
 		} CASTERLOC;
 		
-
 		typedef enum
 		{
 			NO_SPELL = -1,
@@ -167,8 +165,6 @@ class SPELL_INFO
 			TIME_STOP,			/* W9 */
 			LAST_WIZARD_SPELL = TIME_STOP,
 
-
-
 			CURE_LIGHT,			/* P1 */ //cure light wounds
 			FIRST_PRIEST_SPELL=CURE_LIGHT,
 			DETECT_EVIL,		/* P1 */
@@ -200,12 +196,9 @@ class SPELL_INFO
 			RESURRECTION,		/* P7 */
 			LAST_PRIEST_SPELL = RESURRECTION, 
 			
-
 			MAX_SPELL_INDEX,
 		}	TYPE;
 			
-
-		
 		typedef enum {
 			LEVEL_0 = 0,  /* dummy */
 			LEVEL_1 = 1,
@@ -223,8 +216,6 @@ class SPELL_INFO
 			MAX_LEVELS = 10
 		} LEVEL;
 	
-
-
  		class SPELL_ITEM
 		{
 			public:
@@ -235,7 +226,6 @@ class SPELL_INFO
 				SAVETYPE		SaveType;
 				SCHOOL			School;
 				void			*pSpellObjects;	// Place holder for list of necessary material objects.
-				// PLAYER_CLASS_INFO::TYPE		CanCast;
 				UBYTE			WhereCast;
 				USHORT			Sphere;			// Only used by Priest spells.
 				

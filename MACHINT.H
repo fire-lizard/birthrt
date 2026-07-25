@@ -1,4 +1,3 @@
-
 /* ========================================================================
    Copyright (c) 1990,1996	Synergistic Software
    All Rights Reserved
@@ -48,7 +47,6 @@ void remove_keyint(void);
 /* keyint.c */
 extern volatile unsigned char 	key_stat[];
    
-
 #if defined (__cplusplus)
 }
 #endif

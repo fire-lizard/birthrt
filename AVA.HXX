@@ -153,7 +153,6 @@ public:
 	inline void			mfSetRealmName (char * szName);
 	inline char *		mfGetRealmName ();*/
 
-
 // ---------------------------------------------------------------------------
 // "GET" functions.
 
@@ -162,42 +161,35 @@ inline THINGTYPE AVA_FILE::mfGetThingType() const
 	return fThingType;
 }
 
-
 inline char * AVA_FILE::mfGetName()
 {
 	return fszName;
 }
-
 
 inline LONG AVA_FILE::mfGetTitle () const
 {
 	return fTitle;
 }
 
-
 inline LONG AVA_FILE::mfGetRace () const
 {
 	return fRace;
 }
-
 
 inline LONG AVA_FILE::mfGetClass1 () const
 {
 	return fClass1[0];
 }
 
-
 inline LONG AVA_FILE::mfGetClass1Level () const
 {
 	return fClass1[1];
 }
 
-
 inline LONG AVA_FILE::mfGetClass1Experience () const
 {
 	return fClass1[2];
 }
-
 
 inline LONG AVA_FILE::mfGetClass2 () const
 {
@@ -206,102 +198,85 @@ inline LONG AVA_FILE::mfGetClass2 () const
 	return fClass2[0];
 }
 
-
 inline LONG AVA_FILE::mfGetClass2Level () const
 {
 	return fClass2[1];
 }
-
 
 inline LONG AVA_FILE::mfGetClass2Experience () const
 {
 	return fClass2[2];
 }
 
-
 inline LONG AVA_FILE::mfGetStrength () const
 {
 	return fStrength;
 }
-
 
 inline LONG AVA_FILE::mfGetIntelligence () const
 {
 	return fIntelligence;
 }
 
-
 inline LONG AVA_FILE::mfGetDexterity () const
 {
 	return fDexterity;
 }
-
 
 inline LONG AVA_FILE::mfGetWisdom () const
 {
 	return fWisdom;
 }
 
-
 inline LONG AVA_FILE::mfGetConstitution () const
 {
 	return fConstitution;
 }
-
 
 inline LONG AVA_FILE::mfGetCharisma () const
 {
 	return fCharisma;
 }
 
-
 inline LONG AVA_FILE::mfGetTHAC0 () const
 {
 	return fTHAC0;
 }
-
 
 inline LONG AVA_FILE::mfGetAlignment () const
 {
 	return fAlignment;
 }
 
-
 inline LONG AVA_FILE::mfGetHitPoints () const
 {
 	return fHitPoints;
 }
-
 
 inline LONG AVA_FILE::mfGetArmorClass () const
 {
 	return fArmorClass;
 }
 
-
 inline LONG AVA_FILE::mfGetArmorType () const
 {
 	return fArmorType;
 }
-
 
 inline LONG AVA_FILE::mfGetWeapon () const
 {
 	return fWeapon;
 }
 
-
 inline LONG AVA_FILE::mfGetMorale () const
 {
 	return fMorale;
 }
 
-
 inline LONG AVA_FILE::mfGetTotalHitPoints () const
 {
 	return fTotalHitPoints;
 }
-
 
 inline LONG AVA_FILE::mfGetExperience () const
 {
@@ -311,12 +286,10 @@ inline LONG AVA_FILE::mfGetExperience () const
 	return fExperience;
 }
 
-
 inline LONG AVA_FILE::mfGetAttacksPerRound () const
 {
 	return fAttacksPerRound;
 }
-
 
 inline LONG AVA_FILE::mfGetBloodlineGrade () const
 {
@@ -332,7 +305,6 @@ inline LONG AVA_FILE::mfGetBloodlineStrength () const
 {
 	return fBloodlineStrength;
 }
-
 
 // ---------------------------------------------------------------------------
 // "SET" functions.
@@ -544,5 +516,3 @@ inline LONG	AVA_FILE::mfGetBardLevel ()
 };
 
 #endif
-
-

@@ -30,7 +30,6 @@ MCIDEVICEID gwMCIDeviceID = 0;   /* MCI Device ID for the AVI file */
 #define AVI_VIDEO "avivideo"
 #define GWL_WNDPROC         (-4)
 
-
 BOOL CALLBACK AviProc ( HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam )
 {
 	switch ( msg )
@@ -46,7 +45,6 @@ BOOL CALLBACK AviProc ( HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam )
    	return ( CallWindowProc( (WNDPROC)fpOldAVIWndProc, hwnd, msg, wParam, lParam ) );
 
 } // AviProc
-
 
 //----------------------------------------------------------------------------
 //
@@ -77,8 +75,6 @@ DWORD mci_Init ( void )
  return ( MCI_NOERROR );
 
 }	//---- End of mci_Init()
-
-
 
 //----------------------------------------------------------------------------
 //
@@ -114,7 +110,6 @@ DWORD mci_OpenFile ( LPSTR lpszFileName )
 
    mci_OpenParms.lpstrElementName = lpszFileName;
 
-
    //---- Send off the command 
 
    dwResult = mciSendCommand ( 0,
@@ -142,10 +137,7 @@ DWORD mci_OpenFile ( LPSTR lpszFileName )
 
    return ( dwResult );
 
-
 }   //---- End of mci_OpenFile
-
-
 
 //----------------------------------------------------------------------------
 //
@@ -204,10 +196,7 @@ DWORD mci_OpenDevice ( LPSTR lpszDevName )
 
    return ( dwResult );
 
- 
 }	//---- End of mci_OpenDevice()
-
-
 
 //----------------------------------------------------------------------------
 //
@@ -248,13 +237,9 @@ DWORD  mci_Close ( void )
 
    mci_OpenParms.wDeviceID = 0;
 
-
    return ( dwResult );
 
-
 }	//---- End of mci_Close()
-
- 
 
 //----------------------------------------------------------------------------
 //
@@ -278,7 +263,6 @@ DWORD mci_Play ( void )
    MCI_PLAY_PARMS   play;
    DWORD            dwResult;
 
-
    play.dwCallback = (DWORD) hwndApp;   //---- Call back handle to signal we are done
      
    //---- Send off the Play command
@@ -288,9 +272,7 @@ DWORD mci_Play ( void )
                                MCI_NOTIFY,
                                (DWORD)(LPVOID) &play );
 
-
    return ( dwResult );
-
 
 }   //---- End of mci_Play()
 
@@ -320,13 +302,9 @@ DWORD mci_Rewind ( void )
                                MCI_WAIT | MCI_SEEK_TO_START,
                                0 );
 
-
    return ( dwResult );
 
-
 }   //---- End of mci_Rewind()
-
-
 
 //----------------------------------------------------------------------------
 //
@@ -354,13 +332,9 @@ DWORD mci_Stop ( void )
                                MCI_WAIT,
                                (DWORD)(LPVOID) NULL );
 
-
    return ( dwResult );
 
-
 }   //---- End of mci_Stop()
-
-
 
 //----------------------------------------------------------------------------
 //
@@ -382,8 +356,6 @@ DWORD mci_GetPosition ( void )
 {
    MCI_STATUS_PARMS status;
 
-
-
    status.dwItem = MCI_STATUS_POSITION;
 
    if ( mciSendCommand ( mci_OpenParms.wDeviceID,
@@ -396,10 +368,7 @@ DWORD mci_GetPosition ( void )
 
       }
 
-
-
    return ( status.dwReturn );
-
 
 }   //---- End of mci_GetPosition()
 
@@ -429,7 +398,6 @@ DWORD mci_CloseCD(void)
 	return (mciSendCommand(wCDDeviceID, MCI_CLOSE, 0, (DWORD)NULL));
 }
 
-
 // Plays a given CD audio track using MCI_OPEN, MCI_PLAY. Returns as 
 // soon as playback begins. The window procedure function for the given
 // window will be notified when playback is complete. Returns 0L on
@@ -441,7 +409,6 @@ DWORD mci_PlayCD(HWND hWndNotify, BYTE bTrack, BYTE bStartMin, BYTE bStartSec, B
     MCI_PLAY_PARMS mciPlayParms;
 
 	// GEH Not So. fails running from CD for now, so just exit
-	// return(FALSE);
 
 	// if in network play or sound effects are off, don't use redbook sounds
 	if(fSound == FALSE)
@@ -485,7 +452,6 @@ DWORD mci_PlayCD(HWND hWndNotify, BYTE bTrack, BYTE bStartMin, BYTE bStartSec, B
     return (dwReturn);
 }	//---- End of mci_PlayCD
 
-
 DWORD mci_StopCD ( void )
 {
 
@@ -496,9 +462,7 @@ DWORD mci_StopCD ( void )
                                MCI_WAIT,
                                (DWORD)(LPVOID) NULL );
 
-
    return ( dwResult );
-
 
 }   //---- End of mci_Stop()
 
@@ -515,12 +479,10 @@ DWORD mci_CheckCDBusy ( void )
                                MCI_STATUS_ITEM,
                                (DWORD)(LPVOID) &mciStatusParms );
 
-
    // returns 1 if CD is busy
    dwResult = (DWORD)(!(mciStatusParms.dwReturn & 0x00000001));
    
    return ( dwResult );
-
 
 }   //---- End of mci_CheckCDBusy()
 
@@ -565,7 +527,6 @@ void mci_CloseAVI(void)
 	//
 	// Get the device ID for the opened device type and then close
 	// the device type.
-//	mciID = mciGetDeviceID(AVI_VIDEO);
 	mciID = wAVIDeviceId;
 
 	mciSendCommand(mciID, MCI_CLOSE, 0L,
@@ -574,17 +535,9 @@ void mci_CloseAVI(void)
 
 void mci_StopAVI(void)
 {
-//	MCIDEVICEID        mciID;
 	MCI_DGV_WINDOW_PARMS	mciWindow;
-//	MCI_GENERIC_PARMS  mciStop;
 	//
 	// Get the device ID for the opened device type and then stop it
-
-//	mciID = mciGetDeviceID(AVI_VIDEO);
-
-//  gwMCIDeviceID;
-//	mciSendCommand(mciID, MCI_STOP, 0L,
-//                   (DWORD)(LPMCI_GENERIC_PARMS)&mciStop);
 
 	mciSendCommand( gwMCIDeviceID, MCI_STOP, 0L,
                                 (DWORD)(LPVOID) NULL );
@@ -604,7 +557,6 @@ void mci_StopAVI(void)
 	 // -- don't forget to close the AVI also!									
 	mciSendCommand( gwMCIDeviceID, MCI_CLOSE, 0L,
                    				(DWORD)(LPMCI_GENERIC_PARMS)NULL);
-
 
 } // mci_StopAVI
 
@@ -715,6 +667,4 @@ HWND hWnd)
 			rcMovieBounds.right, rcMovieBounds.bottom, TRUE);
 }
 
-
 // MciUtil.c
-

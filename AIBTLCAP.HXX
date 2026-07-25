@@ -76,7 +76,6 @@ public:
 	static void mfShoot(CAvatar *);
 	static void mfTryToEngageEnemyBtlCap(CAvatar *);
 	static void mfRunEnemyBtlCapAI(CAvatar *);
-//REMOVED CHANGED to CheckMove()	static void mfRunEnemyBtlCapRemoteAI(CAvatar *);
 	static BOOL mfKillTroop(CAvatar *, THINGTYPE);
 	static SHORT mfEnemyPriority(CAvatar *, SHORT, SHORT);
 	static BOOL mfAutoEngage(CAvatar *, SHORT, SHORT);

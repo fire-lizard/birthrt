@@ -9,7 +9,6 @@
    
    Contains the following general functions:
 
-   
    ======================================================================== */
 
 /* ------------------------------------------------------------------------
@@ -17,10 +16,8 @@
    ------------------------------------------------------------------------ */
 #include <string.h>
 
-//#include "gamestr.h"
 #include "WEAPON.HXX"
 #include "strenum.h"   
-
 
 /* ------------------------------------------------------------------------
    Notes
@@ -123,4 +120,3 @@ const WEAPON_INFO::TYPE WEAPON_INFO::mfFindType(char * cpWeaponName)
 	
 	return Result;
 }
-

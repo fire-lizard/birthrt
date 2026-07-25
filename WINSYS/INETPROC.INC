@@ -60,7 +60,6 @@
 							if(i == MAX_PLAYERS)
 								break;	// no so leave
 
-
 							tx = *lp;
 							lp++;
 							ty = *lp;

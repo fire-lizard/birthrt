@@ -31,7 +31,4 @@ class HighlightMgr
 		void Clear();
 };
 
-
-
 #endif
-

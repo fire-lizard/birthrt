@@ -6,7 +6,6 @@
 #ifndef _CONTEXT_HXX
 #define _CONTEXT_HXX
 
-
 #define H_Zoom_Button	209
 #define H_Your_Party	3
 #define H_WRS_Raze	247
@@ -322,7 +321,6 @@
 #define H_Accessing_Atlas___Ruins_of_Empire	276
 #define H_3D_Battle_Camera_Views	85
 #define H_3D_Adventure_Viewing_Screen	179
-        
         
 #endif // _CONTEXT_HXX
 

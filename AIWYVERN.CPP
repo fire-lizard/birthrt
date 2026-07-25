@@ -9,7 +9,6 @@
    
    Contains the following general functions:
 
-   
    ======================================================================== */
 
 /* ------------------------------------------------------------------------
@@ -66,7 +65,6 @@ void CAvatar::Wyverns (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 	BIRTHRT_SND waveId;
 	SHORT waveRange;
 	
-
 	if( player.ThingIndex != fERROR &&
 		!reject( pAvatar->mfGetSector(), mythings[player.ThingIndex].sect))
 	{
@@ -144,7 +142,6 @@ void CAvatar::Wyverns (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 			pAvatar->fWyvern.Movement.dy = pAvatar->mfGetMarchRate();
 			pAvatar->fWyvern.Movement.dz = 0;
 
-			
 			if (pAvatar->mfTeleportHome())
 			{
 				// Remember where "Home" is.
@@ -201,21 +198,16 @@ void CAvatar::Wyverns (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 			pAvatar->mfReturnToPosition();
 			break;
 	
-			
 	case AI_DEAD:
 			// Dead is dead. Don't move.
 			pAvatar->mfClearLoopingSnd(waveId);
-			//if (pAvatar->mfGetArtSequence() != DEADSEQ)
-			//{
 				pAvatar->mfGetSectorInfo(&FloorHeight, &CeilingHeight, &Special);
 				pAvatar->mfMoveToXYZA(pAvatar->mfX(),
 									  pAvatar->mfY(),
 									  FloorHeight,
 									  pAvatar->mfAngle());
-			//}
 			if (pAvatar->attrib.DiedLastFrame)
 			{
-//				pAvatar->mfSpewAll();
 				pAvatar->attrib.DiedLastFrame=FALSE;
 			}
 
@@ -241,7 +233,6 @@ Defend_Yourself:
 				pAvatar->mfQueueSnd(waveId, waveRange, WingFlappingFrame);
 				pAvatar->mfSetLoopingSnd(waveId, 9); 
 
-				//pAvatar->attrib.IssuedChallange = FALSE;
 				if(pAvatar->attrib.IsFollowPath == TRUE)
 				{
 					pAvatar->FaceTo(pAvatar->fFollowPath.oldP.x, pAvatar->fFollowPath.oldP.y);
@@ -260,15 +251,12 @@ Defend_Yourself:
 					pAvatar->mfQueueSnd(waveId, waveRange, WingFlappingFrame);
 					pAvatar->mfSetLoopingSnd(waveId, 9); 
 
-
-					//pAvatar->attrib.IssuedChallange = FALSE;
 					pAvatar->mfStartAnimationOnce(MARCHSEQ);
 
 					pAvatarTarget->mfDisEngage();
 					pAvatar->hEnemy = fERROR;
 					if(pAvatar->attrib.IsFollowPath == TRUE)
 					{
-						//pAvatar->FaceTo(pAvatar->fFollowPath.oldP.x, pAvatar->fFollowPath.oldP.y);
 						pAvatar->SetAIFuncIndex(CAvatar::AI_FUNC_FOLLOW_PATH);
 						pAvatar->DoAI(CAvatar::AI_INIT);
 						break;
@@ -282,7 +270,6 @@ Defend_Yourself:
 					const LONG distance = aprox_dist(pAvatar->mfX(), pAvatar->mfY(),
 													 pAvatarTarget->mfX(), pAvatarTarget->mfY());
 		
-					
 					if(	pAvatar->mfCanIHitHim(pAvatarTarget, distance, pAvatar->fContactDistance))
 					{
 						pAvatar->FaceTo(pAvatarTarget->mfX(),
@@ -339,11 +326,8 @@ Defend_Yourself:
 					pAvatar->mfQueueSnd(waveId, waveRange, WingFlappingFrame);
 					pAvatar->mfSetLoopingSnd(waveId, 9); 
 
-
-					//pAvatar->attrib.IssuedChallange = FALSE;
 					if(pAvatar->attrib.IsFollowPath == TRUE)
 					{
-						//pAvatar->FaceTo(pAvatar->fFollowPath.oldP.x, pAvatar->fFollowPath.oldP.y);
 						pAvatar->SetAIFuncIndex(CAvatar::AI_FUNC_FOLLOW_PATH);
 						pAvatar->DoAI(CAvatar::AI_INIT);
 						break;
@@ -379,15 +363,12 @@ Defend_Yourself:
 						pAvatar->mfQueueSnd(waveId, waveRange, WingFlappingFrame);
 						pAvatar->mfSetLoopingSnd(waveId, 9); 
 
-
-						//pAvatar->attrib.IssuedChallange = FALSE;
 						pAvatar->mfStartAnimationOnce(MARCHSEQ);
 
 						pAvatarTarget->mfDisEngage();
 						pAvatar->hEnemy = fERROR;
 						if(pAvatar->attrib.IsFollowPath == TRUE)
 						{
-							//pAvatar->FaceTo(pAvatar->fFollowPath.oldP.x, pAvatar->fFollowPath.oldP.y);
 							pAvatar->SetAIFuncIndex(CAvatar::AI_FUNC_FOLLOW_PATH);
 							pAvatar->DoAI(CAvatar::AI_INIT);
 							break;
@@ -486,10 +467,8 @@ Defend_Yourself:
 				pAvatar->mfQueueSnd(waveId, waveRange, WingFlappingFrame);
 				pAvatar->mfSetLoopingSnd(waveId, 9); 
 
-				//pAvatar->attrib.IssuedChallange = FALSE;
 				if(pAvatar->attrib.IsFollowPath == TRUE)
 				{
-					//pAvatar->FaceTo(pAvatar->fFollowPath.oldP.x, pAvatar->fFollowPath.oldP.y);
 					pAvatar->SetAIFuncIndex(CAvatar::AI_FUNC_FOLLOW_PATH);
 					pAvatar->DoAI(CAvatar::AI_INIT);
 				}
@@ -509,7 +488,6 @@ Defend_Yourself:
 				const LONG distance = aprox_dist(pAvatar->mfX(), pAvatar->mfY(),
 										 pAvatarTarget->mfX(), pAvatarTarget->mfY());
 			
-				
 				if (pAvatar->mfCanSeeAvatar(pAvatarTarget) && 
 					pAvatarTarget->Engaged <= 3)
 				{
@@ -572,7 +550,6 @@ Defend_Yourself:
 			{
 				pAvatar->hEnemy = fERROR;
 
-				//pAvatar->attrib.IssuedChallange = FALSE;
 				// No foes seen yet.
 				if (pAvatar->mfStandWaiting())
 				{
@@ -596,12 +573,6 @@ Defend_Yourself:
 					else 
 						tz = 0;
 					// GWP Do we really need to set our position twice?
-					//pAvatar->mfStartAnimationOnce(MARCHSEQ);
-					
-					//pAvatar->mfMoveToXYZA(pAvatar->mfX(),
-					//					  pAvatar->mfY(),
-					//					  (FloorHeight+flyHeight),
-					//					  pAvatar->mfAngle());
 					
 					pAvatar->mfStartAnimationOnce(MARCHSEQ);
 					pAvatar->mfQueueSnd(waveId, waveRange, WingFlappingFrame);
@@ -662,7 +633,6 @@ Defend_Yourself:
 			if (pAvatar->hEnemy == fERROR)
 			{
 				pAvatar->Status = AI_SEARCH;
-				//pAvatar->attrib.IssuedChallange = FALSE;
 				pAvatar->bumpTimer = 100;
 				pAvatar->mfStartAnimationOnce(MARCHSEQ);
 				pAvatar->mfQueueSnd(waveId, waveRange, WingFlappingFrame);
@@ -670,7 +640,6 @@ Defend_Yourself:
 
 				if(pAvatar->attrib.IsFollowPath == TRUE)
 				{
-					//pAvatar->FaceTo(pAvatar->fFollowPath.oldP.x, pAvatar->fFollowPath.oldP.y);
 					pAvatar->SetAIFuncIndex(CAvatar::AI_FUNC_FOLLOW_PATH);
 					pAvatar->DoAI(CAvatar::AI_INIT);
 				}
@@ -682,7 +651,6 @@ Defend_Yourself:
 			{
 				// We're being attacked from the back. find'm and attack back.
 				pAvatar->hEnemy = pAvatar->mfFindClosestFoe();
-				//CAvatar * pAvatarTarget = (CAvatar *) BLKPTR(pAvatar->hEnemy);
 				if(pAvatar->mfZ() == FloorHeight)
 					pAvatar->mfStartAnimationOnce(WALKSEQ);
 				else
@@ -690,8 +658,6 @@ Defend_Yourself:
 					pAvatar->mfQueueSnd(waveId, waveRange, WingFlappingFrame);
 					pAvatar->mfSetLoopingSnd(waveId, 9); 
 
-				//const LONG distance = aprox_dist(pAvatar->mfX(), pAvatar->mfY(),
-				//							 pAvatarTarget->mfX(), pAvatarTarget->mfY());
 				if (pAvatar->hEnemy == fERROR)
 				{
 					// Error condition. Should probably disengage myself.
@@ -716,14 +682,12 @@ Defend_Yourself:
 
 					if(pAvatar->attrib.IsFollowPath == TRUE)
 					{
-						//pAvatar->FaceTo(pAvatar->fFollowPath.oldP.x, pAvatar->fFollowPath.oldP.y);
 						pAvatar->SetAIFuncIndex(CAvatar::AI_FUNC_FOLLOW_PATH);
 						pAvatar->DoAI(CAvatar::AI_INIT);
 					}
 					break;
 				}
 			}
-
 
 			CAvatar * pAvatarTarget = (CAvatar *) BLKPTR(pAvatar->hEnemy);
 			
@@ -735,13 +699,11 @@ Defend_Yourself:
 			if (distance > CAvatar::ActivationDistance && !pAvatar->mfCanSeeAvatar(pAvatarTarget)) // Got away
 			{
 				pAvatar->Status = AI_SEARCH;
-				//pAvatar->attrib.IssuedChallange = FALSE;
 				pAvatar->mfQueueSnd(waveId, waveRange, WingFlappingFrame);
 				pAvatar->mfSetLoopingSnd(waveId, 9); 
 
 				if(pAvatar->attrib.IsFollowPath == TRUE)
 				{
-					//pAvatar->FaceTo(pAvatar->fFollowPath.oldP.x, pAvatar->fFollowPath.oldP.y);
 					pAvatar->SetAIFuncIndex(CAvatar::AI_FUNC_FOLLOW_PATH);
 					pAvatar->DoAI(CAvatar::AI_INIT);
 					break;
@@ -775,8 +737,6 @@ Defend_Yourself:
 				LONG MoveAngle;
 				FIXED_VECTOR_3D tp;
 
-				//static int iAlreadySaidHalted = FALSE;
-				
 				// Chase the Target.
 				
 				// GWP If we hit something do we care?
@@ -810,7 +770,6 @@ Defend_Yourself:
 
 						if(pAvatar->attrib.IsFollowPath == TRUE)
 						{
-							//pAvatar->FaceTo(pAvatar->fFollowPath.oldP.x, pAvatar->fFollowPath.oldP.y);
 							pAvatar->SetAIFuncIndex(CAvatar::AI_FUNC_FOLLOW_PATH);
 							pAvatar->DoAI(CAvatar::AI_INIT);
 							break;
@@ -836,7 +795,6 @@ Defend_Yourself:
 												  pAvatar->mfZ()+tp.dz,
 												  pAvatar->mfAngle());
 						}
-
 
 						if(pAvatar->dAngle>0)
 							pAvatar->dAngle = -(pAvatar->dAngle);
@@ -907,13 +865,11 @@ Defend_Yourself:
 						pAvatar->Status = AI_SEARCH;
 						if(pAvatar->attrib.IsFollowPath == TRUE)
 						{
-							//pAvatar->FaceTo(pAvatar->fFollowPath.oldP.x, pAvatar->fFollowPath.oldP.y);
 							pAvatar->SetAIFuncIndex(CAvatar::AI_FUNC_FOLLOW_PATH);
 							pAvatar->DoAI(CAvatar::AI_INIT);
 							break;
 						}
 
-						//pAvatar->attrib.IssuedChallange = FALSE;
 						pAvatar->attrib.IsFlying = TRUE;
 						pAvatar->mfMoveToXYZA((pAvatar->mfX()+PLAYER_INT_VAL(tp.dx)),
 											  (pAvatar->mfY()+PLAYER_INT_VAL(tp.dy)),
@@ -931,7 +887,6 @@ Defend_Yourself:
 						pAvatar->mfQueueSnd(waveId, waveRange, WingFlappingFrame);
 						pAvatar->mfSetLoopingSnd(waveId, 9); 
 
-						
 						const WadThingType bumpResult = pAvatar->mfCheckNewPosition2(&tp, pAvatar->mfGetMarchRate());
 						if(bumpResult == iNOTHING)
 						{
@@ -956,4 +911,3 @@ Defend_Yourself:
 			
 	}
 }
-

@@ -9,7 +9,6 @@
    
    Contains the following general functions:
 
-   
    ======================================================================== */
 
 /* ------------------------------------------------------------------------
@@ -171,5 +170,3 @@ CLASS_EXPERIENCE_TABLE const * const ALL_CLASS_EXPERIENCE_TABLE::pAllClassExperi
 	RogueExperienceTable,	// Thief
 	RogueExperienceTable	// Bard
 };
-
-

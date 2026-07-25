@@ -151,12 +151,6 @@ inline void CAMERA_DATA::mfSwoopCamera()
    ======================================================================== */
 inline BOOL CAMERA_DATA::mfIsAtCameraPosition() 
 {
- //	return ( (CAMERA_INT_VAL(camera.x) == fx &&
- //	          CAMERA_INT_VAL(camera.y) == fy &&
- //	          camera.z == fz &&
- //	          camera.a == fa &&
- //	          camera.p == fp 
- //	          ) ? TRUE : FALSE);
    return(camera.TargetRequested==	NO_TARGET_REQUESTED);
 }
 /* ========================================================================

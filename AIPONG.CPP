@@ -17,7 +17,6 @@
 #include "SNDVOX.HXX"
 #include "SOUND.HXX"
 
-
 // [d11-26-96 JPC] Changed all mfMoveToXYZA calls to mfMoveToXYA calls.
 
 /* ========================================================================
@@ -37,7 +36,6 @@ void CAvatar::PingPong (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 	if( player.ThingIndex != fERROR &&
 		!reject( pAvatar->mfGetSector(), mythings[player.ThingIndex].sect))
 	{
-//		pAvatar->mfStartAnimationLoop(STANDSEQ);
 		return;
 	}
 	
@@ -130,17 +128,13 @@ void CAvatar::PingPong (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 	
 	case AI_DEAD:
 			// Dead is dead. Don't move.
-			//if (pAvatar->mfGetArtSequence() != DEADSEQ)
-			//{
 				pAvatar->mfGetSectorInfo(&FloorHeight, &CeilingHeight, &Special);
 				pAvatar->mfMoveToXYA(pAvatar->mfX(),
 									  pAvatar->mfY(),
 									  pAvatar->mfAngle());
-			//}
 			
 			if (pAvatar->attrib.DiedLastFrame)
 			{
-//				pAvatar->mfSpewAll();
 				pAvatar->attrib.DiedLastFrame=FALSE;
 			}
 
@@ -176,14 +170,11 @@ void CAvatar::PingPong (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 					pAvatar->Status = AI_SEARCH;
 					if(pAvatar->attrib.IsFollowPath == TRUE)
 					{
-						//pAvatar->FaceTo(pAvatar->fFollowPath.oldP.x, pAvatar->fFollowPath.oldP.y);
 						pAvatar->SetAIFuncIndex(CAvatar::AI_FUNC_FOLLOW_PATH);
 						pAvatar->DoAI(CAvatar::AI_INIT);
-						// break;
 					}
 					break;						// [d11-26-96 JPC] move line per TCW Donald.
 				}
-				
 				
 				CAvatar * pAvatarTarget = (CAvatar *) BLKPTR(pAvatar->hEnemy);
 				
@@ -194,10 +185,8 @@ void CAvatar::PingPong (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 					pAvatar->hEnemy = fERROR;
 					if(pAvatar->attrib.IsFollowPath == TRUE)
 					{
-						//pAvatar->FaceTo(pAvatar->fFollowPath.oldP.x, pAvatar->fFollowPath.oldP.y);
 						pAvatar->SetAIFuncIndex(CAvatar::AI_FUNC_FOLLOW_PATH);
 						pAvatar->DoAI(CAvatar::AI_INIT);
-						// break;
 					}
 					break;						// [d11-26-96 JPC] move this one, too
 				}
@@ -258,7 +247,6 @@ void CAvatar::PingPong (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 				}
 				if(pAvatar->attrib.IsFollowPath == TRUE)
 				{
-					//pAvatar->FaceTo(pAvatar->fFollowPath.oldP.x, pAvatar->fFollowPath.oldP.y);
 					pAvatar->SetAIFuncIndex(CAvatar::AI_FUNC_FOLLOW_PATH);
 					pAvatar->DoAI(CAvatar::AI_INIT);
 				}
@@ -271,7 +259,6 @@ void CAvatar::PingPong (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 				pAvatar->Status = AI_SEARCH;
 				if(pAvatar->attrib.IsFollowPath == TRUE)
 				{
-					//pAvatar->FaceTo(pAvatar->fFollowPath.oldP.x, pAvatar->fFollowPath.oldP.y);
 					pAvatar->SetAIFuncIndex(CAvatar::AI_FUNC_FOLLOW_PATH);
 					pAvatar->DoAI(CAvatar::AI_INIT);
 					break;
@@ -289,7 +276,6 @@ void CAvatar::PingPong (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 					pAvatar->hEnemy = fERROR;
 					if(pAvatar->attrib.IsFollowPath == TRUE)
 					{
-						//pAvatar->FaceTo(pAvatar->fFollowPath.oldP.x, pAvatar->fFollowPath.oldP.y);
 						pAvatar->SetAIFuncIndex(CAvatar::AI_FUNC_FOLLOW_PATH);
 						pAvatar->DoAI(CAvatar::AI_INIT);
 						break;
@@ -336,7 +322,6 @@ void CAvatar::PingPong (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 					pAvatar->Status = AI_SEARCH;
 					if(pAvatar->attrib.IsFollowPath == TRUE)
 					{
-						//pAvatar->FaceTo(pAvatar->fFollowPath.oldP.x, pAvatar->fFollowPath.oldP.y);
 						pAvatar->SetAIFuncIndex(CAvatar::AI_FUNC_FOLLOW_PATH);
 						pAvatar->DoAI(CAvatar::AI_INIT);
 						break;
@@ -354,7 +339,6 @@ void CAvatar::PingPong (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 						pAvatar->hEnemy = fERROR;
 						if(pAvatar->attrib.IsFollowPath == TRUE)
 						{
-							//pAvatar->FaceTo(pAvatar->fFollowPath.oldP.x, pAvatar->fFollowPath.oldP.y);
 							pAvatar->SetAIFuncIndex(CAvatar::AI_FUNC_FOLLOW_PATH);
 							pAvatar->DoAI(CAvatar::AI_INIT);
 							break;
@@ -406,7 +390,6 @@ void CAvatar::PingPong (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 				pAvatar->Status = AI_SEARCH;
 				if(pAvatar->attrib.IsFollowPath == TRUE)
 				{
-					//pAvatar->FaceTo(pAvatar->fFollowPath.oldP.x, pAvatar->fFollowPath.oldP.y);
 					pAvatar->SetAIFuncIndex(CAvatar::AI_FUNC_FOLLOW_PATH);
 					pAvatar->DoAI(CAvatar::AI_INIT);
 				}
@@ -431,10 +414,7 @@ void CAvatar::PingPong (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 						
 					if (distance <= CAvatar::ActivationDistance)
 					{
-					   //	pAvatar->mfStartAnimationOnce(STANDSEQ);
-					   //   break;
 					
-						
 						pAvatar->Status = AI_MOVING;
 						pAvatar->bumpTimer = 100;
 						if(pAvatar->attrib.IssuedChallange == FALSE)
@@ -523,7 +503,6 @@ void CAvatar::PingPong (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 				pAvatar->Status = AI_SEARCH;
 				if(pAvatar->attrib.IsFollowPath == TRUE)
 				{
-					//pAvatar->FaceTo(pAvatar->fFollowPath.oldP.x, pAvatar->fFollowPath.oldP.y);
 					pAvatar->SetAIFuncIndex(CAvatar::AI_FUNC_FOLLOW_PATH);
 					pAvatar->DoAI(CAvatar::AI_INIT);
 				}
@@ -557,7 +536,6 @@ void CAvatar::PingPong (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 					pAvatar->Status = AI_SEARCH;
 					if(pAvatar->attrib.IsFollowPath == TRUE)
 					{
-						//pAvatar->FaceTo(pAvatar->fFollowPath.oldP.x, pAvatar->fFollowPath.oldP.y);
 						pAvatar->SetAIFuncIndex(CAvatar::AI_FUNC_FOLLOW_PATH);
 						pAvatar->DoAI(CAvatar::AI_INIT);
 					}
@@ -577,7 +555,6 @@ void CAvatar::PingPong (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 				pAvatar->Status = AI_SEARCH;
 				if(pAvatar->attrib.IsFollowPath == TRUE)
 				{
-					//pAvatar->FaceTo(pAvatar->fFollowPath.oldP.x, pAvatar->fFollowPath.oldP.y);
 					pAvatar->SetAIFuncIndex(CAvatar::AI_FUNC_FOLLOW_PATH);
 					pAvatar->DoAI(CAvatar::AI_INIT);
 					break;
@@ -592,8 +569,6 @@ void CAvatar::PingPong (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 				break;
 			}
 			
-
-			// if (pAvatar->mfCanIHitHim(pAvatarTarget, distance, pAvatar->fContactDistance))
 			// [d4-28-97 JPC] Added mfCanSeeAvatar test here to prevent fighting
 			// through walls.  (mfCanIHitHim only checks distance and relative
 			// Z coordinate, not walls.)
@@ -660,8 +635,6 @@ void CAvatar::PingPong (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 			LONG MoveAngle;
 			FIXED_VECTOR_3D tp;
 
-			//static int iAlreadySaidHalted = FALSE;
-			
 			// Chase the Target.
 			
 			// GWP If we hit something do we care?
@@ -695,7 +668,6 @@ void CAvatar::PingPong (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 					pAvatar->Status = AI_SEARCH;
 					if(pAvatar->attrib.IsFollowPath == TRUE)
 					{
-						//pAvatar->FaceTo(pAvatar->fFollowPath.oldP.x, pAvatar->fFollowPath.oldP.y);
 						pAvatar->SetAIFuncIndex(CAvatar::AI_FUNC_FOLLOW_PATH);
 						pAvatar->DoAI(CAvatar::AI_INIT);
 						break;
@@ -739,7 +711,6 @@ void CAvatar::PingPong (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 						}
 					}
 
-
 					if(pAvatar->dAngle>0)
 						pAvatar->dAngle = -(pAvatar->dAngle);
 					else
@@ -766,17 +737,8 @@ void CAvatar::PingPong (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 void PINGPONG_DATA::mfSwitchToPingPong(LONG hAvatar)
 {
 	CAvatar *pAvatar = (CAvatar *) BLKPTR((SHORT) hAvatar);
-	// GWP POINT	tp;
-	// GWP LONG	angle;
 	
 	//GEH move Rate amount in a random direction
-	// GWP tp.x = 0;
-	// GWP tp.y = -(pAvatar->Rate);
-	// GWP angle = random(256);
-	// GWP rot8_angle(&tp, angle);
-	
-	// GWP pAvatar->fPingPong.Movement.dx = tp.x;
-	// GWP pAvatar->fPingPong.Movement.dy = tp.y;
 	
 	pAvatar->fPingPong.Movement.dx = 0;
 	pAvatar->fPingPong.Movement.dy = -(pAvatar->mfGetWalkRate());
@@ -786,5 +748,4 @@ void PINGPONG_DATA::mfSwitchToPingPong(LONG hAvatar)
 	
 	pAvatar->Status = CAvatar::AI_END_LISTEN;
 }
-
 

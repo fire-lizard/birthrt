@@ -21,7 +21,6 @@
 #include "scnsctor.hxx"
 #endif
 
-
 /* ------------------------------------------------------------------------
    Defines and Compile Flags
    ------------------------------------------------------------------------ */
@@ -69,7 +68,6 @@ private:
 typedef SHORT HDL_EXIT_POINTS;
 typedef EXIT_POINT *PTR_EXIT_POINT;
 typedef EXIT_POINT *PTR_EXIT_POINTS;
-
 
 /* ========================================================================
    Function    - mfCreateExitPoint

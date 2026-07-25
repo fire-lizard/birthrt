@@ -25,7 +25,6 @@
 #include "mapicon.hxx"
 #endif
 
-
 /* ------------------------------------------------------------------------
    Defines and Compile Flags
    ------------------------------------------------------------------------ */
@@ -210,7 +209,6 @@ private:
 	public:
 		// [d4-23-97 JPC] Removed the following so users can edit the names
 		// of characters.  Name is now stored in PLAYER_STATS class, szNameStat.
-		// CSTRPTR				name;
 		unsigned int		Realm		: 7;
 		unsigned int		Race		: 4;
 		unsigned int		Class1		: 4;
@@ -247,7 +245,6 @@ public:
 	inline SHORT mfGetunit() const;
 	inline SHORT mfGetid() const;
 	inline MAP_ICON mfGeticon() const;
-	
 	
 	// Modifiers
 	inline void mfSetRealm(REALM::REALM_TYPE const);
@@ -298,7 +295,6 @@ BOOL IsRegentOrLieutenant (LONG UnitIndex);
    Inline functions
    ------------------------------------------------------------------------ */
 
-
 // if there is a unit associated with this regent, use that
 // realm info. Otherwise, return the original realm data.
 inline REALM::REALM_TYPE const REGENT::mfGetRealm() const
@@ -308,7 +304,6 @@ inline REALM::REALM_TYPE const REGENT::mfGetRealm() const
 		
 	return (REALM::REALM_TYPE)units[fRegentData.unit].Realm;
 }
-
 
 inline REALM::REALM_TYPE const REGENT::mfGetOriginalRealm() const
 {
@@ -366,7 +361,6 @@ inline SHORT REGENT::mfGetunit() const
 	return fRegentData.unit;
 }
 
-
 inline SHORT REGENT::mfGetid() const
 {
 	return fRegentData.id;
@@ -387,7 +381,6 @@ inline void REGENT::mfSetRealm(REALM::REALM_TYPE const NewRealm)
 	{
 		if (units[fRegentData.unit].Realm != NewRealm)
 		{
-			//units[unit].realm = NewRealm;
 			SetGameData(MP_UNITS, MPUNITS_REALM, fRegentData.unit, NewRealm, FALSE);
 		}
 	}

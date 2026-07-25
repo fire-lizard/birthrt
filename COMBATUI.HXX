@@ -35,7 +35,6 @@
 #define BUTNO_SPELL5		14   
 #define BUTNO_SPELL6		15   
 
-
 // Bottom Bar buttons
 #define BUTNO_RPG_RETREAT	1
 #define BUTNO_RPG_DONE		2
@@ -46,9 +45,7 @@
 #define BUTNO_RPG_STATUS	7
 #define BUTNO_RPG_INVENTORY	8
 
-
 #define MULTI_EXIT    1
-
 
 /* ------------------------------------------------------------------------
    Enums
@@ -95,7 +92,6 @@ void CombatSpellKey(LONG /* menuid */, LONG /* SpellNumber */ );
 void CombatSwitchActive(LONG /* unused */ , LONG /* MenuIndex */);
 void CombatCycleActive(LONG, LONG);
 	
-
 void CombatCastSpellBox(LONG /* hAvatar */, LONG /* SpellBoxNumber */ );
 void CombatMenuPaint(LONG /* menuid */, LONG /* hAvatar */ );
 

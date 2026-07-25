@@ -20,7 +20,6 @@ enum CHARED_CLASSES {
 	CLASS_BARD
 };
 
-
 BOOL IsBloodabAvail (ITEMTYPE iItem);
 LONG GetBloodlineGrade ();
 void CharedDoEditorDialog ();

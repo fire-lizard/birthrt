@@ -109,7 +109,6 @@ typedef struct
 	};
 } DIPLOMACY_DATA;
 
-
 typedef struct
 {
 	LONG lFromId;
@@ -122,7 +121,6 @@ typedef struct
 	LONG lResult;
 	UBYTE modRegency;
 } RESPONSE_DIALOG;
-
 
 extern DECL_VECTOR_CLASS(SHORT,UnitTypeID);
 extern DECL_MATRIX_CLASS_S(UBYTE,iSelectedHolding,PROVINCE_COUNT,4);

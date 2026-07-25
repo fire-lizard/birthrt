@@ -34,7 +34,6 @@
 #include "SYSTEM.H"
 #include "MACHINT.H"
 
-
 #include "GAMEMAP.HXX"
 
 #include "MAIN.HXX"
@@ -72,7 +71,6 @@
 extern HWND hwndApp;
 #endif
 
-
 #if defined (_EDIT) || defined (_WADBUILDERS)
 extern "C" {
 void TextureLightTest (LONG arg1, LONG arg2);
@@ -86,7 +84,6 @@ void SysForceCursor (void);
 	Defines and Compile Flags
 	------------------------------------------------------------------------ */
 #define SCRN_DELAY 0x2FFFFFF
-//#define SCRN_DELAY 0x2FFF
 
 // key to the animation showing code
 #define _LAN	01
@@ -130,7 +127,6 @@ void dec_lens (LONG, LONG);
 extern void ReadOptionSettings(void);
 LONG AverageTicksPerFrame (void);
 
-
 /* ------------------------------------------------------------------------
 	Global Variables
 	------------------------------------------------------------------------ */
@@ -170,7 +166,6 @@ char CDDrive[4];
 LONG fDialogUp;
 BOOL bShowWadSize=FALSE;
 BOOL bDumpScreen=FALSE;
-//BOOL fRender = TRUE;
 BOOL fPosition = FALSE;
 void print_point(LONG,LONG);
 void ActivateSegment(LONG, LONG);
@@ -210,7 +205,6 @@ void ShowWadSize (void)
 	shade_edged_rect(60, 15, 150, 20, 32);
    print_textf(70,20,31,"Current wad size: %ld.%02ld meg",cbWad_Uses/1048576L,((cbWad_Uses%1048576L)*100)/1048576L);
 }
-
 
 void PrintLocationInfo(void)
 {
@@ -299,8 +293,6 @@ void ToggleDirectDraw(LONG, LONG)
 	}
 }
 
-
-
 extern void DirectDrawPreFrame( void )
 {
 	fDrawing = TRUE;
@@ -314,8 +306,6 @@ extern void DirectDrawPreFrame( void )
 			sDrawType = iBLT;
 	}
 } // DirectDrawPreFrame
-
-
 
  // -- routine in sysgraph.c
 #else
@@ -375,7 +365,6 @@ static void machine_post_frame()
 	{
 		while(lTime == get_time())
 		{
-			//draw_cursor();
 		}
 	}
 	
@@ -406,7 +395,6 @@ static void machine_post_frame()
 		SCENE_MGR::fFadeToNextScene = SCENE_MGR::NO_FADE;
 	}
 }
-
 
 /* ========================================================================
 	Function    - MainLoop
@@ -457,7 +445,6 @@ void MainLoop(void)
 	//from keyboard and mouse input.
 	if (REGION_HANDLED_EVENT == check_regions())
 	{
-		//mouse_button = 0;     // event handled, clear button
 		mouse_click = 0;
 	}
 	
@@ -488,7 +475,6 @@ void MainLoop(void)
 		RunRequests();
 	}
 	
-
 	// Render a scene
 	else
 	{
@@ -531,7 +517,6 @@ void MainLoop(void)
 		{
 			char szTemp[128];
 			sprintf (szTemp, "WAD Builders Edition, %s, %s", __DATE__, __TIME__);
-			// TitledMessageBox::Display ("Special Version", szTemp);
 			MessageBox (NULL, szTemp, "Special Version", MB_OK);
 			fShowMessage = FALSE;
 		}
@@ -578,7 +563,6 @@ void MainLoop(void)
 	}       // if in domain turn else..
 
 	// Show frames per second
-//#if !defined(_RELEASE)
 	UpdateFPS();
 	color_rect( render_width/2, render_top+5, 60, 15, 0);
 	print_textf( render_width/2, render_top + 5, 31,"^F00F/S %ld  T/F %ld", fps, AverageTicksPerFrame());
@@ -629,7 +613,6 @@ void MenuLoop()
 	//from keyboard and mouse input.
 	if (REGION_HANDLED_EVENT == check_regions())
 	{
-		//mouse_button = 0;     // event handled, clear button
 		mouse_click = 0;
 	}
 
@@ -740,7 +723,6 @@ void GameMain(void)
 #endif
 			PlayIntro();
 
-		// SetGlobalVolume(vol);
   		// [d1-07-97 JPC] You can quit while intro is playing--check
 		// for that here.
 		if (fQuitting)
@@ -993,7 +975,6 @@ void AddGameKeys(void)
 #endif
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-
 	/* -----------------------------------------------------------------
 		The special keys
 		----------------------------------------------------------------- */
@@ -1016,7 +997,6 @@ void AddGameKeys(void)
 	// Add Global Keys
 
 	AddGlobalKeys();
-
 
 #ifdef _EDIT
 	add_key(KEY_F7, EditDebugFunction, 0, 0);        // [d7-01-96 JPC]
@@ -1443,7 +1423,6 @@ void PlayCredits(LONG,LONG)
 End:
 	fAnyKeyChanged = FALSE;
 	clear_key_status(0);
-	//add_timer(1,draw_cursor);
 	return;	
 }
 
@@ -1810,7 +1789,6 @@ void DoPan (void)
 		run_timers();
 	}
 
-
 }
 
 /* ========================================================================
@@ -2106,7 +2084,6 @@ void NewIntro (void)
 
 				case 51:	FadeTo(255, 255, 255, -3); break;			// white flash..
 
-
 #ifdef _WINDOWS
 				case 52:	FadeTo(255, 255, 255, -40); break;			// ..and fade away
 #else
@@ -2173,4 +2150,3 @@ void NewIntro (void)
 }
 
 /* ======================================================================== */
-

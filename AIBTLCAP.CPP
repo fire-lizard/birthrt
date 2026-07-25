@@ -20,7 +20,6 @@
 #include "ENGINE.H"
 
 #include "AVATAR.HXX"
-//#include "btlstr.h"
 #include "AIBTLCAP.HXX"
 #include "GAMEMAP.HXX"
 #include "GAMETYPE.HXX"
@@ -172,7 +171,6 @@ DEFINE_MATRIX_CLASS_S(POINT, BattleGridAway, GRID_MAX_ROWS, GRID_MAX_COLS);
 BOOL fBtlTurnUndead = FALSE;
 
 // list of what avatar is in which grid
-//GEH extern DECL_MATRIX_CLASS_S(GRID,WhosWhere,GRID_MAX_ROWS,GRID_MAX_COLS);
 
 extern BOOL fTutorialFirstBattle;		// from gamemap.cpp
 extern BOOL	fDoTutReserves ;	// from battleui.cpp
@@ -727,7 +725,6 @@ void CAvatar::BattleCapt (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 					fDoTutMove ) 
 				{
 					fDoTutMove = FALSE;
-					//SystemHelp("TUTORIAL TEST", "Select a unit on the field and move them to one of the blue hilighted squares", -1, NULL, 0);
 					DescribeBtlMovement();
 				}
 				pAvatar->Status = AI_SEARCH;
@@ -764,7 +761,6 @@ void CAvatar::BattleCapt (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 			}
 				
 			pAvatar->mfPlayAnimationOnce(DEADSEQ);
-			// GEH pAvatar->SetAIFuncIndex(AI_FUNC_NULL);
 		}
 		
 		if (pAvatar->mfGetArtSequence() != DEADSEQ &&
@@ -777,7 +773,6 @@ void CAvatar::BattleCapt (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 	default:
 		break;
 	}
-
 
 	//---- Check for remote actions 
 
@@ -793,7 +788,6 @@ void CAvatar::BattleCapt (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 
 		if ( dwBattleMultiId != kNoMultiId )
 		{
-			//if ( pAvatar->mfIsHomeTeam() )
 			{
 				ResolveBattleMagic(pAvatar);
 				while(pAvatar->fBtlCap.HitCount > 0)
@@ -813,7 +807,6 @@ void CAvatar::BattleCapt (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 	// check for arrow/missile damage
 	if(pAvatar->KillType == ARROWS)
 	{
-		//if(pAvatar->fBtlCap.Shot > BattleTick)
 		{
 			ResolveMissiles(pAvatar);
 		}
@@ -1091,7 +1084,6 @@ SHORT ResolveAttack(SHORT hDefender, SHORT hAttacker, LONG AttackType)
 	pDefender = (CAvatar *)BLKPTR(hDefender);
 	pAttacker = (CAvatar *)BLKPTR(hAttacker);
 
-	
 	DefenderClass = GetBattleClass(pDefender->fBtlCap.OfficerIcon);
 	DefenderValue = GetBattleDefense(pDefender->fBtlCap.OfficerIcon);
 	
@@ -1231,8 +1223,6 @@ SHORT ResolveAttack(SHORT hDefender, SHORT hAttacker, LONG AttackType)
 	{
 	case SSP_DEEP_WATER:
 		// no fighting in deep water
-		//GEH return 0;
-		//break;
 		
 		// actually, let's do a little damage
 		AttackerValue/=2;
@@ -1285,7 +1275,6 @@ SHORT ResolveAttack(SHORT hDefender, SHORT hAttacker, LONG AttackType)
 	{
 	case SSP_DEEP_WATER:
 		// no fighting in deep water
-		// return 0;
 		
 		// Actually, full defence in deep water
 		
@@ -1388,7 +1377,6 @@ SHORT ResolveAttack(SHORT hDefender, SHORT hAttacker, LONG AttackType)
 			)
 			return 0;
 	}
-
 
 	// now, look at the results
 	
@@ -1718,14 +1706,12 @@ SHORT ResolveBattleMagic(CAvatar *pDefender)
 			{
 				// no resistance, take the damage
 				pDefender->fBtlCap.HitCount += points;
-				//GEH SendResults ( pDefender, points, pDefender->KillType );
 			}
 		}
 		else
 		{
 			// take the damage
 			pDefender->fBtlCap.HitCount += points;
-			//GEH SendResults ( pDefender, points, pDefender->KillType );
 		}
 	
 		// if troops were engaged, deal damage to other group
@@ -1786,7 +1772,6 @@ void BATTLE_CAPTAIN_DATA::mfRightButton(CAvatar *pAvatar)
    ======================================================================== */
 void BATTLE_CAPTAIN_DATA::mfShowInventory(LONG , LONG /* AvatarIndex */)
 {
-	// ShowMenu(D_AVATAR_INVENTORY);
 }
 
 /* ========================================================================
@@ -1984,7 +1969,6 @@ void BATTLE_CAPTAIN_DATA::mfTryToEngageEnemyBtlCap(CAvatar *pAvatar)
 				fDoTutEngage )
 			{
 				fDoTutEngage = FALSE;
-				//SystemHelp("TUTORIAL TEST", "Once engaged, the fight insues unless you click on them and fallback to an open square", -1, NULL, 0);
 				DescribeBtlEngagement();
 			}
 		}
@@ -2086,26 +2070,12 @@ void BATTLE_CAPTAIN_DATA::mfRunEnemyBtlCapAI(CAvatar *pAvatar)
 				&& pAvatar->fBtlCap.mfAutoMagic(pAvatar,r,c))
 			{
 				// fill in data
-				//strcpy(temp,STRMGR_GetStr(STR_CHAT_MAGIC_READY)); 
-				//sprintf(buffer, temp, 
-					//STRMGR_GetStr(gsUnitTitle[pAvatar->fBtlCap.OfficerIcon]),
-					//pAvatar->fBtlCap.Row,
-					//pAvatar->fBtlCap.Column
-					//);
-				//ChatLineAdd(buffer, RED);
 			}
 			else
 			if(!random(DifficultyLevel) 
 				&& pAvatar->fBtlCap.mfAutoShoot(pAvatar,r,c))
 			{
 				// fill in data
-				//strcpy(temp,STRMGR_GetStr(STR_CHAT_ARCHERS_READY)); 
-				//sprintf(buffer, temp, 
-					//STRMGR_GetStr(gsUnitTitle[pAvatar->fBtlCap.OfficerIcon]),
-					//pAvatar->fBtlCap.Row,
-					//pAvatar->fBtlCap.Column
-					//);
-				//ChatLineAdd(buffer, RED);
 			}
 			else
 			if(!random(DifficultyLevel+1))
@@ -2641,7 +2611,6 @@ BOOL BATTLE_CAPTAIN_DATA::mfAutoMagic(
 	
 	DumbAutoLockPtr<PLAYER_STATS const> const dhPlayerStats(pAvatar->hPlayerStats);
 	
-	//if (dhPlayerStats->mfIsMagicUser() || BattleMagicReady(pAvatar))
 	if (BattleMagicReady(pAvatar))
 	{
 		// only from a standing position
@@ -2649,8 +2618,6 @@ BOOL BATTLE_CAPTAIN_DATA::mfAutoMagic(
 			return FALSE;
 			
 		// no more magic left
-		// if(pAvatar->fBtlCap.SpellCount == 0)
-		//	return FALSE;
 			
 		// only if it has been long enough
 		if(pAvatar->fBtlCap.MagicCount > BattleTick)
@@ -2817,8 +2784,6 @@ BOOL BATTLE_CAPTAIN_DATA::mfAutoShoot(
 		
 	// only if it has been long enough
 	// GEH
-	//if(pAvatar->fBtlCap.MissileCount > BattleTick)
-	//	return FALSE;
 	
 	// look at the five legal shots
 	
@@ -3253,11 +3218,9 @@ void BATTLE_CAPTAIN_DATA::mfFallBack(LONG hAvatar)
 	assert(pAvatar->fBtlCap.Column >= 0);
 	assert(pAvatar->fBtlCap.Column <= 4);
 	
-	//assert(pAvatar->fBtlCap.Row >= 0);
 	if(pAvatar->fBtlCap.Row < 0)	// my reserves
 		return;
 		
-	//assert(pAvatar->fBtlCap.Row <= 2);
 	if(pAvatar->fBtlCap.Row > 2)	// his reserves
 		return;
 		
@@ -3519,7 +3482,6 @@ BOOL BATTLE_CAPTAIN_DATA::mfMoraleCheck(CAvatar *pAvatar)
 	
 	MaxMorale = BTL_MAX_MORALE + 1;
 	MyMorale = GetBattleMorale(pAvatar->fBtlCap.OfficerIcon);
-	//GEH MoraleMods = pPlayerStats->StatsMod.mfGetMod(STATSMOD::BTL_MORALE_MOD);
 	TotalMorale = random(
 		MaxMorale - 
 		MyMorale - 
@@ -3870,17 +3832,6 @@ void KillBattleCaptain(CAvatar *pAvatar)
 #endif
 	}
 	// else
-	// if(pAvatar->fBtlCap.OnBtlField)
-	// {
-	// 	// do a kind of mfRout here for regents and officers
-	// 	// troops in the reserves must pass a moral check to come back
-	// 	// this is the flag that tells the reserves code
-	// 	pAvatar->fBtlCap.FallBackCount = 1;
-	// 	
-	// 	// put myself in the reserves
-	// 	BattleMoveToReservesArea(pAvatar->hThis);
-	// 	BattlePutInReserves(pAvatar->mfIsHomeTeam(), pAvatar->hThis);
-	// }
 }
 
 /* -----------------------------------------------------------------
@@ -3998,7 +3949,6 @@ void CAvatar::FollowBtlCap (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 			}
 			
 			// decide how much fight'n noise to make
-			//GEH too much rndnum = random(32);	
 			rndnum = random(66);	
 			if(rndnum==0)
 				AddSndObj( SND_BIG_SWORD_HIT1, SND_BIG_SWORD_HIT_TOTAL, VOLUME_EIGHTY);
@@ -4106,9 +4056,6 @@ void CAvatar::FollowBtlCap (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 			pAvatar->mfSetAngle(pAvatar->fFollowBtlCap.NewA);
 			pAvatar->MoveToward(tx, ty, 0, pLeader->fBtlCap.Movement + 1);
 			// decide how much mov'n noise to make
-		//	rndnum = random(8);	
-		//	if(rndnum==0)
-		//		AddSndObj( SND_HUMAN_MARCHING_LOOP1, NULL, VOLUME_EIGHTY);
 		}
 		else
 		{
@@ -4116,14 +4063,12 @@ void CAvatar::FollowBtlCap (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 			{
 				// keep testing until we can shoot, this is so that
 				// not all of the archers shoot at exactly the same time
-				//if(!random(3))
 				if(pAvatar->fFollowBtlCap.hLeader != fERROR) // GEH for now
 				{
 					CAvatar *pLeader = (CAvatar *) BLKPTR(pAvatar->fFollowBtlCap.hLeader);
 					pAvatar->mfSetAngle(pLeader->mfAngle());
 					pAvatar->fFollowBtlCap.Shoot = BTLCAP_NOSHOT;
 					pAvatar->mfStartAnimationOnce(ATTACK1SEQ);
-					//GEH AddSndObj( SND_ARROW_SHOT1, SND_ARROW_SHOT_TOTAL, VOLUME_EIGHTY);
 				}
 			}
 			else
@@ -4173,7 +4118,6 @@ void FOLLOW_BTLCAP_DATA::mfRightButton(CAvatar *pAvatar)
 	// just temp
 	pAvatar = 0;
 }
-
 
 /* ========================================================================
    Function	- FindUnengaged
@@ -4257,7 +4201,6 @@ void BattleMoveToReservesArea( SHORT hAvatar )
 		pAvatar->fBtlCap.Row = GRID_MAX_ROWS;
 		pAvatar->fBtlCap.Column = 2;
 	}
-
 
 	// take myself off the battle field
 	pAvatar->fBtlCap.OnBtlField = FALSE;
@@ -4352,7 +4295,6 @@ LONG BATTLE_CAPTAIN_DATA::mfTerrainSpeed(CAvatar *pAvatar, SHORT BaseRate)
 	return NewRate;
 }
 
-
 /* ========================================================================
    Function    - DisposeTroopList
    Description - 
@@ -4432,8 +4374,6 @@ void CheckDisconnect(void)
 
 }
 
-
-
 /* ========================================================================
    Function	- TransRowCol
    Description - Mirror row column as if I were the other team
@@ -4458,7 +4398,6 @@ void TransRowCol( SHORT * Row, SHORT * Column )
 
 }  //---- TransRowCol()
 
-
 /* ========================================================================
    Function	- SendMove
    Description - Send rmove to other player
@@ -4467,7 +4406,6 @@ void TransRowCol( SHORT * Row, SHORT * Column )
 void SendMove ( CAvatar *pAvatar )
 {
 	#ifdef _WINDOWS
-
 
 		//----  if a remote player then send move message to them
 
@@ -4493,10 +4431,7 @@ void SendMove ( CAvatar *pAvatar )
 
 	#endif
 
-
 }	//---- End of SendMove()
-
-
 
 /* ========================================================================
    Function	- SendArrive
@@ -4529,8 +4464,6 @@ void SendArrive ( CAvatar *pAvatar )
 	#endif
 }	//---- End of SendArrive()
 
-
-
 /* ========================================================================
    Function	- SendWin
    Description - Send win or loose 
@@ -4541,7 +4474,6 @@ void SendWin ( BOOL IWin )
 	#ifdef _WINDOWS
 
 		CheckDisconnect();
-
 
 		//----  if a remote player then send win/lose message to them
 
@@ -4562,10 +4494,6 @@ void SendWin ( BOOL IWin )
 	#endif
 
 }	//---- End of SendWin()
-
-
-
-
 
 /* ========================================================================
    Function	- SendResults
@@ -4602,7 +4530,6 @@ void SendResults ( CAvatar *pAvatar, SHORT points, SHORT shot )
 #endif
 
 }
-
 
 /* ========================================================================
    Function	- SendRout
@@ -4669,13 +4596,11 @@ void SendFallBack ( CAvatar *pAvatar, SHORT Row, SHORT Column )
  			0,
 			dwBattleMultiId );
 
-
 	}
 
 #endif
 
 }
-
 
 /* ========================================================================
    Function	- SendToReserves
@@ -4704,7 +4629,6 @@ void SendToReserves ( CAvatar *pAvatar )
 			0,              
  			0,
 			dwBattleMultiId );
-
 
 	}
 
@@ -4756,9 +4680,6 @@ void SendMagic ( CAvatar *pAvatar )
 
 }
 
-
-
-
 /* ========================================================================
    Function	- CheckArrive
    Description - Check and see if the unit arrived on the other machine
@@ -4788,10 +4709,6 @@ int CheckArrive ( CAvatar *pAvatar )
 
 		// Remove all move messages from que
 		//GEH ? do we really want to throw these away??
-		//while ( Get_MessQueTS1( 
-		//	MultiPlayer::iMPT_BATTLE, 
-		//	iMPST_BATTLE_MOVE, 
-		//	pAvatar->fBtlCap.UnitIndex,
 		//	&MessBuf ) )
 		//{}
 
@@ -4818,7 +4735,6 @@ void CheckResults ( CAvatar *pAvatar )
 
    MESSQUE MessBuf;
 
-
 	//---- The check for a results message 
 
 	while ( Get_MessQueTS1( MultiPlayer::iMPT_BATTLE, 
@@ -4842,7 +4758,6 @@ void CheckResults ( CAvatar *pAvatar )
 
 }
 
-
 /* ========================================================================
    Function	- CheckRout
    Description - Check for rout messages 
@@ -4858,8 +4773,6 @@ void CheckRout ( CAvatar *pAvatar )
 
 	//---- The check for a rout message 
 
-//	while ( Get_MessQueTS1( MultiPlayer::iMPT_BATTLE, 
-
 	if ( Get_MessQueTS1( MultiPlayer::iMPT_BATTLE, 
  	    			    iMPST_BATTLE_ROUTE, 
 					    pAvatar->fBtlCap.UnitIndex,
@@ -4870,8 +4783,6 @@ void CheckRout ( CAvatar *pAvatar )
 			pAvatar->fBtlCap.UnitIndex );
 
 		pAvatar->fBtlCap.FallBackCount = 0;
-
-		//GEH pAvatar->fBtlCap.mfRoutReal(pAvatar->hThis);
 
 		pAvatar->fBtlCap.mfRout(pAvatar->hThis, FALSE, TRUE);
 
@@ -4896,8 +4807,6 @@ void CheckFallBack ( CAvatar *pAvatar )
 	MESSQUE MessBuf;
 
 	//---- The check for a fall back message 
-
-//	while ( Get_MessQueTS1( MultiPlayer::iMPT_BATTLE, 
 
 	if ( Get_MessQueTS1( MultiPlayer::iMPT_BATTLE, 
  						    iMPST_BATTLE_FALLBACK, 
@@ -4931,7 +4840,6 @@ void CheckFallBack ( CAvatar *pAvatar )
 
 }
 
-
 /* ========================================================================
    Function	- CheckMove
    Description - check for move 
@@ -4946,7 +4854,6 @@ void CheckMove(CAvatar *pAvatar)
    MESSQUE MessBuf;
   	SHORT i;
 	SHORT r,c;
-
 
 	//---- grab any moves this avatar has made 
 
@@ -5006,7 +4913,6 @@ void CheckMove(CAvatar *pAvatar)
 
 }
 
-
 /* ========================================================================
    Function	- CheckReserves
    Description - Check for movement to reserves 
@@ -5049,7 +4955,6 @@ void CheckReserves(CAvatar *pAvatar)
 
 }
 
-
 /* ========================================================================
    Function	- CheckWin
    Description - Check for a win or loose
@@ -5088,8 +4993,6 @@ void CheckWin ( void )
 #endif
 
 }
-
-
 
 /* ========================================================================
    Function	- CheckMagic
@@ -5244,4 +5147,3 @@ void MultiPrintf(const char *format, ...)
 	}
 #endif
 }
-

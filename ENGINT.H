@@ -87,10 +87,8 @@
 #define LITERAL			16			/* Uncompressed pixels. */
 #define PSTAMP				18			/* "Postage stamp" chunk. (FLC only.) */
 
-
 #define TYPE_FLIC				1
 #define TYPE_PCX				2
-
 
 /* ------------------------------------------------------------------------
    Enums
@@ -138,9 +136,6 @@ typedef struct{
 #define NOT_ON_MAP_BIT		0x0080
 #define DRAW_ON_MAP_BIT		0x0100
 #define HAS_BEEN_CROSSED	0x0200
-
-
-
 
 // [d6-05-96 JPC] Changed "char" to "unsigned char" because otherwise
 // seg_to_texture_num will return a NEGATIVE number for texture numbers > 127,
@@ -205,7 +200,6 @@ typedef struct{
 	ULONG	f,r;
 } BR_NODE;
 
-
 // [d6-06-96 JPC] Changed "char" to "UBYTE" to fix a crash bug when texture
 // index is > 127.
 typedef struct{
@@ -225,10 +219,6 @@ typedef struct{
 	LONG		special;
 	SHORT		tag;
 } BR_SECTOR;
-
-//typedef struct{
-//	SHORT		a,b,c,d;
-//} REJECT;
 
 typedef struct{
 	SHORT		xo,yo;
@@ -260,13 +250,9 @@ typedef struct{
 	SHORT		t;
 	SHORT	   frameHandle;					// [d10-08-96 JPC] for animated textures
 	SHORT		iFrame;							// [d10-08-96 JPC] for animated textures
-//	LONG		sky;
-//	ULONG		scale;
-//	LONG		type;
 	USHORT	scale;
 	USHORT	type;
 } TEXTURE;
-
 
 /* ------------------------------------------------------------------------
    Macros
@@ -328,11 +314,6 @@ void draw_ssector(LONG sect);
 void process_seg(LONG s);
 LONG calc_x_texture_info(LONG *xsrc_inc,LONG *src_x);
 // [d7-12-96 JPC] draw_wall is now a static function in RENDER.C.
-// LONG draw_wall(LONG seg);
-// [d6-04-96 JPC] draw_lower_wall and draw_upper_wall functions are
-// now static functions in RENDER.C, AND their parameters have changed.
-// LONG draw_lower_wall(LONG seg);
-// LONG draw_upper_wall(LONG seg);
 LONG draw_backface(LONG type);
 void add_floor_span(LONG x,LONG y,LONG sect);
 void add_ceil_span(LONG x,LONG y,LONG sect);
@@ -367,7 +348,6 @@ SHORT LoadAnimatedTextureStub (CSTRPTR szFileName,BOOL fSetPal,BOOL fLockRes,BOO
 
 /* things.c */
 void draw_thing_spans(void);
-// JPC void draw_thing (LONG t);
 void draw_things (LONG ss);
 /* ------------------------------------------------------------------------
    Global Vars
@@ -429,7 +409,6 @@ typedef LONG SEGMIRROR;
 typedef ULONG SEGMIRROR_DRAWN;
 extern SEGMIRROR * segMirror;
 extern SEGMIRROR_DRAWN * segMirrorDrawn;
-
 
 #if defined (__cplusplus)
 }

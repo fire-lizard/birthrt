@@ -37,7 +37,6 @@ public:
 };
 typedef BLOODLINE_ACQUISITION_LIST *PTR_BLOODLINE_ACQUISITION_LIST;
 
-
 void KeepBloodlineAbilityRoll(
 	BLOOD_ABILITY_INFO::BLOOD_ABILITY BloodAbilityRolled,
 	PTR_PLAYER_BLOOD_INFO pPlayerBloodInfo,

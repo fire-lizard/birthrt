@@ -9,7 +9,6 @@
    
    Contains the following general functions:
 
-   
    ======================================================================== */
 
 /* ------------------------------------------------------------------------
@@ -81,12 +80,10 @@ void CAvatar::Gargoyles (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 	  		
 			pAvatar->mfStartAnimationLoop(STANDSEQ);
 
-
 			pAvatar->fGargoyle.Movement.dx = 0;
 			pAvatar->fGargoyle.Movement.dy = pAvatar->mfGetMarchRate();
 			pAvatar->fGargoyle.Movement.dz = 0;
 
-			
 			if (pAvatar->mfTeleportHome())
 			{
 				// Remember where "Home" is.
@@ -143,7 +140,6 @@ void CAvatar::Gargoyles (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 			pAvatar->mfReturnToPosition();
 			break;
 	
-			
 	case AI_DEAD:
 			// Dead is dead. Don't move. But make sure you are on the ground
 			pAvatar->mfGetSectorInfo(&FloorHeight, &CeilingHeight, &Special);
@@ -154,7 +150,6 @@ void CAvatar::Gargoyles (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 
 			if (pAvatar->attrib.DiedLastFrame)
 			{
-//				pAvatar->mfSpewAll();
 				pAvatar->attrib.DiedLastFrame=FALSE;
 			}
 
@@ -178,10 +173,8 @@ void CAvatar::Gargoyles (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 			if (pAvatar->hEnemy == fERROR)
 			{
 				pAvatar->Status = AI_STONE;
-				//pAvatar->attrib.IssuedChallange = FALSE;
 				if(pAvatar->attrib.IsFollowPath == TRUE)
 				{
-					//pAvatar->FaceTo(pAvatar->fFollowPath.oldP.x, pAvatar->fFollowPath.oldP.y);
 					pAvatar->SetAIFuncIndex(CAvatar::AI_FUNC_FOLLOW_PATH);
 					pAvatar->DoAI(CAvatar::AI_INIT);
 					break;
@@ -194,7 +187,6 @@ void CAvatar::Gargoyles (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 				if (pAvatarTarget->mfAmIImmoblized())
 				{
 					pAvatar->Status = AI_STONE;
-					//pAvatar->attrib.IssuedChallange = FALSE;
 					pAvatar->mfStartAnimationOnce(STANDSEQ);
 					pAvatar->mfGetSectorInfo(&FloorHeight, &CeilingHeight, &Special);
 					pAvatar->mfMoveToXYZA(pAvatar->mfX(),
@@ -202,14 +194,10 @@ void CAvatar::Gargoyles (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 										  FloorHeight,
 										  pAvatar->mfAngle());
 
-			   		//pAvatar->mfQueueSnd(SND_HARPY_WINGFLAP1, SND_HARPY_WINGFLAP_TOTAL, WingFlappingFrame);
-			   		//pAvatar->mfSetLoopingSnd(SND_HARPY_WINGFLAP1, 9); 
-
 					pAvatarTarget->mfDisEngage();
 					pAvatar->hEnemy = fERROR;
 					if(pAvatar->attrib.IsFollowPath == TRUE)
 					{
-						//pAvatar->FaceTo(pAvatar->fFollowPath.oldP.x, pAvatar->fFollowPath.oldP.y);
 						pAvatar->SetAIFuncIndex(CAvatar::AI_FUNC_FOLLOW_PATH);
 						pAvatar->DoAI(CAvatar::AI_INIT);
 						break;
@@ -228,7 +216,6 @@ void CAvatar::Gargoyles (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 					{
 						pAvatar->FaceTo(pAvatarTarget->mfX(),
 						                pAvatarTarget->mfY());
-			   			//pAvatar->mfQueueSnd(SND_HARPY_WINGFLAP1, SND_HARPY_WINGFLAP_TOTAL, WingFlappingFrame);
 
 						if ((pAvatar->mfGetArtSequence() != ATTACK1SEQ &&
 						     pAvatar->mfGetArtSequence() != ATTACK2SEQ &&
@@ -242,8 +229,6 @@ void CAvatar::Gargoyles (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 					{
 						pAvatar->Status = AI_MOVING;
 						pAvatar->mfStartAnimationOnce(MARCHSEQ);
-						//pAvatar->mfQueueSnd(SND_HARPY_WINGFLAP1, SND_HARPY_WINGFLAP_TOTAL, WingFlappingFrame);
-						//pAvatar->mfSetLoopingSnd(SND_HARPY_WINGFLAP1, 9); 
 							
 						pAvatarTarget->mfDisEngage();
 						// Maybe Add a goto here.
@@ -260,15 +245,12 @@ void CAvatar::Gargoyles (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 				if (pAvatar->hEnemy == fERROR)
 				{
 					pAvatar->Status = AI_STONE;
-					//pAvatar->attrib.IssuedChallange = FALSE;
 					if(pAvatar->attrib.IsFollowPath == TRUE)
 					{
-						//pAvatar->FaceTo(pAvatar->fFollowPath.oldP.x, pAvatar->fFollowPath.oldP.y);
 						pAvatar->SetAIFuncIndex(CAvatar::AI_FUNC_FOLLOW_PATH);
 						pAvatar->DoAI(CAvatar::AI_INIT);
 						break;
 					}
-
 
 				}
 				else
@@ -278,7 +260,6 @@ void CAvatar::Gargoyles (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 					if (pAvatarTarget->mfAmIImmoblized())
 					{
 						pAvatar->Status = AI_STONE;
-						//pAvatar->attrib.IssuedChallange = FALSE;
 						pAvatar->mfStartAnimationOnce(STANDSEQ);
 						pAvatar->mfGetSectorInfo(&FloorHeight, &CeilingHeight, &Special);
 						pAvatar->mfMoveToXYZA(pAvatar->mfX(),
@@ -286,14 +267,10 @@ void CAvatar::Gargoyles (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 											  FloorHeight,
 											  pAvatar->mfAngle());
 
-			   			//pAvatar->mfQueueSnd(SND_HARPY_WINGFLAP1, SND_HARPY_WINGFLAP_TOTAL, WingFlappingFrame);
-  						//pAvatar->mfSetLoopingSnd(SND_HARPY_WINGFLAP1, 9); 
-
 						pAvatarTarget->mfDisEngage();
 						pAvatar->hEnemy = fERROR;
 						if(pAvatar->attrib.IsFollowPath == TRUE)
 						{
-							//pAvatar->FaceTo(pAvatar->fFollowPath.oldP.x, pAvatar->fFollowPath.oldP.y);
 							pAvatar->SetAIFuncIndex(CAvatar::AI_FUNC_FOLLOW_PATH);
 							pAvatar->DoAI(CAvatar::AI_INIT);
 							break;
@@ -313,7 +290,6 @@ void CAvatar::Gargoyles (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 						{
 							pAvatar->FaceTo(pAvatarTarget->mfX(),
 							                pAvatarTarget->mfY());
-				   			//pAvatar->mfQueueSnd(SND_HARPY_WINGFLAP1, SND_HARPY_WINGFLAP_TOTAL, WingFlappingFrame);
 
 							pAvatar->mfTestAndGiveDamage(pAvatar->hEnemy);
 							
@@ -330,8 +306,6 @@ void CAvatar::Gargoyles (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 						{
 							pAvatar->Status = AI_MOVING;
 							pAvatar->mfStartAnimationOnce(MARCHSEQ);
-			   				//pAvatar->mfQueueSnd(SND_HARPY_WINGFLAP1, SND_HARPY_WINGFLAP_TOTAL, WingFlappingFrame);
-							//pAvatar->mfSetLoopingSnd(SND_HARPY_WINGFLAP1, 9); 
 
 							pAvatarTarget->mfDisEngage();
 							// Maybe Add a goto here.
@@ -343,10 +317,8 @@ void CAvatar::Gargoyles (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 			{
 				// GWP You have no Player stats....Hit Points????
 				pAvatar->Status = AI_STONE;
-				//pAvatar->attrib.IssuedChallange = FALSE;
 				if(pAvatar->attrib.IsFollowPath == TRUE)
 				{
-					//pAvatar->FaceTo(pAvatar->fFollowPath.oldP.x, pAvatar->fFollowPath.oldP.y);
 					pAvatar->SetAIFuncIndex(CAvatar::AI_FUNC_FOLLOW_PATH);
 					pAvatar->DoAI(CAvatar::AI_INIT);
 				}
@@ -365,7 +337,6 @@ void CAvatar::Gargoyles (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 				CAvatar * pAvatarTarget = (CAvatar *) BLKPTR(pAvatar->hEnemy);
 				const LONG distance = aprox_dist(pAvatar->mfX(), pAvatar->mfY(),
 										 pAvatarTarget->mfX(), pAvatarTarget->mfY());
-			
 			
 				if (pAvatar->mfCanSeeAvatar(pAvatarTarget) && 
 					pAvatarTarget->Engaged <= 3)
@@ -393,8 +364,6 @@ void CAvatar::Gargoyles (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 						pAvatar->Status = AI_MOVING;
 						pAvatar->bumpTimer = 100;
 						pAvatar->mfStartAnimationOnce(MARCHSEQ);
-						//pAvatar->mfQueueSnd(SND_HARPY_WINGFLAP1, SND_HARPY_WINGFLAP_TOTAL, WingFlappingFrame);
-						//pAvatar->mfSetLoopingSnd(SND_HARPY_WINGFLAP1, 9); 
 
 						pAvatar->FaceTo(pAvatarTarget->mfX(), pAvatarTarget->mfY());
 						pAvatar->mfMoveToXYZA(pAvatar->mfX(),
@@ -402,7 +371,6 @@ void CAvatar::Gargoyles (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 											  height,
 											  pAvatar->mfAngle());
 
-						//AddSndObj(SND_HARPY_TAUNT1, SND_HARPY_TAUNT_TOTAL, pAvatar->ThingIndex );
 					}
 				}
 			}
@@ -410,7 +378,6 @@ void CAvatar::Gargoyles (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 			if (pAvatar->Status == AI_STONE)
 			{
 				pAvatar->hEnemy = fERROR;
-				//pAvatar->attrib.IssuedChallange = FALSE;
 				// No foes seen yet.
 				pAvatar->mfStartAnimationOnce(STANDSEQ);
 				pAvatar->mfGetSectorInfo(&FloorHeight, &CeilingHeight, &Special);
@@ -418,7 +385,6 @@ void CAvatar::Gargoyles (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 									  pAvatar->mfY(),
 									  FloorHeight,
 									  pAvatar->mfAngle());
-
 
 			}
 			break;
@@ -428,7 +394,6 @@ void CAvatar::Gargoyles (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 			if (pAvatar->hEnemy == fERROR)
 			{
 				pAvatar->Status = AI_STONE;
-				//pAvatar->attrib.IssuedChallange = FALSE;
 				pAvatar->bumpTimer = 100;
 				pAvatar->mfStartAnimationOnce(STANDSEQ);
 				pAvatar->mfGetSectorInfo(&FloorHeight, &CeilingHeight, &Special);
@@ -437,12 +402,8 @@ void CAvatar::Gargoyles (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 									  FloorHeight,
 									  pAvatar->mfAngle());
 
-				//pAvatar->mfQueueSnd(SND_HARPY_WINGFLAP1, SND_HARPY_WINGFLAP_TOTAL, WingFlappingFrame);
-				//pAvatar->mfSetLoopingSnd(SND_HARPY_WINGFLAP1, 9); 
-
 				if(pAvatar->attrib.IsFollowPath == TRUE)
 				{
-					//pAvatar->FaceTo(pAvatar->fFollowPath.oldP.x, pAvatar->fFollowPath.oldP.y);
 					pAvatar->SetAIFuncIndex(CAvatar::AI_FUNC_FOLLOW_PATH);
 					pAvatar->DoAI(CAvatar::AI_INIT);
 					break;
@@ -455,14 +416,9 @@ void CAvatar::Gargoyles (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 			{
 				// We're being attacked from the back. find'm and attack back.
 				pAvatar->hEnemy = pAvatar->mfFindClosestFoe();
-				//CAvatar * pAvatarTarget = (CAvatar *) BLKPTR(pAvatar->hEnemy);
 
 				pAvatar->mfStartAnimationOnce(MARCHSEQ);
-				//pAvatar->mfQueueSnd(SND_HARPY_WINGFLAP1, SND_HARPY_WINGFLAP_TOTAL, WingFlappingFrame);
-				//pAvatar->mfSetLoopingSnd(SND_HARPY_WINGFLAP1, 9); 
 
-				//const LONG distance = aprox_dist(pAvatar->mfX(), pAvatar->mfY(),
-				//							 pAvatarTarget->mfX(), pAvatarTarget->mfY());
 				if (pAvatar->hEnemy == fERROR)
 				{
 					// Error condition. Should probably disengage myself.
@@ -490,7 +446,6 @@ void CAvatar::Gargoyles (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 
 					if(pAvatar->attrib.IsFollowPath == TRUE)
 					{
-						//pAvatar->FaceTo(pAvatar->fFollowPath.oldP.x, pAvatar->fFollowPath.oldP.y);
 						pAvatar->SetAIFuncIndex(CAvatar::AI_FUNC_FOLLOW_PATH);
 						pAvatar->DoAI(CAvatar::AI_INIT);
 					}
@@ -498,7 +453,6 @@ void CAvatar::Gargoyles (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 					break;
 				}
 			}
-
 
 			CAvatar * pAvatarTarget = (CAvatar *) BLKPTR(pAvatar->hEnemy);
 			
@@ -510,10 +464,8 @@ void CAvatar::Gargoyles (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 			if (distance > CAvatar::ActivationDistance && !pAvatar->mfCanSeeAvatar(pAvatarTarget)) // Got away
 			{
 				pAvatar->Status = AI_STONE;
-				//pAvatar->attrib.IssuedChallange = FALSE;
 				if(pAvatar->attrib.IsFollowPath == TRUE)
 				{
-					//pAvatar->FaceTo(pAvatar->fFollowPath.oldP.x, pAvatar->fFollowPath.oldP.y);
 					pAvatar->SetAIFuncIndex(CAvatar::AI_FUNC_FOLLOW_PATH);
 					pAvatar->DoAI(CAvatar::AI_INIT);
 					break;
@@ -526,9 +478,6 @@ void CAvatar::Gargoyles (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 									  FloorHeight,
 									  pAvatar->mfAngle());
 
-			   	//pAvatar->mfQueueSnd(SND_HARPY_WINGFLAP1, SND_HARPY_WINGFLAP_TOTAL, WingFlappingFrame);
-			   	//pAvatar->mfSetLoopingSnd(SND_HARPY_WINGFLAP1, 9); 
-					
 			}
 			else
 			if (pAvatar->mfCanHarpyHitHim(pAvatarTarget, distance, pAvatar->fContactDistance)
@@ -551,8 +500,6 @@ void CAvatar::Gargoyles (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 				// GWP maybe we should try a slightly offset angle from 
 				// GWP the first try and try again.
 				pAvatar->mfStartAnimationOnce(MARCHSEQ);
-				//pAvatar->mfQueueSnd(SND_HARPY_WINGFLAP1, SND_HARPY_WINGFLAP_TOTAL, WingFlappingFrame);
-				//pAvatar->mfSetLoopingSnd(SND_HARPY_WINGFLAP1, 9); 
 
 				const WadThingType bump = pAvatar->mfFlyTowardWithBump(
 				                            distance,
@@ -584,25 +531,20 @@ void CAvatar::Gargoyles (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 					{	
 						Rotate((POINT*)&tp, pAvatar->mfAngle()+128);
 						pAvatar->mfStartAnimationOnce(STANDSEQ);
-						//pAvatar->mfQueueSnd(SND_HARPY_WINGFLAP1, SND_HARPY_WINGFLAP_TOTAL, WingFlappingFrame);
-						//pAvatar->mfSetLoopingSnd(SND_HARPY_WINGFLAP1, 9); 
 
 						pAvatar->Status = AI_STONE;
 						if(pAvatar->attrib.IsFollowPath == TRUE)
 						{
-							//pAvatar->FaceTo(pAvatar->fFollowPath.oldP.x, pAvatar->fFollowPath.oldP.y);
 							pAvatar->SetAIFuncIndex(CAvatar::AI_FUNC_FOLLOW_PATH);
 							pAvatar->DoAI(CAvatar::AI_INIT);
 							break;
 						}
 
-						//pAvatar->attrib.IssuedChallange = FALSE;
 						pAvatar->mfGetSectorInfo(&FloorHeight, &CeilingHeight, &Special);
 						pAvatar->mfMoveToXYZA(pAvatar->mfX(),
 											  pAvatar->mfY(),
 											  FloorHeight,
 											  pAvatar->mfAngle());
-
 
 					}
 					else
@@ -612,8 +554,6 @@ void CAvatar::Gargoyles (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 						Rotate((POINT*)&tp, MoveAngle+pAvatar->dAngle);
 
 						pAvatar->mfStartAnimationOnce(MARCHSEQ);
-						//pAvatar->mfQueueSnd(SND_HARPY_WINGFLAP1, SND_HARPY_WINGFLAP_TOTAL, WingFlappingFrame);
-						//pAvatar->mfSetLoopingSnd(SND_HARPY_WINGFLAP1, 9); 
 						
 						const WadThingType bumpResult = pAvatar->mfCheckNewPosition2(&tp, pAvatar->mfGetMarchRate());
 						if(bumpResult == iNOTHING)
@@ -638,4 +578,3 @@ void CAvatar::Gargoyles (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 			
 	}
 }
-

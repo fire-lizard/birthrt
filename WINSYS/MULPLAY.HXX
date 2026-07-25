@@ -44,7 +44,6 @@ enum MultiPlayerType
    iMP_SIGS
 };
 
-
 enum MultiGameType
 {
    iMPGT_NONE,
@@ -52,8 +51,6 @@ enum MultiGameType
    iMPGT_LOAD,
    iMPGT_BATTLE
 };
-
-
 
 enum 
 {
@@ -72,7 +69,6 @@ enum
 	iMPE_GAIN_EXP,
 
 };
-
 
 enum
 {
@@ -125,25 +121,19 @@ enum
 
 #define iMPS_SYNC_INITIATIVE	iMPS_SYNC_INIT01
 
-
 #define iCHAT_DIRECT    0
 #define iCHAT_BROADCAST 1
-
 
  // -- User-PNetMod types
 
 #include "PNetType.h"
-
 
 #define MAX_GAMES 10
 
 #define kWaitTurn		7777      //---- Waiting for turn update
 #define kFromMulti		7777      //---- calling from multiplayer 
 
-
 #define kNumSeeds      100        //---- number of random seeds
-
-
 
 const int iPlayerNameSize	= 19;
 const int iGameNameSize	= 23;
@@ -152,18 +142,13 @@ const int iPlaySpecSize	= 100;	// overkill number
 
 const char szLoadTemp[] = ".\\SAVEGAME\\MPTRANS~.TMP";
 
-
-// const int iPlanProfileName = MAX_PATH;
-
 typedef void (*FP_UPDATECALLBACK) ( void );
-
 
 typedef struct
 {
 	char	    szOpponentName[iPlayerNameSize+1];	// other player's name
 
 } SZOPPONENT, *PSZOPPONENT;
-
 
 //---- Used by the Event generator or requester 
 
@@ -179,7 +164,6 @@ typedef struct
 
 }	REQEVENT, *PREQEVENT;
 
-
 //---- Used by event replier
 
 typedef struct
@@ -193,7 +177,6 @@ typedef struct
 
 }	REPEVENT, *PREPEVENT;
 
-
 typedef struct
 {
 	int	EventId;				//---- What event are we waiting for replies 0 - none
@@ -203,8 +186,6 @@ typedef struct
 	int data4;					//---- eventdata
 
 }	RESEVENT, *PRESEVENT;
-
-
 
 //---- Message header 
 
@@ -216,7 +197,6 @@ typedef struct
    DWORD       dwFrom;     // from id ( 0  master ? )
 
 } BRHeader, *PBRHeader;
-
 
 //---- Message master sends to other players 
 
@@ -233,8 +213,6 @@ typedef struct
 
 } BRSetup, *PBRSetup;
 
-
-
 //---- Sync Message
 
 typedef struct
@@ -243,13 +221,11 @@ typedef struct
 
 } BRSync, *PBRSync;
 
-
 typedef struct
 {
 	long	      dwId;                //---- which Sync are we at
 
 } BRLeftGame, *PBRLeftGame;
-
 
 //---- Message won the game 
 
@@ -259,7 +235,6 @@ typedef struct
 
 } BRWonGame, *PBRWonGame;
 
-
 //---- Message  
 
 typedef struct
@@ -267,8 +242,6 @@ typedef struct
 	int control;    //---- control On or Off were outta control......
 
 } BRControl, *PBRControl;
-
-
 
 //---- Event message 
 
@@ -283,7 +256,6 @@ typedef struct
 
 } BREvent, *PBREvent;
 
-
 //---- Reply to Event message 
 
 typedef struct
@@ -295,8 +267,6 @@ typedef struct
 	int data4;					//---- eventdata
 
 } BREventReply, *PBREventReply;
-
-
 
 //---- Results to Event message
 
@@ -310,8 +280,6 @@ typedef struct
 
 } BREventResults, *PBREventResults;
 
-
-
 //---- Chat message 
 
 typedef struct
@@ -321,9 +289,6 @@ typedef struct
 
 }  BRChat, *PBRChat;
 
-
-
-
 typedef struct
 {
 	int 	iWhichRealm;
@@ -332,15 +297,11 @@ typedef struct
 
 } BRRealm, *PBRRealm;
 
-
-
 typedef struct
 {
 	int 	iGameType;
 
 } BRGameType, *PBRGameType;
-
-
 
 typedef struct 
 {
@@ -351,8 +312,6 @@ typedef struct
 
 } BRIndexS, *PBRIndexS;
 
-
-
 typedef struct 
 {
    long        lArray_Id;        // array id to update       
@@ -360,7 +319,6 @@ typedef struct
    long        lStruct_Id;       // struct element id 
 
 } BRIndexR, *PBRIndexR;
-
 
 //---- Test message 
 
@@ -370,8 +328,6 @@ typedef struct
    long        lPinger;          // this ain't golf 
 
 }  BRPing, *PBRPing;
-
-
 
 //---- unit message
 #define SIZEOF_MULTIUNIT 14
@@ -415,7 +371,6 @@ typedef struct
 	UBYTE		Status[SIZEOF_MULTIALLIED];
 }	BRAlliedMessage, *PBRAlliedMessage;
 
-
 //---- Battle messages 
 
 typedef struct
@@ -430,8 +385,6 @@ typedef struct
 
 }  BRBattle, *PBRBattle;
 
-
-
 class MultiPlayer : public GenericMultiPlayer
 {
 	// --
@@ -439,7 +392,6 @@ class MultiPlayer : public GenericMultiPlayer
 	// --
 
 public:
-
 
 	enum MsgType
 	{
@@ -476,8 +428,6 @@ public:
 
 	};
 
-
-
 private:
 
 	enum Status
@@ -488,16 +438,12 @@ private:
 		iMPS_SETUP,		// we have setup the game
 	};
 
-
-
-
 	 // -- Game Information
 
 	Status	    eStatus;				// What is the status of the Multi-Player game?
 	BOOL	    fMaster;				// Are we the master
 
 	SZOPPONENT  szOpponentName[8];	    // other player's names
-
 
 	char    	szName[iPlayerNameSize+1];	// my friendly name
 	char	    szGame[iGameNameSize+1];  	// my last game name
@@ -539,16 +485,12 @@ public:
 	void			InitChat		( void );
 	void			InitEvent		( int which = 0 );
 
-
 	BOOL		   	Setup			( void );
-
 
 	BOOL 			StartNewGame	( void );
 	BOOL 			JoinGame 		( int index );
 
-
    void            UpdateDeletedPlayers( void );
-
 
 	//---- Random functions 
 
@@ -556,14 +498,12 @@ public:
 	void 			InitSeedTable( void );
 	void 			NextSeed( char * szFileName, int iLineNumber );
 
-
 	//---- Sync stuff
 
 	void  			ResetSync( int sync );
 	BOOL 			SendSync( int sync );
 	BOOL 			SendSyncTo( int sync, DWORD dwToWhom );
 	int             GetSync( int sync, int index );
-
 
 	// -- sync time outs
 	void			ResetAllSyncTimes( void );
@@ -580,11 +520,9 @@ public:
 	void  			ResetSyncAction( int rlm );
 	int             GetSyncAction( int rlm );
 
-
 	//---- Send Game Type
 
 	BOOL 			SendGameType( void );
-
 
    //
    //---- Test
@@ -592,28 +530,17 @@ public:
 
    BOOL    Ping            ( long lData, DWORD dwToWhom = kBroadcast );
 
-
    //
    //---- Chat
    //
 
 	BOOL	Chat			( char * pszMsg, int force = 0 );
 
-
-
 	//---- Display network status
 
 	void DisplayNetStatus 		( LONG mx, LONG my );
 
-
-
 	//---- Realm actions 
-
-//  	int  GetActionRealm		    ( void );
-
-//	BOOL BroadcastActionRealm   ( int realm ); //, int action );	//---- Master only
-//	BOOL DoneActionRealm   		( int realm );				//---- Done action
-
 
    //
    //---- Select Realm stuff
@@ -624,10 +551,7 @@ public:
 
 	BOOL BroadcastSetGameData(LONG lArray_Id, LONG lStruct_Id, LONG lArray_Index, LONG lData, DWORD dwToWhom = kBroadcast);
 
-//	BOOL RequestSetGameData(LONG lArray_Id, LONG lStruct_Id, LONG lArray_Index, LONG lData);
-//	BOOL BroadcastGetGameData(LONG lArray_Id, LONG lStruct_Id, LONG lArray_Index);
 	BOOL RequestGetGameData(LONG lArray_Id, LONG lStruct_Id, LONG lArray_Index);
-
 
 	//
 	//---- Event messages
@@ -637,46 +561,35 @@ public:
 					int data1, int data2, int data3, int data4, 
 					int rlm );
 
-
 	BOOL ReplyEvent( int EventId, 
 					 int data1, int data2, int data3, int data4 ); 
-
 
 	BOOL ResultsEvent( int EventId, 
 					   int data1, int data2, int data3, int data4, 
 					   int rlm );
 
-
 	BOOL CheckEvent( void );
-
 
 	BOOL GetAEventReply( int which, 
 						 int * data1, int * data2, int * data3, int * data4 );
-
 
 	int HaveEvent( void );
 
 	int HaveResults( void );
 
-
 	PCHAR GetRealmNameOfEvent(void);
-
 
 	//----- Adventure Over Person who setup game sends this 
 	
 	BOOL BroadcastAdventOver ( void );
 
-
 	//----- Won the game
 	
 	BOOL SendWonGame( SHORT HomeRealm );
 
-
-
 	//---- Set control on and off
 
 	BOOL MultiPlayer::SendControl( int control );
-
 
    //---- Message Loop
 
@@ -695,7 +608,6 @@ public:
 	BOOL	StopTheGame		( void );
 	BOOL	RemovePlayer 	( DWORD dwId );
 
-
 	BOOL	UnitMessage		( DWORD Index, UBYTE *Data, char * szWhy = "unspecified", DWORD dwToWhom = kBroadcast );
 	
 	BOOL	PlacesMessage	( DWORD Index, UBYTE *Data, DWORD dwToWhom = kBroadcast );
@@ -711,11 +623,9 @@ public:
 
 	int     WaitForPlayers		( void );
 
-
 	// --
 	// -- Data retrieval
 	// --
-
 
 	PCHAR	    GetGameName		( void );
 	short	    GetNumPlayers	( void );
@@ -733,7 +643,6 @@ public:
 
 	PCHAR       GetOpponentName	( int i );
 
-
 	int         GetChat         ( int index );
 	int         GetChatRec      ( int index );
 
@@ -747,7 +656,6 @@ public:
 
    BOOL        IsModemGame     ( void );
 
-
 	// --
 	// -- Object status
 	// --
@@ -758,7 +666,6 @@ public:
 	BOOL		IsSlave				( void );
 
    BOOL		IsMultiPlayerandRealm      ( int realm );
-
 
    // --
    // -- Setting data
@@ -777,21 +684,15 @@ public:
 
 	void 		SetGameType				( int GameType );
 
-
-
 	//---- Realm selection stuff 
 
    int			GetRealmFromId( DWORD dwId  );		
-
 
 	//---- Exchange saved games 
 
 	BOOL		ExchangeSavedGame		( void );
 
-
-
 protected:
-
 
 	short DoHeader				( MsgType iType, PCHAR *ppMsg );
 	virtual BOOL	HandleSpecialMessages( UCHAR usMsgId, long lMsgNum );
@@ -802,14 +703,12 @@ protected:
 	BOOL	ReceiveFile			( PSZ pNew );
 	BOOL	ReceiveMessage		( USHORT usType, DWORD dwWait, BOOL fOneOnly = FALSE );
 
-
 	BOOL	SendFile			( PSZ pszPath, PCHAR pszFile );
 
 	BOOL	SendBroadcastMessage ( short sSize, BOOL fAck = TRUE );
 	BOOL	SendDirectMessage  	 ( DWORD dwToWhom, short sSize, BOOL fAck = TRUE );
 
 	void	WriteCfg				( void );
-
 
 	 // -- private copy constructor / assignment operator
 	 // --  they are declared but not defined so defaults are not made
@@ -818,10 +717,7 @@ protected:
 	MultiPlayer ( const MultiPlayer& org );
 	MultiPlayer operator= (const MultiPlayer& org );
 
-
 }; // class MultiPlayer
-
-
 
    // -- Default object
 
@@ -850,15 +746,11 @@ protected:
 
 	extern int iAdventOver;                     //---- Flag for adventure over
 
-
 	extern BOOL DoMultiRealmStuff(SHORT,int);
 
    extern float MasterRealmAIVersionNumber;
 
-
 #endif
-
-
 
 //---- End of MulPlay.hxx
 

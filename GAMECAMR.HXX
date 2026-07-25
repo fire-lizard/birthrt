@@ -36,7 +36,6 @@
 #include "sound.hxx"
 #endif
 
-
 /* ------------------------------------------------------------------------
    Defines and Compile Flags
    ------------------------------------------------------------------------ */
@@ -188,16 +187,6 @@ inline void GAME_CAMERA::mfUpdateCamera()
 			// GWP It gets stuck by walls and doesn't keep up.
 			// GWP SetCameraRotateTarget(
 			// GWP 	&camera,
-			// GWP 	PLAYER_INT_VAL(player.x),
-			// GWP 	PLAYER_INT_VAL(player.y),
-			// GWP 	player.z + ptBehind.dz,
-			// GWP 	player.p - 5,
-			// GWP 	player.a + 128,
-			// GWP 	player.w,
-			// GWP 	100,
-			// GWP 	TRUE
-			// GWP 	);
-			// GWP MoveCamera(&camera, 0);
 				
 			SetCameraPosition(
 				&camera,
@@ -234,4 +223,3 @@ inline GAME_CAMERA::CAMERA_STATE GAME_CAMERA::mfGetCurrentState()
 	return fCameraState;
 }
 #endif // _GAMECAMR_HXX
-

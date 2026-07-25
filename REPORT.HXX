@@ -25,7 +25,6 @@
 #include "vector.hxx"
 #endif
 
-
 /* ------------------------------------------------------------------------
    Defines and Compile Flags
    ------------------------------------------------------------------------ */
@@ -42,7 +41,6 @@
 #define UNIT_TITLE		10
 #define ALLY_LEVEL		11
 #define IMMEDIATE	1024
-
 
 /* ------------------------------------------------------------------------
    Enums
@@ -227,7 +225,6 @@ typedef struct {
 	unsigned int		array1		: 8;
 	unsigned int		array2		: 8;
 	unsigned int		array3		: 8;
-//	CSTRPTR				sz[5];
 	LONG				sz[5];
 } SUBJECT;
 
@@ -265,6 +262,4 @@ extern LONG		iOldSite;
 #endif // _REPORT_HXX
 
 /*	======================================================================== */
-
-
 

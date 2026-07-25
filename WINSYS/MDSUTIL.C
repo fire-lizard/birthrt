@@ -45,8 +45,6 @@ BOOL    Decompress(LPMIDIHDR lpmhSrc, LPMIDIHDR lpmhDst);
 
 void WINAPI midiCallback( HMIDISTRM hms, UINT uMsg, DWORD dwUser, DWORD dw1, DWORD dw2 );
 
-
-
 // LoadMDSImage
 //
 // Allocate space for the handle structure MDSImage and get the 
@@ -82,8 +80,6 @@ DWORD LoadMDSImage(HANDLE *hImage, PBYTE pbImage, DWORD cbImage, DWORD fdw)
     pImage->fccSig          = FOURCC_MDSI;
     pImage->hms             = NULL;
     pImage->cBuffersInUse   = 0;
-
-
 
     // Read the image if we need to 
     //
@@ -190,7 +186,6 @@ DWORD ParseImage(MDSIMAGE* pImage, PBYTE pbImage, DWORD cbImage)
     pbImage += sizeof(FOURCC);
     cbImage -= sizeof(FOURCC);
 
-
     // Should have 'fmt ' chunk first
     //
     if ((cbImage < sizeof(FOURCC) + sizeof(DWORD)) ||
@@ -238,8 +233,6 @@ DWORD ParseImage(MDSIMAGE* pImage, PBYTE pbImage, DWORD cbImage)
     cbChk = pImage->cBuffers * (sizeof(MIDIHDR) + pImage->fmt.cbMaxBuffer);
 
     pImage->pbBufferAlloc = (PBYTE)GlobalAllocPtr( GMEM_MOVEABLE, cbChk );
-
-//    pImage->pbBufferAlloc = (PBYTE)GlobalAllocPtr( GMEM_MOVEABLE | GMEM_SHARE, cbChk );
 
     if (NULL == pImage->pbBufferAlloc)
     {
@@ -296,7 +289,6 @@ DWORD ParseImage(MDSIMAGE* pImage, PBYTE pbImage, DWORD cbImage)
         lpmh = (LPMIDIHDR)(((PBYTE)lpmh) + sizeof(MIDIHDR) + pImage->fmt.cbMaxBuffer);
     }
 
-
 Parse_Cleanup:
 
     if (dwRet)
@@ -336,7 +328,6 @@ BOOL Decompress(LPMIDIHDR lpmhSrc, LPMIDIHDR lpmhDst)
         if (cbDst < 3 * sizeof(DWORD))
             return FALSE;
 
-                                            
         // Event delta-time
         //
         *lpDst++ = *lpSrc++;                
@@ -377,8 +368,6 @@ BOOL Decompress(LPMIDIHDR lpmhSrc, LPMIDIHDR lpmhDst)
             
             hmemcpy(lpDst, lpSrc, cbExtra);
         }
-
-//      assert(0 == (cbExtra % sizeof(DWORD)));
 
         lpDst += (cbExtra / sizeof(DWORD));
         lpSrc += (cbExtra / sizeof(DWORD));
@@ -448,7 +437,6 @@ DWORD PlayMDS(HANDLE hImage, DWORD fdw)
     return MDS_ERR_BADSTATE;
     }
 
-
     V_HIMAGE(hImage);
 
     pImage = (MDSIMAGE*)hImage;
@@ -489,8 +477,6 @@ DWORD PlayMDS(HANDLE hImage, DWORD fdw)
         // stop, but are not guaranteed to be in correct order. Resend 
         // directly from the allocated chunk-of-all-buffers
         //
-
-//      assert(0 == pImage->cBuffersInUse);
 
         lpmh = (LPMIDIHDR)(pImage->pbBufferAlloc);
         for (idx = pImage->cBuffers; idx; --idx)
@@ -579,7 +565,6 @@ DWORD StopMDS(HANDLE hImage)
     DWORD                       idx;
     LPMIDIHDR                   lpmh;
 
-
     if ( hImage == NULL )
     {
     return MDS_ERR_BADSTATE;
@@ -602,7 +587,6 @@ DWORD StopMDS(HANDLE hImage)
         return MDS_ERR_MIDIERROR;
     }
 
-
     // Unprepare everyone
     //
 
@@ -621,7 +605,6 @@ DWORD StopMDS(HANDLE hImage)
     return MDS_SUCCESS;
 }
 
-
 // Callback
 //
 // Keep things rolling or collect the buffers back in the queue
@@ -634,9 +617,7 @@ void WINAPI midiCallback(HMIDISTRM hms, UINT uMsg, DWORD dwUser, DWORD dw1, DWOR
     if (uMsg != MOM_DONE)
         return;
 
-//  assert(NULL != lpmh);
     pImage = (MDSIMAGE*)lpmh->dwUser;
-//  assert(FOURCC_MDSI == pImage->fccSig);
 
     pImage = (MDSIMAGE*)lpmh->dwUser;
 
@@ -647,12 +628,4 @@ void WINAPI midiCallback(HMIDISTRM hms, UINT uMsg, DWORD dwUser, DWORD dw1, DWOR
     --pImage->cBuffersInUse;
 }
 
-
-
 // MdsUtil.c
-
-
-
-
-
-

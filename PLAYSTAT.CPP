@@ -9,7 +9,6 @@
 
    Contains the following general functions:
 
-
    ======================================================================== */
 
 /* ------------------------------------------------------------------------
@@ -29,7 +28,6 @@
 #include "EXPLEVEL.HXX"
 #include "REGEN.HXX"
 #include "REGENTS.HXX"
-
 
 /* ------------------------------------------------------------------------
    Notes
@@ -131,7 +129,6 @@ void PLAYER_STATS::mfInitValues()
 	//	Name functions are:
 	//		mfGetName
 	//		mfSetName
-	// NameClass.fName = PLAYER_NAME::NOT_SET;
 	mfSetName ("");
 	TitleClass.fTitle = PLAYER_TITLE::NOT_SET;
 	DesClass.fDescription = PLAYER_DESCRIPTION::NOT_SET;
@@ -154,16 +151,7 @@ void PLAYER_STATS::mfInitValues()
 	Blindness = FALSE;
 	Paralyized = FALSE;
 	
-	//ShieldType = SHIELD_INFO::NO_SHIELD;
-	//Task[0] = 0;
-	//IdHeir = 0;
-	//Age = 0;
-	//Height = 0;
-	//Weight = 0;
-	
 	//this should definitly be done outside of this function.
-	//printf("initting invn with stats handle %li and ID %li\n",hResult,ID);
-	//Inventory.mfInit(hResult,ID);
 
 }
 
@@ -206,7 +194,6 @@ LONG PLAYER_STATS::mfReadTextData(FILE *fp)
 	LONG lTemp6;
 	char	cpBuffer[126];
 	LONG FileVersion;
-	
 	
 	if (EOF != GetNextLine(fp, cpBuffer, sizeof(cpBuffer)))
 	{
@@ -261,8 +248,6 @@ LONG PLAYER_STATS::mfReadTextData(FILE *fp)
 		goto Leave_fn;
 	}
 	// [d4-08-97, 4-23-97 JPC] AVA files now contain the name.
-	// sscanf(cpBuffer, "%ld", &lTemp);
-	// PLAYER_STATS::NameClass.fName =(PLAYER_NAME::NAME) lTemp;
 	// If you don't want a name, store it as '' or "" in the AVA file.
 	if (strcmp (cpBuffer, "''") != 0 && strcmp (cpBuffer, "\"\"") != 0)
 		mfSetName (cpBuffer);
@@ -517,7 +502,6 @@ void StatReadFromAVA(BOOL SaveAfter)
 
     printf("loading stats from AVA files.\n");
 
-
     for (i=1; i < CHARACTER_COUNT; i++)
     {
 		  // [d5-05-97 JPC] KLUDGE ALERT!
@@ -532,7 +516,6 @@ void StatReadFromAVA(BOOL SaveAfter)
 		  // regents.  You can't add new ones.  Therefore, the realms and
 		  // the IDs of the regents cannot and do not change.)
         gBloodInfo.BL_strength = -1;   // -1 means: not in AVA file
-
 
 		  playerstats[i] = LoadStats(regents[i].mfGetid(), fERROR);
         if (playerstats[i] == fERROR)
@@ -601,7 +584,6 @@ void StatReadFromAVA(BOOL SaveAfter)
 			regents[i].mfGetid(), playerstats[i], i);
         fflush(stdout);
 
-
 		// [d5-05-97 JPC] Kludge implemented, see notes above.
 		if (gBloodInfo.BL_strength >= 0)
 		{
@@ -639,11 +621,6 @@ void StatReadAllFrom(FILE *fp)
 
     fread( &count, sizeof(LONG), 1, fp);
 //    if (count != MAX_ITEM_TYPES)  /* update in itemtype */
-//    {
-//        printf("Wrong items version. Re");  //loading from AVA... :)
-//        StatReadFromAVA(TRUE);
-//        return;
-//    }
 
     fread( &count, sizeof(LONG), 1, fp);
     if (count != CHARACTER_COUNT - 1)
@@ -681,10 +658,6 @@ void StatReadAllFrom(FILE *fp)
    		run_timers();
 	}
 //DEATH
-//    for (i=1; i < CHARACTER_COUNT; i++)
-//    {
-//        SetLock(playerstats[i]);
-//    }
 
     playerStatsInitted = TRUE;
 
@@ -707,14 +680,12 @@ void StatReadAll()
     // GEH fix a bug
     // GEH TEMP TEMP
     //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	// fp = FileOpen(filename, "rb");
 
     fp = 0;
     StatReadAllFrom(fp);
     if (fp)
         FileClose(fp);
 }
-
 
 /* ========================================================================
    Function    - StatWriteAllTo
@@ -765,9 +736,6 @@ void StatWriteAll()
 	    FileClose(fp);
     }
 }
-
-
-
 
 /* ========================================================================
    Function    - LoadStats
@@ -903,18 +871,6 @@ SHORT LoadAVD (
 	
 	//GEH 9/97 We will never be using this feature and it is slowing
 	//down the game.  Bye, Bye for now
-	//pFileRead = FileOpen(szFileName,"rb");
-	//if (pFileRead != 0)
-	//{
-	//	// Version'd files a production and are binary
-	//	hPlayerStats = PLAYER_STATS::mfAllocateSpace((SHORT)fhAvatar,fERROR);
-	//	if (hPlayerStats != fERROR)
-	//	{
-	//		DumbAutoLockPtr <PLAYER_STATS> const pPlayerStats(hPlayerStats);
-	//		pPlayerStats->mfReadData(pFileRead);
-	//	}
-	//	FileClose(pFileRead);
-	//}
 	//else
 	{
 		// now we always stamp an A at the end of the file name
@@ -1069,7 +1025,6 @@ void PLAYER_STATS::mfMemorizeAllInvSpells()
 	}
 }
 
-
 /* ========================================================================
    Function    - IsAvatarDead
    Description - C callable function to determine whether or not an Avatar
@@ -1168,7 +1123,6 @@ void PLAYER_STATS::mfDelete()
 		if (pAvatar->attrib.RuntimeCreated)
 		{
 			Inventory.mfDeinit();
-			// Horked value for hThis! DisposBlock(hThis);
 			hThis = fERROR;			// Just in case.
 		}
 	}

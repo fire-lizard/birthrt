@@ -7,7 +7,6 @@
 #include	"dsound.hpp"
 #endif
 
-
 class AudioMgrDir : public AudioMgr {
 
 public:
@@ -257,6 +256,4 @@ private:
 #endif
 };
 
-
 #endif
-

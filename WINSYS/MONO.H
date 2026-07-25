@@ -6,14 +6,6 @@
 #include <windows.h>
 #include <stdio.h>
 #include <string.h>
-// #include <types.h>
-
-//#ifdef __BORLANDC__
-//#pragma option -a4
-//#endif
-//#ifdef _MSC_VER
-//#pragma pack(push,4)
-//#endif
 
 enum MonoAttrib
 {
@@ -153,13 +145,6 @@ inline void MonoDevice::Printf( int row, int col, const char *format, ... )
       PutString( row, col, strbuf );
       }
 }
-
-//#ifdef __BORLANDC__
-//#pragma option -a.
-//#endif
-//#ifdef _MSC_VER
-//#pragma pack(pop)
-//#endif
 
 #endif
 #endif

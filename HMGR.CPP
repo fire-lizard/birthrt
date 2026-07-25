@@ -29,16 +29,12 @@ BOOL HighlightMgr::Highlighted(SHORT Id) const
 	return FALSE;
 }
 	
-
 void HighlightMgr::HighlightButton(LONG MC,SHORT Dur)
 {
 	SHORT	Mi = 0;
 	SHORT	ID = 0;
 	SPLIT_LONG(MC,Mi,ID);
 	
-//	printf("h mi %li id %li dur %li\n",Mi,ID,Dur);
-	
-
 	// only do this if Mi is !0, because it may be a promoted SHORT
 	if (Mi && Mi!=MenuId) 
 		fatal_error("mismatched menuIDs in %s(%li)",__FILE__,__LINE__);
@@ -62,8 +58,6 @@ void HighlightMgr::SubdueButton(LONG MC)
 	SHORT	ID = 0;
 	SPLIT_LONG(MC,Mi,ID);
 	
-//	printf("s mi id %li %li\n",Mi,ID);
-
 	// only do this if Mi is !0, because it may be a promoted SHORT
 	if (Mi && Mi!=MenuId) 
 		fatal_error("mismatched menuIDs in %s(%li)",__FILE__,__LINE__);
@@ -96,7 +90,6 @@ void HighlightMgr::Service()
 		}
 	}
 }
-
 
 void HighlightMgr::Clear()
 {

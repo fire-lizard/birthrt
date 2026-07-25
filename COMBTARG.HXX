@@ -57,7 +57,6 @@ private:
 	
 	static void TargetStop(LONG /* but */ );
 	
-	
 	// stores prev mouse callback during targetting
 	static PFVLLL	fPrevObjMouseCallback;
 	static PFVLLL	fPrevFloorMouseCallback;
@@ -71,7 +70,6 @@ private:
 	static MODE		fMode;
 	static BOOL		fRegionsPushed;
 };
-
 
 /* ------------------------------------------------------------------------
    Prototypes

@@ -1,4 +1,3 @@
-
 /* ========================================================================
    Copyright (c) 1990,1996	Synergistic Software
    All Rights Reserved
@@ -179,7 +178,6 @@ enum {
 	SYSHELP_MOREINFO,
 };
 
-
 #define SYSHELP_LARGE_BOX	0x00000001
 #define SYSHELP_MED_BOX		0x00000002
 #define SYSHELP_SMALL_BOX	0x00000004
@@ -238,7 +236,6 @@ void PaintGameComplexity(LONG, LONG);
 void SelectMPGameType(LONG, LONG);
 void PaintMPGameComplexity(LONG, LONG);
 
-
 void PaintDescribe(LONG, LONG);
 void IncDescribe(LONG, LONG);
 
@@ -272,13 +269,10 @@ void BuildAdvListSel (LONG , LONG );
 void RunAdvOnly(void);
 void RunBattlesOnly(void);
 
-
 // multiui.cpp 
 
 void ShowMultiPlayerMenu(LONG, LONG);
 void PaintMultiPlayerMenu(LONG MenuCombo, LONG);
-
-
 
 void BtlHelp( int, int );
 void PaintBattleHelp( LONG, LONG );
@@ -296,7 +290,6 @@ void ShowAllAnimations(LONG, LONG);
 void SystemHelp( CHAR *, LONG, PFVLL, LONG );
 void SystemHelp( int, int, LONG, PFVLL, LONG );
 void SystemHelp( CHAR *, CHAR *, LONG, PFVLL, LONG );
-
 
 #if defined(__cplusplus)
 #endif

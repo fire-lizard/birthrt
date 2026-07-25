@@ -9,7 +9,6 @@
    
    Contains the following general functions:
 
-   
    ======================================================================== */
 
 /* ------------------------------------------------------------------------
@@ -69,31 +68,20 @@ float	RealmAIVersionNumber = 1.28; // updated  geh 9/12/97
 #else
 
 // Shipping version
-// float	ProductVersionNumber = 1.10;
-// float	RealmAIVersionNumber = 1.25; // updated  geh 7/09/97
 
 // First Patch
-//float	ProductVersionNumber = 1.12; // updated  geh 8/27/97
-//float	RealmAIVersionNumber = 1.27; // updated  geh 8/27/97
 
 // Second Patch and Second Production Master
-//float	ProductVersionNumber = 1.13; // updated  geh 9/05/97
-//float	RealmAIVersionNumber = 1.28; // updated  geh 9/05/97
 
 // Third Patch 
-//float	ProductVersionNumber = 1.14; // updated  geh 9/05/97
-//float	RealmAIVersionNumber = 1.28; // unchanged
 
 // Fourth Patch 
-//float	ProductVersionNumber = 1.15; // updated  geh 12/09/97
-//float	RealmAIVersionNumber = 1.29; // updated  geh 12/09/97
 
 // Fourth Patch 
 float	ProductVersionNumber = 1.16; // updated  geh 22/07/26
 float	RealmAIVersionNumber = 1.29; // unchanged
 
 #endif // _MULTIPLAY_ONLY
-
 
 /* ------------------------------------------------------------------------
    Local Variables
@@ -156,5 +144,4 @@ static void AboutPaint(LONG MenuCombo, LONG /* unused */ )
 	
 	return;
 }
-
 

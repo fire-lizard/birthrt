@@ -85,12 +85,9 @@
 #include "weapon.hxx"
 #endif
 
-
-
 /* ------------------------------------------------------------------------
    Defines and Compile Flags
    ------------------------------------------------------------------------ */
-//#define TASK_MAX_LEN			39
 #define CURRENT_PLAYER_STAT_VERSION		2
 
 #define fNO_STATFILE			-2
@@ -131,7 +128,6 @@ private:
 	ABILITY					Ability;
 	RACE_INFO::TYPE			Race;
 	// [d4-09-97, 4-23-97 JPC] Replaced by szNameStat, below:
-	// PLAYER_NAME				NameClass;
 	PLAYER_TITLE		    TitleClass;
 	PLAYER_DESCRIPTION		DesClass;
 	ALIGNMENT_INFO::TYPE	Alignment;
@@ -160,15 +156,6 @@ private:
 	unsigned int			Paralyized : 1;					// TRUE or FALSE
 	
 	// Not used in version 0 of birthrt
-	//SHIELD_INFO::TYPE		ShieldType;
-	//char					Task[TASK_MAX_LEN + 1];			// Note: The task data structure will change!!!
-	//PLAYER_BLOOD_INFO		BloodInfo;
-	//PTR_SPELL_LIST		pSpellBook;
-	//PTR_SPELL_SCHOOL_LIST	pSpellSchools;					// Schools of magic the player ascribes to.
-	//SHORT			 		IdHeir;							// Unimplemented (Player who gets the Regency points if this one dies.)
-	//LONG					Age;							// Unimplemented
-	//LONG					Height;							// Unimplemented
-	//LONG					Weight;							// Unimplemented
 
 public:
 	//Inventory
@@ -214,7 +201,6 @@ public:
 	inline char const * const mfGetName() const;
 	inline void mfSetName(CSTRPTR szName);
 // [d4-23-97 JPC] mfGetNameIndex is no longer meaningful.
-//	inline const GAME_STRING mfGetNameIndex() const;
 	inline char const * const mfGetTitle() const;
 	inline GAME_STRING const mfGetTitleIndex() const;
 	inline char const * const mfGetDescription() const;
@@ -312,8 +298,6 @@ inline BOOL isGoodStats(SHORT hAvatarStats)
 		return FALSE;
 }	
 
-
-
 inline void PLAYER_STATS::mfValidateData() const
 {
 #if defined (DEBUG)
@@ -376,7 +360,6 @@ inline WEAPON_INFO::TYPE const PLAYER_STATS::mfGetFirstWeapon() const
 {
 	mfValidateData();
 	return DefaultWeapon;
-	//return Inventory.mfGetCurrentWeapon();
 }
 
 // Get the curernt armor for this character.
@@ -384,7 +367,6 @@ inline ARMOR_INFO::TYPE const PLAYER_STATS::mfGetCurrentArmor() const
 {
 	mfValidateData();
 	return DefaultArmor;
-	//return Inventory.mfGetCurrentArmor();
 }
 
 // Get the const inventory object for this character.
@@ -511,7 +493,6 @@ inline char const * const PLAYER_STATS::mfGetName() const
 	if (szNameStat[0] == 0)
 		return GAME_TTYPE::mfGetDescription(ThingType);
 	else
-		// [d4-23-97 JPC] return (char *)(NameClass.mfGetName(NameClass.fName));
 		return szNameStat;
 }
 
@@ -523,11 +504,6 @@ inline void PLAYER_STATS::mfSetName (CSTRPTR szName)
 }
 
 // [d4-09-97, 4-23-97 JPC] Abolished this function because we no longer have this data.
-// inline GAME_STRING const PLAYER_STATS::mfGetNameIndex() const
-// {
-// 	mfValidateData();
-// 	return (GAME_STRING)(NameClass.mfGetNameIndex(NameClass.fName));
-// }
 
 inline char const * const PLAYER_STATS::mfGetTitle() const
 {
@@ -653,7 +629,6 @@ inline SHORT const PLAYER_STATS::mfGetDex() const
 		if (raising == wouldraise)
 		    dex = set;
 	}
-		
 		
 	return(SHORT)(dex);
 }
@@ -823,7 +798,6 @@ inline SBYTE const PLAYER_STATS::mfGetNumberOfAttacks() const
 	return NumberOfAttacks;
 }
 
-
 // add a charge on this spell. Be sure to test the capablity before
 // calling this fn.
 inline void PLAYER_STATS::mfMemorizeThisSpell(ITEMTYPE const NewSpell)
@@ -894,7 +868,6 @@ inline BOOL const PLAYER_STATS::mfIsMagicUser(PLAYER_CLASS_INFO::TYPE * pType,
 
 	return FALSE;
 }
-
 
 inline ALIGNMENT_INFO::TYPE	const PLAYER_STATS::mfGetAlignment() const
 {

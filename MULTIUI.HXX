@@ -16,8 +16,6 @@
    Defines and Compile Flags
    ------------------------------------------------------------------------ */
 
-
-
 /* ------------------------------------------------------------------------
    Prototypes
    ------------------------------------------------------------------------ */
@@ -27,14 +25,11 @@ enum
 	iMPFT_SEND,
 };
 
-
 enum 
 {
    iMPQ_BEGINNEW,
    iMPQ_LOADGAME,
 };
-
-
 
 enum 
 {
@@ -44,21 +39,17 @@ enum
    iTT_None,
 };
 
-
-
 void ShowMPOver(LONG, LONG);
 void ShowVoteWaitWindow(LONG, LONG);
 void ShowMultiQuestion(LONG, LONG);
 void ShowMultiQuit(LONG, LONG);
 void ShowWaitMultiType(LONG, LONG);
 
-
 void ShowSyncWaitWindow( LONG sync, LONG);
 
 void SetChatSelect( LONG, LONG Key );
 void DoneChatSelect(LONG, LONG);
 void CancelChatSelect(LONG, LONG);
-
 
 void SetMPControlMode ( void );
 
@@ -120,15 +111,8 @@ void DoneMultiPlayerHost( LONG , LONG );
 
 BOOL MultiAllRealmsSelected( void );
 
-//#if defined(__cplusplus)
-//extern "C" {
-//#endif
 void PaintChatSelect(LONG MenuCombo, LONG);
 void ShowChatSelectWindow(LONG, LONG);
-//#if defined(__cplusplus)
-//}
-//#endif
-
 
 /* ------------------------------------------------------------------------
    Internal Prototypes - don't call these directly
@@ -138,6 +122,4 @@ void ShowChatSelectWindow(LONG, LONG);
    ------------------------------------------------------------------------ */
 
 #endif // _MULTIUI_HXX
-
-
 

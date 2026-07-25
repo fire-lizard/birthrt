@@ -115,7 +115,6 @@ int giString[] = {
 #define FLOOR_MIN_HEIGHT	-1024
 #define FLOOR_MAX_HEIGHT	1024
 
-
 // Speeds:
 #define SPEED_CRUSHER		(4)
 #define SPEED_DOOR_NORMAL	(6)			// [d5-01-97 JPC] was (2)
@@ -170,7 +169,6 @@ int giString[] = {
 #define STOP_FLOOR_SOUND(i) RemoveLoopingSound (i)
 #define STOP_CEILING_SOUND(i) RemoveLoopingSound (i)
 
-
 /* ------------------------------------------------------------------------
    Macros
    ------------------------------------------------------------------------ */
@@ -219,7 +217,6 @@ static LONG DoorCreateThing (LONG x, LONG y)
 	return iDummyThing;
 }
 
-
 // ---------------------------------------------------------------------------
 static void DoorRemoveThing (LONG iDummyThing)
 {
@@ -229,7 +226,6 @@ static void DoorRemoveThing (LONG iDummyThing)
 		remove_thing (iDummyThing);
 	}
 }
-
 
 // ---------------------------------------------------------------------------
 static void DoorCloseSound (LONG iDummyThing)
@@ -242,7 +238,6 @@ static void DoorCloseSound (LONG iDummyThing)
 	else
 		AddSndObj (SND_DOOR_CLOSE1, 0, VOLUME_FULL);
 }
-
 
 /* =======================================================================
    Function    - init_doors
@@ -313,7 +308,6 @@ void init_doors(void)
 	gfInCombat = FALSE;						// [d12-07-96 JPC]
 }
 
-
 /* =======================================================================
    Function    - door_moving
    Description - whether or not the door is "in use", which sort of
@@ -331,7 +325,6 @@ static LONG door_moving(LONG iSector)
 	}
 	return(FALSE);
 }
-
 
 /* =======================================================================
    Function    - stop_door
@@ -358,7 +351,6 @@ void stop_door(LONG iSector)
 	}
 }
 
-
 // ---------------------------------------------------------------------------
 static BOOL DoorGetTagSector (LONG * pSector, LONG tag)
 {
@@ -382,7 +374,6 @@ static BOOL DoorGetTagSector (LONG * pSector, LONG tag)
 	*pSector = iSector;
 	return TRUE;
 }
-
 
 // ---------------------------------------------------------------------------
 static void HandleUpDownDoor (LONG iDoor)
@@ -463,7 +454,6 @@ static void HandleUpDownDoor (LONG iDoor)
 	}
 }
 
-
 // ---------------------------------------------------------------------------
 static void HandleSwingingDoor (LONG iDoor)
 {
@@ -528,7 +518,6 @@ static void HandleSwingingDoor (LONG iDoor)
 	}
 	else if (doors[iDoor].state == DS_CLOSING)
 	{
-		// if (abs (doors[iDoor].change) > abs (doors[iDoor].speed))
 		if (abs (doors[iDoor].change) > 0)
 		{
 			doors[iDoor].change -= doors[iDoor].speed;
@@ -563,7 +552,6 @@ static void HandleSwingingDoor (LONG iDoor)
 		}
 	}
 }
-
 
 /* =======================================================================
    Function    - handle_doors
@@ -630,7 +618,6 @@ void handle_doors(LONG arg)
 	}
 }
 
-
 // ---------------------------------------------------------------------------
 static LONG DoorWhichSide (LONG special)
 {
@@ -680,13 +667,11 @@ static LONG DoorWhichSide (LONG special)
 	}
 }
 
-
 // ---------------------------------------------------------------------------
 static BOOL DoorFindVertex (SHORT startVertex, SHORT notVertex, SHORT *foundVertex)
 {
 // [d7-24-96 JPC]
 // Find the vertex connected to "startVertex" that is NOT "notVertex."
-// Return TRUE if found and set foundVertex = found vertex;
 // FALSE if not, and set foundVertex = -1.
 // ---------------------------------------------------------------------------
 
@@ -717,7 +702,6 @@ static BOOL DoorFindVertex (SHORT startVertex, SHORT notVertex, SHORT *foundVert
 	else
 		return TRUE;
 }
-
 
 // ---------------------------------------------------------------------------
 static void DoorActivateUpDownDoor (LONG seg, LONG special, LONG iDoor, LONG iSector, BOOL fHaveKey)
@@ -770,7 +754,6 @@ static void DoorActivateUpDownDoor (LONG seg, LONG special, LONG iDoor, LONG iSe
 	}
 }
 
-
 // ---------------------------------------------------------------------------
 static BOOL DoorOpensLeft (LONG special)
 {
@@ -800,7 +783,6 @@ static BOOL DoorOpensLeft (LONG special)
 			return FALSE;
 	}
 }
-
 
 // ---------------------------------------------------------------------------
 static void DoorActivateSwingingDoor (LONG special, LONG iDoor, LONG iSector, LONG iLinedef, BOOL fClose, BOOL fHaveKey)
@@ -890,13 +872,7 @@ static void DoorActivateSwingingDoor (LONG special, LONG iDoor, LONG iSector, LO
 	}
 	// [d9-06-96 JPC] Swinging doors can't close anymore.
 	// else
-	// {
-	// 	doors[iDoor].state = DS_CLOSING;
-	// 	// goal is irrelevant at this point.
-	// 	// doors[iDoor].goal      = 0;
-	// }
 }
-
 
 // ---------------------------------------------------------------------------
 static BOOL DoorKeyOK (LONG special)
@@ -919,15 +895,12 @@ static BOOL DoorKeyOK (LONG special)
 	if (fSpellKnocking)
 		return TRUE;
 
-
 	if (DoesPlayerHaveItem (CHIME_OF_OPENING))
 	{
 		AddSndObj(SND_HIGH_CHIME_OF_OPENING1_1,NULL,VOLUME_FULL);
 		return TRUE;
 	}
 
-	
-	
 	switch (special)
 	{
 		case LSP_KEY_SILVER:
@@ -1012,7 +985,6 @@ static BOOL DoorKeyOK (LONG special)
 	return ReturnValue;
 }
 
-
 // ---------------------------------------------------------------------------
 static void DoorKeyAdvise (LONG special)
 {
@@ -1031,14 +1003,10 @@ static void DoorKeyAdvise (LONG special)
 	else
 		iItemList = special % 10;
 
-	// strcpy (szItem, gszItemList[iItemList]);
-	// sprintf (szTemp, "You need the %s to open this door", szItem);
-	// TitledMessage ("Door Locked", szTemp);
 	strcpy (szItem, STRMGR_GetStr (giString[iItemList]));
 	sprintf (szTemp, STRMGR_GetStr (STR_DOOR_LOCK_ADVISE), szItem);
 	TitledMessage (STRMGR_GetStr (STR_DOOR_LOCK_TITLE), szTemp);
 }
-
 
 // ---------------------------------------------------------------------------
 void DoorChangeSwitchTexture (LONG iLinedef)
@@ -1100,7 +1068,6 @@ void DoorChangeSwitchTexture (LONG iLinedef)
 		}
 	}
 }
-
 
 // ---------------------------------------------------------------------------
 
@@ -1205,15 +1172,12 @@ void open_door (LONG seg, LONG special)
 			if (fHaveKey)
 			{
 				doors[iDoor].iDummyThing = DoorCreateThing (x, y);
-				// doors[iDoor].iDummyThing = -1;
 				if (doors[iDoor].iDummyThing != -1)
 				{
-					// doors[iDoor].iSound = AddSndObj (SND_MOVING_FLOOR_LOOP1, 0, doors[iDoor].iDummyThing);
 					doors[iDoor].iSound = START_DOOR_SOUND (doors[iDoor].iDummyThing);
 				}
 				else
 				{
-					// doors[iDoor].iSound = AddSndObj (SND_MOVING_FLOOR_LOOP1, 0, -1);
 					doors[iDoor].iSound = START_DOOR_SOUND (VOLUME_FULL);
 				}
 			}
@@ -1254,9 +1218,7 @@ void open_door (LONG seg, LONG special)
 		case LSP_SWDOOR_R_GEM_BLUE:
 		case LSP_SWDOOR_R_GEM_GREEN:
 		case LSP_SWDOOR_R_PASSAGE:
-			// doors[iDoor].iDummyThing = DoorCreateThing (x, y);
 			doors[iDoor].iDummyThing = -1;
-			//  AddSndObj (SND_DOOR_CREAK1, SND_DOOR_CREAK_TOTAL, doors[iDoor].iDummyThing);
 			if (fHaveKey)
 			{
 				AddSndObj (SND_DOOR_CREAK1, SND_DOOR_CREAK_TOTAL, VOLUME_FULL);
@@ -1265,7 +1227,6 @@ void open_door (LONG seg, LONG special)
 			break;
 	}
 }
-
 
 // ---------------------------------------------------------------------------
 static BOOL DoorGetSectorCenter (LONG iSector, LONG * x, LONG * y)
@@ -1307,7 +1268,6 @@ static BOOL DoorGetSectorCenter (LONG iSector, LONG * x, LONG * y)
 	*y = (ymin + ymax) / 2;
 	return TRUE;
 }
-
 
 // ---------------------------------------------------------------------------
 void DoorActivate (LONG iLinedef, LONG tag, LONG special)
@@ -1398,7 +1358,6 @@ void DoorActivate (LONG iLinedef, LONG tag, LONG special)
 	}
 }
 
-
 // ===========================================================================
 //
 //	SECTOR STUFF--Lifts, floors, ceilings.
@@ -1426,7 +1385,6 @@ static LONG LiftFindUnusedRecord ()
 	}
 	return iLift;
 }
-
 
 // ---------------------------------------------------------------------------
 static LONG GetLowestFloorHeight (LONG iSector, LONG sectorRule)
@@ -1496,7 +1454,6 @@ static LONG GetLowestFloorHeight (LONG iSector, LONG sectorRule)
 	return lowestFloorHeight;
 }
 
-
 // ---------------------------------------------------------------------------
 static LONG GetHighestCeilingHeight (LONG iSector)
 {
@@ -1538,7 +1495,6 @@ static LONG GetHighestCeilingHeight (LONG iSector)
 	}
 	return highestCeilingHeight;
 }
-
 
 // ---------------------------------------------------------------------------
 static void HandleLiftType10 (LONG iLift)
@@ -1629,7 +1585,6 @@ static void HandleLiftType10 (LONG iLift)
 	ChangeThingZ (lifts[iLift].sector);
 }
 
-
 // ---------------------------------------------------------------------------
 static void HandleLiftType12 (LONG iLift)
 {
@@ -1715,7 +1670,6 @@ static void HandleLiftType12 (LONG iLift)
 	ChangeThingZ (lifts[iLift].sector);
 }
 
-
 // ---------------------------------------------------------------------------
 void HandleLifts (LONG arg)
 {
@@ -1755,7 +1709,6 @@ void HandleLifts (LONG arg)
 	}
 }
 
-
 // ---------------------------------------------------------------------------
 static BOOL LiftIsActive (LONG iSector)
 {
@@ -1772,7 +1725,6 @@ static BOOL LiftIsActive (LONG iSector)
 	}
 	return FALSE;
 }
-
 
 // ---------------------------------------------------------------------------
 void LiftActivate (LONG iLinedef, LONG tag, LONG special)
@@ -1894,7 +1846,6 @@ void LiftActivate (LONG iLinedef, LONG tag, LONG special)
 	}
 }
 
-
 // ===========================================================================
 // FLOOR CRUSHERS, PIT TRAPS, AND ELEVATORS (REVERSE PIT TRAPS).
 //
@@ -1915,7 +1866,6 @@ static LONG FloorFindUnusedRecord ()
 	}
 	return iFloor;
 }
-
 
 // ---------------------------------------------------------------------------
 static void HandlePitTrap (LONG iFloor)
@@ -1945,7 +1895,6 @@ static void HandlePitTrap (LONG iFloor)
 	ChangeThingZ (floors[iFloor].sector);
 }
 
-
 // ---------------------------------------------------------------------------
 static void HandleUnPitTrap (LONG iFloor)
 {
@@ -1973,7 +1922,6 @@ static void HandleUnPitTrap (LONG iFloor)
 	}
 	ChangeThingZ (floors[iFloor].sector);
 }
-
 
 // ---------------------------------------------------------------------------
 static void HandleFloorType56 (LONG iFloor)
@@ -2003,7 +1951,6 @@ static void HandleFloorType56 (LONG iFloor)
 	}
 	ChangeThingZ (floors[iFloor].sector);
 }
-
 
 // ---------------------------------------------------------------------------
 static void HandleFloorType57 (LONG iFloor)
@@ -2071,10 +2018,8 @@ static void HandleFloorType57 (LONG iFloor)
 			break;
 	}
 
-
 	ChangeThingZ (floors[iFloor].sector);
 }
-
 
 // ---------------------------------------------------------------------------
 void HandleFloors (LONG arg)
@@ -2116,7 +2061,6 @@ void HandleFloors (LONG arg)
 	}
 }
 
-
 // ---------------------------------------------------------------------------
 BOOL FloorIsActive (LONG iSector)
 {
@@ -2133,7 +2077,6 @@ BOOL FloorIsActive (LONG iSector)
 	}
 	return FALSE;
 }
-
 
 // ---------------------------------------------------------------------------
 void FloorActivate (LONG iLinedef, LONG tag, LONG special)
@@ -2273,7 +2216,6 @@ void FloorActivate (LONG iLinedef, LONG tag, LONG special)
 	}
 }
 
-
 // ===========================================================================
 // CEILING CRUSHERS
 //
@@ -2294,7 +2236,6 @@ static LONG CeilingFindUnusedRecord ()
 	}
 	return iCeiling;
 }
-
 
 // ---------------------------------------------------------------------------
 static void HandleCeilingType6 (LONG iCeiling)
@@ -2323,8 +2264,6 @@ static void HandleCeilingType6 (LONG iCeiling)
 		ceilings[iCeiling].fInUse = FALSE; // release the record
 	}
 }
-
-
 
 // ---------------------------------------------------------------------------
 static void HandleCeilingType7 (LONG iCeiling)
@@ -2388,8 +2327,6 @@ static void HandleCeilingType7 (LONG iCeiling)
 	}
 }
 
-
-
 // ---------------------------------------------------------------------------
 void HandleCeilings (LONG arg)
 {
@@ -2422,7 +2359,6 @@ void HandleCeilings (LONG arg)
 	}
 }
 
-
 // ---------------------------------------------------------------------------
 BOOL CeilingIsActive (LONG iSector)
 {
@@ -2439,7 +2375,6 @@ BOOL CeilingIsActive (LONG iSector)
 	}
 	return FALSE;
 }
-
 
 // ---------------------------------------------------------------------------
 void CeilingActivate (LONG iLinedef, LONG tag, LONG special)
@@ -2519,7 +2454,6 @@ void CeilingActivate (LONG iLinedef, LONG tag, LONG special)
 	}
 }
 
-
 // ---------------------------------------------------------------------------
 BOOL LinedefIsSwingingDoor(LONG Ldidx)
 {
@@ -2536,7 +2470,6 @@ BOOL LinedefIsSwingingDoor(LONG Ldidx)
 	return FALSE;
 }
 
-
 // ---------------------------------------------------------------------------
 void DoorInfo (LONG special)
 {
@@ -2552,7 +2485,6 @@ void DoorInfo (LONG special)
 		sprintf (szTemp, STRMGR_GetStr (STR_DOOR_INFO_SWITCH));
 	TitledMessage (STRMGR_GetStr (STR_DOOR_LOCK_TITLE), szTemp);
 }
-
 
 // ---------------------------------------------------------------------------
 // ---------------------------------------------------------------------------

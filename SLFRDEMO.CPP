@@ -42,7 +42,5 @@
    Prototypes
    ------------------------------------------------------------------------ */
 
-
-   	
 SRDEMO_DATA::DUMP_STATE		  SRDEMO_DATA::fDmpState=DUMPOFF;
 char   		  SRDEMO_DATA::fDmpPath[40]="PCX";

@@ -10,7 +10,6 @@
 
 #include "SWINUTIL.H"
 
-
 //--------------------------------------------------------------------------;
 //
 //  void CenterInWindow( hwnd )
@@ -54,9 +53,6 @@ void CenterInWindow( HWND hwnd, HWND hwndBasis, BOOL fRelative )
 
 } // CenterInWindow
 
-
-
-
 //--------------------------------------------------------------------------;
 //
 //  void CenterWindow( hwnd )
@@ -87,9 +83,6 @@ void CenterWindow( HWND hwnd )
 
 } // CenterWindow
 
-
-
-
 //--------------------------------------------------------------------------;
 //
 //  BOOL DoesCopyProtectionFail( ... )
@@ -112,8 +105,6 @@ BOOL DoesCopyProtectFail( PSZ pszDir, PSZ pszVolName )
 	BOOL bRetVal = FALSE;	// assume no failure
 
 	// for now allow a bypass
-//	if(fSkipCheck)
-//		return(FALSE);
 
 	if(GetDriveType(pszDir) != DRIVE_CDROM)
 		bRetVal |= TRUE;
@@ -129,9 +120,6 @@ BOOL DoesCopyProtectFail( PSZ pszDir, PSZ pszVolName )
 
 	return(bRetVal);
 } // DoesCopyProtectionFail
-
-
-
 
 //--------------------------------------------------------------------------
 //
@@ -164,7 +152,6 @@ void MakeQualifiedFilename( PSZ pszName, PSZ pszDir, PSZ pszSubDir,
 			strcat ( pszName, "\\" );
 	}
 
-
     //---- add the subdirectory 
 	if ( strlen(pszSubDir) != 0 )
 	{
@@ -173,7 +160,6 @@ void MakeQualifiedFilename( PSZ pszName, PSZ pszDir, PSZ pszSubDir,
 			strcat ( pszName, "\\" );
 	}
     
-
     //---- add the filename and extension
 	if ( strlen(pszFileName) != 0 )
 		strcat ( pszName, pszFileName );
@@ -181,9 +167,6 @@ void MakeQualifiedFilename( PSZ pszName, PSZ pszDir, PSZ pszSubDir,
 	if ( strlen(pszExt) != 0 )
 	strcat ( pszName, pszExt );
 } // MakeQualifiedFilename
-
-
-
 
 //--------------------------------------------------------------------------
 //
@@ -215,6 +198,5 @@ static CHAR szCaption[MAX_PATH] = "";
 
 	return ( MessageBox( hwnd, szText, szCaption, uType ) );
 } // SMesssageBox
-
 
 // WinUtil.c

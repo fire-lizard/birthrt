@@ -83,7 +83,6 @@ void ShowPanel(LONG Index)
 	LONG xOff = 0;
 	LONG yOff = 0;
 	
-	
 	// simple error test
 	if (!MaxMenu)
 		return;
@@ -142,7 +141,6 @@ void HidePanel(LONG Index)
 	clear_key_status(0);
 }
 
-
 /* ========================================================================
    Function    - IsPanelUp
    Description -
@@ -151,7 +149,6 @@ void HidePanel(LONG Index)
 int IsPanelUp ( LONG Index )
 {
    int i;
-
 
    // search the panels 
 
@@ -166,7 +163,6 @@ int IsPanelUp ( LONG Index )
    return 0;
 
 }
-
 
 /* ========================================================================
    Function    - AddActivePanel
@@ -251,10 +247,8 @@ static void RemoveActivePanel( LONG Index )
    ======================================================================== */
 void RunPanels(void)
 {
-//	if(fUpdatePanels)
 	if(fUpdatePanels && cntSaveBkgnd < 1)
 	{
-//		printf("Running Panels...\n");
 		fUpdatePanels = FALSE;
 		PaintPanels();
 	}
@@ -354,8 +348,6 @@ static void PaintPanels(void)
 		
 			}
 
-			
-
 			// deal with the labels
 			if (Menus[CurPanel].Buttons[i].iLabel != -1 &&
 				!(Menus[CurPanel].Buttons[i].Flags & D_LABEL_OFF))
@@ -436,7 +428,6 @@ static void PaintPanels(void)
 	}
 	
 	/* if we are rendering, we need to paint ourselves */
-	//GEH if(0)
 	if(fRender)
 	{
 		for (APanel=0;APanel < MAX_ACTIVE_MENUS;APanel++)

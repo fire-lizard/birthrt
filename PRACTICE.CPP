@@ -330,7 +330,6 @@ public:
 protected:
 private:
 	inline REALM::REALM_TYPE const mfGetRealm() const {
-		// return (REALM::REALM_TYPE)regents[fAdventurerRegentIndex].Realm; 
 		// Everyone appears to be from ROESONE.
 		return REALM::ROESONE;}
 
@@ -340,7 +339,6 @@ private:
 	SHORT	fhPlayerStats;
 };
 
-//static UBYTE Adventurers[LIST_SIZE] = {
 static DEFINE_STATIC_VECTOR_DATA(CANIDATES,Adventurers) = { 
  CANIDATES(0, 0, 0),
  CANIDATES(0, 0, 0),
@@ -441,10 +439,8 @@ static DEFINE_STATIC_VECTOR_DATA(ADVENTURE_PRACTICE_SITE,SiteList) = {
 DEFINE_STATIC_VECTOR_CLASS(ADVENTURE_PRACTICE_SITE,SiteList);
 
 // list of sites we've been to and the result
-//static UBYTE SeenSite[LIST_SIZE] = {0};
 
 static SHORT SeenAllSites = 0;
-
 
 static SHORT iTroopRealm = 0;
 static SHORT iTroopType = A_INF_UNIT_ICON;
@@ -539,7 +535,6 @@ void RunBattlesOnly(void)
 	if (GoneFighting && !PracticeMode)
 	{
 		// if we won this fight
-		// GWP  Wrong test if (SCENE_MGR::Victor == SCENE_MGR::HomeIndex)
 		if (SCENE_MGR::VictorRealm == SCENE_MGR::Aggressor)
 		{
 			WonTable[CurrentScenario] = 1;
@@ -615,7 +610,6 @@ void BuildArmyPaint (LONG MenuCombo, LONG )
 
 	// what is the current Scenario
 // STR_BB_Scenario_TEXT	^F02Scenario ^F03%hd ^F02of 50
-	// strcpy(buff, "^F02Scenario ^F03%hd ^F02of %hd");
 	sprintf(buff, "%s", STRMGR_GetStr(STR_BB_SCENARIO_TEXT));
 	sprintf(textbuf, buff, CurrentScenario, ScenarioCount);
 	gprint_text( 486, 18, textbuf, BLACK );
@@ -637,9 +631,6 @@ void BuildArmyPaint (LONG MenuCombo, LONG )
 	gprint_text( 486, 50, textbuf, BLACK );
 	
 	// first my units
-	//init_gfont(FONT_SANS_12PT);
-	//mx = 18;
-	//my = 88;
 	// check joining units
 	j = BB_MYARMY1;
 	for (i = 970; i < 985; i++)	// scan for units here
@@ -651,9 +642,6 @@ void BuildArmyPaint (LONG MenuCombo, LONG )
 		{
 			
 			FoundMyHead = TRUE;
-			//sprintf( textbuf, "%s", STRMGR_GetStr(gsUnitTitle[units[i].Icon]));
-			//gprint_text( mx, my, textbuf, YELLOW );
-			//my += 16;
 			GetButtonLabelColor(MenuId, j, &OrigColor);
 			SetButtonLabel(MenuId, j, gsUnitTitle[units[i].Icon], OrigColor);
 			j++;
@@ -661,9 +649,6 @@ void BuildArmyPaint (LONG MenuCombo, LONG )
 			while (units[i].NextUnit != -1 )
 			{
 				i = units[i].NextUnit;
-				//sprintf( textbuf, "%s", STRMGR_GetStr(gsUnitTitle[units[i].Icon]));
-				//gprint_text( mx, my, textbuf, YELLOW );
-				//my += 16;
 				GetButtonLabelColor(MenuId, j, &OrigColor);
 				SetButtonLabel(MenuId, j, gsUnitTitle[units[i].Icon], OrigColor);
 				j++;
@@ -679,8 +664,6 @@ void BuildArmyPaint (LONG MenuCombo, LONG )
 	}
 	
 	// enemy units
-	//mx = 491;
-	//my = 88;
 	// check joining units
 	j = BB_HISARMY1;
 	for (i = 985; i < 1000; i++)
@@ -691,9 +674,6 @@ void BuildArmyPaint (LONG MenuCombo, LONG )
 			)
 		{
 			FoundHisHead = TRUE;
-			//sprintf( textbuf, "%s", STRMGR_GetStr(gsUnitTitle[units[i].Icon]));
-			//gprint_text( mx, my, textbuf, YELLOW );
-			//my += 16;
 			GetButtonLabelColor(MenuId, j, &OrigColor);
 			SetButtonLabel(MenuId, j, gsUnitTitle[units[i].Icon], OrigColor);
 			j++;
@@ -701,9 +681,6 @@ void BuildArmyPaint (LONG MenuCombo, LONG )
 			while (units[i].NextUnit != -1 )
 			{
 				i = units[i].NextUnit;
-				//sprintf( textbuf, "%s", STRMGR_GetStr(gsUnitTitle[units[i].Icon]));
-				//gprint_text( mx, my, textbuf, YELLOW );
-				//my += 16;
 				GetButtonLabelColor(MenuId, j, &OrigColor);
 				SetButtonLabel(MenuId, j, gsUnitTitle[units[i].Icon], OrigColor);
 				j++;
@@ -764,7 +741,6 @@ void BuildArmyPaint (LONG MenuCombo, LONG )
 		PaintBattleScenarios();
 }
 
-
 void BuildListSel (LONG MenuCombo, LONG )
 {
 	SHORT	i;
@@ -793,18 +769,15 @@ void BuildListSel (LONG MenuCombo, LONG )
 	
 		for(i=BB_MYARMY1;i<=BB_MYARMY15;i++)
 		{
-			//SetButtonType(MenuId, i, BUTTON_REGION);
 			if (ButtonId >= BB_MYARMY1 && ButtonId <= BB_MYARMY15)
 				SetButtonHilight(MenuId, i, FALSE);
 		}
 		for(i=BB_HISARMY1;i<=BB_HISARMY15;i++)
 		{
-			//SetButtonType(MenuId, i, BUTTON_REGION);
 			if (ButtonId >= BB_HISARMY1 && ButtonId <= BB_HISARMY15)
 				SetButtonHilight(MenuId, i, FALSE);
 		}
 		
-		// SetButtonType(MenuId, ButtonId, BUTTON_COLORBEVEL);
 		SetButtonHilight(MenuId, ButtonId, TRUE);
 	}
 	fUpdatePanels = TRUE;
@@ -848,12 +821,6 @@ void BuildListAdd (LONG MenuCombo, LONG )
 	{
 		// any edits turn off the fight mode
 		FightMode = FALSE;
-		
-		// for(i=BB_MYARMY1;i<=BB_MYARMY15;i++)
-		// 	SetButtonType(MenuId, i, BUTTON_REGION);
-		// for(i=BB_HISARMY1;i<=BB_HISARMY15;i++)
-		// 	SetButtonType(MenuId, i, BUTTON_REGION);
-		
 		
 		if (iTroopId != -1)
 		{
@@ -1027,10 +994,6 @@ void BuildUnitSel (LONG ButtonId, LONG )
 	}
 	else
 	{
-		// for(i=BB_MYARMY1;i<=BB_MYARMY15;i++)
-		// 	SetButtonType(D_BUILD_ARMY, i, BUTTON_REGION);
-		// for(i=BB_HISARMY1;i<=BB_HISARMY15;i++)
-		// 	SetButtonType(D_BUILD_ARMY, i, BUTTON_REGION);
 			
 		ButtonId -= BB_A_INF_UNIT;
 		
@@ -1341,11 +1304,6 @@ void BuildArmyDone (LONG MenuCombo, LONG )
 		else
 			PracticeMode = FALSE;
 			
-		// for(i=BB_MYARMY1;i<=BB_MYARMY15;i++)
-		// 	SetButtonType(MenuId, i, BUTTON_REGION);
-		// for(i=BB_HISARMY1;i<=BB_HISARMY15;i++)
-		// 	SetButtonType(MenuId, i, BUTTON_REGION);
-		
 		for (i = 970; i < 985; i++)	// scan for head unit here
 		{ 
 			if (units[i].Joined == FALSE && units[i].Realm != REALM::NO_COUNTRY )
@@ -1445,10 +1403,8 @@ static void InitTroopDisplay (LONG type, LONG id, LONG realm)
 	else
 		typeID = UnitTypeID[iTroopType];
 		
-
 	iTroopThingType = GetThingTypeFromID(typeID);
 	
-
 	run_timers();
 }
 
@@ -1932,7 +1888,6 @@ static void PaintBattleScenarios()
 	}
 }
 
-
 /* ========================================================================
    Function    - 
    Description - 
@@ -2008,7 +1963,6 @@ static LONG AddUnit (SHORT StartIndex, LONG prov, LONG icon, LONG id, LONG realm
 	}
 	return 	j;
 }
-
 
 /* ========================================================================
    Function    - 
@@ -2527,7 +2481,6 @@ void RunAdvOnly(void)
 	else
 		LoadAdvInventories();
 	
-	
 	// activate all the sites
 	SetAllAdvSite();
 	
@@ -2582,12 +2535,7 @@ void RunAdvOnly(void)
 	ClearUnitLists();
 	
 	// // clear hilight bar
-	// for(i=BA_LIST_01;i<=BA_LIST_16;i++)
-	// 	SetButtonType(D_BUILD_ADV, i, BUTTON_REGION);
 	
-	// SetButtonType(D_BUILD_ADV, BA_LIST_01 + iSite, BUTTON_COLORBEVEL);
-	// SetButtonType(D_BUILD_ADV, BA_LIST_09, BUTTON_COLORBEVEL);
-		
 	// add check regions
 	del_region(TogglePartyCheck, 0);
 	x = START_PARTY_LIST_X + LIST_CHECK_REGION_X;
@@ -3013,10 +2961,6 @@ void BuildAdvListSel (LONG MenuCombo, LONG )
 	   Handle right clicks help
 	   ----------------------------------------------------------------- */
 	// GEH right button means show status
-	//if(mouse_button == 2)
-	//{
-	//	SystemHelp(STR_BA_HELP_LISTSEL_TITLE, STR_BA_HELP_LISTSEL_TEXT, -1, NULL, 0);
-	//}
 	//else
 	{
 		index = ButtonId - BA_LIST_01;
@@ -3024,10 +2968,6 @@ void BuildAdvListSel (LONG MenuCombo, LONG )
 		// site selection
 		if(index < 8)
 		{
-			// for(i=BA_LIST_01;i<=BA_LIST_08;i++)
-			// 	SetButtonType(MenuId, i, BUTTON_REGION);
-			
-			// SetButtonType(MenuId, ButtonId, BUTTON_COLORBEVEL);
 			
 			iSite = index;
 		}	
@@ -3035,11 +2975,7 @@ void BuildAdvListSel (LONG MenuCombo, LONG )
 		else
 		{
 			index -= 8;
-			// for(i=BA_LIST_09;i<=BA_LIST_16;i++)
-			// 	SetButtonType(MenuId, i, BUTTON_REGION);
 			
-			// SetButtonType(MenuId, ButtonId, BUTTON_COLORBEVEL);
-		
 			if (mouse_button == 1)
 			{
 				Adventurers[index].mfShowInventory();
@@ -3213,7 +3149,6 @@ Reselect:
 	fUpdatePanels = TRUE;
 }
 			
-
 void TogglePartyCheck(LONG i, LONG)
 {
 	SHORT	j;
@@ -3622,7 +3557,6 @@ void PaintGameComplexity(LONG MenuCombo, LONG)
 	}
 }
 
-
 void NewGameConfirmed(LONG,LONG lMultiFlag);
 
 void ResetToNonTutorialAdventures (void)
@@ -3655,7 +3589,6 @@ void SelectGameType(LONG MenuCombo, LONG type)
 	RunMenus();
 	update_screen();
 	TickDelay(4);
-	
 	
 #if defined(_MULTIPLAY_ONLY)
 // disable single player and adventures only
@@ -3737,8 +3670,6 @@ void SelectGameType(LONG MenuCombo, LONG type)
 		case 12:
 			//GEH 8/5/97
 			// reload virgin copies of the .ava and .inv files
-			//StatReadAll();
-			//WriteRealmStartData();
 			//GEH 8/25/97
 			
 			if (tut_or_game == 0)
@@ -3790,19 +3721,6 @@ void SelectGameType(LONG MenuCombo, LONG type)
 				desired_scale = map_scale = max_scale = DMAX_SCALE;
 				fPractice = FALSE;
 
-				//fFinalRoll = FALSE;		// done in InitDomainTurn
-				//fDoActionIcon = FALSE;
-				//sMenusUp = 0;
-				//fFadedOut = -1;
-				//fRedrawAll = TRUE;
-				//fDomainTurn = TRUE;
-				//fUpdateDataArea = TRUE;
-				//iSelectedUnit = -1;
-				//iProvInfo = 0;
-				//iUnitInfo = 0;
-				//iPlaceInfo = 0;
-				//date = 0;
-
 				fTutorialSelected = TRUE;			// new flag
 				if (type == 10)
 					date = 0;
@@ -3821,7 +3739,6 @@ void SelectGameType(LONG MenuCombo, LONG type)
 				advsite[0].name = "tutor";			// turn on site "tutor"
 				advsite[0].realm = REALM::DHOESONE;
 				advsite[0].iPlaces = 64;
-//				SetupAdvsitePlaces();
 				SetAdvSite(0);
 				advsite[0].available = SELECTABLE;
 				iOldSite = 0;
@@ -3915,8 +3832,6 @@ void SelectGameType(LONG MenuCombo, LONG type)
 		 	
 			//GEH 8/5/97
 			// reload virgin copies of the .ava and .inv files
-			//StatReadAll();
-			//WriteRealmStartData();
 			//GEH 8/25/97
 			
 			// reset game files
@@ -3963,8 +3878,6 @@ void SelectGameType(LONG MenuCombo, LONG type)
 			
 			//GEH 8/5/97
 			// reload virgin copies of the .ava and .inv files
-			//StatReadAll();
-			//WriteRealmStartData();
 			//GEH 8/25/97
 			
 			// reset game files

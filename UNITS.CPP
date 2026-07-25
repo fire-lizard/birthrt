@@ -34,9 +34,7 @@ extern BOOL fLogComment;
 
 /* ------------------------------------------------ */
 
-//#define	LOGCOMMENTSLEEP	Sleep(1);
 #define  LOGCOMMENTSLEEP	{;}
-
 
 /* ------------------------------------------------ */
 extern BOOL	fDomainTurn;
@@ -50,7 +48,6 @@ BIRTHRT_SND CalcVoxSndObj(VOX_TYPE Voice, VOX_BLOCK Block);
 
 extern void RandomLogComment ( char * szString );
 extern "C" void RandomLogPrefix ( char * szString );
-
 
 DEFINE_VECTOR_DATA_S(UNIT_TYPE,units,MAX_UNITS) = {
 /*      DUMMY UNIT               */
@@ -2292,10 +2289,8 @@ BOOL CheckUnitStack (LONG iUnit, BOOL fSend )
 			i = units[i].NextUnit;
 			if (c >= gUnitStackSize)
 			{
-				//units[ii].NextUnit = -1;	// split here
 				SetGameData(MP_UNITS, MPUNITS_NEXTUNIT, ii, -1, fSend );
 
-				//units[i].Joined = 0;			// make new leader
 				SetGameData(MP_UNITS, MPUNITS_JOINED, i, FALSE, FALSE );
 				SetGameData(MP_UNITS, MPUNITS_NOTSPOTTED, i, units[iUnit].NotSpotted, FALSE );
 				SetGameData(MP_UNITS, MPUNITS_PROVINCE, i, units[iUnit].province, FALSE );
@@ -2343,9 +2338,7 @@ LONG JoinUnits_sub (LONG iUnit, LONG iUnit2, BOOL fSend )
 	while (units[i].NextUnit > 0)
 		i = units[i].NextUnit;
 
-	//units[i].NextUnit = (SHORT) iUnit;
 	SetGameData(MP_UNITS, MPUNITS_NEXTUNIT, i, iUnit, fSend);
-	//units[iUnit].Joined = TRUE;
 	SetGameData(MP_UNITS, MPUNITS_JOINED, iUnit, TRUE, FALSE);
 	SetGameData(MP_UNITS, MPUNITS_PROVINCE, iUnit, NO_PROVINCE, FALSE );	// clear out province to neutral value
 	#ifdef _WINDOWS
@@ -2455,7 +2448,6 @@ LONG DeleteUnit (SHORT iUnit, BOOL fSend, BOOL ReOrderStack )
 		{
 			if (units[k].NextUnit == iUnit)
 			{
-				//units[k].NextUnit = units[iUnit].NextUnit;
 				SetGameData(MP_UNITS, MPUNITS_NEXTUNIT, k, units[iUnit].NextUnit, fSend );
 				break;
 			}
@@ -2478,20 +2470,6 @@ LONG DeleteUnit (SHORT iUnit, BOOL fSend, BOOL ReOrderStack )
 
 				//	moved to PaintDiplomacy, tribute became payroll 7/16/97 ABC
 				//// Were was tribute being paid to an unlanded lieutenent?
-				//if (Original_realm_ >= REALM::N_IMPORTS_EXPORTS 
-				//    && Original_realm_ <= REALM::RUARCH_ROCKHAMMER)
-				//{
-				//	// No more tribute to dead guys.
-				//	LONG rlm;
-				//	for (rlm = 0; rlm < REALM::REALM_COUNT; ++rlm)
-				//	{
-				//		// Tribute[rlm][Original_realm_] = 0;
-				//		// Tribute[Original_realm_][rlm] = 0;
-				//		
-				//		SetGameData(MP_TRIBUTE, rlm, Original_realm_, 0, fSend);
-				//		SetGameData(MP_TRIBUTE, Original_realm_, rlm, 0, fSend);
-				//	}
-				//}
 
 				// reset the regent of the realm if needed
 				
@@ -2504,13 +2482,10 @@ LONG DeleteUnit (SHORT iUnit, BOOL fSend, BOOL ReOrderStack )
 
 				if (realm[ThisRegentsRealm].mfGetRegent() == i)		// a regent
 				{
-					//realm[ThisRegentsRealm].regency = 0;				// zero regency when regent dies
 					SetGameData(MP_REALM, MPRLM_REGENCY, ThisRegentsRealm, 0, fSend );
 					
 					// Moved to outside this loop.
 					// did *your* regent just die?
-					//if (RegentDeathTest())
-					//	break;
 					
 					// HACK HACK HACK HACK HACK HACK HACK
 					//
@@ -2518,8 +2493,6 @@ LONG DeleteUnit (SHORT iUnit, BOOL fSend, BOOL ReOrderStack )
 					// For Multiplayer, before the player drops off we must transmit
 					// that the stack following the regent is gone.
 					if (ThisRegentsRealm == HomeRealm
-					//RegentDeathTest()
-					//&& realm[ThisRegentsRealm].mfIsPlayerCtrl()
 						#ifdef _WINDOWS
 					    &&(IsMultiPlayer() && fSend)
 					    #endif
@@ -2559,7 +2532,6 @@ LONG DeleteUnit (SHORT iUnit, BOOL fSend, BOOL ReOrderStack )
 							&& regents[k].mfGetRealm() == ThisRegentsRealm
 							&& regents[k].mfGetunit() > 0)	// Not dead.
 						{
-							//realm[ThisRegentsRealm].regent = k;
 							SetGameData(MP_REALM, MPRLM_REGENT, ThisRegentsRealm, k, fSend );
 							if (ThisRegentsRealm == HomeRealm)
 								ActiveRegent = k;
@@ -2572,22 +2544,11 @@ LONG DeleteUnit (SHORT iUnit, BOOL fSend, BOOL ReOrderStack )
 																	(LET_LORDM1_UNIT_ICON - regents[k].mfGeticon()));
 								SetGameData(MP_REGENT, MPREG_ICON, k, NewIcon, fSend);
 							}
-							// GWPn = REG_M_FTR_UNIT_ICON; 
-							// GWPfor (m=LET_LORDM1_UNIT_ICON; m<=LET_GLADY1_UNIT_ICON; ++m)
-							// GWP{
-							// GWP	if (regents[k].mfGeticon() == m)
-							// GWP	{
-							// GWP		//regents[k].icon = n;
-							// GWP		SetGameData(MP_REGENT, MPREG_ICON, k, n, fSend );
-							// GWP	}
-							// GWP	++n;
-							// GWP}
 							break;
 						}
 					}
 					if (k == CHARACTER_COUNT)
 					{
-						//realm[ThisRegentsRealm].regent = -1;
 
 						// can't set unsigned value to -1... set to zero
 						SetGameData(MP_REALM, MPRLM_REGENT, ThisRegentsRealm, 0, fSend );
@@ -2614,11 +2575,8 @@ LONG DeleteUnit (SHORT iUnit, BOOL fSend, BOOL ReOrderStack )
 		#endif
 	}
 
-	//cntUnits--;
-
 	return NewUnitLeader;
 }
-
 
 /* ========================================================================
    Function    - CheckLeader
@@ -2721,16 +2679,6 @@ void MoveSubUnitUpList (LONG iUnit, LONG iStartUnit)
 			iNext!=iUnit && iNext!=-1;
 				iPrev=i, i=iNext, iNext=units[i].NextUnit) ;
 
-	//if (iPrev == -1)
-	//	printf("MoveSubUnitUpList - before [--(-)->--] [%d(%d)->%d] [%d(%d)->%d]\n",
-	//		i,units[i].Joined,units[i].NextUnit,
-	//		iNext,units[iNext].Joined,units[iNext].NextUnit);
-	//else
-	//	printf("MoveSubUnitUpList - before [%d(%d)->%d] [%d(%d)->%d] [%d(%d)->%d]\n",
-	//		iPrev,units[iPrev].Joined,units[iPrev].NextUnit,
-	//		i,units[i].Joined,units[i].NextUnit,
-	//		iNext,units[iNext].Joined,units[iNext].NextUnit);
-
 	if (iNext == -1) return;
 
 	if (iPrev == -1)
@@ -2756,22 +2704,10 @@ void MoveSubUnitUpList (LONG iUnit, LONG iStartUnit)
 		iSelectedUnit = iNext;
 	}
 	else
-		//units[iPrev].NextUnit = iNext;
 		SetGameData(MP_UNITS, MPUNITS_NEXTUNIT, iPrev, iNext, TRUE );
 
 	SetGameData(MP_UNITS, MPUNITS_NEXTUNIT, i, units[iNext].NextUnit, TRUE );
 	SetGameData(MP_UNITS, MPUNITS_NEXTUNIT, iNext, i, TRUE );
-
-
-	//if (iPrev == -1)
-	//	printf("MoveSubUnitUpList - before [--(-)->--] [%d(%d)->%d] [%d(%d)->%d]\n",
-	//		iNext,units[iNext].Joined,units[iNext].NextUnit,
-	//		i,units[i].Joined,units[i].NextUnit);
-	//else
-	//	printf("MoveSubUnitUpList - after [%d(%d)->%d] [%d(%d)->%d] [%d(%d)->%d]\n",
-	//		iPrev,units[iPrev].Joined,units[iPrev].NextUnit,
-	//		iNext,units[iNext].Joined,units[iNext].NextUnit,
-	//		i,units[i].Joined,units[i].NextUnit);
 
 	fRedrawAll = TRUE;
 }
@@ -2799,7 +2735,6 @@ LONG CreateUnitNJ (PROVINCE prov, MAP_ICON icon, LONG id, REALM::REALM_TYPE real
 
 	if (j >= MAX_UNITS)
 	{
-//		fatal_error("ERROR - exceeded MAX_UNITS while creating unit in ACTNMENU\n");
 		return fERROR;
 	}
 
@@ -2884,10 +2819,8 @@ LONG CreateUnitNJ (PROVINCE prov, MAP_ICON icon, LONG id, REALM::REALM_TYPE real
 		}
 	}
 
-	//++cntUnits;
 	return j;
 }
-
 
 /* ========================================================================
    Function    - RequestUnitsIndex
@@ -2934,7 +2867,6 @@ void RequestUnitsIndex (LONG *index, BOOL fSend)
 	}
 
 }
-
 
 /* ========================================================================
    Function    - UnitFinalProvince
@@ -3049,7 +2981,6 @@ void TransportUnit(LONG iUnit, PROVINCE prov, BOOL fSend)
 		MarkUnitsSpotted(prov);
 	}
 			
-	
 	if(!JoinUnitToOthersInProvince(iUnit, prov, fSend))
 	{
 		// Couldn't join up so iUnit is its own stack.

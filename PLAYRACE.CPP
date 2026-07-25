@@ -9,13 +9,11 @@
    
    Contains the following general functions:
 
-   
    ======================================================================== */
 
 /* ------------------------------------------------------------------------
    Includes
    ------------------------------------------------------------------------ */
-//#include "gamestr.h"
 #include "PLAYRACE.HXX"
 #include "strenum.h"
 
@@ -49,5 +47,3 @@ GAME_STRING const RACE_INFO::fpRaceInfoTable[] = {
 		STR_RACE_GOBLIN,
 		STR_RACE_GNOLLS
 };
-
-

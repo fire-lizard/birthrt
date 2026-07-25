@@ -40,8 +40,6 @@
 #include "combatui.hxx"
 #endif
 
-//#include "btlstr.h"
-
 #if !defined(_BATTLE_HXX)
 #include "battle.hxx"
 #endif
@@ -159,7 +157,6 @@ BUTTON AvatarAttributes[] = {
 };
 LONG AvatarAttributesSize = sizeof(AvatarAttributes) / sizeof(BUTTON);
 
-
 BUTTON AvatarAttributes2[] = {
 { 0,BUTTON_BITMAP, D_FREEZE|D_ZOOM, 0,-1, 0,"UI\\STS_PANL.PCX",0,"",100, 20,368,436,NO_KEY,PaintAttributes,0,-1},
 
@@ -188,8 +185,6 @@ BUTTON AvatarAttributes2[] = {
 {23,BUTTON_REGION, D_TEXT_LEFT, 0,-1,                  0,"",0,"",  0,  0,  0,  0,KEY_ESCAPE,HideStatus2,0,-1},
 };
 LONG AvatarAttributes2Size = sizeof(AvatarAttributes2) / sizeof(BUTTON);
-
-
 
 BUTTON AvatarInventory[] = {
 {INV_BUT_ALL      ,BUTTON_BITMAP,D_FREEZE|D_ZOOM,0,-1,0,    "UI\\INV_PANL.PCX",0,"",100, 50,392,348,	NO_KEY,	StaticInventoryGUI::mfPaint,				0,			-1},
@@ -263,7 +258,6 @@ BUTTON SmallInfoBox[] = {
 };
 LONG InfoBoxSize = sizeof(SmallInfoBox) / sizeof(BUTTON);
 
-
 BUTTON ResurrectionScreen[] = {
 {RESURRECT_BUT_ALL	,BUTTON_BITMAP, D_FREEZE|D_ZOOM, 0,-1,0,"UI\\RESURECT.PCX",0,"",160,100,330,170,NO_KEY,ResurrectionMenu::Paint,0,-1},
 {RESURRECT_BUT_TITLE,BUTTON_REGION, 0, 0,STR_ITEM_UI_RESURRECTION,31,"",0,"",4, 4,322, 24,NO_KEY,NULL,0,-1},
@@ -276,7 +270,6 @@ BUTTON ResurrectionScreen[] = {
 {665,BUTTON_REGION, 0, 0,-1,31,"",0,"",0,0,0,0,KEY_ESCAPE,HideSubMenu,D_RESURRECT_MENU,-1},
 };
 LONG ResurrectionScreenSize = sizeof(ResurrectionScreen) / sizeof(BUTTON);
-
 
 BUTTON BtlControl[] = {
 { 0,          BUTTON_BITMAP,0,0,-1,             0,"UI\\BATLPNL1.PCX",0,"",0,316,640,164,NO_KEY,BattleControlPaint,0,-1},
@@ -306,7 +299,6 @@ BUTTON BtlControl[] = {
 {BTL_LIGHT_ID,BUTTON_REGION,0,0,-1,             0,"",0,"UI\\LIGHT.PCX",     7,  0,129,135,NO_KEY,NULL,0,-1},
 };
 LONG BtlControlSize = sizeof(BtlControl) / sizeof(BUTTON);
-
 
 // Note: The next four Button menus are nearly identical. Be sure to duplicate
 //       any changes in each of the menus.
@@ -382,7 +374,6 @@ BUTTON CombatControl4[] = {
 {BUTNO_SPELL6,		BUTTON_REGION,         0, 0,-1,0,"",0,"",289, 37, 25, 18,NO_KEY,CombatSpellKey,5,-1},
 };
 LONG CombatControlSize4 = sizeof(CombatControl4) / sizeof(BUTTON);
-
 
 BUTTON CombatFighterControl1[] = {
 { 0,				BUTTON_BITMAP, D_NO_PUSH, 0,-1,0,"UI\\COMBAT1A.PCX",0,"",  0,344,320, 60,NO_KEY,CombatMenuPaint,0,-1},
@@ -469,7 +460,6 @@ BUTTON CombatRPGBottomBar[] = {
 };
 LONG CombatRPGBottomBarSize = sizeof(CombatRPGBottomBar)/ sizeof(BUTTON);
 
-
 BUTTON CombatBlank1Bar[] = {
 { 0,BUTTON_BITMAP, D_NO_PUSH, 0, -1,0,"UI\\SCMBT_UE.PCX",0,"",320,404,320, 60,NO_KEY,0,0,-1},
 };
@@ -510,7 +500,6 @@ BUTTON ShowAnimation[] = {
 };
 LONG ShowAnimationSize = sizeof(ShowAnimation)/sizeof(BUTTON);
 
-
 BUTTON MoreInfo[] = {
 {0,BUTTON_BITMAP,D_FREEZE|D_ZOOM, 0,-1,0,"UI\\INFODLOG.PCX",0,"",145, 50,352,175,NO_KEY,PaintMoreInfo,0,-1},
 {1,BUTTON_REGION,0,               0,-1,0,"",0,"", 24, 24,305,127,NO_KEY,NULL, 0,-1},
@@ -532,7 +521,6 @@ BUTTON HelpKeys[] = {
 {3,BUTTON_REGION,0,     0,-1, 0,"",0,"",0,0,0,0,KEY_ESCAPE,DoneHelpKeys, 1,-1},
 };
 LONG HelpKeysSize = sizeof(HelpKeys) / sizeof(BUTTON);
-
 
 BUTTON BattleCard[] = {
 {0,BUTTON_BITMAP,D_FREEZE|D_ZOOM, 0,-1,0,"UI\\WARCARD.PCX",0,"",160,128,320,192,NO_KEY,PaintBattleCard,0,-1},
@@ -557,7 +545,6 @@ BUTTON ChatDisplayWindow[] =  {
 };
 LONG ChatDisplayWindowSize = sizeof(ChatDisplayWindow) / sizeof(BUTTON);
 
-
 BUTTON ChatDisplayWindow1[] =  {
 {0,BUTTON_BITMAP,D_FLOATER, 0,-1, 0,"UI\\CHATBOX2.PCX",0,"", 0,0,640,128,NO_KEY, PaintChatDisplay, 1, -1},
 };
@@ -579,7 +566,6 @@ BUTTON ChatSelect[] = {                                           //80
 };
 
 LONG ChatSelectSize = sizeof(ChatSelect) / sizeof(BUTTON);
-
 
 BUTTON MultiName[] = {
 { 0,BUTTON_BITMAP,D_FREEZE|D_ZOOM, 0, -1, 0, "UI\\MLT_PNL4.PCX", 0,"", 162, 46, 316, 232,NO_KEY,PaintMultiPlayerName,0, -1},
@@ -657,12 +643,10 @@ BUTTON MultiHost[] = {
 {10,BUTTON_REGION,D_TEXT_LEFT|D_SANS_8, 0,STR_OPT_DIF_EASY,  BTN_LABEL_COLOR,"",0,"",125,168, 74,14,NO_KEY,SetMultiPlayerHostDiff, 0,-1}, // Easy
 {11,BUTTON_REGION,D_TEXT_LEFT|D_SANS_8, 0,STR_OPT_DIF_MEDIUM,BTN_LABEL_COLOR,"",0,"",125,182, 74,14,NO_KEY,SetMultiPlayerHostDiff, 1,-1}, // Medium
 {12,BUTTON_REGION,D_TEXT_LEFT|D_SANS_8, 0,STR_OPT_DIF_HARD,  BTN_LABEL_COLOR,"",0,"",125,196, 74,14,NO_KEY,SetMultiPlayerHostDiff, 2,-1}, // Hard
-//{13,BUTTON_BITMAP,D_SANS_8, 0,STR_CANCEL,        BTN_LABEL_COLOR,"UI\\HSTBTN1A.PCX",BTN_LABEL_HILITE_COLOR,"UI\\HSTBTN1B.PCX", 28,226, 84, 28,KEY_C,CancelMultiPlayerHost, 0, -1},
 {14,BUTTON_BITMAP,D_SANS_8, 0,STR_DONE,          BTN_LABEL_COLOR,"UI\\HSTBTN2A.PCX",BTN_LABEL_HILITE_COLOR,"UI\\HSTBTN2B.PCX",70,226, 84, 28,KEY_F,DoneMultiPlayerHost, 0, -1},
 {15,BUTTON_REGION,0, 0,-1,0,"",0,"", 0,0,0,0,KEY_ESCAPE,CancelMultiPlayerHost, 0, -1},
 };
 LONG MultiHostSize = sizeof(MultiHost) / sizeof(BUTTON);
-
 
 BUTTON LoyaltyMenu[] = {
 {0,BUTTON_BITMAP,D_FREEZE, 0, -1, 0, "UI\\REPORT2.PCX", 0,"", 102, 6, 436, 468,NO_KEY,PaintLoyaltyTable,0, -1},
@@ -841,8 +825,6 @@ BUTTON GameCmplxMenu[] = {
 };
 LONG GameCmplxMenuSize = sizeof(GameCmplxMenu) / sizeof(BUTTON);
 
-
-
 BUTTON MultiWait[] = {
 {0,BUTTON_BITMAP,D_FREEZE|D_ZOOM, 0, -1, 0, "UI\\CHATPNL2.PCX",0,"", 83, 80, 472, 320,NO_KEY, 0, 0, -1},
 {1,BUTTON_REGION,0, 77,-1,                0, "",0,"", 30, 100,440,15,NO_KEY,0, 0,-1},
@@ -852,7 +834,6 @@ BUTTON MultiWait[] = {
 {5,BUTTON_REGION,0, 77,-1,                0, "",0,"", 30, 164,440,15,NO_KEY,0, 4,-1},
 {6,BUTTON_REGION,0, 77,-1,                0, "",0,"", 30, 180,440,15,NO_KEY,0, 5,-1},
 {7,BUTTON_REGION,0, 77,-1,                0, "",0,"", 30, 196,440,15,NO_KEY,0, 6,-1},
-//{8,BUTTON_BITMAP,0, 0,STR_CANCEL1, BTN_LABEL_COLOR,"UI\\CHTBTN2A.PCX",31,"UI\\CHTBTN2B.PCX", 196, 220, 84, 28,KEY_ESCAPE,HideSubMenuWithClick, D_MULTIWAIT, -1},
 };
 LONG MultiWaitSize = sizeof(MultiWait) / sizeof(BUTTON);
 
@@ -952,7 +933,6 @@ BUTTON AvatarAttributes[] = {
 };
 LONG AvatarAttributesSize = sizeof(AvatarAttributes) / sizeof(BUTTON);
 
-
 BUTTON AvatarAttributes2[] = {
 { 0,BUTTON_BITMAP, D_FREEZE|D_ZOOM, 0,-1, 0,"UI\\STS_PANL.PCX",0,"",100, 20,368,436,NO_KEY,PaintAttributes,0,-1},
 
@@ -981,8 +961,6 @@ BUTTON AvatarAttributes2[] = {
 {23,BUTTON_REGION, D_TEXT_LEFT, 0,-1,                  0,"",0,"",  0,  0,  0,  0,KEY_ESCAPE,HideStatus2,0,-1},
 };
 LONG AvatarAttributes2Size = sizeof(AvatarAttributes2) / sizeof(BUTTON);
-
-
 
 BUTTON AvatarInventory[] = {
 {INV_BUT_ALL      ,BUTTON_BITMAP,D_FREEZE|D_ZOOM,0,-1,0,    "UI\\INV_PANL.PCX",0,"",100, 50,392,348,	NO_KEY,	StaticInventoryGUI::mfPaint,				0,			-1},
@@ -1056,7 +1034,6 @@ BUTTON SmallInfoBox[] = {
 };
 LONG InfoBoxSize = sizeof(SmallInfoBox) / sizeof(BUTTON);
 
-
 BUTTON ResurrectionScreen[] = {
 {RESURRECT_BUT_ALL	,BUTTON_BITMAP, D_FREEZE|D_ZOOM, 0,-1,0,"UI\\RESURECT.PCX",0,"",160,100,330,170,NO_KEY,ResurrectionMenu::Paint,0,-1},
 {RESURRECT_BUT_TITLE,BUTTON_REGION, 0, 0,STR_ITEM_UI_RESURRECTION,31,"",0,"",4, 4,322, 24,NO_KEY,NULL,0,-1},
@@ -1069,7 +1046,6 @@ BUTTON ResurrectionScreen[] = {
 {665,BUTTON_REGION, 0, 0,-1,31,"",0,"",0,0,0,0,KEY_ESCAPE,HideSubMenu,D_RESURRECT_MENU,-1},
 };
 LONG ResurrectionScreenSize = sizeof(ResurrectionScreen) / sizeof(BUTTON);
-
 
 BUTTON BtlControl[] = {
 { 0,          BUTTON_BITMAP,0,0,-1,             0,"UI\\BATLPNL1.PCX",0,"",0,316,640,164,NO_KEY,BattleControlPaint,0,-1},
@@ -1100,7 +1076,6 @@ BUTTON BtlControl[] = {
 
 };
 LONG BtlControlSize = sizeof(BtlControl) / sizeof(BUTTON);
-
 
 // Note: The next four Button menus are nearly identical. Be sure to duplicate
 //       any changes in each of the menus.
@@ -1176,7 +1151,6 @@ BUTTON CombatControl4[] = {
 {BUTNO_SPELL6,		BUTTON_REGION,         0, 0,-1,0,"",0,"",289, 37, 25, 18,NO_KEY,CombatSpellKey,5,-1},
 };
 LONG CombatControlSize4 = sizeof(CombatControl4) / sizeof(BUTTON);
-
 
 BUTTON CombatFighterControl1[] = {
 { 0,				BUTTON_BITMAP, D_NO_PUSH, 0,-1,0,"UI\\COMBAT1A.PCX",0,"",  0,344,320, 60,NO_KEY,CombatMenuPaint,0,-1},
@@ -1263,7 +1237,6 @@ BUTTON CombatRPGBottomBar[] = {
 };
 LONG CombatRPGBottomBarSize = sizeof(CombatRPGBottomBar)/ sizeof(BUTTON);
 
-
 BUTTON CombatBlank1Bar[] = {
 { 0,BUTTON_BITMAP, D_NO_PUSH, 0, -1,0,"UI\\SCMBT_UE.PCX",0,"",320,404,320, 60,NO_KEY,0,0,-1},
 };
@@ -1304,7 +1277,6 @@ BUTTON ShowAnimation[] = {
 };
 LONG ShowAnimationSize = sizeof(ShowAnimation)/sizeof(BUTTON);
 
-
 BUTTON MoreInfo[] = {
 {0,BUTTON_BITMAP,D_FREEZE|D_ZOOM, 0,-1,0,"UI\\INFODLOG.PCX",0,"",145, 50,352,175,NO_KEY,PaintMoreInfo,0,-1},
 {1,BUTTON_REGION,0,               0,-1,0,"",0,"", 24, 24,305,127,NO_KEY,NULL, 0,-1},
@@ -1326,7 +1298,6 @@ BUTTON HelpKeys[] = {
 {3,BUTTON_REGION,0,     0,-1, 0,"",0,"",0,0,0,0,KEY_ESCAPE,DoneHelpKeys, 1,-1},
 };
 LONG HelpKeysSize = sizeof(HelpKeys) / sizeof(BUTTON);
-
 
 BUTTON BattleCard[] = {
 {0,BUTTON_BITMAP,D_FREEZE|D_ZOOM, 0,-1,0,"UI\\WARCARD.PCX",0,"",160,128,320,192,NO_KEY,PaintBattleCard,0,-1},
@@ -1351,7 +1322,6 @@ BUTTON ChatDisplayWindow[] =  {
 };
 LONG ChatDisplayWindowSize = sizeof(ChatDisplayWindow) / sizeof(BUTTON);
 
-
 BUTTON ChatDisplayWindow1[] =  {
 {0,BUTTON_BITMAP,D_FLOATER, 0,-1, 0,"UI\\CHATBOX2.PCX",0,"", 0,0,640,128,NO_KEY, PaintChatDisplay, 1, -1},
 };
@@ -1373,7 +1343,6 @@ BUTTON ChatSelect[] = {                                           //80
 };
 
 LONG ChatSelectSize = sizeof(ChatSelect) / sizeof(BUTTON);
-
 
 BUTTON MultiName[] = {
 { 0,BUTTON_BITMAP,D_FREEZE|D_ZOOM, 0, -1, 0, "UI\\MLT_PNL4.PCX", 0,"", 162, 46, 316, 232,NO_KEY,PaintMultiPlayerName,0, -1},
@@ -1451,12 +1420,10 @@ BUTTON MultiHost[] = {
 {10,BUTTON_REGION,D_TEXT_LEFT|D_SANS_8, 0,STR_OPT_DIF_EASY,  BTN_LABEL_COLOR,"",0,"",125,168, 74,14,NO_KEY,SetMultiPlayerHostDiff, 0,-1}, // Easy
 {11,BUTTON_REGION,D_TEXT_LEFT|D_SANS_8, 0,STR_OPT_DIF_MEDIUM,BTN_LABEL_COLOR,"",0,"",125,182, 74,14,NO_KEY,SetMultiPlayerHostDiff, 1,-1}, // Medium
 {12,BUTTON_REGION,D_TEXT_LEFT|D_SANS_8, 0,STR_OPT_DIF_HARD,  BTN_LABEL_COLOR,"",0,"",125,196, 74,14,NO_KEY,SetMultiPlayerHostDiff, 2,-1}, // Hard
-//{13,BUTTON_BITMAP,D_SANS_8, 0,STR_CANCEL,        BTN_LABEL_COLOR,"UI\\HSTBTN1A.PCX",BTN_LABEL_HILITE_COLOR,"UI\\HSTBTN1B.PCX", 28,226, 84, 28,KEY_A,CancelMultiPlayerHost, 0, -1},
 {14,BUTTON_BITMAP,D_SANS_8, 0,STR_DONE,          BTN_LABEL_COLOR,"UI\\HSTBTN2A.PCX",BTN_LABEL_HILITE_COLOR,"UI\\HSTBTN2B.PCX",70,226, 84, 28,KEY_O,DoneMultiPlayerHost, 0, -1},
 {15,BUTTON_REGION,0, 0,-1,0,"",0,"", 0,0,0,0,KEY_ESCAPE,CancelMultiPlayerHost, 0, -1},
 };
 LONG MultiHostSize = sizeof(MultiHost) / sizeof(BUTTON);
-
 
 BUTTON LoyaltyMenu[] = {
 {0,BUTTON_BITMAP,D_FREEZE, 0, -1, 0, "UI\\REPORT2.PCX", 0,"", 102, 6, 436, 468,NO_KEY,PaintLoyaltyTable,0, -1},
@@ -1635,8 +1602,6 @@ BUTTON GameCmplxMenu[] = {
 };
 LONG GameCmplxMenuSize = sizeof(GameCmplxMenu) / sizeof(BUTTON);
 
-
-
 BUTTON MultiWait[] = {
 {0,BUTTON_BITMAP,D_FREEZE|D_ZOOM, 0, -1, 0, "UI\\CHATPNL2.PCX",0,"", 83, 80, 472, 320,NO_KEY, 0, 0, -1},
 {1,BUTTON_REGION,0, 77,-1,                0, "",0,"", 30, 100,440,15,NO_KEY,0, 0,-1},
@@ -1646,7 +1611,6 @@ BUTTON MultiWait[] = {
 {5,BUTTON_REGION,0, 77,-1,                0, "",0,"", 30, 164,440,15,NO_KEY,0, 4,-1},
 {6,BUTTON_REGION,0, 77,-1,                0, "",0,"", 30, 180,440,15,NO_KEY,0, 5,-1},
 {7,BUTTON_REGION,0, 77,-1,                0, "",0,"", 30, 196,440,15,NO_KEY,0, 6,-1},
-//{8,BUTTON_BITMAP,0, 0,STR_CANCEL1, BTN_LABEL_COLOR,"UI\\CHTBTN2A.PCX",31,"UI\\CHTBTN2B.PCX", 196, 220, 84, 28,KEY_ESCAPE,HideSubMenuWithClick, D_MULTIWAIT, -1},
 };
 LONG MultiWaitSize = sizeof(MultiWait) / sizeof(BUTTON);
 
@@ -1745,7 +1709,6 @@ BUTTON AvatarAttributes[] = {
 };
 LONG AvatarAttributesSize = sizeof(AvatarAttributes) / sizeof(BUTTON);
 
-
 BUTTON AvatarAttributes2[] = {
 { 0,BUTTON_BITMAP, D_FREEZE|D_ZOOM, 0,-1, 0,"UI\\STS_PANL.PCX",0,"",100, 20,368,436,NO_KEY,PaintAttributes,0,-1},
 
@@ -1774,8 +1737,6 @@ BUTTON AvatarAttributes2[] = {
 {23,BUTTON_REGION, D_TEXT_LEFT, 0,-1,                  0,"",0,"",  0,  0,  0,  0,KEY_ESCAPE,HideStatus2,0,-1},
 };
 LONG AvatarAttributes2Size = sizeof(AvatarAttributes2) / sizeof(BUTTON);
-
-
 
 BUTTON AvatarInventory[] = {
 {INV_BUT_ALL      ,BUTTON_BITMAP,D_FREEZE|D_ZOOM,0,-1,0,    "UI\\INV_PANL.PCX",0,"",100, 50,392,348,	NO_KEY,	StaticInventoryGUI::mfPaint,				0,			-1},
@@ -1849,7 +1810,6 @@ BUTTON SmallInfoBox[] = {
 };
 LONG InfoBoxSize = sizeof(SmallInfoBox) / sizeof(BUTTON);
 
-
 BUTTON ResurrectionScreen[] = {
 {RESURRECT_BUT_ALL	,BUTTON_BITMAP, D_FREEZE|D_ZOOM, 0,-1,0,"UI\\RESURECT.PCX",0,"",160,100,330,170,NO_KEY,ResurrectionMenu::Paint,0,-1},
 {RESURRECT_BUT_TITLE,BUTTON_REGION, 0, 0,STR_ITEM_UI_RESURRECTION,31,"",0,"",4, 4,322, 24,NO_KEY,NULL,0,-1},
@@ -1862,7 +1822,6 @@ BUTTON ResurrectionScreen[] = {
 {665,BUTTON_REGION, 0, 0,-1,31,"",0,"",0,0,0,0,KEY_ESCAPE,HideSubMenu,D_RESURRECT_MENU,-1},
 };
 LONG ResurrectionScreenSize = sizeof(ResurrectionScreen) / sizeof(BUTTON);
-
 
 BUTTON BtlControl[] = {
 { 0,          BUTTON_BITMAP,0,0,-1,             0,"UI\\BATLPNL1.PCX",0,"",0,316,640,164,NO_KEY,BattleControlPaint,0,-1},
@@ -1891,13 +1850,8 @@ BUTTON BtlControl[] = {
 {BTL_FALLBACK_ID,BUTTON_REGION,0,0,BTLUI_FALLBACK,BTN_LABEL_COLOR,"",BTN_LABEL_HILITE_COLOR,"UI\\BTLCANCE.PCX", 70,107, 70, 21,NO_KEY,BattleFallBack,0,-1},
 {BTL_LIGHT_ID,BUTTON_REGION,0,0,-1,             0,"",0,"UI\\LIGHT.PCX",     7,  0,129,135,NO_KEY,NULL,0,-1},
 
-//{BTL_SHOOT_ID,BUTTON_REGION,0,0,BTLUI_MISSILE,BTN_LABEL_COLOR,"",BTN_LABEL_HILITE_COLOR,"UI\\BTLBTN5B.PCX",292,136, 64, 28,KEY_M,BattleSelMissile,0,-1},
-//{BTL_MAGIC_ID,BUTTON_REGION,0,0,BTLUI_MAGIC,  BTN_LABEL_COLOR,"",BTN_LABEL_HILITE_COLOR,"UI\\BTLBTN6B.PCX",356,136, 64, 28,KEY_G,BattleSelMagic,0,-1},
-//{BTL_CHAT_ID, BUTTON_REGION,0,0,BTLUI_CHAT,   BTN_LABEL_COLOR,"",BTN_LABEL_HILITE_COLOR,"UI\\BTLBTN3B.PCX",152,136, 64, 28,KEY_C,BattleChatMode,0,-1},
-//{BTL_FOLW_ID, BUTTON_REGION,0,0,BTLUI_FOLLOW, BTN_LABEL_COLOR,"",BTN_LABEL_HILITE_COLOR,"UI\\BTLBTN8B.PCX",544,136, 92, 28,KEY_F,BattleCameraFollow,0,-1},
 };
 LONG BtlControlSize = sizeof(BtlControl) / sizeof(BUTTON);
-
 
 // Note: The next four Button menus are nearly identical. Be sure to duplicate
 //       any changes in each of the menus.
@@ -1973,7 +1927,6 @@ BUTTON CombatControl4[] = {
 {BUTNO_SPELL6,		BUTTON_REGION,         0, 0,-1,0,"",0,"",289, 37, 25, 18,NO_KEY,CombatSpellKey,5,-1},
 };
 LONG CombatControlSize4 = sizeof(CombatControl4) / sizeof(BUTTON);
-
 
 BUTTON CombatFighterControl1[] = {
 { 0,				BUTTON_BITMAP, D_NO_PUSH, 0,-1,0,"UI\\COMBAT1A.PCX",0,"",  0,344,320, 60,NO_KEY,CombatMenuPaint,0,-1},
@@ -2060,7 +2013,6 @@ BUTTON CombatRPGBottomBar[] = {
 };
 LONG CombatRPGBottomBarSize = sizeof(CombatRPGBottomBar)/ sizeof(BUTTON);
 
-
 BUTTON CombatBlank1Bar[] = {
 { 0,BUTTON_BITMAP, D_NO_PUSH, 0, -1,0,"UI\\SCMBT_UE.PCX",0,"",320,404,320, 60,NO_KEY,0,0,-1},
 };
@@ -2101,7 +2053,6 @@ BUTTON ShowAnimation[] = {
 };
 LONG ShowAnimationSize = sizeof(ShowAnimation)/sizeof(BUTTON);
 
-
 BUTTON MoreInfo[] = {
 {0,BUTTON_BITMAP,D_FREEZE|D_ZOOM, 0,-1,0,"UI\\INFODLOG.PCX",0,"",145, 50,352,175,NO_KEY,PaintMoreInfo,0,-1},
 {1,BUTTON_REGION,0,               0,-1,0,"",0,"", 24, 24,305,127,NO_KEY,NULL, 0,-1},
@@ -2123,7 +2074,6 @@ BUTTON HelpKeys[] = {
 {3,BUTTON_REGION,0,     0,-1, 0,"",0,"",0,0,0,0,KEY_ESCAPE,DoneHelpKeys, 1,-1},
 };
 LONG HelpKeysSize = sizeof(HelpKeys) / sizeof(BUTTON);
-
 
 BUTTON BattleCard[] = {
 {0,BUTTON_BITMAP,D_FREEZE|D_ZOOM, 0,-1,0,"UI\\WARCARD.PCX",0,"",160,128,320,192,NO_KEY,PaintBattleCard,0,-1},
@@ -2148,7 +2098,6 @@ BUTTON ChatDisplayWindow[] =  {
 };
 LONG ChatDisplayWindowSize = sizeof(ChatDisplayWindow) / sizeof(BUTTON);
 
-
 BUTTON ChatDisplayWindow1[] =  {
 {0,BUTTON_BITMAP,D_FLOATER, 0,-1, 0,"UI\\CHATBOX2.PCX",0,"", 0,0,640,128,NO_KEY, PaintChatDisplay, 1, -1},
 };
@@ -2170,7 +2119,6 @@ BUTTON ChatSelect[] = {                                           //80
 };
 
 LONG ChatSelectSize = sizeof(ChatSelect) / sizeof(BUTTON);
-
 
 BUTTON MultiName[] = {
 { 0,BUTTON_BITMAP,D_FREEZE|D_ZOOM, 0, -1, 0, "UI\\MLT_PNL4.PCX", 0,"", 162, 46, 316, 232,NO_KEY,PaintMultiPlayerName,0, -1},
@@ -2248,12 +2196,10 @@ BUTTON MultiHost[] = {
 {10,BUTTON_REGION,D_TEXT_LEFT|D_SANS_8, 0,STR_OPT_DIF_EASY,  BTN_LABEL_COLOR,"",0,"",125,168, 74,14,NO_KEY,SetMultiPlayerHostDiff, 0,-1}, // Easy
 {11,BUTTON_REGION,D_TEXT_LEFT|D_SANS_8, 0,STR_OPT_DIF_MEDIUM,BTN_LABEL_COLOR,"",0,"",125,182, 74,14,NO_KEY,SetMultiPlayerHostDiff, 1,-1}, // Medium
 {12,BUTTON_REGION,D_TEXT_LEFT|D_SANS_8, 0,STR_OPT_DIF_HARD,  BTN_LABEL_COLOR,"",0,"",125,196, 74,14,NO_KEY,SetMultiPlayerHostDiff, 2,-1}, // Hard
-//{13,BUTTON_BITMAP,D_SANS_8, 0,STR_CANCEL,        BTN_LABEL_COLOR,"UI\\HSTBTN1A.PCX",BTN_LABEL_HILITE_COLOR,"UI\\HSTBTN1B.PCX", 28,226, 84, 28,KEY_C,CancelMultiPlayerHost, 0, -1},
 {14,BUTTON_BITMAP,D_SANS_8, 0,STR_DONE,          BTN_LABEL_COLOR,"UI\\HSTBTN2A.PCX",BTN_LABEL_HILITE_COLOR,"UI\\HSTBTN2B.PCX",70,226, 84, 28,KEY_D,DoneMultiPlayerHost, 0, -1},
 {15,BUTTON_REGION,0, 0,-1,0,"",0,"", 0,0,0,0,KEY_ESCAPE,CancelMultiPlayerHost, 0, -1},
 };
 LONG MultiHostSize = sizeof(MultiHost) / sizeof(BUTTON);
-
 
 BUTTON LoyaltyMenu[] = {
 {0,BUTTON_BITMAP,D_FREEZE, 0, -1, 0, "UI\\REPORT2.PCX", 0,"", 102, 6, 436, 468,NO_KEY,PaintLoyaltyTable,0, -1},
@@ -2432,8 +2378,6 @@ BUTTON GameCmplxMenu[] = {
 };
 LONG GameCmplxMenuSize = sizeof(GameCmplxMenu) / sizeof(BUTTON);
 
-
-
 BUTTON MultiWait[] = {
 {0,BUTTON_BITMAP,D_FREEZE|D_ZOOM, 0, -1, 0, "UI\\CHATPNL2.PCX",0,"", 83, 80, 472, 320,NO_KEY, 0, 0, -1},
 {1,BUTTON_REGION,0, 77,-1,                0, "",0,"", 30, 100,440,15,NO_KEY,0, 0,-1},
@@ -2443,7 +2387,6 @@ BUTTON MultiWait[] = {
 {5,BUTTON_REGION,0, 77,-1,                0, "",0,"", 30, 164,440,15,NO_KEY,0, 4,-1},
 {6,BUTTON_REGION,0, 77,-1,                0, "",0,"", 30, 180,440,15,NO_KEY,0, 5,-1},
 {7,BUTTON_REGION,0, 77,-1,                0, "",0,"", 30, 196,440,15,NO_KEY,0, 6,-1},
-//{8,BUTTON_BITMAP,0, 0,STR_CANCEL1, BTN_LABEL_COLOR,"UI\\CHTBTN2A.PCX",31,"UI\\CHTBTN2B.PCX", 196, 220, 84, 28,KEY_ESCAPE,HideSubMenuWithClick, D_MULTIWAIT, -1},
 };
 LONG MultiWaitSize = sizeof(MultiWait) / sizeof(BUTTON);
 

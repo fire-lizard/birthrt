@@ -58,8 +58,6 @@
 // Data types
 typedef short           LOGICAL;
 typedef LOGICAL         SN_FLAG;
-// typedef char*           PSTR;
-// typedef const char*     PCSTR;
 typedef long            CUSTID;
 typedef CUSTID          PLAYERID;
 typedef CUSTID          USERID;
@@ -79,7 +77,6 @@ const short CITY_LEN                    = 50;
 const short COUNTRY_LEN                 = 30;
 const short STATE_LEN                   = 4;
 const short USER_NAME_LEN               = 25;
-
 
 // Logical values
 #ifndef sun

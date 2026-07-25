@@ -137,8 +137,6 @@ void RotateCameraAroundPoint(CAMERA * pCamera, LONG KeyState);
 void SetCameraRotatePointTarget( CAMERA *pCamera, const LONG , const LONG , const LONG, const LONG , const LONG , const BOOL );
 void SetCameraRotatePointRates( CAMERA *pCamera, const LONG , const LONG , const LONG , const LONG, const LONG, const LONG );
 
-
-
 #if defined (__cplusplus)
 }
 #endif

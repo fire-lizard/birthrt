@@ -82,20 +82,11 @@ inline void FOLLOW_PLAYER_DATA::mfDelete()
 // write member data to scene file
 inline void FOLLOW_PLAYER_DATA::mfWriteData(FILE *) const
 {
-	//fprintf(fp, "%ld %ld\n", DistX, DistY);
 }
 
 // read member data from scene file
 inline LONG FOLLOW_PLAYER_DATA::mfReadData(FILE *)
 {
-	//char cpBuffer[80];
-	//LONG Result = GetNextLine(fp, cpBuffer, sizeof(cpBuffer));
-	//
-	//if (Result != EOF)
-	//{
-	//	Result = ( (2 == sscanf(cpBuffer, "%ld %ld", &DistX, &DistY) ) ? Result : EOF);
-	//}
-	//return Result;
 	return 1;
 }
 
@@ -114,7 +105,6 @@ inline void FOLLOW_PLAYER_DATA::mfJoinAdventureTeam()
 	fAdventurer.mfJoinAdventureTeam(fhAvatar);
 	fFollowState = THE_ADVENTURE_TEAM;
 }
-
 
 inline void FOLLOW_PLAYER_DATA::mfFollowAdventureTeam()
 {

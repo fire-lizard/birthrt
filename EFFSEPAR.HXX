@@ -8,10 +8,8 @@
 #include "system.h"
 #endif
 
-
 //max of the same item running concurrently in the world
 #define MAX_DIFFERENT_EFFECTS 10
-
 
 template <class ValType>
 class EffectDiffer
@@ -41,8 +39,6 @@ class EffectSeparator
 		
 };
 
-
-
 template <class ValType>
 EffectDiffer<ValType>::EffectDiffer(SHORT hAS,ValType v)
 :hAvatarStats(hAS), Val(v)
@@ -55,14 +51,12 @@ EffectDiffer<ValType>::EffectDiffer()
 {
 }
 
-
 template <class ValType>
 inline EffectSeparator<ValType>::EffectSeparator()
 {
 	for (LONG i=0;i<MAX_DIFFERENT_EFFECTS;i++)
 		Effects[i].hAvatarStats=fERROR;
 }
-
 
 template <class ValType>
 const ValType* EffectSeparator<ValType>::mfGetVal(SHORT hAvStats)
@@ -101,7 +95,6 @@ BOOL EffectSeparator<ValType>::mfAddEffect(SHORT hAS,ValType v)
 
 			Effects[i].hAvatarStats=hAS;
 			Effects[i].Val=v;
-//			printf("added value at %li\n",i);
 			return TRUE;
 		}
 	return FALSE;
@@ -114,7 +107,6 @@ BOOL EffectSeparator<ValType>::mfRemoveEffect(SHORT hAS)
 		if (Effects[i].hAvatarStats==hAS)
 		{
 			Effects[i].hAvatarStats=fERROR;
-//			printf("removed value from %li\n",i);
 			return TRUE;
 		}
 	return FALSE;
@@ -133,4 +125,3 @@ BOOL EffectSeparator<ValType>::mfChangeEffectValue(SHORT hAS,ValType NewVal)
 	else
 		return FALSE;
 }
-	

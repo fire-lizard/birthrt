@@ -119,7 +119,6 @@ public:
 		COMBAT_CAMERA_RIGHTFRIEND,
 		COMBAT_CAMERA_LEFTFRIEND,
 		
-		
 		// Add new keys above here.
 		MAX_KEYS
 	} KEY;

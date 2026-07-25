@@ -9,7 +9,6 @@
 #if !defined (_UNITS_HXX)
 #define _UNITS_HXX 1
 
-
 #if !defined(_TYPEDEFS_H)
 #include "typedefs.h"
 #endif
@@ -74,7 +73,6 @@ typedef struct {
 } UNIT_TYPE, *UNIT_PTR;
 #pragma pack(pop)
 
-
 extern DECL_VECTOR_CLASS(UNIT_TYPE, units);
 
 /* -----------------------------------------------------------------
@@ -94,7 +92,6 @@ LONG CreateUnit (PROVINCE prov, MAP_ICON icon, LONG id, REALM::REALM_TYPE realm,
 LONG CreateUnitNJ (PROVINCE prov, MAP_ICON icon, LONG id, REALM::REALM_TYPE realm, BOOL fSend, BOOL fJoin );
 void RequestUnitsIndex(LONG *index, BOOL fSend);
 PROVINCE UnitFinalProvince (LONG i);
-//void TeleportUnits(void);
 void TransportUnit(LONG iUnit, PROVINCE prov, BOOL fSend);
 LONG MakeUnitSingleStack(LONG iUnit, BOOL fSend);
 BOOL JoinUnitToOthersInProvince(LONG iUnit, PROVINCE prov, BOOL fSend);

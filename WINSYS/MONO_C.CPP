@@ -8,11 +8,9 @@
 
 #include "mono_c.h"
 
-
 static MonoDevice MDA;
 
 //---------------------------------------------------------------------------
-
 
 int mono_getExist( void )
 {
@@ -32,8 +30,6 @@ void mono_setEnable( int flag )    // flag = TRUE  - use mono device
       MDA.Disable();
 }
 
-
-
 //---------------------------------------------------------------------------
 //---------------------------------------------------------------------------
 
@@ -42,12 +38,10 @@ void mono_cls(void)
    MDA.ClearScreen( ' ' );
 }
 
-
 extern "C" void mono_c_cls(void)
 {
    MDA.ClearScreen( ' ' );
 }
-
 
 //---------------------------------------------------------------------------
 
@@ -55,7 +49,6 @@ void mono_putc( short x, short y, char c)
 {
    MDA.PutChar( y, x, c );
 }
-
 
 //---------------------------------------------------------------------------
 
@@ -80,8 +73,6 @@ void mono_printf( short x, short y, const char *format, ... )
    va_end(argptr);
    MDA.PutString( y, x, strbuf );
 }
-
-
 
 extern "C" void mono_c_printf( short x, short y, const char *format, ... )
 {
@@ -142,7 +133,6 @@ void mono_dump  ( short port )
    }
 */
 }
-
 
 //---------------------------------------------------------------------------
 

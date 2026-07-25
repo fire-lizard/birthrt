@@ -20,7 +20,6 @@
 #define MDS_ERR_INVALHANDLE         (6)
 #define MDS_ERR_BADSTATE            (7)
 
-
 // One of these flags MUST be set
 //
 // lpbImage -> string containing filename 

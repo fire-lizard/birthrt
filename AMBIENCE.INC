@@ -11,7 +11,6 @@
    
    ======================================================================== */
 
-
 LONG AmbientSoundScene1[] =
 {
 	SND_AMBIENT_DOG_SOUND1,
@@ -140,7 +139,6 @@ LONG AmbientSoundScene3[] =
 // make this zero_based
 #define AMBIENT_SOUND_SCENE_3_TOTAL (sizeof(AmbientSoundScene3)/sizeof(LONG))
 
-
 LONG AmbientSoundScene4[] =
 {
 	SND_AMBIENT_BEAST_SOUND1,
@@ -188,7 +186,6 @@ LONG AmbientSoundScene4[] =
 
 // make this zero_based
 #define AMBIENT_SOUND_SCENE_4_TOTAL (sizeof(AmbientSoundScene4)/sizeof(LONG))
-
 
 LONG AmbientSoundScene5[] =
 {

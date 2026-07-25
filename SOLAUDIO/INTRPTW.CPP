@@ -51,7 +51,6 @@ InstallServer(ServerFunc* proc, int freqMSec)
 	
 	if (!freeSlot)
 		#ifndef AUDIO_LIB
-		//msgMgr->Fatal(SrcLoc, Msg_MaxServers);
 		#else
 		# if defined(_DEBUG)
 		msgMgr->Fatal("Maximum number of servers exceeded");

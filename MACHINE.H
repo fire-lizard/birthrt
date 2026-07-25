@@ -1,4 +1,3 @@
-
 /* ========================================================================
    Copyright (c) 1990,1996	Synergistic Software
    All Rights Reserved
@@ -76,7 +75,6 @@ void ScreenCopy (
 #define SC_DEFAULT_RES	0					// use default resolution
 #define SC_HIGH_RES		1					// force high-res (for drawing panels)
 
-
 /* statisti.c */
 void init_statistics(void);
 void close_statistics(void);
@@ -109,7 +107,6 @@ LONG keys_down(void);
    Global Variables
    ------------------------------------------------------------------------ */
 /* keyint.c */
-//extern volatile char 	key_stat[];
 extern volatile BOOL fAnyKeyChanged;
 
 extern LONG			cursor_x,cursor_y,mouse_button;

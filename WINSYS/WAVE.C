@@ -6,9 +6,7 @@
 //
 //------------------------------------------------------------------------------
 
-
 #include <Windows.h>
-
 
 #define WAVEVERSION 1
 
@@ -36,9 +34,6 @@
 #define ER_CANNOTWRITE      0xe104
 #endif
 
-
-
-
 // ----------------------------------------------------------
 // WaveOpenFile - 
 //  This function will open a wave input file and prepare 
@@ -65,7 +60,6 @@ int WaveOpenFile( char        *pszFileName,
     WORD        cbExtraAlloc;   // Extra bytes for waveformatex structure for weird formats.
     int         nError;     // Return value.
 
-
     // Initialization...
     *ppwfxInfo = NULL;
     nError = 0;
@@ -81,7 +75,6 @@ int WaveOpenFile( char        *pszFileName,
     {
         goto ERROR_READING_WAVE;
     }
-
 
     if ((pckInRIFF->ckid != FOURCC_RIFF) || (pckInRIFF->fccType != mmioFOURCC('W', 'A', 'V', 'E')))
     {
@@ -112,7 +105,6 @@ int WaveOpenFile( char        *pszFileName,
         goto ERROR_READING_WAVE;
     }
                             
-
     // Ok, allocate the waveformatex, but if its not pcm
     // format, read the next word, and thats how many extra
     // bytes to allocate.
@@ -160,7 +152,6 @@ int WaveOpenFile( char        *pszFileName,
         goto ERROR_READING_WAVE;
     }
     
-
     goto TEMPCLEANUP;       
 
 ERROR_READING_WAVE:
@@ -182,7 +173,6 @@ TEMPCLEANUP:
     return(nError);
 
 }
-
 
 // ----------------------------------------------------------
 // WaveStartDataRead - 
@@ -208,7 +198,6 @@ int WaveStartDataRead(
     if ((nError = mmioSeek(*phmmioIn, pckInRIFF->dwDataOffset 
     + sizeof(FOURCC), SEEK_SET)) == -1)
     {
-        //Assert(FALSE);
         goto ERROR_READING_WAVE;
     }
 
@@ -227,7 +216,6 @@ ERROR_READING_WAVE:
 CLEANUP:    
     return(nError);
 }
-
 
 // ----------------------------------------------------------
 // WaveReadFile - 
@@ -331,8 +319,4 @@ int WaveCloseReadFile(
 
 }
 
-
-
 // Wave.c
-
-

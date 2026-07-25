@@ -617,7 +617,6 @@ GAME_TTYPE::GAME_ITEM const GAME_TTYPE::game_ttypes[] = {
  {{"------",	NOLOW,				NOATTS},			0, 		0,		NOSOUND,										STR_NULL},								//	 549
  {{"------",	NOLOW,				NOATTS},			0, 		0,		NOSOUND,										STR_NULL},								//	 550
 
-
 //
 // !!!!!!!!!!! DO NOT RENUMBER ANYTHING BETWEEN 551 AND 600 !!!!!!!!!!!
 //
@@ -636,7 +635,6 @@ GAME_TTYPE::GAME_ITEM const GAME_TTYPE::game_ttypes[] = {
  {{"A_HRS3",	LORES_KNIGHT_HORSE,	HEAT|PARTBUMP|HUMANOID|AUTO_AI|NOATTACK2|FLC_ART},	60, 60,	HORSE_SOUNDS,			STR_AVATAR_HEAVY_CAVALRY},					//   558  	knight horse
  {{"------",	NOLOW,				NOATTS},			0, 		0,		NOSOUND,										STR_NULL},								//	 559				
  {{"------",	NOLOW,				NOATTS},			0, 		0,		NOSOUND,										STR_NULL},								//   560
-																															
 																															
 	// HINTS - DO NOT RENUMBER
  																															
@@ -691,7 +689,6 @@ GAME_TTYPE::GAME_ITEM const GAME_TTYPE::game_ttypes[] = {
  {{"------",	NOLOW,				NOATTS},			0, 		0,		NOSOUND,										STR_NULL},											//	 598						
  {{"------",	NOLOW,				NOATTS},			0, 		0,		NOSOUND,										STR_NULL},											//	 599						
  {{"------",	NOLOW,				NOATTS},			0, 		0,		NOSOUND,										STR_NULL},											//	 600						
-																															
 																															
    // BLOOD ABILITIES 																										
 																															
@@ -766,7 +763,6 @@ GAME_TTYPE::GAME_ITEM const GAME_TTYPE::game_ttypes[] = {
  {{"A_HRS2",	NOLOW,				HEAT|PARTBUMP|HUMANOID|AUTO_AI|NOATTACK2|FLC_ART},	60, 60,	HORSE_SOUNDS,		STR_AVATAR_LIGHT_CAVALRY},				//   666  	cavalry horse
  {{"A_HRS4",	NOLOW,				HEAT|PARTBUMP|HUMANOID|AUTO_AI|NOATTACK2|FLC_ART},	60, 60,	HORSE_SOUNDS,		STR_AVATAR_HEAVY_CAVALRY},					//   667  	knight horse
 
-
  {{"NECKMI",	NOLOW,	TREASURE|MAGIC|MAPCPICK|NOBUMP|PICKABLE|BITMAP_ART},					0, 	0,	NOSOUND,							STR_ITEM_NAME_NECKLACE_OF_MISSILES},				//   668 Necklace of Missiles (7 charges)
  {{"NECKMI",	NOLOW,	TREASURE|MAGIC|MAPCPICK|NOBUMP|PICKABLE|BITMAP_ART},					0, 	0,	NOSOUND,							STR_ITEM_NAME_NECKLACE_OF_MISSILES},				//   669 Necklace of Missiles (6 charges)
  {{"NECKMI",	NOLOW,	TREASURE|MAGIC|MAPCPICK|NOBUMP|PICKABLE|BITMAP_ART},					0, 	0,	NOSOUND,							STR_ITEM_NAME_NECKLACE_OF_MISSILES},				//   670 Necklace of Missiles (5 charges)
@@ -792,10 +788,7 @@ GAME_TTYPE::GAME_ITEM const GAME_TTYPE::game_ttypes[] = {
  {{"WAND10",	NOLOW,	TREASURE|MAGIC|MAPCPICK|NOBUMP|PICKABLE|BITMAP_ART},					0, 	0,	NOSOUND,							STR_ITEM_NAME_WAND_OF_SECRET_DETECTION},			//	 689 Wand of Secret Detection (2 charges)
  {{"WAND10",	NOLOW,	TREASURE|MAGIC|MAPCPICK|NOBUMP|PICKABLE|BITMAP_ART},					0, 	0,	NOSOUND,							STR_ITEM_NAME_WAND_OF_SECRET_DETECTION},			//	 690 Wand of Secret Detection (1 charge)
 
-
-
  };
-
 
 /* ========================================================================
    Function    - mfGetThingType
@@ -840,5 +833,3 @@ const BOOL GAME_TTYPE::mfIsMissileBlocker (THINGTYPE const type)
 		(SceneType != SCENE_AI::BATTLE_SCENE));
 		
 }
-
-

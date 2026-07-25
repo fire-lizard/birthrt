@@ -5,7 +5,6 @@
 #ifndef _MAP_H
 #define _MAP_H
 
-
 /* ------------------------------------------------------------------------
    Sub Includes
    ------------------------------------------------------------------------ */
@@ -23,7 +22,6 @@
    Defines and Compile Flags
    ------------------------------------------------------------------------ */
 #define MAP_ERROR_CHECKED 0
-
 
 typedef enum {MAP_REG_NONE=0,MAP_REG_NORM=1,MAP_REG_FULL=2} MapRegionType;
 
@@ -51,7 +49,6 @@ typedef struct _MAP_INFO {
 	MapRegionType	RegionType;  				//full-screen, normal, none.
 	MapHighlightData Highlight;
 	
-
 	unsigned long	fDrawMap 			:1;
 	unsigned long	fFullScreen 		:1;
 	unsigned long	fDrawCheaterLines 	:1;
@@ -66,9 +63,6 @@ typedef struct _MAP_INFO {
 	unsigned long 	fPrintAvatarHdls	:1;
 } MAP_INFO, *PTR_MAP_INFO;
 
-	
-	
-   
 //reserved bits 3-7 (0x0004-0x0040) for map shapes/colors
 
 #define MAP_SHAPE_MASK		(0x0004|0x0008) 
@@ -104,11 +98,6 @@ typedef struct _MAP_INFO {
 #define TELEPORT_WAIT 1
 #define TELEPORT_DONE 2
 
-
-
-
-
-
 //map drawing colors
 #define MAP_RED			127
 #define MAP_BLUE		79
@@ -116,7 +105,6 @@ typedef struct _MAP_INFO {
 #define MAP_YELLOW		175
 #define MAP_TRANSPARENT	0
 #define MAP_WHITE		30
-
 
 //these probably need to be changed!
 #define UTILITY_LINE_COLOR			MAP_YELLOW
@@ -138,7 +126,6 @@ typedef struct _MAP_INFO {
 
 #define HIGHLIGHTED_THING_COLOR		MAP_RED
 
-
 #define MAP_SHAPE_AUTO			(-1)
 #define MAP_COLOR_AUTO			(-1)
 
@@ -149,11 +136,9 @@ typedef struct _MAP_INFO {
 #define MAP_SCALED		TRUE
 #define MAP_NOT_SCALED	FALSE
 
-
 /* ------------------------------------------------------------------------
    Prototypes
    ------------------------------------------------------------------------ */
-
 
 #ifdef __cplusplus
 extern "C" 
@@ -161,7 +146,6 @@ extern "C"
 #endif
 
 extern LONG GetMarginReductionCount(void);
-
 
 //gotta love arbitrary numbers...
 #define FULL_LEVEL_ZOOM		666
@@ -178,7 +162,6 @@ void SetMapHighlightEvil(LONG,LONG);
 void SetMapHighlightInvisibleCreatures(LONG,LONG);
 void SetMapHighlightMagic(LONG,LONG);
 void SetMapHighlightQuestObject(LONG,LONG);
-
 
 BOOL SetMapCameraDraw(LONG);
 BOOL SetMapPlayerDraw(LONG); 
@@ -197,7 +180,6 @@ void HandleMapAvatar(LONG,SHORT,ULONG,BOOL);
 void DrawMapPlayer(void);
 void DrawMapCamera(void);
 void DrawMapQuestObject(void);
-
 
 void MapTeleport(LONG code);  
 

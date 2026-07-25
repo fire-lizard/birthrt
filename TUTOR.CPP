@@ -65,8 +65,6 @@ GAME_STRING const TutorialHelpMgr::TutorText[][MAX_THELP_STRINGS_PER_ENTRY] =
 
 long const TutorialHelpMgr::HelpEntries=sizeof(TutorText)/sizeof(GAME_STRING[MAX_THELP_STRINGS_PER_ENTRY]);
 
-
-
 BOOL const TutorialHelpMgr::HelpExists(long const i,long const j)
 {
 	if (!InBounds(i,j))

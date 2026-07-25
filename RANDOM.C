@@ -113,10 +113,8 @@ void RandomLogComment ( char * szString )
 void RandomLogPrefix ( char * szString )
 {
 	if ( pFile && strlen(temp) < 1400)
-		//sprintf(temp, "%s%s ",temp, szString);
 		strcat(temp, szString);
 }
-
 
 /* ========================================================================
    Function    - LogFlush
@@ -130,7 +128,6 @@ void LogFlush ( void )
 	RandomLogClose();
 }
 
-
 /* ======================================================================== */
 
 unsigned long lograndom ( char * szFileName, SHORT iLineNumber )
@@ -138,7 +135,6 @@ unsigned long lograndom ( char * szFileName, SHORT iLineNumber )
 	lastrand = rand();
 
 	// -- This logging is too abusive
-	// -- GEH RandomLogWrite ( lastrand, szFileName, iLineNumber );
 
 	return lastrand;
 
@@ -153,6 +149,5 @@ void InitRandomLog(void)
 		fclose ( pFile );
 	}
 }
-
 
 /* ======================================================================== */

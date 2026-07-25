@@ -21,9 +21,7 @@
 #include "adventur.hxx"
 #endif
 
-
 #define MAX_REGENERATORS 20
-
 
 class Regenerator
 {
@@ -44,13 +42,10 @@ class Regenerator
 inline BOOL isPlayer(SHORT hAvatar);
 inline BOOL isGoodAvatar(SHORT hAvatar);
 
-
-
 inline BOOL isPlayer(SHORT hAvatar)
 {
 	if (hAvatar==fERROR)
 		return FALSE;
-
 
 	ADVENTURER_TEAM_ITOR AdvItor;
 	for (AdvItor = ADVENTURER::begin(); AdvItor != ADVENTURER::end();
@@ -61,7 +56,6 @@ inline BOOL isPlayer(SHORT hAvatar)
 	}
 	return FALSE;
 }
-
 
 inline BOOL isGoodAvatar(SHORT hAvatar)
 {

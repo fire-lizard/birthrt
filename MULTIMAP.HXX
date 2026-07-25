@@ -11,13 +11,6 @@
 /* ------------------------------------------------------------------------
    Defines and Compile Flags
    ------------------------------------------------------------------------ */
-// extern REALM_STRUCT realm[REALM::REALM_COUNT];
-// extern REGENT	regents[];
-// extern PROV_TYPE province[];
-// extern PLACE_TYPE places[MAX_PLACES];
-// extern UNIT_TYPE units[MAX_UNITS];
-// extern UBYTE	RealmReaction[LAND_REALM_COUNT][LAND_REALM_COUNT];
-// extern UBYTE	RealmStatus[LAND_REALM_COUNT][LAND_REALM_COUNT];
 
 /* ------------------------------------------------------------------------
    Prototypes
@@ -41,11 +34,9 @@ void HandleMultiPlayerEvents(void);
 void DoSetGameData(LONG lArray_Id, LONG lStruct_Id, LONG lArray_Index, LONG lData);
 LONG DoGetGameData(LONG lArray_Id, LONG lStruct_Id, LONG lArray_Index);
 
-
 /* ------------------------------------------------------------------------
    Structs
    ------------------------------------------------------------------------ */
-
 
 typedef struct {
 	CSTRPTR name;
@@ -64,7 +55,6 @@ typedef struct {
 #define MAX_SITES      26
 #define MAX_USER_SITES 24
 #define MAX_ADV_SITES  (MAX_SITES+MAX_USER_SITES)
-
 
 /* ------------------------------------------------------------------------
    Enums

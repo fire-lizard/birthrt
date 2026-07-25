@@ -187,7 +187,6 @@ typedef struct {
 
 static DONT_DRAW_INFO gDontDrawInfo = { FALSE, fERROR };
 
-
 typedef struct {
 	SHORT	*pMagicItems;
 	LONG	NumberOfMagicItems;
@@ -351,7 +350,6 @@ void ChangeThingType(LONG ThingIndex, LONG NewType)
 		load_obj_graphic(ThingIndex, NewType, iSequence, CurrentRotation, bControl, bControl);
 		
 		// Refresh pointer.
-		//pAnim = (ANIMPTR) BLKPTR(iAnim);
 		
 		if (pAnim->type == TYPE_FLIC &&			// PCX's don't have frames.
 		    pAnim->hiData > 0)
@@ -631,7 +629,6 @@ SHORT load_FLC_sequence(ULONG iAnim, ULONG ttype, ULONG seq, ULONG Rotation)
 		OpenAnim(iAnim, iseq + rot, fn, TYPE_FLIC);
 	}
 
-
 	fill_sequence_handles(iAnim, seq);		/* handle non-existant rot */
 
 	return iAnim;
@@ -782,7 +779,6 @@ LoadGenthing:
 			ULONG Gentype;
 			
 			// GEH substitute valid item
-			//GEH type = gMagicItems.pMagicItems[random(gMagicItems.NumberOfMagicItems)];
 			Gentype = BALM_OF_HEALING;
 			
 			/* get base filename from registered TType array */
@@ -796,7 +792,6 @@ LoadGenthing:
 		{
 			return;
 		}
-		
 		
 		if (mythings[i].iBitm != fERROR)
 		{
@@ -972,7 +967,6 @@ void init_things (LONG * pPlayerStart)  // which player start to begin on
 	{
 		// this section could take a bit of time so we will
 		// call the timer critical routine
-		// GWP Too often to be called here. run_timers();
 		
 		if(things[i].type == 343)
 			continue;
@@ -1064,13 +1058,11 @@ void init_things (LONG * pPlayerStart)  // which player start to begin on
 			mythings[t].z = FloorHeight;
 		}
 
-		// mythings[t].angle = ((LONG)(((float)(64*things[i].angle))/90))-64;
 		// [d7-30-96 JPC] Per TCW GWP--above calculation is wrong.
 		mythings[t].angle = (320 - ((LONG)(((float)(64*things[i].angle))/90))) & 0xFF;
 		mythings[t].AIbits = things[i].options;
 	
 		// Do the following in add_thing:
-		// mythings[t].sect = (SHORT)sect;
 		add_thing(t, ss);
 	}
 }
@@ -1108,7 +1100,6 @@ void purge_thing(LONG ThingIndex)
    ======================================================================== */
 void purge_all_things (void)
 {
-	//BITMPTR	pBuff;
 	SHORT		i;
 
 	if (mythings != NULL)								/* is there mythings */
@@ -1171,7 +1162,6 @@ static void MoveSetThing (LONG ThingIndex,LONG nx,LONG ny)
 									  &Tag);
 		mythings[ThingIndex].sect = (SHORT)sect;
 
-
 		// [d12-09-96 JPC] If this is a water sector, the things can
 		// go lower than the nominal floor height, so adjust
 		// "FloorHeight" here.  (Fixes bug in non-first-person view
@@ -1187,7 +1177,6 @@ static void MoveSetThing (LONG ThingIndex,LONG nx,LONG ny)
 		{
 			FloorHeight -= (mythings[ThingIndex].heiScaled * 3) / 4;
 		}
-
 
 		if (FloorHeight > mythings[ThingIndex].z)
 		{
@@ -1206,7 +1195,6 @@ static void MoveSetThing (LONG ThingIndex,LONG nx,LONG ny)
 		}
 	}
 }
-
 
 /* ========================================================================
    Function    - set_thing
@@ -1236,7 +1224,6 @@ void move_thing (LONG ThingIndex, LONG dx, LONG dy)
 
 	CHECK_THING_INDEX(t,"move_thing");
 
-	// GWP orig_ss = find_ssector(mythings[ThingIndex].x,mythings[ThingIndex].y);
 	// GWP We already know this.
 	orig_ss = mythings[ThingIndex].ssect;
 
@@ -1574,7 +1561,6 @@ void remove_thing (LONG t)
 	mythings[t].sect=-1;
 	mythings[t].valid = FALSE;
 
-
 	// Doors, lifts, and so on use a dummy thing for their sound effects.
 	// Handle the dummy thing here.  (Also handles cases where things
 	// for some pathological reason have ssect = -1).
@@ -1583,7 +1569,6 @@ void remove_thing (LONG t)
 		mythings[t].next_thing=-1;
 		return;
 	}
-
 
 #if defined(_DEBUG)
 	if (ss < 0 || ss >= MAX_SSECTORS)
@@ -1649,7 +1634,6 @@ void add_thing (LONG t, LONG ss)
 	LONG Special;
 	LONG Tag;
 		
-
 	CHECK_THING_INDEX(t,"add_thing");
 #if defined (_DEBUG)
 	if (ss < 0 || ss >= MAX_SSECTORS)
@@ -1759,7 +1743,6 @@ static void scale_obj (LONG t, LONG sx, LONG dx, LONG dy, LONG dye, LONG clipped
 		sptr_end = sptr + ((dye-dy)*screen_buffer_width);
 		sptr_inc = screen_buffer_width;
 	}
-
 
 	tsy = clipped * src_inc;
 	tptr = &tptr[sx * bptr->w]; /*note add of sx here instead of in loop*/
@@ -2059,7 +2042,6 @@ static void draw_thing (LONG t)
 					iHead = piData->iData[iSeq];		// get the memory handle for this resource
 				}
 			}
-			
 			
 			/* get width and height of selected sequence */
 			pHead = (FLICHEADPTR)BLKPTR(iHead);
@@ -2364,12 +2346,6 @@ static void draw_thing (LONG t)
 		d.x = b.x;
 		d.y = b.y;
 
-		// if (sectors[mythings[t].sect].special == SSP_WATER ||
-		// 	sectors[mythings[t].sect].special == SSP_ACID_FLOOR ||
-		// 	sectors[mythings[t].sect].special == SSP_LAVA)
-		// 	thingZ = mythings[t].z + mythings[t].heiScaled / 4;
-		// else										// must be SSP_DEEP_WATER
-		// 	thingZ = mythings[t].z + (mythings[t].heiScaled * 3) / 4;
 		thingZ = floorHeight;
 		proj(&d,camera.z - thingZ);
 		proj(&b,camera.z - mythings[t].z);		// lower-right
@@ -2395,7 +2371,6 @@ static void draw_thing (LONG t)
 	xsrc_inc = (xsrc_inc * scale_factor*UNIT_SCALE_ADJUST) / (UNITARY_SCALE*mythings[t].scale_adjust);
 	src_x = (src_x * scale_factor*UNIT_SCALE_ADJUST) / (UNITARY_SCALE*mythings[t].scale_adjust) ;
 	src_x <<= 8;	// Shift the rest to avoid an overflow in the above line. GWP.
-
 
 	myDeltaY = b.y - a.y;
 	// If there's no change in Y, then clip_obj in the draw loop below will return
@@ -2472,7 +2447,6 @@ static void draw_thing (LONG t)
 		LONG			delta_y;
 		
 		topY=a.y;
-      // [d9-03-96 JPC] Added "bottomClip" factor to the following;
 		// bottomClip is 0 in most cases, but is some fraction of the
 		// thing's SCALED and PROJECTED height if the thing is in water.
 		bottomY=b.y - bottomClip;			
@@ -2538,7 +2512,6 @@ static void draw_thing (LONG t)
 	}
 }
 
-
 /* =======================================================================
 	Run through list of things while sorting each pair by distance from camera
 	======================================================================= */
@@ -2587,7 +2560,6 @@ void draw_things (LONG ss)
 	{
 		// this section could take a bit of time so we will
 		// call the timer critical routine
-		// GWP Too often to be called here. run_timers();
 		
 		nd = (aprox_dist(CAMERA_INT_VAL(camera.x),
 						 CAMERA_INT_VAL(camera.y),
@@ -2746,7 +2718,6 @@ SHORT OpenAnim (SHORT iAnim, SHORT iSeq, CSTRPTR szFileName, SHORT Type)
 void RemoveAnim (SHORT iAnim)
 {
 	ANIMPTR	pAnim;
-//	UWORD		i;
 
 	if (iAnim <= fERROR)
 		return;
@@ -2754,9 +2725,6 @@ void RemoveAnim (SHORT iAnim)
 	pAnim = (ANIMPTR)BLKPTR(iAnim);
 
 	/* handled by PurgeClass(CLASS2) in purge_zone */
-//	for (i=0; i<NUMSEQUENCES; ++i)
-//		if (pAnim->iData[i] != fERROR)
-//			SetPurge(pAnim->iData[i]);
 
 	if (pAnim->iBuff != fERROR)
 		DisposBlock(pAnim->iBuff);
@@ -2765,11 +2733,8 @@ void RemoveAnim (SHORT iAnim)
 	pAnim->hiData = fERROR;	// The animations will be free'd as class 2 objects.
 	DisposBlock(iAnim);
 
-// printf("Disposed of iAnim and iBuff in RemoveAnim\n");
-
 }
 	
-
 /* ========================================================================
    Function    - MarkOldAnimPurgable
    Description - Purge out the previous animation.
@@ -2904,7 +2869,6 @@ SHORT SetAnimSequence (SHORT iAnim, SHORT iSeq)
 	pAnim->frame		= 0;
 	pAnim->width		= pHead->width;
 	pAnim->height		= pHead->height;
-//	pAnim->speed		= (USHORT)pHead->speed;
 	pAnim->offData		= pHead->oframe1;
 	pAnim->totalFrames	= pHead->frames;
 	if (pAnim->offData > 100000)
@@ -3020,7 +2984,6 @@ exit:
 	return pAnim->iBuff;
 }
 
-
 /* =======================================================================
 	NextAnimFrame - Advance to next frame of flic
 	======================================================================= */
@@ -3078,9 +3041,6 @@ SHORT NextAnimFrame (SHORT iAnim, USHORT sequence, USHORT rotation, UBYTE * pCtr
 	else
 		goto error_exit;
 	
-
-	//pAnim = (ANIMPTR)BLKPTR(iAnim);
-	
 	/* prepare for sequence check and frame decoding */
 	pHead = (FLICHEADPTR)BLKPTR(iHead);
 	// Paged out or non-existent art.
@@ -3106,11 +3066,8 @@ SHORT NextAnimFrame (SHORT iAnim, USHORT sequence, USHORT rotation, UBYTE * pCtr
 		}
 		if (SetAnimSequence(iAnim, seq_and_rot) == fERROR)
 			goto error_exit;
-			//return fERROR;
 		
 		// Refresh the pointers after call to SetAnimSequence.
-		//pAnim = (ANIMPTR)BLKPTR(iAnim);
-		//piData = (I_DATA_BLK *) BLKPTR(ihiData);
 		
 		iHead = piData->iData[seq_and_rot];
 		if (iHead <= 0)
@@ -3139,10 +3096,6 @@ SHORT NextAnimFrame (SHORT iAnim, USHORT sequence, USHORT rotation, UBYTE * pCtr
 		}
 		//GEH Not Used
 		//if (sequence != old_sequence)		/* not just rotation change */
-		//{
-		//	desired_frame = 0;
-		//	continue_flag = START_FLAG;
-		//}
 	}
 	else
 		++desired_frame;
@@ -3162,7 +3115,6 @@ SHORT NextAnimFrame (SHORT iAnim, USHORT sequence, USHORT rotation, UBYTE * pCtr
 #if defined (_DEBUG)
 				fatal_error("ERROR - pAnim->offData set to invalid value (%ld) in NextAnimFrame\n",pAnim->offData);
 #else
-				// return fERROR;
 				goto error_exit;
 #endif
 			}
@@ -3217,10 +3169,8 @@ error_exit:
 	if (!iAnimLocked)
 		ClrLock(iAnim);
 
-	
 	return rv;
 }
-
 
 /* =======================================================================
 	decode_frame - Decode a frame that is in memory already into screen.
@@ -3275,20 +3225,10 @@ ERRCODE decode_frame (ANIMPTR pAnim, 	FLICHEADPTR pHead)
 			switch (pChunk->type)
 			{
 //				case COLOR_256:
-//					decode_color((PTR)(pChunk+1), pAnim, COLOR_256);
-//					break;
   				case DELTA_FLC:
   					decode_delta_flc((PTR)(pChunk+1), pAnim);
   					break;
 //				case COLOR_64:
-//					decode_color((PTR)(pChunk+1), pAnim, COLOR_64);
-//					break;
-//				case DELTA_FLI:
-//					decode_delta_fli((PTR)(pChunk+1), pAnim);
-//					break;
-//				case BLACK_FRM:
-//					FillRect(pAnim->iBuff, 0, 0, pAnim->width, pAnim->height, coTRANSP);
-//					break;
   				case BYTE_RUN:
   					decode_byte_run((PTR)(pChunk+1), pAnim);
   					break;
@@ -3296,7 +3236,6 @@ ERRCODE decode_frame (ANIMPTR pAnim, 	FLICHEADPTR pHead)
   					decode_literal((PTR)(pChunk+1), pAnim);
   					break;
   				default:
-//				printf("OTHER CHUNK: %d\n",pChunk->type);
   					break;
 			}
 		}
@@ -3439,7 +3378,6 @@ void decode_delta_flc (PTR pData, ANIMPTR pAnim)
 						} while (--psize);
 					}
 
-
 				} while(--opcount);
 			}
 			pDest += width;
@@ -3524,7 +3462,6 @@ BOOL ThingIsPickupable (LONG thingIndex)
 	& MAPCPICK) ? TRUE : FALSE);
 }
 
-
 /* ======================================================================= */
 BOOL ThingIsEvil (LONG thingIndex)
 {
@@ -3556,7 +3493,6 @@ void change_scale_adjust(LONG t, LONG newScale)
 	mythings[t].heiScaled = (mythings[t].heiScaled*mythings[t].scale_adjust)/UNIT_SCALE_ADJUST;
 	mythings[t].widScaled = (mythings[t].widScaled*mythings[t].scale_adjust)/UNIT_SCALE_ADJUST;
 }
-
 
 /* ===========================================================================
 	ChangeThingZ--when a sector floor height changes, call this function to
@@ -3703,7 +3639,6 @@ void InitMagicThings(SHORT * pMagicThingTypes,
 
 }
 
-
 LONG QuestItemMythingsIndex(void)
 {
 	return gMagicItems.QuestItemMythingsIndex;
@@ -3713,9 +3648,6 @@ LONG GetQuestThing(void)
 {
 	return gMagicItems.QuestItem;
 }
-
-
-
 
 #if EXTRATHINGS
 /* ===========================================================================
@@ -3798,7 +3730,6 @@ void AddThingToAdjacentSubsectors (LONG ThingIndex)
 }
 #endif
 
-
 /* ========================================================================
    Function    - LoadIData
    Description - Create a unique I_DATA_BLK. I_DATA_BLK's hold an array
@@ -3863,8 +3794,6 @@ SHORT DisposeIDataBlk (SHORT iResBlk, SHORT iMemBlk)
 	return DisposRes(iResBlk, iMemBlk);
 }
 
-
-
 /* ========================================================================
    Function    - Load_Bitm
    Description - Load a bit map graphic
@@ -3886,7 +3815,6 @@ static void Load_Bitm(SHORT *piBitm, ULONG ttype)
 	
 	sprintf(pn,"%sPCX\\%s.pcx",THING_PATH,n);
 
-//		printf("Loading %s as a bitm\n",pn);
 	*piBitm = GetResourceRot(pn);
 	if (*piBitm == fERROR)
 	{
@@ -3941,4 +3869,3 @@ ULONG RestrictAniSeq(ULONG seq)
 
 // ---------------------------------------------------------------------------
 // ---------------------------------------------------------------------------
-

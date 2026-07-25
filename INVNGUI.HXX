@@ -1,7 +1,6 @@
 #ifndef _INVNGUI_HXX
 #define _INVNGUI_HXX
 
-
 /* ========================================================================
    Copyright (c) 1990,1996   Synergistic Software
    All Rights Reserved.
@@ -22,11 +21,9 @@
                        the player's inventory from a resource handle, this 
                        class does it for them.
                        
-
    Contains the following inline general functions:
    (arguments only specified in overloaded cases)
 
-    
    StaticInventoryGUI::
     mfPaint                -Paints the player's inventory
     mfDisplay              -Shows the player's inventory menu
@@ -43,7 +40,6 @@
     mfPrintWeaponInfo      -Prints weapon info about the player's current weap
     mfPrintArmorInfo       -Prints armor info about the player's current armor
 
-       
    ======================================================================== */
 /* ------------------------------------------------------------------------
    Includes
@@ -96,23 +92,17 @@
 #include "infobox.hxx"
 #endif
 
-
 extern BOOL fBattleCombat;
 
 extern BOOL fPreparingSpells;
-
 
 /* ------------------------------------------------------------------------
    Classes
    ------------------------------------------------------------------------ */
 
-
-
 class StaticInventoryGUI;
 class ObjectList;
 
-
- 
 /* ========================================================================
    Class       - InventoryGUI
    Description - A class to handle the interface between the player and an
@@ -133,7 +123,6 @@ class InventoryGUI
 		SHORT RecipStart;
 		SHORT HighlightedRecipient;
 
-		
 		void mfPaintSpellBoxes(ObjectList const & ,LONG) const;
 		void mfPaintListBoxLine(LONG,ObjectList & ,LONG) const;
 		void mfPaintListBoxIcon(LONG,ObjectList const & ,LONG) const;
@@ -158,7 +147,6 @@ class InventoryGUI
 		void mfTakeFromAvailSpells(LONG,LONG);
 		
 		void mfPurge(LONG,LONG);
-		
 		
 		InventoryGUI();
 		void mfInit(SHORT);
@@ -203,7 +191,6 @@ class StaticInventoryGUI
 		static void Hide(LONG,LONG);
 		static void ShowStatus(LONG,LONG);
 		static void mfLoad(LONG,LONG);
-		// GWP static void mfSave(LONG,LONG);
 		static void mfPurge(LONG,LONG);
 		
 };
@@ -221,10 +208,6 @@ inline InventoryGUI::InventoryGUI()
 	HlMgr(D_AVATAR_INVENTORY)
 {
 }
-
-
-
-
 
 inline void InventoryGUI::mfDisplay(LONG,LONG FromStatus)
 {	
@@ -251,28 +234,15 @@ inline void InventoryGUI::mfDisplay(LONG,LONG FromStatus)
 	if (FromStatus)
 		HideMenu(D_AVATAR_ATTRIBUTES); //get rid of status
 	
-	
 	if (AvatarStatsHdl==fERROR)
 		fatal_error("tried to display invalid invntory\n");
 	
 	//Store the handle to the status in the menu.
 	SetButtonValue(D_AVATAR_INVENTORY, INV_BUT_STATUS, AvatarStatsHdl);
 	
-	//printf("about to show handle %li\n",AvatarStatsHdl);
 	ShowMenu(D_AVATAR_INVENTORY); //show the actual inventory pcx
 	
-
-//	GlobalListBoxHandle= NewListBox(Rect(0,0,200,140),
-//									Rect(220,0,20,30),
-//									Rect(220,30,20,30),
-//									28,FONT_TITL_20PT,test,41
-//								   );
 }
-
-
-
-
-
 
 inline void StaticInventoryGUI::mfPaint(LONG a,LONG b)
 {
@@ -313,16 +283,12 @@ inline void StaticInventoryGUI::mfToggleDemBoxes(LONG,LONG)
 
 inline void StaticInventoryGUI::mfPrintArmorInfo(LONG,LONG)
 {
-	// GWP ObjectList& AvatarInventory=AvaStatsHdlToObjList(GUI.GetStatsHdl());
 
-	// GWP AvatarInventory.PrintArmorInfo();
 }
 
 inline void StaticInventoryGUI::mfPrintWeaponInfo(LONG,LONG)
 {
-	// GWP ObjectList& AvatarInventory=AvaStatsHdlToObjList(GUI.GetStatsHdl());
 
-	// GWP AvatarInventory.PrintWeaponInfo();
 }
 
 inline void StaticInventoryGUI::mfAddToAvailSpells(LONG a,LONG b)
@@ -344,8 +310,6 @@ inline void StaticInventoryGUI::ShowStatus(LONG a,LONG b)
 {
 	GUI.HlMgr.HighlightButton(a,1);
 	//need a delay!	
-
-
 
 	GUI.HlMgr.Clear();
 	ShowSubMenu(a,D_AVATAR_ATTRIBUTES);

@@ -1,6 +1,5 @@
 #include "ITEMEQP.HXX"
 
-
 LONG EquipMax[]={
 0,	//NoEquip
 1,	//Helm
@@ -12,8 +11,6 @@ LONG EquipMax[]={
 1,	//Boots
 -1,	//Unlimited
 };
-
-	
 
 DEFINE_VECTOR_DATA(ItemEquipType,EquipTypes)=
 {

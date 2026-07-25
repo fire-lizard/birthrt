@@ -59,9 +59,6 @@ SHORT RollDice( DICE const * const pDiceInfo)
 
 		// Generate a random number between 1 and the Number of sides on the dice.
 #if defined (_WINDOWS) && defined(_DEBUG)
-//		char temp[100];
-//		sprintf(temp, "%12.12s%@%d", FileName, LineNum);
-//		RandomLogPrefix(temp);
 #endif
 
 		sRoll = random(pDiceInfo->sbNumberOfSides)+1;
@@ -70,7 +67,6 @@ SHORT RollDice( DICE const * const pDiceInfo)
 	}
 
 	sResult += pDiceInfo->sbModifier;
-	// printf("Roll %dd%d+%d = %d\n",pDiceInfo->sbNumberOfDice,pDiceInfo->sbNumberOfSides,pDiceInfo->sModifier,sResult);
 	return sResult;
 }
 
@@ -95,11 +91,8 @@ SHORT AveDice( DICE const * const pDiceInfo)
 	sResult = sResult/32;
 
 	sResult += pDiceInfo->sbModifier;
-	// printf("Ave %dd%d+%d = %d\n",pDiceInfo->sbNumberOfDice,pDiceInfo->sbNumberOfSides,pDiceInfo->sModifier,sResult);
 	return sResult;
 }
 
 /* ======================================================================= */
-
-
 

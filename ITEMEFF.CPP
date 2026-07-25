@@ -14,7 +14,6 @@
 #include "strenum.h"
 #include "TMSGBOX.HXX"
 
-
 /* -----------------------------------------------------------------
 
    ----------------------------------------------------------------- */
@@ -49,7 +48,6 @@ LONG ItemEffects::Generic(LONG Combo,LONG,LONG action)
 			}
 				
 			case PICKUP:
-//		     	printf("Generic object PICKUP effect called\n");
 				break;
 			case EQUIP:
 				printf("Generic object EQUIP effect called\n");
@@ -148,7 +146,6 @@ LONG ItemEffects::Flight(LONG Combo,LONG Arg,LONG action)
  	
 	ItemType&		Item=ItemTypes[IType];
 
-
 	if(fDomainTurn)
 	{
 		return NOT_SUPPORTED;
@@ -183,10 +180,8 @@ LONG ItemEffects::Flight(LONG Combo,LONG Arg,LONG action)
 				
 				Item.mfMessage(STR_ACTIVATE_FLIGHT);
 	
-				// JPC if (pPlayerStats->hAvatar==CAvatar::mfGetPlayerAvatarHandle()) //this is kludgy
 				player.Flying=TRUE;
 					
-	 				
 			}
 				break;
 			case DEACTIVATE:
@@ -199,7 +194,6 @@ LONG ItemEffects::Flight(LONG Combo,LONG Arg,LONG action)
 					pAvatar->attrib.IsFlying=0;
 				}
 	
-				// JPC if (pPlayerStats->hAvatar==CAvatar::mfGetPlayerAvatarHandle()) //this is kludgy
 				player.Flying=FALSE;
 
 				Item.mfMessage(STR_DEACTIVATE_FLIGHT);
@@ -214,8 +208,6 @@ LONG ItemEffects::Flight(LONG Combo,LONG Arg,LONG action)
 	
 	return OK;
 }
-
-
 
 LONG ItemEffects::RingFeatherFall(LONG Combo,LONG Arg,LONG action)
 {
@@ -436,7 +428,6 @@ LONG ItemEffects::RingInfravision(LONG Combo,LONG Arg,LONG action)
 	return OK;
 }
 	
-
 LONG ItemEffects::SeeInDark(LONG Combo,LONG Arg,LONG action)
 {
 
@@ -502,7 +493,6 @@ LONG ItemEffects::SeeInDark(LONG Combo,LONG Arg,LONG action)
 
 }
 
-
 LONG ItemEffects::Speed(LONG Combo,LONG Arg,LONG Action)
 {
 
@@ -513,14 +503,6 @@ LONG ItemEffects::Speed(LONG Combo,LONG Arg,LONG Action)
  	
 	ItemType&		Item=ItemTypes[IType];
 	
-	// if(fDomainTurn)
-	// {
-	// 	return NOT_SUPPORTED;
-	// }
-	// if(fBattleCombat)
-	// {
-	// 	return NOT_SUPPORTED;
-	// }
 	// else	// adventure level
 	// ALL
 	{
@@ -729,15 +711,6 @@ LONG ItemEffects::BookOfExaltedDeeds(LONG Combo,LONG Arg,LONG Action)
  	
 	ItemType&		Item=ItemTypes[IType];
 
-	
-	// if(fDomainTurn)
-	// {
-	// 	return NOT_SUPPORTED;
-	// }
-	// if(fBattleCombat)
-	// {
-	// 	return NOT_SUPPORTED;
-	// }
 	// else	// adventure level
 	// ALL
 	{
@@ -823,15 +796,6 @@ LONG ItemEffects::BookOfVileDarkness(LONG Combo,LONG Arg,LONG Action)
 	PLAYER_STATS	*pPlayerStats=(PLAYER_STATS*)BLKPTR(hPlayerStats);
 	SHORT			hAvatar = pPlayerStats->hAvatar;
 
-	
-	// if(fDomainTurn)
-	// {
-	// 	return NOT_SUPPORTED;
-	// }
-	// if(fBattleCombat)
-	// {
-	// 	return NOT_SUPPORTED;
-	// }
 	// else	// adventure level
 	// ALL
 	{
@@ -903,13 +867,6 @@ LONG ItemEffects::BookOfVileDarkness(LONG Combo,LONG Arg,LONG Action)
 	}
 	return OK; //everything went ok	
 }
-
-
-
-
-
-
-
 
 /* -----------------------------------------------------------------
 
@@ -989,14 +946,6 @@ LONG ItemEffects::GauntletsOfDex(LONG Combo,LONG Arg,LONG Action)
  	SPLIT_COMBO(Combo,IType,hPlayerStats);
  	
 	ItemType&		Item=ItemTypes[IType];
-	// if(fDomainTurn)
-	// {
-	//	return NOT_SUPPORTED;
-	// }
-	// if(fBattleCombat)
-	// {
-	//	return NOT_SUPPORTED;
-	// }
 	// else	// adventure level
 	// works in all modes
 	{
@@ -1050,14 +999,6 @@ LONG ItemEffects::GuantletsOfOgrePow(LONG Combo,LONG Arg,LONG Action)
  	
 	ItemType&		Item=ItemTypes[IType];
 	
-	// if(fDomainTurn)
-	// {
-	//	return NOT_SUPPORTED;
-	// }
-	// if(fBattleCombat)
-	// {
-	//	return NOT_SUPPORTED;
-	// }
 	// else	// adventure level
 	// works in all modes
 	{
@@ -1116,7 +1057,6 @@ struct AddSpellCombo
 	SBYTE	HighBoundLevel;
 };
 
-
 static ITEMTYPE GetRandomSpellItem(LONG lo,LONG hi)
 {
 	LONG SpellLevel=0;
@@ -1143,8 +1083,6 @@ static ITEMTYPE GetRandomRealmSpellItem()
 	return ItemTypeIdx;
 }
 
-
-
 LONG ItemEffects::TomeAddRandomSpells(LONG Combo,LONG Arg,LONG Action)
 {
 	SHORT Itemtype;  				//the index in ItemTypes of the Item
@@ -1161,15 +1099,6 @@ LONG ItemEffects::TomeAddRandomSpells(LONG Combo,LONG Arg,LONG Action)
 	ASC.LowBoundLevel=(Arg>>8)&0xFF;
 	ASC.HighBoundLevel=(Arg)&0xFF;
 
-
-//	if(fDomainTurn)
-//	{
-//	return NOT_SUPPORTED;
-//	}
-//	if(fBattleCombat)
-//	{
-//	return NOT_SUPPORTED;
-//	}
 //	else	// adventure level
 	{
 		switch(Action)
@@ -1179,7 +1108,6 @@ LONG ItemEffects::TomeAddRandomSpells(LONG Combo,LONG Arg,LONG Action)
 				
 				DumbAutoLockPtr< PLAYER_STATS > const pPlayerStats(hPlayerStats);
 				ObjectList&  Ol=pPlayerStats->mfGetInventory();
-
 
 				if (pPlayerStats->mfGetSpellCastClass(SPELL_INFO::WIZARD)==CANT_CAST_SPELLS)
 				{
@@ -1192,7 +1120,6 @@ LONG ItemEffects::TomeAddRandomSpells(LONG Combo,LONG Arg,LONG Action)
 				if (!ASC.fRealm)
 				{
 	
-
 					//this tries twice, and if it gets two dupes in a row, gives up
 					for (LONG i=0;i<ASC.Number;i++)
 						if (Ol.mfAddItem(GetRandomSpellItem(ASC.LowBoundLevel,ASC.HighBoundLevel))&ADD_DUP)
@@ -1230,7 +1157,6 @@ LONG ItemEffects::TomeAddRandomSpells(LONG Combo,LONG Arg,LONG Action)
 	return OK; //everything went ok	
 }
 
-
 /* -----------------------------------------------------------------
 
    ----------------------------------------------------------------- */
@@ -1243,14 +1169,6 @@ LONG ItemEffects::LibrOfConjuration(LONG Combo,LONG Arg,LONG Action)
  	
 	ItemType&		Item=ItemTypes[IType];
 	
-//	if(fDomainTurn)
-//	{
-//		return NOT_SUPPORTED;
-//	}
-//	if(fBattleCombat)
-//	{
-//		return NOT_SUPPORTED;
-//	}
 //	else	/ adventure level
 	
 	{
@@ -1328,14 +1246,6 @@ LONG ItemEffects::LibrOfDamnation(LONG Combo,LONG Arg,LONG Action)
  	
 	ItemType&		Item=ItemTypes[IType];
 	
-//	if(fDomainTurn)
-//	{
-//		return NOT_SUPPORTED;
-//	}
-//	if(fBattleCombat)
-//	{
-//		return NOT_SUPPORTED;
-//	}
 //	else
 	{
 	
@@ -1412,14 +1322,6 @@ LONG ItemEffects::LibrSilver(LONG Combo,LONG Arg,LONG Action)
  	
 	ItemType&		Item=ItemTypes[IType];
 	
-//	if(fDomainTurn)
-//	{
-//		return NOT_SUPPORTED;
-//	}
-//	else if(fBattleCombat)
-//	{
-//		return NOT_SUPPORTED;
-//	}
 //	else
 	{
 		switch(Action)
@@ -1491,8 +1393,6 @@ LONG ItemEffects::LibrSilver(LONG Combo,LONG Arg,LONG Action)
 
    ----------------------------------------------------------------- */
 
-
-
 LONG ItemEffects::Parchment(LONG Combo,LONG Arg,LONG Action)
 {
 	ITEMTYPE		IType;
@@ -1502,7 +1402,6 @@ LONG ItemEffects::Parchment(LONG Combo,LONG Arg,LONG Action)
  	
 	ItemType&		Item=ItemTypes[IType];
 
-	
 	if(fDomainTurn)
 	{
 	   return NOT_SUPPORTED;
@@ -1559,8 +1458,6 @@ LONG ItemEffects::Parchment(LONG Combo,LONG Arg,LONG Action)
 	return OK; //everything went ok	
 }
 
-
-
 LONG ItemEffects::GoldCoins(LONG Combo, LONG Arg, LONG Action)
 {
 	SHORT Itemtype;  				//the index in ItemTypes of the Item
@@ -1569,7 +1466,6 @@ LONG ItemEffects::GoldCoins(LONG Combo, LONG Arg, LONG Action)
 									//the item
  	SPLIT_COMBO(Combo,Itemtype,hPlayerStats); //extract the data from the Combo
 
-	
 	if(fDomainTurn)
 	{
 		return NOT_SUPPORTED;
@@ -1619,7 +1515,6 @@ LONG ItemEffects::RingJump(LONG Combo,LONG Arg,LONG Action)
 
 	ItemType& Item=ItemTypes[Itemtype]; //A reference to the item
 
-	
 	if(fDomainTurn)
 	{
 		return NOT_SUPPORTED;
@@ -1653,7 +1548,6 @@ LONG ItemEffects::RingJump(LONG Combo,LONG Arg,LONG Action)
 					// first jumping ability spell or item wears off.
 					if (pAvatar->attrib.IsJumpEnhanced)
 						return CANT_COMPLETE;
-	
 	
 					Item.mfMessage(STR_ACTIVATE_JUMPx3);
 	
@@ -1695,7 +1589,6 @@ LONG ItemEffects::RingJump(LONG Combo,LONG Arg,LONG Action)
 					fatal_error("EffectSeparator::mfGetVal returned NULL  %s(%li)\n",__FILE__,__LINE__);
 #endif
 
-
 				// [d12-03-96 JPC] Applied to whole adventure team.
 				ADVENTURER_TEAM_ITOR AdvItor;
 				for (AdvItor = ADVENTURER::begin(); AdvItor != ADVENTURER::end();
@@ -1715,7 +1608,6 @@ LONG ItemEffects::RingJump(LONG Combo,LONG Arg,LONG Action)
 	return OK; //everything went ok	
 }
 
-
 LONG ItemEffects::RingResistance(LONG Combo,LONG Arg,LONG Action)
 {
 	STATSMOD::MOD_TYPE	type;
@@ -1728,15 +1620,6 @@ LONG ItemEffects::RingResistance(LONG Combo,LONG Arg,LONG Action)
  	
 	ItemType&		Item=ItemTypes[IType];
 
-	
-	//if(fDomainTurn)
-	//{
-	//	return NOT_SUPPORTED;
-	//}
-	//if(fBattleCombat)
-	//{
-	//	return NOT_SUPPORTED;
-	//}
 	//else	// adventure level
 	// works in all modes
 	{
@@ -1826,4 +1709,3 @@ LONG ItemEffects::RingResistance(LONG Combo,LONG Arg,LONG Action)
 	}
 	return OK; //everything went ok	
 }
-

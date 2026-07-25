@@ -17,7 +17,6 @@
 #include "memmanag.hxx"
 #endif
 
-
 /* ------------------------------------------------------------------------
    Defines and Compile Flags
    ------------------------------------------------------------------------ */
@@ -118,7 +117,6 @@ protected:
 private:
 	SHORT	fHandle;
 };
-
 
 // No reference counting, relies on going out of scope to clear the lock.
 template <class T> class DumbAutoLockPtr
@@ -227,7 +225,6 @@ public:
 			ClrLock(fHandle);
 		}
 	}
-	
 	
 	// index operators
 	T & operator[](LONG const index)

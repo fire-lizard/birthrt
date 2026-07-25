@@ -183,7 +183,6 @@ int main(int argc,char * argv[])
 				if(iWhichString <= 99)
 					break;
 
-
 			case NEWBLOCK:
 				//WRC [14.04.97] this makes a new enum every 
 				//newblock to avoid the problem of having
@@ -194,10 +193,8 @@ int main(int argc,char * argv[])
 				//another case and do a new enum every
 				//2000 strings...
 					
-				
 				fprintf(fEnumFile,"};\n\nenum\n{\n");
 
-				
 				// remember where we are
 				lNewPosition = ftell(fDatFile);
 
@@ -371,7 +368,6 @@ BOOL text_differs(char *filename1, char *filename2)
 		goto Abort;
 	}
 		
-	
 	while (!feof(fp1))
 	{
 		blocknum++;

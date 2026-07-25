@@ -61,10 +61,6 @@ DEFINE_VECTOR_MEMBER_CLASS(ItemEffects::ActiveItem,
 				    		ItemEffects,
 				    		ActiveItems);
 
-
-
-
-
 BOOL fQuietItems=FALSE;  //whether or not Items display a message box/play a sound
 DEFINE_VECTOR_DATA(ItemType,ItemTypes) =
 {
@@ -182,8 +178,6 @@ ItemType(IC_MUNDANE,0,	-1,	HINT_3,							ItemEffects::Parchment,			3,					0,	"PR
 ItemType(IC_MUNDANE,0,	-1,	HINT_4,							ItemEffects::Parchment,			4,					0,	"PRCH02", STR_ITEM_DESC_PARCHMENT_1),
 ItemType(IC_MUNDANE,0,	-1,	HINT_5,							ItemEffects::Parchment,			5,					0,	"PRCH01", STR_ITEM_DESC_PARCHMENT_1),
 
-
-
 //Relics of Power
 //Ctor   Category   Atr	   	GameType						Effect	  						Arg	Dur Icon     MiscInfo
 //------|----------|---|---|-------------------------------|-------------------------------|---|---|--------|--------|
@@ -217,8 +211,6 @@ ItemType(IC_MAGITEM,0,	-1,	TOME_OF_MYSTIC_MAGICS,			ItemEffects::TomeAddRandomSp
 ItemType(IC_MAGITEM,0,	-1,	TOME_OF_SORCERORS_LORE,			ItemEffects::TomeAddRandomSpells,	MAKE_ADD_SPELL(3,4,6)			,-1,"TOME04",STR_ITEM_DESC_TOME_OF_SORCERER_LORE),
 ItemType(IC_MAGITEM,0,	-1,	TOME_OF_THE_HIGH_WIZARDS,		ItemEffects::TomeAddRandomSpells,	MAKE_ADD_SPELL(1,7,9)			,-1,"TOME05",STR_ITEM_DESC_TOME_OF_HIGH_WIZARDS),
 ItemType(IC_MAGITEM,0,	-1,	TOME_OF_THE_MAGE_LORDS,			ItemEffects::TomeAddRandomSpells,	MAKE_ADD_SPELL(5,0,0)|ADD_REALM	,-1,"TOME06",STR_ITEM_DESC_TOME_OF_MAGE_LORDS),
-
-
 
 //Spells                              
 //Ctor   Category   Atr ExtendedData                    		GameType                Effect								Arg                						Dur(in seconds) Icon  MiscInfo
@@ -284,7 +276,6 @@ ItemType(IC_SPELL,	TARGETWAVE,	SPELL_INFO::FIRE_STORM,			FIRE_STORM_1,			ItemEff
 ItemType(IC_SPELL,	0,			SPELL_INFO::HOLY_WORD,			HOLY_WORD_1,			ItemEffects::HolyWordSpell,			MAKE_DICE(1,6,0),						-1,				"SCRL07",STR_SPELL_DESC_HOLY_WORD),
 ItemType(IC_SPELL,	0,			SPELL_INFO::RESURRECTION,		RESURRECTION_1,			ItemEffects::Resurrection,			0, 										-1,				"SCRL07",STR_SPELL_DESC_RESURRECTION),		
 
-
 // Wizard Realm Spells																																									  
 ItemType(IC_REALM_SPELL,  0,	REALM_SPELL_INFO::ALCHEMY,				REALM_ALCHEMY_1,			ItemEffects::RealmGeneric,	0,		    -1 ,"TOME06",STR_REALM_SPELL_DESC_ALCHEMY),
 ItemType(IC_REALM_SPELL,  0,	REALM_SPELL_INFO::DEATH_PLAGUE,			REALM_DEATH_PLAGUE_1,		ItemEffects::RealmGeneric,	0,		    -1 ,"TOME06",STR_REALM_SPELL_DESC_DEATH_PLAGUE),
@@ -306,7 +297,6 @@ ItemType(IC_REALM_SPELL,  0,	REALM_SPELL_INFO::BLIGHT,				REALM_BLIGHT_1,				Ite
 ItemType(IC_REALM_SPELL,  0,	REALM_SPELL_INFO::DISPEL_REALM_MAGIC_PRIESTVER,	REALM_DISPEL_REALM_MAGIC_1,	ItemEffects::RealmGeneric,	0,	-1 ,"SCRL08",STR_REALM_SPELL_DESC_DISPEL_REALM_MAGIC),
 ItemType(IC_REALM_SPELL,  0,	REALM_SPELL_INFO::HONEST_DEALING,		REALM_HONEST_DEALING_1,		ItemEffects::RealmGeneric,	0,		    -1 ,"SCRL08",STR_REALM_SPELL_DESC_HONEST_DEALING),
 ItemType(IC_REALM_SPELL,  0,	REALM_SPELL_INFO::INVESTITURE,			REALM_INVESTITURE_1,		ItemEffects::RealmGeneric,	0,		    -1 ,"SCRL08",STR_REALM_SPELL_DESC_INVESTITURE),
-
 
 //Blood Abilities
 //Ctor   Category   Atr ExtendedData                            	GameType    					Effect                           Arg  Dur IconFileName   MiscInfo
@@ -350,7 +340,6 @@ ItemType(IC_MAGITEM,0,	-1,	IOUN_HEART,			ItemEffects::AddToAttribute,	AT_ALL|1,	
 ItemType(IC_MAGITEM,0,	-1,	IOUN_FIST,			ItemEffects::AddToAttribute,	AT_LEV|2,			180,"IOUN07", STR_ITEM_DESC_IOUN_FIST),
 ItemType(IC_MAGITEM,0,	-1,	TOME_OF_THE_PRINCE,	ItemEffects::TomePrince,		0,					0,  "TOME01", STR_RELIC_DESC_TOME_OF_THE_PRINCE),
 
-
 //fix for charges bug
 ItemType(IC_MAGITEM,TARGET,	-1,	NECKLACE_OF_MISSILES_7,		ItemEffects::HurlFireBall,				AT_FIRE|MAKE_DICE(2,6,0),					0,	"NECKMI",STR_ITEM_DESC_NECKLACE_OF_MISSILES),
 ItemType(IC_MAGITEM,TARGET,	-1,	NECKLACE_OF_MISSILES_6,		ItemEffects::HurlFireBall,				AT_FIRE|MAKE_DICE(2,6,0),					0,	"NECKMI",STR_ITEM_DESC_NECKLACE_OF_MISSILES),
@@ -385,8 +374,6 @@ ItemType(IC_BLOODAB,		0,	-1,	CURE_CRITICAL_1,		ItemEffects::TouchSpell,	HEAL_ABS
 
 DEFINE_VECTOR_CLASS(ItemType, ItemTypes);
 
-
-
 #define NUMBER_OF_CHARGED_CHAIN 10
 ItemChargeHandler::ChargedItemChain ItemChargeHandler::ChargeDegradeTable[10] =
 {
@@ -403,21 +390,15 @@ ItemChargeHandler::ChargedItemChain(0), //marks the end of the list
 };
 DEFINE_VECTOR_MEMBER_CLASS(ItemChargeHandler::ChargedItemChain, ItemChargeHandler,ChargeDegradeTable);
 
-//LONG ItemChargeHandler::NumChargedItems=sizeof(ItemChargeHandler::ChargeDegradeTable)/sizeof(ItemChargeHandler::ChargedItemChain);
 LONG ItemChargeHandler::NumChargedItems=NUMBER_OF_CHARGED_CHAIN;
-
-
-
 
 /* ------------------------------------------------------------------------
    EFFECT FUNCTIONS
    ------------------------------------------------------------------------ */
 
-
 LONG ItemEffects::RealmGeneric(LONG Combo,LONG Arg,LONG Action)
 {Arg=Combo;Combo=Action;Action=Arg;return 0;}
 //this function is a helper for a coder trying to implement magic items.
-
 
 LONG ItemEffects::Template(LONG Combo, LONG Arg, LONG Action)
 {
@@ -437,7 +418,6 @@ LONG ItemEffects::Template(LONG Combo, LONG Arg, LONG Action)
 	//DEACTIVATE means it's duration has run out and it is deactivating
 	//etc...
 
-
 	SHORT Itemtype;  				//the index in ItemTypes of the Item 
 									//being activated
 	SHORT hPlayerStats;   			//the stats of the avatar who's activating 
@@ -449,8 +429,6 @@ LONG ItemEffects::Template(LONG Combo, LONG Arg, LONG Action)
 	// Note: Don't access these handles unless you can guarentee that there will
 	//	     be either an avatar or a stats structure active.
 	//       Generally copy them into the part of the code which needs them.
-	// PLAYER_STATS	*const pPlayerStats=(PLAYER_STATS*const )BLKPTR(hPlayerStats);
-	// CAvatar	* const pAvatar=(CAvatar* const )BLKPTR(pPlayerStats->hAvatar);
 	
 	if(fDomainTurn)
 	{
@@ -466,8 +444,6 @@ LONG ItemEffects::Template(LONG Combo, LONG Arg, LONG Action)
 		{
 			case ACTIVATE:
 				//put your code that represents what the Item does when used here
-				//if (bad)
-				//	return CANT_COMPLETE;	
 				
 				//this means that the action couldn't be completed. This is most 
 				//useful for EQUIP and PICKUP, if they return CANT_COMPLETE, then 
@@ -477,9 +453,6 @@ LONG ItemEffects::Template(LONG Combo, LONG Arg, LONG Action)
 				//The effect function must take care of adding and removing itself 
 				//from the ActiveItem list. when activated, add	the Item, and 
 				//remove it in the DEACTIVATE case.
-				//				  ThisFunc Arg1 ,Arg2,Duration(in frames)
-				//					vvvv   vvv	 vvv   vvvvvvvvvvvvvvvvvvvvvvvvvv
-				//mfAddActiveItem(Template,Combo,Arg,Item.mfDuration(hPlayerStats));
 				
 				//the two arguments should always be the same as the ones that
 				//were passed to you in this function (Template)
@@ -493,7 +466,6 @@ LONG ItemEffects::Template(LONG Combo, LONG Arg, LONG Action)
 				//if you added the item to the active item list in ACTIVATE
 				//you'll want to remove it here.
 				//
-				//mfRemoveActiveItem(Template,Combo,Arg);
 				//
 				//be sure that you pass in the same arguments as you passed in
 				//otherwise it won't deactivate. and weird stuff may happen.
@@ -502,8 +474,6 @@ LONG ItemEffects::Template(LONG Combo, LONG Arg, LONG Action)
 				//this happens when the item is picked up, return CANT_COMPLETE
 				//to disable the avatar from picking this up
 				//example:
-				// if (Avatar.IsGoodAligned() && Item.CantbeHeldByGood())	
-				//		return CANT_COMPLETE;
 				break;
 			case DROP:
 				//this is called when the item is dropped, it can be used to 
@@ -528,12 +498,6 @@ LONG ItemEffects::Template(LONG Combo, LONG Arg, LONG Action)
 	}
 	return OK; //everything went ok	
 }
-
-
-
-
-
-
 
 LONG ItemEffects::Regenerate(LONG Combo,LONG Arg,LONG Action)
 {
@@ -589,8 +553,6 @@ LONG ItemEffects::Regenerate(LONG Combo,LONG Arg,LONG Action)
 	return Result; //everything went ok	
 }
 
-
-
 LONG ItemEffects::Rescuee(LONG,LONG,LONG action)
 {
 	if (fDomainTurn || fBattleCombat)
@@ -600,7 +562,6 @@ LONG ItemEffects::Rescuee(LONG,LONG,LONG action)
 	else
 		return CANT_COMPLETE;	
 }
-
 
 LONG ItemEffects::TouchSpell(LONG Combo, LONG arg, LONG action)
 {
@@ -637,13 +598,11 @@ LONG ItemEffects::TouchSpell(LONG Combo, LONG arg, LONG action)
 		return NOT_SUPPORTED;
 }
 
-
 //arg is determined by high byte of arg,
 //1=Percentage (low short is what percent)
 //2=Absolute (low short is how many hp)
 //3=Random (low 3 bytes describe the DICE to roll)
 //4=Fully heal (low 3 bytes aren't important)
-
 
 LONG ItemEffects::Heal(LONG Combo,LONG arg,LONG action)
 {
@@ -660,7 +619,6 @@ LONG ItemEffects::Heal(LONG Combo,LONG arg,LONG action)
 	dice.sbNumberOfSides=DICE_NUMSIDES(arg);
 	dice.sbModifier=DICE_MODIFIER(arg);
 	
-
 	if(fDomainTurn)
 	{
 		return NOT_SUPPORTED;
@@ -695,22 +653,18 @@ LONG ItemEffects::Heal(LONG Combo,LONG arg,LONG action)
 					case HEAL_PERCENT:
 						mfSound(SND_HEAL1,NULL,pAvatar->ThingIndex);
 						amount_healed = pPlayerStats->mfGetMaxHitPoints()*HEAL_DATA(arg)/100; 
-						// pPlayerStats->HitPts += pPlayerStats->FullHitPts*HEAL_DATA(arg)/100; 
 						break;
 					case HEAL_ABSOLUT:
 						mfSound(SND_HEAL1,NULL,pAvatar->ThingIndex);
 						amount_healed = HEAL_DATA(arg);
-						// pPlayerStats->HitPts += HEAL_DATA(arg); 
 						break;
 					case HEAL_RANDOM:
 						mfSound(SND_HEAL1,NULL,pAvatar->ThingIndex);
 						amount_healed = RollDice(&dice);
-						// pPlayerStats->HitPts += RollDice(&dice);
 						break;
 					case HEAL_FULLY:
 						mfSound(SND_HEAL2,NULL,pAvatar->ThingIndex);
 						amount_healed = pPlayerStats->mfGetMaxHitPoints() - pPlayerStats->mfGetCurHitPoints();
-						// pPlayerStats->HitPts = pPlayerStats->FullHitPts; 
 						break;
 					default:
 						fatal_error ("bad Healing type %li passed to ItemEffects::Heal\n",HealType>>24);
@@ -731,9 +685,6 @@ LONG ItemEffects::Heal(LONG Combo,LONG arg,LONG action)
 	}
 	return OK;
 }
-
-
-
 
 /* -----------------------------------------------------------------
    
@@ -762,8 +713,6 @@ LONG ItemEffects::AddToAttribute(LONG Combo,LONG Arg,LONG Action)
 			
 		case PICKUP:
 		{
-//			if (!mfAddActiveItem(ItemEffects::AddToAttribute,Combo,Arg,Item.mfDuration(hPlayerStats)))
-//				return CANT_COMPLETE;
 				
 			DumbAutoLockPtr< PLAYER_STATS > const pPlayerStats(hPlayerStats);
 			
@@ -882,7 +831,6 @@ LONG ItemEffects::AddToAttribute(LONG Combo,LONG Arg,LONG Action)
 				mod = (SBYTE)(Arg&0x0000ffff);
 				pPlayerStats->StatsMod.mfModifyStats(type, -mod);
 			}
-//			mfRemoveActiveItem(ItemEffects::AddToAttribute,Combo,Arg);
 		}
 			break;
 			
@@ -898,9 +846,6 @@ LONG ItemEffects::AddToAttribute(LONG Combo,LONG Arg,LONG Action)
 	return OK; //everything went ok	
 }
 
-
-
-
 LONG ItemEffects::ImproveWeapon(LONG Combo,LONG Arg,LONG Action)
 {
 
@@ -911,14 +856,6 @@ LONG ItemEffects::ImproveWeapon(LONG Combo,LONG Arg,LONG Action)
  	
 	ItemType&		Item=ItemTypes[Itemtype];
 	
-	// if(fDomainTurn)
-	// {
-	//	return NOT_SUPPORTED;
-	// }
-	// if(fBattleCombat)
-	// {
-	//	return NOT_SUPPORTED;
-	// }
 	// else	// adventure level
 	// works in all modes
 	{
@@ -977,14 +914,6 @@ LONG ItemEffects::SetAttrTo(LONG Combo,LONG Arg,LONG Action)
  	
 	ItemType&		Item=ItemTypes[Itemtype];
 	
-	//if(fDomainTurn)
-	//{
-	//	return NOT_SUPPORTED;
-	//}
-	//if(fBattleCombat)
-	//{
-	//	return NOT_SUPPORTED;
-	//}
 	//else	// adventure level
 	// works in all modes
 	{
@@ -1000,7 +929,6 @@ LONG ItemEffects::SetAttrTo(LONG Combo,LONG Arg,LONG Action)
 					
 				if (!mfAddActiveItem(ItemEffects::SetAttrTo,Combo,Arg,Item.mfDuration(hPlayerStats)))
 					return CANT_COMPLETE;
-				
 				
 				if(Arg&AT_STR)
 				{
@@ -1130,14 +1058,6 @@ LONG ItemEffects::Invulnerable(LONG Combo,LONG Arg,LONG Action)
  	
 	ItemType&		Item=ItemTypes[Itemtype];
 
-	//if(fDomainTurn)
-	//{
-	//	return NOT_SUPPORTED;
-	//}
-	//if(fBattleCombat)
-	//{
-	//	return NOT_SUPPORTED;
-	//}
 	//else	// adventure level
 	// works in all modes
 	{
@@ -1208,7 +1128,6 @@ LONG ItemEffects::ActResistance(LONG Combo,LONG Arg,LONG Action)
  	
 	ItemType&		Item=ItemTypes[Itemtype];
 
-	
 	if(fDomainTurn)
 	{
 		// must allow pickup of item, at least...
@@ -1376,15 +1295,6 @@ LONG ItemEffects::Resistance(LONG Combo,LONG Arg,LONG Action)
  	
 	ItemType&		Item=ItemTypes[Itemtype];
 
-	
-	//if(fDomainTurn)
-	//{
-	//	return NOT_SUPPORTED;
-	//}
-	//if(fBattleCombat)
-	//{
-	//	return NOT_SUPPORTED;
-	//}
 	//else	// adventure level
 	// works in all modes
 	{
@@ -1494,14 +1404,6 @@ LONG ItemEffects::ImproveArmor(LONG Combo,LONG Arg,LONG Action)
  	
 	ItemType&		Item=ItemTypes[Itemtype];
 
-	// if(fDomainTurn)
-	// {
-	//	return NOT_SUPPORTED;
-	// }
-	// if(fBattleCombat)
-	// {
-	//	return NOT_SUPPORTED;
-	// }
 	// else	// adventure level
 	// works in all modes
 	{
@@ -1603,7 +1505,6 @@ LONG ItemEffects::HurlFireBall(LONG Combo,LONG Arg,LONG Action)
 					fBtlMagicType = BTLCAP_MAGIC_DESOLVE;
 					
 				fBtlMagicResult = BTL_R;
-				
 				
 				if (ItemTypes[Itemtype].mfCategory() == IC_MAGITEM)
 				{
@@ -1840,7 +1741,6 @@ LONG ItemEffects::IlluminateAreaRad(LONG Combo,LONG Arg,LONG Action)
  	
 	ItemType&		Item=ItemTypes[Itemtype];
 
-	
 	if(fDomainTurn)
 	{
 		return NOT_SUPPORTED;
@@ -2089,12 +1989,6 @@ LONG ItemEffects::ParalyzeAllInRad(LONG Combo,LONG Arg,LONG Action)
 	return OK; //everything went ok	
 }
 
-
-
-
-
-
-
 //effect duration maintenance functions! 
 
 BOOL ItemEffects::mfAddActiveItem(PFLLLL f,LONG a1,LONG a2,LONG dur,BOOL fAR)
@@ -2105,7 +1999,6 @@ BOOL ItemEffects::mfAddActiveItem(PFLLLL f,LONG a1,LONG a2,LONG dur,BOOL fAR)
  	SPLIT_COMBO(a1,Itemtype,hAvatarStats);
 	ItemType&		Item=ItemTypes[Itemtype];
 	
-
 	if (mfGetActiveItem(f,a1,a2))
 	{
 		char buffer[120];
@@ -2141,7 +2034,6 @@ BOOL ItemEffects::mfAddActiveItem(PFLLLL f,LONG a1,LONG a2,LONG dur,BOOL fAR)
 	ai.Func=f;
 	ai.Arg1=a1;
 	ai.Arg2=a2;
-	//printf("making active Args %li and %li\n",ai.Arg1,ai.Arg2);
 	ai.Valid=TRUE;
 	ai.AutoRemove=fAR;
 	return TRUE;
@@ -2157,7 +2049,6 @@ void ItemEffects::DeactivateAllItems()
 	}
 }
 			
-
 ItemEffects::ActiveItem* ItemEffects::mfGetActiveItem(PFLLLL f,LONG a1,LONG a2)
 {
 	for (LONG i=0;i<MAX_ACTIVE_ITEMS;++i)
@@ -2170,9 +2061,6 @@ ItemEffects::ActiveItem* ItemEffects::mfGetActiveItem(PFLLLL f,LONG a1,LONG a2)
 	
 }
 	
-	
-	
-
 //Service Durations takes a long because it's used as a task.
 void ItemEffects::ServiceDurations(LONG)  
 {
@@ -2188,22 +2076,14 @@ void ItemEffects::ServiceDurations(LONG)
 			if (ai.TimeToStop != INDEFINATE_DUR && ai.TimeToStop < SCENE_MGR::gTick)
 				(*ai.Func)(ai.Arg1,ai.Arg2,DEACTIVATE);
 
-
 			else
 			{
-//				ITEMTYPE		Itemtype;
-//				SHORT			hPlayerStats;
-//			 	SPLIT_COMBO(ai.Arg1,Itemtype,hPlayerStats);
-//				if(!fDomainTurn)
-//					printf("Item %li has %li seconds left (%li,%li)\n",Itemtype,(ai.TimeToStop-SCENE_MGR::gTick)/18,ai.TimeToStop,SCENE_MGR::gTick);
-
 
 				(*ai.Func)(ai.Arg1,ai.Arg2,SERVICE);
 			}
 		}
 	}
 }
-
 
 /* ========================================================================
    Function    - mfPauseDurations
@@ -2228,7 +2108,6 @@ void ItemEffects::mfPauseDurations(LONG const DiffTime)
 	}
 }
 
-
 void ItemEffects::mfRemoveActiveItem(PFLLLL a,LONG b,LONG c)
 {
 	for (LONG i=0;i<MAX_ACTIVE_ITEMS;++i)
@@ -2236,7 +2115,6 @@ void ItemEffects::mfRemoveActiveItem(PFLLLL a,LONG b,LONG c)
 		ActiveItem& ai=ActiveItems[i];
 		if (ai.Valid && ai.Func==a && ai.Arg1==b && ai.Arg2==c)
 		{
-//			printf("index %li found\n",i);
 			ai.Valid=FALSE;
 			ai.Func=NULL;
 			ai.Arg1=-1;
@@ -2246,8 +2124,6 @@ void ItemEffects::mfRemoveActiveItem(PFLLLL a,LONG b,LONG c)
 			
 	}
 }
-
-
 
 void ItemEffects::WipeActiveItems()
 {
@@ -2265,7 +2141,6 @@ void ItemEffects::DeactivateAvatarsItems(SHORT hPlayerStats)
 		SHORT Itemtype=fERROR;
 		SPLIT_COMBO(ActiveItems[i].Arg1,Itemtype,hAvStats);
 
-
 		if (ai.Valid == TRUE && ai.Func != NULL && hAvStats==hPlayerStats)
 		{
 			fQuietItems=TRUE;
@@ -2279,9 +2154,6 @@ void ItemEffects::DeactivateAvatarsItems(SHORT hPlayerStats)
 	}
 }			
 
-		
-
-
 SHORT ItemType::mfDuration(SHORT AvaStatsHdl) const
 {
 	if(IC_SPELL!=Category || !(Duration&PER_LEVEL))
@@ -2290,7 +2162,6 @@ SHORT ItemType::mfDuration(SHORT AvaStatsHdl) const
 	PTR_PLAYER_STATS pss =(PTR_PLAYER_STATS)BLKPTR(AvaStatsHdl);
 	SHORT PriestClass=pss->mfGetSpellCastClass(SPELL_INFO::PRIEST);
 	SHORT WizardClass=pss->mfGetSpellCastClass(SPELL_INFO::WIZARD);
-
 
 	if (WizardClass!=CANT_CAST_SPELLS)
 		return (Duration& ~PER_LEVEL)*(pss->mfGetLevel(WizardClass));
@@ -2332,7 +2203,6 @@ void TargetMenu::Paint(LONG MenuCombo, LONG Arg)
 		DumbAutoLockPtr< PLAYER_STATS > const pPS(StatsHdls[index]);
       // [d4-09-97 JPC] Changed the following because the PLAYER_NAME
       // class is going away.
-      // strncpy(NameBuf, PLAYER_NAME::mfGetName(pPS->NameClass.fName), 30);
       strncpy(NameBuf, pPS->mfGetName(), 30);
 		print_text_centered(NameX+(NameW/2), NameY+(NameH/2)+1, NameBuf,BLACK);
 	}
@@ -2395,7 +2265,6 @@ void TargetMenu::Display(LONG combo, LONG targetargs)
 	TargetType = targettype;
 	TargetArgs = targetargs;
 	
-	
 	LONG index = 0;
 	ADVENTURER_TEAM_ITOR AdvItor;
 	
@@ -2452,7 +2321,6 @@ ItemChargeHandler::ChargedItemChain::ChargedItemChain(LONG num,ITEMTYPE a,ITEMTY
 	ItemTypeChain[9]=j;
 }
 
-
 void ItemChargeHandler::mfDropCharge(ITEMTYPE ItemTypeIdx,SHORT hAvatarStats)
 {
 	LONG iFound,jFound;
@@ -2460,7 +2328,6 @@ void ItemChargeHandler::mfDropCharge(ITEMTYPE ItemTypeIdx,SHORT hAvatarStats)
 	if(!mfFind(ItemTypeIdx,&iFound,&jFound))
 		return;
 
-	
 	DumbAutoLockPtr< PLAYER_STATS > const pStats(hAvatarStats);
 	InventoryItor itor(pStats->mfGetInventory());
 
@@ -2502,7 +2369,6 @@ void ItemChargeHandler::mfDropCharge(ITEMTYPE ItemTypeIdx,SHORT hAvatarStats)
 	}
 }
 		
-	
 LONG ItemChargeHandler::mfCharges(ITEMTYPE ItemTypeIdx)
 {
 	LONG iFound,jFound;
@@ -2518,12 +2384,10 @@ LONG ItemChargeHandler::mfCharges(ITEMTYPE ItemTypeIdx)
 		return Charges;
 }
 
-
 BOOL ItemChargeHandler::mfFind(ITEMTYPE ItemTypeIdx,LONG* iFound,LONG* jFound)
 {
 	LONG i=0,j=0;
 	
-
 	for (i=0;i<NumChargedItems;++i)
 		for (j=0;ChargeDegradeTable[i][j]!=ITEM_NO_THING;++j)
 			if (ChargeDegradeTable[i][j]==ItemTypeIdx)
@@ -2538,8 +2402,3 @@ BOOL ItemChargeHandler::mfFind(ITEMTYPE ItemTypeIdx,LONG* iFound,LONG* jFound)
 	return FALSE;
 
 }
-	
-	
-	
-
-

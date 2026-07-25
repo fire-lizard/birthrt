@@ -9,7 +9,6 @@
 
    Contains the following general functions:
 
-
    ======================================================================== */
 
 /* ------------------------------------------------------------------------
@@ -157,4 +156,3 @@ BOOL FindUserSceneFiles ( char * pPath, char * pExt )
 	
 	return TRUE;
 }
-

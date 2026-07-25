@@ -9,7 +9,6 @@
 
    Contains the following general functions:
 
-
    ======================================================================== */
 
 /* ------------------------------------------------------------------------
@@ -93,16 +92,11 @@ SBYTE					SCENE_MGR::TerrainSubType = -1;	// battle field sub type
 SCENE_AI::SCENE_TYPE	SCENE_MGR::SceneType = SCENE_AI::NO_SCENE;	// type for next scene ai
 
 // GEH these are gregs debug stuff
-//REALM::REALM_TYPE	SCENE_MGR::Aggressor = REALM::AERENWE;
-//SHORT		SCENE_MGR::HomeIndex = 0;	// who is the home unit (w/camera)
-//SHORT		SCENE_MGR::AwayIndex = 1;	// who is the away unit
 
 LONG		SCENE_MGR::MachineIds = 10000;	// current availible avatar id
 
-
 extern BOOL fQuietItems;
 
-	
 /* ========================================================================
    Function    - GetNewId
    Description -
@@ -154,7 +148,6 @@ void SCENE_MGR::mfSetScenePause(BOOL const bState)
 
 	if (SCENE_MGR::hCurrentScene != fERROR)
 	{
-		//GEH SetBlockAttr(SCENE_MGR::hCurrentScene, LOCKED, LOCKED);
 		PTR_SCENE pCurrentScene = (PTR_SCENE) BLKPTR(SCENE_MGR::hCurrentScene);
 
 		// Pause the scene so that the music keeps playing but the camera movement
@@ -164,19 +157,15 @@ void SCENE_MGR::mfSetScenePause(BOOL const bState)
 		if (fScenePaused)
 		{
 			pCurrentScene->mfSetSceneState(SCENE_AI::PAUSED);
-			//PlayEnvironmentalSounds = FALSE;
 			// For the momemt send all the AI's into a Paused state
 			for (i = 0; i < MAX_AVATARS; i++)
 			{
 				if (pCurrentScene->Avatars[i] != fERROR)
 				{
-					//GEH SetBlockAttr(pCurrentScene->Avatars[i], LOCKED, LOCKED);
 					CAvatar *pAvatar = (CAvatar *) BLKPTR(pCurrentScene->Avatars[i]);
 					pAvatar->DoAI(CAvatar::AI_BEGIN_PAUSE);
 					
 					// Just incase he died.
-					//GEH if (pCurrentScene->Avatars[i] != fERROR)
-						//GEH ClrLock(pCurrentScene->Avatars[i]);
 					
 				}
 			}
@@ -184,25 +173,20 @@ void SCENE_MGR::mfSetScenePause(BOOL const bState)
 		else
 		{
 			pCurrentScene->mfSetSceneState(SCENE_AI::PLAY);
-			//PlayEnvironmentalSounds = TRUE;
 			// For the momemt send all the AI's into a Paused state
 			for (i = 0; i < MAX_AVATARS; i++)
 			{
 				if (pCurrentScene->Avatars[i] != fERROR)
 				{
-					//GEH SetBlockAttr(pCurrentScene->Avatars[i], LOCKED, LOCKED);
 					CAvatar *pAvatar = (CAvatar *) BLKPTR(pCurrentScene->Avatars[i]);
 					pAvatar->DoAI(CAvatar::AI_END_PAUSE);
 					
 					// Just incase he died.
-					//GEH if (pCurrentScene->Avatars[i] != fERROR)
-						//GEH ClrLock(pCurrentScene->Avatars[i]);
 					
 				}
 			}
 		}
 		
-		//GEh ClrLock(hCurrentScene);
 	}
 }
 /* ========================================================================
@@ -231,7 +215,6 @@ LONG const SCENE_MGR::mfLoadScene(
 		}
 		else
 		{
-			//GEH SetBlockAttr(SCENE_MGR::hCurrentScene, LOCKED, LOCKED);
 			
 			bFirstTime = TRUE;
 			pCurrentScene = (PTR_SCENE) BLKPTR(SCENE_MGR::hCurrentScene);
@@ -240,7 +223,6 @@ LONG const SCENE_MGR::mfLoadScene(
 	}
 	else
 	{
-		//GEH SetBlockAttr(SCENE_MGR::hCurrentScene, LOCKED, LOCKED);
 		
 		pCurrentScene = (PTR_SCENE) BLKPTR(SCENE_MGR::hCurrentScene);
 		pCurrentScene->mfSetSceneState(SCENE_AI::RELEASE);
@@ -279,7 +261,6 @@ LONG const SCENE_MGR::mfLoadScene(
 		// won't clear the list
 		memset(BtlExceptions, 0, sizeof(SHORT) * GRID_MAX_ROWS * GRID_MAX_COLS);
 
-
 #ifdef _WINDOWS
 
 		if ( IsMultiPlayer() )
@@ -295,7 +276,6 @@ LONG const SCENE_MGR::mfLoadScene(
 				if ( IsMulPlayerandRealm(units[SCENE_MGR::AwayIndex].Realm) )
 				{
 					SetGameData(MP_GAMEDATA, MPGAMESEMIPHORE_BATTLE_START, 0, (LONG)btl_char, TRUE );
-					// -- WaitForSemiphore(MPGAMESEMIPHORE_BATTLE_START1);
 					StartSync(iMPS_SYNC8);
 					CheckSync(iMPS_SYNC8, TRUE, FALSE);
 					DisplayInfo("UI\\DINFO_BK.PCX",1,STR_GM_ENTER_BATTLE);
@@ -315,7 +295,6 @@ LONG const SCENE_MGR::mfLoadScene(
 					StartSync(iMPS_SYNC8);
 					CheckSync(iMPS_SYNC8, TRUE, FALSE);
 					btl_char = DoGetGameData(MP_GAMEDATA, MPGAMESEMIPHORE_BATTLE_START, 0 );
-					// -- btl_char = WaitForSemiphore(MPGAMESEMIPHORE_BATTLE_START);
 					DisplayInfo("UI\\DINFO_BK.PCX",1,STR_GM_ENTER_BATTLE);
 					update_screen();
 					SceneName[5] = btl_char;
@@ -334,7 +313,6 @@ LONG const SCENE_MGR::mfLoadScene(
 					}
 				}
 			}
-
 
 		}
 		else    //---- Let non multiplayer do what it wants
@@ -359,7 +337,6 @@ LONG const SCENE_MGR::mfLoadScene(
 				SceneName[5] = (CHAR)(random(4)+'0');
 			}
 		}
-
 
 		// over-ride scene type
 		pCurrentScene->mfSetSceneType( SCENE_AI::BATTLE_SCENE );
@@ -485,7 +462,6 @@ LONG const SCENE_MGR::mfLoadScene(
 		add_task(1,HandleFloors,0);  	//once every frame see if any floors moving
 		add_task(1,HandleCeilings,0); //once every frame see if any ceilings moving
 		add_task(1,TextureFrameHandler,0);  //once every frame check lighting effects
-		// no longer used: add_task(10,SectorFrameHandler,0);  //once every 10 frames check sector effects
 	}
 	ResumeSuspendedMusic();
 	return fNOERR;
@@ -503,7 +479,6 @@ static BOOL LoadSceneAvatars( SCENE * const pScene, SHORT UnitIndex )
 {
 	SHORT					i=0;
 	const REALM::REALM_TYPE	Realm = (REALM::REALM_TYPE) units[UnitIndex].Realm;
-	// CHAR					buffer[24];
 	
 	do
 	{
@@ -518,7 +493,6 @@ static BOOL LoadSceneAvatars( SCENE * const pScene, SHORT UnitIndex )
 			
 			if (pScene->Avatars[i] != fERROR)
 			{
-				//GEH SetBlockAttr(pScene->Avatars[i], LOCKED, LOCKED);
 				CAvatar *pAvatar = (CAvatar *) BLKPTR(pScene->Avatars[i]);
 				pAvatar->UnitIndex = UnitIndex;
 				pAvatar->Id = units[UnitIndex].id;
@@ -551,7 +525,6 @@ static BOOL LoadSceneAvatars( SCENE * const pScene, SHORT UnitIndex )
 				pAvatar->mfSetOriginalRemapColor(Realm);
 				
 				units[UnitIndex].iHandle = pScene->Avatars[i];
-				//GEH ClrLock(pScene->Avatars[i]);
 			}
 		}
 		else
@@ -582,7 +555,6 @@ void SCENE_MGR::mfReleaseSceneToMap(LONG,LONG)
 	SuspendMusic();
 	if (hCurrentScene != fERROR)
 	{
-		//GEH SetBlockAttr(SCENE_MGR::hCurrentScene, LOCKED, LOCKED);
 		PTR_SCENE pCurrentScene = (PTR_SCENE) BLKPTR(SCENE_MGR::hCurrentScene);
 		
 		// GWP You must deactivate before releasing the avatar memory.
@@ -640,7 +612,6 @@ void SCENE_MGR::mfDoAI()
 		// In case the wad was loaded directly
 		if (SCENE_MGR::hCurrentScene != fERROR)
 		{
-			//GEH SetBlockAttr(SCENE_MGR::hCurrentScene, LOCKED, LOCKED);
 			PTR_SCENE pCurrentScene = (PTR_SCENE) BLKPTR(SCENE_MGR::hCurrentScene);
 	
 			if (fExitLevel != 0)
@@ -662,8 +633,6 @@ void SCENE_MGR::mfDoAI()
 			    fExitLevel = 0;
 				pCurrentScene->mfCallSceneAI();
 				
-				//GEH ClrLock(SCENE_MGR::hCurrentScene);
-			
 			}
 			else
 			{
@@ -680,7 +649,6 @@ void SCENE_MGR::mfDoAI()
 					goto StartSceneAI;
 				}
 				
-				//GEH ClrLock(SCENE_MGR::hCurrentScene);
 			}
 		}
 		else

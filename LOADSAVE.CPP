@@ -64,7 +64,6 @@ extern BOOL fLogComment;
 /* ------------------------------------------------------------------------
    Defines
    ------------------------------------------------------------------------ */
-//#define	LOGCOMMENTSLEEP	Sleep(1);
 #define  LOGCOMMENTSLEEP	{;}
 
 #define FONT_TITL_40PT  13
@@ -192,7 +191,6 @@ extern BOOL fPlayerNeverDeclaredWar;
 #define MAINT_MODE				2
 #define BEFORE_LTACTION			0
 
-// extern LONG mode_save;		/* gamemap.cpp */
 extern LONG new_treasury;
 extern LONG iGorgonPlot;	/* gamemap.cpp */
 extern LONG iGorgonAlly;	/* gamemap.cpp */
@@ -501,7 +499,6 @@ void SaveGameFiles(FILE *fp)
     StatWriteAllTo(fp);
 	run_timers();
 
-
 	/*-------------------------------------------------------------------*/
 	// Save scenario specific realm names
 	// [abc] 10/27/97
@@ -513,7 +510,6 @@ void SaveGameFiles(FILE *fp)
 	}
 
 }
-
 
 void LoadGameFiles(FILE *fp)
 {
@@ -567,8 +563,6 @@ void LoadGameFiles(FILE *fp)
     {
 		fread(&dummy,				sizeof(LONG),			1, fp);
 		
-//		if ((dummy&0xff) != 0)	// not saved as basic game
-//    		++date;
     }
 	else
 #endif
@@ -627,7 +621,6 @@ void LoadGameFiles(FILE *fp)
 		run_timers();
     }
 
-
     /*-------------------------------------------------------------------*/
     /* Load regents[] */
 
@@ -672,7 +665,6 @@ void LoadGameFiles(FILE *fp)
     assert(count == LAND_REALM_COUNT);
     fread((char *) RealmReaction, size, count, fp);
 
-
     /*-------------------------------------------------------------------*/
     /* Load RealmStatus[][] */
 
@@ -683,7 +675,6 @@ void LoadGameFiles(FILE *fp)
     fread((char *) &count, sizeof(LONG), 1, fp);
     assert(count == LAND_REALM_COUNT);
     fread((char *) RealmStatus, size, count, fp);
-
 
     /*-------------------------------------------------------------------*/
     /* Load province[] */
@@ -737,7 +728,6 @@ void LoadGameFiles(FILE *fp)
 		run_timers();
     }
 
-
     /*-------------------------------------------------------------------*/
     /* Load places[] */
 
@@ -775,9 +765,6 @@ void LoadGameFiles(FILE *fp)
         places[i].Icon				= pPlS->Icon;
         places[i].x					= pPlS->x;
         places[i].y					= pPlS->y;
-//      places[i].iName				= pPlS->iName; // never nonzero
-
-//		places[i].iIconBitm			= fERROR;  // InitDomainTurn will fill in
 
 		if (places[i].Icon != NO_MAP_ICON)
 		{
@@ -787,7 +774,6 @@ void LoadGameFiles(FILE *fp)
 		}
 		else
 			places[i].iIconBitm = fERROR;
-
 
         ++pPlS;  /* advance */
 		run_timers();
@@ -850,7 +836,6 @@ void LoadGameFiles(FILE *fp)
 		run_timers();
     }
 
-
     /*-------------------------------------------------------------------*/
     /* Load npc_ai[] */
 
@@ -862,8 +847,6 @@ void LoadGameFiles(FILE *fp)
     assert(count == LAND_REALM_COUNT);
 
     fread(npc_ai, size, count, fp);
-    //for (i=0; i < count; i++)
-    //    npc_ai[i].CurrentMode = pNA[i].CurrentMode;
 
     /*-------------------------------------------------------------------*/
     /* Load RealmOrder[] */
@@ -967,7 +950,6 @@ void LoadGameFiles(FILE *fp)
     /*-------------------------------------------------------------------*/
     /* update regent info */
 
-
 	if ( fMultiLoad )
 	{
 		int i;
@@ -978,7 +960,6 @@ void LoadGameFiles(FILE *fp)
 		}
 
 	}
-
 
 	ActiveRegent = realm[HomeRealm].mfGetRegent();
 	realm[HomeRealm].mfSetPlayerCtrl(TRUE);
@@ -994,7 +975,6 @@ void LoadGameFiles(FILE *fp)
 	if (0 == access(cur_sav, F_OK))
 		remove(cur_sav);
 }
-
 
 void ScrollGame(LONG dir, LONG)
 {
@@ -1047,7 +1027,6 @@ void LoadGame(LONG, LONG)
 	
 		// hide main menu
 	
-//		GAMEToggleMainMenu(FALSE,0);
 		back_to_main = TRUE;
 
 		// wait for menu to minimize
@@ -1057,7 +1036,6 @@ void LoadGame(LONG, LONG)
 		ShowLoadMenu(FALSE);
 	}
 }
-
 
 /* ========================================================================
    Function    - LoadGameMulti
@@ -1072,8 +1050,6 @@ void LoadGameMulti(LONG, LONG)
 	
 	// hide main menu
 	
-//	GAMEToggleMainMenu(FALSE,0);
-
 	back_to_main = FALSE;
 
 	// wait for menu to minimize
@@ -1083,8 +1059,6 @@ void LoadGameMulti(LONG, LONG)
 	ShowLoadMenu(TRUE);
 
 }
-
-
 
 void PaintCantSave(LONG, LONG)
 {
@@ -1123,14 +1097,6 @@ void CantSaveMsg()
 void SaveGame(LONG, LONG)
 {
 
-//#ifdef _WINDOWS
-//	//---- Dont allow if this is a multiplayer game
-//	if ( IsMultiPlayer() )
-//	{
-//		return;		
-//	}
-// #endif
-
 	if ( mouse_button == 2 )
 	{
 		SystemHelp( STR_MAIN1_HELP_SAVE_TITLE,
@@ -1141,8 +1107,6 @@ void SaveGame(LONG, LONG)
 
 		if (!fDomainTurn || !char_selected)
 			return;
-//		if (dturn_mode != MIN_MODE && dturn_mode != TAXLVL_MODE && dturn_mode != MAINT_MODE)
-//			return;
 		if (master_game_type == GAME_INTRO)	
 			return;
 
@@ -1160,7 +1124,6 @@ void SaveGame(LONG, LONG)
 
 		// turn off main menu
 	
-//		GAMEToggleMainMenu(FALSE,0);
 		back_to_main = TRUE;
 
 		// wait for menu to minimize
@@ -1170,7 +1133,6 @@ void SaveGame(LONG, LONG)
 		ShowSaveMenu();
 	}
 }
-
 
 /* ========================================================================
    Function    - ShowLoadMenu
@@ -1188,9 +1150,6 @@ void ShowLoadMenu(BOOL fMulti)
     LoadSaveName[0] = ' ';
     ShowMenu(D_LOAD_MENU);
 }
-
-
-
 
 /* ========================================================================
    Function    - ShowSaveMenu
@@ -1222,7 +1181,6 @@ void HideLoadMenu(LONG MenuCombo, LONG)
 	del_region(SelectGame, 0);
 	
 	// Click is done by the button itself.
-	//PushLoadSaveButton(MenuCombo);
 	
 	HideMenu(MenuId);
 	fUpdatePanels = TRUE;
@@ -1291,7 +1249,6 @@ void HideSaveMenu(LONG MenuCombo, LONG)
 	
 	// click the button
 	// The button does the push.
-	// PushLoadSaveButton(MenuCombo);
 	
 	HideMenu(MenuId);
 	fUpdatePanels = TRUE;
@@ -1424,8 +1381,6 @@ void ShowMaxReached()
 	RunMenus();
 }
 
-
-
 void filename_chop(char *filename)
 {
     char *p;
@@ -1438,7 +1393,6 @@ void filename_chop(char *filename)
         *p = '\0';
     }
 }
-
 
 // borrowed enough code here so "HideMaxReached" works for this, too.
 void ShowDeleteFailed()
@@ -1537,7 +1491,6 @@ void SaveGameDo(LONG MenuCombo, LONG forsure)
     	return;
     }
 
-
     if (!CopyAFile(cur_game, buffer))	// save succeeded
     {
     	back_to_main = FALSE;
@@ -1545,7 +1498,6 @@ void SaveGameDo(LONG MenuCombo, LONG forsure)
     HideSaveMenu(MenuCombo, 0);
     return;
 }
-
 
 /* ========================================================================
    Function    - LoadGameDoMulti
@@ -1561,7 +1513,6 @@ void LoadGameDoMulti( void )
 
 	fMultiLoad = TRUE;
 	REGRELIC_STRUCT::SetAssigned();  // shouldn't give more relics
-
 
 	fp = fopen( szLoadTemp, "rb");
 
@@ -1587,7 +1538,6 @@ void LoadGameDoMulti( void )
 
 	LinkUnits(FALSE); // Don't send to others 
 	
-	
 	SHORT i;
 	for (i=0; i < LAND_REALM_COUNT; i++)
 	{
@@ -1604,7 +1554,6 @@ void LoadGameDoMulti( void )
 	global_action_turn = 1;
 	oldAction = 0;
 	fRoundOver = FALSE;
-	//    mode_save = MAINT_MODE;
 	fFinalRoll = FALSE;
 	fUpdateDataArea = FALSE;
 	fDoActionIcon = FALSE;
@@ -1638,14 +1587,9 @@ void LoadGameDoMulti( void )
 	}
 	InitDomainTurn(0);  /* restore the rest of the stuff */
 
-
-
 #endif
 
-
 }
-
-
 
 /* ========================================================================
    Function    - LoadGameDo
@@ -1672,7 +1616,6 @@ void LoadGameDo(LONG MenuCombo, LONG )
 	strcpy(buf1, LoadSaveName);
 	filename_chop(buf1);
     sprintf(buffer, "SaveGame\\%s.SAV", buf1);
-
 
 	//---- Do some multiplayer things instead
 
@@ -1800,8 +1743,6 @@ void LoadGameDo(LONG MenuCombo, LONG )
 	return;
 }
 
-
-
 void DeleteGameReal(LONG , LONG button)
 {	
     char buffer[127];
@@ -1826,7 +1767,6 @@ void DeleteGameReal(LONG , LONG button)
     ScrollGame(0,0);
 }
 
-
 void DeleteGameConfirmed(LONG MenuCombo, LONG button)
 {
 	LONG	MenuId, ButtonId;
@@ -1845,8 +1785,6 @@ void DeleteGameConfirmed(LONG MenuCombo, LONG button)
 	
 	DeleteGameReal(0, button);
 }
-
-
 
 void DeleteGame (LONG MenuCombo, LONG)
 {
@@ -2074,7 +2012,6 @@ void PaintLoadSaveMenu (LONG MenuCombo, LONG)
     }
 }
 
-
 BOOL GetHelpBit(SHORT bitno)
 {
 	unsigned long x;
@@ -2098,4 +2035,3 @@ void SetAllHelpBits(void)
 {
 	helpbits = 0xFFFFFFFF;
 }
-

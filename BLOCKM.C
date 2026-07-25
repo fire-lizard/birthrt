@@ -32,7 +32,6 @@
    Global Variables
    ------------------------------------------------------------------------ */
 
-   
 /* =======================================================================
    Function    - get_blockm
    Description - determines the block specified coordinates are in
@@ -81,9 +80,6 @@ POINT GetBlockCornerFromXY(LONG x,LONG y)
 	ReturnMe.x+=blockm_header.xo;
 	ReturnMe.y+=blockm_header.yo;
 
-
 	return ReturnMe;
 
-}
-
-	
+}

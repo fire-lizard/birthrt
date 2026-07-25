@@ -9,7 +9,6 @@
    
    Contains the following general functions:
 
-   
    ======================================================================== */
 
 /* ------------------------------------------------------------------------
@@ -90,7 +89,6 @@ void RECHECK_OPTIONS::mfUpDateOptions()
 		
 		SetButtonLabel(D_COMBAT_RPGBOTTOM_BAR, BUTNO_RPG_DONE, STR_NULL, 0);
 	}
-	
 	
 	CONTROL_PANELS::mfUpdateOptions();
 	

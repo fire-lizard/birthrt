@@ -40,7 +40,6 @@
 #include "loadsave.hxx"
 #endif
 
-
 extern BOOL IsMultiPlayer ( void );
 
 /* ------------------------------------------------------------------------
@@ -258,7 +257,6 @@ extern DECL_MATRIX_CLASS_S(UBYTE,RealmStatus,REALM::REALM_COUNT,LAND_REALM_COUNT
 
 extern DECL_VECTOR_CLASS_S(REALM_STRUCT,realm,REALM::REALM_COUNT);
 
-
 /* ------------------------------------------------------------------------
    Prototypes
    ------------------------------------------------------------------------ */
@@ -269,8 +267,6 @@ inline BOOL const ISATWAR(REALM::REALM_TYPE const a,REALM::REALM_TYPE const b)
 {
 	if (a >= REALM::REALM_COUNT || b >= LAND_REALM_COUNT)
 	{
-//		fatal_error ("Bad Arguments to ISATWAR\n");
-//		return (a == b ) ? FALSE : TRUE;
 		return FALSE;
 	}
 	if (a == REALM::ANY_REALM || b == REALM::ANY_REALM )
@@ -290,7 +286,6 @@ inline BOOL const AREALLIED(REALM::REALM_TYPE const a,REALM::REALM_TYPE const b)
 {
 	if (a >= REALM::REALM_COUNT || b >= LAND_REALM_COUNT)
 	{
-//		fatal_error ("Bad Arguments to AREALLIED\n");
 		return (a == b) ? TRUE : FALSE;
 	}
 	
@@ -324,7 +319,6 @@ inline BOOL const AREFULLALLIES(REALM::REALM_TYPE const a,REALM::REALM_TYPE cons
 {
 	if (a >= REALM::REALM_COUNT || b >= LAND_REALM_COUNT)
 	{
-//		fatal_error ("Bad Arguments to AREFULLALLIES\n");
 		return (a == b) ? TRUE : FALSE;
 	}
 	// An error in calling but don't stop now.
@@ -345,7 +339,6 @@ inline BOOL const ISVASSAL(REALM::REALM_TYPE const a,REALM::REALM_TYPE const b)
 {
 	if (a >= REALM::REALM_COUNT || b >= LAND_REALM_COUNT)
 	{
-//		fatal_error ("Bad Arguments to ISVASSEAL\n");
 		return (a == b) ? FALSE : TRUE;
 	}
 	// An error in calling but don't stop now.
@@ -370,13 +363,9 @@ inline void SET_NOT_FRIENDLY(REALM::REALM_TYPE const Attacking, REALM::REALM_TYP
 		return;
 		
 	// GWP Removed at Alan's request.
-	//if (Attacking==REALM::FIVEPEAKS || Attacked==REALM::FIVEPEAKS)
-	//	return;
 
-	
 	if (Attacking == Attacked || Attacking >= REALM::REALM_COUNT || Attacked >= LAND_REALM_COUNT)
 		return;
-
 
 	if (((RealmStatus[Attacking][Attacked]) &0x0F) > STATUS_NEUTRAL)
 	{
@@ -583,9 +572,6 @@ inline void	REALM_STRUCT::mfSetRegency(LONG const NewRegency)
 		fRealmData.regency = 0;
 	}
 //	else if (NewRegency > (LONG)(USHRT_MAX))
-//	{
-//		fRealmData.regency = USHRT_MAX;
-//	}
 	else
 	{
 		fRealmData.regency = NewRegency;
@@ -706,8 +692,5 @@ inline void	REALM_STRUCT::mfSetDMCtrl( BOOL const DMCtrl)
 	fRealmData.x = ((SHORT)DMCtrl << 14) + (fRealmData.x & 0x2FFF);
 }
 
-
 /*	======================================================================== */
 #endif // _REALM_HXX
-
-
