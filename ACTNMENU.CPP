@@ -52,7 +52,7 @@
 #include "ITEMUTIL.HXX"
 
 #ifdef _WINDOWS
-#include "WINSYS\MULPLAY.HXX"
+#include "WINSYS/MULPLAY.HXX"
 #endif
 
 extern BOOL fLogComment;

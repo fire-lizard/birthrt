@@ -53,31 +53,31 @@
    ======================================================================== */
 #include <stdio.h>
 #if !defined(_TYPEDEFS_H)
-#include "typedefs.h"
+#include "TYPEDEFS.H"
 #endif
 
 #if !defined(_GAMETYPE_HXX)
-#include "gametype.hxx"   
+#include "GAMETYPE.HXX"   
 #endif
 
 #if !defined(_ITEMTYPE_HXX)
-#include "itemtype.hxx"
+#include "ITEMTYPE.HXX"
 #endif
 
 #if !defined(_WEAPON_HXX)
-#include "weapon.hxx"
+#include "WEAPON.HXX"
 #endif
 
 #if !defined(_ARMOR_HXX)
-#include "armor.hxx"
+#include "ARMOR.HXX"
 #endif
 
 #if !defined(_TMSGBOX_HXX)
-#include "tmsgbox.hxx"
+#include "TMSGBOX.HXX"
 #endif
 
 #if !defined(_VECTOR_HXX)
-#include "vector.hxx"
+#include "VECTOR.HXX"
 #endif
 
 /* ------------------------------------------------------------------------

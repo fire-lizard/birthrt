@@ -12,19 +12,19 @@
    Sub Includes
    ------------------------------------------------------------------------ */
 #if !defined(_TYPEDEFS_H)
-#include "typedefs.h"
+#include "TYPEDEFS.H"
 #endif
 
 #if !defined(_THINGS_H)
-#include "things.h"
+#include "THINGS.H"
 #endif
 
 #if !defined(_PLAYCLAS_HXX)
-#include "playclas.hxx"
+#include "PLAYCLAS.HXX"
 #endif
 
 #if !defined(_EXPLEVEL_HXX)
-#include "explevel.hxx" // for saving throw types
+#include "EXPLEVEL.HXX" // for saving throw types
 #endif
 
 #define TRAVELINGSEQ	STANDSEQ

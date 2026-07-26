@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <stdarg.h>
 
-#include "mono_c.h"
+#include "MONO_C.H"
 
 static MonoDevice MDA;
 

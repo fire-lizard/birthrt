@@ -6,15 +6,15 @@
 #define _ACTIONS_HXX
 
 #if !defined(_TYPEDEFS_HXX)
-#include "typedefs.h"
+#include "TYPEDEFS.H"
 #endif
 
 #if !defined(_VECTOR_HXX)
-#include "vector.hxx"
+#include "VECTOR.HXX"
 #endif
 
 #if !defined(_STRMGR_H)
-#include "strmgr.h"
+#include "STRMGR.H"
 #endif
 
 /* ------------------------------------------------------------------------

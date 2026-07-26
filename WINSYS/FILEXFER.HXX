@@ -3,7 +3,7 @@
 #ifndef _H_FILEXFER
 #define _H_FILEXFER
 
-#include "PNetMod.hxx"
+#include "PNETMOD.HXX"
 
 const int NETMSGID_RTS       = 249 ;
 const int NETMSGID_OKTS      = 250 ;

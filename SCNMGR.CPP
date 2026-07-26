@@ -40,7 +40,7 @@
 #include "TASK.H"
 
 #ifdef _WINDOWS
-#include "WINSYS\MULPLAY.HXX"
+#include "WINSYS/MULPLAY.HXX"
 #endif
 
 /* ------------------------------------------------------------------------

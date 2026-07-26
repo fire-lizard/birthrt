@@ -9,15 +9,15 @@
    Sub Includes
    ------------------------------------------------------------------------ */
 #if !defined(_TYPEDEFS_H)
-#include "typedefs.h"
+#include "TYPEDEFS.H"
 #endif
 
 #if !defined(_SYSTEM_H)
-#include "system.h"
+#include "SYSTEM.H"
 #endif
 
 #if !defined(_REALM_HXX)
-#include "realm.hxx"
+#include "REALM.HXX"
 #endif
 
 /* ------------------------------------------------------------------------

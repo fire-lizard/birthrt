@@ -14,63 +14,63 @@
 #include <stdio.h>
 
 #if !defined(_ABILTIY_HXX)
-#include "ability.hxx"
+#include "ABILITY.HXX"
 #endif
 
 #if !defined(_ALIGNMNT_HXX)
-#include "alignmnt.hxx"
+#include "ALIGNMNT.HXX"
 #endif
 
 #if !defined(_ARMOR_HXX)
-#include "armor.hxx"
+#include "ARMOR.HXX"
 #endif
 
 #if !defined(_DEXTERIT_HXX)
-#include "dexterit.hxx"
+#include "DEXTERIT.HXX"
 #endif
 
 #if !defined(_DICE_H)
-#include "dice.h"
+#include "DICE.H"
 #endif
 
 #if !defined(_FILEUTIL_H)
-#include "fileutil.h"
+#include "FILEUTIL.H"
 #endif
 
 #if !defined(_REGENTS_HXX)
-#include "regents.hxx"
+#include "REGENTS.HXX"
 #endif
 
 #if !defined(_GAMETYPE_HXX)
-#include "gametype.hxx"
+#include "GAMETYPE.HXX"
 #endif
 
 #if !defined(_INVNTORY_HXX)
-#include "invntory.hxx"
+#include "INVNTORY.HXX"
 #endif
 
 #if !defined(_PLAYID_HXX)
-#include "playid.hxx"
+#include "PLAYID.HXX"
 #endif
 
 #if !defined(_PLAYRACE_HXX)
-#include "playrace.hxx"
+#include "PLAYRACE.HXX"
 #endif
 
 #if !defined(_PLAYCLAS_HXX)
-#include "playclas.hxx"
+#include "PLAYCLAS.HXX"
 #endif
 
 #if !defined(_SPELL_HXX)
-#include "spell.hxx"
+#include "SPELL.HXX"
 #endif
 
 #if !defined(_STATSMOD_HXX)
-#include "statsmod.hxx"
+#include "STATSMOD.HXX"
 #endif
 
 #if !defined(_STRENGTH_HXX)
-#include "strength.hxx"
+#include "STRENGTH.HXX"
 #endif
 
 #if !defined(_STRENUM_H)
@@ -78,11 +78,11 @@
 #endif
 
 #if !defined(_VECTOR_HXX)
-#include "vector.hxx"
+#include "VECTOR.HXX"
 #endif
 
 #if !defined(_WEAPON_HXX)
-#include "weapon.hxx"
+#include "WEAPON.HXX"
 #endif
 
 /* ------------------------------------------------------------------------

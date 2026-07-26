@@ -10,7 +10,7 @@
 #include <stdio.h>
 
 #ifdef _WINDOWS
-#include "WINSYS\STATUS.H"
+#include "WINSYS/STATUS.H"
 #include "PLATFORM.H"
 #include <fcntl.h>
 #include <stdarg.h>

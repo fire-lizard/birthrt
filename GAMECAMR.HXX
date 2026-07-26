@@ -9,31 +9,31 @@
    Sub Includes
    ------------------------------------------------------------------------ */
 #if !defined(_TYPEDEFS_H)
-#include "typedefs.h"
+#include "TYPEDEFS.H"
 #endif
 
 #if !defined(_CAMERA_H)
-#include "camera.h"
+#include "CAMERA.H"
 #endif
 
 #if !defined(_PLAYER_HXX)
-#include "player.hxx"
+#include "PLAYER.HXX"
 #endif
 
 #if !defined(_SYSTEM_H)
-#include "system.h"
+#include "SYSTEM.H"
 #endif
 
 #if !defined(_ENGINT_H)
-#include "engint.h"
+#include "ENGINT.H"
 #endif
 
 #if !defined(_PLAYER_HXX)
-#include "player.hxx"
+#include "PLAYER.HXX"
 #endif
 
 #if !defined(_SOUND_HXX)
-#include "sound.hxx"
+#include "SOUND.HXX"
 #endif
 
 /* ------------------------------------------------------------------------

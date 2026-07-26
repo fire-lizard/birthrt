@@ -11,19 +11,19 @@
 #include <string.h>
 
 #if !defined(_TYPEDEFS_H)
-#include "typedefs.h"
+#include "TYPEDEFS.H"
 #endif
 
 #if !defined(_GAMECAMR_HXX)
-#include "gamecamr.hxx"
+#include "GAMECAMR.HXX"
 #endif
 
 #if !defined(_REALM_HXX)
-#include "realm.hxx"
+#include "REALM.HXX"
 #endif
 
 #if !defined(_SCNAI_HXX)
-#include "scnai.hxx"
+#include "SCNAI.HXX"
 #endif
 
 /* ------------------------------------------------------------------------

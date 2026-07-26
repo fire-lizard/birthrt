@@ -15,7 +15,7 @@
    Includes
    ------------------------------------------------------------------------ */
 #if !defined(_TYPEDEFS_H)
-#include "typedefs.h"
+#include "TYPEDEFS.H"
 #endif
 
 #if defined (__cplusplus)
@@ -127,11 +127,11 @@ enum {
 /* ------------------------------------------------------------------------
    Global Variables
    ------------------------------------------------------------------------ */
-#include "soundfx.hxx"
+#include "SOUNDFX.HXX"
 
 // now build the totals list
 #ifdef WINDOWS_SOUND
-#include "totals.h"
+#include "TOTALS.H"
 #endif
 
 /* ------------------------------------------------------------------------

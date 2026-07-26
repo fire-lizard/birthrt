@@ -18,31 +18,31 @@
    ------------------------------------------------------------------------ */
 
 #if !defined(_TYPEDEFS_H)
-#include "typedefs.h"
+#include "TYPEDEFS.H"
 #endif
 
 #if !defined(_AVATAR_HXX)
-#include "avatar.hxx"
+#include "AVATAR.HXX"
 #endif
 
 #if !defined(_PANEL_H)
-#include "panel.h"
+#include "PANEL.H"
 #endif
 
 #if !defined(_REALM_HXX)
-#include "realm.hxx"
+#include "REALM.HXX"
 #endif
 
 #if !defined(_SNDVOX_HXX)
-#include "sndvox.hxx"
+#include "SNDVOX.HXX"
 #endif
 
 #if !defined(_SOUND_HXX)
-#include "sound.hxx"
+#include "SOUND.HXX"
 #endif
 
 #if !defined(_VECTOR_HXX)
-#include "vector.hxx"
+#include "VECTOR.HXX"
 #endif
 
 /* ------------------------------------------------------------------------

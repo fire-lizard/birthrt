@@ -19,7 +19,7 @@
 #include <string.h>
 
 #include "SYSTEM.H"				// resource manager, BLKPTR, fERROR
-#include "SOLAUDIO\dsound.hpp"
+#include "SOLAUDIO/DSOUND.HPP"
 #include "KERNAUD.HPP"
 
 extern HWND hwndApp;			// WINSYS application window

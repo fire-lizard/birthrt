@@ -9,11 +9,11 @@
 #define _AIFOLPLY_H
 
 #if !defined(_TYPEDEFS_H)
-#include "typedefs.h"
+#include "TYPEDEFS.H"
 #endif
 
 #if !defined(_ADVENTUR_HXX)
-#include "adventur.hxx"
+#include "ADVENTUR.HXX"
 #endif
 
 /* -----------------------------------------------------------------

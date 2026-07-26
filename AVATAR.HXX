@@ -11,119 +11,119 @@
 #include <limits.h>
 
 #if !defined(_SYSTEM_H)
-#include "system.h"
+#include "SYSTEM.H"
 #endif
 
 #if !defined(_ENGINE_H)
-#include "engine.h"
+#include "ENGINE.H"
 #endif
 
 #if !defined(_CTHING_HXX)
-#include "cthing.hxx"
+#include "CTHING.HXX"
 #endif
 
 #if !defined(_AIFTSEQ_HXX)
-#include "aiftseq.hxx"
+#include "AIFTSEQ.HXX"
 #endif
 
 #if !defined(_REALM_HXX)
-#include "realm.hxx"
+#include "REALM.HXX"
 #endif
 
 #if !defined(_MACHINE_H)
-#include "machine.h"
+#include "MACHINE.H"
 #endif
 
 #if !defined(_MENU_H)
-#include "menu.h"
+#include "MENU.H"
 #endif
 
 #if !defined(_SCNMGR_HXX)
-#include "scnmgr.hxx"
+#include "SCNMGR.HXX"
 #endif
 
 #if !defined(_SOUND_HXX)
-#include "sound.hxx"
+#include "SOUND.HXX"
 #endif
 
 #if !defined(_SPECIAL_H)
-#include "special.h"
+#include "SPECIAL.H"
 #endif
 
 typedef SHORT HDL_AVATAR;
 
 // ai subclasses
 #if !defined(_AI_LEADER_HXX)
-#include "aileader.hxx"
+#include "AILEADER.HXX"
 #endif
 
 // ai classes
 #if !defined(_AIBTLCAP_HXX)
-#include "aibtlcap.hxx"
+#include "AIBTLCAP.HXX"
 #endif
 
 #if !defined(_AIFOLPLY_HXX)
-#include "aifolply.hxx"
+#include "AIFOLPLY.HXX"
 #endif
 
 #if !defined(_AIFIREBL_HXX)
-#include "aifirebl.hxx"
+#include "AIFIREBL.HXX"
 #endif
 
 #if !defined(_AIFOLID_HXX)
-#include "aifolid.hxx"
+#include "AIFOLID.HXX"
 #endif
 
 #if !defined(_AIFOLPTH_HXX)
-#include "aifolpth.hxx"
+#include "AIFOLPTH.HXX"
 #endif
 
 #if !defined(_AIGARGL_HXX)
-#include "aigargl.hxx"
+#include "AIGARGL.HXX"
 #endif
 
 #if !defined(_AIGUARD_HXX)
-#include "aiguard.hxx"
+#include "AIGUARD.HXX"
 #endif
 
 #if !defined(_AIPONG_HXX)
-#include "aipong.hxx"
+#include "AIPONG.HXX"
 #endif
 
 #if !defined(_AIPTHLDR_HXX)
-#include "aipthldr.hxx"
+#include "AIPTHLDR.HXX"
 #endif
 
 #if !defined(_AIFOLCAP_HXX)
-#include "aifolcap.hxx"
+#include "AIFOLCAP.HXX"
 #endif
 
 #if !defined(_AISPIDER_HXX)
-#include "aispider.hxx"
+#include "AISPIDER.HXX"
 #endif
 
 #if !defined(_AIHHOUND_HXX)
-#include "aihhound.hxx"
+#include "AIHHOUND.HXX"
 #endif
 
 #if !defined(_AIHARPY_HXX)
-#include "aiharpy.hxx"
+#include "AIHARPY.HXX"
 #endif
 
 #if !defined(_AIWYVERN_HXX)
-#include "aiwyvern.hxx"
+#include "AIWYVERN.HXX"
 #endif
 
 #if !defined(_AISPECTR_HXX)
-#include "aispectr.hxx"
+#include "AISPECTR.HXX"
 #endif
 
 #if !defined(_AIHORSE_HXX)
-#include "aihorse.hxx"
+#include "AIHORSE.HXX"
 #endif
 
 #if !defined(_AISTUN_HXX)
-#include "aistun.hxx"
+#include "AISTUN.HXX"
 #endif
 
 /* -----------------------------------------------------------------

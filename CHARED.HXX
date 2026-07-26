@@ -7,7 +7,7 @@
 #if !defined (_CHARED_HXX_)
 #define _CHARED_HXX_
 
-#include "itemtype.hxx"
+#include "ITEMTYPE.HXX"
 
 // We have our own enums here to omit the magician.
 enum CHARED_CLASSES {

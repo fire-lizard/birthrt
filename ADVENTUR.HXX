@@ -10,31 +10,31 @@
    Sub Includes
    ------------------------------------------------------------------------ */
 #if !defined(_TYPEDEFS_H)
-#include "typedefs.h"
+#include "TYPEDEFS.H"
 #endif
 
 #if !defined(_ENGINE_H)
-#include "engine.h"
+#include "ENGINE.H"
 #endif
 
 #if !defined(_SYSTEM_H)
-#include "system.h"
+#include "SYSTEM.H"
 #endif
 
 #if !defined(_PLAYER_HXX)
-#include "player.hxx"
+#include "PLAYER.HXX"
 #endif
 
 #if !defined(_THINGTYP_H)
-#include "thingtyp.h"
+#include "THINGTYP.H"
 #endif
 
 #if !defined(_HANDLE_HXX)
-#include "handle.hxx"
+#include "HANDLE.HXX"
 #endif
 
 #if !defined(_VECTOR_HXX)
-#include "vector.hxx"
+#include "VECTOR.HXX"
 #endif
 
 /* ------------------------------------------------------------------------

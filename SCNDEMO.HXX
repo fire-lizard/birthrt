@@ -14,15 +14,15 @@
 #include <limits.h>
 
 #if !defined(_SYSTEM_H)
-#include "system.h"
+#include "SYSTEM.H"
 #endif
 
 #if !defined(_FILEUTIL_H)
-#include "fileutil.h"
+#include "FILEUTIL.H"
 #endif
 
 #if !defined(_FILENAME_HXX)
-#include "filename.hxx"
+#include "FILENAME.HXX"
 #endif
 
 /* ------------------------------------------------------------------------

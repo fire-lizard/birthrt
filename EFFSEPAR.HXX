@@ -5,7 +5,7 @@
 //item of this type could be in use at a time.
 
 #if !defined(_SYSTEM_H)
-#include "system.h"
+#include "SYSTEM.H"
 #endif
 
 //max of the same item running concurrently in the world

@@ -16,15 +16,15 @@
    ======================================================================== */
 
 #if !defined(_TYPEDEFS_H)
-#include "typedefs.h"
+#include "TYPEDEFS.H"
 #endif
 
 #if !defined (_MENUPROT_H)
-#include "menuprot.h"
+#include "MENUPROT.H"
 #endif
 
 #if !defined(_GMENUENM_H)
-#include "gmenuenm.h"
+#include "GMENUENM.H"
 #endif
 
 #define MSGBOX_BUT_ALL	  0

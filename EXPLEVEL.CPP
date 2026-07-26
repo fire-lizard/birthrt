@@ -33,7 +33,7 @@
 #include "REGENTS.HXX"
 #include "REPORT.HXX"
 #ifdef _WINDOWS
-#include "WINSYS\MULPLAY.HXX"
+#include "WINSYS/MULPLAY.HXX"
 #endif
 
 // Its in stdlib.h

@@ -132,18 +132,37 @@ if (WIN32)
 
 else ()
 
-	# The portable core compiles here; it does not link into a game yet
-	# because nothing implements the graphics/sound/input entry points that
-	# WINSYS used to provide. Building it as a library keeps that honest.
-	add_library (birthrt_core STATIC ${BIRTHRT_CORE})
+	# SDL2 replaces WINSYS: window, present, palette, keyboard, mouse.
+	find_package (SDL2 REQUIRED)
+
+	# POSIX/ is the Linux/macOS counterpart of WINSYS/.
+	set (BIRTHRT_POSIX
+		"POSIX/SDLSYS.CPP" "POSIX/STUBS.CPP" "POSIX/MULPLAY_STUB.CPP")
+
+	add_executable (Birthrt ${BIRTHRT_CORE} ${BIRTHRT_POSIX})
+
+	# The 1997 sources are C++ even in the .C files - the Win32 build
+	# compiles them that way, so cross-TU globals are C++-mangled there.
+	# Pin the same choice here instead of letting the extension decide.
+	set_source_files_properties (${BIRTHRT_CORE} ${BIRTHRT_POSIX}
+		PROPERTIES LANGUAGE CXX)
 
 	# _WINDOWS is this codebase's own "not DOS" switch (595 conditionals).
 	# The non-DOS branch is the right one on Linux/macOS too.
-	target_compile_definitions (birthrt_core PRIVATE _WINDOWS)
-	target_include_directories (birthrt_core PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
-	set_target_properties (birthrt_core PROPERTIES CXX_STANDARD 11 C_STANDARD 99)
+	target_compile_definitions (Birthrt PRIVATE _WINDOWS)
+	target_include_directories (Birthrt PRIVATE ${CMAKE_CURRENT_SOURCE_DIR} ${SDL2_INCLUDE_DIRS})
+	target_link_libraries (Birthrt ${SDL2_LIBRARIES})
+	set_target_properties (Birthrt PROPERTIES CXX_STANDARD 11)
 
-	message (STATUS "Birthrt: building portable core only.")
-	message (STATUS "  TODO: SDL backend for WINSYS (video/input/audio) and DirectPlay.")
+	# 1997 C++ predates most of what these would flag, and the noise buries
+	# the diagnostics that matter. -fpermissive is load-bearing: the sources
+	# rely on pre-standard conversions clang/gcc reject outright.
+	target_compile_options (Birthrt PRIVATE
+		-fpermissive -fsigned-char -fno-strict-aliasing
+		-Wno-write-strings -Wno-narrowing -Wno-multichar
+		-Wno-invalid-offsetof -Wno-deprecated)
+
+	message (STATUS "Birthrt: POSIX/SDL2 build.")
+	message (STATUS "  Not yet implemented: audio (SDL_audio for KERNAUD) and DirectPlay multiplayer.")
 
 endif ()

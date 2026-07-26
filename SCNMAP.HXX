@@ -14,7 +14,7 @@
 #include <limits.h>
 
 #if !defined(_SYSTEM_H)
-#include "system.h"
+#include "SYSTEM.H"
 #endif
 
 /* ------------------------------------------------------------------------

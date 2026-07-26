@@ -14,39 +14,39 @@
 #include <limits.h>
 
 #if !defined(_SYSTEM_H)
-#include "system.h"
+#include "SYSTEM.H"
 #endif
 
 #if !defined(_MACHINE_H)
-#include "machine.h"
+#include "MACHINE.H"
 #endif
 
 #if !defined(_PANORAMA_HXX)
-#include "panorama.hxx"
+#include "PANORAMA.HXX"
 #endif
 
 #if !defined(_SCNAI_HXX)
-#include "scnai.hxx"
+#include "SCNAI.HXX"
 #endif
 
 #if !defined(_SCNCAMR_HXX)
-#include "scncamr.hxx"
+#include "SCNCAMR.HXX"
 #endif
 
 #if !defined(_SCNDEMO)
-#include "scndemo.hxx"
+#include "SCNDEMO.HXX"
 #endif
 
 #if !defined(_SCNMAP_HXX)
-#include "scnmap.hxx"
+#include "SCNMAP.HXX"
 #endif
 
 #if !defined(_SCNMUSIC_HXX)
-#include "scnmusic.hxx"
+#include "SCNMUSIC.HXX"
 #endif
 
 #if !defined(_SCNVER_HXX)
-#include "scnver.hxx"
+#include "SCNVER.HXX"
 #endif
 
 #if !defined(_STRENUM_H)

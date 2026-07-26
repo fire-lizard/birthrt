@@ -12,11 +12,11 @@
    Sub Includes
    ------------------------------------------------------------------------ */
 #if !defined(_TYPEDEFS_H)
-#include "typedefs.h"
+#include "TYPEDEFS.H"
 #endif
 
 #if !defined(_BLOOD_HXX)
-#include "blood.hxx"
+#include "BLOOD.HXX"
 #endif
 
 /* ------------------------------------------------------------------------

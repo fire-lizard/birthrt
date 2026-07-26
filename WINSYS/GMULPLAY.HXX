@@ -16,16 +16,19 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdarg.h>
+#if defined(_WIN32)
 #include <wtypes.h>
-#include "../typedefs.h"
-#include "../Resource.h"
+#endif
+#include "../TYPEDEFS.H"
+#include "../RESOURCE.H"
 
-#include "fstream"
-#include "StdIO.h"
-#include "Limits.h"
+#include <fstream>
+#include <climits>
+#if defined(_WIN32)
 #include "Direct.h"
+#endif
 
-#include "FileXfer.hxx"
+#include "FILEXFER.HXX"
 
 // -- This needs to compile w/o the Windows.h stuff, so kludge away!
 
@@ -50,7 +53,7 @@ typedef unsigned char BYTE;
  // -- End of kludge section
 
  // -- User-PNetMod types
-#include "PNetType.h"
+#include "PNETTYPE.H"
 
  // -- Prototype for the Chat Message alert sound routine
 

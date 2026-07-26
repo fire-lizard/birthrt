@@ -30,8 +30,8 @@ DWORD		DSoundMSec = 1000;
 extern HWND hMyWnd;
 #endif
 
-#include "custmsys.hpp"
-#include "audio.hpp"
+#include "Custmsys.hpp"
+#include "AUDIO.HPP"
 
 //-------------------------------------------------------------------------------
 // Input: sample number

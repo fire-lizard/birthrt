@@ -45,39 +45,39 @@
    Includes
    ------------------------------------------------------------------------ */
 #if !defined(_TYPEDEFS_H)
-#include "typedefs.h"
+#include "TYPEDEFS.H"
 #endif
 
 #if !defined(_MENUPROT_H)
-#include "menuprot.h"
+#include "MENUPROT.H"
 #endif
 
 #if !defined(_PLAYSTATS_HXX)
-#include "playstat.hxx"
+#include "PLAYSTAT.HXX"
 #endif
 
 #if !defined(_INVNTORY_HXX)
-#include "invntory.hxx"
+#include "INVNTORY.HXX"
 #endif
 
 #if !defined(_HANDLE_HXX)
-#include "handle.hxx"
+#include "HANDLE.HXX"
 #endif
 
 #if !defined(_INVNBUTS_HXX)
-#include "invnbuts.hxx"
+#include "INVNBUTS.HXX"
 #endif
 
 #if !defined(_GMENUENM_H)
-#include "gmenuenm.h"
+#include "GMENUENM.H"
 #endif
 
 #if !defined(_LISTBOX_HXX)
-#include "listbox.hxx"
+#include "LISTBOX.HXX"
 #endif
 
 #if !defined(_HMGR_HXX)
-#include "hmgr.hxx"			//button highlight manager.
+#include "HMGR.HXX"			//button highlight manager.
 #endif
 
 #if !defined(_STRENUM_H)
@@ -85,11 +85,11 @@
 #endif
 
 #if !defined(_STRMGR_H)
-#include "strmgr.h"
+#include "STRMGR.H"
 #endif
 
 #if !defined(_INFOBOX_HXX)
-#include "infobox.hxx"
+#include "INFOBOX.HXX"
 #endif
 
 extern BOOL fBattleCombat;

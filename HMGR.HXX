@@ -2,11 +2,11 @@
 #define _HMGR_HXX
 
 #if !defined(_TYEPDEFS_H)
-#include "typedefs.h"
+#include "TYPEDEFS.H"
 #endif
 
 #if !defined(_GMENUENM_H)
-#include "gmenuenm.h"
+#include "GMENUENM.H"
 #endif
 
 #define MAX_HIGHLIGHTED_BUTTONS	10

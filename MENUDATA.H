@@ -17,27 +17,27 @@
    Includes
    ------------------------------------------------------------------------ */
 #if !defined(_SYSTEM_H)
-#include "system.h"
+#include "SYSTEM.H"
 #endif
 
 #if !defined(_CHARSEL_HXX)
-#include "charsel.hxx"
+#include "CHARSEL.HXX"
 #endif
 
 #if defined(_MAIN_HXX)
-#include "main.hxx"
+#include "MAIN.HXX"
 #endif
 
 #if !defined(_GAME_H)
-#include "game.h"
+#include "GAME.H"
 #endif
 
 #if !defined(_MENU_H)
-#include "menu.h"
+#include "MENU.H"
 #endif
 
 #if defined(_WINDOWS) && !defined(_MULPLAY_HXX)
-#include "winsys\mulplay.hxx"
+#include "WINSYS/MULPLAY.HXX"
 #endif
 
 /* ------------------------------------------------------------------------

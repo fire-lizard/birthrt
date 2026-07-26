@@ -9,15 +9,15 @@
 #if !defined (_AVA_HXX_)
 #define _AVA_HXX_
 
-#include "alignmnt.hxx"
-#include "gamemap.hxx"
-#include "main.hxx"
-#include "scene.hxx"
-#include "playclas.hxx"
-#include "appear.hxx"
-#include "bloodreq.hxx"
-#include "playstat.hxx"
-#include "chared.hxx"
+#include "ALIGNMNT.HXX"
+#include "GAMEMAP.HXX"
+#include "MAIN.HXX"
+#include "SCENE.HXX"
+#include "PLAYCLAS.HXX"
+#include "APPEAR.HXX"
+#include "BLOODREQ.HXX"
+#include "PLAYSTAT.HXX"
+#include "CHARED.HXX"
 
 class AVA_FILE {
 public:

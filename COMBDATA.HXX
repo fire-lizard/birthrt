@@ -10,27 +10,27 @@
    Sub Includes
    ------------------------------------------------------------------------ */
 #if !defined(_TYPEDEFS_H)
-#include "typedefs.h"
+#include "TYPEDEFS.H"
 #endif
 
 #if !defined(_SYSTEM_H)
-#include "system.h"
+#include "SYSTEM.H"
 #endif
 
 #if !defined(_COMBOPTS_HXX)
-#include "combopts.hxx"
+#include "COMBOPTS.HXX"
 #endif
 
 #if !defined(_GAME_H)
-#include "game.h"
+#include "GAME.H"
 #endif
 
 #if !defined(_GAMECAMR_HXX)
-#include "gamecamr.hxx"
+#include "GAMECAMR.HXX"
 #endif
 
 #if !defined(_SCNMGR_HXX)
-#include "scnmgr.hxx"
+#include "SCNMGR.HXX"
 #endif
 
 /* ------------------------------------------------------------------------

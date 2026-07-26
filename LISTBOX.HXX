@@ -2,7 +2,7 @@
 #define _LISTBOX_H
 
 #if !defined(_SYSTEM_H)
-#include "system.h"
+#include "SYSTEM.H"
 #endif
 
 #define LISTBOX_REGION_ID 972

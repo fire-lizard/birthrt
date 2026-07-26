@@ -21,7 +21,7 @@
 
 #if defined(_WINDOWS)
 #include "PLATFORM.H"
-#include "WINSYS\MULPLAY.HXX"
+#include "WINSYS/MULPLAY.HXX"
 #endif
 
 #include "SYSTEM.H"

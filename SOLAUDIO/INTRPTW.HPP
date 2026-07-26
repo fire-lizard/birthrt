@@ -4,7 +4,7 @@
 #define INTRPTW_HPP
 
 #if !defined(CUSTMSYS_HPP)
-#include "custmsys.hpp"
+#include "Custmsys.hpp"
 #endif
 
 typedef void (ServerFunc)();

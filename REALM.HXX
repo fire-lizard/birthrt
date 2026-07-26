@@ -13,23 +13,23 @@
 #include <limits.h>
 
 #if !defined(_TYPEDEFS_H)
-#include "typedefs.h"
+#include "TYPEDEFS.H"
 #endif
 
 #if !defined(_MACHINE_H)
-#include "machine.h"
+#include "MACHINE.H"
 #endif
 
 #if !defined(_MULTIMAP_HXX)
-#include "multimap.hxx"
+#include "MULTIMAP.HXX"
 #endif
 
 #if !defined(_VECTOR_HXX)
-#include "vector.hxx"
+#include "VECTOR.HXX"
 #endif
 
 #if !defined(_STRMGR_H)
-#include "strmgr.h"
+#include "STRMGR.H"
 #endif
 
 #if !defined(_STRENM_H)
@@ -37,7 +37,7 @@
 #endif
 
 #if !defined(_LOADSAVE_HXX)
-#include "loadsave.hxx"
+#include "LOADSAVE.HXX"
 #endif
 
 extern BOOL IsMultiPlayer ( void );

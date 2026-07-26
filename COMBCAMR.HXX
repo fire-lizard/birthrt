@@ -16,11 +16,11 @@
    ------------------------------------------------------------------------ */
 
 #if !defined(_TYEPDEFS_H)
-#include "typedefs.h"
+#include "TYPEDEFS.H"
 #endif
 
 #if !defined(_AVATAR_HXX)
-#include "avatar.hxx"
+#include "AVATAR.HXX"
 #endif
 
 /* ------------------------------------------------------------------------

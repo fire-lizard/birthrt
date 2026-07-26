@@ -11,27 +11,27 @@
 #include <stdio.h>
 
 #if !defined(_TYPEDEFS_H)
-#include "typedefs.h"
+#include "TYPEDEFS.H"
 #endif
 
 #if !defined(_SYSTEM_H)
-#include "system.h"
+#include "SYSTEM.H"
 #endif
 
 #if !defined(_LIGHT_H)
-#include "light.h"
+#include "LIGHT.H"
 #endif
 
 #if !defined(_GAMETYPE_HXX)
-#include "gametype.hxx"
+#include "GAMETYPE.HXX"
 #endif
 
 #if !defined(_SPECIAL_H)
-#include "special.h"
+#include "SPECIAL.H"
 #endif
 
 #if !defined(_THINGS_H)
-#include "things.h"
+#include "THINGS.H"
 #endif
 
 // Base class for all avatar things that exist in Birthright

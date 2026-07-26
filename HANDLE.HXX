@@ -10,11 +10,11 @@
    Sub Includes
    ------------------------------------------------------------------------ */
 #if !defined(_MACHINE_H)
-#include "machine.h"
+#include "MACHINE.H"
 #endif
 
 #if !defined(_MEMMANAG_HXX)
-#include "memmanag.hxx"
+#include "MEMMANAG.HXX"
 #endif
 
 /* ------------------------------------------------------------------------

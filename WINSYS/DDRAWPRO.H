@@ -10,7 +10,9 @@
    ------------------------------------------------------------------------ */
 #include "../SYSTEM.H"
 
+#if defined(_WIN32)
 #include <ddraw.h>
+#endif
 /* ------------------------------------------------------------------------
    Defines and Compile Flags
    ------------------------------------------------------------------------ */
@@ -30,22 +32,29 @@
 extern "C" {
 #endif
 
+/* The POSIX build has no DirectDraw at all; only the three entry points
+   the portable core actually calls are declared, and POSIX/STUBS.CPP
+   answers them with "not available". The rest take DirectDraw surface
+   types that do not exist off Windows. */
 void    DDCleanup               ( void );
+BOOL    DDInitialize            ( HWND hwndMain, BOOL fGDI );
+HRESULT DDSetCooperative		  ( BOOL fExclusive );
+
+#if defined(_WIN32)
 void    DDDrawBuffer            ( PCHAR pchBuf );
 void    DDEraseScreen           ( void );
 HRESULT DDFlipScreen            ( LPDIRECTDRAWSURFACE lpDDSFlip );
 HRESULT DDFlipSurface           ( void );
 HDC	  DDGetDC					  ( BOOL fBack );
 DWORD	  DDGetSurfaceWidth		  ( void );
-BOOL    DDInitialize            ( HWND hwndMain, BOOL fGDI );
 HRESULT DDLockSurface           ( PCHAR *ppchBuf, long *pViewWidth );
 BOOL	  DDRealizePalette		  ( void );
 BOOL	  DDSetPaletteEntries	  ( void );
 void	  DDReleaseDC				  ( HDC hdc );
 BOOL    DDRestoreSurfaces       ( void );
-HRESULT DDSetCooperative		  ( BOOL fExclusive );
 HRESULT DDSetDisplayMode        ( BOOL fHigh );
 HRESULT DDUnlockSurface         ( PCHAR pchBuf );
+#endif
 
 #if defined (__cplusplus)
 }

@@ -63,7 +63,7 @@
 #ifndef __SIERRANWAPI_H__
 #define __SIERRANWAPI_H__
 
-#include "SNTypes.h"
+#include "SNTYPES.H"
 
 // The following is the evergrowing list of SIGSAPI's.
 

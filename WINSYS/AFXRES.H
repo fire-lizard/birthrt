@@ -18,7 +18,7 @@
 #ifdef RC_INVOKED
 #ifndef _INC_WINDOWS
 #define _INC_WINDOWS
-        #include "winsys\winres.h"           // extract from windows header
+        #include "WINSYS/WINRES.H"           // extract from windows header
 #endif
 #endif
 

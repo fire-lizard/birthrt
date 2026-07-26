@@ -12,7 +12,7 @@
    Sub Includes
    ------------------------------------------------------------------------ */
 #if !defined(_SPELL_HXX)
-#include "spell.hxx"
+#include "SPELL.HXX"
 #endif
 
 class PLAYER_STATS;

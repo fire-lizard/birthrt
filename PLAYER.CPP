@@ -24,11 +24,11 @@
 #include "PLATFORM.H"
 
 #if defined (_STATUS)
-#include "winsys\status.h"
+#include "WINSYS/STATUS.H"
 #endif
 
 #if defined (_DEBUG)
-#include "winsys\mono_c.h"
+#include "WINSYS/MONO_C.H"
 #endif
 
 #endif	// _WINDOWS

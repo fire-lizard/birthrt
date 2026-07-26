@@ -29,9 +29,9 @@
 #include "SYSTEM.H"
 
 #if defined (WINDOWS_SOUND)
-#include "winsys\wave.h"
-#include "winsys\SndUtil.h"
-#include "winsys\SWinUtil.h"
+#include "WINSYS/WAVE.H"
+#include "WINSYS/SNDUTIL.H"
+#include "WINSYS/SWINUTIL.H"
 #endif
 
 #if defined (AUDIO_LIB)

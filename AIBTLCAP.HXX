@@ -36,11 +36,11 @@ enum {
    ----------------------------------------------------------------- */
 
 #if !defined(_GAMETYPE_HXX)
-#include "gametype.hxx"
+#include "GAMETYPE.HXX"
 #endif
 
 #if !defined(_FILEUTIL_H)
-#include "fileutil.h"
+#include "FILEUTIL.H"
 #endif
 
 /* -----------------------------------------------------------------

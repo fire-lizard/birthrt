@@ -17,59 +17,59 @@
    Includes
    ------------------------------------------------------------------------ */
 #if !defined(_SYSTEM_H)
-#include "system.h"
+#include "SYSTEM.H"
 #endif
 
 #if !defined(_COLORS_H)
-#include "colors.h"
+#include "COLORS.H"
 #endif
 
 #if !defined(_MENU_H)
-#include "menu.h"
+#include "MENU.H"
 #endif
 
 #if !defined(_GMENUENM_H)
-#include "gmenuenm.h"
+#include "GMENUENM.H"
 #endif
 
 #if !defined(_AVATAR_HXX)
-#include "avatar.hxx"
+#include "AVATAR.HXX"
 #endif
 
 #if !defined(_COMBAT_HXX)
-#include "combatui.hxx"
+#include "COMBATUI.HXX"
 #endif
 
 #if !defined(_BATTLE_HXX)
-#include "battle.hxx"
+#include "BATTLE.HXX"
 #endif
 
 #if !defined(_BATTLEUI_HXX)
-#include "battleui.hxx"
+#include "BATTLEUI.HXX"
 #endif
 
 #if !defined(_INVNGUI_HXX)
-#include "invngui.hxx"
+#include "INVNGUI.HXX"
 #endif
 
 #if !defined(_INVENTORY_HXX)
-#include "invntory.hxx"
+#include "INVNTORY.HXX"
 #endif
 
 #if !defined(_TMSGBOX_HXX)
-#include "tmsgbox.hxx"
+#include "TMSGBOX.HXX"
 #endif
 
 #if !defined(_INFOBOX_HXX)
-#include "infobox.hxx"
+#include "INFOBOX.HXX"
 #endif
 
 #if !defined(_GAME_H)
-#include "game.h"
+#include "GAME.H"
 #endif
 
 #if !defined(_ANIM_H)
-#include "anim.h"
+#include "ANIM.H"
 #endif
 
 #if !defined(_STRENUM_H)
@@ -77,35 +77,35 @@
 #endif
 
 #if !defined(_MULTIMAP_HXX)
-#include "multimap.hxx"
+#include "MULTIMAP.HXX"
 #endif
 
 #if !defined(_MULTIUI_HXX)
-#include "multiui.hxx"
+#include "MULTIUI.HXX"
 #endif
 
 #if !defined(_RESURECT_HXX)
-#include "resurect.hxx"
+#include "RESURECT.HXX"
 #endif
 
 #if !defined(_GAMEMAP_HXX)
-#include "gamemap.hxx"
+#include "GAMEMAP.HXX"
 #endif
 
 #if !defined(_PARCH_HXX)
-#include "parch.hxx"
+#include "PARCH.HXX"
 #endif
 
 #if !defined(_REPORT_HXX)
-#include "report.hxx"
+#include "REPORT.HXX"
 #endif
 
 #if !defined(_TUTRMENU_HXX)
-#include "tutrmenu.hxx"
+#include "TUTRMENU.HXX"
 #endif
 
 #if !defined(_ADVPREP_HXX)
-#include "advprep.hxx"
+#include "ADVPREP.HXX"
 #endif
 
 /* ------------------------------------------------------------------------

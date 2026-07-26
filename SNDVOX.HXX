@@ -15,11 +15,11 @@
    Includes
    ------------------------------------------------------------------------ */
 #if !defined(_TYPEDEFS_H)
-#include "typedefs.h"
+#include "TYPEDEFS.H"
 #endif
 
 #if !defined(_TYINGTYP_H)
-#include "thingtyp.h"
+#include "THINGTYP.H"
 #endif
 
 /* ------------------------------------------------------------------------

@@ -12,11 +12,11 @@
 #define _REGRELIC_HXX
 
 #if !defined(_TYPEDEFS_HXX)
-#include "typedefs.h"
+#include "TYPEDEFS.H"
 #endif
 
 #if !defined(_REGENTS_HXX)
-#include "regents.hxx"
+#include "REGENTS.HXX"
 #endif
 
 class REGRELIC_STRUCT {

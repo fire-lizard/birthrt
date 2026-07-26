@@ -10,11 +10,11 @@
    Sub Includes
    ------------------------------------------------------------------------ */
 #if !defined(_TYEPDEFS_H)
-#include "typedefs.h"
+#include "TYPEDEFS.H"
 #endif
 
 #if !defined(_SYSTEM_H)
-#include "system.h"
+#include "SYSTEM.H"
 #endif
 
 /* ------------------------------------------------------------------------

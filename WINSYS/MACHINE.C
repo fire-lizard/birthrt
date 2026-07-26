@@ -37,7 +37,7 @@ X   machine_post_frame    -does postframe things, such as updating the screen
 #include "../FILEUTIL.H"
 #include "mmsystem.h"
 
-// [d11-09-96 JPC] No longer use registry. #include "registry.h"
+// [d11-09-96 JPC] No longer use registry. #include "REGISTRY.H"
 #include "DDRAWPRO.H"
 
 // name of first scene in this

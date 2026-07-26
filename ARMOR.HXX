@@ -12,15 +12,15 @@
    Sub Includes
    ------------------------------------------------------------------------ */
 #if !defined(_TYEPDEFS_H)
-#include "typedefs.h"
+#include "TYPEDEFS.H"
 #endif
 
 #if !defined(_PLAYRACE_HXX)
-#include "playrace.hxx"
+#include "PLAYRACE.HXX"
 #endif
 
 #if !defined(_WEAPON_HXX)
-#include "weapon.hxx"
+#include "WEAPON.HXX"
 #endif
 
 #if !defined(_STRENUM_H)

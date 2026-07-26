@@ -8,7 +8,7 @@
 
 #if defined (_STATUS)
 #include <windows.h>
-#include "system.h"
+#include "SYSTEM.H"
 
 #define MAXSTATUS 		10
 #define STATUS_WIDTH		800

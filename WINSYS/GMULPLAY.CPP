@@ -1399,8 +1399,8 @@ BOOL GenericMultiPlayer::SendDirectMessage( DWORD dwToWhom, USHORT usType, short
 #define	ACK_LED_W	4
 #define	ACK_LED_H	4
 #define	ACK_LED_INC	8
-#include "..\COLORS.H"
-#include "..\ENGINE.H"
+#include "../COLORS.H"
+#include "../ENGINE.H"
 
 void PaintAckLED(int k, DWORD id2, BOOL localAcks)
 {

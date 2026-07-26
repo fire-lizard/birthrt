@@ -10,15 +10,15 @@
    Sub Includes
    ------------------------------------------------------------------------ */
 #if !defined(_ITEMTYPE_HXX)
-#include "itemtype.hxx"
+#include "ITEMTYPE.HXX"
 #endif
 
 #if !defined(_SPELL_HXX)
-#include "spell.hxx"
+#include "SPELL.HXX"
 #endif
 
 #if !defined(_RLMSPELL_HXX)
-#include "rlmspell.hxx"
+#include "RLMSPELL.HXX"
 #endif
 /* ------------------------------------------------------------------------
    Defines and Compile Flags

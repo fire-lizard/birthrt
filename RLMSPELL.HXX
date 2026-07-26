@@ -12,15 +12,15 @@
    Sub Includes
    ------------------------------------------------------------------------ */
 #if !defined(_TYPEDEFS_H)
-#include "typedefs.h"
+#include "TYPEDEFS.H"
 #endif
 
 #if !defined(_THINGS_H)
-#include "things.h"
+#include "THINGS.H"
 #endif
 
 #if !defined(_PLAYCLAS_HXX)
-#include "playclas.hxx"
+#include "PLAYCLAS.HXX"
 #endif
 
 /* ------------------------------------------------------------------------

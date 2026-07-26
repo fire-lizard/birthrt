@@ -11,11 +11,11 @@
 #include <stdio.h>
 
 #if !defined(_TYEPDEFS_H)
-#include "typedefs.h"
+#include "TYPEDEFS.H"
 #endif
 
 #if !defined(_FILEUTIL_H)
-#include "fileutil.h"
+#include "FILEUTIL.H"
 #endif
 
 /* ------------------------------------------------------------------------

@@ -30,14 +30,14 @@
    Includes
    ------------------------------------------------------------------------ */
 #if !defined(_TYPEDEFS_H)
-#include "typedefs.h"
+#include "TYPEDEFS.H"
 #endif
 
 #if !defined(_GAMETYPE_HXX)
-#include "gametype.hxx"   
+#include "GAMETYPE.HXX"   
 #endif
 
-// Not Used #include "weapon.hxx"
+// Not Used #include "WEAPON.HXX"
 // Not Used #endif
 
 #if !defined(_STRENUM_H)
@@ -45,11 +45,11 @@
 #endif
 
 #if !defined(_STRMGR_H)
-#include "strmgr.h"
+#include "STRMGR.H"
 #endif
 
 #if !defined(_SCNMGR_HXX)
-#include "scnmgr.hxx"
+#include "SCNMGR.HXX"
 #endif
 
 #if !defined(_STRENUM_H)
@@ -57,15 +57,15 @@
 #endif
 
 #if !defined(_VECTOR_HXX)
-#include "vector.hxx"   
+#include "VECTOR.HXX"   
 #endif
 
 #if !defined(_TASK_H)
-#include "task.h"   
+#include "TASK.H"   
 #endif
 
 #if !defined(_TMSGBOX_HXX)
-#include "tmsgbox.hxx"   
+#include "TMSGBOX.HXX"   
 #endif
 
 /* ------------------------------------------------------------------------

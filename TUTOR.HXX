@@ -2,7 +2,7 @@
 #define _TUTOR_HXX
 
 #if !defined(_TYPEDEFS_H)
-#include "typedefs.h"
+#include "TYPEDEFS.H"
 #endif
 
 #if !defined(_STRENUM_H)

@@ -14,15 +14,15 @@
 #include <limits.h>
 
 #if !defined(_TYPEDEFS_H)
-#include "typedefs.h"
+#include "TYPEDEFS.H"
 #endif
 
 #if !defined(_ATHING_HXX)
-#include "athing.hxx"
+#include "ATHING.HXX"
 #endif
 
 #if !defined(_SCNINFO_HXX)
-#include "scninfo.hxx"
+#include "SCNINFO.HXX"
 #endif
 
 /* ------------------------------------------------------------------------

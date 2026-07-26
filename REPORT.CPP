@@ -15,8 +15,8 @@
    ------------------------------------------------------------------------ */
 #ifdef _WINDOWS
 #include "PLATFORM.H"
-#include "WINSYS\MULPLAY.HXX"
-#include "WINSYS\MONO_C.H"
+#include "WINSYS/MULPLAY.HXX"
+#include "WINSYS/MONO_C.H"
 #endif
 
 #include <stdio.h>

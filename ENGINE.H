@@ -11,45 +11,45 @@
    ------------------------------------------------------------------------ */
 //map.h!
 #if !defined(_MAP_H)
-#include "map.h"
+#include "MAP.H"
 #endif
 
 #if !defined(_TYPEDEFS_H)
-#include "typedefs.h"
+#include "TYPEDEFS.H"
 #endif
 
 #include <limits.h>
 
 #if !defined(_THINGS_H)
-#include "things.h"
+#include "THINGS.H"
 #endif
 
 #if !defined(_DOORS_H)
-#include "doors.h"
+#include "DOORS.H"
 #endif
 
 #if !defined(_SECTORS_H)
-#include "sectors.h"
+#include "SECTORS.H"
 #endif
 
 #if !defined(_WADTHING_H)
-#include "wadthing.h"
+#include "WADTHING.H"
 #endif
 
 #if !defined(_2DMOUSE_H)
-#include "2dmouse.h"
+#include "2DMOUSE.H"
 #endif
 
 #if !defined(_BUMP_H)
-#include "bump.h"
+#include "BUMP.H"
 #endif
 
 #if !defined(_PLAYER_HXX)
-#include "player.hxx"
+#include "PLAYER.HXX"
 #endif
 
 #if !defined(_CAMERA_H)
-#include "camera.h"
+#include "CAMERA.H"
 #endif
 
 /* ------------------------------------------------------------------------

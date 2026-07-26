@@ -9,15 +9,15 @@
    Sub Includes
    ------------------------------------------------------------------------ */
 #if !defined(_TYPEDEFS_H)
-#include "typedefs.h"
+#include "TYPEDEFS.H"
 #endif
 
 #if !defined(_DICE_H)
-#include "dice.h"
+#include "DICE.H"
 #endif
 
 #if !defined(_PLAYRACE_HXX)
-#include "playrace.hxx"
+#include "PLAYRACE.HXX"
 #endif
 
 #if !defined(_STRENUM_H)

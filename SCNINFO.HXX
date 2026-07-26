@@ -11,7 +11,7 @@
 #include <string.h>
 
 #if !defined(_FILENAME_HXX)
-#include "filename.hxx"
+#include "FILENAME.HXX"
 #endif
 
 /* ------------------------------------------------------------------------

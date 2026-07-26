@@ -4,7 +4,7 @@
 #define AUDIODIR_HPP
 
 #ifndef DSOUND_HPP
-#include	"dsound.hpp"
+#include "DSOUND.HPP"
 #endif
 
 class AudioMgrDir : public AudioMgr {

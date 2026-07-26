@@ -32,7 +32,7 @@
 #define min(a,b) (((a) < (b)) ? (a) : (b))
 
 #if defined (_STATUS)
-#include "winsys\status.h"
+#include "WINSYS/STATUS.H"
 void WriteDebug (const char *format, ... );
 #else
 	#define WriteDebug 1?0:printf

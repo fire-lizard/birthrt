@@ -9,11 +9,11 @@
    Sub Includes
    ------------------------------------------------------------------------ */
 #if !defined(_TYPEDEFS_H)
-#include "typedefs.h"
+#include "TYPEDEFS.H"
 #endif
 
 #if !defined(_REALM_HXX)
-#include "realm.hxx"
+#include "REALM.HXX"
 #endif
 
 #if !defined(_STRENUM_H)
@@ -21,7 +21,7 @@
 #endif
 
 #if !defined(_VECTOR_HXX)
-#include "vector.hxx"
+#include "VECTOR.HXX"
 #endif
 /* ------------------------------------------------------------------------
    Defines and Compile Flags

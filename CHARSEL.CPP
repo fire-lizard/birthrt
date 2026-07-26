@@ -57,8 +57,8 @@
 #include "PLACES.HXX"
 
 #ifdef _WINDOWS
-#include "WINSYS\MULPLAY.HXX"
-#include "WINSYS\MONO_C.H"
+#include "WINSYS/MULPLAY.HXX"
+#include "WINSYS/MONO_C.H"
 #include "REGRELIC.HXX"					// [d5-30-97 JPC] lieutenant relics
 #endif
 

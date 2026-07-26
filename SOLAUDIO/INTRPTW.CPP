@@ -4,10 +4,10 @@
 #define INCLUDE_MMSYSTEM_H
 #include "windows.h"
 #include "mmsystem.h"
-#include "intrptw.hpp"
+#include "INTRPTW.HPP"
 #ifndef AUDIO_LIB
 #else
-#include "custmsys.hpp"
+#include "Custmsys.hpp"
 #endif
 
 static	Boolean		SetTimer(Boolean * /*TimersStillRunning */);

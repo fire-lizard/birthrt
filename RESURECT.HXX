@@ -7,11 +7,11 @@
    ======================================================================== */
 
 #if !defined(_TYPEDEFS_H)
-#include "typedefs.h"
+#include "TYPEDEFS.H"
 #endif
 
 #if !defined(_ITEMTYPE_HXX)
-#include "itemtype.hxx"
+#include "ITEMTYPE.HXX"
 #endif
 
 #define RESURRECT_BUT_ALL	1

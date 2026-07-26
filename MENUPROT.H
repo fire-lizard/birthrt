@@ -10,7 +10,7 @@
    Sub Includes
    ------------------------------------------------------------------------ */
 #if !defined(_TYPEDEFS_H)
-#include "typedefs.h"
+#include "TYPEDEFS.H"
 #endif
 /* ------------------------------------------------------------------------
    Defines and Compile Flags

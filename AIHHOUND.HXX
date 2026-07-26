@@ -9,11 +9,11 @@
 #define _AIPONG_H
 
 #if !defined(_ATHING_HXX)
-#include "athing.hxx"
+#include "ATHING.HXX"
 #endif
 
 #if !defined(_AVATAR_HXX)
-#include "avatar.hxx"
+#include "AVATAR.HXX"
 #endif
 
 typedef SHORT HDL_AVATAR;

@@ -2,7 +2,7 @@
 #define ITEMEQP_HXX
 
 #if !defined(_VECTOR_HXX)
-#include "vector.hxx"
+#include "VECTOR.HXX"
 #endif
 
 typedef enum

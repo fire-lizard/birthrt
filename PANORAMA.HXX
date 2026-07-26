@@ -12,11 +12,11 @@
 #include <stdlib.h>
 
 #if !defined(_SYSTEM_H)
-#include "system.h"
+#include "SYSTEM.H"
 #endif
 
 #if !defined(_ENGINE_H)
-#include "engine.h"
+#include "ENGINE.H"
 #endif
 
 /* ------------------------------------------------------------------------

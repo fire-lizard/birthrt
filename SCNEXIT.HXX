@@ -14,11 +14,11 @@
 #include <limits.h>
 
 #if !defined(_TYPEDEFS_H)
-#include "typedefs.h"
+#include "TYPEDEFS.H"
 #endif
 
 #if !defined(_SCNSCTOR_HXX)
-#include "scnsctor.hxx"
+#include "SCNSCTOR.HXX"
 #endif
 
 /* ------------------------------------------------------------------------

@@ -22,27 +22,27 @@
 #endif
 
 #if !defined(_TYPEDEFS_H)
-#include "typedefs.h"
+#include "TYPEDEFS.H"
 #endif
 
 #if !defined(_MACHINE_H)
-#include "machine.h"
+#include "MACHINE.H"
 #endif
 
 #if !defined(_THINGS_H)
-#include "things.h"
+#include "THINGS.H"
 #endif
 
 #if !defined(_SOUND_HXX)
-#include "sound.hxx"
+#include "SOUND.HXX"
 #endif
 
 #if !defined(_THINGTYP_H)
-#include "thingtyp.h"
+#include "THINGTYP.H"
 #endif
 
 #if !defined(_STRMGR_H)
-#include "strmgr.h"
+#include "STRMGR.H"
 #endif
 
 /* ------------------------------------------------------------------------

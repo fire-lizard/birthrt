@@ -10,7 +10,7 @@
 #define _FLICPLAY_HXX
 
 #if !defined(_THINGS_H)
-#include "things.h"
+#include "THINGS.H"
 #endif
 
 BOOL PlayFlic(char * fn, LONG secondsToWaitAtEnd);

@@ -49,7 +49,7 @@
 #include "SOUND.HXX"
 
 #ifdef _WINDOWS
-#include ".\WINSYS\MULPLAY.HXX"
+#include "WINSYS/MULPLAY.HXX"
 #endif
 
 #include "MENU.H"

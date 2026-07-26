@@ -14,15 +14,15 @@
 #include <time.h>
 
 #if !defined(_SYSTEM_H)
-#include "system.h"
+#include "SYSTEM.H"
 #endif
 
 #if !defined(_CAMRDATA_HXX)
-#include "camrdata.hxx"
+#include "CAMRDATA.HXX"
 #endif
 
 #if !defined(_GAMEMAP_HXX)
-#include "gamemap.hxx"
+#include "GAMEMAP.HXX"
 #endif
 
 /* ------------------------------------------------------------------------

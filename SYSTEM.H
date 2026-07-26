@@ -21,39 +21,39 @@
 #endif
 
 #if !defined(_TYPEDEFS_H)
-#include "typedefs.h"
+#include "TYPEDEFS.H"
 #endif
 
 #if !defined(_COLORS_H)
-#include "colors.h"
+#include "COLORS.H"
 #endif
 
 #if !defined(_MEMMANAG_HXX)
-#include "memmanag.hxx"
+#include "MEMMANAG.HXX"
 #endif
 
 #if !defined(_RESMANAG_HXX)
-#include "resmanag.hxx"
+#include "RESMANAG.HXX"
 #endif
 
 #if !defined(_REGIONS_H)
-#include "regions.h"
+#include "REGIONS.H"
 #endif
 
 #if !defined(_MENUPROT_H)
-#include "menuprot.h"
+#include "MENUPROT.H"
 #endif
 
 #if !defined(_REDBOOK_H)
-#include "redbook.h"
+#include "REDBOOK.H"
 #endif
 
 #if !defined(_FOPEN_H)
-#include "fopen.h"
+#include "FOPEN.H"
 #endif
 
 #if defined(_WINDOWS) && !defined(_RANDOM_H)			//---- random override for logging
-#include "random.h"
+#include "RANDOM.H"
 #endif
 
 /* ------------------------------------------------------------------------

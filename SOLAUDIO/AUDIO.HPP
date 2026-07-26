@@ -3,7 +3,7 @@
 #ifndef AUDIO_HPP
 #define AUDIO_HPP
 
-#include "custmsys.hpp"
+#include "Custmsys.hpp"
 
 const unsigned MAXSAMPLES = 8;
 const unsigned MAXVOLUME = 127;

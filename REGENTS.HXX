@@ -10,19 +10,19 @@
    Sub Includes
    ------------------------------------------------------------------------ */
 #if !defined(_TYPEDEFS_H)
-#include "typedefs.h"
+#include "TYPEDEFS.H"
 #endif
 
 #if !defined(_UNITS_HXX)
-#include "units.hxx"
+#include "UNITS.HXX"
 #endif
 
 #if !defined(_REALM_HXX)
-#include "realm.hxx"
+#include "REALM.HXX"
 #endif
 
 #if !defined(_MAPICON_HXX)
-#include "mapicon.hxx"
+#include "MAPICON.HXX"
 #endif
 
 /* ------------------------------------------------------------------------

@@ -9,15 +9,15 @@
 #define _AIPONG_HXX 1
 
 #if !defined(_AVATAR_HXX)
-#include "avatar.hxx"
+#include "AVATAR.HXX"
 #endif
 
 #if !defined(_FILEUTIL_H)
-#include "fileutil.h"
+#include "FILEUTIL.H"
 #endif
 
 #if !defined(_ITEMTYPE_HXX)
-#include "itemtype.hxx"
+#include "ITEMTYPE.HXX"
 #endif
 
 /* -----------------------------------------------------------------

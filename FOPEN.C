@@ -134,6 +134,14 @@ FILE * FileOpen(
 {
 	FILE	*pFile = NULL;
 	char	chFileName[_MAX_PATH] = "";
+	char	chResolved[_MAX_PATH];
+
+	/* Every path the game passes is Win32-shaped and of arbitrary case.
+	   Resolve it here, before the open-file queue is consulted, so the
+	   queue, access() and fopen() all agree on one spelling.
+	   No-op on Windows. */
+	PlatResolvePath(chResolved, pszFile, sizeof(chResolved));
+	pszFile = chResolved;
 
 //top:
 	run_timers();
@@ -220,6 +228,10 @@ SHORT DiskOpen(
 {
 	SHORT	iFile;
 	char	chFileName[_MAX_PATH] = "";
+	char	chResolved[_MAX_PATH];
+
+	PlatResolvePath(chResolved, pszFile, sizeof(chResolved));
+	pszFile = chResolved;
 
 	if ((iFile = DiskInQueue (pszFile)) != -1)
 	{
@@ -279,7 +291,11 @@ LONG FileAccess(
 {
 	LONG iFile = -1;
 	char	chFileName[_MAX_PATH];
-	
+	char	chResolved[_MAX_PATH];
+
+	PlatResolvePath(chResolved, pszFile, sizeof(chResolved));
+	pszFile = chResolved;
+
 	// Check resource files, then local drive, then CD-ROM.
 	if (ResourceFileAccess (pszFile) == 0)
 	{

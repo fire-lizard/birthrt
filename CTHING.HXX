@@ -11,15 +11,15 @@
 #include <stdio.h>
 
 #if !defined(_TYPEDEFS_H)
-#include "typedefs.h"
+#include "TYPEDEFS.H"
 #endif
 
 #if !defined(_ATHING_HXX)
-#include "athing.hxx"
+#include "ATHING.HXX"
 #endif
 
 #if !defined(_GAMETYPE_HXX)
-#include "gametype.hxx"
+#include "GAMETYPE.HXX"
 #endif
 
 class CThing : public ArtThing {

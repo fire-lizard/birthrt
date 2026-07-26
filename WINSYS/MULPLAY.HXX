@@ -19,7 +19,7 @@
 #ifndef _MULPLAY_H
 #define _MULPLAY_H
 
-#include "GMulPlay.hxx"
+#include "GMULPLAY.HXX"
 
 // about 1/2 minutes in milliseconds
 #define MP_PING_FREQ		(30*1000)
@@ -126,7 +126,7 @@ enum
 
  // -- User-PNetMod types
 
-#include "PNetType.h"
+#include "PNETTYPE.H"
 
 #define MAX_GAMES 10
 

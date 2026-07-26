@@ -1,5 +1,5 @@
 #ifdef _DEBUG
-#include "mono.h"
+#include "MONO.H"
 
 MonoDevice::MonoDevice()
 {

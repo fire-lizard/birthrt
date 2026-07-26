@@ -63,8 +63,8 @@
 #include "TASK.H"
 
 #ifdef _WINDOWS
-#include "WINSYS\DDRAWPRO.H"
-#include "WINSYS\MULPLAY.HXX"       //---- Multiplay
+#include "WINSYS/DDRAWPRO.H"
+#include "WINSYS/MULPLAY.HXX"       //---- Multiplay
 extern HWND hwndApp;
 #endif
 

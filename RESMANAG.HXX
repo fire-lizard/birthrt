@@ -10,11 +10,11 @@
    Sub Includes
    ------------------------------------------------------------------------ */
 #if !defined(_TYPEDEFS_H)
-#include "typedefs.h"
+#include "TYPEDEFS.H"
 #endif
 
 #if !defined(_MEMMANAG_HXX)
-#include "memmanag.hxx"
+#include "MEMMANAG.HXX"
 #endif
 
 /* ------------------------------------------------------------------------

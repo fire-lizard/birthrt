@@ -14,7 +14,7 @@
 #include <string.h>
 
 #if !defined(_SYSTEM_H)
-#include "system.h"
+#include "SYSTEM.H"
 #endif
 
 void init_anim();

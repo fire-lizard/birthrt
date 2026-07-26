@@ -9,13 +9,13 @@
 /* ------------------------------------------------------------------------
    Sub Includes
    ------------------------------------------------------------------------ */
-#include "typedefs.h"
+#include "TYPEDEFS.H"
 #if defined (_DEBUG) && !defined(_MACHINE_H)
-#include "machine.h"
+#include "MACHINE.H"
 #endif
 
 #if !defined(_THINGTYP_H)
-#include "thingtyp.h"
+#include "THINGTYP.H"
 #endif
 
 /* ------------------------------------------------------------------------

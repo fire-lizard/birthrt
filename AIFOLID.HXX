@@ -9,7 +9,7 @@
 #define _AIFOLID_H
 
 #if !defined(_FILEUTIL_H)
-#include "fileutil.h"
+#include "FILEUTIL.H"
 #endif
 
 /* -----------------------------------------------------------------

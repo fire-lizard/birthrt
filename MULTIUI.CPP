@@ -38,9 +38,9 @@
 #include "SCNMGR.HXX"
 #include "GAME.H"
 #ifdef _WINDOWS
-#include "WINSYS\GOTOURL.H"
-#include "WINSYS\MULPLAY.HXX"
-#include "WINSYS\DDRAWPRO.H"
+#include "WINSYS/GOTOURL.H"
+#include "WINSYS/MULPLAY.HXX"
+#include "WINSYS/DDRAWPRO.H"
 #endif
 
 #include "MULTIUI.HXX"

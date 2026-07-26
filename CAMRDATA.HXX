@@ -14,7 +14,7 @@
 #include <limits.h>
 
 #if !defined(_CAMERA_H)
-#include "camera.h"
+#include "CAMERA.H"
 #endif
 
 /* ------------------------------------------------------------------------

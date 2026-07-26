@@ -192,11 +192,11 @@
    ------------------------------------------------------------------------ */
 #include <string.h>
 #if !defined(_TYPEDEFS_H)
-#include "typedefs.h"
+#include "TYPEDEFS.H"
 #endif
 
 #if !defined(_MACHINE_H)
-#include "machine.h"
+#include "MACHINE.H"
 #endif
 
 /* ------------------------------------------------------------------------

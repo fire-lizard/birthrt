@@ -34,7 +34,7 @@
 
 #define INITGUID
 #include "Windows.h"
-#include "..\WINSYS\PNETMOD.HXX"
+#include "PNETMOD.HXX"
 #include "stdio.h"
 #include "direct.h"
 #include "memory.h"
@@ -47,11 +47,11 @@
 
 //!!!!!!!!!!!!!!!!!!!!!!!!
 
-#include "..\WINSYS\MONO_C.H"
+#include "MONO_C.H"
 
-#include "..\WINSYS\SNTYPES.H"
-#include "..\WINSYS\SIERRANW.H"
-#include "..\WINSYS\SNWVALID.H"
+#include "SNTYPES.H"
+#include "SIERRANW.H"
+#include "SNWVALID.H"
 
 extern BOOL fLogComment;
 

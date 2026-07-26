@@ -18,15 +18,15 @@
 #include <stdio.h>
 
 #if defined (_STATUS)
-#include "debug.h"
-#include "engint.h"
+#include "DEBUG.H"
+#include "ENGINT.H"
 #endif
 #include "SYSTEM.H"
 #include "ENGINE.H"
 #include "MACHINE.H"
 
 #if defined (_STATUS)
-#include "winsys\status.h"
+#include "WINSYS/STATUS.H"
 void WriteDebug (const char *format, ... );
 extern BOOL gfCheckCameraMove;
 #else

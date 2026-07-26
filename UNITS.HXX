@@ -10,23 +10,23 @@
 #define _UNITS_HXX 1
 
 #if !defined(_TYPEDEFS_H)
-#include "typedefs.h"
+#include "TYPEDEFS.H"
 #endif
 
 #if !defined(_VECTOR_HXX)
-#include "vector.hxx"
+#include "VECTOR.HXX"
 #endif
 
 #if !defined(_MAPICON_HXX)
-#include "mapicon.hxx"
+#include "MAPICON.HXX"
 #endif
 
 #if !defined(_PROVDATA_HXX)
-#include "provdata.hxx"
+#include "PROVDATA.HXX"
 #endif
 
 #if !defined(_REALM_HXX)
-#include "realm.hxx"
+#include "REALM.HXX"
 #endif
 
 //----------------------------------

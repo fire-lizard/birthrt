@@ -251,7 +251,7 @@ void OptAdjLevel(LONG which, LONG what)
             break;
 
 		case OPT_ADJ_SCREEN_SIZE:
-		    selected_screen_size -= what;		// notice the hack!
+		    selected_screen_size += what;		// "+" = higher resolution
 		    if (selected_screen_size < 0)
 		        selected_screen_size = 0;
 		    if (selected_screen_size > 5)

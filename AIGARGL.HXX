@@ -9,7 +9,7 @@
 #define _AIGARGL_HXX
 
 #if !defined(_AVATAR_HXX)
-#include "avatar.hxx"
+#include "AVATAR.HXX"
 #endif
 
 /* -----------------------------------------------------------------

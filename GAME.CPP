@@ -58,8 +58,8 @@
 #include "COLORS.H"
 
 #ifdef _WINDOWS
-#include ".\WINSYS\DDRAWPRO.H"
-#include ".\WINSYS\MULPLAY.HXX"
+#include "WINSYS/DDRAWPRO.H"
+#include "WINSYS/MULPLAY.HXX"
 #endif
 
 /* ------------------------------------------------------------------------

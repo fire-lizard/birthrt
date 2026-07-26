@@ -14,11 +14,11 @@
 #include <limits.h>
 
 #if !defined(_SYSTEM_H)
-#include "system.h"
+#include "SYSTEM.H"
 #endif
 
 #if !defined(_SCNINFO_HXX)
-#include "scninfo.hxx"
+#include "SCNINFO.HXX"
 #endif
 
 /* ------------------------------------------------------------------------

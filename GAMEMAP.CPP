@@ -57,8 +57,8 @@
 #include "HANDLE.HXX"
 
 #ifdef _WINDOWS
-#include "WINSYS\MULPLAY.HXX"
-#include "WINSYS\MONO_C.H"
+#include "WINSYS/MULPLAY.HXX"
+#include "WINSYS/MONO_C.H"
 #endif
 
 extern BOOL fLogComment;

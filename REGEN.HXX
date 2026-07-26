@@ -2,23 +2,23 @@
 #define REGEN_HXX 1
 
 #if !defined(_TYPEDEFS_H)
-#include "typedefs.h"
+#include "TYPEDEFS.H"
 #endif
 
 #if !defined(_HANDLE_HXX)
-#include "handle.hxx"
+#include "HANDLE.HXX"
 #endif
 
 #if !defined(_SCNMGR_HXX)
-#include "scnmgr.hxx"
+#include "SCNMGR.HXX"
 #endif
 
 #if !defined(_SCENE_HXX)
-#include "scene.hxx"
+#include "SCENE.HXX"
 #endif
 
 #if !defined(_ADVENTUR_HXX)
-#include "adventur.hxx"
+#include "ADVENTUR.HXX"
 #endif
 
 #define MAX_REGENERATORS 20

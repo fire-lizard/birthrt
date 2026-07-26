@@ -75,12 +75,19 @@ const DWORD dwBroadcast  = 999;
 
 typedef char GBoolean;
 
-#include "PNetType.h"
+#include "PNETTYPE.H"
 
 typedef int (*GamePrintFunction)(char* s);
 
 #define	IDIRECTPLAY2_OR_GREATER
+#if defined(_WIN32)
 #include "DPlay.h"
+#else
+/* No DirectPlay off Windows. These declarations exist only so the class
+   below parses; POSIX/MULPLAY_STUB.CPP supplies bodies that report "no
+   multiplayer" and nothing ever dereferences them. */
+#include "../POSIX/DPLAYSHIM.H"
+#endif
 
 const int iMAXPROVIDERS	= (15);
 const int iMAXSESSIONS		= (20);

@@ -36,11 +36,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "system.h"
-#include "engine.h"
-#include "engint.h"
-#include "machine.h"
-#include "dynamtex.h"
+#include "SYSTEM.H"
+#include "ENGINE.H"
+#include "ENGINT.H"
+#include "MACHINE.H"
+#include "DYNAMTEX.H"
 /* ------------------------------------------------------------------------
    Defines and typedefs
    ------------------------------------------------------------------------ */

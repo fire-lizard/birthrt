@@ -2,7 +2,7 @@
 
 #include "windows.h"
 #include <dsound.h>
-#include "dsound.hpp"
+#include "DSOUND.HPP"
 #include <math.h>
 #include <stdlib.h>
 #include <stdio.h>

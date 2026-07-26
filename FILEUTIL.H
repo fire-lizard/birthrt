@@ -11,7 +11,7 @@
 #include <stdio.h>
 
 #if !defined(_TYPEDEFS_H)
-#include "typedefs.h"
+#include "TYPEDEFS.H"
 #endif
 
 /* ------------------------------------------------------------------------
