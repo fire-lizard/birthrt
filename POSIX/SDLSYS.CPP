@@ -606,14 +606,30 @@ static void Scale2xFrame(LONG srcw, LONG srch)
 
 /* Expand an 8bpp buffer through the palette LUT straight into a locked
    streaming texture. */
+/* Report an SDL failure once per call site. A present that fails silently
+   looks exactly like a game that draws nothing. */
+static void SDLFailed(const char *what, BOOL *pReported)
+{
+	if (!*pReported)
+	{
+		*pReported = TRUE;
+		printf("SDL: %s failed: %s\n", what, SDL_GetError());
+		fflush(stdout);
+	}
+}
+
 static void BlitIndexed(SDL_Texture *tex, const UBYTE *src, int w, int h)
 {
+	static BOOL fLockReported = FALSE;
 	void *pixels = NULL;
 	int   pitch  = 0;
 	int   x, y;
 
 	if (SDL_LockTexture(tex, NULL, &pixels, &pitch) != 0)
+	{
+		SDLFailed("SDL_LockTexture", &fLockReported);
 		return;
+	}
 
 	for (y = 0; y < h; y++)
 	{
@@ -649,8 +665,47 @@ void update_screen(void)
 		tex = gTexture;
 	}
 
-	SDL_RenderClear(gRender);
-	SDL_RenderCopy(gRender, tex, NULL, NULL);
+	{
+		static BOOL fClearReported = FALSE, fCopyReported = FALSE;
+
+		if (SDL_RenderClear(gRender) != 0)
+			SDLFailed("SDL_RenderClear", &fClearReported);
+		if (SDL_RenderCopy(gRender, tex, NULL, NULL) != 0)
+			SDLFailed("SDL_RenderCopy", &fCopyReported);
+	}
+
+	/* BIRTHRT_SHOT=<n> writes frame n to shot.bmp straight out of the
+	   renderer. The only way to see what the game drew on a headless box,
+	   and it bypasses X entirely - a screenshot of the window cannot tell
+	   "the game drew nothing" apart from "the compositor showed nothing". */
+	{
+		static long lFrame = 0;
+		static long lWanted = -2;
+
+		if (lWanted == -2)
+		{
+			const char *p = getenv("BIRTHRT_SHOT");
+			lWanted = p ? atol(p) : -1;
+		}
+
+		if (++lFrame == lWanted)
+		{
+			SDL_Surface *s = SDL_CreateRGBSurfaceWithFormat(0, cw, ch, 32,
+															SDL_PIXELFORMAT_ARGB8888);
+			if (s != NULL)
+			{
+				if (SDL_RenderReadPixels(gRender, NULL, SDL_PIXELFORMAT_ARGB8888,
+										 s->pixels, s->pitch) == 0)
+					SDL_SaveBMP(s, "shot.bmp");
+				else
+					printf("SDL_RenderReadPixels failed: %s\n", SDL_GetError());
+				SDL_FreeSurface(s);
+			}
+			printf("wrote shot.bmp at frame %ld (%dx%d)\n", lFrame, cw, ch);
+			fflush(stdout);
+		}
+	}
+
 	SDL_RenderPresent(gRender);
 }
 
@@ -1064,6 +1119,10 @@ static BOOL AppInit(void)
 
 int main(int argc, char *argv[])
 {
+	/* The game's diagnostics are all printf. Redirected to a file that is
+	   block-buffered, so a crash or a kill loses everything useful. */
+	setvbuf(stdout, NULL, _IOLBF, 0);
+
 	parse_cmdline(argc, argv);
 
 	if (!AppInit())

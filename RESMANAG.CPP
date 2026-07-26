@@ -265,12 +265,18 @@ SHORT	RegisterResExtention (
 	PFRESHASH HashProc )
 {
 	LONG	i;
+	char	achExt[sizeof(ResExtentions[0].achExtension)];
 
 	if (fReport & fREPORT_RESMGR)
 		printf("Entering RegisterResExtention\n");
 
-	/* use only upper case names */
-	strupr(sExtension);
+	/* Use only upper case names - on a copy. strupr writes in place and
+	   every caller passes a string literal ("AVD", "IDA", "ANT" in
+	   MAIN.CPP), so uppercasing the argument itself writes to .rodata.
+	   MSVC let that through; on Linux it is an immediate SIGSEGV. */
+	strncpy(achExt, sExtension, sizeof(achExt) - 1);
+	achExt[sizeof(achExt) - 1] = '\0';
+	strupr(achExt);
 
 	/* find a match to over-ride or an empty slot */
 	for (i=0; i<cMAXEXTENTS; i++)
@@ -278,7 +284,7 @@ SHORT	RegisterResExtention (
 		if (NULL == ResExtentions[i].pfLoadProc)
 			break;			/* found empty slot first */
 
-		if (0 == stricmp(ResExtentions[i].achExtension, sExtension))
+		if (0 == stricmp(ResExtentions[i].achExtension, achExt))
 			break;			/* found existing extension, over-write values */
 	}
 
@@ -286,9 +292,9 @@ SHORT	RegisterResExtention (
 		return fERROR;		/* no available slots */
 
 	if (fReport & fREPORT_RESMGR)
-		printf("Res extension registered: %s\n", sExtension);
+		printf("Res extension registered: %s\n", achExt);
 
-	strcpy(ResExtentions[i].achExtension, sExtension);
+	strcpy(ResExtentions[i].achExtension, achExt);
 	ResExtentions[i].pfLoadProc = LoadProc;
 	ResExtentions[i].pfDisposeProc = DisposeProc;
 	ResExtentions[i].pfSetPurgeProc = SetPurgeProc;
