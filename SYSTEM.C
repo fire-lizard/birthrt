@@ -1738,9 +1738,17 @@ SHORT print_textf(LONG x, LONG y, LONG color, const char *format, ...)
 	char texbuffer[2000];
 	va_list argp;
 
-	LONG	i = (LONG) format;
-
-	if ( i <= 0 )				// prevent NULL or -1 strings from crashing
+	// Guard against the NULL and (char *)-1 the resource manager hands
+	// back for a missing string. This used to read
+	//		LONG i = (LONG) format;  if (i <= 0) return 0;
+	// which truncates a 64-bit pointer to 32 bits and tests its sign.
+	// On Windows that is harmless only because /LARGEADDRESSAWARE:NO
+	// keeps every address below 2GB, so the truncation is always
+	// positive. On Linux the heap lives at 0x7ffff..., bit 31 of the
+	// low half is frequently set, and perfectly good strings tested as
+	// negative and were dropped without a trace - which is why menu
+	// labels drew on Windows and vanished here.
+	if ( format == NULL || format == (const char *)-1 )
 		return 0;
 
 	va_start(argp, format);

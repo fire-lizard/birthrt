@@ -680,29 +680,44 @@ void update_screen(void)
 	   and it bypasses X entirely - a screenshot of the window cannot tell
 	   "the game drew nothing" apart from "the compositor showed nothing". */
 	{
-		static long lFrame = 0;
+		static long lFrame  = 0;
 		static long lWanted = -2;
+		static long lEvery  = 0;
 
 		if (lWanted == -2)
 		{
 			const char *p = getenv("BIRTHRT_SHOT");
-			lWanted = p ? atol(p) : -1;
+
+			lWanted = -1;
+			if (p != NULL && sscanf(p, "%ld:%ld", &lWanted, &lEvery) < 1)
+				lWanted = -1;
 		}
 
-		if (++lFrame == lWanted)
+		++lFrame;
+		if (lEvery > 0 && lFrame > lWanted && ((lFrame - lWanted) % lEvery) == 0)
+			lWanted = lFrame;
+
+		if (lFrame == lWanted)
 		{
 			SDL_Surface *s = SDL_CreateRGBSurfaceWithFormat(0, cw, ch, 32,
 															SDL_PIXELFORMAT_ARGB8888);
+			char szName[64];
+
+			if (lEvery > 0)
+				sprintf(szName, "shot%05ld.bmp", lFrame);
+			else
+				strcpy(szName, "shot.bmp");
+
 			if (s != NULL)
 			{
 				if (SDL_RenderReadPixels(gRender, NULL, SDL_PIXELFORMAT_ARGB8888,
 										 s->pixels, s->pitch) == 0)
-					SDL_SaveBMP(s, "shot.bmp");
+					SDL_SaveBMP(s, szName);
 				else
 					printf("SDL_RenderReadPixels failed: %s\n", SDL_GetError());
 				SDL_FreeSurface(s);
 			}
-			printf("wrote shot.bmp at frame %ld (%dx%d)\n", lFrame, cw, ch);
+			printf("wrote %s at frame %ld (%dx%d)\n", szName, lFrame, cw, ch);
 			fflush(stdout);
 		}
 	}
