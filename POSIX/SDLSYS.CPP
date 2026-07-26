@@ -108,6 +108,7 @@ static Uint32   gPalLut[256];				/* palette -> ARGB8888       */
 
 static BOOL     fFadedOut = FALSE;
 static BOOL     fWindowShown = FALSE;
+static BOOL     fReleasePending = FALSE;	/* button up seen, not applied yet */
 
 /* Client-area size chosen on the options screen; the game buffer stays
    640x480 and the renderer scales it, exactly as the Win32 build does. */
@@ -847,12 +848,18 @@ void read_mouse(void)
 		cursor_x = (LONG)x * WindowWidth  / rc.right;
 		cursor_y = (LONG)y * WindowHeight / rc.bottom;
 
-		mouse_button = FALSE;
+		/* Don't overwrite a press the game has not seen yet - that is
+		   WindowsMessages()' job. Otherwise a click released before the
+		   next read_mouse() disappears. */
+		if (!fReleasePending)
+		{
+			mouse_button = FALSE;
 
-		if (buttons & SDL_BUTTON(SDL_BUTTON_RIGHT))
-			mouse_button = 2;
-		else if (buttons & SDL_BUTTON(SDL_BUTTON_LEFT))
-			mouse_button = 1;
+			if (buttons & SDL_BUTTON(SDL_BUTTON_RIGHT))
+				mouse_button = 2;
+			else if (buttons & SDL_BUTTON(SDL_BUTTON_LEFT))
+				mouse_button = 1;
+		}
 	}
 }
 
@@ -867,16 +874,58 @@ void update_buttons(void)
 }
 
 /* The 1997 software cursor (blit the cursor bitmap into the frame, then
-   restore what was under it) only ran in the DirectDraw path. GDI mode
-   let the OS draw the pointer, and so does SDL - so these are the same
-   no-ops WINSYS/MOUSE.C reduced to when sDrawMode == iGDI. */
-void SysHideCursor(void)  {}
-void SysShowCursor(void)  {}
-void SysForceCursor(void) {}
+   restore what was under it) only ran in the DirectDraw path; in GDI mode
+   ForceCursor did nothing but call read_mouse(), and SDL is the same.
+
+   The read_mouse() call is the load-bearing part and is easy to miss:
+   MENU.C, REGIONS.C and PANEL.C bracket their drawing with
+   SysHideCursor()/SysShowCursor() every frame, and that is the ONLY thing
+   that updates cursor_x/cursor_y anywhere in the game. Stub these out and
+   the cursor reads 0,0 forever, so every region hit-test in
+   check_regions() is against the top-left corner and no click ever lands. */
+static BOOL fMouseHidden = TRUE;
+
+static void ForceCursor(void)
+{
+	if (!mouse_present)
+		return;
+
+	read_mouse();
+	/* GDI/SDL: the OS draws the pointer, nothing to blit. */
+}
+
+void SysHideCursor(void)
+{
+	if (!mouse_present || fMouseHidden)
+		return;
+
+	fMouseHidden = TRUE;
+}
+
+void SysShowCursor(void)
+{
+	if (fMouseHidden)
+	{
+		ForceCursor();
+		fMouseHidden = FALSE;
+	}
+}
+
+void SysForceCursor(void)
+{
+	ForceCursor();
+	fMouseHidden = FALSE;
+}
 
 void draw_cursor(void)
 {
-	read_mouse();
+	if (fAutoRestoreCursor)
+	{
+		SysHideCursor();
+		SysShowCursor();
+	}
+	else
+		ForceCursor();
 }
 
 LONG cursor_in_box(LONG x1, LONG y1, LONG w, LONG h)
@@ -941,11 +990,23 @@ static void HandleEvent(const SDL_Event *ev)
 		KeyUp(VKFromSDL(ev->key.keysym.sym, ev->key.keysym.scancode));
 		break;
 
+	/* machine_pre_frame() (MAIN.CPP) turns mouse_button into a click only
+	   on the 0 -> non-zero edge, so the press has to be released again or
+	   there is never another edge. Releasing is deferred to
+	   WindowsMessages() below: a fast click can press and release inside a
+	   single pump, and clearing it here would mean the game never sees a
+	   frame with the button down. */
 	case SDL_MOUSEBUTTONDOWN:
 		if (ev->button.button == SDL_BUTTON_LEFT)
 			mouse_button = 1;
 		else if (ev->button.button == SDL_BUTTON_RIGHT)
 			mouse_button = 2;
+		break;
+
+	case SDL_MOUSEBUTTONUP:
+		if (ev->button.button == SDL_BUTTON_LEFT ||
+			ev->button.button == SDL_BUTTON_RIGHT)
+			fReleasePending = TRUE;
 		break;
 
 	case SDL_WINDOWEVENT:
@@ -971,12 +1032,91 @@ static void HandleEvent(const SDL_Event *ev)
 	}
 }
 
+/* BIRTHRT_CLICK=<frame>:<x>:<y> synthesises a left click at that frame.
+   There is no way to drive the mouse on a headless box, and the click
+   path is a state machine across three layers (SDL event -> mouse_button
+   -> machine_pre_frame's edge detect -> mouse_click -> check_regions), so
+   this is what makes it testable at all. It also traces mouse_button and
+   mouse_click for a few frames either side. */
+static void InjectTestClick(void)
+{
+	static long lFrame  = 0;
+	static long lWanted = -2;
+	static int  iX = 0, iY = 0;
+	static LONG lPrevBtn = -1, lPrevClick = -1;
+
+	if (lWanted == -2)
+	{
+		const char *p = getenv("BIRTHRT_CLICK");
+
+		lWanted = -1;
+		if (p != NULL && sscanf(p, "%ld:%d:%d", &lWanted, &iX, &iY) != 3)
+			lWanted = -1;
+	}
+	if (lWanted < 0)
+		return;
+
+	lFrame++;
+
+	/* Repeat every 200 frames after the first: the intro and the FLIC
+	   player run their own loops and legitimately eat clicks, so a single
+	   shot at a guessed frame proves nothing. */
+	if (lFrame > lWanted && ((lFrame - lWanted) % 200) == 0)
+		lWanted = lFrame;
+
+	if (lFrame == lWanted || lFrame == lWanted + 2)
+	{
+		SDL_Event e;
+
+		memset(&e, 0, sizeof(e));
+		e.type         = (lFrame == lWanted) ? SDL_MOUSEBUTTONDOWN : SDL_MOUSEBUTTONUP;
+		e.button.button = SDL_BUTTON_LEFT;
+		e.button.state = (lFrame == lWanted) ? SDL_PRESSED : SDL_RELEASED;
+		e.button.x     = iX;
+		e.button.y     = iY;
+
+		if (lFrame == lWanted)
+			SDL_WarpMouseInWindow(gWindow, iX, iY);
+
+		{
+			int rc = SDL_PushEvent(&e);
+
+			printf("[click] frame %ld: pushed %s at %d,%d rc=%d (%s)\n", lFrame,
+				   (lFrame == lWanted) ? "DOWN" : "UP", iX, iY, rc,
+				   rc == 1 ? "queued" : SDL_GetError());
+		}
+	}
+
+	if (mouse_button != lPrevBtn || mouse_click != lPrevClick)
+	{
+		printf("[click] frame %ld: mouse_button=%ld mouse_click=%ld cursor=%ld,%ld\n",
+			   lFrame, (long)mouse_button, (long)mouse_click,
+			   (long)cursor_x, (long)cursor_y);
+		lPrevBtn   = mouse_button;
+		lPrevClick = mouse_click;
+	}
+}
+
 void WindowsMessages(void)
 {
 	SDL_Event ev;
+	LONG	  before = mouse_button;
+
+	InjectTestClick();
 
 	while (!fQuitting && SDL_PollEvent(&ev))
 		HandleEvent(&ev);
+
+	/* Release the button only once the game has had a whole frame with it
+	   down - `before` non-zero means it was already set when this pump
+	   started, so machine_pre_frame() has seen the edge. A press and
+	   release arriving in the same pump therefore survives to the next
+	   frame instead of being swallowed. */
+	if (fReleasePending && before != 0)
+	{
+		mouse_button = 0;
+		fReleasePending = FALSE;
+	}
 }
 
 void ClearMessageQueue(void)
