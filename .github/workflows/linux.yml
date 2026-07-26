@@ -1,0 +1,33 @@
+# Linux bring-up build.
+#
+# There is no Linux machine in the development loop, so this is the
+# compiler that reports on POSIX/. It is expected to fail while the port
+# is in progress - the log is the work list. Read the first few errors,
+# fix, push again.
+name: linux
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install SDL2
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libsdl2-dev ninja-build
+
+      # Ninja to match the Windows setup, and because `-k 0` below is
+      # Ninja's keep-going spelling.
+      - name: Configure
+        run: cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Debug
+
+      # Keep going after the first failure so one run reports every broken
+      # translation unit instead of just the alphabetically-first one.
+      - name: Build
+        run: cmake --build build -j "$(nproc)" -- -k 0
