@@ -15,7 +15,30 @@
 
 #include "../TYPEDEFS.H"
 #include "../SYSTEM.H"
+#include "../REALM.HXX"
+#include "../CHARSEL.HXX"
 #include "WINSYS/MULPLAY.HXX"
+
+/* NOT a no-op, unlike everything below. On Win32 this runs from the
+   AMultiPlayer constructor at startup and seeds lRealmSelectedByPlayer[]
+   with -1, meaning "no network player owns this realm". The array is
+   static storage, so leaving it zeroed reads as "player 0 owns every
+   realm" - which makes RealmNames() skip every label (GAMEMAP.CPP:6590)
+   and the map click handler reject every province (GAMEMAP.CPP:7123).
+   Single player never touches the array again, so this one line is the
+   difference between a usable map and a blank, dead one. */
+void MultiPlayer::InitGoop(void)
+{
+	LONG i;
+
+	for (i = 0; i < LAND_REALM_COUNT; ++i)
+		lRealmSelectedByPlayer[i] = -1;
+}
+
+MultiPlayer::MultiPlayer(void)
+{
+	InitGoop();
+}
 
 MultiPlayer AMultiPlayer;
 
@@ -144,7 +167,6 @@ BOOL GenericMultiPlayer::SendMessage(DWORD dwToWhom, USHORT usType, short sSize,
 GenericMultiPlayer::GenericMultiPlayer(const GenericMultiPlayer& org) : pnmGame(0, 0) {}
 
 /* ---- MultiPlayer ---- */
-MultiPlayer::MultiPlayer() {}
 MultiPlayer::~MultiPlayer() {}
 int MultiPlayer::ForceStart() { return (int)0; }
 void MultiPlayer::DisablePlayers() {}
@@ -245,7 +267,6 @@ int MultiPlayer::GetRealmFromId(DWORD dwId) { return (int)0; }
 BOOL MultiPlayer::ExchangeSavedGame() { return (BOOL)0; }
 short MultiPlayer::DoHeader(MsgType iType, PCHAR *ppMsg) { return (short)0; }
 BOOL MultiPlayer::HandleSpecialMessages(UCHAR usMsgId, long lMsgNum) { return (BOOL)0; }
-void MultiPlayer::InitGoop() {}
 void MultiPlayer::ReadCfg() {}
 BOOL MultiPlayer::ReceiveFile(PSZ pNew) { return (BOOL)0; }
 BOOL MultiPlayer::ReceiveMessage(USHORT usType, DWORD dwWait, BOOL fOneOnly) { return (BOOL)0; }

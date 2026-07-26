@@ -1057,6 +1057,7 @@ static void InjectTestClick(void)
 {
 	static long lFrame  = 0;
 	static long lWanted = -2;
+	static long lEvery  = 0;
 	static int  iX = 0, iY = 0;
 	static LONG lPrevBtn = -1, lPrevClick = -1;
 
@@ -1065,7 +1066,7 @@ static void InjectTestClick(void)
 		const char *p = getenv("BIRTHRT_CLICK");
 
 		lWanted = -1;
-		if (p != NULL && sscanf(p, "%ld:%d:%d", &lWanted, &iX, &iY) != 3)
+		if (p != NULL && sscanf(p, "%ld:%d:%d:%ld", &lWanted, &iX, &iY, &lEvery) < 3)
 			lWanted = -1;
 	}
 	if (lWanted < 0)
@@ -1073,10 +1074,11 @@ static void InjectTestClick(void)
 
 	lFrame++;
 
-	/* Repeat every 200 frames after the first: the intro and the FLIC
-	   player run their own loops and legitimately eat clicks, so a single
-	   shot at a guessed frame proves nothing. */
-	if (lFrame > lWanted && ((lFrame - lWanted) % 200) == 0)
+	/* Optional 4th field repeats the click every N frames. Useful when
+	   probing for a frame that accepts input - the intro and the FLIC
+	   player run their own loops and legitimately eat clicks - but the
+	   default is a single shot so a click can be aimed at a real button. */
+	if (lEvery > 0 && lFrame > lWanted && ((lFrame - lWanted) % lEvery) == 0)
 		lWanted = lFrame;
 
 	if (lFrame == lWanted || lFrame == lWanted + 2)
