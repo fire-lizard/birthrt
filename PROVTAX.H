@@ -45,4 +45,3 @@ SHORT AveGuildTempleTaxes(
 #endif
 
 #endif // _PROVTAX_H
-

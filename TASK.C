@@ -197,4 +197,3 @@ void pause_task(LONG taskIndex)
 		++tasks[taskIndex].next;
 	}
 }
-

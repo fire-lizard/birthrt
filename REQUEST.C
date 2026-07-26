@@ -52,7 +52,7 @@ static LONG ActiveRequests[MAX_ACTIVE_MENUS] = {fERROR,fERROR,fERROR,fERROR,fERR
 static LONG RequestValue[MAX_ACTIVE_MENUS] = {fERROR,fERROR,fERROR,fERROR,fERROR,fERROR,fERROR,fERROR,fERROR,fERROR};
 
 // pointers to the data to use (provided by the user)
-extern PMENU	Menus;
+extern MENU	Menus[];
 extern LONG		MaxMenu;
 
 extern SHORT	sMenusUp;
@@ -471,4 +471,3 @@ static void PaintRequests(void)
 }
 
 /* ======================================================================== */
-

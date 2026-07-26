@@ -102,4 +102,3 @@ void MarkUnitsSpotted(PROVINCE prov);
 
 #endif // _UNITS_HXX
 /*	======================================================================== */
-

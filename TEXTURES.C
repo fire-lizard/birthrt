@@ -64,7 +64,7 @@ void WriteErrFile(char *n);
    Global Variables
    ------------------------------------------------------------------------ */
 TEXTURE	textures[MAX_TEXTURES];
-long		last_texture = 0;
+LONG		last_texture = 0;
 SHORT		hSky_filenames = fERROR;
 #define  cSKY_TEXTURES		12				// [d11-08-96 JPC] used to be 11
 TEXTURE	sky_textures[cSKY_TEXTURES];
@@ -103,7 +103,7 @@ extern	LONG	gRemapIndex;				// [d7-29-96 JPC] experimental
    Change      - 6-06-96 JPC: added o_status parameter so caller can
                  tell what happened
    ======================================================================== */
-long get_texture (char *in, ULONG * o_status)
+LONG get_texture (char *in, ULONG * o_status)
 {
 	LONG		i;
 	ULONG		t;
@@ -373,7 +373,7 @@ void load_sky_textures (void)
    Description - gets a floor texture from somewhere???
    Returns     - the entry in the floor texture table where it was stored
    ======================================================================== */
-long get_floor_texture(char *in)
+LONG get_floor_texture(char *in)
 {
 	long		i;
 	ULONG		t;

@@ -40,8 +40,8 @@
 #include <stdarg.h>
 #include <ctype.h>
 #include "PLATFORM.H"
-#include <sys\types.h>
-#include <sys\stat.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 #include <fcntl.h>
 #include "SYSTEM.H"
 #include "SYSINT.H"

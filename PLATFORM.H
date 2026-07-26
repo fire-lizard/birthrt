@@ -58,7 +58,9 @@ typedef void *	HKEY;
 typedef void *	LPVOID;
 typedef char *	LPSTR;
 typedef char *	PSZ;
+typedef char *	PSTR;
 typedef char *	PCHAR;
+typedef DWORD *	LPDWORD;
 typedef const char *	LPCSTR;
 typedef unsigned short	WORD;
 typedef unsigned long	ULONG_PTR;
@@ -143,6 +145,29 @@ typedef long		HRESULT;
 #ifndef MAX_PATH
 #define MAX_PATH	PATH_MAX
 #endif
+#ifndef _MAX_PATH
+#define _MAX_PATH	PATH_MAX
+#endif
+
+/* <unistd.h> above declares `int pause(void)`, which collides with the
+   game's own `void pause(LONG)` (MACHINE.H) - both are extern "C", so the
+   linkage clashes rather than overloading. Rename the game's, after the
+   system header has been seen. */
+#define pause		birthrt_pause
+
+/* MSVC CRT spellings used throughout the 1997 sources. Defined after the
+   system headers above so the real declarations are not rewritten. */
+#define stricmp		strcasecmp
+#define strnicmp	strncasecmp
+#define strupr		plat_strupr
+#define filelength	plat_filelength
+/* The game calls mkdir with one argument. A macro does not re-expand its
+   own name, so the inner mkdir is the real one. */
+#define mkdir(p)	mkdir((p), 0777)
+
+/* Win32 odds and ends the core still references. */
+#define HELP_CONTENTS	0x0003
+#define HELP_CONTEXT	0x0001
 
 #ifndef O_BINARY
 #define O_BINARY	0
@@ -198,9 +223,15 @@ int		GetClientRect(HWND hwnd, RECT *rc);
 short	GetAsyncKeyState(int vk);
 int		WinHelp(HWND hwnd, const char *help, unsigned cmd, unsigned long data);
 unsigned int waveOutGetNumDevs(void);
+int		ShowCursor(int show);
+int		AllocConsole(void);
 
 #if defined(__cplusplus)
 }
+
+/* Not extern "C": POSIX/STUBS.CPP defines it outside the block, matching
+   GOTOURL.H and the other WINSYS headers that never wrapped theirs. */
+HINSTANCE FindExecutable(const char *file, const char *dir, char *result);
 #endif
 
 #endif	/* _WIN32 */
@@ -208,6 +239,19 @@ unsigned int waveOutGetNumDevs(void);
 /* ------------------------------------------------------------------------
    Portable helpers - available on every target.
    ------------------------------------------------------------------------ */
+
+/* Bitfield layout is NOT the same on MSVC and gcc. MSVC starts a new
+   storage unit when the next bitfield will not fit in the current one;
+   gcc (under #pragma pack) packs bits contiguously across byte
+   boundaries. Structs that reach a save file must use the MSVC rule or
+   the 1997 file format silently changes size - sizeof(REGENT) came out
+   12 instead of 14. Tag those structs with this. */
+#if defined(_WIN32)
+#define MS_BITFIELDS
+#else
+#define MS_BITFIELDS	__attribute__((ms_struct))
+#endif
+
 #if defined(__cplusplus)
 extern "C" {
 #endif

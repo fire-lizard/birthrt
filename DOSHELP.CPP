@@ -16,7 +16,7 @@
 #include "SYSTEM.H"
 #include <stdio.h>
 #include "TYPEDEFS.H"
-#include <sys\types.h>
+#include <sys/types.h>
 #include "PLATFORM.H"
 
 #include "GAME.H"

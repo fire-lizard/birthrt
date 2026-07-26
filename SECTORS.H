@@ -33,4 +33,3 @@ BOOL IsLavaSector (LONG iSector);
 #endif
 
 #endif
-

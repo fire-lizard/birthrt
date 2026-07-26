@@ -136,16 +136,25 @@ else ()
 	find_package (SDL2 REQUIRED)
 
 	# POSIX/ is the Linux/macOS counterpart of WINSYS/.
+	# MESSQUE.CPP is in the WINSYS directory but is portable - a plain
+	# message ring the battle AI uses, no Win32 in it.
 	set (BIRTHRT_POSIX
-		"POSIX/SDLSYS.CPP" "POSIX/STUBS.CPP" "POSIX/MULPLAY_STUB.CPP")
+		"POSIX/SDLSYS.CPP" "POSIX/STUBS.CPP" "POSIX/MULPLAY_STUB.CPP"
+		"WINSYS/MESSQUE.CPP")
 
 	add_executable (Birthrt ${BIRTHRT_CORE} ${BIRTHRT_POSIX})
 
 	# The 1997 sources are C++ even in the .C files - the Win32 build
 	# compiles them that way, so cross-TU globals are C++-mangled there.
 	# Pin the same choice here instead of letting the extension decide.
-	set_source_files_properties (${BIRTHRT_CORE} ${BIRTHRT_POSIX}
-		PROPERTIES LANGUAGE CXX)
+	# Only the .C/.CPP entries: setting LANGUAGE on the .H/.HXX entries
+	# promotes them from headers to translation units and CMake compiles
+	# each one standalone.
+	foreach (_src IN LISTS BIRTHRT_CORE BIRTHRT_POSIX)
+		if (_src MATCHES "\\.(C|CPP|c|cpp)$")
+			set_source_files_properties (${_src} PROPERTIES LANGUAGE CXX)
+		endif ()
+	endforeach ()
 
 	# _WINDOWS is this codebase's own "not DOS" switch (595 conditionals).
 	# The non-DOS branch is the right one on Linux/macOS too.

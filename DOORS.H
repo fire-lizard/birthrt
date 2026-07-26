@@ -41,4 +41,3 @@ void DoorInfo (LONG special);
 #endif
 
 #endif
-

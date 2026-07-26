@@ -111,4 +111,3 @@ void ForceHires();
 	
 void AdventureFixUnitsArray(LONG /* iUnitLeader */);
 #endif
-

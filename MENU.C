@@ -85,7 +85,7 @@ SHORT	hSaveBkgnd = fERROR;
 SHORT	cntSaveBkgnd = 0;
 
 // pointers to the data to use (provided by the user)
-PMENU Menus = 0;
+static PMENU Menus = 0;
 LONG  MaxMenu = 0;
 
 extern BOOL fIsFadedOut;

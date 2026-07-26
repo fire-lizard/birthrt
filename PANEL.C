@@ -54,7 +54,7 @@ BOOL	fUpdatePanels = FALSE;
 static LONG ActivePanels[MAX_ACTIVE_MENUS] = {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};
 
 // pointers to the data to use (provided by the user)
-extern PMENU Menus;
+extern MENU Menus[];
 extern LONG  MaxMenu;
 extern SHORT	cntSaveBkgnd;
 
@@ -447,4 +447,3 @@ static void PaintPanels(void)
 	
 	SysShowCursor();
 }
-

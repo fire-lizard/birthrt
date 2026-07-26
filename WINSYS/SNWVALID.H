@@ -167,4 +167,3 @@ DllExport VALIDATE_DLL_EXIT SNWValidate(char *GPName,
 #endif	//MAKE_DLL
 
 #endif  //_INC_SNWValidateSDK
-

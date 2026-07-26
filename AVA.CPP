@@ -15,7 +15,9 @@
 
 #ifdef _WINDOWS
 #include "PLATFORM.H"
+#if defined(_WIN32)
 #include <windowsx.h>
+#endif
 #endif
 
 #include "SYSTEM.H"

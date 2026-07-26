@@ -87,6 +87,11 @@ BOOL	text_differs(char *, char *);
    Description - Creates a string table
    Returns     - 
    ======================================================================== */
+/* STRMAKE is a standalone string-table builder that happens to live in
+   the game's source list. Its main() is dead weight in the Win32 build
+   (WinMain is the entry point) but collides with the real main() on
+   POSIX, where SDLSYS.CPP owns it. */
+#if defined(_WIN32)
 int main(int argc,char * argv[])
 {
 	int iVal;
@@ -258,6 +263,7 @@ int main(int argc,char * argv[])
 
 	return 0;
 }
+#endif	/* _WIN32 */
 
 int GetToken(FILE *fFile)
 {

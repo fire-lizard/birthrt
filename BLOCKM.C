@@ -37,7 +37,7 @@
    Description - determines the block specified coordinates are in
    Returns     - returns the block the coordinates are in
    ======================================================================== */   
-SHORT* get_blockm (long px1,long py1)
+SHORT* get_blockm (LONG px1,LONG py1)
 {
 	long bx,by,bo;
 	SHORT *bm;
@@ -82,4 +82,4 @@ POINT GetBlockCornerFromXY(LONG x,LONG y)
 
 	return ReturnMe;
 
-}
+}

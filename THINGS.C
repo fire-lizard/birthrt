@@ -650,6 +650,10 @@ static void load_obj_graphic(LONG i,
 	char		n[40];
 	char		fn[128];
 	char		pn[128];
+	/* Declared up here because the gotos below jump past their original
+	   initialisations, which C++ forbids (MSVC allowed it). */
+	LONG		ArtType;
+	ANIMPTR		pAnim = 0;
 	
 	mythings[i].type = ttype;
 
@@ -670,7 +674,7 @@ static void load_obj_graphic(LONG i,
 	/* get base filename from registered TType array */
 	/* GEH also check for the ultra low memory config */
 	/* and swap out some of the animations for another */
-		LONG ArtType = GetArtType(ttype);
+		ArtType = GetArtType(ttype);
 		if (ArtType == FLC_ART)
 			goto Art_Is_FLC;
 		if (ArtType == BITMAP_ART)
@@ -690,7 +694,7 @@ static void load_obj_graphic(LONG i,
 	/* ------------------------------------------ */
 	if (Exists(fn))			/* check for STAND @ 0 rotation */
 	{
-		ANIMPTR pAnim = 0;
+		pAnim = 0;
 Art_Is_FLC:
 
 		iAnim = mythings[i].iAnim;
@@ -728,7 +732,7 @@ Art_Is_FLC:
 	/* ------------------------------------------ */
 	else if (Exists(pn))
 	{
-		ANIMPTR pAnim = 0;
+		pAnim = 0;
 		
 Art_Is_PCX:
 		iAnim = mythings[i].iAnim;
@@ -3409,7 +3413,7 @@ void decode_delta_flc (PTR pData, ANIMPTR pAnim)
 }
 
 // see below
-void sort_things_from_camera(long n)
+void sort_things_from_camera(LONG n)
 {
 }
 

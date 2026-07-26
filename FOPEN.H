@@ -28,4 +28,3 @@ void CloseAllFiles ();
 }
 #endif
 #endif
-

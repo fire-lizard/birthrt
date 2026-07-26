@@ -240,4 +240,3 @@ void PLAYER_HIT::mfDamageRange( THINGTYPE const Enemytype,
 		*maxDamage = 0;
 	}
 }
-

@@ -37,4 +37,3 @@ void SlowDown(LONG, LONG);
 void CloseAnimationMenu(LONG, LONG);
 
 #endif
-

@@ -812,4 +812,3 @@ SIGSAPI void ToggleCommExit(int DoIt);
 typedef void (*lpfnToggleCommExitFunc)( int );
 
 #endif //__SIERRANWAPI_H__
-

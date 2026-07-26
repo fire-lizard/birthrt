@@ -29,6 +29,7 @@
 #include "../FILEUTIL.H"
 #include "../PLAYER.HXX"		/* PlayerSpeed, PlayerHiresSpeed */
 #include "../MENU.H"			/* sMenusUp */
+#include "../SOUND.HXX"			/* TurnOffAllSounds, ShutDownSoundSystem */
 
 /* REDBOOK.C; MACHINE.C declared these locally too. Every .C here builds
    as C++, so these stay C++-mangled - no extern "C". */
@@ -61,23 +62,28 @@ PTR			GDIscreen = NULL;
 COLORSPEC	CurPal[256];
 BOOL		fHighRes;
 SHORT		iDispBuffer = fERROR;
-long		disp_color;
+LONG		disp_color;
 
 /* mouse.c */
-long	old_cursor_x, old_cursor_y;
-long	cursor_x, cursor_y, mouse_button;
+LONG	old_cursor_x, old_cursor_y;
+LONG	cursor_x, cursor_y, mouse_button;
 char	chCursorName[32];
-long	location_x, location_y;
-long	mouse_click = 0;
-long	mouse_present = TRUE;
-long	current_cursor;
-long	need_cursor_draw = FALSE;
+LONG	location_x, location_y;
+LONG	mouse_click = 0;
+LONG	mouse_present = TRUE;
+LONG	current_cursor;
+LONG	need_cursor_draw = FALSE;
 SHORT	cursor_bitmap;
 BOOL	fAutoRestoreCursor = FALSE;
 
 /* keyint.c */
 volatile unsigned char	key_stat[256];
 volatile BOOL			fAnyKeyChanged;
+
+/* machine.c owned these too. */
+int		iChatKey;
+LONG	lSavedX = -1;
+LONG	lSavedY = -1;
 
 /* machine.c owned these; the joystick is not wired up on this backend. */
 LONG	JoyXPos = 0, JoyYPos = 0, JoyZPos = 0;
@@ -805,8 +811,14 @@ void update_buttons(void)
 		mouse_button = 1;
 }
 
-/* The 1997 software cursor is only used in the DirectDraw path; in GDI
-   mode the OS cursor was drawn instead, and SDL does the same here. */
+/* The 1997 software cursor (blit the cursor bitmap into the frame, then
+   restore what was under it) only ran in the DirectDraw path. GDI mode
+   let the OS draw the pointer, and so does SDL - so these are the same
+   no-ops WINSYS/MOUSE.C reduced to when sDrawMode == iGDI. */
+void SysHideCursor(void)  {}
+void SysShowCursor(void)  {}
+void SysForceCursor(void) {}
+
 void draw_cursor(void)
 {
 	read_mouse();

@@ -423,8 +423,15 @@ public:
 						 fcpTypeName, fcpVarName, index, fRows);
 		}
 #endif
+		// fcpTypeName/fcpVarName only exist under _VECTOR_CHK. MSVC never
+		// noticed because it does not check an uninstantiated template
+		// body; gcc does.
+#if defined (_VECTOR_CHK)
 		BrVector<T> Result(start + (index*fCols), fCols, fcpTypeName, fcpVarName);
-		
+#else
+		BrVector<T> Result(start + (index*fCols), fCols, "", "");
+#endif
+
 		return ( Result );
 	}
 	
@@ -437,8 +444,15 @@ public:
 						 fcpTypeName, fcpVarName, index, fRows);
 		}
 #endif
+		// fcpTypeName/fcpVarName only exist under _VECTOR_CHK. MSVC never
+		// noticed because it does not check an uninstantiated template
+		// body; gcc does.
+#if defined (_VECTOR_CHK)
 		BrVector<T> Result(start + (index*fCols), fCols, fcpTypeName, fcpVarName);
-		
+#else
+		BrVector<T> Result(start + (index*fCols), fCols, "", "");
+#endif
+
 		return ( Result );
 	}
 	

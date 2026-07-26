@@ -204,4 +204,3 @@ inline char const * const BLOOD_ABILITY_INFO::mfGetName(
 }
 
 #endif // _BLOOD_H
-

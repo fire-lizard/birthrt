@@ -113,4 +113,3 @@ void  mono_setHardwareCursor( int flag )    // flag = TRUE  - use mono device
 }
 
 #endif
-

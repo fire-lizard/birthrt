@@ -23,8 +23,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "PLATFORM.H"
-#include <sys\types.h>
-#include <sys\stat.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 #include <fcntl.h>
 #include <ctype.h>
 #include <string>
@@ -613,7 +613,7 @@ static LONG FindExtensionIndex (CSTRPTR szResName)
 		if (*szExtension !=0)
 		{
 			string ext(szExtension);
-			transform(ext.begin(), ext.end(), ext.begin(), toupper);
+			transform(ext.begin(), ext.end(), ext.begin(), ::toupper);
 			for (SHORT iExtIndex = cMAXEXTENTS-1; iExtIndex > 0; iExtIndex--)
 				if (0 == ext.compare(ResExtentions[iExtIndex].achExtension))
 					return iExtIndex;

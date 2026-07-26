@@ -289,4 +289,4 @@ DEFINE_VECTOR_DATA_S(PROV_TYPE,province,(PROVINCE_COUNT+1)) = { //          n c 
 /*215*/  {""                ,   0,   0, REALM::MIERES,   0, 0, 0, 0, AV_LOY,0,0,0,0,0,0,0,0,0, 0, 0, 1, 1, 0, 0, 0, 0,FOREST, {{DUERLIN,FOREST}, {WESTMARCH,FOREST}, {ILIEN,RIVER}},	0},
 };
 
-DEFINE_VECTOR_CLASS(PROV_TYPE, province);
+DEFINE_VECTOR_CLASS(PROV_TYPE, province);

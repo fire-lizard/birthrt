@@ -90,7 +90,7 @@ typedef struct _BATTLE_TROOP_INFO {
    Prototypes
    ------------------------------------------------------------------------ */
 
-long ResolveBattleCard( LONG AIcon, LONG Attatck, LONG DIcon, LONG Defense);
+LONG ResolveBattleCard( LONG AIcon, LONG Attatck, LONG DIcon, LONG Defense);
 BOOL BattleRound( void );
 
 SHORT GetBattleClass( SHORT unit_icon );

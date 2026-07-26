@@ -203,4 +203,3 @@ SCENE_AI::SCENE_TYPE *pSceneType
 }
 
 #endif // _SCNAI_HXX
-

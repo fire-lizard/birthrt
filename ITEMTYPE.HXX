@@ -485,7 +485,7 @@ extern LONG PlayerTermVelocity;
    ------------------------------------------------------------------------ */
 extern void AddGameKeys(void);
 
-extern "C" extern MapHighlightData MapHighlight;
+extern "C" MapHighlightData MapHighlight;
 	
 /* ------------------------------------------------------------------------
    Classes

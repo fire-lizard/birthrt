@@ -191,4 +191,3 @@ inline void FOLLOW_PLAYER_DATA::mfSwapPlaces(FOLLOW_PLAYER_DATA & OtherFollower)
 	fAdventurer.mfSwapPlaces(OtherFollower.fAdventurer);
 }
 #endif	// _AIFOLPLY_HXX
-

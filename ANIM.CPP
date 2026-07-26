@@ -29,7 +29,7 @@
 #define MAXWINSPEED 50
 #define MAXDOSSPEED	1
 
-static LONG index = FIRST_GAME_THING;
+static LONG gAnimIndex = FIRST_GAME_THING;
 static char fn[128];
 static char const * n;
 static LONG seq;
@@ -50,24 +50,24 @@ void init_anim()
  	// add by lan for animation menu
  	BOOL not_found = TRUE;
 	
-	index = FIRST_GAME_THING;
+	gAnimIndex = FIRST_GAME_THING;
 	
-	while (not_found && index < LAST_GAME_THING)
+	while (not_found && gAnimIndex < LAST_GAME_THING)
 	{
-		n = GAME_TTYPE::mfGetArtFileName((THINGTYPE)index);
+		n = GAME_TTYPE::mfGetArtFileName((THINGTYPE)gAnimIndex);
 	 	seq = 0;
 	 	rot = 0;
 	 	sprintf(fn, "%s%s\\%s%c%c.FLC", THING_PATH, n,n, cAction[seq], cRotation[rot]);
 	 	
 		if( FileAccess(fn) != 0)
-			index++;
+			gAnimIndex++;
 		else
 			not_found = FALSE;
 
 // removed for HD/CD access by cdb
  	}
- 	iAnim = AllocateAnim(TYPE_FLIC, index);
-	load_FLC_sequence(iAnim, index, seq, rot);
+ 	iAnim = AllocateAnim(TYPE_FLIC, gAnimIndex);
+	load_FLC_sequence(iAnim, gAnimIndex, seq, rot);
  	SetAnimSequence(iAnim, (seq * NUMROTATIONS) + 0);
  	control = START_FLAG;
  	flag = SAMEANIM;
@@ -543,7 +543,7 @@ void PaintAnimation (LONG MenuCombo, LONG )
 	print_text_centered(X, Y, fn, 60);
 	Y += 20;
 	
-	sprintf(xCntr, STRMGR_GetStr(STR_ANIM_STR1),xCenter, speedRate, index);
+	sprintf(xCntr, STRMGR_GetStr(STR_ANIM_STR1),xCenter, speedRate, gAnimIndex);
    	print_text_centered(X, Y, xCntr, 60);  
 	Y += 20;
 	sprintf(S, STRMGR_GetStr(STR_ANIM_STR2), scale, wid, hei);
@@ -559,27 +559,27 @@ void PaintAnimation (LONG MenuCombo, LONG )
 void GetNextAnimation(LONG, LONG)
 {
 	  char tmp[128]; 
-	  index++;
+	  gAnimIndex++;
 	  
-	  if(index > LAST_GAME_THING)
-			index = FIRST_GAME_THING;
+	  if(gAnimIndex > LAST_GAME_THING)
+			gAnimIndex = FIRST_GAME_THING;
 	  
-	  n = GAME_TTYPE::mfGetArtFileName((THINGTYPE)index);
+	  n = GAME_TTYPE::mfGetArtFileName((THINGTYPE)gAnimIndex);
    	  sprintf(tmp, "%s------\\------%c%c.flc", THING_PATH, cAction[seq], cRotation[rot]);
 	  sprintf(fn, "%s%s\\%s%c%c.FLC", THING_PATH, n,n, cAction[seq], cRotation[rot]);
 
    	  while((0==(strcmp(fn, tmp)))||(0!=FileAccess(fn)) )	  
 	  {
-		index++;
-		if(index > LAST_GAME_THING)
-			index = FIRST_GAME_THING;
-		n = GAME_TTYPE::mfGetArtFileName((THINGTYPE)index);
+		gAnimIndex++;
+		if(gAnimIndex > LAST_GAME_THING)
+			gAnimIndex = FIRST_GAME_THING;
+		n = GAME_TTYPE::mfGetArtFileName((THINGTYPE)gAnimIndex);
    		sprintf(tmp, "%s------\\------%c%c.FLC", THING_PATH, cAction[seq], cRotation[rot]);
 		sprintf(fn, "%s%s\\%s%c%c.FLC", THING_PATH, n,n, cAction[seq], cRotation[rot]);
 	  }
 	  flag = CHANGEANIM;
 	  
-	  sprintf(tmp, "%s.IDA", GAME_TTYPE::mfGetArtFileName((THINGTYPE)index));
+	  sprintf(tmp, "%s.IDA", GAME_TTYPE::mfGetArtFileName((THINGTYPE)gAnimIndex));
 	  ANIMPTR pAnim = (ANIMPTR) BLKPTR(iAnim);
 	  if (pAnim->hiData > 0)
 	  {
@@ -587,7 +587,7 @@ void GetNextAnimation(LONG, LONG)
 	  }
 	  pAnim->hiData = GetResourceStd(tmp, FALSE);
 	  
-	  load_FLC_sequence(iAnim, index, seq, rot);
+	  load_FLC_sequence(iAnim, gAnimIndex, seq, rot);
 	  SetAnimSequence(iAnim, (seq * NUMROTATIONS) + rot);
 }
 	
@@ -595,26 +595,26 @@ void GetPrevAnimation(LONG, LONG)
 {
    	char tmp[128];
 	sprintf(tmp, "%s------\\------%c%c.FLC", THING_PATH,cAction[seq], cRotation[rot] );
-	index--;
+	gAnimIndex--;
 	
-	if(index < FIRST_GAME_THING)
-		index = LAST_GAME_AVATAR;
+	if(gAnimIndex < FIRST_GAME_THING)
+		gAnimIndex = LAST_GAME_AVATAR;
 	
-    n = GAME_TTYPE::mfGetArtFileName((THINGTYPE)index);
+    n = GAME_TTYPE::mfGetArtFileName((THINGTYPE)gAnimIndex);
  	sprintf(fn, "%s%s\\%s%c%c.FLC", THING_PATH, n,n, cAction[seq], cRotation[rot]);
 
 	while((0==(strcmp(fn, tmp)))||(0!=FileAccess(fn) ))	
 	{
-		index--;
-		if(index < FIRST_GAME_THING)
-			index = LAST_GAME_AVATAR; 
-		n = GAME_TTYPE::mfGetArtFileName((THINGTYPE)index);
+		gAnimIndex--;
+		if(gAnimIndex < FIRST_GAME_THING)
+			gAnimIndex = LAST_GAME_AVATAR; 
+		n = GAME_TTYPE::mfGetArtFileName((THINGTYPE)gAnimIndex);
    		sprintf(tmp, "%s------\\------%c%c.FLC", THING_PATH, cAction[seq], cRotation[rot]);
 		sprintf(fn, "%s%s\\%s%c%c.FLC", THING_PATH,n, n, cAction[seq],cRotation[rot]);
 	}
 	flag = CHANGEANIM;
 	
-	sprintf(tmp, "%s.IDA", GAME_TTYPE::mfGetArtFileName((THINGTYPE)index));
+	sprintf(tmp, "%s.IDA", GAME_TTYPE::mfGetArtFileName((THINGTYPE)gAnimIndex));
 	ANIMPTR pAnim = (ANIMPTR) BLKPTR(iAnim);
 	if (pAnim->hiData > 0)
 	{
@@ -622,7 +622,7 @@ void GetPrevAnimation(LONG, LONG)
 	}
 	pAnim->hiData = GetResourceStd(tmp, FALSE);
 	
-	load_FLC_sequence(iAnim, index, seq, rot);
+	load_FLC_sequence(iAnim, gAnimIndex, seq, rot);
 	SetAnimSequence(iAnim, (seq * NUMROTATIONS) + rot);
 }
 

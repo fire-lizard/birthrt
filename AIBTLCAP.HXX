@@ -217,4 +217,3 @@ SHORT	ResolveBattleMagic( CAvatar * );
 void	SendWin ( BOOL IWin );
 
 #endif
-

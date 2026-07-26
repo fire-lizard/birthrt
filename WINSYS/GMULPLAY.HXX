@@ -31,6 +31,13 @@
 #include "FILEXFER.HXX"
 
 // -- This needs to compile w/o the Windows.h stuff, so kludge away!
+//
+// These are typedefs, not macros, so the #ifndef guards never fire and
+// the typedefs are always emitted. On Win32 they happen to agree with
+// <windef.h>. On POSIX they do not: DWORD there is 32-bit (TYPEDEFS.H),
+// and `unsigned long` is 64-bit, so this block redefines it incompatibly.
+// TYPEDEFS.H and PLATFORM.H already supply every name below.
+#if defined(_WIN32)
 
 #ifndef USHORT
 typedef unsigned short USHORT;
@@ -50,6 +57,8 @@ typedef unsigned char UCHAR;
 #ifndef BYTE
 typedef unsigned char BYTE;
 #endif
+
+#endif	/* _WIN32 */
  // -- End of kludge section
 
  // -- User-PNetMod types

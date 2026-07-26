@@ -170,8 +170,8 @@ void debug_draw_seg_line(long x1,long y1,long x2,long y2,long c)
 
 }
 
-void scale_col_ttop(long sx,long dx,long dy,long dye,
-				long clipped,long src_inc)
+void scale_col_ttop(LONG sx,LONG dx,LONG dy,LONG dye,
+				LONG clipped,LONG src_inc)
 {
 	register FIXED16	tsy;
 	register PTR		sptr;

@@ -234,7 +234,7 @@ extern LONG fControlMode;
 
 extern SHORT	iDMapBx;
 
-extern PMENU		Menus;
+extern MENU		Menus[];
 
 #define TOGGLEMODE
 
@@ -4384,4 +4384,3 @@ void HostMultiPlayerCreate (LONG MenuCombo, LONG )
 //---- End of multiui.cpp
 
 /* ======================================================================== */
-

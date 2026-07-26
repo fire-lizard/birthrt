@@ -122,4 +122,3 @@ void ShowChatSelectWindow(LONG, LONG);
    ------------------------------------------------------------------------ */
 
 #endif // _MULTIUI_HXX
-

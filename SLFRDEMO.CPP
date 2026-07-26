@@ -11,7 +11,7 @@
    Includes
 
    ------------------------------------------------------------------------ */
-#include <sys\types.h>
+#include <sys/types.h>
 #include "PLATFORM.H"
 #include <ctype.h>
 

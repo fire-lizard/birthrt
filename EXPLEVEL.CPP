@@ -371,11 +371,11 @@ void GainExp(PLAYER_STATS * pPS, const LONG ExpAmount,
 
             xp_for_next_level =
                ALL_CLASS_EXPERIENCE_TABLE::mfGetMinimumExperience(pCD->Type,
-                   min(pCD->sbLevel+1, MAX_EXPERIENCE_LEVELS));
+                   MIN(pCD->sbLevel+1, MAX_EXPERIENCE_LEVELS));
 
             xp_for_yet_another_level =
                ALL_CLASS_EXPERIENCE_TABLE::mfGetMinimumExperience(pCD->Type,
-                   min(pCD->sbLevel+2, MAX_EXPERIENCE_LEVELS));
+                   MIN(pCD->sbLevel+2, MAX_EXPERIENCE_LEVELS));
 
             /*-------------------------------------------------*/
             /* split experience amongst the individual classes */
@@ -399,4 +399,3 @@ void GainExp(PLAYER_STATS * pPS, const LONG ExpAmount,
         }
     }
 }
-

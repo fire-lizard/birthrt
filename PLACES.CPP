@@ -1252,4 +1252,4 @@ LONG HoldingValue (LONG iHold)
 		return (places[iHold].Level * 3);		// 3 gb per level for others
 }
 
-
+

@@ -276,4 +276,3 @@ typedef struct tSpecialChat
 typedef void (*SPECIAL_CHAT_PROC)(char *, sSpecialChat);
 
 #endif // _SN_TYPES_H_
-

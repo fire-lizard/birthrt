@@ -39,6 +39,9 @@ typedef struct _DPSESSIONDESC	*LPDPSESSIONDESC;
 typedef struct _DPSESSIONDESC2	*LPDPSESSIONDESC2;
 typedef struct _DPCAPS			*LPDPCAPS;
 
+typedef const struct _DPNAME		*LPCDPNAME;
+typedef const struct _DPSESSIONDESC2	*LPCDPSESSIONDESC2;
+
 typedef int (*LPDPENUMDPCALLBACKA)(LPGUID, char *, DWORD, DWORD, void *);
 
 #define __stdcall

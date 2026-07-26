@@ -205,7 +205,11 @@ class REGENT {
 private:
 	// Helper class to hide the data yet let the complier generate a default
 	// constructor. (Saves about 1/2 the data space over one I have to specify.)
-	class REGENT_DATA {
+	// MS_BITFIELDS: gcc would pack these 45 bits into 6 bytes, MSVC uses
+	// two unsigned-int storage units (8). regents[] is written to save
+	// files wholesale, so the MSVC layout is the format. The static_assert
+	// in LOADSAVE.CPP is what catches this.
+	class MS_BITFIELDS REGENT_DATA {
 	public:
 		// [d4-23-97 JPC] Removed the following so users can edit the names
 		// of characters.  Name is now stored in PLAYER_STATS class, szNameStat.
@@ -439,4 +443,3 @@ inline void REGENT::mfSeticon(MAP_ICON const NewIconVal)
 	fRegentData.icon = NewIconVal;
 }
 #endif // _REGENTS_HXX
-

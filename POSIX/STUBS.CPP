@@ -34,7 +34,18 @@ HRESULT DDSetCooperative(BOOL)		{ return 0; }
    SDL audio backend will answer for itself, so claim one device. */
 unsigned int waveOutGetNumDevs(void)	{ return 1; }
 
+/* SDL owns the cursor here, and this process already has a terminal. */
+int ShowCursor(int)						{ return 0; }
+int AllocConsole(void)					{ return 1; }
+
 }	/* extern "C" */
+
+/* MULTIUI.CPP compares the result against 32 the old ShellExecute way;
+   anything <= 32 means "could not launch", which is the honest answer. */
+HINSTANCE FindExecutable(const char *, const char *, char *)
+{
+	return (HINSTANCE)0;
+}
 
 void DirectDrawSaveScreen(void)		{}
 

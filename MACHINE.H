@@ -8,6 +8,13 @@
 /* ------------------------------------------------------------------------
    Sub Includes
    ------------------------------------------------------------------------ */
+/* Must precede the pause() declaration below: PLATFORM.H pulls in
+   <unistd.h>, whose own `int pause(void)` would otherwise clash with the
+   game's `void pause(LONG)`, and renames the game's out of the way. */
+#if !defined(_PLATFORM_H)
+#include "PLATFORM.H"
+#endif
+
 #if !defined(_TYPEDEFS_H)
 #include "TYPEDEFS.H"
 #endif

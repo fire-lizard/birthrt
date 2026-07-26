@@ -8,4 +8,3 @@
 BOOL FindUserSceneFiles ( char * pPath, char * pExt );
 
 #endif
-

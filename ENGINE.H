@@ -1,4 +1,4 @@
-/* ®RM250¯ */
+/* ï¿½RM250ï¿½ */
 /* ========================================================================
    Copyright (c) 1990,1996	Synergistic Software
    All Rights Reserved
@@ -9,6 +9,13 @@
 /* ------------------------------------------------------------------------
    Sub Includes
    ------------------------------------------------------------------------ */
+/* The key tables below are written in Win32 virtual-key codes, which came
+   from <Windows.h> on the Win32 build. PLATFORM.H is where they live now,
+   so it has to be first. */
+#if !defined(_PLATFORM_H)
+#include "PLATFORM.H"
+#endif
+
 //map.h!
 #if !defined(_MAP_H)
 #include "MAP.H"
@@ -374,7 +381,7 @@ extern "C" {
 
 /* blockm.c */
 POINT GetBlockCornerFromXY(LONG x,LONG y);
-SHORT* get_blockm (long px1,long py1);
+SHORT* get_blockm (LONG px1,LONG py1);
 
 //WRC Fixed Camera functions (mirrors etc...)  these are bad icky things.
 //do not use them.
@@ -472,4 +479,3 @@ extern ULONG	tot_nodes;
 }
 #endif
 #endif // _ENGINE_H
-

@@ -51,4 +51,3 @@ extern volatile unsigned char 	key_stat[];
 }
 #endif
 #endif // _MACHINT_H
-

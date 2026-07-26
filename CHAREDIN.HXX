@@ -12,4 +12,3 @@ void ReadINVTextData (FILE * fp);
 BOOL WriteINVFile (char * szInvFileName);
 
 #endif
-

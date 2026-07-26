@@ -1393,4 +1393,3 @@ void StaticInventoryGUI::mfAddItem(LONG,LONG Itype)
 	
 	AvatarInventory.mfAddItem((ITEMTYPE)Itype);
 }
-

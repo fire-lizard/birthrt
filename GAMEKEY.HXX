@@ -174,4 +174,3 @@ inline LONG const GAME_KEYS::mfWriteRawData(FILE * const fp )
 }
 
 #endif // _GAMEKEY_HXX
-
