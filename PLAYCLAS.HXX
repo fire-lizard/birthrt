@@ -229,8 +229,8 @@ inline const LONG PLAYER_CLASS_LIST::mfRollHitPts() const
 // Write the text data to the .ava file.
 inline void PLAYER_CLASS_LIST::mfWriteTextData(FILE * const fp)
 {
-	fprintf(fp, "%ld %hd %ld", (LONG)Class[0].Type, (SHORT)Class[0].sbLevel, Class[0].ExperiencePts);
-	fprintf(fp, "%ld %hd %ld", (LONG)Class[1].Type, (SHORT)Class[1].sbLevel, Class[1].ExperiencePts);
+	fprintf(fp, "%d %hd %d", (LONG)Class[0].Type, (SHORT)Class[0].sbLevel, Class[0].ExperiencePts);
+	fprintf(fp, "%d %hd %d", (LONG)Class[1].Type, (SHORT)Class[1].sbLevel, Class[1].ExperiencePts);
 }
 
 // Get your best Thac0 for dual players. I know this isn't true AD&D but

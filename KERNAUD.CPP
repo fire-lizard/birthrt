@@ -13,7 +13,7 @@
         resource handle is kept and the pointer re-fetched every use, so
         purge/reload and compaction by the memory manager are harmless)
    ======================================================================== */
-#include <Windows.h>
+#include "PLATFORM.H"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

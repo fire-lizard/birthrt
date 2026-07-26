@@ -15,16 +15,13 @@
    Includes
    ------------------------------------------------------------------------ */
 #ifdef _WINDOWS
-#include <Windows.h>
+#include "PLATFORM.H"
 #endif
 
 #include <stdlib.h>
 #include <stdio.h>
-#include <io.h>
 #include <fcntl.h>
 #include <string.h>
-#include <dos.h>
-#include <conio.h>
 #include <errno.h>
 #include <string>
 #include <vector>
@@ -81,19 +78,10 @@ BOOL FindUserSceneFiles ( char * pPath, char * pExt )
 	// build path to scene directory with wildcard extention
 	sprintf(ScenePath, "%s*%s", pPath, pExt);
 	
-	vector<string> names;
 	string search_path = pPath + string("*") + pExt;
-	WIN32_FIND_DATA fd;
-	HANDLE hFind = FindFirstFile(search_path.c_str(), &fd);
-	if (hFind != INVALID_HANDLE_VALUE) {
-		do {
-			if (!(fd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)) {
-				names.push_back(fd.cFileName);
-			}
-		} while (::FindNextFile(hFind, &fd));
-		FindClose(hFind);
-	}
-	else
+	vector<string> names = PlatListFiles(search_path.c_str());
+
+	if (names.empty())
 	// no files found
 		return FALSE;
 

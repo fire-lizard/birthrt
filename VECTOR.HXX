@@ -330,7 +330,7 @@ public:
 #if defined (_VECTOR_CHK)
 		if (index < 0 || index >= fnDim)
 		{
-			fatal_error("ERROR! %s %s[%ld], Access outside array bounds %ld.\n",
+			fatal_error("ERROR! %s %s[%d], Access outside array bounds %d.\n",
 						 fcpTypeName, fcpVarName, index, fnDim);
 		}
 #endif
@@ -343,7 +343,7 @@ public:
 #if defined (_VECTOR_CHK)
 		if (index < 0 || index >= fnDim)
 		{
-		    fatal_error("ERROR! Index %s %s[%ld], Access outside array bounds %ld.\n",
+		    fatal_error("ERROR! Index %s %s[%d], Access outside array bounds %d.\n",
 		    			fcpTypeName, fcpVarName, index, fnDim);
 		}
 #endif
@@ -419,7 +419,7 @@ public:
 #if defined (_VECTOR_CHK)
 		if (index < 0 || index >= fRows)
 		{
-			fatal_error("ERROR! %s %s[%ld], Access outside array bounds %ld.\n",
+			fatal_error("ERROR! %s %s[%d], Access outside array bounds %d.\n",
 						 fcpTypeName, fcpVarName, index, fRows);
 		}
 #endif
@@ -433,7 +433,7 @@ public:
 #if defined (_VECTOR_CHK)
 		if (index < 0 || index >= fRows)
 		{
-			fatal_error("ERROR! %s %s[%ld], Access outside array bounds %ld.\n",
+			fatal_error("ERROR! %s %s[%d], Access outside array bounds %d.\n",
 						 fcpTypeName, fcpVarName, index, fRows);
 		}
 #endif

@@ -15,13 +15,12 @@
    Includes
    ------------------------------------------------------------------------ */
 #include <ctype.h>
-#include <io.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 #if defined(_WINDOWS)
-#include <Windows.h>
+#include "PLATFORM.H"
 #include "WINSYS\MULPLAY.HXX"
 #endif
 
@@ -4290,7 +4289,7 @@ void BattleLooseProc(LONG MenuCombo, LONG button)
 				if ( fLogComment )
 				{
 					char temp[150];
-					sprintf ( temp, "Finalizing NPCBattle - VK_F10=%ld and PlayerCtrl[%ld]=%ld\n",
+					sprintf ( temp, "Finalizing NPCBattle - VK_F10=%d and PlayerCtrl[%d]=%d\n",
 						(LONG)(GetAsyncKeyState( VK_F10 ) & 0x8000),
 						(LONG)sAwayRealm,
 						(LONG)(!realm[sAwayRealm].mfIsPlayerCtrl()));

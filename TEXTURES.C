@@ -21,7 +21,7 @@
    ------------------------------------------------------------------------ */
 #include <stdio.h>
 #include <string.h>
-#include <dos.h>
+#include "PLATFORM.H"
 #include <ctype.h>
 #include "DEBUG.H"
 #include "SYSTEM.H"

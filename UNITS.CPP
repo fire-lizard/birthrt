@@ -7,7 +7,7 @@
    
    ======================================================================= */
 #ifdef _WINDOWS
-#include <Windows.h>
+#include "PLATFORM.H"
 #endif
 
 #include <stdio.h>
@@ -2862,7 +2862,7 @@ void RequestUnitsIndex (LONG *index, BOOL fSend)
 	if ( fLogComment )
 	{
 		char temp[100];
-		sprintf ( temp, "   units.cpp RequestUnitsIndex - index:%ld fSend:%ld", j, fSend);
+		sprintf ( temp, "   units.cpp RequestUnitsIndex - index:%d fSend:%d", j, fSend);
 		RandomLogComment ( temp );
 	}
 

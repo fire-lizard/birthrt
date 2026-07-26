@@ -9,13 +9,12 @@
 /* ------------------------------------------------------------------------
    Includes
    ------------------------------------------------------------------------ */
-#include <io.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 #ifdef _WINDOWS
-#include <Windows.h>
+#include "PLATFORM.H"
 #include <windowsx.h>
 #endif
 
@@ -59,7 +58,7 @@ LONG AVA_FILE::mfReadTextData (FILE *fp)
 	
 	if (EOF != GetNextLine(fp, cpBuffer, sizeof(cpBuffer)))
 	{
-		sscanf(cpBuffer, "%ld", &fFileVersion);
+		sscanf(cpBuffer, "%d", &fFileVersion);
 	}
 	else
 	{
@@ -69,7 +68,7 @@ LONG AVA_FILE::mfReadTextData (FILE *fp)
 	
 	if (EOF != GetNextLine(fp, cpBuffer, sizeof(cpBuffer)))
 	{
-		sscanf(cpBuffer, "%ld", &lTemp);
+		sscanf(cpBuffer, "%d", &lTemp);
 		fThingType = (THINGTYPE)lTemp;
 	}
 	else
@@ -85,7 +84,7 @@ LONG AVA_FILE::mfReadTextData (FILE *fp)
 		WarnMessage ("WARNING: Missing  AVA Version number.\n");
 		goto Leave_fn;
 	}
-	sscanf(cpBuffer, "%ld", &fStatsVersion);		
+	sscanf(cpBuffer, "%d", &fStatsVersion);		
 	
 	Result = GetNextLine(fp, cpBuffer, sizeof(cpBuffer));
 	if (EOF == Result)
@@ -93,7 +92,7 @@ LONG AVA_FILE::mfReadTextData (FILE *fp)
 		WarnMessage ("WARNING: Missing AVA strength ability info.\n");
 		goto Leave_fn;
 	}
-	sscanf(cpBuffer, "%ld", &fStrength);
+	sscanf(cpBuffer, "%d", &fStrength);
 	
 	Result = GetNextLine(fp, cpBuffer, sizeof(cpBuffer));
 	if (EOF == Result)
@@ -101,7 +100,7 @@ LONG AVA_FILE::mfReadTextData (FILE *fp)
 		WarnMessage ("WARNING: Missing AVA dexterity ability info.\n");
 		goto Leave_fn;
 	}
-	sscanf(cpBuffer, "%ld", &fDexterity);
+	sscanf(cpBuffer, "%d", &fDexterity);
 	
 	Result = GetNextLine(fp, cpBuffer, sizeof(cpBuffer));
 	if (EOF == Result)
@@ -109,7 +108,7 @@ LONG AVA_FILE::mfReadTextData (FILE *fp)
 		WarnMessage ("WARNING: Missing AVA constitution ability info.\n");
 		goto Leave_fn;
 	}
-	sscanf(cpBuffer, "%ld", &fConstitution);
+	sscanf(cpBuffer, "%d", &fConstitution);
 	
 	Result = GetNextLine(fp, cpBuffer, sizeof(cpBuffer));
 	if (EOF == Result)
@@ -117,7 +116,7 @@ LONG AVA_FILE::mfReadTextData (FILE *fp)
 		WarnMessage ("WARNING: Missing AVA intelligence ability info.\n");
 		goto Leave_fn;
 	}
-	sscanf(cpBuffer, "%ld", &fIntelligence);
+	sscanf(cpBuffer, "%d", &fIntelligence);
 	
 	Result = GetNextLine(fp, cpBuffer, sizeof(cpBuffer));
 	if (EOF == Result)
@@ -125,7 +124,7 @@ LONG AVA_FILE::mfReadTextData (FILE *fp)
 		WarnMessage ("WARNING: Missing AVA wisdom ability info.\n");
 		goto Leave_fn;
 	}
-	sscanf(cpBuffer, "%ld", &fWisdom);
+	sscanf(cpBuffer, "%d", &fWisdom);
 	
 	Result = GetNextLine(fp, cpBuffer, sizeof(cpBuffer));
 	if (EOF == Result)
@@ -133,7 +132,7 @@ LONG AVA_FILE::mfReadTextData (FILE *fp)
 		WarnMessage ("WARNING: Missing AVA charisma ability info.\n");
 		goto Leave_fn;
 	}
-	sscanf(cpBuffer, "%ld", &fCharisma);
+	sscanf(cpBuffer, "%d", &fCharisma);
 	
 	Result = GetNextLine(fp, cpBuffer, sizeof(cpBuffer));
 	if (EOF == Result)
@@ -141,7 +140,7 @@ LONG AVA_FILE::mfReadTextData (FILE *fp)
 		WarnMessage ("WARNING: Missing AVA player race info.\n");
 		goto Leave_fn;
 	}
-	sscanf(cpBuffer, "%ld", &fRace);
+	sscanf(cpBuffer, "%d", &fRace);
 	
 	Result = GetNextLine(fp, cpBuffer, sizeof(cpBuffer));
 	if (EOF == Result)
@@ -159,7 +158,7 @@ LONG AVA_FILE::mfReadTextData (FILE *fp)
 		WarnMessage ("WARNING: Missing player title.\n");
 		goto Leave_fn;
 	}
-	sscanf(cpBuffer, "%ld", &fTitle);
+	sscanf(cpBuffer, "%d", &fTitle);
 
 	Result = GetNextLine(fp, cpBuffer, sizeof(cpBuffer));
 	if (EOF == Result)
@@ -167,7 +166,7 @@ LONG AVA_FILE::mfReadTextData (FILE *fp)
 		WarnMessage ("WARNING: Missing player description.\n");
 		goto Leave_fn;
 	}
-	sscanf(cpBuffer, "%ld", &fDescription);
+	sscanf(cpBuffer, "%d", &fDescription);
 
 	Result = GetNextLine(fp, cpBuffer, sizeof(cpBuffer));
 	if (EOF == Result)
@@ -175,7 +174,7 @@ LONG AVA_FILE::mfReadTextData (FILE *fp)
 		WarnMessage ("WARNING: Missing player alignment data.\n");
 		goto Leave_fn;
 	}
-	sscanf(cpBuffer, "%ld", &fAlignment);			/* ALIGNMENT_TYPE */	
+	sscanf(cpBuffer, "%d", &fAlignment);			/* ALIGNMENT_TYPE */	
 	
 	Result = GetNextLine(fp, cpBuffer, sizeof(cpBuffer));
 	if (EOF == Result)
@@ -183,7 +182,7 @@ LONG AVA_FILE::mfReadTextData (FILE *fp)
 		WarnMessage ("WARNING: Missing player hit point data in AVA file.\n");
 		goto Leave_fn;
 	}
-	sscanf(cpBuffer, "%ld", &fHitPoints);				/* LONG */	
+	sscanf(cpBuffer, "%d", &fHitPoints);				/* LONG */	
 	
 	Result = GetNextLine(fp, cpBuffer, sizeof(cpBuffer));
 	if (EOF == Result)
@@ -191,7 +190,7 @@ LONG AVA_FILE::mfReadTextData (FILE *fp)
 		WarnMessage ("WARNING: Missing Armor Class information in AVA file.\n");
 		goto Leave_fn;
 	}
-	sscanf(cpBuffer, "%ld", &fArmorClass);			/* LONG */	
+	sscanf(cpBuffer, "%d", &fArmorClass);			/* LONG */	
 	
 	Result = GetNextLine(fp, cpBuffer, sizeof(cpBuffer));
 	if (EOF == Result)
@@ -199,7 +198,7 @@ LONG AVA_FILE::mfReadTextData (FILE *fp)
 		WarnMessage ("WARNING: Missing Armor type information in AVA file.\n");
 		goto Leave_fn;
 	}
-	sscanf(cpBuffer, "%ld", &fArmorType);			/* ARMOR_TYPE */	
+	sscanf(cpBuffer, "%d", &fArmorType);			/* ARMOR_TYPE */	
 	
 	Result = GetNextLine(fp, cpBuffer, sizeof(cpBuffer));
 	if (EOF == Result)
@@ -207,7 +206,7 @@ LONG AVA_FILE::mfReadTextData (FILE *fp)
 		WarnMessage ("WARNING: Missing Weapon type information in AVA file.\n");
 		goto Leave_fn;
 	}
-	sscanf(cpBuffer, "%ld", &fWeapon);			/* WEAPON_TYPE */	
+	sscanf(cpBuffer, "%d", &fWeapon);			/* WEAPON_TYPE */	
 	
 	Result = GetNextLine(fp, cpBuffer, sizeof(cpBuffer));
 	if (EOF == Result)
@@ -215,7 +214,7 @@ LONG AVA_FILE::mfReadTextData (FILE *fp)
 		WarnMessage ("WARNING: Missing Morale data in AVA file.\n");
 		goto Leave_fn;
 	}
-	sscanf(cpBuffer, "%ld",  &fMorale);
+	sscanf(cpBuffer, "%d",  &fMorale);
 	
 	Result = GetNextLine(fp, cpBuffer, sizeof(cpBuffer));
 	if (EOF == Result)
@@ -223,7 +222,7 @@ LONG AVA_FILE::mfReadTextData (FILE *fp)
 		WarnMessage ("WARNING: Missing Full HitPt data in AVA file.\n");
 		goto Leave_fn;
 	}
-	sscanf(cpBuffer, "%ld", &fTotalHitPoints);
+	sscanf(cpBuffer, "%d", &fTotalHitPoints);
 	
 	Result = GetNextLine(fp, cpBuffer, sizeof(cpBuffer));
 	if (EOF == Result)
@@ -231,7 +230,7 @@ LONG AVA_FILE::mfReadTextData (FILE *fp)
 		WarnMessage ("WARNING: Missing Thac0 data in AVA file.\n");
 		goto Leave_fn;
 	}
-	sscanf(cpBuffer, "%ld", &fTHAC0);
+	sscanf(cpBuffer, "%d", &fTHAC0);
 	
 	Result = GetNextLine(fp, cpBuffer, sizeof(cpBuffer));
 	if (EOF == Result)
@@ -239,7 +238,7 @@ LONG AVA_FILE::mfReadTextData (FILE *fp)
 		WarnMessage ("WARNING: Missing Damage Dice data in AVA file.\n");
 		goto Leave_fn;
 	}
-	sscanf(cpBuffer, "(%ld %ld %ld) (%ld %ld %ld)",
+	sscanf(cpBuffer, "(%d %d %d) (%d %d %d)",
 	                   &lTemp, &lTemp2, &lTemp3, &lTemp4, &lTemp5, &lTemp6);
 	fDamageDice[0] = lTemp;
 	fDamageDice[1] = lTemp2;
@@ -254,7 +253,7 @@ LONG AVA_FILE::mfReadTextData (FILE *fp)
 		WarnMessage ("WARNING: Missing Hit Dice data in AVA file.\n");
 		goto Leave_fn;
 	}
-	sscanf(cpBuffer, "(%ld %ld %ld)", &lTemp, &lTemp2, &lTemp3);
+	sscanf(cpBuffer, "(%d %d %d)", &lTemp, &lTemp2, &lTemp3);
 	fHitDice[0] = lTemp;
 	fHitDice[1] = lTemp2;
 	fHitDice[2] = lTemp3;
@@ -265,7 +264,7 @@ LONG AVA_FILE::mfReadTextData (FILE *fp)
 		WarnMessage ("WARNING: Missing Experience Pts data in AVA file.\n");
 		goto Leave_fn;
 	}
-	sscanf(cpBuffer, "%ld", &fExperience);
+	sscanf(cpBuffer, "%d", &fExperience);
 	
 	Result = GetNextLine(fp, cpBuffer, sizeof(cpBuffer));
 	if (EOF == Result)
@@ -273,7 +272,7 @@ LONG AVA_FILE::mfReadTextData (FILE *fp)
 		WarnMessage ("WARNING: Missing class 1 data in AVA file.\n");
 		goto Leave_fn;
 	}
-	sscanf(cpBuffer, "%ld %ld %ld", &lTemp, &lTemp2, &lTemp3);
+	sscanf(cpBuffer, "%d %d %d", &lTemp, &lTemp2, &lTemp3);
 	fClass1[0] = lTemp;
 	fClass1[1] = lTemp2;
 	fClass1[2] = lTemp3;
@@ -284,7 +283,7 @@ LONG AVA_FILE::mfReadTextData (FILE *fp)
 		WarnMessage ("WARNING: Missing class 2 data in AVA file.\n");
 		goto Leave_fn;
 	}
-	sscanf(cpBuffer, "%ld %ld %ld", &lTemp, &lTemp2, &lTemp3);
+	sscanf(cpBuffer, "%d %d %d", &lTemp, &lTemp2, &lTemp3);
 	fClass2[0] = lTemp;
 	fClass2[1] = lTemp2;
 	fClass2[2] = lTemp3;
@@ -295,7 +294,7 @@ LONG AVA_FILE::mfReadTextData (FILE *fp)
 		WarnMessage ("Warning: Missing number of Attacks in AVA file.\n");
 		goto Leave_fn;
 	}
-	sscanf(cpBuffer,"%ld", &fAttacksPerRound);
+	sscanf(cpBuffer,"%d", &fAttacksPerRound);
 	
 	// Now Calculate the other fields as necessary.
 	
@@ -307,15 +306,15 @@ LONG AVA_FILE::mfReadTextData (FILE *fp)
 	Result = GetNextLine(fp, cpBuffer, sizeof(cpBuffer));
 	if (EOF != Result)
 	{
-		sscanf(cpBuffer,"%ld", &fBloodlineGrade);
+		sscanf(cpBuffer,"%d", &fBloodlineGrade);
 		Result = GetNextLine(fp, cpBuffer, sizeof(cpBuffer));
 		if (EOF != Result)
 		{
-			sscanf(cpBuffer,"%ld", &fBloodlineDerivation);
+			sscanf(cpBuffer,"%d", &fBloodlineDerivation);
 			Result = GetNextLine(fp, cpBuffer, sizeof(cpBuffer));
 			if (EOF != Result)
 			{
-				sscanf(cpBuffer,"%ld", &fBloodlineStrength);
+				sscanf(cpBuffer,"%d", &fBloodlineStrength);
 			}
 		}
 	}

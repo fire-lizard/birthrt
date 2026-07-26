@@ -13,7 +13,7 @@
 #include <string.h>
 
 #if defined(_WINDOWS)
-#include <Windows.h>
+#include "PLATFORM.H"
 #endif
 
 #include "SYSTEM.H"

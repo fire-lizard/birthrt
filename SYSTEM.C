@@ -39,9 +39,7 @@
 #include <stdlib.h>
 #include <stdarg.h>
 #include <ctype.h>
-#include <dos.h>
-#include <io.h>
-#include <conio.h>
+#include "PLATFORM.H"
 #include <sys\types.h>
 #include <sys\stat.h>
 #include <fcntl.h>

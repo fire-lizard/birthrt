@@ -758,7 +758,7 @@ void DrawMapQuestObject(void)
 		
 		a.x=mt.x;
 		a.y=mt.y;
-		printf("QI at %li,%li\n",mt.x,mt.y);
+		printf("QI at %i,%i\n",mt.x,mt.y);
 		DrawMapStyledObject(&a,MAP_NOT_ANGLED,MAP_RED,MS_DIAMOND,30,MAP_SCALED);
 		DrawMapStyledObject(&a,MAP_NOT_ANGLED,MAP_RED,MS_DIAMOND,15,MAP_SCALED);
 		
@@ -850,11 +850,11 @@ void HandleMapAvatar(LONG i,SHORT hAvatar,ULONG color,BOOL scaled)
 			PrintY=WORLD_Y_TO_SCREEN_Y(o.y+10);
 
 			if (gMapInfo.fPrintMythingIdxs)	
-				sprintf(buffer,"[%li]",i);
+				sprintf(buffer,"[%i]",i);
 			if (gMapInfo.fPrintAvatarHdls)
-				sprintf(buffer,"%s(%li)",buffer,hAvatar);
+				sprintf(buffer,"%s(%i)",buffer,hAvatar);
 							
-			print_textf(PrintX,PrintY,MAP_YELLOW,"[%li]",i);
+			print_textf(PrintX,PrintY,MAP_YELLOW,"[%i]",i);
 		}
 	}
 
@@ -1030,7 +1030,7 @@ static void DrawMapLinedef(long i)
 				DrawMapXLine(a,b,IMPASSABLE_LINE_COLOR);
 
 		if (gMapInfo.fPrintLinedefIdxs)
-			print_textf(PrintX,PrintY,MAP_YELLOW,"[%li]",i);
+			print_textf(PrintX,PrintY,MAP_YELLOW,"[%i]",i);
 		
 	}
 }	   

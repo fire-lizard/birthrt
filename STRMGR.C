@@ -20,7 +20,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdarg.h>
-#include <io.h>
+#include "PLATFORM.H"
 #include "TYPEDEFS.H"
 #include "MACHINE.H"
 #include "SYSTEM.H"
@@ -129,7 +129,7 @@ CSTRPTR STRMGR_GetStr(LONG iStrNum)
 	lWhichString = iStrNum % 100;
 
 	// is this block already in memory?
-	sprintf(idstr, "%ld.STR", lWhichBlock);
+	sprintf(idstr, "%d.STR", lWhichBlock);
 	hStrDataBlock = GetResourceStd(idstr, FALSE);
 	
 	if (hStrDataBlock < 0)

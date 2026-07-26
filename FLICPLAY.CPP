@@ -24,13 +24,10 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <conio.h>
-#include <io.h>
 #include <fcntl.h>
-#include <dos.h>
 
 #ifdef _WINDOWS
-#include <Windows.h>
+#include "PLATFORM.H"
 #endif
 
 #include "SYSTEM.H"

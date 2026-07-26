@@ -58,7 +58,7 @@ inline void WYVERN_DATA::mfInitVals()
 // write member data to scene file
 inline void WYVERN_DATA::mfWriteData(FILE *fp) const
 {
-	fprintf(fp, "%ld %ld\n", Movement.dx, Movement.dy);
+	fprintf(fp, "%d %d\n", Movement.dx, Movement.dy);
 }
 
 // read member data from scene file
@@ -69,7 +69,7 @@ inline const LONG WYVERN_DATA::mfReadData(FILE *fp)
 	
 	if (Result != EOF)
 	{
-		Result = ( (2 == sscanf(cpBuffer, "%ld %ld", &Movement.dx, &Movement.dy) ) ? Result : EOF);
+		Result = ( (2 == sscanf(cpBuffer, "%d %d", &Movement.dx, &Movement.dy) ) ? Result : EOF);
 	}
 	return Result;
 }

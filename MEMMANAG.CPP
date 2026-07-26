@@ -48,7 +48,7 @@
 #include <limits.h>
 #include <memory>
 
-#include <conio.h>
+#include "PLATFORM.H"
 #include "SYSTEM.H"
 
 #include "MEMMANAG.HXX"
@@ -120,7 +120,18 @@ static void 		ConcatinateMem();
 
 shared_ptr<unsigned char[]> pHeap;
 
+/* apBlocks holds byte OFFSETS into pHeap, not addresses. It used to hold
+   addresses cast to ULONG, which only worked because the link forced every
+   allocation below 2GB (/LARGEADDRESSAWARE:NO). Offsets into a 32MB arena
+   fit a ULONG on any target, so the manager is now pointer-width agnostic.
+   Blocks made by NewExternalBlock point outside the arena and keep their
+   raw pointer in apExternal instead; they are the only BLKTYPE4 blocks. */
 ULONG		apBlocks[3072];
+static PTR	apExternal[3072];
+
+#define HEAPPTR(off)	(pHeap.get() + (off))
+#define HEAPOFF(p)		((ULONG)((PTR)(p) - pHeap.get()))
+
 SHORT		aiNextBlk[3072];
 SHORT		aiPrevBlk[3072];
 ATTR_BLK_TYPE		abBlockAttr[3072];
@@ -174,14 +185,14 @@ ULONG InitMemManag (
 	InitResourceManager(cNumResHeads_);
 #endif
 
-	printf("memory available: %ld\n",cbMaxFree);
+	printf("memory available: %d\n",cbMaxFree);
 
 	cbFreemem = cbMaxFree - 4000;
 
 	// count down til we find the real size of free memory or we can't find enough
 	pHeap = shared_ptr<unsigned char[]>(new unsigned char[cbFreemem]);
 
-	printf("memory allocated: %ld Starting at 0x%lx\n",cbFreemem, pHeap.get());
+	printf("memory allocated: %d Starting at %p\n",cbFreemem, (void *)pHeap.get());
 
 	if (cbFreemem < cbMinMemoryNeeded || pHeap == NULL)
 	{
@@ -189,7 +200,7 @@ ULONG InitMemManag (
 			puts("Unable to allocate memory in Memmanag. pHeap is NULL\n");
 		else
 		{
-			sprintf(buffer,"Insufficient memory to execute program.\nNeeded at least %ldk bytes free, found %ldk bytes free.\nPlease remove some system resident utilities and try again.\n",
+			sprintf(buffer,"Insufficient memory to execute program.\nNeeded at least %dk bytes free, found %dk bytes free.\nPlease remove some system resident utilities and try again.\n",
 				(cbMinMemoryNeeded/1024L), (cbFreemem/1024L) );
 			puts(buffer);
 		}
@@ -197,17 +208,17 @@ ULONG InitMemManag (
 		exit(EXIT_SUCCESS);
 	}
 
-	apBlocks[START_BLOCK] = (ULONG)pHeap.get();				/* START-OF-SPACE marker */
+	apBlocks[START_BLOCK] = 0;								/* START-OF-SPACE marker */
 	aiNextBlk[START_BLOCK] = FIRST_BLOCK;
 	aiPrevBlk[START_BLOCK] = (SHORT)fERROR;						/* means no link */
 	abBlockAttr[START_BLOCK] = STARTBLK | LOCKED;
 
-	apBlocks[FIRST_BLOCK] = (ULONG)pHeap.get();				/* first free space */
+	apBlocks[FIRST_BLOCK] = 0;								/* first free space */
 	aiNextBlk[FIRST_BLOCK] = END_BLOCK;
 	aiPrevBlk[FIRST_BLOCK] = START_BLOCK;
 	abBlockAttr[FIRST_BLOCK] = FREEMEM;
 
-	apBlocks[END_BLOCK] = (ULONG)pHeap.get() + cbFreemem;	/* END-OF-CONTIGUOUS-SPACE marker */
+	apBlocks[END_BLOCK] = cbFreemem;						/* END-OF-CONTIGUOUS-SPACE marker */
 	aiNextBlk[END_BLOCK] = (SHORT)fERROR;						/* means no link */
 	aiPrevBlk[END_BLOCK] = FIRST_BLOCK;
 	abBlockAttr[END_BLOCK] = ENDBLK | LOCKED;
@@ -319,7 +330,8 @@ SHORT NewExternalBlock (PTR p)
 		return (SHORT)fERROR;
 
 	abBlockAttr[i] = BLKTYPE4;			/* mark the header as allocated */
-	apBlocks[i] = (ULONG)p;
+	apBlocks[i] = 0;					/* not in the arena - see apExternal */
+	apExternal[i] = p;
 	aiNextBlk[i] = (SHORT)fERROR;
 	aiPrevBlk[i] = (SHORT)fERROR;
 
@@ -531,7 +543,7 @@ SHORT	GetBlockIndex (PTR p)
 	     (abBlockAttr[iHandle] & BLKTYPEMASK) != ENDBLK;
 		 iHandle = aiNextBlk[iHandle])			/* move to next block */
 	{
-		if (apBlocks[iHandle] == (ULONG)p)
+		if (HEAPPTR(apBlocks[iHandle]) == p)
 			return (iHandle);
 	}
 
@@ -645,7 +657,7 @@ Restart:
 				goto Restart;				/* returns true if some memory was freed */
 
 			/* Search unsucessful after compact and purge */
-			printf("MEMMANAG ERROR - insufficient memory, requested:%ld  available:%ld\n",cBytes,cbFound);
+			printf("MEMMANAG ERROR - insufficient memory, requested:%d  available:%d\n",cBytes,cbFound);
 			PrintMemList();
 			return (SHORT)fERROR;
 		}
@@ -1344,7 +1356,7 @@ static BOOL MoveFreeBlockUp (LONG i)
 	Src = apBlocks[iNext];
 	cBytes = GetBlockSize(iNext);		/* get the size of the inuse block */
 
-	memmove((PTR)Dest, (PTR)Src, cBytes);
+	memmove(HEAPPTR(Dest), HEAPPTR(Src), cBytes);
 
 	apBlocks[iNext] = Dest;				/* new position for i is old position of prev */
 	apBlocks[i] = Dest + cBytes;
@@ -1380,7 +1392,7 @@ static BOOL MoveFreeBlockDown (LONG i)
 	Dest = Src + GetBlockSize(i);				/* Dest is new position of prev */
 	cBytes = GetBlockSize(iPrev);
 
-	memmove((PTR)Dest, (PTR)Src, cBytes);
+	memmove(HEAPPTR(Dest), HEAPPTR(Src), cBytes);
 
 	apBlocks[i] = Src;					/* new position for i is old position of prev */
 	apBlocks[iPrev] = Dest;				/* set position of the moved block */
@@ -1520,7 +1532,7 @@ void PrintMemList ()
 
 	for (cc=0; cc < col2; ++cc)
 	{
-		fprintf(fp,"%03u %07lx %06lx %04x %03u ",i, apBlocks[i], GetBlockSize(i), CheckSum(i), (abBlockAttr[i]&CLASSMASK)>>3 );
+		fprintf(fp,"%03u %07x %06x %04x %03u ",i, apBlocks[i], GetBlockSize(i), CheckSum(i), (abBlockAttr[i]&CLASSMASK)>>3 );
 		type = abBlockAttr[i] & BLKTYPEMASK;
 		if (type != ENDBLK && aiPrevBlk[aiNextBlk[i]] != i)
 			fprintf(fp,"*********");
@@ -1543,7 +1555,7 @@ void PrintMemList ()
 
 		if (i2 != fERROR)
 		{
-			fprintf(fp," | %03u %07lx %06lx %04x %03u ",i2, apBlocks[i2], GetBlockSize(i2), CheckSum(i2), (abBlockAttr[i]&CLASSMASK)>>3 );
+			fprintf(fp," | %03u %07x %06x %04x %03u ",i2, apBlocks[i2], GetBlockSize(i2), CheckSum(i2), (abBlockAttr[i]&CLASSMASK)>>3 );
 			type = abBlockAttr[i2] & BLKTYPEMASK;
 			if (type != ENDBLK && aiPrevBlk[aiNextBlk[i2]] != i2)
 				fprintf(fp,"*********");
@@ -1601,7 +1613,10 @@ void * BLKPTR(LONG i)
 	}
 #endif
 
-	return (void*)((ULONG*)apBlocks[i]);
+	if ((abBlockAttr[i] & BLKTYPEMASK) == BLKTYPE4)
+		return (void *)apExternal[i];
+
+	return (void *)HEAPPTR(apBlocks[i]);
 }
 
 /* ========================================================================
@@ -1883,7 +1898,7 @@ static ULONG	FillFreeBlock(LONG iHandle)
 				LONG  const iFillNext = aiNextBlk[iFillerHandle];
 				LONG  const iFillPrev = aiPrevBlk[iFillerHandle];
 				
-				memmove((PTR)Dest, (PTR)Src, BestBlockSize);
+				memmove(HEAPPTR(Dest), HEAPPTR(Src), BestBlockSize);
 				
 				apBlocks[iHandle] = Src;
 				apBlocks[iFillerHandle] = Dest;

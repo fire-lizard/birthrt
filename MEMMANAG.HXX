@@ -102,6 +102,7 @@ typedef USHORT ATTR_BLK_TYPE;
 extern "C" {
 #endif
 
+/* byte offsets into the manager's arena - use BLKPTR(i) for an address */
 extern ULONG 				apBlocks[];				/* memmanag.c */
 extern BOOL					fReport;				/* memmanag.c */
 

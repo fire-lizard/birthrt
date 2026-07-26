@@ -251,7 +251,7 @@ const LONG PLAYER_CLASS_LIST::mfReadTextData(FILE * const fp)
 	LONG lTemp;
 	
 	Result = GetNextLine(fp, cpBuffer, sizeof(cpBuffer));
-	if (3 == sscanf(cpBuffer, "%ld %hd %ld", &lTemp, &Class[0].sbLevel, &Class[0].ExperiencePts))
+	if (3 == sscanf(cpBuffer, "%d %hd %d", &lTemp, &Class[0].sbLevel, &Class[0].ExperiencePts))
 	{
 		Class[0].Type = (PLAYER_CLASS_INFO::TYPE) lTemp;
 		if (Class[0].Type != PLAYER_CLASS_INFO::NOT_SET && 
@@ -263,7 +263,7 @@ const LONG PLAYER_CLASS_LIST::mfReadTextData(FILE * const fp)
 	}
 	
 	Result = GetNextLine(fp, cpBuffer, sizeof(cpBuffer));
-	if (3 == sscanf(cpBuffer, "%ld %hd %ld", &lTemp, &Class[1].sbLevel, &Class[1].ExperiencePts))
+	if (3 == sscanf(cpBuffer, "%d %hd %d", &lTemp, &Class[1].sbLevel, &Class[1].ExperiencePts))
 	{
 		Class[1].Type = (PLAYER_CLASS_INFO::TYPE) lTemp;
 		if (Class[1].Type != PLAYER_CLASS_INFO::NOT_SET &&

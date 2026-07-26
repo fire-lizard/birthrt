@@ -385,7 +385,7 @@ void activate_seg(LONG DistanceSquared)
 	LONG iLinedef;
 	
 #if !defined(_RELEASE)
-	printf("trying to activate seg (maxdist squared= %li)\n",DistanceSquared);
+	printf("trying to activate seg (maxdist squared= %i)\n",DistanceSquared);
 #endif
 
 	// JPC Note:
@@ -481,7 +481,7 @@ void activate_seg(LONG DistanceSquared)
 		
 		case LSP_TELE_1WAY:
 #if !defined(_RELEASE)
-			printf("teleporting to sector %li\n",tag_to_sector(linedefs[iLinedef].tag));
+			printf("teleporting to sector %i\n",tag_to_sector(linedefs[iLinedef].tag));
 #endif
 			TeleportPlayer(tag_to_sector(linedefs[iLinedef].tag));
 			break;

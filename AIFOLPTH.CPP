@@ -24,7 +24,7 @@
 
 void FOLLOW_PATH_DATA::mfWriteData(FILE * fp)
 {
-	fprintf(fp, "%ld\n", PathCount);
+	fprintf(fp, "%d\n", PathCount);
 	if (PathCount > 0)
 	{
 		LONG i;
@@ -45,7 +45,7 @@ LONG FOLLOW_PATH_DATA::mfReadData(FILE *fp)
 	PathIndex = 0;
 	oldP.x = 0;
 	oldP.y = 0;
-	if (1 == sscanf(cpBuffer, "%ld", &PathCount))
+	if (1 == sscanf(cpBuffer, "%d", &PathCount))
 	{
 		if (PathCount > 0)
 		{

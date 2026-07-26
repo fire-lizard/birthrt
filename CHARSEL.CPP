@@ -20,13 +20,12 @@
    Includes
    ------------------------------------------------------------------------ */
 #ifdef _WINDOWS
-#include <Windows.h>
+#include "PLATFORM.H"
 #endif
 
 #include <stdio.h>
 #include <string.h>
 #include <stdarg.h>
-#include <io.h>
 #include <stdlib.h>
 
 #include "TYPEDEFS.H"

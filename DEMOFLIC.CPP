@@ -17,7 +17,7 @@
    ------------------------------------------------------------------------ */
 #include <stdio.h>
 #ifdef _WINDOWS
-#include <Windows.h>
+#include "PLATFORM.H"
 #endif
 
 #include "SYSTEM.H"

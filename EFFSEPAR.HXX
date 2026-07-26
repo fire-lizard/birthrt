@@ -64,7 +64,7 @@ const ValType* EffectSeparator<ValType>::mfGetVal(SHORT hAvStats)
 	if (hAvStats==fERROR)
 	{
 #ifdef DEBUG
-		fatal_error("fERROR passed to mfGetVal %s(%li)\n",__FILE__,__LINE__);
+		fatal_error("fERROR passed to mfGetVal %s(%i)\n",__FILE__,__LINE__);
 #endif
 		return NULL;
 	}
@@ -74,7 +74,7 @@ const ValType* EffectSeparator<ValType>::mfGetVal(SHORT hAvStats)
 			return &Effects[i].Val;
 
 #ifdef DEBUG
-	fatal_error("couldn't find avatar stats in Effect list %s(%li)\n",__FILE__,__LINE__);
+	fatal_error("couldn't find avatar stats in Effect list %s(%i)\n",__FILE__,__LINE__);
 #endif
 	return NULL;
 }

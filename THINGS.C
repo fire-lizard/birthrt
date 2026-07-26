@@ -55,7 +55,7 @@ extern UBYTE				shade_table[];
 		#ifdef _WINDOWS
 				#define ASSERT(arg) if(!(arg)) SS_Assert(gszSourceFile, __LINE__)
 		#else
-				#define ASSERT(arg) {if(!(arg))fatal_error("ASSERTION FAILED %s,%li\n",gszSourceFile, __LINE__);}
+				#define ASSERT(arg) {if(!(arg))fatal_error("ASSERTION FAILED %s,%i\n",gszSourceFile, __LINE__);}
 		#endif	
 	#else
 		#define ASSERT(__ignore) ((void)0)
@@ -584,7 +584,7 @@ SHORT load_FLC_sequence(ULONG iAnim, ULONG ttype, ULONG seq, ULONG Rotation)
 	if (seq > MAX_ANIMATIONSEQ)
 	{
 #if defined (_DEBUG)
-		fatal_error("ERROR - seq number bad (%ld) in load_FLC_sequence\n", seq);
+		fatal_error("ERROR - seq number bad (%d) in load_FLC_sequence\n", seq);
 #else
 		return iAnim;
 #endif
@@ -597,7 +597,7 @@ SHORT load_FLC_sequence(ULONG iAnim, ULONG ttype, ULONG seq, ULONG Rotation)
 	if (seq > MAX_ANIMATIONSEQ)
 	{
 #if defined(_DEBUG)
-		fatal_error("ERROR - seq number bad (%ld) in load_FLC_sequence\n", seq);
+		fatal_error("ERROR - seq number bad (%d) in load_FLC_sequence\n", seq);
 #else
 		return iAnim;
 #endif
@@ -663,7 +663,7 @@ static void load_obj_graphic(LONG i,
 	/* check for type out of range */
 	if (ttype > G_NumberOfTTypes)
 	{
-		printf("ERROR - THINGS.C: thing type number greater than %ld: %ld\n",ttype, G_NumberOfTTypes);
+		printf("ERROR - THINGS.C: thing type number greater than %d: %d\n",ttype, G_NumberOfTTypes);
 		goto LoadGenthing;
 	}
 
@@ -680,7 +680,7 @@ static void load_obj_graphic(LONG i,
 				
 		sprintf(n,"%s", GetThingName(ttype));
 
-	printf("Type:%03ld - %s\n",ttype,n);
+	printf("Type:%03d - %s\n",ttype,n);
 
 	sprintf(fn,"%s%s\\%sS0.flc",THING_PATH,n,n);
 	sprintf(pn,"%sPCX\\%sS0.pcx",THING_PATH,n);
@@ -772,7 +772,7 @@ Art_Is_BITMAP:
 
 		if (mythings[i].iBitm == fERROR)
 		{
-			printf("WARNING - %s (%ld) not found in load_obj_graphic, loading GENTHING\n",pn,ttype);
+			printf("WARNING - %s (%d) not found in load_obj_graphic, loading GENTHING\n",pn,ttype);
 
 LoadGenthing:
 			{
@@ -849,7 +849,7 @@ LONG create_thing(ULONG type, LONG x, LONG y, LONG z)
 		}
 		for (i = 0; i < 300; ++i)
 			if (debug_cTypes[i])
-				printf("#%ld - %s: %d", i, GetThingName(type), debug_cTypes[i]);
+				printf("#%d - %s: %d", i, GetThingName(type), debug_cTypes[i]);
 #if defined(_DEBUG)		
 		fatal_error("ERROR - Requested too many things, exceeded MAX_THINGS (%d)\n", MAX_THINGS);
 #else
@@ -1638,7 +1638,7 @@ void add_thing (LONG t, LONG ss)
 #if defined (_DEBUG)
 	if (ss < 0 || ss >= MAX_SSECTORS)
 	{
-		fatal_error("THINGS ERROR! add_thing Ssector out of bounds %ld.\n", ss);
+		fatal_error("THINGS ERROR! add_thing Ssector out of bounds %d.\n", ss);
 	}
 #endif
 
@@ -2060,7 +2060,7 @@ static void draw_thing (LONG t)
 				mythings[t].iBitm = NextAnimFrame(iAnim, (SHORT)mythings[t].iSequence, rotation, &(mythings[t].bControl), pAnim->frame);
 				if ( mythings[t].iBitm == fERROR)
 				{
-					printf("WARNING - NextAnimFrame %ld (seq:%ld rot:%ld) returned fERROR\n",type,mythings[t].iSequence,rotation);
+					printf("WARNING - NextAnimFrame %d (seq:%d rot:%d) returned fERROR\n",type,mythings[t].iSequence,rotation);
 					return;
 				}
 				else
@@ -2075,7 +2075,7 @@ static void draw_thing (LONG t)
 					mythings[t].iBitm = NextAnimFrame(iAnim, (SHORT)mythings[t].iSequence, rotation, &(mythings[t].bControl), pAnim->frame);
 					if ( mythings[t].iBitm == fERROR)
 					{
-						printf("WARNING - NextAnimFrame %ld (seq:%ld rot:%ld) returned fERROR\n",type,mythings[t].iSequence,rotation);
+						printf("WARNING - NextAnimFrame %d (seq:%d rot:%d) returned fERROR\n",type,mythings[t].iSequence,rotation);
 						return;
 					}
 					else
@@ -2092,7 +2092,7 @@ static void draw_thing (LONG t)
 					mythings[t].iBitm = NextAnimFrame(iAnim, (SHORT)mythings[t].iSequence, rotation, &(mythings[t].bControl), -1);
 					if ( mythings[t].iBitm == fERROR)
 					{
-						printf("WARNING - NextAnimFrame %ld (seq:%ld rot:%ld) returned fERROR\n",type,mythings[t].iSequence,rotation);
+						printf("WARNING - NextAnimFrame %d (seq:%d rot:%d) returned fERROR\n",type,mythings[t].iSequence,rotation);
 						return;
 					}
 					else
@@ -2107,7 +2107,7 @@ static void draw_thing (LONG t)
 						mythings[t].iBitm = NextAnimFrame(iAnim, (SHORT)mythings[t].iSequence, rotation, &(mythings[t].bControl), -1);
 						if ( mythings[t].iBitm == fERROR)
 						{
-							printf("WARNING - NextAnimFrame %ld (seq:%ld rot:%ld) returned fERROR\n",type,mythings[t].iSequence,rotation);
+							printf("WARNING - NextAnimFrame %d (seq:%d rot:%d) returned fERROR\n",type,mythings[t].iSequence,rotation);
 							return;
 						}
 						else
@@ -2210,7 +2210,7 @@ static void draw_thing (LONG t)
 			mythings[t].iBitm = NextPCXFrame(iAnim, mythings[t].iSequence, rotation);
 			if ( mythings[t].iBitm == fERROR)
 			{
-				printf("WARNING - NextPCXFrame %ld (seq:%ld rot:%ld) returned fERROR\n",type,mythings[t].iSequence,rotation);
+				printf("WARNING - NextPCXFrame %d (seq:%d rot:%d) returned fERROR\n",type,mythings[t].iSequence,rotation);
 				return;
 			}
 			
@@ -2874,7 +2874,7 @@ SHORT SetAnimSequence (SHORT iAnim, SHORT iSeq)
 	if (pAnim->offData > 100000)
 	{
 #if defined (_DEBUG)
-		fatal_error("ERROR - pAnim->offData set to invalid value (%ld) in SetAnimSequence\n",pAnim->offData);
+		fatal_error("ERROR - pAnim->offData set to invalid value (%d) in SetAnimSequence\n",pAnim->offData);
 #endif
 		return fERROR;
 	}
@@ -3113,7 +3113,7 @@ SHORT NextAnimFrame (SHORT iAnim, USHORT sequence, USHORT rotation, UBYTE * pCtr
 			if (pAnim->offData > 100000)
 			{
 #if defined (_DEBUG)
-				fatal_error("ERROR - pAnim->offData set to invalid value (%ld) in NextAnimFrame\n",pAnim->offData);
+				fatal_error("ERROR - pAnim->offData set to invalid value (%d) in NextAnimFrame\n",pAnim->offData);
 #else
 				goto error_exit;
 #endif
@@ -3135,7 +3135,7 @@ SHORT NextAnimFrame (SHORT iAnim, USHORT sequence, USHORT rotation, UBYTE * pCtr
 		if ( pAnim->offData >= pHead->size)
 		{
 #if defined(_DEBUG)
-			printf("WARNING! Things.c is missing %ld frames.\n",
+			printf("WARNING! Things.c is missing %d frames.\n",
 			        (LONG)(pAnim->totalFrames - pAnim->frame));
 #endif
 			pHead->frames = pAnim->frame;

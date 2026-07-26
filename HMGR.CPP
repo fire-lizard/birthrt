@@ -37,7 +37,7 @@ void HighlightMgr::HighlightButton(LONG MC,SHORT Dur)
 	
 	// only do this if Mi is !0, because it may be a promoted SHORT
 	if (Mi && Mi!=MenuId) 
-		fatal_error("mismatched menuIDs in %s(%li)",__FILE__,__LINE__);
+		fatal_error("mismatched menuIDs in %s(%i)",__FILE__,__LINE__);
 	
 	for (LONG i=0;i<MAX_HIGHLIGHTED_BUTTONS;i++)
 	{
@@ -60,7 +60,7 @@ void HighlightMgr::SubdueButton(LONG MC)
 	
 	// only do this if Mi is !0, because it may be a promoted SHORT
 	if (Mi && Mi!=MenuId) 
-		fatal_error("mismatched menuIDs in %s(%li)",__FILE__,__LINE__);
+		fatal_error("mismatched menuIDs in %s(%i)",__FILE__,__LINE__);
 	
 	for (LONG i=0;i<MAX_HIGHLIGHTED_BUTTONS;i++)
 	{
@@ -72,7 +72,7 @@ void HighlightMgr::SubdueButton(LONG MC)
 			return;
 		}
 	}
-	printf("couldn't subdue button %li, it wasn't present in the list\n",ID); 
+	printf("couldn't subdue button %i, it wasn't present in the list\n",ID); 
 }
 
 void HighlightMgr::Service()

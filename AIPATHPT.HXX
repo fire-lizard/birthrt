@@ -41,7 +41,7 @@ public:
 
 inline void PATH_PT::mfWriteData(FILE * fp)
 {
-	fprintf(fp, "%ld %ld %ld %ld\n", X, Y, Z, A);
+	fprintf(fp, "%d %d %d %d\n", X, Y, Z, A);
 }
 
 inline LONG PATH_PT::mfReadData(FILE *fp)
@@ -51,7 +51,7 @@ inline LONG PATH_PT::mfReadData(FILE *fp)
 	
 	if (Result != EOF)
 	{
-		Result = (4 == sscanf(cpBuffer, "%ld %ld %ld %ld", &X, &Y, &Z, &A)) ? Result : EOF;
+		Result = (4 == sscanf(cpBuffer, "%d %d %d %d", &X, &Y, &Z, &A)) ? Result : EOF;
 	}
 	return Result;
 }

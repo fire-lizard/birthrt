@@ -21,7 +21,7 @@
 #include <stdio.h>
 #include <math.h>
 #ifdef _WINDOWS
-#include <Windows.h>
+#include "PLATFORM.H"
 
 #if defined (_STATUS)
 #include "winsys\status.h"

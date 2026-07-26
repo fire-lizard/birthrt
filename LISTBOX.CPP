@@ -32,7 +32,7 @@ void ListBox::Init(SHORT hThis,Rect& box,Rect& scrUp,Rect& scrDn,SHORT LineHeigh
 
 	Lines=box.Height()/LineHeight;
 
-	printf("Lines=%li\n",Lines);
+	printf("Lines=%i\n",Lines);
 
 	LineH=(UBYTE)LineHeight;
 	Font=font;
@@ -65,13 +65,13 @@ SHORT ListBox::Scroll(SHORT delta)
 	SHORT i=0;
 
 	SHORT Adder=SGN(delta);
-	printf("in scroll with delta %li adder=%li\n",delta,Adder);
+	printf("in scroll with delta %i adder=%i\n",delta,Adder);
 	
 	delta=ABS(delta);
 
 	for (i=0;i<delta;i++)
 	{
-		printf("LBDS=%li\n",DispStart);
+		printf("LBDS=%i\n",DispStart);
 		if (DispStart+Adder<0)
 			break;
 
@@ -98,7 +98,7 @@ const char *ListBox::GetHighlightedLine() const
 
 void ListBox::SetHighlightedLine(SHORT delta) 
 {
-	printf("highlight %li\n",delta);
+	printf("highlight %i\n",delta);
 
 	HighlightedLine=(SHORT)(DispStart+delta);
 }

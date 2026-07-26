@@ -169,7 +169,7 @@ inline LONG ABILITY::mfReadData(FILE *fp)
 	for(i=0;i<ABILITY::ABILITY_MAX_NUMBER;i++)		/* ABILITY	*/
 	{
 		Result = GetNextLine(fp, cpBuffer, sizeof(cpBuffer));
-		sscanf(cpBuffer, "%ld", &lTemp);
+		sscanf(cpBuffer, "%d", &lTemp);
 		fAbilities[i] = (SBYTE) lTemp;
 	}
 	

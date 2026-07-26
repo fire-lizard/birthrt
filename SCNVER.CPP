@@ -15,7 +15,7 @@
    Includes
    ------------------------------------------------------------------------ */
 #include <ctype.h>
-#include <io.h>
+#include "PLATFORM.H"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

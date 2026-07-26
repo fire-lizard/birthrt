@@ -11,8 +11,7 @@
 
 #ifdef _WINDOWS
 #include "WINSYS\STATUS.H"
-#include "Windows.h"
-#include <io.h>
+#include "PLATFORM.H"
 #include <fcntl.h>
 #include <stdarg.h>
 //GEH not availible in Watcom #include <crtdbg.h>        // JPC

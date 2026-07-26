@@ -187,7 +187,7 @@ void NewCameraThing(LONG t)
 	long ta;
 
 	if (CurrCam>MAX_LEVEL_CAMERAS)
-		fatal_error("\n too many Cameras %s(%li)\n",__FILE__,__LINE__);
+		fatal_error("\n too many Cameras %s(%i)\n",__FILE__,__LINE__);
 
 	Cameras[CurrCam].x=things[t].x << CAMERA_FIXEDPT;
 	Cameras[CurrCam].y=things[t].y << CAMERA_FIXEDPT;
@@ -216,7 +216,7 @@ void NewCameraLinedef(LONG l)
 	LONG i;
 
 	if (CurrDynTex>MAX_DYNAMIC_TEXTURES)
-		fatal_error("\n too many dynamic Textures %s(%li)\n",__FILE__,__LINE__);
+		fatal_error("\n too many dynamic Textures %s(%i)\n",__FILE__,__LINE__);
 
 	DynamicTextures[CurrDynTex].LDidx=l;
 
@@ -230,7 +230,7 @@ void NewCameraLinedef(LONG l)
 	}
 
 	if (i==MAX_DYNTEX_BUFFERS)
-		fatal_error("\n invalid camera type %s(%li)\n",__FILE__,__LINE__);
+		fatal_error("\n invalid camera type %s(%i)\n",__FILE__,__LINE__);
 		
 	if(CamBufs[DynamicTextures[CurrDynTex].BufferType].buffer==-1)
 		NewVideoBuffer(DynamicTextures[CurrDynTex].BufferType);
@@ -307,7 +307,7 @@ void RenderCameraView(SHORT DynTexIdx,SHORT CameraHdl)
 	CAMERA OldCam=camera;
 
 	if (CameraHdl>CurrCam)
-		fatal_error("Invalid Camera %li specified! %s(%li)\n",CameraHdl,__FILE__,__LINE__);
+		fatal_error("Invalid Camera %i specified! %s(%i)\n",CameraHdl,__FILE__,__LINE__);
 	
 	camera=Cameras[CameraHdl];
 	
@@ -342,7 +342,7 @@ static void NewVideoBuffer(SHORT type)
 {
 	
 	if (type>=MAX_DYNTEX_BUFFERS)
-		fatal_error("too many camera types! %s(%li)\n",__FILE__,__LINE__);
+		fatal_error("too many camera types! %s(%i)\n",__FILE__,__LINE__);
 	if (CamBufs[type].buffer!=-1)
 		return;
 
@@ -359,13 +359,13 @@ static void NewVideoBuffer(SHORT type)
 static void RedirectVideo(SHORT BufferIdx)
 {
 	if (VideoCurrentlyRedirected)
-		fatal_error("\nCan't render two cameras at once! %s(%li)\n",__FILE__,__LINE__);
+		fatal_error("\nCan't render two cameras at once! %s(%i)\n",__FILE__,__LINE__);
 	
 	if (BufferIdx>MAX_DYNTEX_BUFFERS)
-		fatal_error("\nInvalid Buffer %s(%li)\n",__FILE__,__LINE__);
+		fatal_error("\nInvalid Buffer %s(%i)\n",__FILE__,__LINE__);
 
 	if (CamBufs[BufferIdx].buffer==-1)
-		fatal_error("\nInvalid Buffer %s(%li)\n",__FILE__,__LINE__);
+		fatal_error("\nInvalid Buffer %s(%i)\n",__FILE__,__LINE__);
 
 	SaveVideoSet();
 	VideoCurrentlyRedirected=TRUE;
@@ -404,9 +404,9 @@ static void RestoreVideo(void)
 static void CloseVideoBuffer(SHORT VidIdx)
 {
 	if(VidIdx>MAX_DYNTEX_BUFFERS)
-		fatal_error("can only close valid buffers in VidBuf (too many) %s(%li)\n",__FILE__,__LINE__);
+		fatal_error("can only close valid buffers in VidBuf (too many) %s(%i)\n",__FILE__,__LINE__);
 	if(CamBufs[VidIdx].buffer==-1)
-		fatal_error("can only close valid buffers in VidBuf (-1) %s(%li)\n",__FILE__,__LINE__);
+		fatal_error("can only close valid buffers in VidBuf (-1) %s(%i)\n",__FILE__,__LINE__);
 
 	if (VideoCurrentlyRedirected)
 		RestoreVideo();

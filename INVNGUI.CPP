@@ -560,7 +560,7 @@ void InventoryGUI::mfPaintListBoxLine(LONG Lines,ObjectList & Ol,LONG MenuId) co
 			if (itor == Ol.end())
 				return;
 				
-			sprintf(NumBuf,"^F03%li",(*itor)->mfHowMany());
+			sprintf(NumBuf,"^F03%i",(*itor)->mfHowMany());
 			
 			if (fPreparingSpells && CurrCategory == IC_SPELL)
 			{

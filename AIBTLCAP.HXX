@@ -159,7 +159,7 @@ inline void BATTLE_CAPTAIN_DATA::mfDelete()
 // write my class data to disk
 inline void BATTLE_CAPTAIN_DATA::mfWriteData( FILE *fp )
 {
-	fprintf(fp, "%ld %ld\n", (LONG) TargetType, (LONG) TroopType);
+	fprintf(fp, "%d %d\n", (LONG) TargetType, (LONG) TroopType);
 }
 	
 // read my class data from disk
@@ -170,7 +170,7 @@ inline LONG BATTLE_CAPTAIN_DATA::mfReadData( FILE * fp )
 	
 	if (Result != EOF)
 	{
-		Result = (2 == sscanf(cpBuffer, "%ld %ld", &TargetType, &TroopType) ) ? Result : EOF;
+		Result = (2 == sscanf(cpBuffer, "%d %d", &TargetType, &TroopType) ) ? Result : EOF;
 	}
 	return Result;
 }

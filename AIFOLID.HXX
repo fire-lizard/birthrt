@@ -38,7 +38,7 @@ public:
 
 inline void FOLLOW_ID_DATA::mfWriteData(FILE *fp)
 {
-	fprintf(fp, "%ld\n", Id);
+	fprintf(fp, "%d\n", Id);
 }
 
 inline LONG FOLLOW_ID_DATA::mfReadData(FILE *fp)
@@ -48,7 +48,7 @@ inline LONG FOLLOW_ID_DATA::mfReadData(FILE *fp)
 	LONG Result = GetNextLine(fp, cpBuffer, sizeof (cpBuffer));
 	if (Result != EOF)
 	{
-		Result = ( (1 ==sscanf(cpBuffer, "%ld", &Id) ? Result : EOF));
+		Result = ( (1 ==sscanf(cpBuffer, "%d", &Id) ? Result : EOF));
 	}
 	return Result;
 }

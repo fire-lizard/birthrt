@@ -667,7 +667,7 @@ LONG ItemEffects::Heal(LONG Combo,LONG arg,LONG action)
 						amount_healed = pPlayerStats->mfGetMaxHitPoints() - pPlayerStats->mfGetCurHitPoints();
 						break;
 					default:
-						fatal_error ("bad Healing type %li passed to ItemEffects::Heal\n",HealType>>24);
+						fatal_error ("bad Healing type %i passed to ItemEffects::Heal\n",HealType>>24);
 				}
 				if (amount_healed < 0)
 					amount_healed = 0;
@@ -2022,7 +2022,7 @@ BOOL ItemEffects::mfAddActiveItem(PFLLLL f,LONG a1,LONG a2,LONG dur,BOOL fAR)
 		return FALSE;	// Out of space.
 	}
 
-	printf("ActiveItem Index set as %li\n",i);
+	printf("ActiveItem Index set as %i\n",i);
 
 	ActiveItem& ai=ActiveItems[i];
 

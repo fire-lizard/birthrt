@@ -379,7 +379,7 @@ SHORT GetBattleClass( SHORT unit_icon )
 {
 #if defined (_DEBUG)
 	if (unit_icon < 0 || unit_icon >= MaxBattleTroopInfoIndex)
-		fatal_error("ERROR! GetBattleClass unit_icon (%hd) out of bounds of %ld.\n",
+		fatal_error("ERROR! GetBattleClass unit_icon (%hd) out of bounds of %d.\n",
 		            unit_icon, MaxBattleTroopInfoIndex);
 #endif
 
@@ -395,7 +395,7 @@ SHORT GetBattleMove( SHORT unit_icon )
 {
 #if defined (_DEBUG)
 	if (unit_icon < 0 || unit_icon >= MaxBattleTroopInfoIndex)
-		fatal_error("ERROR! GetBattleMove unit_icon (%hd) out of bounds of %ld.\n",
+		fatal_error("ERROR! GetBattleMove unit_icon (%hd) out of bounds of %d.\n",
 		            unit_icon, MaxBattleTroopInfoIndex);
 #endif
 	return (BattleTroopInfo[unit_icon].Move);
@@ -410,7 +410,7 @@ SHORT GetBattleDefense( SHORT unit_icon )
 {
 #if defined (_DEBUG)
 	if (unit_icon < 0 || unit_icon >= MaxBattleTroopInfoIndex)
-		fatal_error("ERROR! GetBattleDefense unit_icon (%hd) out of bounds of %ld.\n",
+		fatal_error("ERROR! GetBattleDefense unit_icon (%hd) out of bounds of %d.\n",
 		            unit_icon, MaxBattleTroopInfoIndex);
 #endif
 	return (BattleTroopInfo[unit_icon].Defend);
@@ -425,7 +425,7 @@ SHORT GetBattleMelee( SHORT unit_icon )
 {
 #if defined (_DEBUG)
 	if (unit_icon < 0 || unit_icon >= MaxBattleTroopInfoIndex)
-		fatal_error("ERROR! GetBattleMelee unit_icon (%hd) out of bounds of %ld.\n",
+		fatal_error("ERROR! GetBattleMelee unit_icon (%hd) out of bounds of %d.\n",
 		            unit_icon, MaxBattleTroopInfoIndex);
 #endif
 	return (BattleTroopInfo[unit_icon].Melee);
@@ -440,7 +440,7 @@ SHORT GetBattleCharge( SHORT unit_icon )
 {
 #if defined (_DEBUG)
 	if (unit_icon < 0 || unit_icon >= MaxBattleTroopInfoIndex)
-		fatal_error("ERROR! GetBattleCharge unit_icon (%hd) out of bounds of %ld.\n",
+		fatal_error("ERROR! GetBattleCharge unit_icon (%hd) out of bounds of %d.\n",
 		            unit_icon, MaxBattleTroopInfoIndex);
 #endif
 	return (BattleTroopInfo[unit_icon].Charge);
@@ -455,7 +455,7 @@ SHORT GetBattleMissile( SHORT unit_icon )
 {
 #if defined (_DEBUG)
 	if (unit_icon < 0 || unit_icon >= MaxBattleTroopInfoIndex)
-		fatal_error("ERROR! GetBattleMissile unit_icon (%hd) out of bounds of %ld.\n",
+		fatal_error("ERROR! GetBattleMissile unit_icon (%hd) out of bounds of %d.\n",
 		            unit_icon, MaxBattleTroopInfoIndex);
 #endif
 	return (BattleTroopInfo[unit_icon].Missile);
@@ -470,7 +470,7 @@ SHORT GetBattleMorale( SHORT unit_icon )
 {
 #if defined (_DEBUG)
 	if (unit_icon < 0 || unit_icon >= MaxBattleTroopInfoIndex)
-		fatal_error("ERROR! GetBattleMorale unit_icon (%hd) out of bounds of %ld.\n",
+		fatal_error("ERROR! GetBattleMorale unit_icon (%hd) out of bounds of %d.\n",
 		            unit_icon, MaxBattleTroopInfoIndex);
 #endif
 	return (BattleTroopInfo[unit_icon].Morale);
@@ -485,7 +485,7 @@ SHORT GetBattleMagic( SHORT unit_icon )
 {
 #if defined (_DEBUG)
 	if (unit_icon < 0 || unit_icon >= MaxBattleTroopInfoIndex)
-		fatal_error("ERROR! GetBattleMagic unit_icon (%hd) out of bounds of %ld.\n",
+		fatal_error("ERROR! GetBattleMagic unit_icon (%hd) out of bounds of %d.\n",
 		            unit_icon, MaxBattleTroopInfoIndex);
 #endif
 	return (BattleTroopInfo[unit_icon].Magic);
@@ -500,7 +500,7 @@ SHORT GetBattleBonus( SHORT unit_icon )
 {
 #if defined (_DEBUG)
 	if (unit_icon < 0 || unit_icon >= MaxBattleTroopInfoIndex)
-		fatal_error("ERROR! GetBattleBonus unit_icon (%hd) out of bounds of %ld.\n",
+		fatal_error("ERROR! GetBattleBonus unit_icon (%hd) out of bounds of %d.\n",
 		            unit_icon, MaxBattleTroopInfoIndex);
 #endif
 	return (BattleTroopInfo[unit_icon].Bonus);

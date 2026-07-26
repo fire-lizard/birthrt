@@ -12,8 +12,7 @@
 
    ------------------------------------------------------------------------ */
 #include <sys\types.h>
-#include <direct.h>
-#include <io.h>
+#include "PLATFORM.H"
 #include <ctype.h>
 
 #include "SYSTEM.H"

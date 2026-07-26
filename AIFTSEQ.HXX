@@ -98,7 +98,7 @@ inline FIGHT_SEQUENCE::ATTACK_MODE const FIGHT_SEQUENCE::mfGetNextSequence(THING
 #if defined (_DEBUG)
 	if (ThingType < FIRST_GAME_THING || ThingType > LAST_GAME_AVATAR)
 	{
-		fatal_error("FILE: %s[%d] ThingType %ld has no attack sequence.\n", 
+		fatal_error("FILE: %s[%d] ThingType %d has no attack sequence.\n", 
 					__FILE__, __LINE__, ThingType);
 	}
 #endif

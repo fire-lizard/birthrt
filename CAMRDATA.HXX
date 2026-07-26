@@ -161,7 +161,7 @@ inline BOOL CAMERA_DATA::mfIsAtCameraPosition()
 inline BOOL CAMERA_DATA::mfReadData (char * cpBuffer) 
 {
 	LONG fr;
-	return ((6 == sscanf(cpBuffer, "%ld %ld %ld %ld %ld %ld",
+	return ((6 == sscanf(cpBuffer, "%d %d %d %d %d %d",
 											&fx,
 											&fy,
 											&fz,
@@ -177,7 +177,7 @@ inline BOOL CAMERA_DATA::mfReadData (char * cpBuffer)
    ======================================================================== */
 inline void CAMERA_DATA::mfWriteData (FILE *fp) 
 {
-	fprintf(fp,"%ld\t%ld\t%ld\t%ld\t%ld\t%ld\n", fx, fy, fz, fa, fp, 0);
+	fprintf(fp,"%d\t%d\t%d\t%d\t%d\t%d\n", fx, fy, fz, fa, fp, 0);
 }
 
 #endif // _CAMRDATA_HXX

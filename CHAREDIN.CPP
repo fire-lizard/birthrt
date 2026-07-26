@@ -11,12 +11,11 @@
    ------------------------------------------------------------------------ */
 #ifdef _WINDOWS								// Windows is required for this module
 
-#include <io.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-#include <Windows.h>
+#include "PLATFORM.H"
 #include <windowsx.h>
 
 #include "SYSTEM.H"

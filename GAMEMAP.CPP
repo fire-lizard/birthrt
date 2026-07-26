@@ -14,13 +14,12 @@
    Includes
    ------------------------------------------------------------------------ */
 #ifdef _WINDOWS
-#include <Windows.h>
+#include "PLATFORM.H"
 #endif
 
 #include <stdio.h>
 #include <string.h>
 #include <stdarg.h>
-#include <direct.h>
 
 #include "SYSTEM.H"
 
@@ -3223,7 +3222,7 @@ void AdjTaxLevel (LONG prov, LONG level)
 		if ( fLogComment )
 		{
 			char temp[100];
-			sprintf ( temp, "gamemap.cpp AdjTaxLevel - prov:%ld  level:%ld",
+			sprintf ( temp, "gamemap.cpp AdjTaxLevel - prov:%d  level:%d",
 				prov, level);
 			RandomLogComment ( temp );
 		}
@@ -3735,7 +3734,7 @@ void DegradeCastles (void)
 				if ( fLogComment )
 				{
 					char temp[100];
-					sprintf ( temp, "CASTLE DEGRADE - %s in %s, new level:%d iRoute2:%ld\n",province[i].name,realm[province[i].Realm].mfGetName(),places[j].Level,places[j].iRoute2);
+					sprintf ( temp, "CASTLE DEGRADE - %s in %s, new level:%d iRoute2:%d\n",province[i].name,realm[province[i].Realm].mfGetName(),places[j].Level,places[j].iRoute2);
 					RandomLogComment ( temp );
 				}
 
@@ -4951,7 +4950,7 @@ BOOL UpdateDataArea (void)
 			if ( fLogComment )
 			{
 				char temp[100];
-				sprintf ( temp, "PLAYER FINANCIAL INFO - %s  treasury:%ld  income:%ld",
+				sprintf ( temp, "PLAYER FINANCIAL INFO - %s  treasury:%d  income:%d",
 					realm[HomeRealm].mfGetName(),
 					realm[HomeRealm].mfGetTreasury(),
 					realm[HomeRealm].mfGetIncome() );
@@ -5403,7 +5402,7 @@ BOOL UpdateDataArea (void)
 												if ( fLogComment )
 												{
 													char temp[100];
-													sprintf ( temp, "gamemap.cpp Contest or Pillage Auto Set - prov:%ld  TaxLevel set to 0",i);
+													sprintf ( temp, "gamemap.cpp Contest or Pillage Auto Set - prov:%d  TaxLevel set to 0",i);
 													RandomLogComment ( temp );
 												}
 												SetGameData(MP_PROVINCE, MPPROV_TAXLEVEL, i, 0, TRUE );		 // minimum taxes collected
@@ -8565,7 +8564,7 @@ LONG CheckUnitArrival (LONG iMovingUnit, BOOL fJoinAllowed)
 						char temp[150];
 						char MovingUnitRealmName[50];
 						strcpy(MovingUnitRealmName,realm[units[iMovingUnit].Realm].mfGetName());
-						sprintf ( temp, "CheckUnitArrival - neither is us: Sync %ld - mov:%s vs j:%s in prov:%s",
+						sprintf ( temp, "CheckUnitArrival - neither is us: Sync %d - mov:%s vs j:%s in prov:%s",
 							(iMPS_SYNC_INITIATIVE + BattleSync),
 							MovingUnitRealmName,
 							realm[units[j].Realm].mfGetName(),
@@ -8581,7 +8580,7 @@ LONG CheckUnitArrival (LONG iMovingUnit, BOOL fJoinAllowed)
 					if ( fLogComment )
 					{
 						char temp[150];
-						sprintf ( temp, "CheckUnitArrival - neither is us: done waiting at Sync %ld",
+						sprintf ( temp, "CheckUnitArrival - neither is us: done waiting at Sync %d",
 							(iMPS_SYNC_INITIATIVE + BattleSync));
 						RandomLogComment ( temp );
 					}
@@ -8819,7 +8818,7 @@ LONG CheckUnitArrival (LONG iMovingUnit, BOOL fJoinAllowed)
 											if ( fLogComment )
 											{
 												char temp[150];
-												sprintf ( temp, "Finalizing NPCBattle - VK_F10=%ld",
+												sprintf ( temp, "Finalizing NPCBattle - VK_F10=%d",
 													(LONG)(GetAsyncKeyState( VK_F10 ) & 0x8000) );
 												RandomLogComment ( temp );
 											}
@@ -8902,7 +8901,7 @@ LONG CheckUnitArrival (LONG iMovingUnit, BOOL fJoinAllowed)
 							if ( fLogComment )
 							{
 								char temp[150];
-								sprintf ( temp, "CheckUnitArrival - we are one: Sync %ld",
+								sprintf ( temp, "CheckUnitArrival - we are one: Sync %d",
 									(iMPS_SYNC_INITIATIVE + BattleSync));
 								RandomLogComment ( temp );
 							}
@@ -8913,7 +8912,7 @@ LONG CheckUnitArrival (LONG iMovingUnit, BOOL fJoinAllowed)
 							if ( fLogComment )
 							{
 								char temp[150];
-								sprintf ( temp, "CheckUnitArrival - we are one: done waiting at Sync %ld",
+								sprintf ( temp, "CheckUnitArrival - we are one: done waiting at Sync %d",
 									(iMPS_SYNC_INITIATIVE + BattleSync));
 								RandomLogComment ( temp );
 							}
@@ -8932,7 +8931,7 @@ LONG CheckUnitArrival (LONG iMovingUnit, BOOL fJoinAllowed)
 					if ( fLogComment )
 					{
 						char temp[100];
-						sprintf ( temp, "After PC vs NPC Battle - cntUnits %ld", cntUnits_() );
+						sprintf ( temp, "After PC vs NPC Battle - cntUnits %d", cntUnits_() );
 						RandomLogComment ( temp );
 					}
 				}
@@ -8995,7 +8994,7 @@ LONG CheckUnitArrival (LONG iMovingUnit, BOOL fJoinAllowed)
 					if ( fLogComment )
 					{
 						char temp[100];
-						sprintf ( temp, "After NPC vs NPC Battle - cntUnits %ld", cntUnits_() );
+						sprintf ( temp, "After NPC vs NPC Battle - cntUnits %d", cntUnits_() );
 						RandomLogComment ( temp );
 					}
 				}
@@ -9269,7 +9268,7 @@ void WithdrawLosingUnit (BOOL fSend)
 			if ( fLogComment )
 			{
 				char temp[150];
-				sprintf ( temp, "WithdrawLosingUnit - deleting unit:%ld of %s",
+				sprintf ( temp, "WithdrawLosingUnit - deleting unit:%d of %s",
 					LosingUnit,
 					realm[units[LosingUnit].Realm].mfGetName());
 				RandomLogComment ( temp );

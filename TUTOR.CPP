@@ -78,7 +78,7 @@ GAME_STRING const TutorialHelpMgr::GetHelp(long const i,long const j)
 	if (!InBounds(i,j))
 	{
 #ifdef _DEBUG
-		fatal_error("trying to access tutorial help outside of array bounds! %s(%li)",__FILE__,__LINE__);
+		fatal_error("trying to access tutorial help outside of array bounds! %s(%i)",__FILE__,__LINE__);
 #endif
 		return STR_NULL;
 	}

@@ -22,9 +22,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <dos.h>
-#include <io.h>
-#include <conio.h>
+#include "PLATFORM.H"
 #include <sys\types.h>
 #include <sys\stat.h>
 #include <fcntl.h>
@@ -1227,7 +1225,7 @@ SHORT LoadCompressedDataFromResFile (
 	{
 #if defined (_DEBUG)
 		UBYTE * p = (UBYTE *)&pResHeader->startcode;
-		fatal_error("RESMANAG ERROR - bad RSRC header: slot=%ld file=%s offset=%lu read=%d magic=%02x%02x%02x%02x hash=%08lx ext=%d flags=%02x\n",
+		fatal_error("RESMANAG ERROR - bad RSRC header: slot=%d file=%s offset=%u read=%d magic=%02x%02x%02x%02x hash=%08x ext=%d flags=%02x\n",
 			iResFileSlot, szPathname, gcbResOffset[iResFileSlot], result,
 			p[0], p[1], p[2], p[3],
 			lResNameCRC[iResFileSlot], (int)iResExtIndex[iResFileSlot],
@@ -1461,7 +1459,7 @@ BOOL RotateBitm (SHORT iBitmBlk, LONG w, LONG h)
 	if (iTempBlk == fERROR)
 	{
 #if defined (_DEBUG)
-		fatal_error("RESMANAG ERROR - unable to allocate memory for rotation, size: %ld\n", size);
+		fatal_error("RESMANAG ERROR - unable to allocate memory for rotation, size: %d\n", size);
 #endif
 		return FALSE;
 	}
@@ -1602,7 +1600,7 @@ SHORT LoadPCXFromResFile (CSTRPTR szFileName, BOOL fNoScale, BOOL fLockRes, BOOL
 		{
 			DisposBlock (iSrcBlk);
 #if defined (_DEBUG)
-			fatal_error("RESMANAG ERROR - unable to allocate memory for the file, size: %ld\n",cbLargest);
+			fatal_error("RESMANAG ERROR - unable to allocate memory for the file, size: %d\n",cbLargest);
 #endif
 			return (SHORT)fERROR;
 		}
@@ -1734,7 +1732,7 @@ SHORT LoadPCX (CSTRPTR szFileName, BOOL fNoScale, BOOL fLockRes, BOOL fRotated, 
 	{
 		DiskClose(file);
 #if defined (_DEBUG)
-		fatal_error("RESMANAG ERROR - unable to allocate memory for the file, size: %ld\n",cbLargest);
+		fatal_error("RESMANAG ERROR - unable to allocate memory for the file, size: %d\n",cbLargest);
 #endif
 		return (SHORT)fERROR;
 	}
@@ -1850,7 +1848,7 @@ SHORT LoadFLC (CSTRPTR szFileName, BOOL fNoScale, BOOL fLockRes, BOOL fRotated, 
 	{
 		DiskClose(file);
 #if defined (_DEBUG)
-		fatal_error("RESMANAG ERROR - unable to allocate memory for the file, size: %ld\n",cBytes);
+		fatal_error("RESMANAG ERROR - unable to allocate memory for the file, size: %d\n",cBytes);
 #endif
 		return (SHORT)fERROR;
 	}
@@ -2043,7 +2041,7 @@ USHORT CheckSum (SHORT iHandle)
 		i = iHandle;
 	}
 	
-	ps = (ULONG *)apBlocks[i]; 	// Use the real pointer because GetBlockSize
+	ps = (ULONG *)BLKPTR(i); 	// Use the real pointer because GetBlockSize
 						   		// returns the full memory block size.
 	l = GetBlockSize(i);
 	
@@ -2054,7 +2052,7 @@ USHORT CheckSum (SHORT iHandle)
 		
 	Result = cs.SplitWord.usUpper + cs.SplitWord.usLower;
 		
-	p = (PTR) apBlocks[i];
+	p = (PTR) BLKPTR(i);
 	// Add in the last 3 bytes if necessary.
 	for (j = (l % sizeof(ULONG));
 		 j > 0;

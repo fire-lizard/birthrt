@@ -89,7 +89,7 @@ inline LONG const DIALOG_TRIPLINES::mfReadData(FILE *fp)
 	
 	if (Result != EOF)
 	{
-		if ( 2 == sscanf(cpBuffer, "%ld %ld", &fTripLineNumber, &fStringNumber))
+		if ( 2 == sscanf(cpBuffer, "%d %d", &fTripLineNumber, &fStringNumber))
 		{
 			fStringNumber += STR_DIALOG_BASE_NUMBER;
 		}

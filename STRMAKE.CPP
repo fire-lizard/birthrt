@@ -2,7 +2,7 @@
 #include <string.h>
 #include <stdarg.h>
 #include <stdlib.h>
-#include <io.h>
+#include "PLATFORM.H"
 #include <ctype.h>
 
 #include "TYPEDEFS.H"

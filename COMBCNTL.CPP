@@ -697,7 +697,7 @@ void CONTROL_PANELS::CURRENT_CONTROL::mfPaintPanel()
 				if (fccActive[fsccIndex].fhMenu == fhMenu)
 				{
 					// Only draw the hot key numbers on the active menu.
-					sprintf(cpBuffer, "%ld", i+1);
+					sprintf(cpBuffer, "%d", i+1);
 					gprint_text(SpellBoxX, SpellBoxY, cpBuffer, WHITE);
 				}
 				

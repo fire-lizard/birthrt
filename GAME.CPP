@@ -15,10 +15,9 @@
    Includes
    ------------------------------------------------------------------------ */
 #include <stdio.h>
-#include <io.h>
 #include <ctype.h>
 #if defined(_WINDOWS)
-#include <Windows.h>
+#include "PLATFORM.H"
 #else
 #include <time.h>
 #endif
@@ -1723,7 +1722,7 @@ int PaintInputField(LONG lButtonId, char *szBuffer, LONG lBufLen, LONG lFont,
 						
 						hPlayerStats = GetButtonValue(D_AVATAR_INVENTORY, INV_BUT_STATUS);
 
-						FieldsRead=sscanf(&szBuffer[6],"%ld %ld", &Item, &Quantity);
+						FieldsRead=sscanf(&szBuffer[6],"%d %d", &Item, &Quantity);
 			
 						if (FieldsRead>0)
 						{
@@ -1759,7 +1758,7 @@ int PaintInputField(LONG lButtonId, char *szBuffer, LONG lBufLen, LONG lFont,
 					{
 						hPlayerStats = GetButtonValue(D_AVATAR_INVENTORY, INV_BUT_STATUS);
 
-						LONG FieldsRead=sscanf(&szBuffer[7],"%ld", &Item);
+						LONG FieldsRead=sscanf(&szBuffer[7],"%d", &Item);
 	
 						if (FieldsRead>0)
 						{
@@ -1815,7 +1814,7 @@ int PaintInputField(LONG lButtonId, char *szBuffer, LONG lBufLen, LONG lFont,
 				{
 					LONG	Item;
 					
-					LONG FieldsRead=sscanf(&szBuffer[6],"%ld", &Item);
+					LONG FieldsRead=sscanf(&szBuffer[6],"%d", &Item);
 					if (FieldsRead)
 					{
 						if( Item )
@@ -1841,7 +1840,7 @@ int PaintInputField(LONG lButtonId, char *szBuffer, LONG lBufLen, LONG lFont,
 				{
 					LONG	Item;
 					
-					LONG FieldsRead=sscanf(&szBuffer[6],"%ld", &Item);
+					LONG FieldsRead=sscanf(&szBuffer[6],"%d", &Item);
 					if (FieldsRead)
 					{
 						if( Item )
@@ -1879,7 +1878,7 @@ int PaintInputField(LONG lButtonId, char *szBuffer, LONG lBufLen, LONG lFont,
 							Dash[0] = ' ';
 							Minus = TRUE;
 						}
-						LONG FieldsRead=sscanf(&szBuffer[6],"%ld %ld", &Stat, &Item);
+						LONG FieldsRead=sscanf(&szBuffer[6],"%d %d", &Stat, &Item);
 						if (FieldsRead==2)
 						{	
 							if(Minus)
@@ -1914,7 +1913,7 @@ int PaintInputField(LONG lButtonId, char *szBuffer, LONG lBufLen, LONG lFont,
 							Dash[0] = ' ';
 							Minus = TRUE;
 						}
-						LONG FieldsRead=sscanf(&szBuffer[6],"%ld %ld", &Stat, &Item);
+						LONG FieldsRead=sscanf(&szBuffer[6],"%d %d", &Stat, &Item);
 						if (FieldsRead==2)
 						{	
 							if(Minus)
@@ -1939,7 +1938,7 @@ int PaintInputField(LONG lButtonId, char *szBuffer, LONG lBufLen, LONG lFont,
 					
 					if(fDomainTurn)
 					{
-						LONG FieldsRead=sscanf(&szBuffer[6],"%ld", &Item);
+						LONG FieldsRead=sscanf(&szBuffer[6],"%d", &Item);
 						if (FieldsRead==1)
 						{
 							if( Item )
@@ -1985,7 +1984,7 @@ int PaintInputField(LONG lButtonId, char *szBuffer, LONG lBufLen, LONG lFont,
 				{
 					LONG	Sound;
 					
-					LONG FieldsRead=sscanf(&szBuffer[6],"%ld", &Sound);
+					LONG FieldsRead=sscanf(&szBuffer[6],"%d", &Sound);
 					if (FieldsRead==1)
 						AddSndObj((BIRTHRT_SND)Sound, 0, VOLUME_FULL);
 	
@@ -2119,7 +2118,7 @@ int PaintInputField(LONG lButtonId, char *szBuffer, LONG lBufLen, LONG lFont,
 						LONG	Item;
 						
 						hPlayerStats = GetButtonValue(D_AVATAR_INVENTORY, INV_BUT_STATUS);
-						LONG FieldsRead=sscanf(&szBuffer[6],"%ld", &Item);
+						LONG FieldsRead=sscanf(&szBuffer[6],"%d", &Item);
 						
 						if (FieldsRead==1)
 						{
@@ -2164,7 +2163,7 @@ int PaintInputField(LONG lButtonId, char *szBuffer, LONG lBufLen, LONG lFont,
 					LONG Item;
 					InputHideMenu();
 					
-					LONG FieldsRead=sscanf(&szBuffer[6],"%ld", &Item);
+					LONG FieldsRead=sscanf(&szBuffer[6],"%d", &Item);
 					
 					if(FieldsRead>0)
 						PlayGorgon(Item,0);

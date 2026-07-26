@@ -73,7 +73,7 @@ void RandomLogWrite ( unsigned long therand, char * szFileName, int iLineNumber 
 		if ( pFile )
 		{
 			fprintf ( pFile,
-							"%sR%lu %12.12s@%d\n",
+							"%sR%u %12.12s@%d\n",
 							temp,
 							therand, 
 							szFileName,

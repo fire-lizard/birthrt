@@ -243,10 +243,10 @@ IWAD_ENTRY ent;
 #endif
 	PlayerArrival(&PlayerStart);
 
-	debugf("Free memory before textures...%ld\n", ReportFreeMem(TRUE));
+	debugf("Free memory before textures...%d\n", ReportFreeMem(TRUE));
 	load_sky_textures();
 	load_wall_textures();
-	debugf("Free memory after textures...%ld\n", ReportFreeMem(TRUE));
+	debugf("Free memory after textures...%d\n", ReportFreeMem(TRUE));
 	cbWad_Uses = cbMem_Before - ReportFreeMem(TRUE);	/* mem used by wad */
 
 #if 01
@@ -334,7 +334,7 @@ LONG numRead;
 	fseek(fi,ent->offset,SEEK_SET);
 	tot_things=ent->size/sizeof(THING);
 	if (tot_things==0 || tot_things > 10000)
-		fatal_error("LEVEL ERROR - Total things=%ld in wad %s\n",tot_things,pwad_name);
+		fatal_error("LEVEL ERROR - Total things=%d in wad %s\n",tot_things,pwad_name);
 	things=(THING *)zalloc(ent->size+1);
 
 	numRead = fread(&things[0],sizeof(THING), tot_things,fi);
@@ -358,7 +358,7 @@ LONG numRead;
 	fseek(fi,ent->offset,SEEK_SET);
 	tot_linedefs=ent->size/sizeof(LINEDEF);
 	if (tot_linedefs==0 || tot_linedefs > 10000)
-		fatal_error("LEVEL ERROR - Total linedefs=%ld in wad %s\n",tot_linedefs,pwad_name);
+		fatal_error("LEVEL ERROR - Total linedefs=%d in wad %s\n",tot_linedefs,pwad_name);
 	linedefs=(LINEDEF *)zalloc(ent->size+1);
 
 	numRead = fread(&linedefs[0], sizeof(LINEDEF), tot_linedefs, fi);
@@ -385,7 +385,7 @@ LONG numRead;
 	fseek(fi,ent->offset,SEEK_SET);
 	tot_sidedefs=ent->size/sizeof(SIDEDEF);
 	if (tot_sidedefs==0 || tot_sidedefs > 10000)
-		fatal_error("LEVEL ERROR - Total sidedefs=%ld in wad %s\n",tot_sidedefs,pwad_name);
+		fatal_error("LEVEL ERROR - Total sidedefs=%d in wad %s\n",tot_sidedefs,pwad_name);
 	
 	SidedefHandle = NewBlock(sizeof(SIDEDEF) * tot_sidedefs);
 	SetBlockAttr(SidedefHandle, LOCKED, LOCKED);
@@ -428,7 +428,7 @@ ULONG numRead;
 	fseek(fi,ent->offset,SEEK_SET);
 	tot_vertexs=ent->size/sizeof(VERTEX);
 	if (tot_vertexs==0 || tot_vertexs > 10000)
-		fatal_error("LEVEL ERROR - Total vertexs=%ld in wad %s\n",tot_vertexs,pwad_name);
+		fatal_error("LEVEL ERROR - Total vertexs=%d in wad %s\n",tot_vertexs,pwad_name);
 	VertexHandle = NewBlock(sizeof(VERTEX) * tot_vertexs);
 	SetBlockAttr(VertexHandle, LOCKED, LOCKED);
 	t = (VERTEX *) BLKPTR(VertexHandle);
@@ -464,7 +464,7 @@ static void load_segs(IWAD_ENTRY *ent, FILE * fi)
 	fseek(fi,ent->offset,SEEK_SET);
 	tot_segs=ent->size/sizeof(SEG);
 	if (tot_segs==0 || tot_segs > 10000)
-		fatal_error("LEVEL ERROR - Total segs=%ld in wad %s\n",tot_segs,pwad_name);
+		fatal_error("LEVEL ERROR - Total segs=%d in wad %s\n",tot_segs,pwad_name);
 	segs=(SEG *)zalloc(ent->size+1);
 
 	numRead = fread(&segs[0], sizeof(SEG), tot_segs, fi);
@@ -533,7 +533,7 @@ ULONG numRead;
 	fseek(fi,ent->offset,SEEK_SET);
 	tot_ssectors=ent->size/sizeof(SSECTOR);
 	if (tot_ssectors==0 || tot_ssectors > 10000)
-		fatal_error("LEVEL ERROR - Total ssectors=%ld in wad %s\n",tot_ssectors,pwad_name);
+		fatal_error("LEVEL ERROR - Total ssectors=%d in wad %s\n",tot_ssectors,pwad_name);
 		
 	SsectorHandle = NewBlock((1 + tot_ssectors) * sizeof(SSECTOR));
 	SetBlockAttr(SsectorHandle, LOCKED, LOCKED);
@@ -573,7 +573,7 @@ LONG numRead;
 	fseek(fi,ent->offset,SEEK_SET);
 	tot_nodes=ent->size/sizeof(NODE);
 	if (tot_nodes==0 || tot_nodes > 10000)
-		fatal_error("LEVEL ERROR - Total nodes=%ld in wad %s\n",tot_nodes,pwad_name);
+		fatal_error("LEVEL ERROR - Total nodes=%d in wad %s\n",tot_nodes,pwad_name);
 	
 	NodeHandle = NewBlock(sizeof(NODE) * tot_nodes);
 	SetBlockAttr(NodeHandle,LOCKED,LOCKED);
@@ -615,7 +615,7 @@ LONG numRead;
  	fseek(fi,ent->offset,SEEK_SET);
 	tot_sectors=ent->size/sizeof(SECTOR);
 	if (tot_sectors==0 || tot_sectors > 10000)
-		fatal_error("LEVEL ERROR - Total sectors=%ld in wad %s\n",tot_sectors,pwad_name);
+		fatal_error("LEVEL ERROR - Total sectors=%d in wad %s\n",tot_sectors,pwad_name);
 		
 	SectorHandle=NewBlock(ent->size+1);
 	SetBlockAttr(SectorHandle, LOCKED, LOCKED);
@@ -683,7 +683,7 @@ void PurgeLevel(void)
 	remove_task(HandleCeilings);
 	remove_task(TextureFrameHandler);
 
-	printf("Freemem at end of level: %ld\n", ReportFreeMem(TRUE));
+	printf("Freemem at end of level: %d\n", ReportFreeMem(TRUE));
 	init_doors();								// [d11-14-96 JPC] removes all sounds
 	purge_all_things();
 	purge_all_textures();
@@ -721,7 +721,7 @@ void PurgeLevel(void)
 
 	cbWad_Uses = 0;
 
-	printf("Freemem after purge: %ld\n", ReportFreeMem(TRUE));
+	printf("Freemem after purge: %d\n", ReportFreeMem(TRUE));
 }
 
 /* ========================================================================
@@ -743,7 +743,7 @@ void load_new_wad(char *name, LONG PlayerStart)
 	// GWP SetPurgeClass(CLASS2);			/* purge all things and textures */
 	// GWP DisposClass(CLASS1);				/* remove all zallocED memory */
 
-	printf("Freemem before loading %s: %ld\n", name, ReportFreeMem(TRUE));
+	printf("Freemem before loading %s: %d\n", name, ReportFreeMem(TRUE));
 	load_level(name,PlayerStart);
 }
 

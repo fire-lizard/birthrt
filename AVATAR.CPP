@@ -497,13 +497,13 @@ LONG CAvatar::CreateAvatar(
 	else
 	{
 		LONG lMemoryAvail = ReportFreeMem(TRUE);
-		printf("Memory available before creating avatar %ld\n", lMemoryAvail);
+		printf("Memory available before creating avatar %d\n", lMemoryAvail);
 		// create the avatar
 		pScene->Avatars[i] = CAvatar::NewAvatar();
 	
 		if (pScene->Avatars[i] != fERROR)
 		{
-			printf("Creating Avatar Id = %ld\n", Id);
+			printf("Creating Avatar Id = %d\n", Id);
 			
 			CAvatar *pAvatar = (CAvatar *) BLKPTR(pScene->Avatars[i]);
 		
@@ -515,12 +515,12 @@ LONG CAvatar::CreateAvatar(
 			pAvatar->mfInitVals();
 			pAvatar->Realm.HomeRealm = Realm;
 			pAvatar->mfSetOriginalRemapColor(Realm);
-			printf("Used memory = %ld\n", (lMemoryAvail - ReportFreeMem(TRUE)));
+			printf("Used memory = %d\n", (lMemoryAvail - ReportFreeMem(TRUE)));
 			
 		}
 		else
 		{
-			printf("WARNING! Unable to create Avatar Id = %ld\n", Id);
+			printf("WARNING! Unable to create Avatar Id = %d\n", Id);
 			i = fERROR;
 		}
 	}

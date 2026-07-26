@@ -17,7 +17,7 @@
 #include <stdio.h>
 #include "TYPEDEFS.H"
 #include <sys\types.h>
-#include <direct.h>
+#include "PLATFORM.H"
 
 #include "GAME.H"
 #include "MENU.H"

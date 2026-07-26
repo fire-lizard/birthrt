@@ -15,11 +15,10 @@
    Includes
    ------------------------------------------------------------------------ */
 #ifdef _WINDOWS
-#include <Windows.h>
+#include "PLATFORM.H"
 #endif
 
 #include <ctype.h>
-#include <io.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

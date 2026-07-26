@@ -15,15 +15,14 @@
    Includes
    ------------------------------------------------------------------------ */
 
-#include <io.h>
 
 #ifdef _WINDOWS
 #define INCLUDE_MMSYSTEM_H
-#include <Windows.h>
+#include "PLATFORM.H"
 #endif
 
 #if defined (WINDOWS_SOUND)
-	#include <windows.h>
+	#include "PLATFORM.H"
 #else
 #endif
 

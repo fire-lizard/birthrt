@@ -8,7 +8,7 @@
 #include <stdarg.h>
 #include <ctype.h>
 #ifndef _WINDOWS
-#include <malloc.h>
+#include "PLATFORM.H"
 #endif
 
 /*

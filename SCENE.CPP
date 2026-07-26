@@ -15,7 +15,7 @@
    Includes
    ------------------------------------------------------------------------ */
 #include <ctype.h>
-#include <io.h>
+#include "PLATFORM.H"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -495,7 +495,7 @@ LONG SCENE::mfReadDialogTripLines(FILE *fp)
 	Result = GetNextLine(fp, cpBuffer, sizeof(cpBuffer));
 	if (Result != EOF)
 	{
-		if ( 1 == sscanf(cpBuffer, "%ld", &fMaxDialogTriplines))
+		if ( 1 == sscanf(cpBuffer, "%d", &fMaxDialogTriplines))
 		{
 			fhDialogTriplines = NewBlock(sizeof (DIALOG_TRIPLINES) * fMaxDialogTriplines);
 			if (fhDialogTriplines != fERROR)
@@ -536,7 +536,7 @@ LONG SCENE::mfReadQuestThingType(FILE *fp)
 	if (Result != EOF)
 	{
 		LONG	ThingNumber;
-		if ( 1 == sscanf(cpBuffer, "%ld", &ThingNumber))
+		if ( 1 == sscanf(cpBuffer, "%d", &ThingNumber))
 		{
 //			else
 				SetQuestThing(ThingNumber);
@@ -589,7 +589,7 @@ LONG SCENE::mfReadNotes(FILE *fp)
 					LONG	NoteNumber;
 					LONG	StringId;
 					
-					if (2 == sscanf(cpBuffer,"%ld %ld", &NoteNumber, &StringId))
+					if (2 == sscanf(cpBuffer,"%d %d", &NoteNumber, &StringId))
 					{
 						pNotes[j].mfSetNoteData((SBYTE)NoteNumber, (GAME_STRING)StringId);
 					}
@@ -673,13 +673,13 @@ LONG SCENE::mfReadAvatars(FILE *fp)
 		Result = GetNextLine(fp, cpBuffer, sizeof(cpBuffer));
 		
 		// Takes an optional realm type.
-		if (Result != EOF && sscanf(cpBuffer, "%ld %ld %ld %ld %ld %ld %ld",
+		if (Result != EOF && sscanf(cpBuffer, "%d %d %d %d %d %d %d",
 			&tID, &tX, &tY, &tZ, &tA, &AIIndex, &RealmType) >= 6)
 		{
 			printf("loading Avatar %d\n",tID);
 			LONG lMemoryAvail = ReportFreeMem(TRUE);
 			
-			printf("Free memory before load...%ld\n", lMemoryAvail);
+			printf("Free memory before load...%d\n", lMemoryAvail);
 			while( i < MAX_AVATARS && Avatars[i] != fERROR)
 			{
 				i++;
@@ -718,7 +718,7 @@ LONG SCENE::mfReadAvatars(FILE *fp)
 					pAvatar->Realm.HomeRealm = RealmType;
 			
 					Result = pAvatar->mfReadRestOfSceneData(fp);
-					printf("Memory used after load...%ld\n", (lMemoryAvail - ReportFreeMem(TRUE)));
+					printf("Memory used after load...%d\n", (lMemoryAvail - ReportFreeMem(TRUE)));
 				}
 			}
 			else //i > MAX_AVATARS)
@@ -1511,7 +1511,7 @@ void SCENE::mfSceneButtonFloor(
 		compa = AngleFromPoint ( PLAYER_INT_VAL(player.x), PLAYER_INT_VAL(player.y), sx, sy, RESOLUTION_8 );
 	
 #if defined(TEST_MOVEMENT)
-		printf( "move from %ld, %ld %ld to %ld, %ld %ld\n",
+		printf( "move from %d, %d %d to %d, %d %d\n",
 			PLAYER_INT_VAL(player.x), PLAYER_INT_VAL(player.y), player.a,
 			sx, sy, compa );
 #endif
@@ -1550,7 +1550,7 @@ BOOL const SCENE::mfGetExitScene( LONG &Id, char * *const cpNewSceneName)
 	if (!bFound)
 	{
 #if defined (_DEBUG)
-		fatal_error("ERROR: No Exit data in .scene file for Exit line %ld\n", Id);
+		fatal_error("ERROR: No Exit data in .scene file for Exit line %d\n", Id);
 #endif
 		*cpNewSceneName = 0;
 	}
@@ -1823,7 +1823,7 @@ LONG mfReadUserType(FILE *fp, SCENE::SCENE_DATA *SceneData )
 	if (Result != EOF)
 	{
 		LONG	SceneType;
-		sscanf(cpBuffer, "%ld", &SceneType);
+		sscanf(cpBuffer, "%d", &SceneType);
 		SceneData->SceneType = (SCENE::SCENE_TYPE) SceneType;
 	}
 	return Result;
@@ -1861,7 +1861,7 @@ LONG mfReadUserDifficulty(FILE *fp, SCENE::SCENE_DATA *SceneData )
 	if (Result != EOF)
 	{
 		LONG	SceneDiff;
-		sscanf(cpBuffer, "%ld", &SceneDiff);
+		sscanf(cpBuffer, "%d", &SceneDiff);
 		SceneData->sSceneDiff = (SHORT)SceneDiff;
 	}
 	

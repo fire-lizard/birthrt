@@ -14,7 +14,7 @@
 #include <string.h>
 #if defined(_RELEASE)
 #include <stdio.h>
-#include <io.h>
+#include "PLATFORM.H"
 #endif
 
 #if !defined(_STRENUM_H)

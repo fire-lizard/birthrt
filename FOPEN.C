@@ -8,16 +8,13 @@
 #
 \#######################################################################*/
 #ifdef _WINDOWS
-#include <Windows.h>
+#include "PLATFORM.H"
 #endif
 
 #include <stdlib.h>
 #include <stdio.h>
-#include <io.h>
 #include <fcntl.h>
 #include <string.h>
-#include <dos.h>
-#include <conio.h>
 #include <errno.h>
 #include "TYPEDEFS.H"
 #include "SYSTEM.H"

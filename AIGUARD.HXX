@@ -39,7 +39,7 @@ private:
 // write member data to scene file on disk
 inline void GUARDPT_DATA::mfWriteData(FILE *fp)
 {
-	fprintf(fp, "%ld %ld %ld %ld\n", X, Y, StandAsideX, StandAsideY);
+	fprintf(fp, "%d %d %d %d\n", X, Y, StandAsideX, StandAsideY);
 }
 
 // read member data from scene file off disk
@@ -50,7 +50,7 @@ inline LONG GUARDPT_DATA::mfReadData(FILE * fp)
 	
 	if (Result != EOF)
 	{
-		Result = ( (4 == sscanf(cpBuffer, "%ld %ld %ld %ld", 
+		Result = ( (4 == sscanf(cpBuffer, "%d %d %d %d", 
 		                                  &X, &Y, &StandAsideX, &StandAsideY) ) ? 
 		                                  Result : EOF);
 	}

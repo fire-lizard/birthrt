@@ -72,7 +72,7 @@ inline const LONG AVATAR_POISON::mfReadTextData(FILE *fp)
 		LONG lTemp1;
 		LONG lTemp2;
 		
-		if( 2 == sscanf(cpBuffer,"%ld %ld", &lTemp1, &lTemp2))
+		if( 2 == sscanf(cpBuffer,"%d %d", &lTemp1, &lTemp2))
 		{
 			fType = (TYPE) lTemp1;
 			fsbCountTillNextDose = (SBYTE) lTemp2;
@@ -84,7 +84,7 @@ inline const LONG AVATAR_POISON::mfReadTextData(FILE *fp)
 
 inline const LONG AVATAR_POISON::mfWriteTextData(FILE *fp)
 {
-	fprintf(fp, "%ld %ld\n", (LONG) fType, (LONG) fsbCountTillNextDose);
+	fprintf(fp, "%d %d\n", (LONG) fType, (LONG) fsbCountTillNextDose);
 }
 
 inline TYPE const AVATAR_POISON::mfGetType() const

@@ -14,7 +14,7 @@
    Includes
    ------------------------------------------------------------------------ */
 #ifdef _WINDOWS
-#include <Windows.h>
+#include "PLATFORM.H"
 #endif
 
 #include <stdio.h>
@@ -1304,7 +1304,7 @@ static void SyncRegencySpentInOpposition (REALM::REALM_TYPE TargetRealm)
 			|| TargetRealm <= 0 || TargetRealm >= REALM::REALM_COUNT)
 	{
 		#ifdef _DEBUG
-		fatal_error("SyncRegencySpentInOpposition - HomeRealm (%ld) or TargetRealm (%ld) out of bounds (%d)", HomeRealm, TargetRealm, REALM::REALM_COUNT);
+		fatal_error("SyncRegencySpentInOpposition - HomeRealm (%d) or TargetRealm (%d) out of bounds (%d)", HomeRealm, TargetRealm, REALM::REALM_COUNT);
 		#endif
 		return;
 	}

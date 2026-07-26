@@ -100,7 +100,7 @@ inline void PLACE::mfCreatePlace(char *cpBuffer)
 	
 	mfInitVals();
 	
-	if( 4 == sscanf(cpBuffer, "%ld %ld %ld %s", &X, 
+	if( 4 == sscanf(cpBuffer, "%d %d %d %s", &X, 
 	                                            &Y, 
 	                                            &ThingType, 
 	                                            fscInfo.mfGetSceneName()))

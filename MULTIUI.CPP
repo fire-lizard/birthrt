@@ -14,7 +14,7 @@
    Includes
    ------------------------------------------------------------------------ */
 #ifdef _WINDOWS
-#include <Windows.h>
+#include "PLATFORM.H"
 #endif
 #include <stdio.h>
 #include <string.h>
@@ -2891,7 +2891,7 @@ void StartSync ( LONG sync )
 		if ( fLogComment )
 		{
 		char temp[200];
-		sprintf ( temp, "StartSync - start of sync %ld -----------------", sync);
+		sprintf ( temp, "StartSync - start of sync %d -----------------", sync);
 		RandomLogComment ( temp );
 		}
 
@@ -2907,7 +2907,7 @@ void StartSync ( LONG sync )
 			if ( fLogComment )
 			{
 			char temp[200];
-			sprintf ( temp, "   StartSync - Player %ld, send sync %ld", AMultiPlayer.GetPlayerId(), sync);
+			sprintf ( temp, "   StartSync - Player %d, send sync %d", AMultiPlayer.GetPlayerId(), sync);
 			RandomLogComment ( temp );
 			}
 
@@ -2927,7 +2927,7 @@ void StartSync ( LONG sync )
 				if ( fLogComment )
 				{
 				char temp[200];
-				sprintf ( temp, "   StartSync - Player %ld, send sync %ld Failed!", AMultiPlayer.GetPlayerId(), sync);
+				sprintf ( temp, "   StartSync - Player %d, send sync %d Failed!", AMultiPlayer.GetPlayerId(), sync);
 				RandomLogComment ( temp );
 				}
 
@@ -2950,7 +2950,7 @@ void StartSync ( LONG sync )
 			if ( fLogComment )
 			{
 			char temp[200];
-			sprintf ( temp, "   StartSync - Master, do nothing, sync %ld", sync);
+			sprintf ( temp, "   StartSync - Master, do nothing, sync %d", sync);
 			RandomLogComment ( temp );
 			}
 			
@@ -3048,7 +3048,7 @@ LONG CheckSync ( LONG sync, BOOL fStay, BOOL fDisplayProcess )
 								if ( fLogComment )
 								{
 									char temp[200];
-									sprintf ( temp, "CheckSync - sync %ld for id %ld TIMEDOUT, resending...", sync, dwId);
+									sprintf ( temp, "CheckSync - sync %d for id %d TIMEDOUT, resending...", sync, dwId);
 									RandomLogComment ( temp );
 								}
 							}
@@ -3104,9 +3104,9 @@ LONG CheckSync ( LONG sync, BOOL fStay, BOOL fDisplayProcess )
 			if ( fLogComment )
 			{
 				char temp[200];
-				sprintf ( temp, "   CheckSync - Master, received all sync %ld", sync);
+				sprintf ( temp, "   CheckSync - Master, received all sync %d", sync);
 				RandomLogComment ( temp );
-				sprintf ( temp, "   CheckSync - Master, send GO for sync %ld", sync);
+				sprintf ( temp, "   CheckSync - Master, send GO for sync %d", sync);
 				RandomLogComment ( temp );
 			}
 
@@ -3126,7 +3126,7 @@ LONG CheckSync ( LONG sync, BOOL fStay, BOOL fDisplayProcess )
 				if ( fLogComment )
 				{
 					char temp[200];
-					sprintf ( temp, "   CheckSync - Master, send GO for sync %ld Failed!", sync);
+					sprintf ( temp, "   CheckSync - Master, send GO for sync %d Failed!", sync);
 					RandomLogComment ( temp );
 				}
 			}
@@ -3154,7 +3154,7 @@ LONG CheckSync ( LONG sync, BOOL fStay, BOOL fDisplayProcess )
 				if ( fLogComment )
 				{
 					char temp[200];
-					sprintf ( temp, "   CheckSync - Master, send GO2 for sync %ld Failed!", sync);
+					sprintf ( temp, "   CheckSync - Master, send GO2 for sync %d Failed!", sync);
 					RandomLogComment ( temp );
 				}
 			}
@@ -3250,7 +3250,7 @@ LONG CheckSync ( LONG sync, BOOL fStay, BOOL fDisplayProcess )
 		if ( fLogComment )
 		{
 			char temp[200];
-			sprintf ( temp, "CheckSync - End of sync %ld -----------------", sync);
+			sprintf ( temp, "CheckSync - End of sync %d -----------------", sync);
 			RandomLogComment ( temp );
 		}
 

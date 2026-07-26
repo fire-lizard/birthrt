@@ -17,7 +17,7 @@
    Includes
    ------------------------------------------------------------------------ */
 #ifdef _WINDOWS
-#include <Windows.h>
+#include "PLATFORM.H"
 #endif
 
 #include <stdio.h>
@@ -416,7 +416,7 @@ void DoNPCAdmin (void)
 					else
 						Sleep(0);
 
-					sprintf ( temp, "                    HoldingsMaintCost[%ld]:%04d  castles:%04d  OccupPr:%04d  court:%04d",
+					sprintf ( temp, "                    HoldingsMaintCost[%d]:%04d  castles:%04d  OccupPr:%04d  court:%04d",
 						cProvHolds,MaintCost[cProvHolds],cCastles,cOccupiedProv,CourtCost[realm[rlm].mfGetCourt()] );
 					if ( fLogComment )
 						RandomLogComment ( temp );
@@ -452,7 +452,7 @@ void DoNPCAdmin (void)
 							FLOGCOMMENT
 							{
 								char temp[100];
-								sprintf ( temp, "NPC Disbanding unit - %s  unit:%ld",
+								sprintf ( temp, "NPC Disbanding unit - %s  unit:%d",
 									realm[rlm].mfGetName(), i);
 								if ( fLogComment )
 									RandomLogComment ( temp );
@@ -514,7 +514,7 @@ void DoNPCAdmin (void)
 				FLOGCOMMENT
 				{
 					char temp[100];
-					sprintf ( temp, "DoNPCAdmin %d - %s is realm #%ld in the realm order\n",
+					sprintf ( temp, "DoNPCAdmin %d - %s is realm #%d in the realm order\n",
 						5,
 						realm[rlm].mfGetName(),
 						roll);
@@ -544,9 +544,9 @@ void DoNPCAdmin (void)
 		{
 			j = RealmOrder[i];
 			if (j >= 0 && j < LAND_REALM_COUNT)
-				sprintf ( temp, "             #%ld - %s",i,realm[RealmOrder[i]].mfGetName() );
+				sprintf ( temp, "             #%d - %s",i,realm[RealmOrder[i]].mfGetName() );
 			else
-				sprintf ( temp, "             #%ld - %s",i,"unused" );
+				sprintf ( temp, "             #%d - %s",i,"unused" );
 			if ( fLogComment )
 				RandomLogComment ( temp );
 			else
@@ -1091,7 +1091,7 @@ LONG UnitsHere (PROVINCE prov, REALM::REALM_TYPE _realm)
 	FLOGCOMMENT
 	{
 		char temp[100];
-		sprintf ( temp, "   UnitsHere - prov:%s  realm:%s  cUnits:%ld  cGroups:%ld  str:%ld",
+		sprintf ( temp, "   UnitsHere - prov:%s  realm:%s  cUnits:%d  cGroups:%d  str:%d",
 			province[prov].name,
 			realm[_realm].mfGetName(),
 			cUnits, cGroups, strTargetProvince);
@@ -1618,7 +1618,7 @@ if (province[i].LevyMustered >= province[i].CivLevel)
 					if (province[i].Realm == CurrentRealm)
 					{
 						char temp[100];
-						sprintf ( temp, "   FindProv, Muster - prov:%ld  %d<%d  %d  %d>=%d",
+						sprintf ( temp, "   FindProv, Muster - prov:%d  %d<%d  %d  %d>=%d",
 							i, 
 							province[i].LevyMustered, province[i].CivLevel,
 							UnitsHere((PROVINCE)i,CurrentRealm),
@@ -4573,14 +4573,14 @@ Another:
 			strcpy(temp3,szAIAction[action].mfGetStr() );
 			strcpy(temp4,realm[TriggeredTargetRealm].mfGetName());
 			
-			sprintf ( temp, "DoNPCAction %d - %s  doing action:%ld %s (maybe on %s)", 
+			sprintf ( temp, "DoNPCAction %d - %s  doing action:%d %s (maybe on %s)", 
 				37, temp2, action, temp3, temp4);
 		}
 		else
 		{
 			strcpy(temp2, realm[rlm].mfGetName());
 			strcpy(temp3, szAIAction[action].mfGetStr());
-			sprintf ( temp, "DoNPCAction %d - %s  doing action:%ld %s", 
+			sprintf ( temp, "DoNPCAction %d - %s  doing action:%d %s", 
 				37, temp2, action, temp3);
 		}
 		if ( fLogComment )
@@ -4800,7 +4800,7 @@ CreateHldng:
 			FLOGCOMMENT
 			{
 				char temp[200];
-				sprintf ( temp, "Declare War - action_turn:%d  fPlayerNeverDelaredWar:%ld game_difficulty:%ld", 
+				sprintf ( temp, "Declare War - action_turn:%d  fPlayerNeverDelaredWar:%d game_difficulty:%d", 
 					action_turn[HomeRealm], fPlayerNeverDeclaredWar, game_difficulty );
 				if ( fLogComment )
 					RandomLogComment ( temp );
@@ -5733,7 +5733,7 @@ actmovelbl:
 				FLOGCOMMENT
 				{
 					char temp[100];
-					sprintf ( temp, "   muster unit %d - Failed1: cntUnits %ld", 38, cntUnits_() );
+					sprintf ( temp, "   muster unit %d - Failed1: cntUnits %d", 38, cntUnits_() );
 					if ( fLogComment )
 						RandomLogComment ( temp );
 					else
@@ -5807,7 +5807,7 @@ actmovelbl:
 				FLOGCOMMENT
 				{
 					char temp[100];
-					sprintf ( temp, "   MusterUnit %d - %s  in %s, index #%ld",
+					sprintf ( temp, "   MusterUnit %d - %s  in %s, index #%d",
 						41,
 						realm[rlm].mfGetName(),
 						province[TargetProvince].name,
@@ -6167,7 +6167,7 @@ actmovelbl:
 				FLOGCOMMENT
 				{
 					char temp[100];
-					sprintf ( temp, "   LegionOfDead - %s  in %s, index #%ld",
+					sprintf ( temp, "   LegionOfDead - %s  in %s, index #%d",
 						realm[rlm].mfGetName(),
 						province[TargetProvince].name,
 						iUnit);

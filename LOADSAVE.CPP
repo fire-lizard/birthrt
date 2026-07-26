@@ -14,15 +14,13 @@
    Includes
    ------------------------------------------------------------------------ */
 #ifdef _WINDOWS
-#include <Windows.h>
+#include "PLATFORM.H"
 #endif
 
-#include <io.h>
 #include "SYSTEM.H"
 #include <stdio.h>
 #include "TYPEDEFS.H"
 #include <sys\types.h>
-#include <direct.h>
 #include <string>
 #include <vector>
 
@@ -31,7 +29,6 @@
 #include "GAME.H"
 #include "SOUND.HXX"
 #include "MENU.H"
-#include "dos.h"
 
 #include "GAMEMAP.HXX"  /* for realm[], regents[], province[], places[] */
 #include "REALM.HXX"    /* for RealmReaction[][] and RealmStatus[][] */
@@ -1837,17 +1834,7 @@ LONG GetSaveGames(char names[MAX_SAVED_GAMES+1][FILENAME_LEN+1])
     for (i=0; i <= MAX_SAVED_GAMES; i++)
         memset(names[i], '\0', FILENAME_LEN);
 
-	vector<string> fileNames;
-	WIN32_FIND_DATA fd;
-	HANDLE hFind = FindFirstFile(path, &fd);
-	if (hFind != INVALID_HANDLE_VALUE) {
-		do {
-			if (!(fd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)) {
-				fileNames.push_back(fd.cFileName);
-			}
-		} while (::FindNextFile(hFind, &fd));
-		FindClose(hFind);
-	}
+	vector<string> fileNames = PlatListFiles(path);
 
 	for (int index = 0; index < fileNames.size() && 
           ((LoadSave==LS_SAVE && num_files < MAX_SAVED_GAMES) ||

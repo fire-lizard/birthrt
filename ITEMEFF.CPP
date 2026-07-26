@@ -1115,7 +1115,7 @@ LONG ItemEffects::TomeAddRandomSpells(LONG Combo,LONG Arg,LONG Action)
 					return DONT_DROP;
 				}
 				
-				printf("pASC Num:%li  Low:%li  Hi:%li fRealm:%li\n",ASC.Number,ASC.LowBoundLevel,ASC.HighBoundLevel,ASC.fRealm);
+				printf("pASC Num:%i  Low:%i  Hi:%i fRealm:%i\n",ASC.Number,ASC.LowBoundLevel,ASC.HighBoundLevel,ASC.fRealm);
 
 				if (!ASC.fRealm)
 				{
@@ -1586,7 +1586,7 @@ LONG ItemEffects::RingJump(LONG Combo,LONG Arg,LONG Action)
 				}
 #ifdef DEBUG
 				else
-					fatal_error("EffectSeparator::mfGetVal returned NULL  %s(%li)\n",__FILE__,__LINE__);
+					fatal_error("EffectSeparator::mfGetVal returned NULL  %s(%i)\n",__FILE__,__LINE__);
 #endif
 
 				// [d12-03-96 JPC] Applied to whole adventure team.

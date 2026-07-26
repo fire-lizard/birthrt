@@ -14,7 +14,7 @@
    Includes
    ------------------------------------------------------------------------ */
 #ifdef _WINDOWS
-#include <Windows.h>
+#include "PLATFORM.H"
 #endif
 #include <stdio.h>
 #include <string.h>
@@ -180,7 +180,7 @@ void DoSetGameData(LONG lArray_Id, LONG lStruct_Id, LONG lArray_Index, LONG lDat
 					if ( fLogComment )
 					{
 						char temp[100];
-						sprintf ( temp, "   multimap - %s regency:%ld",realm[lArray_Index].mfGetName(),realm[lArray_Index].mfGetRegency());
+						sprintf ( temp, "   multimap - %s regency:%d",realm[lArray_Index].mfGetName(),realm[lArray_Index].mfGetRegency());
 						RandomLogComment ( temp );
 					}
 					break;
@@ -302,7 +302,7 @@ void DoSetGameData(LONG lArray_Id, LONG lStruct_Id, LONG lArray_Index, LONG lDat
 					if ( fLogComment )
 					{
 						char temp[100];
-						sprintf ( temp, "   multimap - prov:%ld  set TaxLevel:%ld",
+						sprintf ( temp, "   multimap - prov:%d  set TaxLevel:%d",
 							lArray_Index, lData);
 						RandomLogComment ( temp );
 					}

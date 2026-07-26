@@ -44,7 +44,7 @@ void LEADER_DATA::mfWriteData(FILE *fp)
 	{
 		for(i=0;i<sMaxFollowers;i++)
 		{
-			fprintf(fp, "%ld %ld %ld %ld %ld\n", 
+			fprintf(fp, "%d %d %d %d %d\n", 
 				pPointList[i].x, 
 				pPointList[i].y, 
 				pPointList[i].z, 
@@ -104,7 +104,7 @@ LONG LEADER_DATA::mfReadData(FILE * fp)
 				Result = GetNextLine(fp, cpBuffer, sizeof(cpBuffer));
 				if (Result == EOF)
 					return EOF;
-				if(3 != sscanf(cpBuffer, "%ld %ld %ld", 
+				if(3 != sscanf(cpBuffer, "%d %d %d", 
 					&pPointList[i].x,&pPointList[i].y,&pPointList[i].a))
 					return EOF;
 				

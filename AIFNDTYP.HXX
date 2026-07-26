@@ -44,7 +44,7 @@ public:
 // write member data to scene file on disk
 inline void FIND_TYPE_DATA::mfWriteData(FILE *fp)
 {
-	fprintf(fp, "%ld\n", (LONG) TargetType);
+	fprintf(fp, "%d\n", (LONG) TargetType);
 }
 
 // read member data from scene file off disk
@@ -55,7 +55,7 @@ inline LONG FIND_TYPE_DATA::mfReadData(FILE *fp)
 	
 	if (Result != EOF)
 	{
-		Result = ( (1 == sscanf(cpBuffer, "%ld", &TargetType) ) ? Result : EOF);
+		Result = ( (1 == sscanf(cpBuffer, "%d", &TargetType) ) ? Result : EOF);
 	}
 	return Result;
 }

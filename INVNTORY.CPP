@@ -31,7 +31,7 @@
    Includes
    ------------------------------------------------------------------------ */
 #ifdef _WINDOWS
-#include <Windows.h>
+#include "PLATFORM.H"
 #endif
 
 #include <stdio.h>
@@ -580,7 +580,7 @@ void ObjectList::mfLoad()
 	
 	SHORT ID=mfGetAvatarID();
 
-	sprintf(FileName,"%sid%li.inv",SAVEDIR,ID);
+	sprintf(FileName,"%sid%i.inv",SAVEDIR,ID);
 	if(!Exists(FileName))
 	{
 		return;
@@ -1123,7 +1123,7 @@ void ObjectList::ReadINV(SHORT hPlayerStats, LONG id)
 
     // load .inv file
 
-    sprintf(filename, "scenes\\id%ld.inv", id);
+    sprintf(filename, "scenes\\id%d.inv", id);
     fp = FileOpen(filename, "r");
     if (fp != NULL)
     {

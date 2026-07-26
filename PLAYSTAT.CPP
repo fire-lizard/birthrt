@@ -197,7 +197,7 @@ LONG PLAYER_STATS::mfReadTextData(FILE *fp)
 	
 	if (EOF != GetNextLine(fp, cpBuffer, sizeof(cpBuffer)))
 	{
-		sscanf(cpBuffer, "%ld", &FileVersion);
+		sscanf(cpBuffer, "%d", &FileVersion);
 	}
 	else
 	{
@@ -207,7 +207,7 @@ LONG PLAYER_STATS::mfReadTextData(FILE *fp)
 	
 	if (EOF != GetNextLine(fp, cpBuffer, sizeof(cpBuffer)))
 	{
-		sscanf(cpBuffer, "%ld", &lTemp);
+		sscanf(cpBuffer, "%d", &lTemp);
 		ThingType = (THINGTYPE)lTemp;
 	}
 	else
@@ -223,7 +223,7 @@ LONG PLAYER_STATS::mfReadTextData(FILE *fp)
 		printf("WARNING: Missing  AVA Version number.\n");
 		goto Leave_fn;
 	}
-	sscanf(cpBuffer, "%ld", &lTemp);		/* PLAYER_STATS::VERSION  */
+	sscanf(cpBuffer, "%d", &lTemp);		/* PLAYER_STATS::VERSION  */
 	StructVersion = (PLAYER_STATS::VERSION) lTemp;
 	
 	Result = Ability.mfReadData(fp);							// ABILITY
@@ -239,7 +239,7 @@ LONG PLAYER_STATS::mfReadTextData(FILE *fp)
 		printf("WARNING: Missing AVA player race info.\n");
 		goto Leave_fn;
 	}
-	sscanf(cpBuffer, "%ld", &Race);				/* PLAYER_RACE_TYPE */	
+	sscanf(cpBuffer, "%d", &Race);				/* PLAYER_RACE_TYPE */	
 	
 	Result = GetNextLine(fp, cpBuffer, sizeof(cpBuffer));
 	if (EOF == Result)
@@ -260,7 +260,7 @@ LONG PLAYER_STATS::mfReadTextData(FILE *fp)
 		printf("WARNING: Missing player title.\n");
 		goto Leave_fn;
 	}
-	sscanf(cpBuffer, "%ld", &lTemp);
+	sscanf(cpBuffer, "%d", &lTemp);
 	PLAYER_STATS::TitleClass.fTitle =(PLAYER_TITLE::TITLE) lTemp;
 
 	Result = GetNextLine(fp, cpBuffer, sizeof(cpBuffer));
@@ -269,7 +269,7 @@ LONG PLAYER_STATS::mfReadTextData(FILE *fp)
 		printf("WARNING: Missing player Name.\n");
 		goto Leave_fn;
 	}
-	sscanf(cpBuffer, "%ld", &lTemp);
+	sscanf(cpBuffer, "%d", &lTemp);
 	PLAYER_STATS::DesClass.fDescription =(PLAYER_DESCRIPTION::DES) lTemp;
 
 	Result = GetNextLine(fp, cpBuffer, sizeof(cpBuffer));
@@ -278,7 +278,7 @@ LONG PLAYER_STATS::mfReadTextData(FILE *fp)
 		printf("WARNING: Missing player alignment data.\n");
 		goto Leave_fn;
 	}
-	sscanf(cpBuffer, "%ld", &lTemp);			/* ALIGNMENT_TYPE */	
+	sscanf(cpBuffer, "%d", &lTemp);			/* ALIGNMENT_TYPE */	
 	Alignment = (ALIGNMENT_INFO::TYPE) lTemp;
 	
 	Result = GetNextLine(fp, cpBuffer, sizeof(cpBuffer));
@@ -295,7 +295,7 @@ LONG PLAYER_STATS::mfReadTextData(FILE *fp)
 		printf("WARNING: Missing Armor Class information in AVA file.\n");
 		goto Leave_fn;
 	}
-	sscanf(cpBuffer, "%ld", &lTemp);			/* LONG */	
+	sscanf(cpBuffer, "%d", &lTemp);			/* LONG */	
 	sbArmorClass = (SBYTE) lTemp;
 	
 	Result = GetNextLine(fp, cpBuffer, sizeof(cpBuffer));
@@ -304,7 +304,7 @@ LONG PLAYER_STATS::mfReadTextData(FILE *fp)
 		printf("WARNING: Missing Armor type information in AVA file.\n");
 		goto Leave_fn;
 	}
-	sscanf(cpBuffer, "%ld", &lTemp);			/* ARMOR_TYPE */	
+	sscanf(cpBuffer, "%d", &lTemp);			/* ARMOR_TYPE */	
 	DefaultArmor = (ARMOR_INFO::TYPE) lTemp;
 	
 	Result = GetNextLine(fp, cpBuffer, sizeof(cpBuffer));
@@ -313,7 +313,7 @@ LONG PLAYER_STATS::mfReadTextData(FILE *fp)
 		printf("WARNING: Missing Weapon type information in AVA file.\n");
 		goto Leave_fn;
 	}
-	sscanf(cpBuffer, "%ld", &lTemp);			/* WEAPON_TYPE */	
+	sscanf(cpBuffer, "%d", &lTemp);			/* WEAPON_TYPE */	
 	DefaultWeapon = (WEAPON_INFO::TYPE) lTemp;
 	
 	Result = GetNextLine(fp, cpBuffer, sizeof(cpBuffer));
@@ -338,7 +338,7 @@ LONG PLAYER_STATS::mfReadTextData(FILE *fp)
 		printf("WARNING: Missing Thac0 data in AVA file.\n");
 		goto Leave_fn;
 	}
-	sscanf(cpBuffer, "%ld", &Thac0);
+	sscanf(cpBuffer, "%d", &Thac0);
 	
 	Result = GetNextLine(fp, cpBuffer, sizeof(cpBuffer));
 	if (EOF == Result)
@@ -346,7 +346,7 @@ LONG PLAYER_STATS::mfReadTextData(FILE *fp)
 		printf("WARNING: Missing Damage Dice data in AVA file.\n");
 		goto Leave_fn;
 	}
-	sscanf(cpBuffer, "(%ld %ld %ld) (%ld %ld %ld)",
+	sscanf(cpBuffer, "(%d %d %d) (%d %d %d)",
 	                   &lTemp, &lTemp2, &lTemp3, &lTemp4, &lTemp5, &lTemp6);
 	DamageDice[0].sbNumberOfDice = (SBYTE) lTemp;
 	DamageDice[0].sbNumberOfSides = (SBYTE) lTemp2;
@@ -361,7 +361,7 @@ LONG PLAYER_STATS::mfReadTextData(FILE *fp)
 		printf("WARNING: Missing Hit Dice data in AVA file.\n");
 		goto Leave_fn;
 	}
-	sscanf(cpBuffer, "(%ld %ld %ld)", &lTemp, &lTemp2, &lTemp3);
+	sscanf(cpBuffer, "(%d %d %d)", &lTemp, &lTemp2, &lTemp3);
 	HitDice.sbNumberOfDice = (SBYTE) lTemp;
 	HitDice.sbNumberOfSides = (SBYTE) lTemp2;
 	HitDice.sbModifier = (SBYTE) lTemp3;
@@ -372,7 +372,7 @@ LONG PLAYER_STATS::mfReadTextData(FILE *fp)
 		printf("WARNING: Missing Experience Pts data in AVA file.\n");
 		goto Leave_fn;
 	}
-	sscanf(cpBuffer, "%ld", &XP);
+	sscanf(cpBuffer, "%d", &XP);
 	
 	Result = PlayerClassList.mfReadTextData(fp);
 	
@@ -382,7 +382,7 @@ LONG PLAYER_STATS::mfReadTextData(FILE *fp)
 		printf("Warning: Missing number of Attacks in AVA file.\n");
 		goto Leave_fn;
 	}
-	sscanf(cpBuffer,"%ld", &lTemp);
+	sscanf(cpBuffer,"%d", &lTemp);
 	NumberOfAttacks = (SBYTE) lTemp;
 
 	// [d5-05-97 JPC] KLUDGE: read in bloodline info if present.
@@ -392,15 +392,15 @@ LONG PLAYER_STATS::mfReadTextData(FILE *fp)
 	Result = GetNextLine(fp, cpBuffer, sizeof(cpBuffer));
 	if (EOF != Result)
 	{
-		sscanf(cpBuffer,"%ld", &gBloodInfo.BL_grade);
+		sscanf(cpBuffer,"%d", &gBloodInfo.BL_grade);
 		Result = GetNextLine(fp, cpBuffer, sizeof(cpBuffer));
 		if (EOF != Result)
 		{
-			sscanf(cpBuffer,"%ld", &gBloodInfo.BL_deriv);
+			sscanf(cpBuffer,"%d", &gBloodInfo.BL_deriv);
 			Result = GetNextLine(fp, cpBuffer, sizeof(cpBuffer));
 			if (EOF != Result)
 			{
-				sscanf(cpBuffer,"%ld", &gBloodInfo.BL_strength);
+				sscanf(cpBuffer,"%d", &gBloodInfo.BL_strength);
 			}
 		}
 	}
@@ -784,7 +784,7 @@ SHORT LoadStats(LONG tID,SHORT hAvatar)
 				"but doesn't match any I know of.\n", tID);
 	}
 	
-	sprintf(szFileName,"scenes\\id%ld.avd", tID);
+	sprintf(szFileName,"scenes\\id%d.avd", tID);
 
 	// We may at some time in the future want to check the result of the freads!
 	
@@ -1091,7 +1091,7 @@ THINGTYPE const GetThingTypeFromID(LONG const tID)
 	{
 		char cpTextFileName[80];
 		
-		sprintf(cpTextFileName,"scenes\\id%ld.avd", tID);
+		sprintf(cpTextFileName,"scenes\\id%d.avd", tID);
 		SHORT hPlayerStats = GetResourceStd(cpTextFileName,(BOOL)fERROR); //bool?
 		
 		if ( fStartMultiGame )

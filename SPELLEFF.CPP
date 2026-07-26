@@ -109,7 +109,7 @@ LONG ItemEffects::Jump(LONG Combo,LONG Arg,LONG Action)
 				}
 #ifdef DEBUG
 				else
-					fatal_error("EffectSeparator::mfGetVal returned NULL  %s(%li)\n",__FILE__,__LINE__);
+					fatal_error("EffectSeparator::mfGetVal returned NULL  %s(%i)\n",__FILE__,__LINE__);
 #endif
 
 				// [d12-03-96 JPC] Applied to whole adventure team.
@@ -545,7 +545,7 @@ LONG ItemEffects::Shrink(LONG Combo,LONG Arg,LONG Action)
 					if (!pOldScale)
 					{
 						#ifdef _DEBUG		
-						fatal_error("needed data not in effectseperator! %s(%li)\n",__FILE__,__LINE__);
+						fatal_error("needed data not in effectseperator! %s(%i)\n",__FILE__,__LINE__);
 						#else
 						pAvatar->mfChangeScale(100);
 						#endif
@@ -1091,7 +1091,7 @@ LONG ItemEffects::Blindness(LONG Combo,LONG Arg,LONG Action)
 				
 				if (!phEnemy)
 #ifdef DEBUG
-					fatal_error("mfGetVal returned NULL %s(%li)\n",__FILE__,__LINE__);
+					fatal_error("mfGetVal returned NULL %s(%i)\n",__FILE__,__LINE__);
 #else
 					return CANT_COMPLETE;
 #endif
@@ -1205,7 +1205,7 @@ LONG ItemEffects::PowerBlindSpell(LONG Combo,LONG Arg,LONG Action)
 				
 				if (!phEnemy)
 #ifdef DEBUG
-					fatal_error("mfGetVal returned NULL %s(%li)\n",__FILE__,__LINE__);
+					fatal_error("mfGetVal returned NULL %s(%i)\n",__FILE__,__LINE__);
 #else
 					return CANT_COMPLETE;
 #endif
@@ -2718,7 +2718,7 @@ LONG ItemEffects::Confusion(LONG Combo,LONG Arg,LONG Action)
 
 				if (!pTempAIFunc)
 #ifdef _DEBUG
-					fatal_error("Needed data not in list!(pTempAIFunc:%p) %s(%li)\n",pTempAIFunc,__FILE__,__LINE__);
+					fatal_error("Needed data not in list!(pTempAIFunc:%p) %s(%i)\n",pTempAIFunc,__FILE__,__LINE__);
 #else
 					return NOT_SUPPORTED;
 #endif

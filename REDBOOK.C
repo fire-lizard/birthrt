@@ -12,13 +12,11 @@ Game specific routines
 ------------------------------------------------------------------------------
 *****************************************************************************/
 #ifndef _WINDOWS
-#include <i86.h>
 #else
-#include <Windows.h>
+#include "PLATFORM.H"
 #include "WINSYS\MCIUTIL.H"
 extern HWND	hwndApp;
 #endif
-#include <io.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -129,7 +127,7 @@ void PrintRedError (void)
 	}
 	else
 	{
-		mprintf ("CD drive error:  int6a = %08lx, int6b = %08lx\n", *int6a, *int6b);
+		mprintf ("CD drive error:  int6a = %08x, int6b = %08x\n", *int6a, *int6b);
 	}
 }
 #endif
@@ -490,7 +488,7 @@ int PlayCDMusic (unsigned short tune)
 		start = starttrack + offset;
 
 #if _SYS_DEBUG
-	//mprintf ("\nCD tune = %d   starttrack = %08lx\noffset = %08lx   length = %08lx   start = %08lx\n",
+	//mprintf ("\nCD tune = %d   starttrack = %08x\noffset = %08x   length = %08x   start = %08x\n",
 #endif
 
 		return (PlayRedBook (start, length));

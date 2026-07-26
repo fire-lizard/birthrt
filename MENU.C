@@ -16,7 +16,7 @@
 
 #include <stdio.h>
 #if _WINDOWS
-#include <Windows.h>
+#include "PLATFORM.H"
 #endif
 #include "SYSTEM.H"
 #include "SYSINT.H"
@@ -1928,7 +1928,7 @@ void InvToStats(LONG a,LONG b)
 	double multiplier;
 	a=b;
 
-	fscanf(temp,"%li %lf",&max,&multiplier);
+	fscanf(temp,"%i %lf",&max,&multiplier);
 	fclose(temp);
 
 	//we'll turn these back on later.
@@ -1945,7 +1945,7 @@ void InvToStats(LONG a,LONG b)
 			clear_screen();
 
 			ScaleBitmapX(0,0,hInvBitm,0,0,1000,1000,i);
-			print_textf(320,0,WHITE,"^F11%li (%li,%li)",i,cursor_x,cursor_y);
+			print_textf(320,0,WHITE,"^F11%i (%i,%i)",i,cursor_x,cursor_y);
 			update_screen();
 			i*=multiplier;
 		}
@@ -1955,7 +1955,7 @@ void InvToStats(LONG a,LONG b)
 			clear_screen();
 			
 			ScaleBitmapX(0,0,hStaBitm,0,0,1000,1000,i);
-			print_textf(320,0,WHITE,"^F11%li (%li,%li)",i,cursor_x,cursor_y);
+			print_textf(320,0,WHITE,"^F11%i (%i,%i)",i,cursor_x,cursor_y);
 			update_screen();
 			i/=multiplier;
 		}

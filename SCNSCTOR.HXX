@@ -83,7 +83,7 @@ inline void SCN_SECTOR::mfCreateSector(char * cpBuffer)
 {
 	mfInitVals();
 	
-	const LONG ScanResult = sscanf(cpBuffer, "%ld %s", &fId, fscInfo.mfGetSceneName());
+	const LONG ScanResult = sscanf(cpBuffer, "%d %s", &fId, fscInfo.mfGetSceneName());
 	
 	if ( 2 != ScanResult)
 	{

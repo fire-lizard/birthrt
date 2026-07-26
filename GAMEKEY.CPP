@@ -16,7 +16,7 @@
    ------------------------------------------------------------------------ */
 
 #if defined(_WINDOWS)
-#include <Windows.h>
+#include "PLATFORM.H"
 #endif
 
 #include "ENGINE.H"

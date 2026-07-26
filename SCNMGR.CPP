@@ -19,7 +19,7 @@
 #include <string.h>
 
 #ifdef _WINDOWS
-#include <Windows.h>
+#include "PLATFORM.H"
 #endif
 
 #include "AVATAR.HXX"

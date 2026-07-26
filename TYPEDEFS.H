@@ -8,14 +8,28 @@
 #ifndef _TYPEDEFS_H
 #define _TYPEDEFS_H
 
-#if !defined(LONG)
-	typedef signed long		LONG;
+/* On Windows every core type has to agree with <windef.h>, so pull it in
+   first and let the fallbacks below stay dormant. PLATFORM.H does not
+   include this header on Win32, so there is no cycle. */
+#if defined(_WIN32)
+#include "PLATFORM.H"
 #endif
 
-#if defined(_WINDOWS)
-	typedef int	BOOL;
+/* LONG/ULONG must stay exactly 32 bits: they appear in on-disk structs
+   (WAD records, savegames, .AVA files) and in the memory manager's block
+   table. On Windows they have to remain `long` so the typedefs agree with
+   <windef.h>; everywhere else `long` is 64-bit, so use stdint. */
+#if defined(_WIN32)
+	typedef signed long		LONG;
+	typedef unsigned long	ULONG;
 #else
-	typedef unsigned long	BOOL;
+	#include <stdint.h>
+	typedef int32_t			LONG;
+	typedef uint32_t		ULONG;
+#endif
+
+#if !defined(_WINDEF_)
+	typedef int	BOOL;
 #endif
 
 #ifndef TRUE
@@ -36,7 +50,6 @@ typedef unsigned char	UBYTE;
 typedef signed short	SHORT;
 typedef unsigned short	USHORT;
 typedef signed short	ERRCODE;
-typedef unsigned long	ULONG;
 typedef unsigned char *	PTR;
 typedef PTR	*			HDL;
 
@@ -70,7 +83,7 @@ typedef LONG	(*PFLLLL)(LONG,LONG,LONG);
 		LONG		x, y;
 	} POINT;
 
-	typedef unsigned long   DWORD;
+	typedef ULONG           DWORD;
 	typedef unsigned int    UINT;
 	typedef unsigned char BYTE;
 	typedef BYTE *	    LPBYTE;
@@ -159,9 +172,11 @@ typedef union
 /* -----------------------------------------------------------------
    Pragmas
    ----------------------------------------------------------------- */
+#if defined(__WATCOMC__)
 // init cont problems with shorts
 #pragma warning 389 4
 // unused variables
 #pragma warning  14 4
+#endif
 
 #endif // _TYPEDEFS_H

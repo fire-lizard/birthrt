@@ -16,7 +16,7 @@
    ------------------------------------------------------------------------ */
 
 #ifdef _WINDOWS
-#include <Windows.h>
+#include "PLATFORM.H"
 #endif
 
 #include "MACHINE.H"
@@ -1278,7 +1278,7 @@ static void ShowCombatUIMenu(SCENE & rScene)
 		/* -----------------------------------------------------------------
 		   put up the control panel menu
 		   ----------------------------------------------------------------- */
-		printf("Region count before Combat Menu: %ld\n", CountRegions());
+		printf("Region count before Combat Menu: %d\n", CountRegions());
 		push_regions();
 		// Add back the critcial keys & regions.
 		AddGameKeys();
@@ -1431,7 +1431,7 @@ static void HideCombatUIMenu(SCENE & rScene)
 	 	}
 		
 		pop_regions();
-		printf("Region count after Combat Menu: %ld\n", CountRegions());
+		printf("Region count after Combat Menu: %d\n", CountRegions());
 	}
 }
 

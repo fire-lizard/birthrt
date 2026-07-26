@@ -19,13 +19,11 @@
 	------------------------------------------------------------------------ */
 #include <stdio.h>
 #include <stdlib.h>
-#include <conio.h>
-#include <io.h>
 
 #ifndef _WINDOWS
 #include <bios.h>
 #else
-#include <Windows.h>
+#include "PLATFORM.H"
 #endif
 
 //included by gamemap.hxx commented out to fix the "Segment too large"
@@ -52,7 +50,6 @@
 #include "PANEL.H"
 #include "GMENUENM.H"
 #include "FLICPLAY.HXX"
-#include <dos.h>
 #include "LIGHT.H"                                                      // [d7-03-96 JPC]
 #include "STRMGR.H"
 #include "strenum.h"
@@ -203,7 +200,7 @@ void ShowWadSize (void)
 	init_gfont(FONT_SANS_5PT);
 
 	shade_edged_rect(60, 15, 150, 20, 32);
-   print_textf(70,20,31,"Current wad size: %ld.%02ld meg",cbWad_Uses/1048576L,((cbWad_Uses%1048576L)*100)/1048576L);
+   print_textf(70,20,31,"Current wad size: %d.%02d meg",cbWad_Uses/1048576L,((cbWad_Uses%1048576L)*100)/1048576L);
 }
 
 void PrintLocationInfo(void)
@@ -220,19 +217,19 @@ void PrintLocationInfo(void)
 
 #if defined(_DEBUG)
 	// lot's of info
-	print_textf( render_width/4, 35, 31,"^F00X=%ld, Y=%ld, Z=%ld, H=%ld, A=%ld, P=%ld Sector=%hd ssect=%hd",
+	print_textf( render_width/4, 35, 31,"^F00X=%d, Y=%d, Z=%d, H=%d, A=%d, P=%d Sector=%hd ssect=%hd",
  		PLAYER_INT_VAL(player.x), PLAYER_INT_VAL(player.y), player.z, player.h, player.a, player.p,
 		sector, player_ssector);
 		
-	print_textf( render_width/4, 45, 31,"^F00CX=%ld, CY=%ld, CZ=%ld, CA=%ld, CP=%ld",
+	print_textf( render_width/4, 45, 31,"^F00CX=%d, CY=%d, CZ=%d, CA=%d, CP=%d",
 		CAMERA_INT_VAL(camera.x), CAMERA_INT_VAL(camera.y), camera.z, camera.a, camera.p);
 	if (MapIsActive())
 	{
-		print_textf(render_width/4,55, 31, "^F00Map Zoom Factor %ld", MapZoomFactor());
+		print_textf(render_width/4,55, 31, "^F00Map Zoom Factor %d", MapZoomFactor());
 	}
 #else
 	// just x,y location
-	print_textf( render_width/4, 35, 31,"^F00X=%ld, Y=%ld", 
+	print_textf( render_width/4, 35, 31,"^F00X=%d, Y=%d", 
 		PLAYER_INT_VAL(player.x), PLAYER_INT_VAL(player.y) );
 #endif
 	
@@ -421,7 +418,7 @@ void MainLoop(void)
 	if(cMemDebugTimer++ == 0)
 	{
 		ULONG ulMemUsed = ReportInUse(FALSE);
-		printf("MEM USAGE:	%ld\n", ulMemUsed);
+		printf("MEM USAGE:	%d\n", ulMemUsed);
 	}
 #endif
 	
@@ -565,7 +562,7 @@ void MainLoop(void)
 	// Show frames per second
 	UpdateFPS();
 	color_rect( render_width/2, render_top+5, 60, 15, 0);
-	print_textf( render_width/2, render_top + 5, 31,"^F00F/S %ld  T/F %ld", fps, AverageTicksPerFrame());
+	print_textf( render_width/2, render_top + 5, 31,"^F00F/S %d  T/F %d", fps, AverageTicksPerFrame());
 
 	ScreenCopy(0, render_width/2, render_top+5, 60, 15, SC_DEFAULT_RES);
 
@@ -910,7 +907,7 @@ void print_point(LONG,LONG)
 
 	if (fp)
 	{
-		fprintf(fp, "MoveCamera\t%ld\t%ld\t%ld\t%ld\t%ld\t%ld\n",
+		fprintf(fp, "MoveCamera\t%d\t%d\t%d\t%d\t%d\t%d\n",
 			PLAYER_INT_VAL(player.x),
 			PLAYER_INT_VAL(player.y),
 			player.z,
