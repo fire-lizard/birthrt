@@ -44,6 +44,14 @@ vector<string> PlatListFiles(const char *pattern)
 #include <dirent.h>
 #include <stdarg.h>
 #include <time.h>
+#include <sys/stat.h>
+
+/* PLATFORM.H redirects these to the plat_* wrappers below. Inside this file
+   we need the real ones - and plat_copy_path itself calls access(), which
+   would recurse through the wrapper straight back into plat_copy_path. */
+#undef fopen
+#undef access
+#undef mkdir
 
 void Sleep(unsigned long ms)
 {
@@ -176,6 +184,42 @@ char *plat_copy_path(char *dst, const char *src, unsigned long len)
 	return dst;
 }
 
+/* ------------------------------------------------------------------------
+   The bare filesystem calls, resolved. A game path reaches these as
+   "savegame\\current.sav"; plat_copy_path turns it into the real
+   "SAVEGAME/current.sav" - and when the file itself does not exist yet, it
+   still resolves the directory components, so a new save is created inside
+   the shipped SAVEGAME rather than as a file with a backslash in its name.
+   ------------------------------------------------------------------------ */
+static const char *resolved(char *buf, unsigned long len, const char *path)
+{
+	return plat_copy_path(buf, path ? path : "", len);
+}
+
+FILE *plat_fopen(const char *path, const char *mode)
+{
+	char buf[_MAX_PATH];
+	return fopen(resolved(buf, sizeof(buf), path), mode);
+}
+
+int plat_access_path(const char *path, int mode)
+{
+	char buf[_MAX_PATH];
+	return access(resolved(buf, sizeof(buf), path), mode);
+}
+
+int plat_remove(const char *path)
+{
+	char buf[_MAX_PATH];
+	return remove(resolved(buf, sizeof(buf), path));
+}
+
+int plat_mkdir_path(const char *path)
+{
+	char buf[_MAX_PATH];
+	return mkdir(resolved(buf, sizeof(buf), path), 0777);
+}
+
 vector<string> PlatListFiles(const char *pattern)
 {
 	vector<string> names;
@@ -202,6 +246,12 @@ vector<string> PlatListFiles(const char *pattern)
 	{
 		prefix = pat.substr(0, star);
 		suffix = pat.substr(star + 1);
+	}
+
+	/* "savegame/*.SAV" has to find the shipped SAVEGAME directory. */
+	{
+		char buf[_MAX_PATH];
+		dir = plat_copy_path(buf, dir.c_str(), sizeof(buf));
 	}
 
 	d = opendir(dir.c_str());

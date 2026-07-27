@@ -25,6 +25,7 @@
 #define plat_mkdir(p)		_mkdir(p)
 #define plat_filelength(fd)	_filelength(fd)
 #define plat_access			_access
+#define plat_remove			remove
 
 /* The game's own path strings are already Win32-shaped. */
 #define PlatResolvePath(dst, src, len)	((void)plat_copy_path((dst), (src), (len)))
@@ -161,9 +162,29 @@ typedef long		HRESULT;
 #define strnicmp	strncasecmp
 #define strupr		plat_strupr
 #define filelength	plat_filelength
-/* The game calls mkdir with one argument. A macro does not re-expand its
-   own name, so the inner mkdir is the real one. */
-#define mkdir(p)	mkdir((p), 0777)
+#if defined(__cplusplus)
+/* libstdc++'s <cstdio> and friends #undef the C library names when they are
+   first included, which would silently drop the redirects below in any TU
+   that pulls in a C++ header after this one - and every .C here compiles as
+   C++. Getting those includes over with now makes the redirects stick. */
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+#endif
+
+/* The game reaches for these directly with Win32-shaped paths - saves go to
+   "savegame\\current.sav", mkdir("SaveGame") - and only FOPEN.C's FileOpen
+   ever ran them through the resolver. On Linux that wrote a file literally
+   named "savegame\current.sav" next to a new "SaveGame" directory, instead
+   of current.sav inside the shipped SAVEGAME. Route them all through the
+   same seam; PLATFORM.CPP #undefs these before implementing them.
+
+   `remove` deliberately stays a plain function: <algorithm> declares
+   std::remove, so a macro of that name breaks every C++ header that sees it.
+   The few call sites that delete a game path call plat_remove directly. */
+#define fopen(p, m)	plat_fopen((p), (m))
+#define access(p, m)	plat_access_path((p), (m))
+#define mkdir(p)	plat_mkdir_path(p)
 
 /* Win32 odds and ends the core still references. */
 #define HELP_CONTENTS	0x0003
@@ -188,8 +209,8 @@ typedef long		HRESULT;
 
 #define PLAT_PATH_SEP		'/'
 #define plat_stricmp		strcasecmp
-#define plat_mkdir(p)		mkdir((p), 0777)
-#define plat_access			access
+#define plat_mkdir(p)		plat_mkdir_path(p)
+#define plat_access			plat_access_path
 
 /* Game paths are Win32-shaped ("GRAPHICS\\DEFAULT.COL") and their case
    rarely matches what is on disk. Rewrite them before they reach the
@@ -261,6 +282,15 @@ extern "C" {
    case-sensitive filesystem each component matched case-insensitively
    against what is on disk. Returns dst. */
 char *plat_copy_path(char *dst, const char *src, unsigned long len);
+
+#if !defined(_WIN32)
+/* The four bare filesystem calls the game makes with unresolved game paths.
+   Each resolves its argument, then does what its namesake does. */
+FILE *plat_fopen(const char *path, const char *mode);
+int   plat_access_path(const char *path, int mode);
+int   plat_remove(const char *path);
+int   plat_mkdir_path(const char *path);
+#endif
 
 #if defined(__cplusplus)
 }

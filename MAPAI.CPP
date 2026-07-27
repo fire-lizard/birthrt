@@ -6460,7 +6460,9 @@ void BroadcastGoldAndRegency( void )
 		Regency[i] = realm[i].mfGetRegency();
 	}
 	
-	AMultiPlayer.AdminMessage((UBYTE *)Gold[0], (UBYTE *)Regency[0], "SEND ADMIN" );
+	// &Gold[0], not Gold[0]: the original passed the uninitialised element's
+	// value as a pointer. 16 bits of garbage looked like a pointer in 1997.
+	AMultiPlayer.AdminMessage((UBYTE *)&Gold[0], (UBYTE *)&Regency[0], "SEND ADMIN" );
 }
 #endif
 /* ========================================================================

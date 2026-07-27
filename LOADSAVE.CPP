@@ -163,7 +163,9 @@ static BOOL fMultiLoad = FALSE;
 static BOOL back_to_main = TRUE;
 static BOOL in_question = FALSE;
 
-static unsigned long helpbits = 0x00000000;
+// ULONG, not unsigned long: this is written into the savegame, and LP64
+// would put 8 bytes where Windows writes 4, shifting the whole rest of the file.
+static ULONG helpbits = 0x00000000;
 
 LONG master_game_type = GAME_NORMAL;
 
@@ -285,7 +287,7 @@ void SaveGameFiles(FILE *fp)
     fwrite(&iGorgonPlot,		sizeof(LONG),			1, fp);
     fwrite(&iGorgonAlly,		sizeof(LONG),			1, fp);
     fwrite(iLieutenants,		sizeof(UBYTE),			9, fp);
-    fwrite(&helpbits,			sizeof(unsigned long),	1, fp);
+    fwrite(&helpbits,			sizeof(ULONG),	1, fp);
     fwrite(&cheated,			sizeof(LONG),			1, fp);
 	fwrite(&usedFreeAction,		sizeof(SHORT),			1, fp);
 	fwrite(&usedFreeForge,		sizeof(SHORT),			1, fp);
@@ -539,7 +541,7 @@ void LoadGameFiles(FILE *fp)
     fread(&iGorgonPlot,			sizeof(LONG),			1, fp);
     fread(&iGorgonAlly,			sizeof(LONG),			1, fp);
     fread(iLieutenants,			sizeof(UBYTE),			9, fp);
-    fread(&helpbits,			sizeof(unsigned long),	1, fp);
+    fread(&helpbits,			sizeof(ULONG),	1, fp);
     fread(&cheated,				sizeof(LONG),			1, fp);
 	fread(&usedFreeAction,		sizeof(SHORT),			1, fp);
 	fread(&usedFreeForge,		sizeof(SHORT),			1, fp);
@@ -970,7 +972,7 @@ void LoadGameFiles(FILE *fp)
 	strcat(cur_sav, STRMGR_GetStr(STR_SAVEGAME));
 
 	if (0 == access(cur_sav, F_OK))
-		remove(cur_sav);
+		plat_remove(cur_sav);
 }
 
 void ScrollGame(LONG dir, LONG)
@@ -1758,7 +1760,7 @@ void DeleteGameReal(LONG , LONG button)
     filename_chop(buf1);
     sprintf(buffer, "SaveGame\\%s.SAV", buf1);
 
-    remove(buffer);
+    plat_remove(buffer);
     highlighted_choice = -1;
     num_games = GetSaveGames(saved_games);
     ScrollGame(0,0);

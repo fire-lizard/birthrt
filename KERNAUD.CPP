@@ -19,7 +19,11 @@
 #include <string.h>
 
 #include "SYSTEM.H"				// resource manager, BLKPTR, fERROR
+#if defined(_WIN32)
 #include "SOLAUDIO/DSOUND.HPP"
+#else
+#include "POSIX/SDLAUDIO.HPP"		// same DSound surface, over SDL2
+#endif
 #include "KERNAUD.HPP"
 
 extern HWND hwndApp;			// WINSYS application window
@@ -118,7 +122,15 @@ static BOOL KA_ParseWave (const UBYTE * img, ULONG cbImg,
 // Locate the WAV image for <id>: loose file first, then the resource manager.
 static BOOL KA_Acquire (KA_SAMPLE * s, int id)
 {
-	static const char * apszDirs[] = { "", "MUSIC\\" };
+	/* The installer scatters the effects over these by id range - see the
+	   *SOURCEDRIVE:\WAVE00\ entries in SIERRA.INF - and the ranges are not
+	   derivable from the id (WAVE384 holds 39473..46658), so search them
+	   all. A partial install simply has fewer of them; a sound that is not
+	   on disk is a miss, exactly as it was in 1997. */
+	static const char * apszDirs[] = {
+		"", "MUSIC\\", "WAVE00\\", "WAVE10\\", "WAVE20\\",
+		"WAVE30\\", "WAVE384\\", "WAVELOOP\\"
+	};
 	char	szName[64];
 	int		i;
 
@@ -126,7 +138,7 @@ static BOOL KA_Acquire (KA_SAMPLE * s, int id)
 	s->pFile = NULL;
 	s->cbFile = 0;
 
-	for (i = 0; i < 2; i++)
+	for (i = 0; i < (int)(sizeof(apszDirs) / sizeof(apszDirs[0])); i++)
 	{
 		FILE *	f;
 		long	cb;

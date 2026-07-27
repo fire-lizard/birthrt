@@ -28,6 +28,15 @@
 	typedef uint32_t		ULONG;
 #endif
 
+/* The largest value a LONG holds. NOT <limits.h>'s LONG_MAX, which is the
+   limit of C's `long`: 64-bit off Windows, so storing it in a LONG truncates
+   to -1. That silently inverted every "nothing is closer than this yet"
+   search - `if (distance < prevDistance)` was false for every candidate, so
+   monsters never picked a target and stood still through an entire fight.
+   Same value as LONG_MAX on Win32, so that build is unchanged. */
+#define LONG_MAXVAL		((LONG) 0x7FFFFFFF)
+#define ULONG_MAXVAL	((ULONG) 0xFFFFFFFFu)
+
 #if !defined(_WINDEF_)
 	typedef int	BOOL;
 #endif

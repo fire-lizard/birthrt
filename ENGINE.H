@@ -92,7 +92,9 @@
 #define SAMEANIM         0
 
 /* ingore this argument value */
-#define NO_CHANGE		LONG_MAX
+/* LONG_MAXVAL, not LONG_MAX: off Windows the latter is 64-bit and
+   truncates to -1 in a LONG, so this sentinel never compared equal. */
+#define NO_CHANGE		LONG_MAXVAL
 
 /* ------------------------------------------------------------------------
 	Key defines

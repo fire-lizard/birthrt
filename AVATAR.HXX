@@ -1213,7 +1213,7 @@ inline void CAvatar::mfSetHighlightEnemy()
 inline void CAvatar::mfTurnHighlightOff()
 {
 	mfRemapColor(fOriginalRemapColor);
-	fHighlightEndTime = ULONG_MAX;
+	fHighlightEndTime = ULONG_MAXVAL;
 }
 
 inline BOOL const CAvatar::mfAmIBeingControled() const
