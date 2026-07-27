@@ -140,7 +140,11 @@ else ()
 	# message ring the battle AI uses, no Win32 in it.
 	set (BIRTHRT_POSIX
 		"POSIX/SDLSYS.CPP" "POSIX/STUBS.CPP" "POSIX/MULPLAY_STUB.CPP"
-		"WINSYS/MESSQUE.CPP")
+		"WINSYS/MESSQUE.CPP"
+		# Audio: KERNAUD.CPP is the portable half (wave lookup, slot table,
+		# RIFF parsing) and is shared with the Win32 build; SDLAUDIO.CPP
+		# replaces SOLAUDIO's DirectSound backend under it.
+		"KERNAUD.CPP" "KERNAUD.HPP" "POSIX/SDLAUDIO.CPP" "POSIX/SDLAUDIO.HPP")
 
 	add_executable (Birthrt ${BIRTHRT_CORE} ${BIRTHRT_POSIX})
 
@@ -158,7 +162,8 @@ else ()
 
 	# _WINDOWS is this codebase's own "not DOS" switch (595 conditionals).
 	# The non-DOS branch is the right one on Linux/macOS too.
-	target_compile_definitions (Birthrt PRIVATE _WINDOWS)
+	# AUDIO_LIB switches SOUND.CPP onto the kernel->Audio* path.
+	target_compile_definitions (Birthrt PRIVATE _WINDOWS AUDIO_LIB)
 	target_include_directories (Birthrt PRIVATE ${CMAKE_CURRENT_SOURCE_DIR} ${SDL2_INCLUDE_DIRS})
 	# -rdynamic exports symbols into the dynamic table so the crash
 	# handler's backtrace shows function names rather than bare addresses.
@@ -199,6 +204,6 @@ else ()
 	set_source_files_properties (REPORT.CPP PROPERTIES COMPILE_OPTIONS "-Wno-error=overflow")
 
 	message (STATUS "Birthrt: POSIX/SDL2 build.")
-	message (STATUS "  Not yet implemented: audio (SDL_audio for KERNAUD) and DirectPlay multiplayer.")
+	message (STATUS "  Not yet implemented: DirectPlay multiplayer.")
 
 endif ()
