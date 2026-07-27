@@ -205,7 +205,7 @@ SHORT CAvatar::NewAvatar(void)
 		pAvatar->fAttackTurnFlag = ATTACK_TURN_NOT_DECIDED;
 		pAvatar->fDamageFlag = 0;
 		pAvatar->fOriginalRemapColor = 0;
-		pAvatar->fHighlightEndTime = ULONG_MAX;
+		pAvatar->fHighlightEndTime = ULONG_MAXVAL;
 		pAvatar->fContactDistance = 0;
 		pAvatar->UnitIndex = -1;
 		
@@ -725,7 +725,7 @@ HDL_AVATAR CAvatar::mfFindClosestFoe() const
 	PTR_SCENE pCurrentScene = (PTR_SCENE) BLKPTR(SCENE_MGR::hCurrentScene);
 	SHORT i;
 	HDL_AVATAR Result = fERROR;
-	LONG prevDistance = LONG_MAX;
+	LONG prevDistance = LONG_MAXVAL;
 	
 	for (i = 0; i < MAX_AVATARS; ++i)
 	{
@@ -772,9 +772,9 @@ HDL_AVATAR CAvatar::mfFindClosestVisibleFoe() const
 	PTR_SCENE pCurrentScene = (PTR_SCENE) BLKPTR(SCENE_MGR::hCurrentScene);
 	SHORT i;
 	HDL_AVATAR Result = fERROR;
-	LONG prevDistance = LONG_MAX;
+	LONG prevDistance = LONG_MAXVAL;
 	HDL_AVATAR HackOnMe = fERROR;
-	LONG prevHackOnMeDistance = LONG_MAX;
+	LONG prevHackOnMeDistance = LONG_MAXVAL;
 	
 	for (i = 0; i < MAX_AVATARS; ++i)
 	{

@@ -4839,7 +4839,7 @@ BOOL UpdateDataArea (void)
 			char cur_sav[25] = "savegame\\";
 			strcat(cur_sav, STRMGR_GetStr(STR_SAVEGAME));
  	 		if (Exists(cur_sav))
-				remove (cur_sav);
+				plat_remove (cur_sav);
 
     		mkdir("SaveGame");			// in case it's not there
 			fp = fopen(cur_sav, "wb");
@@ -6807,7 +6807,10 @@ void FrameTimerEnd (void)
 
 LONG AverageTicksPerFrame (void)
 {
-	return (lTotalTimeInMapDraw / cntMapDraws);
+	// MainLoop's FPS overlay calls this every frame from frame 1, but
+	// cntMapDraws stays 0 until the first map draw - and integer division
+	// by zero traps (SIGFPE here, #DE on Windows).
+	return cntMapDraws ? (lTotalTimeInMapDraw / cntMapDraws) : 0;
 }
 
 LONG AdjustedTimeLimit (void)
@@ -9996,7 +9999,11 @@ void BattlePrepProc(LONG MenuCombo, LONG)
    ======================================================================== */
 void DisplayNPCResults(void)
 {
-	BOOL	fContinueLoop = TRUE;
+	// Static, not automatic: its address goes through ToggleVal's 32-bit
+	// LONG argument below, and a stack address does not survive that.
+	static BOOL	fContinueLoop;
+
+	fContinueLoop = TRUE;
 
 	// set the proc to null
 	SetButtonProc  (D_QUESTION1, 0, PaintNPCResults, 0, 0 );

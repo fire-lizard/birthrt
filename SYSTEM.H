@@ -210,7 +210,12 @@ typedef struct
 
 #define SAME_SIGNS( a, b ) (((LONG) ((ULONG) a ^ (ULONG) b)) >= 0 )
 
-#define random(num) (SHORT)(((LONG)rand()*(num))/(0x8000U))
+/* The 0x8000U was MSVC's RAND_MAX+1 hardcoded. glibc's RAND_MAX is
+   0x7FFFFFFF, so the multiply overflowed and 99.8% of random(100) came back
+   outside 0..99 - DoNPCAction's "for (k=0; roll > p[k].Chance; ++k)" then ran
+   off the end of its action table and segfaulted on the first domain turn.
+   The 64-bit intermediate leaves the Windows results bit-identical. */
+#define random(num) (SHORT)(((long long)rand()*(num))/((long long)RAND_MAX+1))
 
 #define MAX(a,b)			( ((a) > (b)) ? (a) : (b) )
 #define MIN(a,b)			( ((a) < (b)) ? (a) : (b) )

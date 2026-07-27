@@ -913,7 +913,7 @@ LONG create_thing(ULONG type, LONG x, LONG y, LONG z)
 	mythings[i].inVisible = FALSE;
 	mythings[i].Frozen = FALSE;
 	mythings[i].SkipFrame = FALSE;
-	mythings[i].dist = LONG_MAX;	// so we won't auto res it up.
+	mythings[i].dist = LONG_MAXVAL;	// so we won't auto res it up.
 	mythings[i].scale_adjust = UNIT_SCALE_ADJUST;
 	mythings[i].ColorRemap = 0;
 
@@ -3205,7 +3205,10 @@ ERRCODE decode_frame (ANIMPTR pAnim, 	FLICHEADPTR pHead)
 #endif
 
 	/* decode the next frame of the animation */
-	pFramehd = (FRAMEHEADPTR)((ULONG)pHead + pAnim->offData);
+	/* Byte arithmetic, not (ULONG)pHead + offset: pHead is 64-bit here and
+	   the round trip through a 32-bit ULONG truncated it into a wild
+	   pointer, which is what crashed on "Begin rule". */
+	pFramehd = (FRAMEHEADPTR)((UBYTE *)pHead + pAnim->offData);
 
 	if (pFramehd->size > 100000)
 	{

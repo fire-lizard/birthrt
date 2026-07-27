@@ -160,16 +160,43 @@ else ()
 	# The non-DOS branch is the right one on Linux/macOS too.
 	target_compile_definitions (Birthrt PRIVATE _WINDOWS)
 	target_include_directories (Birthrt PRIVATE ${CMAKE_CURRENT_SOURCE_DIR} ${SDL2_INCLUDE_DIRS})
+	# -rdynamic exports symbols into the dynamic table so the crash
+	# handler's backtrace shows function names rather than bare addresses.
+	#
+	# -no-pie is the Linux counterpart of the Windows build's
+	# /LARGEADDRESSAWARE:NO. The region/menu system hands callbacks their
+	# argument as a LONG (32-bit) and ~13 sites push a pointer through it
+	# (add_region(..., SetNum, (LONG)&iSelectedHolding[i][0], ...)). Every
+	# one of those targets is a global or a static, so loading the image at
+	# 0x400000 instead of a PIE's 0x555555550000 keeps their addresses
+	# inside 32 bits and the round trip is lossless.
+	# ponytail: the real fix is a pointer-width callback argument, which
+	# means changing PFVLL and every void Foo(LONG,LONG) callback in the
+	# game. Do that if a pointer to the stack or to mmap'd memory ever has
+	# to go through a region argument.
 	target_link_libraries (Birthrt ${SDL2_LIBRARIES})
+	target_link_options (Birthrt PRIVATE -rdynamic -no-pie)
+	target_compile_options (Birthrt PRIVATE -fno-pie)
 	set_target_properties (Birthrt PROPERTIES CXX_STANDARD 11)
 
 	# 1997 C++ predates most of what these would flag, and the noise buries
 	# the diagnostics that matter. -fpermissive is load-bearing: the sources
 	# rely on pre-standard conversions clang/gcc reject outright.
+	# -Werror=overflow: the one warning class this port cannot afford to let
+	# scroll past. `LONG x = LONG_MAX` silently became -1 here and left the
+	# adventure monsters unable to pick a target; 19 sites had it. It is a
+	# constant-folding diagnostic, so it never fires on correct code.
 	target_compile_options (Birthrt PRIVATE
 		-fpermissive -fsigned-char -fno-strict-aliasing
+		-Werror=overflow
 		-Wno-write-strings -Wno-narrowing -Wno-multichar
 		-Wno-invalid-offsetof -Wno-deprecated)
+
+	# REPORT.CPP's Subject table stores "<advisor group> + index" in an 8-bit
+	# bitfield and some entries exceed 255. MSVC truncates them identically,
+	# so this matches the retail build - it is not a porting artefact, and
+	# widening the field would move reports between advisor tabs.
+	set_source_files_properties (REPORT.CPP PROPERTIES COMPILE_OPTIONS "-Wno-error=overflow")
 
 	message (STATUS "Birthrt: POSIX/SDL2 build.")
 	message (STATUS "  Not yet implemented: audio (SDL_audio for KERNAUD) and DirectPlay multiplayer.")

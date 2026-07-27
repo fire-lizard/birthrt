@@ -368,7 +368,7 @@ void CAvatar::FireBall (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 									else  //time to get a new target
 									{
 										LONG i=0;
-										ULONG MinDist=ULONG_MAX; //largest 32 bit number
+										ULONG MinDist=ULONG_MAXVAL; //largest 32 bit number
 										LONG  MinDistIdx=-1;
 										SCENE const * const pScene=(SCENE const * const)BLKPTR(SCENE_MGR::hCurrentScene);
 										

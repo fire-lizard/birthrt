@@ -304,7 +304,7 @@ TryAgain:
 				LONG LargestBlock;
 				
 				// compact all memory
-				CompactMem_(ULONG_MAX, aiNextBlk[START_BLOCK], &LargestBlock);
+				CompactMem_(ULONG_MAXVAL, aiNextBlk[START_BLOCK], &LargestBlock);
 				fAlreadyTriedAgain = TRUE;
 				goto TryAgain;
 			}
@@ -1505,7 +1505,7 @@ SHORT HandleOutOfMemory ()
 	{
 		LONG LargestBlock;
 		
-		CompactMem_(ULONG_MAX, aiNextBlk[START_BLOCK], &LargestBlock);
+		CompactMem_(ULONG_MAXVAL, aiNextBlk[START_BLOCK], &LargestBlock);
 	}
 	     
 	return Success;		/* no more memory availabe to release */

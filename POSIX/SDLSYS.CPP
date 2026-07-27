@@ -19,6 +19,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdarg.h>
+#include <signal.h>
+#include <unistd.h>
+#include <execinfo.h>
 
 #include "../TYPEDEFS.H"
 #include "../SYSTEM.H"
@@ -1274,11 +1277,70 @@ static BOOL AppInit(void)
 	return TRUE;
 }
 
+/* ========================================================================
+   Crash reporting.
+
+   The box this runs on has core dumps disabled (ulimit -c 0), and a bare
+   "Segmentation fault" says nothing. Catch the fatal signals and write a
+   backtrace to both stderr and Fatal.err, where the game already puts its
+   fatal errors. Needs -rdynamic at link time for the function names.
+
+   Deliberately uses write()/backtrace_symbols_fd rather than printf:
+   those are async-signal-safe, and a handler that deadlocks in malloc
+   tells you even less than no handler at all.
+   ======================================================================== */
+static void CrashHandler(int sig)
+{
+	void *frames[64];
+	int   n = backtrace(frames, (int)(sizeof(frames) / sizeof(frames[0])));
+	const char *name;
+	int   fd;
+
+	switch (sig)
+	{
+	case SIGSEGV:	name = "SIGSEGV (segmentation fault)\n"; break;
+	case SIGBUS:	name = "SIGBUS (bus error)\n";           break;
+	case SIGFPE:	name = "SIGFPE (arithmetic error)\n";    break;
+	case SIGILL:	name = "SIGILL (illegal instruction)\n"; break;
+	case SIGABRT:	name = "SIGABRT (abort)\n";              break;
+	default:		name = "fatal signal\n";                 break;
+	}
+
+	write(STDERR_FILENO, "\n*** Birthright crashed: ", 25);
+	write(STDERR_FILENO, name, strlen(name));
+	backtrace_symbols_fd(frames, n, STDERR_FILENO);
+
+	fd = open("Fatal.err", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (fd >= 0)
+	{
+		write(fd, "Birthright crashed: ", 20);
+		write(fd, name, strlen(name));
+		backtrace_symbols_fd(frames, n, fd);
+		close(fd);
+	}
+
+	/* Restore the default action and re-raise, so the exit status and any
+	   core dump still reflect the real signal. */
+	signal(sig, SIG_DFL);
+	raise(sig);
+}
+
+static void InstallCrashHandler(void)
+{
+	signal(SIGSEGV, CrashHandler);
+	signal(SIGBUS,  CrashHandler);
+	signal(SIGFPE,  CrashHandler);
+	signal(SIGILL,  CrashHandler);
+	signal(SIGABRT, CrashHandler);
+}
+
 int main(int argc, char *argv[])
 {
 	/* The game's diagnostics are all printf. Redirected to a file that is
 	   block-buffered, so a crash or a kill loses everything useful. */
 	setvbuf(stdout, NULL, _IOLBF, 0);
+
+	InstallCrashHandler();
 
 	parse_cmdline(argc, argv);
 
@@ -1297,11 +1359,18 @@ int main(int argc, char *argv[])
 
 void parse_cmdline(int argc, char *argv[])
 {
+	extern char pwad[];		/* GAME.CPP - non-empty means boot into that wad */
 	int i;
 
 	for (i = 1; i < argc; i++)
 	{
-		if (strcmp(argv[i], "-wad") == 0)
+		/* "-wad WADS/DOOM_MW.WAD" is the POSIX spelling of the retail
+		   "w wadname.wad": skip the map and start in the adventure. */
+		if (strcmp(argv[i], "-wad") == 0 && i + 1 < argc)
+		{
+			strncpy(pwad, argv[++i], 39);
+			pwad[39] = '\0';
 			JustLoadWad = TRUE;
+		}
 	}
 }

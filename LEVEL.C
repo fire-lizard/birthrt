@@ -136,9 +136,12 @@ void load_level(char *name, LONG PlayerStart)
 {
 FILE	*fit;
 FILE	*DataReadFit;
-long	num;
-long	id;
-long	h;
+/* LONG, not long: these three are read straight off the WAD header,
+   which stores 32-bit fields. LP64 makes plain long 8 bytes, so the
+   reads below swallowed the directory offset and E1M1 was never found. */
+LONG	num;
+LONG	id;
+LONG	h;
 LONG	cbMem_Before;
 char	lev[30];
 int	iSegment;									// [d11-05-96 JPC]
@@ -173,9 +176,9 @@ IWAD_ENTRY ent;
 	DataReadFit=FileOpen(pwad_name,"rb");
 	
 	allocate_spans();
-	fread(&id,sizeof(long),1,fit);	/*id*/
-	fread(&num,sizeof(long),1,fit);	/*num items*/
-	fread(&h,sizeof(long),1,fit);	/*table offset*/
+	fread(&id,sizeof(LONG),1,fit);	/*id*/
+	fread(&num,sizeof(LONG),1,fit);	/*num items*/
+	fread(&h,sizeof(LONG),1,fit);	/*table offset*/
 	fseek(fit,h,SEEK_SET);
 	
 	SetLoadingProgress(35);
@@ -770,9 +773,9 @@ void CreateResourceScript ()
 // Note that you have to specify both the WAD directory and the .WAD extension.
 
 	FILE *		fit;
-	long			num;
-	long			id;
-	long			h;
+	LONG			num;						// 32-bit WAD header fields, see load_level
+	LONG			id;
+	LONG			h;
 	char			lev[30];
 	IWAD_ENTRY	ent;
 	THING			t;
@@ -788,9 +791,9 @@ void CreateResourceScript ()
 	if (fit == NULL)
 		fatal_error("Can't open PWAD file \"%s\"", szWadName);
 	
-	fread(&id,sizeof(long),1,fit);	/*id*/
-	fread(&num,sizeof(long),1,fit);	/*num items*/
-	fread(&h,sizeof(long),1,fit);	/*table offset*/
+	fread(&id,sizeof(LONG),1,fit);	/*id*/
+	fread(&num,sizeof(LONG),1,fit);	/*num items*/
+	fread(&h,sizeof(LONG),1,fit);	/*table offset*/
 	fseek(fit,h,SEEK_SET);
 	strcpy(lev,level_name);
 	strupr(lev);
