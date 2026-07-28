@@ -539,9 +539,10 @@ void SCENE_AI::mfAdventureInit ( SCENE &rScene)
 	if (TRUE == AdventureAllocateData(rScene))
 	{
 		LONG 	i;
-	
-		PlayTrack(ucWhichTrack);
-		
+
+		// music is still suspended while the scene loads, so PlayTrack here
+		// did nothing.  mfLoadScene replays the track after it resumes.
+
 		set_margin_size(0, 0, 0, 0);
 		
 		SetSoundDecay(300, 1000);

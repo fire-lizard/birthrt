@@ -670,6 +670,9 @@ void NewGameConfirmed(LONG,LONG lMultiFlag)
 	fclose(fp);
 	date = 0;
 
+	ucWhichTrack = REDBOOK_REALM;
+	PlayTrack(REDBOOK_REALM);
+
 	NewGameConfirmed2( FALSE );
 
 }

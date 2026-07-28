@@ -143,6 +143,7 @@ enum {
    ----------------------------------------------------------------- */
 void SuspendMusic(void);
 void ResumeSuspendedMusic(void);
+BOOL IsMusicSuspended(void);
 int GetMusicVolume(void);
 
 void SetMusicVolume(int,int,int);

@@ -793,6 +793,14 @@ void GameMain(void)
 	clear_key_status(0);
 	ResumeSuspendedMusic();
 
+	// nothing had kicked off the menu/realm track, so the main menu came up
+	// silent and stayed that way until something else called PlayTrack
+	if (fMusic)
+	{
+		ucWhichTrack = REDBOOK_REALM;
+		PlayTrack(ucWhichTrack);
+	}
+
 	// begin with the domain turn
 	if (JustLoadWad)
 	{
@@ -1667,6 +1675,28 @@ void CheckTheCDMusic(void)
 {
 	static LONG StartTime = 0;
 	static SHORT delayTicks;
+	static LONG SuspendedStartTime = 0;
+
+	// While music is suspended PlayTrack is a no-op, so don't restart the
+	// track here.  If something suspended it and never resumed, bail us out
+	// after 12 seconds so an adventure/combat doesn't run silent.
+	if(IsMusicSuspended())
+	{
+		if(fMusic && (ucWhichTrack != 100) &&
+			( (master_game_type == GAME_ADVENTURE) || gfInCombat) )
+		{
+			if(SuspendedStartTime == 0)
+				SuspendedStartTime = get_time();
+			else if( ( (get_time() ) - SuspendedStartTime) > (18 * 12) )	// 18 ticks/second
+			{
+				ResumeSuspendedMusic();
+				SuspendedStartTime = 0;
+			}
+		}
+		return;
+	}
+
+	SuspendedStartTime = 0;
 
 	if(fMusic && !CheckCDBusy() && 	(ucWhichTrack != 100) )
 	{
