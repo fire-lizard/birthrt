@@ -148,6 +148,7 @@ public:
 	inline	static void mfCurrentSpeakAcknowledgement();
 	inline	static void mfSetCurrentToLeader();
 	inline	static void mfSetAllDefend();
+	inline	static void mfHaltAllToDefend();
 			static void mfInitAllPanels();
 			static void mfCycleToNextPanel();
 			static void mfUpdateOptions();
@@ -375,6 +376,43 @@ inline void CONTROL_PANELS::mfSetAllDefend()
 			if (!pAvatar->mfAmIImmoblized())
 			{
 				pAvatar->mfSetAttackMode(FIGHT_SEQUENCE::ATM_DEFEND);
+				pAvatar->mfSetAttackSequence(FIGHT_SEQUENCE::ATM_DEFEND);
+			}
+		}
+	}
+}
+
+inline void CONTROL_PANELS::mfHaltAllToDefend()
+{
+	// Halt = press Defend on the whole party at once.  First set every PC's
+	// current and last fighting style to defend.
+	mfSetAllDefend();
+
+	// Then force any actively engaged PC into AI_DEFEND.  The chase/attack states
+	// (AI_MOVING/AI_ATTACK/AI_FALLBACK) do not re-read the fighting style mid-action, and
+	// AI_SEARCH only honours it on its next decision, so without this a PC that was
+	// pursuing a target would keep chasing after Halt and only start defending once it
+	// dropped back to AI_SEARCH.  Forcing AI_DEFEND stops the pursuit immediately: the PC
+	// holds position and defends an adjacent enemy if one is in melee range.  States that
+	// must not be interrupted (casting, dead, stoned, paused, etc.) are left untouched.
+	for (LONG i = 0; i < MAX_NUMBER_CONTROLS; i++)
+	{
+		if (fccActive[i].fhAvatar != fERROR)
+		{
+			CAvatar * const pAvatar = (CAvatar * const) BLKPTR(fccActive[i].fhAvatar);
+			if (!pAvatar->mfAmIImmoblized())
+			{
+				switch (pAvatar->Status)
+				{
+				case CAvatar::AI_MOVING:
+				case CAvatar::AI_ATTACK:
+				case CAvatar::AI_SEARCH:
+				case CAvatar::AI_FALLBACK:
+					pAvatar->Status = CAvatar::AI_DEFEND;
+					break;
+				default:
+					break;
+				}
 			}
 		}
 	}

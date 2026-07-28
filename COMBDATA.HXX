@@ -39,6 +39,7 @@
 #define DEAD_TIMER_WAIT	100
 #define COMBAT_TIMES_OUT	100
 #define ABSOLUTE_RPG_WAIT	400
+#define RECENT_COMBAT_TICKS	50	// 5 seconds: combat auto-ends this long after the last combat event
 /* ------------------------------------------------------------------------
    Enums
    ------------------------------------------------------------------------ */
@@ -249,7 +250,7 @@ inline void COMBAT_SCENE_DATA::mfRestoreSceneVals()
 	
 inline void COMBAT_SCENE_DATA::mfInitCombatTimer()
 {
-	fCombatTimer = SCENE_MGR::gTick + COMBAT_TIMES_OUT;	// 10 seconds till time out.
+	fCombatTimer = SCENE_MGR::gTick + RECENT_COMBAT_TICKS;	// 5 seconds to auto-end.
 	fgTickPrev = SCENE_MGR::gTick;
 }
 

@@ -86,8 +86,12 @@ void RECHECK_OPTIONS::mfUpDateOptions()
 	else
 	{
 		replace_key(GAME_KEYS::mfGetKey(GAME_KEYS::COMBAT_DEFEND), CombatDefendKey, 0, &oldKey);
-		
-		SetButtonLabel(D_COMBAT_RPGBOTTOM_BAR, BUTNO_RPG_DONE, STR_NULL, 0);
+
+		// Arcade mode reuses the RPG "Done" button as Halt (CombatTurnDoneKey
+		// dispatches to CombatHaltKey).  STR_ANIM_STOP is the nearest existing
+		// localized label - birthrt ships a prebuilt STRDAT.DAT, so no new
+		// string id can be added for "Halt".
+		SetButtonLabel(D_COMBAT_RPGBOTTOM_BAR, BUTNO_RPG_DONE, STR_ANIM_STOP, 223);
 	}
 	
 	CONTROL_PANELS::mfUpdateOptions();
