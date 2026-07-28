@@ -1108,7 +1108,8 @@ void InventoryGUI::mfChangeCurrCat(LONG MenuCombo,LONG c)
 	SPLIT_LONG(MenuCombo, MenuId, ButtonId);
 	
 	for (LONG i = INV_BUT_MUNDANE; i <= INV_BUT_BLOODABLT; ++i)
-		HlMgr.SubdueButton(i);
+		if (HlMgr.Highlighted((SHORT)i))
+			HlMgr.SubdueButton(i);
 
 	LONG newArg=BUILD_LONG(MenuId, INV_BUT_MUNDANE+c);
 	
