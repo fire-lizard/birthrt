@@ -209,6 +209,7 @@ class ObjectList
 		//member functions
 		inline void mfMakeHead(ITEMTYPE const,SHORT const, SHORT const);
 		BOOL const mfCatsMatch(ItemCategory const,ItemCategory const);
+		void mfSortSpellsByLevel();
 		inline SHORT const mfGetAvatarID();
 		inline void mfSetAvatarID(SHORT const);
 
