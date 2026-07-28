@@ -484,6 +484,19 @@ LONG AddLoopingSound(BIRTHRT_SND WaveID, LONG ThingIndex)
 {
 	LONG total;
 
+	// Anything but the -2 "full volume" marker has to be a live thing.
+	// A bad index would be read out of bounds by UpdateLoopingSoundObjects,
+	// and fERROR (-1) would be stored as the array's end marker and hide
+	// every sound added after it.
+	if(ThingIndex != -2)
+	{
+		if(ThingIndex < 0 || ThingIndex >= MAX_THINGS)
+			return fERROR;
+
+		if(mythings[ThingIndex].valid != TRUE)
+			return fERROR;
+	}
+
 	if(TotalLoopingSounds + 1 <= MAX_SOUND_THINGS)
 	{
 		LoopingSoundThing[TotalLoopingSounds].wave = WaveID;

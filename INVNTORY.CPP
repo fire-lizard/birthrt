@@ -106,6 +106,11 @@ extern SHORT BARelicFound;			// from practice.cpp
 
 extern void VictoryScreen(PFVLL,PFVLL);
 
+// VictoryScreen() suspends the music and forces ucWhichTrack to REDBOOK_REALM,
+// so the quest item popup has to remember what the scene was playing.
+static SHORT gQuestItemPrevTrack = fERROR;
+static BOOL gQuestItemTrackRestorePending = FALSE;
+
 extern BOOL fStartMultiGame;
 
 /* ========================================================================
@@ -184,6 +189,32 @@ void QuestItemFoundProc(LONG MenuCombo,LONG b)
 	TickDelay(4);
 	HideMenu(MenuId);
 	RunMenus();
+
+	if (gQuestItemTrackRestorePending)
+	{
+		if (master_game_type == GAME_ADVENTURE)
+		{
+			// 100 is the "no music" sentinel, so fall back to the combat track.
+			SHORT const ResumeTrack =
+				(gQuestItemPrevTrack == fERROR || gQuestItemPrevTrack == 100)
+					? (SHORT)REDBOOK_PERSCOMBAT
+					: gQuestItemPrevTrack;
+
+			ucWhichTrack = ResumeTrack;
+			ResumeSuspendedMusic();
+			PlayTrack(ResumeTrack);
+		}
+
+		gQuestItemTrackRestorePending = FALSE;
+		gQuestItemPrevTrack = fERROR;
+	}
+}
+
+void ShowQuestItemVictoryScreen(void)
+{
+	gQuestItemPrevTrack = ucWhichTrack;
+	gQuestItemTrackRestorePending = TRUE;
+	VictoryScreen(PaintQuestItemFound,QuestItemFoundProc);
 }
 
 LONG GetLevelFiendIndex(void)
@@ -378,7 +409,7 @@ void ObjectList::mfMouseCallback(LONG but,LONG obj,LONG /* WadThingtype */)
 				else
 #endif
 				{
-					VictoryScreen(PaintQuestItemFound,QuestItemFoundProc);
+					ShowQuestItemVictoryScreen();
 				}
 
 				RunMenus();
