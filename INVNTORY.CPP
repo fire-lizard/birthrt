@@ -150,7 +150,11 @@ void PaintQuestItemFound(LONG MenuCombo,LONG b)
 
 	ITEMTYPE const QuestItem = ObjectList::mfGameTypetoItemType((THINGTYPE)GetQuestThing());
 	ItemType const &QuestItemData = ItemTypes[QuestItem];
-	strcpy(LongDesc, STRMGR_GetStr(QuestItemData.mfGetExtendedData()));
+	// items with no long description fall back to the short one
+	if (QuestItemData.mfGetExtendedData() != -1)
+		strcpy(LongDesc, STRMGR_GetStr(QuestItemData.mfGetExtendedData()));
+	else
+		strcpy(LongDesc, STRMGR_GetStr(QuestItemData.mfInfo()));
 
 	sprintf(Buf,FormatBuf,
 			    GAME_TTYPE::mfGetDescription((THINGTYPE)GetQuestThing()),
@@ -160,7 +164,11 @@ void PaintQuestItemFound(LONG MenuCombo,LONG b)
 	Y += gtext_height(Buf);
 	
 	strncpy(FormatBuf, STRMGR_GetStr(STR_QUESTITEM_YOUCANLEAVE), sizeof(FormatBuf));
-	sprintf(Buf, FormatBuf, place_names[SCENE_MGR::PlacesIndex]);
+	// user scenes aren't on the map, so name the adventure site instead
+	if (SCENE_MGR::PlacesIndex != -1)
+		sprintf(Buf, FormatBuf, place_names[SCENE_MGR::PlacesIndex]);
+	else
+		sprintf(Buf, FormatBuf, advsite[iAdventureSiteIndex].name);
 	gprint_text(X, Y, Buf, color);
 }
 	
