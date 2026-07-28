@@ -88,21 +88,41 @@ static void CombatSelectThisAdventurer(CThing *pAvatar)
 static void CombatSelectThisEnemy(CThing * pAvatar)
 {
 	SHORT const hControledAvatar = CONTROL_PANELS::mfGetCurrAvatarHdl();
-	
-	if (hControledAvatar != fERROR)
+
+	if (hControledAvatar == fERROR)
+		return;
+
+	CAvatar * const pControlledAvatar = (CAvatar * const ) BLKPTR(hControledAvatar);
+	CAvatar * const pTarget = (CAvatar *) pAvatar;	// the avatar the player tapped
+
+	// [Issue 36] Do not run the melee chase routine while this PC is casting a spell.
+	// When the player taps an enemy to TARGET a spell, that tap also reaches this
+	// enemy-select handler; re-applying the PC's last fighting style here (ATM_DEFEND
+	// for a spellcaster) would overwrite the AI_CASTSPELL state the spell setup just
+	// established and silently cancel the cast.
+	if (pControlledAvatar->Status == CAvatar::AI_CASTSPELL)
+		return;
+
+	// [Issue 36] Manual targeting only engages a valid target: an opposing-team avatar
+	// that is alive and not standing in dangerous terrain.  If the tapped avatar is not
+	// a valid target, leave the PC doing whatever it was already doing.
+	if (pControlledAvatar->mfIsAlly(pTarget) ||
+	    pTarget->mfAmIImmoblized() ||
+	    pControlledAvatar->mfIsNastySector(pTarget->mfX(), pTarget->mfY()))
 	{
-		CAvatar * const pControlledAvatar = (CAvatar * const ) BLKPTR(hControledAvatar);
-		pControlledAvatar->mfSethEnemy(((CAvatar *)pAvatar)->hThis);
-		
-		if (pControlledAvatar->Status == CAvatar::AI_DEFEND ||
-		     (pControlledAvatar->Status == CAvatar::AI_PAUSED && 
-		      pControlledAvatar->fPrev.Status == CAvatar::AI_DEFEND))
-		{
-			// Just default to the first combat unless they are already
-			// using a different mode.
-			pControlledAvatar->mfSetAttackMode(FIGHT_SEQUENCE::ATM_HIGH);
-		}
+		return;
 	}
+
+	// The player has tapped the enemy on screen, so the party is now aware of it.
+	pTarget->mfMarkAware();
+
+	// Lock onto the valid target (fresh pursuit -> reset the chase give-up timer),
+	// then re-apply the PC's last fighting style.  mfSetAttackMode() drives the rest:
+	// an attack style puts the PC in AI_ATTACK (pathfind + attack), while defend puts
+	// it in AI_DEFEND (locked on, but holds position and does not pursue).
+	pControlledAvatar->fChaseStartTick = 0;
+	pControlledAvatar->mfSethEnemy(pTarget->hThis);
+	pControlledAvatar->mfSetAttackMode(pControlledAvatar->mfGetLastFightingStyle());
 }
 
 /* ========================================================================
@@ -743,30 +763,32 @@ void CONTROL_PANELS::CURRENT_CONTROL::mfSetBeginCombat(BOOL const AutoAttack)
 			if (pAvatar->Status != CAvatar::AI_ATTACK &&
 				pAvatar->Status != CAvatar::AI_CASTSPELL)
 			{
-				if (pAvatar->Engaged > 0)
+				// [Issue 53] Determine this PC's class-based default fighting style:
+				// martial classes (fighter, paladin, ranger, thief, bard) use slow
+				// attack 1; spellcasters (wizard, magician, priest) default to defend.
+				FIGHT_SEQUENCE::ATTACK_MODE defaultMode = FIGHT_SEQUENCE::ATM_HIGH;
+				if (pAvatar->hPlayerStats != fERROR)
 				{
-					// If you are being attacked, auto Defend.
-					pAvatar->mfSetAttackMode(FIGHT_SEQUENCE::ATM_DEFEND);
+					PLAYER_STATS const * const pPlayerStats = (PLAYER_STATS const * const) BLKPTR(pAvatar->hPlayerStats);
+					if (pPlayerStats->mfIsType(PLAYER_CLASS_INFO::WIZARD) ||
+					    pPlayerStats->mfIsType(PLAYER_CLASS_INFO::MAGICIAN) ||
+					    pPlayerStats->mfIsType(PLAYER_CLASS_INFO::PRIEST))
+					{
+						defaultMode = FIGHT_SEQUENCE::ATM_DEFEND;
+					}
+				}
+				// Each PC starts the encounter with its last fighting style set to the
+				// class default, and (in arcade) its current fighting style synced to
+				// that default.  RPG mode waits in defend for per-turn commands.
+				pAvatar->mfSetLastFightingStyle(defaultMode);
+
+				if (AutoAttack == TRUE)
+				{
+					pAvatar->mfSetAttackMode(defaultMode);
 				}
 				else
 				{
-					if (pAvatar->hPlayerStats != fERROR)
-					{
-						PLAYER_STATS const * const pPlayerStats = (PLAYER_STATS const * const) BLKPTR(pAvatar->hPlayerStats);
-						
-						if (AutoAttack == TRUE &&
-						    (pPlayerStats->mfIsType(PLAYER_CLASS_INFO::FIGHTER) ||
-						     pPlayerStats->mfIsType(PLAYER_CLASS_INFO::PALADIN) ||
-						     pPlayerStats->mfIsType(PLAYER_CLASS_INFO::RANGER) ))
-						{
-							// If you are not being attacked, help out.
-							pAvatar->mfSetAttackMode(FIGHT_SEQUENCE::ATM_HIGH);
-						}
-						else
-						{
-							pAvatar->mfSetAttackMode(FIGHT_SEQUENCE::ATM_DEFEND);
-						}
-					}
+					pAvatar->mfSetAttackMode(FIGHT_SEQUENCE::ATM_DEFEND);
 				}
 			}
 		}

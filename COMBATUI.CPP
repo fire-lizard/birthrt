@@ -1020,9 +1020,16 @@ void PlayAdventureUI(SCENE &rScene)
 			}
 			
 			// if no target found or I'm my own target, fail to get an enemy.
+			// [Issue 36] Every spell that reaches this targeting-cursor path is hostile
+			// (damage/stone/death/turn-undead); beneficial spells (cure/heal) are
+			// TouchSpell with REQUISIT 0 and never enter targeting.  So an allied target
+			// here is always a hostile spell aimed at a party member: reject it so a PC
+			// can never lock a hostile spell onto an ally (which also stops that bad
+			// hEnemy from carrying into melee).
 			if (TargetFound == FALSE
 				|| pShootingAvatar->ThingIndex == COMBAT_TARGETTING::mfGetTargetIndex()
 				|| pTargetAvatar->GetAIFuncIndex() == CAvatar::AI_FUNC_FIREBALL
+				|| pShootingAvatar->mfIsAlly(pTargetAvatar)
 				)
 			{
 				pShootingAvatar->mfSethEnemy(fERROR);
@@ -1032,12 +1039,12 @@ void PlayAdventureUI(SCENE &rScene)
 				// set the spell caster's hEnemy to be this object
 				pShootingAvatar->mfSethEnemy(rScene.Avatars[i]);
 			}
-			
+
 			pShootingAvatar->fDamageFlag = 1;
-			
+
 			// clear target
 			COMBAT_TARGETTING::mfInitVals();
-			
+
 			// Shoot right away. (No delay)
 			if (pShootingAvatar->hPlayerStats != fERROR)
 			{
@@ -1516,7 +1523,12 @@ void PlayCombatUI(SCENE &rScene)
 			BOOL TargetFound = FALSE;
 			
 			// check to see if this thing index is an avatar
-			for(LONG i = 0; i < MAX_AVATARS; i++ )
+			// NOTE: use the function-scope `i` (declared at the top of PlayCombatUI) so
+			// the matched index survives the loop -- the success branch below reads
+			// rScene.Avatars[i] to set hEnemy.  A shadowing `for(LONG i ...)` here left
+			// that read using an uninitialised function-scope `i`, locking the spell onto
+			// a garbage avatar instead of the tapped target.
+			for(i = 0; i < MAX_AVATARS; i++ )
 			{
 				// This is a sparsly filled array.
 				if (rScene.Avatars[i] != fERROR)
@@ -1529,7 +1541,7 @@ void PlayCombatUI(SCENE &rScene)
 					}
 				}
 			}
-			
+
 			if (rScene.fhData != fERROR)
 			{
 				DumbAutoLockPtr<COMBAT_SCENE_DATA> const pcsdData(rScene.fhData);
@@ -1550,9 +1562,14 @@ void PlayCombatUI(SCENE &rScene)
 			}
 			
 			// if no target found or I'm my own target, fail to get an enemy.
+			// [Issue 36] Reject an allied target: every spell on this targeting-cursor
+			// path is hostile (beneficial cure/heal spells are TouchSpell and never
+			// target here), so a PC must never be able to lock a hostile spell onto a
+			// party member.
 			if (TargetFound == FALSE
 				|| pShootingAvatar->ThingIndex == COMBAT_TARGETTING::mfGetTargetIndex()
 				|| pTargetAvatar->GetAIFuncIndex() == CAvatar::AI_FUNC_FIREBALL
+				|| pShootingAvatar->mfIsAlly(pTargetAvatar)
 				)
 			{
 				pShootingAvatar->mfSethEnemy(fERROR);
@@ -1561,7 +1578,7 @@ void PlayCombatUI(SCENE &rScene)
 			{
 				// set the spell caster's hEnemy to be this object
 				pShootingAvatar->mfSethEnemy(rScene.Avatars[i]);
-				
+
 			}
 			
 			pShootingAvatar->fDamageFlag = 1;
@@ -1865,6 +1882,8 @@ void CombatDefendKey(LONG menuid, LONG )
 				
 				pAvatar->mfSetAttackMode(FIGHT_SEQUENCE::ATM_DEFEND);
 				pAvatar->mfSetAttackSequence(FIGHT_SEQUENCE::ATM_DEFEND);
+				// [Issue 36] Remember the player's chosen fighting style.
+				pAvatar->mfSetLastFightingStyle(FIGHT_SEQUENCE::ATM_DEFEND);
 				if (OldSceneType == SCENE_AI::COMBAT_SCENE)
 				{
 					if (pCurrentScene->fhData != fERROR)
@@ -2440,6 +2459,8 @@ void CombatHighAttackKey(LONG menuid, LONG SwingFast)
 					{
 						pAvatar->mfSetAttackMode(FIGHT_SEQUENCE::ATM_HIGH);
 					}
+					// [Issue 36] Remember the player's chosen fighting style.
+					pAvatar->mfSetLastFightingStyle(pAvatar->mfGetAttackMode());
 					pAvatar->mfDecideWhoseTurnToAttack();
 					if (pAvatar->mfIsMyTurnToAttack())
 					{
@@ -2527,6 +2548,8 @@ void CombatLowAttackKey(LONG menuid, LONG SwingFast)
 					{
 						pAvatar->mfSetAttackMode(FIGHT_SEQUENCE::ATM_LOW);
 					}
+					// [Issue 36] Remember the player's chosen fighting style.
+					pAvatar->mfSetLastFightingStyle(pAvatar->mfGetAttackMode());
 					pAvatar->mfDecideWhoseTurnToAttack();
 					if (pAvatar->mfIsMyTurnToAttack())
 					{
