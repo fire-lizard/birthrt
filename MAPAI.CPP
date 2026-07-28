@@ -5041,30 +5041,39 @@ CreateHldng:
 					}
 					else		// non-landed vassal becomes lieutenant instead
 					{
-						TargetProvince = (PROVINCE)units[regents[realm[CurrentRealm].mfGetRegent()].mfGetunit()].province;
-						for (j=69; j<CHARACTER_COUNT; ++j)			// scan all regents
+						// the realm may be regentless, or its regent may have no unit
+						LONG const iCurrentRegent = realm[CurrentRealm].mfGetRegent();
+						LONG const iCurrentRegentUnit = (iCurrentRegent != NO_REGENT)
+							? regents[iCurrentRegent].mfGetunit()
+							: fERROR;
+
+						if (iCurrentRegentUnit > 0 && iCurrentRegentUnit < MAX_UNITS)
 						{
-							if (regents[j].mfGetRealm() == TargetRealm)
+							TargetProvince = (PROVINCE)units[iCurrentRegentUnit].province;
+							for (j=69; j<CHARACTER_COUNT; ++j)			// scan all regents
 							{
-								TargetPlace = j;
-							 	LONG const iUnit = CreateUnit(TargetProvince, regents[TargetPlace].mfGeticon(), (LONG) regents[TargetPlace].mfGetid(), CurrentRealm, FALSE);
-								if (iUnit != fERROR)
+								if (regents[j].mfGetRealm() == TargetRealm)
 								{
-									if (regents[TargetPlace].mfGetRealm() >= LAND_REALM_COUNT
-									   	|| regents[TargetPlace].mfGetRealm() == HomeRealm)
-										for (k=0; k<MAX_PLACES; ++k)
-										{
-											if(places[k].Realm == regents[TargetPlace].mfGetRealm())
+									TargetPlace = j;
+								 	LONG const iUnit = CreateUnit(TargetProvince, regents[TargetPlace].mfGeticon(), (LONG) regents[TargetPlace].mfGetid(), CurrentRealm, FALSE);
+									if (iUnit != fERROR)
+									{
+										if (regents[TargetPlace].mfGetRealm() >= LAND_REALM_COUNT
+										   	|| regents[TargetPlace].mfGetRealm() == HomeRealm)
+											for (k=0; k<MAX_PLACES; ++k)
 											{
-												CheckHolding(k, CurrentRealm, FALSE);
+												if(places[k].Realm == regents[TargetPlace].mfGetRealm())
+												{
+													CheckHolding(k, CurrentRealm, FALSE);
+												}
 											}
-										}
-									SetGameData(MP_REGENT, MPREG_UNIT, TargetPlace, iUnit, FALSE );
-									// HACK HACK HACK HACK HACK
-									// GWP Don't set this anymore. (It's read from the units array.
+										SetGameData(MP_REGENT, MPREG_UNIT, TargetPlace, iUnit, FALSE );
+										// HACK HACK HACK HACK HACK
+										// GWP Don't set this anymore. (It's read from the units array.
+									}
+									// even if we can't create a unit we have to stop.
+									break;
 								}
-								// even if we can't create a unit we have to stop.
-								break;
 							}
 						}
 					}
