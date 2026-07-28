@@ -718,7 +718,14 @@ void CONTROL_PANELS::CURRENT_CONTROL::mfSetBeginCombat(BOOL const AutoAttack)
 	{
 		LONG i;
 		CAvatar * const pAvatar = (CAvatar * const) BLKPTR(fhAvatar);
-		
+
+		// The panel caches its avatar across scenes; drop it if it's stale.
+		if (pAvatar == NULL)
+		{
+			fhAvatar = fERROR;
+			return;
+		}
+
 		fOriginalAngle = pAvatar->mfAngle();
 		fOriginalStatus = pAvatar->Status;
 		fOriginalLeftButtonFn = pAvatar->mfSetLeftButtonFn(CombatSelectThisAdventurer);
@@ -791,7 +798,12 @@ BOOL const CONTROL_PANELS::CURRENT_CONTROL::mfNeedToUpdatePanel()
 	if (fhAvatar != fERROR)
 	{
 		CAvatar const * const pAvatar = (CAvatar *const) BLKPTR(fhAvatar);
-		
+
+		if (pAvatar == NULL)
+		{
+			return FALSE;
+		}
+
 		if (pAvatar->Status != fPrevStatus)
 		{
 			fPrevStatus = pAvatar->Status;
