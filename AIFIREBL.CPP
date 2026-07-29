@@ -476,27 +476,7 @@ void CAvatar::FireBall (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 									break; // found him
 							}
 						}
-
-						// [Issue 36] A single-target hostile projectile fired with no lock must
-						// never detonate on the caster's own party.  If the first avatar in its
-						// path is an ally, treat it as "not found" so the projectile passes
-						// through the friend and continues toward an enemy (or expires on a
-						// wall).  AoE projectiles are intentionally left alone -- their blast
-						// may still catch allies, matching the original risk/reward.
-						if (i != MAX_AVATARS)
-						{
-							CAvatar const * const pBumped = (CAvatar const * const) BLKPTR(pCurrentScene->Avatars[i]);
-							CAvatar const * const pCaster = (pAvatar->fFireBall.hWhoCast != fERROR)
-								? (CAvatar const * const) BLKPTR(pAvatar->fFireBall.hWhoCast) : NULL;
-							BOOL const bSingleTarget = (pAvatar->mfType() == MAGIC_MISSILE_1 ||
-							                            pAvatar->mfType() == PLASMA_STREAK_1 ||
-							                            pAvatar->mfType() == LORES_PLASMA_STREAK_1 ||
-							                            pAvatar->mfType() == LIGHTNING_1 ||
-							                            pAvatar->mfType() == LORES_LIGHTNING_1);
-							if (bSingleTarget && pCaster != NULL && pCaster->mfIsAlly(pBumped))
-								i = MAX_AVATARS;	// pass through the ally, do not damage a party member
-						}
-
+			
 						if(i != MAX_AVATARS)
 						{
 							if(pAvatar->mfZ() > FloorHeight + (ExplosionHeight - pAvatar->mfHeight())/2)

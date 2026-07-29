@@ -86,10 +86,6 @@ typedef SHORT HDL_AVATAR;
 #include "AIGUARD.HXX"
 #endif
 
-#if !defined(_AIPATH_HXX)
-#include "AIPATH.HXX"
-#endif
-
 #if !defined(_AIPONG_HXX)
 #include "AIPONG.HXX"
 #endif
@@ -317,14 +313,8 @@ public:				// Public for the dialog editor
 	
 	FIGHT_SEQUENCE	fFightSeq;			// Fight sequence for this avatar.
 	
-	WadThingType    lastBump;
+	WadThingType    lastBump;	
 	LONG            bumpTimer;			// For movement.
-	// [Issue 36] Awareness: the gTick up to which the relationship is still
-	// "aware" (0 = not aware / expired).
-	ULONG           fAwarenessTick;		// Opposing team is aware of THIS avatar's location until this tick.
-	ULONG           fSeenEnemyTick;		// This NPC stays aware of the player party it has seen until this tick.
-	ULONG           fChaseStartTick;	// gTick the current PC pursuit began (0 = not pursuing); drives the give-up.
-	FIGHT_SEQUENCE::ATTACK_MODE fLastFightingStyle;	// Last fighting style set on this PC. [Issue 36]
 	LONG			dAngle;
 	LONG			fTimeLastChanged;
 	LONG			fFrameLastChanged;
@@ -351,11 +341,7 @@ public:				// Public for the dialog editor
 		HORSE_DATA			fHorse;
 	};
 	FOLLOW_PATH_DATA	fFollowPath;
-
-	// [Issue 36] Sector-graph A* pathfinding state -- kept outside the AI union
-	// so every AI function type can navigate around obstacles.
-	AI_PATH_STATE		fAiPath;
-
+	
 	void Save(void);
 	void DoAI(void);
 	inline AISTATUS DoAI(AISTATUS st);
@@ -470,18 +456,7 @@ public:				// Public for the dialog editor
 	BOOL const mfAmIBeingAttacked() const;
 	BOOL const mfAmICastingASpell() const;
 	BOOL const mfAmIChasingAnEnemy() const;
-
-	// [Issue 36] Awareness (timed; the opposing team remembers where you were).
-	void mfMarkAware();						// Refresh: opposing team is aware of me (AwarenessTicks).
-	BOOL const mfIsAware() const;			// Is the opposing team currently aware of me?
-	void mfMarkSeenEnemy();					// Refresh: I (an NPC) have just seen the player party.
-	BOOL const mfHasSeenEnemyRecently() const;	// Do I still remember seeing the player party?
-	void mfMarkVisibleFoesAware();			// Mark EVERY foe I currently have LOS to as aware.
-
-	// [Issue 36] Last fighting style chosen for this player character.
-	inline FIGHT_SEQUENCE::ATTACK_MODE const mfGetLastFightingStyle() const;
-	inline void mfSetLastFightingStyle(FIGHT_SEQUENCE::ATTACK_MODE const);
-
+	
 	inline BOOL const mfAmIImmoblized() const;
 	BOOL const mfAmIAlive() const;
 	void mfIfAliveRestoreHealth();
@@ -516,7 +491,6 @@ public:				// Public for the dialog editor
 	
 	static SHORT PlayerAvatarHandle;	// The avatar that is following the player structure
 	static const LONG	ActivationDistance;
-	static const ULONG	AwarenessTicks;	// [Issue 36] How long awareness lasts.
 	static const LONG	fgTauntDelay;	// How long to wait for the next taunt.
 	
 	// Which avatar is being controled by the keyboard "player."
@@ -680,17 +654,6 @@ inline CAvatar::AISTATUS CAvatar::DoAI(CAvatar::AISTATUS st)
 inline CAvatar::AIFUNC CAvatar::GetAIFuncIndex() const
 {
 	return AIFuncIndex;
-}
-
-// [Issue 36] Last fighting style accessors.
-inline FIGHT_SEQUENCE::ATTACK_MODE const CAvatar::mfGetLastFightingStyle() const
-{
-	return fLastFightingStyle;
-}
-
-inline void CAvatar::mfSetLastFightingStyle(FIGHT_SEQUENCE::ATTACK_MODE const m)
-{
-	fLastFightingStyle = m;
 }
 
 // Start a new animation. Cover func sets all our internal vars.
@@ -910,9 +873,6 @@ inline void CAvatar::mfStandAndFidget()
 inline void CAvatar::mfInitVals()
 {
 	attrib.KilledByLava=0;
-	fAiPath.fPathWaypointCount = 0;
-	fAiPath.fPathWaypointIndex = 0;
-	fAiPath.fPathTargetSector  = -1;
 	switch(GetAIFuncIndex())
 	{
 	case AI_FUNC_PING_PONG:

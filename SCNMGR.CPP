@@ -22,7 +22,6 @@
 #include "PLATFORM.H"
 #endif
 
-#include "AIPATH.HXX"
 #include "AVATAR.HXX"
 #include "COMBATUI.HXX"
 #include "SCNMGR.HXX"
@@ -586,9 +585,6 @@ void SCENE_MGR::mfReleaseSceneToMap(LONG,LONG)
 		DisposBlock(hCurrentScene);
 		hCurrentScene = fERROR;
 
-		// Free the sector-graph pathfinding data before the WAD it was
-		// built from is purged (see AIPATH.HXX lifecycle).
-		FreeSectorGraph();
 		PurgeLevel();
 	}
 	

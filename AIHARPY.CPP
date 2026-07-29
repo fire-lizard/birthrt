@@ -305,11 +305,8 @@ void CAvatar::Harpies (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 						const LONG distance = aprox_dist(pAvatar->mfX(), pAvatar->mfY(),
 														 pAvatarTarget->mfX(), pAvatarTarget->mfY());
 						
-						// [Issue 36] Require current LOS to damage -- the hit tests ignore
-						// walls.  No LOS drops back to AI_MOVING (else branch) to pathfind.
-						if ((pAvatar->mfCanHarpyHitHim(pAvatarTarget, distance, pAvatar->fContactDistance)
+						if (pAvatar->mfCanHarpyHitHim(pAvatarTarget, distance, pAvatar->fContactDistance)
 							||((pAvatarTarget->mfHeight()<60)&&pAvatar->mfCanIHitHim(pAvatarTarget, distance, pAvatar->fContactDistance)))
-							&& pAvatar->mfCanSeeAvatar(pAvatarTarget))
 						{
 							pAvatar->FaceTo(pAvatarTarget->mfX(),
 							                pAvatarTarget->mfY());
@@ -574,10 +571,9 @@ void CAvatar::Harpies (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 				}
 			}
 			else
-			// [Issue 36] Only enter AI_ATTACK with current LOS to the target.
-			if ((pAvatar->mfCanHarpyHitHim(pAvatarTarget, distance, pAvatar->fContactDistance)
+			if (pAvatar->mfCanHarpyHitHim(pAvatarTarget, distance, pAvatar->fContactDistance)
 				||((pAvatarTarget->mfHeight()<60)&&pAvatar->mfCanIHitHim(pAvatarTarget, distance, pAvatar->fContactDistance)))
-				&& pAvatar->mfCanSeeAvatar(pAvatarTarget))
+				
 			{
 				pAvatar->Status = AI_ATTACK;
 				pAvatarTarget->mfEngage();
@@ -594,27 +590,14 @@ void CAvatar::Harpies (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 				// GWP If we hit something do we care?
 				// GWP maybe we should try a slightly offset angle from
 				// GWP the first try and try again.
-				AI_MOVER_INFO mover;
-				mover.width    = pAvatar->mfWidth();
-				mover.height   = pAvatar->mfHeight();
-				mover.z        = pAvatar->mfZ();
-				mover.isFlying = TRUE;	// flier: sector A* + funnel only
-				LONG moveTargetX = pAvatarTarget->mfX();
-				LONG moveTargetY = pAvatarTarget->mfY();
-				ApplySectorPath(&pAvatar->fAiPath,
-				                pAvatar->mfGetSector(), pAvatarTarget->mfGetSector(),
-				                pAvatar->mfX(), pAvatar->mfY(),
-				                pAvatarTarget->mfX(), pAvatarTarget->mfY(),
-				                &moveTargetX, &moveTargetY, &mover);
-				const LONG moveDist = aprox_dist(pAvatar->mfX(), pAvatar->mfY(), moveTargetX, moveTargetY);
 				pAvatar->mfStartAnimationOnce(MARCHSEQ);
 				pAvatar->mfQueueSnd(SND_HARPY_WINGFLAP1, SND_HARPY_WINGFLAP_TOTAL, WingFlappingFrame);
 				pAvatar->mfSetLoopingSnd(SND_HARPY_WINGFLAP1, 9);
 
 				const WadThingType bump = pAvatar->mfFlyTowardWithBump(
-				                            moveDist,
-											moveTargetX,
-						                    moveTargetY,
+				                            distance,
+											pAvatarTarget->mfX(),
+						                    pAvatarTarget->mfY(),
 											pAvatarTarget->mfZ() + ((distance > FlyDownDistance) ? FlyHeight : 0),
 						                    FlyDownDistance,
 											pAvatar->mfGetMarchRate(),
@@ -638,12 +621,7 @@ void CAvatar::Harpies (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 					tp.dy = (pAvatar->mfGetMarchRate())<<PLAYER_FIXEDPT;
 					tp.dz = 0;
 					if(pAvatar->dAngle > 64)
-					{
-						// [Issue 36] Steering exhausted: clear the cached A* path and
-						// reset the steering angle so the next pursuit starts fresh.
-						pAvatar->fAiPath.fPathWaypointCount = 0;
-						pAvatar->fAiPath.fPathTargetSector  = -1;
-						pAvatar->dAngle = 8;
+					{	
 						pAvatar->mfStartAnimationOnce(WALKSEQ);
 						pAvatar->mfQueueSnd(SND_HARPY_WINGFLAP1, SND_HARPY_WINGFLAP_TOTAL, WingFlappingFrame);
 						pAvatar->mfSetLoopingSnd(SND_HARPY_WINGFLAP1, 9);

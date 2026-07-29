@@ -376,10 +376,6 @@ inline void CONTROL_PANELS::mfSetAllDefend()
 			if (!pAvatar->mfAmIImmoblized())
 			{
 				pAvatar->mfSetAttackMode(FIGHT_SEQUENCE::ATM_DEFEND);
-				// [Issue 36] Defend-all also sets the last fighting style to defend, so
-				// when the PC later re-engages a target the chase routine keeps it
-				// defending rather than reverting to a stored attack style.
-				pAvatar->mfSetLastFightingStyle(FIGHT_SEQUENCE::ATM_DEFEND);
 				pAvatar->mfSetAttackSequence(FIGHT_SEQUENCE::ATM_DEFEND);
 			}
 		}

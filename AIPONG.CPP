@@ -404,33 +404,26 @@ void CAvatar::PingPong (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 			if (pAvatar->hEnemy != fERROR)
 			{
 				CAvatar * pAvatarTarget = (CAvatar *) BLKPTR(pAvatar->hEnemy);
-
-				// check to see if this guy is too far to see
-				const LONG distance = aprox_dist(
-					pAvatar->mfX(), pAvatar->mfY(),
-					pAvatarTarget->mfX(), pAvatarTarget->mfY());
-
-				const BOOL canSee = pAvatar->mfCanSeeAvatar(pAvatarTarget);
-				if (canSee)
+			
+				if (pAvatar->mfCanSeeAvatar(pAvatarTarget))
 				{
-					// [Issue 36] This NPC has LOS to a player character.  By symmetry
-					// the party is aware of this NPC (awareness gate for hero targeting),
-					// and the NPC now remembers the party so it can keep pursuing even
-					// after the player slips out of sight.
-					pAvatar->mfMarkAware();
-					pAvatar->mfMarkSeenEnemy();
-				}
-				if (distance <= CAvatar::ActivationDistance &&
-				    (canSee || pAvatar->mfHasSeenEnemyRecently()))
-				{
-					pAvatar->Status = AI_MOVING;
-					pAvatar->bumpTimer = 100;
-					if(pAvatar->attrib.IssuedChallange == FALSE)
+					// check to see if this guy is too far to see
+					const LONG distance = aprox_dist(
+						pAvatar->mfX(), pAvatar->mfY(),
+						pAvatarTarget->mfX(), pAvatarTarget->mfY());
+						
+					if (distance <= CAvatar::ActivationDistance)
 					{
-						AddVoxSnd(VOX_CHALLENGES, pAvatar->ThingIndex);
-						pAvatar->attrib.IssuedChallange = TRUE;
+					
+						pAvatar->Status = AI_MOVING;
+						pAvatar->bumpTimer = 100;
+						if(pAvatar->attrib.IssuedChallange == FALSE)
+						{
+							AddVoxSnd(VOX_CHALLENGES, pAvatar->ThingIndex);
+							pAvatar->attrib.IssuedChallange = TRUE;
+						}
+						break;
 					}
-					break;
 				}
 			}
 		
@@ -647,24 +640,11 @@ void CAvatar::PingPong (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 			// GWP If we hit something do we care?
 			// GWP maybe we should try a slightly offset angle from
 			// GWP the first try and try again.
-			AI_MOVER_INFO mover;
-			mover.width    = pAvatar->mfWidth();
-			mover.height   = pAvatar->mfHeight();
-			mover.z        = pAvatar->mfZ();
-			mover.isFlying = FALSE;
-			LONG moveTargetX = pAvatarTarget->mfX();
-			LONG moveTargetY = pAvatarTarget->mfY();
-			ApplySectorPath(&pAvatar->fAiPath,
-			                pAvatar->mfGetSector(), pAvatarTarget->mfGetSector(),
-			                pAvatar->mfX(), pAvatar->mfY(),
-			                pAvatarTarget->mfX(), pAvatarTarget->mfY(),
-			                &moveTargetX, &moveTargetY, &mover);
-			const LONG moveDist = aprox_dist(pAvatar->mfX(), pAvatar->mfY(), moveTargetX, moveTargetY);
 			pAvatar->mfStartAnimationOnce(MARCHSEQ);
 			const WadThingType bump = pAvatar->mfMoveTowardWithBump(
-			                            moveDist,
-										moveTargetX,
-					                    moveTargetY,
+			                            distance,
+										pAvatarTarget->mfX(),
+					                    pAvatarTarget->mfY(),
 					                    pAvatar->fContactDistance/3,	// GWP HACK VALUE
 					                    pAvatar->mfGetMarchRate(),
 					                    (SHORT)((TRUE == pAvatar->mfStayInMonsterBox())
@@ -684,12 +664,7 @@ void CAvatar::PingPong (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 				tp.dy = (pAvatar->mfGetMarchRate())<<PLAYER_FIXEDPT;
 				tp.dz = 0;
 				if(pAvatar->dAngle > 64)
-				{
-					// [Issue 36] Steering exhausted: clear the cached A* path and reset
-					// the steering angle so the next pursuit starts fresh.
-					pAvatar->fAiPath.fPathWaypointCount = 0;
-					pAvatar->fAiPath.fPathTargetSector  = -1;
-					pAvatar->dAngle = 8;
+				{	
 					pAvatar->Status = AI_SEARCH;
 					if(pAvatar->attrib.IsFollowPath == TRUE)
 					{
