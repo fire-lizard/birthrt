@@ -465,6 +465,17 @@ LONG const SCENE_MGR::mfLoadScene(
 		add_task(1,TextureFrameHandler,0);  //once every frame check lighting effects
 	}
 	ResumeSuspendedMusic();
+
+	// Adventure init requests track playback while music is suspended during
+	// scene load; replay after resume so first-entry adventure music starts.
+	{
+		SCENE_AI::STATE			SceneState;
+		SCENE_AI::SCENE_TYPE	SceneType;
+
+		pCurrentScene->mfGetSceneAIState(&SceneState, &SceneType);
+		if (SceneType == SCENE_AI::ADVENTURE_SCENE)
+			PlayTrack(ucWhichTrack);
+	}
 	return fNOERR;
 	
 Error:
@@ -552,7 +563,7 @@ Error:
 void SCENE_MGR::mfReleaseSceneToMap(LONG,LONG)
 {
 
-	PlayEnvironmentalSounds = FALSE;
+	ResetEnvironmentalSoundState();
 	SuspendMusic();
 	if (hCurrentScene != fERROR)
 	{
@@ -588,6 +599,8 @@ void SCENE_MGR::mfReleaseSceneToMap(LONG,LONG)
 	// return to the map
 	InitDomainTurn(0);
 	ResumeSuspendedMusic();
+	ucWhichTrack = REDBOOK_REALM;
+	PlayTrack(REDBOOK_REALM);
 }
 
 /* ========================================================================

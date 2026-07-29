@@ -3093,8 +3093,20 @@ SHORT NextAnimFrame (SHORT iAnim, USHORT sequence, USHORT rotation, UBYTE * pCtr
 
 			for(i=pAnim->frame; i<tmpFrame; ++i)
 			{
+				if ( pAnim->offData >= (ULONG)pHead->size)
+				{
+#if defined(_DEBUG)
+					printf("WARNING! Things.c is missing %d frames.\n",
+					        (LONG)(pAnim->totalFrames - pAnim->frame));
+#endif
+					pHead->frames = pAnim->frame;
+					pAnim->totalFrames = pAnim->frame;
+					break;
+				}
+				
 				++pAnim->frame;
-				decode_frame(pAnim, pHead);
+				if (decode_frame(pAnim, pHead) == fERROR)
+					break;
 			}
 
 		}
@@ -3148,7 +3160,8 @@ SHORT NextAnimFrame (SHORT iAnim, USHORT sequence, USHORT rotation, UBYTE * pCtr
 		}
 		
 		++pAnim->frame;
-		decode_frame(pAnim, pHead);	/* advance to next frame */
+		if (decode_frame(pAnim, pHead) == fERROR)	/* advance to next frame */
+			break;
 	}
 
 	/* set control frame number */
@@ -3187,6 +3200,14 @@ ERRCODE decode_frame (ANIMPTR pAnim, 	FLICHEADPTR pHead)
 	FRAMEHEADPTR	pFramehd;
 	CHUNKHEADPTR	pChunk;
 	PTR				pData;
+
+	/* Paged out or non-existent art; a stale block here would fault on the
+	   pFramehd->size read below, crashing to desktop with no Fatal.err. */
+	if (!IsPointerGood(pAnim) || !IsPointerGood(pHead))
+		return fERROR;
+	
+	if (pAnim->offData >= (ULONG)pHead->size)
+		return fERROR;
 
 #if defined(_DEBUG)
 	//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

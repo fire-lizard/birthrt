@@ -106,6 +106,11 @@ extern SHORT BARelicFound;			// from practice.cpp
 
 extern void VictoryScreen(PFVLL,PFVLL);
 
+// VictoryScreen() suspends the music and forces ucWhichTrack to REDBOOK_REALM,
+// so the quest item popup has to remember what the scene was playing.
+static SHORT gQuestItemPrevTrack = fERROR;
+static BOOL gQuestItemTrackRestorePending = FALSE;
+
 extern BOOL fStartMultiGame;
 
 /* ========================================================================
@@ -150,7 +155,11 @@ void PaintQuestItemFound(LONG MenuCombo,LONG b)
 
 	ITEMTYPE const QuestItem = ObjectList::mfGameTypetoItemType((THINGTYPE)GetQuestThing());
 	ItemType const &QuestItemData = ItemTypes[QuestItem];
-	strcpy(LongDesc, STRMGR_GetStr(QuestItemData.mfGetExtendedData()));
+	// items with no long description fall back to the short one
+	if (QuestItemData.mfGetExtendedData() != -1)
+		strcpy(LongDesc, STRMGR_GetStr(QuestItemData.mfGetExtendedData()));
+	else
+		strcpy(LongDesc, STRMGR_GetStr(QuestItemData.mfInfo()));
 
 	sprintf(Buf,FormatBuf,
 			    GAME_TTYPE::mfGetDescription((THINGTYPE)GetQuestThing()),
@@ -160,7 +169,11 @@ void PaintQuestItemFound(LONG MenuCombo,LONG b)
 	Y += gtext_height(Buf);
 	
 	strncpy(FormatBuf, STRMGR_GetStr(STR_QUESTITEM_YOUCANLEAVE), sizeof(FormatBuf));
-	sprintf(Buf, FormatBuf, place_names[SCENE_MGR::PlacesIndex]);
+	// user scenes aren't on the map, so name the adventure site instead
+	if (SCENE_MGR::PlacesIndex != -1)
+		sprintf(Buf, FormatBuf, place_names[SCENE_MGR::PlacesIndex]);
+	else
+		sprintf(Buf, FormatBuf, advsite[iAdventureSiteIndex].name);
 	gprint_text(X, Y, Buf, color);
 }
 	
@@ -184,6 +197,32 @@ void QuestItemFoundProc(LONG MenuCombo,LONG b)
 	TickDelay(4);
 	HideMenu(MenuId);
 	RunMenus();
+
+	if (gQuestItemTrackRestorePending)
+	{
+		if (master_game_type == GAME_ADVENTURE)
+		{
+			// 100 is the "no music" sentinel, so fall back to the combat track.
+			SHORT const ResumeTrack =
+				(gQuestItemPrevTrack == fERROR || gQuestItemPrevTrack == 100)
+					? (SHORT)REDBOOK_PERSCOMBAT
+					: gQuestItemPrevTrack;
+
+			ucWhichTrack = ResumeTrack;
+			ResumeSuspendedMusic();
+			PlayTrack(ResumeTrack);
+		}
+
+		gQuestItemTrackRestorePending = FALSE;
+		gQuestItemPrevTrack = fERROR;
+	}
+}
+
+void ShowQuestItemVictoryScreen(void)
+{
+	gQuestItemPrevTrack = ucWhichTrack;
+	gQuestItemTrackRestorePending = TRUE;
+	VictoryScreen(PaintQuestItemFound,QuestItemFoundProc);
 }
 
 LONG GetLevelFiendIndex(void)
@@ -230,7 +269,97 @@ static BOOL TheftAffectsAlliance(void)
 	
 	return TRUE;
 }
-		
+
+// Order adventure spell entries by spell level, then spell index for stable ties.
+static BOOL ShouldInsertSpellBefore(ITEMTYPE const NewType, ITEMTYPE const ExistingType)
+{
+	// Only re-order within the adventure spell category.
+	// Other categories keep their existing insertion behavior.
+	if (ItemTypes[ExistingType].mfCategory() != IC_SPELL)
+		return FALSE;
+
+	LONG const NewSpellIndex = ItemTypes[NewType].mfGetExtendedData();
+	LONG const ExistingSpellIndex = ItemTypes[ExistingType].mfGetExtendedData();
+
+	if (NewSpellIndex < 0 || ExistingSpellIndex < 0)
+		return FALSE;
+
+	SPELL_INFO::SPELL_ITEM const NewSpell = SPELL_INFO::mfGetSpell((SPELL_INFO::TYPE)NewSpellIndex);
+	SPELL_INFO::SPELL_ITEM const ExistingSpell = SPELL_INFO::mfGetSpell((SPELL_INFO::TYPE)ExistingSpellIndex);
+
+	if (NewSpell.Level < ExistingSpell.Level)
+		return TRUE;
+
+	if (NewSpell.Level > ExistingSpell.Level)
+		return FALSE;
+
+	// Stable tie-breaker within the same level.
+	return (NewSpellIndex < ExistingSpellIndex) ? TRUE : FALSE;
+}
+
+// Re-link inventory nodes so existing IC_SPELL entries are level-ordered.
+// Non-spell entries keep their original relative order in the list.
+void ObjectList::mfSortSpellsByLevel()
+{
+	InvenIndex OriginalOrder[MAX_INVENTORY_ITEMS];
+	InvenIndex SortedSpellNodes[MAX_INVENTORY_ITEMS];
+	InvenIndex FinalOrder[MAX_INVENTORY_ITEMS];
+
+	LONG NodeCount = 0;
+	LONG SpellCount = 0;
+	InvenIndex Current = HeadIndex;
+
+	while (Current != fERROR && NodeCount < MAX_INVENTORY_ITEMS)
+	{
+		OriginalOrder[NodeCount++] = Current;
+
+		if (AllItems[Current].mfCategory() == IC_SPELL)
+			SortedSpellNodes[SpellCount++] = Current;
+
+		Current = AllItems[Current].mfNext();
+	}
+
+	if (Current != fERROR)
+		return;
+
+	if (SpellCount < 2 || NodeCount < 2)
+		return;
+
+	for (LONG i = 1; i < SpellCount; ++i)
+	{
+		InvenIndex const SpellNodeToInsert = SortedSpellNodes[i];
+		LONG j = i - 1;
+
+		while (j >= 0 &&
+			ShouldInsertSpellBefore(
+				AllItems[SpellNodeToInsert].mfType(),
+				AllItems[SortedSpellNodes[j]].mfType()))
+		{
+			SortedSpellNodes[j + 1] = SortedSpellNodes[j];
+			--j;
+		}
+
+		SortedSpellNodes[j + 1] = SpellNodeToInsert;
+	}
+
+	LONG SpellPos = 0;
+	for (LONG i = 0; i < NodeCount; ++i)
+	{
+		InvenIndex const Node = OriginalOrder[i];
+
+		if (AllItems[Node].mfCategory() == IC_SPELL)
+			FinalOrder[i] = SortedSpellNodes[SpellPos++];
+		else
+			FinalOrder[i] = Node;
+	}
+
+	HeadIndex = FinalOrder[0];
+	for (LONG i = 0; i < NodeCount - 1; ++i)
+		AllItems[FinalOrder[i]].mfSetNext(FinalOrder[i + 1]);
+
+	AllItems[FinalOrder[NodeCount - 1]].mfSetNext(fERROR);
+}
+
 /* -----------------------
     ObjectList Members
    ----------------------- */
@@ -378,7 +507,7 @@ void ObjectList::mfMouseCallback(LONG but,LONG obj,LONG /* WadThingtype */)
 				else
 #endif
 				{
-					VictoryScreen(PaintQuestItemFound,QuestItemFoundProc);
+					ShowQuestItemVictoryScreen();
 				}
 
 				RunMenus();
@@ -606,6 +735,7 @@ void ObjectList::mfLoad()
 		fread(Data,sizeof(SHORT),2,DatFile);
 		mfAddItem((ITEMTYPE)Data[0], (SHORT) Data[1], 0, FALSE);
 	}
+	mfSortSpellsByLevel();
 	fclose(DatFile);
 }
 
@@ -663,6 +793,8 @@ void ObjectList::mfLoadFrom(FILE *fp)
     }
     for (i=0; i < MAX_SPELL_BOXES; ++i)
         SpellBoxes[i] = fERROR;
+
+	mfSortSpellsByLevel();
 
     fQuietItems = sQI;
 }
@@ -1028,7 +1160,10 @@ AddItemStatus const ObjectList::mfAddItem(
 				//if one is already there
 				for (LONG i=0; i < count; ++i)
 				    (*itor)->mfGainOne(); //add one to quantity
-	
+
+				if (ItemTypes[Type].mfCategory() == IC_SPELL)
+					mfSortSpellsByLevel();
+
 				return ReturnCode|ADD_DUP|ADD_OK;
 			}
 		}
@@ -1074,7 +1209,10 @@ AddItemStatus const ObjectList::mfAddItem(
 		++itor;
 		(*itor)->mfInit(Type,count,_charges,fERROR,TRUE);
 	}
-		
+
+	if (ItemTypes[Type].mfCategory() == IC_SPELL)
+		mfSortSpellsByLevel();
+
 	return ReturnCode|ADD_OK;
 }
 
@@ -1153,6 +1291,7 @@ void ObjectList::ReadINV(SHORT hPlayerStats, LONG id)
 	}
 	// add priest spells if appropriate
 	AddPriestSpells(hPlayerStats);
+	mfSortSpellsByLevel();
 
 	fQuietItems = sQI;
 }
@@ -1703,8 +1842,11 @@ void MultiAddItem(LONG iRegentIndex, LONG iItemtype, LONG number)
 {
 	SHORT hPlayerStats = playerstats[iRegentIndex];
 	ITEMTYPE Itemtype = (ITEMTYPE) iItemtype;
-	SHORT count = number;
-	
+
+	// Clamp count to SHORT range to prevent integer overflow
+	// The inventory system uses SHORT (16-bit) for quantities
+	SHORT count = (SHORT) ((number < 0) ? 0 : ((number > SHRT_MAX) ? SHRT_MAX : number));
+
 	if (hPlayerStats != fERROR)
 	{
 		DumbAutoLockPtr< PLAYER_STATS > const pPlayerStats(hPlayerStats);
@@ -1786,9 +1928,15 @@ BOOL ObjectList::PrepBattleSpell(
 	}
 		
 	// -- Check to see if this character can learn any more
-	// -- of this type of spell
+	// -- of this type of spell.
+	// -- Only memorize (increment quantity) for IC_SPELL items.
+	// -- IC_MAGITEM items (e.g. Necklace of Missiles, wands) are physical
+	// -- items whose quantities must not be inflated during battle prep.
+	// -- Their extended data is -1, making mfCanIMemorizeThisSpell unsafe
+	// -- to call and potentially return TRUE from out-of-bounds table access.
 	LONG const Index = itor.mfGetCurrentInvIndex();
-	if (pPS->mfCanIMemorizeThisSpell(Item) == TRUE)
+	if (ItemTypes[Item].mfCategory() == IC_SPELL &&
+	    pPS->mfCanIMemorizeThisSpell(Item) == TRUE)
 	{
 		(*itor)->mfGainOne();
 		retVal = TRUE;

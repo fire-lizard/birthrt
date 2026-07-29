@@ -142,7 +142,10 @@ void ADVENTURER::mfUpdateAdventureTeam(PLAYER const * const pPlayer )
 			if (SCENE_MGR::gTick > SoundDelay + fTimeLastBump)
 			{
 				fTimeLastBump = SCENE_MGR::gTick;
-				if (GAME_TTYPE::mfIsAvatarType(mythings[pPlayer->BumpIndex].type))
+				if (pPlayer->BumpIndex >= 0 &&
+					pPlayer->BumpIndex < MAX_THINGS &&
+					mythings[pPlayer->BumpIndex].valid == TRUE &&
+					GAME_TTYPE::mfIsAvatarType(mythings[pPlayer->BumpIndex].type))
 				{
 					if (CAvatar::mfDeadFlicSeq(pPlayer->BumpIndex))
 					{
@@ -208,6 +211,8 @@ void ADVENTURER::mfInitAdventureTeam(PLAYER const * const pPlayer)
 	fTimeLastBump = 0;
 	
 	fhdlPathPositions = NewBlock(sizeof(ADVENTURER_POSITION) * MAX_TRAIL_POINTS);
+	if (fhdlPathPositions == fERROR)
+		return;
 	DumbAutoLockArray<ADVENTURER_POSITION> const pPath(fhdlPathPositions);
 	
 	pPath[fFirstAdventurerIndex].mfUpdatePosition(pPlayer);
@@ -286,6 +291,8 @@ BOOL const ADVENTURER::mfIsAdventureTeam(CAvatar_pmfv pmfv)
 	     AdvItor++)
 	{
 		CAvatar const * const pAvatar = (CAvatar const * const) BLKPTR(*AdvItor);
+		if (!IsPointerGood(pAvatar))
+			continue;
 		if (TRUE == (pAvatar->*pmfv)())
 		{
 			Result = TRUE;
@@ -310,7 +317,9 @@ SHORT const ADVENTURER::mfFirstAdventurerIs(CAvatar_pmfv pmfv)
 	     AdvItor++)
 	{
 		CAvatar const * const pAvatar = (CAvatar const * const) BLKPTR(*AdvItor);
-		
+		if (!IsPointerGood(pAvatar))
+			continue;
+
 		if (TRUE == (pAvatar->*pmfv)())
 		{
 			Result = *AdvItor;
@@ -364,6 +373,11 @@ BOOL const ADVENTURER::mfJoinAdventureTeam(SHORT const hdlAvatar)
 {
 	BOOL Result = FALSE;
 	
+	// Without the path array mfGetMyPosition leaves the position untouched,
+	// so the avatar would be moved to garbage coordinates.
+	if (fhdlPathPositions == fERROR)
+		return FALSE;
+
 	if (hdlAvatar != fERROR)
 	{
 		SBYTE i;
@@ -377,7 +391,9 @@ BOOL const ADVENTURER::mfJoinAdventureTeam(SHORT const hdlAvatar)
 				LONG NewA;
 				
 				CAvatar * const pAvatar = (CAvatar * const) BLKPTR(hdlAvatar);
-				
+				if (!IsPointerGood(pAvatar))
+					break;
+
 				fhAvatar = hdlAvatar;
 				if (i == 0)
 				{
@@ -480,7 +496,9 @@ BOOL const ADVENTURER::mfDoesAdventureTeamHave(THINGTYPE const ThingType)
 	     AdvItor++)
 	{
 		CAvatar const * const  pAvatar = (CAvatar const * const) BLKPTR(*AdvItor);
-		
+		if (!IsPointerGood(pAvatar))
+			continue;
+
 		if (!pAvatar->mfAmIImmoblized() && pAvatar->hPlayerStats != fERROR)
 		{
 			DumbAutoLockPtr<PLAYER_STATS> const pPlayerStats(pAvatar->hPlayerStats);
@@ -509,6 +527,8 @@ void ADVENTURER::mfDoToAllAdventurers(CAvatar_pmf pmf)
 	     AdvItor++)
 	{
 		CAvatar * const  pAvatar = (CAvatar * const) BLKPTR(*AdvItor);
+		if (!IsPointerGood(pAvatar))
+			continue;
 		(pAvatar->*pmf)();
 	}
 }

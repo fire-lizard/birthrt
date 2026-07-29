@@ -539,9 +539,10 @@ void SCENE_AI::mfAdventureInit ( SCENE &rScene)
 	if (TRUE == AdventureAllocateData(rScene))
 	{
 		LONG 	i;
-	
-		PlayTrack(ucWhichTrack);
-		
+
+		// music is still suspended while the scene loads, so PlayTrack here
+		// did nothing.  mfLoadScene replays the track after it resumes.
+
 		set_margin_size(0, 0, 0, 0);
 		
 		SetSoundDecay(300, 1000);
@@ -574,14 +575,18 @@ void SCENE_AI::mfAdventureInit ( SCENE &rScene)
 			// Initialize the Regent to be the current picker up of things
 			// clicked on.
 			CAvatar *pAvatar = (CAvatar *) BLKPTR(units[UnitIndex].iHandle);
-			pAvatar->mfSetMeToThePlayer();
-			
+			if (IsPointerGood(pAvatar))
+				pAvatar->mfSetMeToThePlayer();
+
 			do
 			{
 				pAvatar = (CAvatar *) BLKPTR(units[UnitIndex].iHandle);
-				pAvatar->SetAIFuncIndex(CAvatar::AI_FUNC_FOLLOW_PLAYER);
-				pAvatar->mfInitVals();
-				pAvatar->fFollowPlayer.mfJoinAdventureTeam();
+				if (IsPointerGood(pAvatar))
+				{
+					pAvatar->SetAIFuncIndex(CAvatar::AI_FUNC_FOLLOW_PLAYER);
+					pAvatar->mfInitVals();
+					pAvatar->fFollowPlayer.mfJoinAdventureTeam();
+				}
 				UnitIndex = (SHORT) units[UnitIndex].NextUnit;
 			} while(UnitIndex != -1);
 		}
@@ -594,8 +599,9 @@ void SCENE_AI::mfAdventureInit ( SCENE &rScene)
 			if (rScene.Avatars[i] != fERROR)
 			{
 				CAvatar * const pAvatar = (CAvatar * const) BLKPTR(rScene.Avatars[i]);
-				pAvatar->DoAI(CAvatar::AI_INIT);
-				
+				if (IsPointerGood(pAvatar))
+					pAvatar->DoAI(CAvatar::AI_INIT);
+
 				// Hey he could have died!
 				//GEH if (rScene.Avatars[i] != fERROR)
 			}
@@ -620,6 +626,35 @@ void SCENE_AI::mfAdventureInit ( SCENE &rScene)
    ======================================================================== */
 void SCENE_AI::mfAdventureRelease (SCENE &rScene)
 {
+	ResetEnvironmentalSoundState();
+
+	// Drop every combat reference before the avatar blocks are freed. The
+	// party avatars survive a move to another map in the same adventure, so
+	// a handle left in hEnemy would point at an enemy from the old map.
+	for (LONG avi = 0; avi < MAX_AVATARS; avi++)
+	{
+		if (rScene.Avatars[avi] != fERROR)
+		{
+			CAvatar * const pAvatar = (CAvatar * const) BLKPTR(rScene.Avatars[avi]);
+			if (pAvatar == NULL)
+			{
+				continue;
+			}
+
+			if (pAvatar->hEnemy != fERROR)
+			{
+				pAvatar->mfSethEnemy(fERROR);
+			}
+
+			// Don't carry an in-progress attack into the next scene.
+			if (pAvatar->Status == CAvatar::AI_ATTACK ||
+				pAvatar->Status == CAvatar::AI_CASTSPELL)
+			{
+				pAvatar->Status = CAvatar::AI_INIT;
+			}
+		}
+	}
+
 	AdventureFixUnitsArray(SCENE_MGR::HomeIndex);
 	
 	// GWP We'll disconnect these player stats when we delete the avatars.
@@ -677,8 +712,9 @@ void SCENE_AI::mfAdventurePlay (SCENE &rScene)
 				{
 					CAvatar * const pAvatar = (CAvatar * const ) BLKPTR(rScene.Avatars[i]);
 					
-					pAvatar->DoAI();
-					
+					if (IsPointerGood(pAvatar))
+						pAvatar->DoAI();
+
 					// Hey he could have died!
 					//GEH if (rScene.Avatars[i] != fERROR)
 				}

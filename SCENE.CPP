@@ -172,6 +172,9 @@ void SCENE::mfLoadScene(char * cpSceneFile,
 // after the load is complete.)
 	SysHideCursor ();
 #endif
+	// Drop the previous scene's ambient profile. If the new scene has no
+	// [AmbientSound] section we would otherwise keep playing the old one.
+	ResetEnvironmentalSoundState();
 	// Re-initialize the internal variables.
 	StopRedBook();
 	TurnOffAllSounds();
@@ -716,7 +719,6 @@ LONG SCENE::mfReadAvatars(FILE *fp)
 						// GWP We call this instead of DeleteAvatar for Debug purposes
 						DisposBlock(Avatars[i]);
 						Avatars[i] = fERROR;
-						i--;
 						continue;
 					}
 					
@@ -1222,7 +1224,9 @@ void SCENE::mfDeleteAvatar(SHORT hAvatar)
 {
 	LONG i;
 	PTR_SCENE pScene = (PTR_SCENE) BLKPTR(SCENE_MGR::hCurrentScene);
-	
+	if (!IsPointerGood(pScene))
+		return;
+
 	for (i=0; i<MAX_AVATARS; i++)
 	{
 		if (pScene->Avatars[i] == hAvatar)
@@ -1249,6 +1253,11 @@ void SCENE::mfReleaseAvatars()
 		if( Avatars[i] != fERROR)
 		{
 			pAvatar = (CAvatar *) BLKPTR(Avatars[i]);
+			if (!IsPointerGood(pAvatar))
+			{
+				Avatars[i] = fERROR;
+				continue;
+			}
 			pAvatar->DoAI(CAvatar::AI_RELEASE);
 		}
 	}
@@ -1268,6 +1277,8 @@ LONG SCENE::mfAvatarIndex( LONG Id )
 		if (Avatars[i] != fERROR)
 		{
 			CAvatar *pAvatar = (CAvatar *) BLKPTR(Avatars[i]);
+			if (!IsPointerGood(pAvatar))
+				continue;
 			if (pAvatar->Id == Id)
 				return (i);
 		}
@@ -1295,12 +1306,16 @@ void SCENE::mfSceneButtonObject(
 		
 		SetBlockAttr(SCENE_MGR::hCurrentScene, LOCKED, LOCKED);
 		PTR_SCENE pScene = (PTR_SCENE) BLKPTR(SCENE_MGR::hCurrentScene);
-		
+		if (!IsPointerGood(pScene))
+			return;
+
 		for (i = 0; i < MAX_AVATARS; i++)
 		{
 			if (pScene->Avatars[i] != fERROR)
 			{
 				CAvatar *pAvatar = (CAvatar *) BLKPTR(pScene->Avatars[i]);
+				if (!IsPointerGood(pAvatar))
+					continue;
 				if (pAvatar->ThingIndex == objClicked)
 				{
 					bObjFound = TRUE;
@@ -1579,12 +1594,16 @@ void SCENE::mfDrawMapStuff ( void )
 	if (SCENE_MGR::hCurrentScene != fERROR)
 	{
 		PTR_SCENE pCurrentScene = (PTR_SCENE) BLKPTR(SCENE_MGR::hCurrentScene);
-	
+		if (!IsPointerGood(pCurrentScene))
+			return;
+
  		for(i = 0; i < MAX_AVATARS; i++ )
  		{
  			if(pCurrentScene->Avatars[i] != fERROR )
  			{
  				CAvatar *pAvatar = (CAvatar *) BLKPTR(pCurrentScene->Avatars[i]);
+				if (!IsPointerGood(pAvatar))
+					continue;
 				if (pAvatar->Status!=CAvatar::AI_DEAD)
 					HandleMapAvatar(pAvatar->ThingIndex,pCurrentScene->Avatars[i],MAP_RED,MAP_SCALED);
  			}
@@ -1626,7 +1645,7 @@ void SCENE::mfAttachAutoAIsAndThingSnds ( void )
 				// Find the first available Avatar slot.
 				// Note: Since I don't reset i, we start looking from the
 				//       last open spot we found.
-				for (; Avatars[i] != fERROR && i < MAX_AVATARS;i++)
+				for (; i < MAX_AVATARS && Avatars[i] != fERROR;i++)
 				{};
 				
 				if (i >= MAX_AVATARS)
@@ -1652,7 +1671,6 @@ void SCENE::mfAttachAutoAIsAndThingSnds ( void )
 						printf("WARNING! Unable to load Avatar %d\n", ttype);
 						pAvatar->DeleteAvatar(pAvatar->hThis);
 						Avatars[i] = fERROR;
-						i--;
 						continue;
 					}
 					pAvatar->attrib.RuntimeCreated = TRUE;	// Don't save!

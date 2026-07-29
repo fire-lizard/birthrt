@@ -96,6 +96,7 @@ void CombatCastSpellBox(LONG /* hAvatar */, LONG /* SpellBoxNumber */ );
 void CombatMenuPaint(LONG /* menuid */, LONG /* hAvatar */ );
 
 void CombatTurnDoneKey(LONG /* unused */, LONG /* unused */ );
+void CombatHaltKey(LONG /* unused */, LONG /* unused */);
 void CombatRetreatKey(LONG /* menuid */, LONG /* unused */);
 void CombatNewLeaderKey(LONG /* unused */, LONG /* unused */);
 void CombatReturnToMap(LONG /* unused */ , LONG /* unused */ );

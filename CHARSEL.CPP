@@ -670,6 +670,9 @@ void NewGameConfirmed(LONG,LONG lMultiFlag)
 	fclose(fp);
 	date = 0;
 
+	ucWhichTrack = REDBOOK_REALM;
+	PlayTrack(REDBOOK_REALM);
+
 	NewGameConfirmed2( FALSE );
 
 }
@@ -1609,11 +1612,7 @@ void EndAdvParty(LONG i, LONG j)
 			RESTORE_REGION_STATE(regADJUST_TAXES			);
 
 			dturn_mode = ACTN_MODE;
-			if (fLTAction == DURING_LTACTION)
-			{
-				ActiveRegent = realm[HomeRealm].mfGetRegent();
-  				fLTAction = BEFORE_LTACTION;
-			}
+			// Keep lieutenant action context active when backing out of adventure setup.
 
 			DataAreaMode (ACTN_MODE, 0);
 		}

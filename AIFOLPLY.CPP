@@ -45,11 +45,14 @@ void FOLLOW_PLAYER_DATA::mfFollowPlayer()
 	if (fhAvatar != fERROR)
 	{
 		CAvatar const * const pAvatar = (CAvatar const * const) BLKPTR(fhAvatar);
-		SetPlayer(pAvatar->mfX(),
-		          pAvatar->mfY(),
-		          pAvatar->mfZ(),
-		          pAvatar->mfAngle(),
-		          0);
+		if (IsPointerGood(pAvatar))
+		{
+			SetPlayer(pAvatar->mfX(),
+			          pAvatar->mfY(),
+			          pAvatar->mfZ(),
+			          pAvatar->mfAngle(),
+			          0);
+		}
 	}
 }
 /* ========================================================================
@@ -155,9 +158,14 @@ void CAvatar::FollowPlayer (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 				{
 					
 					CAvatar * pEnemy = (CAvatar *) BLKPTR (pAvatar->hEnemy);
-				
-					pAvatar->FaceTo(pEnemy->mfX(), pEnemy->mfY());
-					
+					if (!IsPointerGood(pEnemy))
+					{
+						pAvatar->mfSethEnemy(fERROR);
+					}
+					else
+					{
+						pAvatar->FaceTo(pEnemy->mfX(), pEnemy->mfY());
+					}
 				}
 				
 				if (pAvatar->hPlayerStats == fERROR)
@@ -221,6 +229,12 @@ void CAvatar::FollowPlayer (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 				if (pAvatar->hEnemy != fERROR)
 				{
 					CAvatar *pAvatarEnemy = (CAvatar *) BLKPTR(pAvatar->hEnemy);
+					if (!IsPointerGood(pAvatarEnemy))
+					{
+						pAvatar->mfSethEnemy(fERROR);
+						pAvatar->Status = AI_SEARCH;
+						break;
+					}
 					const LONG distance = aprox_dist(pAvatar->mfX(),
 					                                 pAvatar->mfY(),
 					                                 pAvatarEnemy->mfX(),
@@ -334,7 +348,13 @@ void CAvatar::FollowPlayer (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 			if (pAvatar->hEnemy != fERROR)
 			{
 				CAvatar *pAvatarEnemy = (CAvatar *) BLKPTR(pAvatar->hEnemy);
-				
+				if (!IsPointerGood(pAvatarEnemy))
+				{
+					pAvatar->mfSethEnemy(fERROR);
+					pAvatar->Status = AI_SEARCH;
+					break;
+				}
+
 				if (pAvatarEnemy->mfAmIImmoblized())
 				{
 					pAvatar->Status = AI_SEARCH;
@@ -538,6 +558,11 @@ void CAvatar::FollowPlayer (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 			if (pAvatar->hEnemy != fERROR)
 			{
 				CAvatar * const pAvatarEnemy = (CAvatar * const) BLKPTR(pAvatar->hEnemy);
+				if (!IsPointerGood(pAvatarEnemy))
+				{
+					pAvatar->mfSethEnemy(fERROR);
+					break;
+				}
 				const LONG distance = aprox_dist(pAvatar->mfX(),
 				                                 pAvatar->mfY(),
 				                                 pAvatarEnemy->mfX(),
@@ -679,6 +704,8 @@ Start_Attack:
 					{
 						// Enemy found by sector reject but too far -- ignore, prefer
 						// nearby targets.
+					if (!IsPointerGood(pAvatarEnemy))
+					{
 						pAvatar->mfSethEnemy(fERROR);
 					}
 					else
@@ -700,7 +727,13 @@ Start_Attack:
 			if (pAvatar->hEnemy != fERROR)
 			{
 				CAvatar *pAvatarEnemy = (CAvatar *) BLKPTR(pAvatar->hEnemy);
-				
+				if (!IsPointerGood(pAvatarEnemy))
+				{
+					pAvatar->mfSethEnemy(fERROR);
+					pAvatar->Status = AI_SEARCH;
+					break;
+				}
+
 				if (pAvatarEnemy->mfAmIImmoblized())
 				{
 					// Got'm
@@ -753,7 +786,15 @@ Start_Attack:
 						else
 						{
 							CAvatar const * const pAvatarEnemy = (CAvatar const * const) BLKPTR(pAvatar->hEnemy);
-							pAvatar->FaceTo(pAvatarEnemy->mfX(), pAvatarEnemy->mfY());
+							if (!IsPointerGood(pAvatarEnemy))
+							{
+								pAvatar->mfSethEnemy(fERROR);
+								pAvatar->Status = AI_SEARCH;
+							}
+							else
+							{
+								pAvatar->FaceTo(pAvatarEnemy->mfX(), pAvatarEnemy->mfY());
+							}
 						}
 						
 						if ((pAvatar->mfGetArtSequence() != ATTACK1SEQ &&
@@ -807,6 +848,12 @@ StartDefend:
 			if (pAvatar->hEnemy != fERROR)
 			{
 				CAvatar *pAvatarEnemy = (CAvatar *) BLKPTR(pAvatar->hEnemy);
+				if (!IsPointerGood(pAvatarEnemy))
+				{
+					pAvatar->mfSethEnemy(fERROR);
+					pAvatar->Status = AI_SEARCH;
+					break;
+				}
 				if (pAvatarEnemy->mfAmIImmoblized())
 				{
 					// Got'm

@@ -143,6 +143,7 @@ enum {
    ----------------------------------------------------------------- */
 void SuspendMusic(void);
 void ResumeSuspendedMusic(void);
+BOOL IsMusicSuspended(void);
 int GetMusicVolume(void);
 
 void SetMusicVolume(int,int,int);
@@ -174,6 +175,7 @@ void ShutDownSoundSystem(void);
 void TurnOffAllSounds(void);
 void KillSoundsNoFade(void);
 void	StopASound (int reqSound, int SoundTag);
+void ResetEnvironmentalSoundState(void);
 
 void ServiceSOLAudio(void);
 

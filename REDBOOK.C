@@ -75,6 +75,7 @@ int fMusic = 1;
 static int CurrentSong = fERROR;
 static int CurrentTag = fERROR;
 static BOOL MusicSuspended = FALSE;
+static SHORT PendingTrack = fERROR;
 SHORT UserCDVolume = 100;
 
 SHORT ucWhichTrack = 0;
@@ -246,10 +247,21 @@ int PlayTrack (SHORT track)
 {
 	
 	if(!fMusic || MusicSuspended)
+	{
+		// Remember what was asked for while suspended so the track isn't
+		// lost - ResumeSuspendedMusic() starts it.
+		if(MusicSuspended && fMusic)
+		{
+			PendingTrack = track;
+			ucWhichTrack = track;
+		}
 		return 0;
-		
+	}
+
+	PendingTrack = fERROR;
+
 	ucWhichTrack = track;
-	
+
 	if(CurrentTag != fERROR)
 			StopASound(CurrentSong,CurrentTag);
 
@@ -623,6 +635,17 @@ void SuspendMusic(void)
 void ResumeSuspendedMusic(void)
 {
 	MusicSuspended = FALSE;
+	if(fMusic && PendingTrack != fERROR)
+	{
+		SHORT DeferredTrack = PendingTrack;
+		PendingTrack = fERROR;
+		PlayTrack(DeferredTrack);
+	}
+}
+
+BOOL IsMusicSuspended(void)
+{
+	return MusicSuspended;
 }
 
 int GetMusicVolume(void)

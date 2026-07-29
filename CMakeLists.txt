@@ -208,3 +208,12 @@ else ()
 	message (STATUS "  Not yet implemented: DirectPlay multiplayer.")
 
 endif ()
+
+# Standalone string-table disassembler: strdat.dat -> strdat.txt + strenum.h,
+# the inverse of STRMAKE.CPP. Its own target because it owns main(), which
+# would collide with STRMAKE.CPP's in the game executable.
+add_executable (strumake EXCLUDE_FROM_ALL "STRUMAKE.CPP")
+target_include_directories (strumake PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+if (MSVC)
+	target_compile_definitions (strumake PRIVATE _CRT_SECURE_NO_WARNINGS)
+endif ()

@@ -441,7 +441,7 @@ void CAvatar::FireBall (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 								else
 								{
 									CAvatar * const pEnemy = (CAvatar * const) BLKPTR(pAvatar->hEnemy);
-									if (!SaveVs(pEnemy->hPlayerStats, ST_SPELL, 0))
+									if (pEnemy->hPlayerStats == fERROR || !SaveVs(pEnemy->hPlayerStats, ST_SPELL, 0))
 										pCastAvatar->mfInflictMagicDamage(pEnemy, pAvatar->mfType(), pAvatar->fDamage);
 									else	
 
@@ -512,7 +512,7 @@ void CAvatar::FireBall (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 							    pAvatar->mfType() == LORES_LIGHTNING_1)
 							{
 								CAvatar * const pEnemy = (CAvatar * const) BLKPTR(pCurrentScene->Avatars[i]);
-									if (!SaveVs(pEnemy->hPlayerStats, ST_SPELL, 0))
+									if (pEnemy->hPlayerStats == fERROR || !SaveVs(pEnemy->hPlayerStats, ST_SPELL, 0))
 										pCastAvatar->mfInflictMagicDamage(pEnemy, pAvatar->mfType(), pAvatar->fDamage);
 									else	
 										pCastAvatar->mfInflictMagicDamage(pEnemy, pAvatar->mfType(), pAvatar->fDamage/2);

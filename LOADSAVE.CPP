@@ -1736,6 +1736,9 @@ void LoadGameDo(LONG MenuCombo, LONG )
 	SetRedrawMainMapLevel();
 	fFadedOut = -1;
 	
+	ucWhichTrack = REDBOOK_REALM;
+	PlayTrack(REDBOOK_REALM);
+
 	if (ScenarioInfo.IsScenario)		// [abc] 10/6/97
 		NewGameConfirmed2(FALSE);
 	
