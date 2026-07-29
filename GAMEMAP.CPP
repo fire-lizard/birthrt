@@ -10196,6 +10196,64 @@ SHORT GetLastUnit( SHORT FirstUnit )
 }
 
 /* ========================================================================
+   Function    - GetLastDuelUnit
+	Description - find the unit in a stack that should duel next, preferring
+					  non-hero units first, then lieutenants, keeping the regent
+					  as the final fallback
+	Returns     - unit index
+	======================================================================== */
+SHORT GetLastDuelUnit( SHORT FirstUnit )
+{
+	SHORT lastUnit, preferredUnit=fERROR, preferredLieutenant=fERROR;
+	SHORT regentUnit=fERROR, k;
+	BOOL	isRegent, isLieutenant;
+
+	if ( FirstUnit == fERROR )
+		return fERROR;
+
+	lastUnit = FirstUnit;
+
+	while (TRUE)
+	{
+		isRegent = IsRegent(lastUnit);
+		isLieutenant = IsLieutenant(lastUnit);
+
+		if ( !isRegent && !isLieutenant )
+			preferredUnit = lastUnit;
+		else
+		if ( isLieutenant )
+			preferredLieutenant = lastUnit;
+		else
+		if ( isRegent )
+			regentUnit = lastUnit;
+
+		k = (SHORT) units[lastUnit].NextUnit;
+
+		// end of list, this is the last unit
+		if ( k == fERROR )
+			break;
+
+		// next guy in the list is a stack head, this is the tail of this stack
+		if ( units[k].Joined == 0)
+			break;
+
+		lastUnit = k;
+	}
+
+	if ( preferredUnit != fERROR )
+		return preferredUnit;
+
+	if ( preferredLieutenant != fERROR )
+		return preferredLieutenant;
+
+	// -- fallback when only the regent remains in this stack
+	if ( regentUnit != fERROR )
+		return regentUnit;
+
+	return lastUnit;
+}
+
+/* ========================================================================
    Function    - NPCBattleResults
    Description - fight a battle between NPC's
    Returns     - side-effect in SCENE_MGR::Victor and SCENE_MGR::Loser
@@ -10218,7 +10276,10 @@ void NPCBattleResults (BOOL fSend)
 	SHORT HomeRealm = units[SCENE_MGR::HomeIndex].Realm;
 	SHORT AwayRealm = units[SCENE_MGR::AwayIndex].Realm;
 	BOOL  HomeLarger = FALSE;
-	
+	BOOL	HomeOverwhelmingAdvantage = FALSE;
+	BOOL	AwayOverwhelmingAdvantage = FALSE;
+	BOOL	HeroVsHeroDuel = FALSE;
+
 	// exp points for being brave enough to fight
 	BattleExpPoints( SCENE_MGR::HomeIndex, BTL_EXP_ENGAGE, 0, FALSE );
 	BattleExpPoints( SCENE_MGR::AwayIndex, BTL_EXP_ENGAGE, 0, FALSE );
@@ -10284,8 +10345,8 @@ void NPCBattleResults (BOOL fSend)
 	// -----------------------------------------------------------------
 
 	// -- Get last unit in list
-	HomeUnitIndex = GetLastUnit(SCENE_MGR::HomeIndex);
-	AwayUnitIndex = GetLastUnit(SCENE_MGR::AwayIndex);
+	HomeUnitIndex = GetLastDuelUnit(SCENE_MGR::HomeIndex);
+	AwayUnitIndex = GetLastDuelUnit(SCENE_MGR::AwayIndex);
 	// -- Get power of these units
 	HomeUnitPower = UnitPower(HomeUnitIndex);
 	HomeUnitPower += random(HomeUnitPower/2);
@@ -10331,7 +10392,14 @@ void NPCBattleResults (BOOL fSend)
 		{
 			AwayPower += UnitPower(UnitIndex);
 		}
-	
+
+		// -- Mirror the retreat threshold below so heroes on the side with
+		// -- overwhelming odds are not treated as valid auto-battle casualties
+		HomeOverwhelmingAdvantage = ((AwayPower * 3) < HomePower);
+		AwayOverwhelmingAdvantage = ((HomePower * 3) < AwayPower);
+		HeroVsHeroDuel = IsRegentOrLieutenant(HomeUnitIndex)
+			&& IsRegentOrLieutenant(AwayUnitIndex);
+
 		// -----------------------------------------------------------------
 		// -- If one side is great enough in power over the other
 		// -- then must have them retreat, except in the case
@@ -10368,7 +10436,16 @@ void NPCBattleResults (BOOL fSend)
 				if(!random(3))
 					goto HomeWins;
 			}
-			
+
+			// -- preserve heroes under overwhelming odds, except when both
+			// -- duel participants are heroes (that resolves normally)
+			if ( !HeroVsHeroDuel
+				&& AwayOverwhelmingAdvantage
+				&& IsRegentOrLieutenant(AwayUnitIndex) )
+			{
+				goto AwayWins;
+			}
+
 			// -- check for top of stack before killing
 			if ( units[AwayUnitIndex].Joined == 0)
 			{
@@ -10411,7 +10488,7 @@ void NPCBattleResults (BOOL fSend)
 				HomeUnitPower -= AwayUnitPower/2;
 				
 				// -- get next last unit
-				AwayUnitIndex = GetLastUnit(SCENE_MGR::AwayIndex);
+				AwayUnitIndex = GetLastDuelUnit(SCENE_MGR::AwayIndex);
 				AwayUnitPower = UnitPower(AwayUnitIndex);
 				AwayUnitPower += random(AwayUnitPower/2);
 				
@@ -10434,7 +10511,16 @@ void NPCBattleResults (BOOL fSend)
 				if(!random(3))
 					goto AwayWins;
 			}
-			
+
+			// -- preserve heroes under overwhelming odds, except when both
+			// -- duel participants are heroes (that resolves normally)
+			if ( !HeroVsHeroDuel
+				&& HomeOverwhelmingAdvantage
+				&& IsRegentOrLieutenant(HomeUnitIndex) )
+			{
+				goto HomeWins;
+			}
+
 			// -- check for top of stack before killing
 			if ( units[HomeUnitIndex].Joined == 0)
 			{
@@ -10477,7 +10563,7 @@ void NPCBattleResults (BOOL fSend)
 				AwayUnitPower -= HomeUnitPower/2;
 				
 				// -- get next last unit
-				HomeUnitIndex = GetLastUnit(SCENE_MGR::HomeIndex);
+				HomeUnitIndex = GetLastDuelUnit(SCENE_MGR::HomeIndex);
 				HomeUnitPower = UnitPower(HomeUnitIndex);
 				HomeUnitPower += random(HomeUnitPower/2);
 			}
