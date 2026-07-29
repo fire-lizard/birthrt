@@ -574,14 +574,18 @@ void SCENE_AI::mfAdventureInit ( SCENE &rScene)
 			// Initialize the Regent to be the current picker up of things
 			// clicked on.
 			CAvatar *pAvatar = (CAvatar *) BLKPTR(units[UnitIndex].iHandle);
-			pAvatar->mfSetMeToThePlayer();
-			
+			if (IsPointerGood(pAvatar))
+				pAvatar->mfSetMeToThePlayer();
+
 			do
 			{
 				pAvatar = (CAvatar *) BLKPTR(units[UnitIndex].iHandle);
-				pAvatar->SetAIFuncIndex(CAvatar::AI_FUNC_FOLLOW_PLAYER);
-				pAvatar->mfInitVals();
-				pAvatar->fFollowPlayer.mfJoinAdventureTeam();
+				if (IsPointerGood(pAvatar))
+				{
+					pAvatar->SetAIFuncIndex(CAvatar::AI_FUNC_FOLLOW_PLAYER);
+					pAvatar->mfInitVals();
+					pAvatar->fFollowPlayer.mfJoinAdventureTeam();
+				}
 				UnitIndex = (SHORT) units[UnitIndex].NextUnit;
 			} while(UnitIndex != -1);
 		}
@@ -594,8 +598,9 @@ void SCENE_AI::mfAdventureInit ( SCENE &rScene)
 			if (rScene.Avatars[i] != fERROR)
 			{
 				CAvatar * const pAvatar = (CAvatar * const) BLKPTR(rScene.Avatars[i]);
-				pAvatar->DoAI(CAvatar::AI_INIT);
-				
+				if (IsPointerGood(pAvatar))
+					pAvatar->DoAI(CAvatar::AI_INIT);
+
 				// Hey he could have died!
 				//GEH if (rScene.Avatars[i] != fERROR)
 			}
@@ -677,8 +682,9 @@ void SCENE_AI::mfAdventurePlay (SCENE &rScene)
 				{
 					CAvatar * const pAvatar = (CAvatar * const ) BLKPTR(rScene.Avatars[i]);
 					
-					pAvatar->DoAI();
-					
+					if (IsPointerGood(pAvatar))
+						pAvatar->DoAI();
+
 					// Hey he could have died!
 					//GEH if (rScene.Avatars[i] != fERROR)
 				}
