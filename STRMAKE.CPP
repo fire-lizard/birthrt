@@ -60,7 +60,7 @@ char szEnumHeader[] = {
 /* ------------------------------------------------------------------------\n\
    Global Variables\n\
    ------------------------------------------------------------------------ */\n\
-#include \"strmgr.h\"\n\
+#include \"STRMGR.H\"\n\
 #define GAME_STRING LONG\n\
 enum {\n"
 };
