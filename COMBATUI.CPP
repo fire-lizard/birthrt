@@ -1449,7 +1449,13 @@ void ReleaseCombatUI(SCENE &rScene)
 		if (rScene.Avatars[i] != fERROR)
 		{
 			CAvatar * const pAvatar = (CAvatar * const) BLKPTR(rScene.Avatars[i]);
-			
+
+			// Don't touch an avatar whose block is already gone.
+			if (pAvatar == NULL)
+			{
+				continue;
+			}
+
 			// Clear the Pause mode (if set)
 			pAvatar->DoAI(CAvatar::AI_END_PAUSE);
 			

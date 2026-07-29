@@ -171,6 +171,9 @@ void SCENE::mfLoadScene(char * cpSceneFile,
 // after the load is complete.)
 	SysHideCursor ();
 #endif
+	// Drop the previous scene's ambient profile. If the new scene has no
+	// [AmbientSound] section we would otherwise keep playing the old one.
+	ResetEnvironmentalSoundState();
 	// Re-initialize the internal variables.
 	StopRedBook();
 	TurnOffAllSounds();
@@ -707,7 +710,6 @@ LONG SCENE::mfReadAvatars(FILE *fp)
 						// GWP We call this instead of DeleteAvatar for Debug purposes
 						DisposBlock(Avatars[i]);
 						Avatars[i] = fERROR;
-						i--;
 						continue;
 					}
 					
@@ -1634,7 +1636,7 @@ void SCENE::mfAttachAutoAIsAndThingSnds ( void )
 				// Find the first available Avatar slot.
 				// Note: Since I don't reset i, we start looking from the
 				//       last open spot we found.
-				for (; Avatars[i] != fERROR && i < MAX_AVATARS;i++)
+				for (; i < MAX_AVATARS && Avatars[i] != fERROR;i++)
 				{};
 				
 				if (i >= MAX_AVATARS)
@@ -1660,7 +1662,6 @@ void SCENE::mfAttachAutoAIsAndThingSnds ( void )
 						printf("WARNING! Unable to load Avatar %d\n", ttype);
 						pAvatar->DeleteAvatar(pAvatar->hThis);
 						Avatars[i] = fERROR;
-						i--;
 						continue;
 					}
 					pAvatar->attrib.RuntimeCreated = TRUE;	// Don't save!

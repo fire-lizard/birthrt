@@ -562,7 +562,7 @@ Error:
 void SCENE_MGR::mfReleaseSceneToMap(LONG,LONG)
 {
 
-	PlayEnvironmentalSounds = FALSE;
+	ResetEnvironmentalSoundState();
 	SuspendMusic();
 	if (hCurrentScene != fERROR)
 	{

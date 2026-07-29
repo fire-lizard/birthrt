@@ -626,6 +626,35 @@ void SCENE_AI::mfAdventureInit ( SCENE &rScene)
    ======================================================================== */
 void SCENE_AI::mfAdventureRelease (SCENE &rScene)
 {
+	ResetEnvironmentalSoundState();
+
+	// Drop every combat reference before the avatar blocks are freed. The
+	// party avatars survive a move to another map in the same adventure, so
+	// a handle left in hEnemy would point at an enemy from the old map.
+	for (LONG avi = 0; avi < MAX_AVATARS; avi++)
+	{
+		if (rScene.Avatars[avi] != fERROR)
+		{
+			CAvatar * const pAvatar = (CAvatar * const) BLKPTR(rScene.Avatars[avi]);
+			if (pAvatar == NULL)
+			{
+				continue;
+			}
+
+			if (pAvatar->hEnemy != fERROR)
+			{
+				pAvatar->mfSethEnemy(fERROR);
+			}
+
+			// Don't carry an in-progress attack into the next scene.
+			if (pAvatar->Status == CAvatar::AI_ATTACK ||
+				pAvatar->Status == CAvatar::AI_CASTSPELL)
+			{
+				pAvatar->Status = CAvatar::AI_INIT;
+			}
+		}
+	}
+
 	AdventureFixUnitsArray(SCENE_MGR::HomeIndex);
 	
 	// GWP We'll disconnect these player stats when we delete the avatars.

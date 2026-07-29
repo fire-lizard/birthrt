@@ -114,6 +114,7 @@ static BOOL PauseAllSounds_Hits = 0;
 static BOOL AudioInitialized = FALSE;
 static LONG TotalEnvironSnds = 0;
 static LONG TotalLoopingSounds = 0;
+static SHORT FramesTilNextSound = 300;
 
 #define FADE_TO_RESET_COUNT 20;
 static LONG SoundFade = 0;
@@ -639,12 +640,22 @@ void InitSoundThings(void)
 }
 
 /*************************************************************************
+Function ResetEnvironmentalSoundState
+Purpose  clear the ambient sound selectors and timer between levels
+**************************************************************************/
+void ResetEnvironmentalSoundState(void)
+{
+	PlayEnvironmentalSounds = FALSE;
+	WhichEnvironmentalSound = 0;
+	FramesTilNextSound = 300;
+}
+
+/*************************************************************************
 Function ServiceDosAudio
 Purpose  prevent breakup up sound in DOS
 **************************************************************************/
 void ServiceSOLAudio(void)
 {
-	static SHORT FramesTilNextSound = 300;
 	if(!AudioInitialized )
 		return;
 
