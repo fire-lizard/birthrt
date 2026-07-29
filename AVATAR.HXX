@@ -619,7 +619,16 @@ inline void CAvatar::mfSetRealm(REALM::REALM_TYPE const NewRealm)
 // returns TRUE if Him is an ally of Me
 inline const BOOL CAvatar::mfIsAlly(CAvatar const * const Him) const
 {
-	return AREALLIED(Realm.HomeRealm,Him->Realm.HomeRealm);	// changed 9/3 ABC
+	// An alliance only counts in combat if BOTH realms claim it.  The 1997
+	// RealmStatus table has three one-sided entries (Rhuobhe->Tuarhievel,
+	// Spiderfell->Rhuobhe, Fivepeaks->Monsters), and a one-sided ally is
+	// worse than either extreme: the garrison refuses to acquire you as a
+	// foe while you can still cut it down.  That is the "enemies ignore
+	// you" report at Elfwash Keep (bord_kg, garrison realm Rhuobhe) for a
+	// Tuarhievel regent.  Vassal pairs stay allied both ways because VA and
+	// FA are both >= STATUS_PERMISSIVE_ALLIANCE.
+	return AREALLIED(Realm.HomeRealm,Him->Realm.HomeRealm) &&	// changed 9/3 ABC
+	       AREALLIED(Him->Realm.HomeRealm,Realm.HomeRealm);
 }
 
 // This routine calls the current AI routine every render frame.
