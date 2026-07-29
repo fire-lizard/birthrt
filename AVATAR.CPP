@@ -2353,7 +2353,8 @@ void CAvatar::mfMarkVisibleFoesAware()
 			continue;
 
 		CAvatar * const pFoe = (CAvatar *) BLKPTR(pCurrentScene->Avatars[i]);
-		if (mfIsAlly(pFoe) ||
+		if (pFoe == NULL ||
+		    mfIsAlly(pFoe) ||
 		    pFoe->mfAmIImmoblized() ||
 		    pFoe->AIFuncIndex == AI_FUNC_FIREBALL)
 			continue;
