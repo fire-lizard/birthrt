@@ -483,6 +483,9 @@ void DoSetGameData(LONG lArray_Id, LONG lStruct_Id, LONG lArray_Index, LONG lDat
 			break;
 
 		case	MP_UNITS:
+			// a bad index here would scribble over memory outside the units array
+			if (lArray_Index < 0 || lArray_Index >= MAX_UNITS)
+				return;
 			switch(lStruct_Id)
 			{
 				case	MPUNITS_PROVINCE:
@@ -957,6 +960,9 @@ LONG DoGetGameData(LONG lArray_Id, LONG lStruct_Id, LONG lArray_Index)
 			break;
 
 		case	MP_UNITS:
+			// a bad index here would read memory outside the units array
+			if (lArray_Index < 0 || lArray_Index >= MAX_UNITS)
+				return fERROR;
 			switch(lStruct_Id)
 			{
 				case	MPUNITS_PROVINCE:
