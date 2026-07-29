@@ -330,6 +330,7 @@ static LONG		mode_save = MAINT_MODE;
 DECL_VECTOR_DATA(SHORT,region_state,10);
 SHORT				fFadedOut = FALSE;
 SHORT	fCheckUnitArrival = FALSE;
+static LONG		gLtActionPulsePhase = -1;
 static SHORT	sUnitsLostWinner;	// units lost during NPC battles
 static SHORT	sUnitsLostLoser;
 static BOOL		fHomeRetreatPath;		// units have a place to run
@@ -3456,10 +3457,23 @@ void DoAction (LONG iAction, LONG)
 			}
 		}
 	}
+	else if (iAction == LIEUTENANT_ACTION && fLTAction == AFTER_LTACTION)
+	{
+		reqSound = SND_UI_NOT_PERMITTED;
+	}
 
 	else if (HomeRealm == CurrentRealm
 			&& dact_ic_active[iAction])
 	{
+		if (iAction == LIEUTENANT_ACTION && fLTAction == DURING_LTACTION)
+		{
+			DepressIcon();
+			ActiveRegent = realm[HomeRealm].mfGetRegent();
+			fLTAction = BEFORE_LTACTION;
+			fUpdateDataArea = TRUE;
+			return;
+		}
+
 		DepressIcon();
 		UpdateActionHeader((SHORT)iAction);
 
@@ -4979,7 +4993,7 @@ BOOL UpdateDataArea (void)
 		dact_ic_active[FORGE_LEY_LINE] = (i==WIZARD || j==WIZARD || i==BARD || j==BARD);
 		dact_ic_active[REALM_SPELL]= (i==WIZARD || j==WIZARD || i==PRIEST || j==PRIEST || i==BARD || j==BARD);
 		dact_ic_active[BUILD_ROAD]=dact_ic_active[DECLARE_WAR]=dact_ic_active[HOLD_ACTION]=dact_ic_active[INVESTITURE]=dact_ic_active[LIEUTANANT]=dact_ic_active[LIEUTENANT_ACTION]=dact_ic_active[MUSTER]=(ActiveRegent==realm[HomeRealm].mfGetRegent());
-		dact_ic_active[LIEUTENANT_ACTION] = (fLTAction == BEFORE_LTACTION);
+		dact_ic_active[LIEUTENANT_ACTION] = (fLTAction != AFTER_LTACTION);
 		dact_ic_active[DIPLOMACY] = (realm[HomeRealm].mfGetCourt() != 0);
 		dact_ic_active[DECLARE_WAR] = (action_turn[HomeRealm]>=3)?FALSE:dact_ic_active[DECLARE_WAR];
 
@@ -5061,6 +5075,18 @@ BOOL UpdateDataArea (void)
 					else
 						DrawBitmap ((SHORT)(9+(i*48)), (SHORT)(64+(j*46)), iDActnI2, (SHORT)(i*48), (SHORT)(j*46), 48, 46);
 				}
+
+			if (fLTAction == DURING_LTACTION)
+			{
+				LONG const pulseColor = (get_time() & 8) ? DKPURPLE : LTBLUE;
+				// In control mode 2, Lieutenant Action is action index 14 at (col=1,row=6).
+				LONG const x = 9 + (1*48);
+				LONG const y = 64 + (6*46);
+				line(x-1, y-1, x+48, y-1, pulseColor);
+				line(x-1, y+46, x+48, y+46, pulseColor);
+				line(x-1, y-1, x-1, y+46, pulseColor);
+				line(x+48, y-1, x+48, y+46, pulseColor);
+			}
 		}
 
 		// print realm name
@@ -8217,6 +8243,17 @@ print_textf(0,0,BLACK,buffer6);
 
 		FrameTimerEnd();
 	}		// end of if RedrawAll, etc.
+
+	// Keep Lieutenant Action pulse animating while active, and force one redraw
+	// when leaving LT mode so any overlay is immediately removed.
+	{
+		LONG const phase = (fLTAction == DURING_LTACTION) ? (get_time() & 8) : -1;
+		if (phase != gLtActionPulsePhase)
+		{
+			gLtActionPulsePhase = phase;
+			fUpdateDataArea = TRUE;
+		}
+	}
 
 	// ========================================================
 	// update process panel
