@@ -238,7 +238,97 @@ static BOOL TheftAffectsAlliance(void)
 	
 	return TRUE;
 }
-		
+
+// Order adventure spell entries by spell level, then spell index for stable ties.
+static BOOL ShouldInsertSpellBefore(ITEMTYPE const NewType, ITEMTYPE const ExistingType)
+{
+	// Only re-order within the adventure spell category.
+	// Other categories keep their existing insertion behavior.
+	if (ItemTypes[ExistingType].mfCategory() != IC_SPELL)
+		return FALSE;
+
+	LONG const NewSpellIndex = ItemTypes[NewType].mfGetExtendedData();
+	LONG const ExistingSpellIndex = ItemTypes[ExistingType].mfGetExtendedData();
+
+	if (NewSpellIndex < 0 || ExistingSpellIndex < 0)
+		return FALSE;
+
+	SPELL_INFO::SPELL_ITEM const NewSpell = SPELL_INFO::mfGetSpell((SPELL_INFO::TYPE)NewSpellIndex);
+	SPELL_INFO::SPELL_ITEM const ExistingSpell = SPELL_INFO::mfGetSpell((SPELL_INFO::TYPE)ExistingSpellIndex);
+
+	if (NewSpell.Level < ExistingSpell.Level)
+		return TRUE;
+
+	if (NewSpell.Level > ExistingSpell.Level)
+		return FALSE;
+
+	// Stable tie-breaker within the same level.
+	return (NewSpellIndex < ExistingSpellIndex) ? TRUE : FALSE;
+}
+
+// Re-link inventory nodes so existing IC_SPELL entries are level-ordered.
+// Non-spell entries keep their original relative order in the list.
+void ObjectList::mfSortSpellsByLevel()
+{
+	InvenIndex OriginalOrder[MAX_INVENTORY_ITEMS];
+	InvenIndex SortedSpellNodes[MAX_INVENTORY_ITEMS];
+	InvenIndex FinalOrder[MAX_INVENTORY_ITEMS];
+
+	LONG NodeCount = 0;
+	LONG SpellCount = 0;
+	InvenIndex Current = HeadIndex;
+
+	while (Current != fERROR && NodeCount < MAX_INVENTORY_ITEMS)
+	{
+		OriginalOrder[NodeCount++] = Current;
+
+		if (AllItems[Current].mfCategory() == IC_SPELL)
+			SortedSpellNodes[SpellCount++] = Current;
+
+		Current = AllItems[Current].mfNext();
+	}
+
+	if (Current != fERROR)
+		return;
+
+	if (SpellCount < 2 || NodeCount < 2)
+		return;
+
+	for (LONG i = 1; i < SpellCount; ++i)
+	{
+		InvenIndex const SpellNodeToInsert = SortedSpellNodes[i];
+		LONG j = i - 1;
+
+		while (j >= 0 &&
+			ShouldInsertSpellBefore(
+				AllItems[SpellNodeToInsert].mfType(),
+				AllItems[SortedSpellNodes[j]].mfType()))
+		{
+			SortedSpellNodes[j + 1] = SortedSpellNodes[j];
+			--j;
+		}
+
+		SortedSpellNodes[j + 1] = SpellNodeToInsert;
+	}
+
+	LONG SpellPos = 0;
+	for (LONG i = 0; i < NodeCount; ++i)
+	{
+		InvenIndex const Node = OriginalOrder[i];
+
+		if (AllItems[Node].mfCategory() == IC_SPELL)
+			FinalOrder[i] = SortedSpellNodes[SpellPos++];
+		else
+			FinalOrder[i] = Node;
+	}
+
+	HeadIndex = FinalOrder[0];
+	for (LONG i = 0; i < NodeCount - 1; ++i)
+		AllItems[FinalOrder[i]].mfSetNext(FinalOrder[i + 1]);
+
+	AllItems[FinalOrder[NodeCount - 1]].mfSetNext(fERROR);
+}
+
 /* -----------------------
     ObjectList Members
    ----------------------- */
@@ -614,6 +704,7 @@ void ObjectList::mfLoad()
 		fread(Data,sizeof(SHORT),2,DatFile);
 		mfAddItem((ITEMTYPE)Data[0], (SHORT) Data[1], 0, FALSE);
 	}
+	mfSortSpellsByLevel();
 	fclose(DatFile);
 }
 
@@ -671,6 +762,8 @@ void ObjectList::mfLoadFrom(FILE *fp)
     }
     for (i=0; i < MAX_SPELL_BOXES; ++i)
         SpellBoxes[i] = fERROR;
+
+	mfSortSpellsByLevel();
 
     fQuietItems = sQI;
 }
@@ -1036,7 +1129,10 @@ AddItemStatus const ObjectList::mfAddItem(
 				//if one is already there
 				for (LONG i=0; i < count; ++i)
 				    (*itor)->mfGainOne(); //add one to quantity
-	
+
+				if (ItemTypes[Type].mfCategory() == IC_SPELL)
+					mfSortSpellsByLevel();
+
 				return ReturnCode|ADD_DUP|ADD_OK;
 			}
 		}
@@ -1082,7 +1178,10 @@ AddItemStatus const ObjectList::mfAddItem(
 		++itor;
 		(*itor)->mfInit(Type,count,_charges,fERROR,TRUE);
 	}
-		
+
+	if (ItemTypes[Type].mfCategory() == IC_SPELL)
+		mfSortSpellsByLevel();
+
 	return ReturnCode|ADD_OK;
 }
 
@@ -1161,6 +1260,7 @@ void ObjectList::ReadINV(SHORT hPlayerStats, LONG id)
 	}
 	// add priest spells if appropriate
 	AddPriestSpells(hPlayerStats);
+	mfSortSpellsByLevel();
 
 	fQuietItems = sQI;
 }
@@ -1711,8 +1811,11 @@ void MultiAddItem(LONG iRegentIndex, LONG iItemtype, LONG number)
 {
 	SHORT hPlayerStats = playerstats[iRegentIndex];
 	ITEMTYPE Itemtype = (ITEMTYPE) iItemtype;
-	SHORT count = number;
-	
+
+	// Clamp count to SHORT range to prevent integer overflow
+	// The inventory system uses SHORT (16-bit) for quantities
+	SHORT count = (SHORT) ((number < 0) ? 0 : ((number > SHRT_MAX) ? SHRT_MAX : number));
+
 	if (hPlayerStats != fERROR)
 	{
 		DumbAutoLockPtr< PLAYER_STATS > const pPlayerStats(hPlayerStats);
@@ -1794,9 +1897,15 @@ BOOL ObjectList::PrepBattleSpell(
 	}
 		
 	// -- Check to see if this character can learn any more
-	// -- of this type of spell
+	// -- of this type of spell.
+	// -- Only memorize (increment quantity) for IC_SPELL items.
+	// -- IC_MAGITEM items (e.g. Necklace of Missiles, wands) are physical
+	// -- items whose quantities must not be inflated during battle prep.
+	// -- Their extended data is -1, making mfCanIMemorizeThisSpell unsafe
+	// -- to call and potentially return TRUE from out-of-bounds table access.
 	LONG const Index = itor.mfGetCurrentInvIndex();
-	if (pPS->mfCanIMemorizeThisSpell(Item) == TRUE)
+	if (ItemTypes[Item].mfCategory() == IC_SPELL &&
+	    pPS->mfCanIMemorizeThisSpell(Item) == TRUE)
 	{
 		(*itor)->mfGainOne();
 		retVal = TRUE;
