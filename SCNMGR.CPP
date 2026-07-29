@@ -595,6 +595,8 @@ void SCENE_MGR::mfReleaseSceneToMap(LONG,LONG)
 	// return to the map
 	InitDomainTurn(0);
 	ResumeSuspendedMusic();
+	ucWhichTrack = REDBOOK_REALM;
+	PlayTrack(REDBOOK_REALM);
 }
 
 /* ========================================================================
