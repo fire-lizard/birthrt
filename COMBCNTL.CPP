@@ -457,34 +457,23 @@ void CONTROL_PANELS::CURRENT_CONTROL::mfPaintPanel()
 		case CAvatar::AI_ATTACK:
 			if (pAvatar->hEnemy != fERROR)
 			{
-				LONG ToHit = pAvatar->mfToHitEnemy(pAvatar->hEnemy);
-				if (mundane_descriptions)
+				// The reworked combat status lines below are literal text: birthrt
+				// ships a prebuilt STRDAT.DAT, so no string ids can be added for
+				// the new wording without indexing past the end of the table.
+				CAvatar const * const pEnemy = (CAvatar const * const) BLKPTR(pAvatar->hEnemy);
+
+				if (pEnemy->hPlayerStats != fERROR)
 				{
-					if (ToHit > 20)
-					{
-						ToHit = 20;
-					}
-					else if (ToHit < 2)
-					{
-						ToHit = 2;
-					}
-					ToHit = (21 - ToHit) * 5;
-					strncpy(cpFormatBuffer, STRMGR_GetStr(COMBAT_STR_HIT_CHANCE), sizeof(cpFormatBuffer));
+					DumbHandlePtr <PLAYER_STATS const> const dhEnemyStats(pEnemy->hPlayerStats);
+					strncpy(cpNameBuffer, dhEnemyStats->mfGetName(), sizeof(cpNameBuffer));
+					sprintf(cpBuffer, "Attacking %s (AC%hd)",
+					                  cpNameBuffer,
+					                  (SHORT)dhEnemyStats->mfGetArmorClass());
 				}
 				else
 				{
-					strncpy(cpFormatBuffer, STRMGR_GetStr(COMBAT_STR_RPG_HIT_CHANCE), sizeof(cpFormatBuffer));
-				}
-				
-				if (pAvatar->mfGetAttackMode() == FIGHT_SEQUENCE::ATM_QUICK_HIGH ||
-					pAvatar->mfGetAttackMode() == FIGHT_SEQUENCE::ATM_QUICK_LOW)
-					
-				{
-					sprintf(cpBuffer, cpFormatBuffer, STRMGR_GetStr(COMBAT_STR_QUICK),ToHit);
-				}
-				else
-				{
-					sprintf(cpBuffer, cpFormatBuffer, STRMGR_GetStr(COMBAT_STR_SLOW),ToHit);
+					sprintf(cpBuffer, "Attacking %s",
+					                  GAME_TTYPE::mfGetDescription(pEnemy->mfType()));
 				}
 			}
 			else
@@ -526,98 +515,74 @@ void CONTROL_PANELS::CURRENT_CONTROL::mfPaintPanel()
 				if (pEnemy->hPlayerStats != fERROR)
 				{
 					DumbHandlePtr <PLAYER_STATS const> const dhEnemyStats(pEnemy->hPlayerStats);
-					strcpy( cpFormatBuffer, STRMGR_GetStr(COMBAT_STR_DEFENDING));
-					sprintf(cpBuffer, cpFormatBuffer, 
-										dhEnemyStats->mfGetName(),
-										(SHORT)dhEnemyStats->mfGetArmorClass() );
+					strncpy(cpNameBuffer, dhEnemyStats->mfGetName(), sizeof(cpNameBuffer));
+					sprintf(cpBuffer, "Defending against %s", cpNameBuffer);
 				}
+				else
+				{
+					sprintf(cpBuffer, "Defending against %s",
+					                  GAME_TTYPE::mfGetDescription(pEnemy->mfType()));
+				}
+			}
+			else
+			{
+				strncpy(cpBuffer, "Defending", sizeof(cpBuffer));
 			}
 			break;
 		case CAvatar::AI_ATTACK:
 			if (pAvatar->hEnemy != fERROR)
 			{
-				CAvatar const * const pEnemy = (CAvatar const * const) BLKPTR(pAvatar->hEnemy);
-				if (pEnemy->hPlayerStats != fERROR)
+				LONG const dmg = pAvatar->mfGetDamageDealt();
+				LONG ToHit = pAvatar->mfToHitEnemy(pAvatar->hEnemy);
+				if (ToHit > 20)
 				{
-					DumbHandlePtr <PLAYER_STATS> const dhEnemyStats(pEnemy->hPlayerStats);
-					// Damage calculations haven't occured yet
-					LONG minDamage;
-					LONG maxDamage;
-					
-					PLAYER_HIT const PlayerHitObj(dhPlayerStats, dhEnemyStats);
-					PlayerHitObj.mfDamageRange(pEnemy->mfType(), &minDamage, &maxDamage);
-					if (pAvatar->mfGetAttackMode() == FIGHT_SEQUENCE::ATM_QUICK_HIGH ||
-						pAvatar->mfGetAttackMode() == FIGHT_SEQUENCE::ATM_QUICK_LOW)
-					
-					{
-						maxDamage *= 2;
-					}
-					
-					if (pAvatar->mfGetDamageDealt()< 0)
-					{
-						strncpy(cpFormatBuffer, STRMGR_GetStr(COMBAT_STR_ATTACKING),sizeof(cpFormatBuffer));
-						sprintf(cpBuffer, cpFormatBuffer,
-							        minDamage,
-							        maxDamage);
-					}
-					else
-					{
-						if (pAvatar->mfGetDamageDealt() == 0)
-						{
-							// We missed.
-								strncpy(cpFormatBuffer, STRMGR_GetStr(COMBAT_STR_SWING_MISS), sizeof(cpFormatBuffer));
-								sprintf(cpBuffer, cpFormatBuffer,
-											  minDamage,
-											  maxDamage );
-						}
-						else
-						{
-							// We hit'em!
-							strncpy(cpFormatBuffer, STRMGR_GetStr(COMBAT_STR_HIT_FOR), sizeof(cpFormatBuffer));
-							sprintf(cpBuffer, cpFormatBuffer, 
-			                                  minDamage,
-			                                  maxDamage,
-			                                  pAvatar->mfGetDamageDealt());
-						}
-					}
+					ToHit = 20;
+				}
+				else if (ToHit < 2)
+				{
+					ToHit = 2;
+				}
+				ToHit = (21 - ToHit) * 5;
+
+				// LONG is `long` on Win32 but int32_t elsewhere, so pin the
+				// varargs to int rather than relying on %ld.
+				if (dmg < 0)
+				{
+					sprintf(cpBuffer, "%d%% chance to hit", (int)ToHit);
+				}
+				else if (dmg == 0)
+				{
+					// We missed.
+					sprintf(cpBuffer, "%d%% chance to hit... missed!", (int)ToHit);
 				}
 				else
 				{
-					sprintf(cpBuffer, STRMGR_GetStr(COMBAT_STR_CANT_ENGAGE));
+					// We hit'em!
+					sprintf(cpBuffer, "%d%% chance to hit... hits for %d damage!", (int)ToHit, (int)dmg);
 				}
 			}
 			else
 			{
-				sprintf(cpBuffer, STRMGR_GetStr(COMBAT_STR_CANT_ENGAGE));
+				sprintf(cpBuffer, STRMGR_GetStr(COMBAT_STR_AWAITING_CMD));
 			}
 			break;
 		case CAvatar::AI_FALLBACK:
+			strncpy(cpBuffer, "Retreating", sizeof(cpBuffer));
+			break;
+		case CAvatar::AI_MOVING:
 			if (pAvatar->hEnemy != fERROR)
 			{
 				CAvatar const * const pEnemy = (CAvatar const * const) BLKPTR(pAvatar->hEnemy);
 				if (pEnemy->hPlayerStats != fERROR)
 				{
 					DumbHandlePtr <PLAYER_STATS const> const dhEnemyStats(pEnemy->hPlayerStats);
-					
-					strncpy(cpFormatBuffer, STRMGR_GetStr(COMBAT_STR_FALLING_BACK), sizeof(cpFormatBuffer));
-					sprintf(cpBuffer, cpFormatBuffer, 
-									    dhEnemyStats->mfGetName(),
-										(SHORT)dhEnemyStats->mfGetArmorClass() );
+					strncpy(cpNameBuffer, dhEnemyStats->mfGetName(), sizeof(cpNameBuffer));
+					sprintf(cpBuffer, "Engaging %s", cpNameBuffer);
 				}
-			}
-			break;
-		case CAvatar::AI_MOVING:
-			if (pAvatar->hEnemy != fERROR)
-			{
-				CAvatar *pEnemy = (CAvatar *) BLKPTR(pAvatar->hEnemy);
-				if (pEnemy->hPlayerStats != fERROR)
+				else
 				{
-					DumbHandlePtr <PLAYER_STATS const> const dhEnemyStats(pEnemy->hPlayerStats);
-					
-					strncpy(cpFormatBuffer, STRMGR_GetStr(COMBAT_STR_CHASING), sizeof (cpFormatBuffer));
-					sprintf(cpBuffer, cpFormatBuffer,
-										dhEnemyStats->mfGetName(),
-										(SHORT)dhEnemyStats->mfGetArmorClass() );
+					sprintf(cpBuffer, "Engaging %s",
+					                  GAME_TTYPE::mfGetDescription(pEnemy->mfType()));
 				}
 			}
 			break;

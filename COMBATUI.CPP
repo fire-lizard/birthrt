@@ -2565,10 +2565,15 @@ void CombatLowAttackKey(LONG menuid, LONG SwingFast)
    ======================================================================== */
 void CombatTurnDoneKey(LONG /* unused */, LONG /* unused */ )
 {
-	// Only enabled if RPG mode is on.
+	// Only enabled if RPG mode is on.  In arcade mode the same bottom bar button
+	// is the Halt command; GAMEMENU.H hardwires this proc onto the button, so
+	// dispatch rather than repointing the button (and its live region) at runtime.
 	if (COMBAT_MODE::mfIsModeRPG() == FALSE)
+	{
+		CombatHaltKey(0, 0);
 		return;
-		
+	}
+
 	if (mouse_button == 2)
 	{
 		// Display help dialog on right click
@@ -2639,6 +2644,76 @@ void CombatTurnDoneKey(LONG /* unused */, LONG /* unused */ )
 		{
 			DumbAutoLockPtr<COMBAT_SCENE_DATA> const pcsdData(pCurrentScene->fhData);
 			pcsdData->mfInitRPGTimer();
+		}
+	}
+}
+
+/* ========================================================================
+   Function    - CombatHaltKey
+   Description - Set all PCs to Defend, stopping pursuit and holding
+   				 position. Allows auto-end of combat to trigger.
+   				 (Arcade mode only)
+   Returns     -
+   ======================================================================== */
+void CombatHaltKey(LONG /* unused */, LONG /* unused */)
+{
+	// Only enabled if RPG mode is off.
+	if (COMBAT_MODE::mfIsModeRPG() == TRUE)
+		return;
+
+	if (mouse_button == 2)
+	{
+		// Display help dialog on right click.
+		// birthrt ships a prebuilt STRDAT.DAT, so there is no string id to add
+		// these two to; they go through the literal-text SystemHelp overload.
+		static CHAR HaltHelpTitle[] = "Halt";
+		static CHAR HaltHelpText[] = "Sets all party members to Defend, stopping pursuit and "
+		                             "holding position. Combat will end automatically a few "
+		                             "seconds after the last attack.";
+
+		mouse_click = 0;
+		SystemHelp(HaltHelpTitle, HaltHelpText, H_Adventure_Done_Button, 0, 0);
+	}
+	else if ((mouse_click == 1 && mouse_button == 1) || mouse_click == 0)
+	{
+		mouse_click = 0;
+		// click the button
+		SetButtonHilight(D_COMBAT_RPGBOTTOM_BAR, BUTNO_RPG_DONE, TRUE);
+		fUpdatePanels = TRUE;
+		RunPanels();
+		RunMenus();
+		update_screen();
+		TickDelay(4);
+		SetButtonHilight(D_COMBAT_RPGBOTTOM_BAR, BUTNO_RPG_DONE, FALSE);
+		fUpdatePanels = TRUE;
+		RunPanels();
+		RunMenus();
+		update_screen();
+		TickDelay(4);
+
+		if (SCENE_MGR::hCurrentScene == fERROR)
+		{
+			return;
+		}
+
+		SCENE * const pCurrentScene = (SCENE * const) BLKPTR(SCENE_MGR::hCurrentScene);
+
+		SCENE_AI::STATE SceneState;
+		SCENE_AI::SCENE_TYPE SceneType;
+		pCurrentScene->mfGetSceneAIState(&SceneState,
+						                 &SceneType);
+
+		if (SceneType != SCENE_AI::COMBAT_SCENE)
+		{
+			return;
+		}
+
+		CONTROL_PANELS::mfHaltAllToDefend();
+
+		if (pCurrentScene->fhData != fERROR)
+		{
+			DumbAutoLockPtr<COMBAT_SCENE_DATA> const pcsdData(pCurrentScene->fhData);
+			pcsdData->mfInitCombatTimer();
 		}
 	}
 }
