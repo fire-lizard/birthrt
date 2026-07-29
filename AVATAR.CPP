@@ -35,6 +35,8 @@
 
 SHORT CAvatar::PlayerAvatarHandle=fERROR;
 const LONG CAvatar::ActivationDistance = 1000;
+// [Issue 36] Awareness lifetime: 30 seconds at the ~10 tick/second combat rate.
+const ULONG CAvatar::AwarenessTicks = 300;
 const LONG CAvatar::fgTauntDelay = 50;
 
 // [d11-05-96 JPC] Experiment for keeping dead things from clipping so badly.
@@ -199,6 +201,11 @@ SHORT CAvatar::NewAvatar(void)
 		pAvatar->hPlayerStats = fERROR;
 		pAvatar->Realm.HomeRealm	= REALM::NO_COUNTRY;
 		pAvatar->Engaged	= 0;
+		// [Issue 36] Awareness is transient (not saved); starts cleared every adventure.
+		pAvatar->fAwarenessTick = 0;
+		pAvatar->fSeenEnemyTick = 0;
+		pAvatar->fChaseStartTick = 0;
+		pAvatar->fLastFightingStyle = FIGHT_SEQUENCE::ATM_DEFEND;
 		pAvatar->hEnemy	= fERROR;
 		pAvatar->KillType	= NO_THING;
 		pAvatar->fDamage = -1;
@@ -1039,7 +1046,24 @@ BOOL CAvatar::mfWackEm(const HDL_AVATAR hEnemyTarget)
 		fDamageFlag = 0;
 		return FALSE;
 	}
-	
+
+	// [Issue 36] Never land a melee blow through a wall.  The AI attack gates use
+	// mfCanIHitHim(), which only checks distance and relative Z -- not line of sight --
+	// so this is the final guarantee that an actual hit requires current LOS to the
+	// target.  At melee contact range (<= 90 units, below the 100-unit hearing
+	// threshold) mfCanSeeAvatar() reduces to a pure ray-cast wall test.  The spectre
+	// exemption is bidirectional: a spectre/wraith may attack through a wall, AND a
+	// spectre/wraith may be attacked through a wall (e.g. a player character striking
+	// back at a spectre that phased into it).  So we only require LOS when NEITHER
+	// the attacker nor the target is a spectre.
+	if (AIFuncIndex != AI_FUNC_SPECTRE &&
+	    pEnemyTarget->GetAIFuncIndex() != AI_FUNC_SPECTRE &&
+	    !mfCanSeeAvatar(pEnemyTarget))
+	{
+		fDamageFlag = 0;
+		return FALSE;
+	}
+
 	SET_NOT_FRIENDLY(Realm.HomeRealm, pEnemyTarget->Realm.HomeRealm);
 	if (pEnemyTarget->hPlayerStats != fERROR && hPlayerStats != fERROR)
 	{
@@ -2280,6 +2304,75 @@ BOOL const CAvatar::mfAmIChasingAnEnemy() const
 {
 	return ((Status == AI_MOVING || Status == AI_ATTACK) &&
 	        hEnemy != fERROR);
+}
+
+/* ========================================================================
+   Function    - mfMarkAware / mfIsAware
+   Description - [Issue 36] Refresh / query whether the opposing team is
+                 currently aware of THIS avatar's location.  Awareness expires
+                 AwarenessTicks after the last sighting.
+   Returns     -
+   ======================================================================== */
+
+void CAvatar::mfMarkAware()
+{
+	fAwarenessTick = SCENE_MGR::gTick + AwarenessTicks;
+}
+
+BOOL const CAvatar::mfIsAware() const
+{
+	return (fAwarenessTick > SCENE_MGR::gTick) ? TRUE : FALSE;
+}
+
+/* ========================================================================
+   Function    - mfMarkSeenEnemy / mfHasSeenEnemyRecently
+   Description - [Issue 36] NPC side of awareness: this NPC remembers having
+                 seen the player party, allowing re-acquisition without current
+                 line of sight until the timer expires.
+   Returns     -
+   ======================================================================== */
+
+void CAvatar::mfMarkSeenEnemy()
+{
+	fSeenEnemyTick = SCENE_MGR::gTick + AwarenessTicks;
+}
+
+BOOL const CAvatar::mfHasSeenEnemyRecently() const
+{
+	return (fSeenEnemyTick > SCENE_MGR::gTick) ? TRUE : FALSE;
+}
+
+/* ========================================================================
+   Function    - mfMarkVisibleFoesAware
+   Description - [Issue 36] A party member's line of sight grants the whole
+                 party awareness of EVERY enemy it can currently see -- not just
+                 its chosen target.  Awareness lives on the enemy, so refreshing
+                 it here lets any party member pursue any spotted foe.
+   Returns     -
+   ======================================================================== */
+
+void CAvatar::mfMarkVisibleFoesAware()
+{
+	PTR_SCENE pCurrentScene = (PTR_SCENE) BLKPTR(SCENE_MGR::hCurrentScene);
+	if (pCurrentScene == NULL)
+		return;
+
+	for (SHORT i = 0; i < MAX_AVATARS; ++i)
+	{
+		if (pCurrentScene->Avatars[i] == fERROR ||
+		    pCurrentScene->Avatars[i] == hThis)
+			continue;
+
+		CAvatar * const pFoe = (CAvatar *) BLKPTR(pCurrentScene->Avatars[i]);
+		if (pFoe == NULL ||
+		    mfIsAlly(pFoe) ||
+		    pFoe->mfAmIImmoblized() ||
+		    pFoe->AIFuncIndex == AI_FUNC_FIREBALL)
+			continue;
+
+		if (mfCanSeeAvatar(pFoe))
+			pFoe->mfMarkAware();
+	}
 }
 
 /* ========================================================================

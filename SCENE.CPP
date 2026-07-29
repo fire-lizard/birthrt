@@ -22,6 +22,7 @@
 #include <fcntl.h>
 
 #include "SCENE.HXX"
+#include "AIPATH.HXX"
 
 #include "SYSTEM.H"
 #include "ENGINE.H"
@@ -623,8 +624,16 @@ LONG SCENE::mfReadWad(FILE *fp,
 	const LONG Result = GetNextLine(fp, &cpBuffer[5], sizeof(cpBuffer) - 5);
 	if (Result != EOF)
 	{
+		// Free any previous sector graph before the old WAD data is purged.
+		FreeSectorGraph();
+
 		load_new_wad(cpBuffer, playerStartLocation);
-		
+
+		// Build the sector-graph A* pathfinding structure from the newly loaded WAD.
+		// Must come after load_new_wad() so linedefs/sectors are valid, and before
+		// avatars begin moving.
+		BuildSectorGraph();
+
 		// Connect up the AutoAI's (Avatars found in the wad.)
 		// This is done here before we add the scene Avatars.
 		mfAttachAutoAIsAndThingSnds();

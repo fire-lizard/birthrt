@@ -26,6 +26,10 @@ int iHackHasKey = FALSE;
 // GWP hack for Testing purposes.
 const LONG SoundDelay = 7;
 static const LONG MaxChaseDistance = 1000;
+// [Issue 36] A PC gives up chasing a target after this many ticks of pursuing without
+// successfully reaching it (15 seconds at the ~10 tick/second combat rate) and returns
+// to the await-orders (AI_SEARCH, no enemy) state.
+static const ULONG ChaseGiveUpTicks = 150;
 
 /* ========================================================================
    Function    - mfFollowPlayer
@@ -64,6 +68,22 @@ void CAvatar::FollowPlayer (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 	
 	if ((pAvatar->fFollowPlayer.mfCanIWalkThruWall() != TRUE) && (pAvatar->Status != AI_DEAD))
 		pAvatar->mfCheckCrush();
+
+	// [Issue 36] A party member's line of sight grants the whole party awareness of EVERY
+	// enemy it can currently see (not just its chosen target).  Run this once per frame in
+	// the combat states so all spotted enemies become valid targets for every party member.
+	switch (Status)
+	{
+	case AI_SEARCH:
+	case AI_MOVING:
+	case AI_ATTACK:
+	case AI_DEFEND:
+	case AI_FALLBACK:
+		pAvatar->mfMarkVisibleFoesAware();
+		break;
+	default:
+		break;
+	}
 
 	if(pAvatar->Status == AI_DEAD && Status != AI_RESURRECTION)
 		Status = AI_DEAD;
@@ -346,33 +366,83 @@ void CAvatar::FollowPlayer (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 				                                 pAvatarEnemy->mfX(),
 				                                 pAvatarEnemy->mfY());
 				
-				if (pAvatar->mfCanIHitHim(pAvatarEnemy, distance, pAvatar->fContactDistance))
+				const BOOL movCanSee = pAvatar->mfCanSeeAvatar(pAvatarEnemy);
+				if (movCanSee)
+					pAvatarEnemy->mfMarkAware();
+				// [Issue 36] Only begin attacking when we currently have LOS to the
+				// enemy.  mfCanIHitHim() ignores walls, so without the LOS gate a hero
+				// would swing through a wall at a target on the far side; instead we
+				// stay in AI_MOVING and pathfind around the obstacle.  Spectres are the
+				// exception: they phase through walls, so a hero may strike one once
+				// close enough even without LOS.
+				const BOOL movTargetIsSpectre =
+					(pAvatarEnemy->GetAIFuncIndex() == AI_FUNC_SPECTRE);
+				if (pAvatar->mfCanIHitHim(pAvatarEnemy, distance, pAvatar->fContactDistance) &&
+					(movCanSee || movTargetIsSpectre))
 				{
+					// [Issue 36] Reached the target: this pursuit succeeded, so reset the
+					// chase give-up timer (it restarts if we later drop back to AI_MOVING).
+					pAvatar->fChaseStartTick = 0;
 					pAvatar->mfRestartFightSequence();
 					// GWP HACK HACK
 					goto Start_Attack;
 				}
 				else
 				{
+					// [Issue 36] Still pursuing.  Start the give-up clock on the first
+					// pursuit frame, and abandon the target after ChaseGiveUpTicks of
+					// unsuccessful chasing, returning to await orders (AI_SEARCH, no enemy).
+					if (pAvatar->fChaseStartTick == 0)
+						pAvatar->fChaseStartTick = SCENE_MGR::gTick;
+					else if (SCENE_MGR::gTick - pAvatar->fChaseStartTick > ChaseGiveUpTicks)
+					{
+						pAvatar->fChaseStartTick = 0;
+						pAvatar->fFollowPlayer.dAngle = 8;
+						pAvatar->fAiPath.fPathWaypointCount = 0;
+						pAvatar->fAiPath.fPathTargetSector  = -1;
+						pAvatar->mfSethEnemy(fERROR);
+						pAvatar->Status = AI_SEARCH;
+						pAvatar->mfStartAnimationOnce(STANDSEQ);
+						break;
+					}
 					LONG Angle;
 					LONG myThingBumped;
-					
+
 					pAvatar->mfStartAnimationLoop(MARCHSEQ);
-					
-					// Move toward your enemy.
+
+					// Sector-graph A* pathfinding: route through portals toward the enemy.
+					// ApplySectorPath() computes a fresh A* path when the enemy changes
+					// sectors, then advances through portal waypoints until all are
+					// consumed, after which movement reverts to a direct line.
+					AI_MOVER_INFO mover;
+					mover.width    = pAvatar->mfWidth();
+					mover.height   = pAvatar->mfHeight();
+					mover.z        = pAvatar->mfZ();
+					mover.isFlying = FALSE;
+					LONG moveTargetX = pAvatarEnemy->mfX();
+					LONG moveTargetY = pAvatarEnemy->mfY();
+					ApplySectorPath(&pAvatar->fAiPath,
+					                pAvatar->mfGetSector(), pAvatarEnemy->mfGetSector(),
+					                pAvatar->mfX(), pAvatar->mfY(),
+					                pAvatarEnemy->mfX(), pAvatarEnemy->mfY(),
+					                &moveTargetX, &moveTargetY, &mover);
+
+					// Move toward the chosen target (waypoint or enemy).
+					const LONG moveDist = aprox_dist(
+						pAvatar->mfX(), pAvatar->mfY(), moveTargetX, moveTargetY);
 					const LONG Bump = pAvatar->mfMoveTowardWithBump(
-										distance,
-					                    pAvatarEnemy->mfX(),
-										pAvatarEnemy->mfY(),
+										moveDist,
+					                    moveTargetX,
+										moveTargetY,
 										pAvatar->fContactDistance/3,
 										pAvatar->mfGetMarchRate(),
 										0,
 										&Angle,
 										&myThingBumped
 										);
-										
+
 					// Now set the player to this location.
-					
+
 					// GWP Later play the sound for this ArtThing instead of generic noise.
 					switch( Bump)
 					{
@@ -398,9 +468,6 @@ void CAvatar::FollowPlayer (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 						}
 						break;
 					case iWALL:
-						pAvatar->mfStartAnimationOnce(STANDSEQ);
-						pAvatar->mfSethEnemy(fERROR);
-						
 						if (SCENE_MGR::gTick > SoundDelay + pAvatar->fFollowPlayer.fTimeLastBump)
 						{
 							pAvatar->fFollowPlayer.fTimeLastBump = SCENE_MGR::gTick;
@@ -431,12 +498,63 @@ void CAvatar::FollowPlayer (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 						// Step too high
 						break;
 					}
-					
+
+					// Lightweight wall-steering fallback for residual bumps after waypoint
+					// navigation.  With proper sector-graph routing true wall bumps should be
+					// uncommon; this handles edge cases such as irregular portal geometry, thin
+					// doorways, or locked-door linedefs that A* cannot know about at query time.
+					// The give-up threshold of 64 matches all other AI types (~17 steering
+					// frames), giving stuck characters the most attempts to free themselves.
+					if (Bump == iWALL || Bump == iCEILING || Bump == iFLOOR)
+					{
+						if (pAvatar->fFollowPlayer.dAngle > 64)
+						{
+							// Steering exhausted.  Clear the stored path so A* recomputes on
+							// the next AI_SEARCH -> AI_MOVING transition, then give up.
+							pAvatar->fFollowPlayer.dAngle = 8;
+							pAvatar->fAiPath.fPathWaypointCount = 0;
+							pAvatar->fAiPath.fPathTargetSector  = -1;
+							pAvatar->mfSethEnemy(fERROR);
+							pAvatar->Status = AI_SEARCH;
+							pAvatar->mfStartAnimationOnce(STANDSEQ);
+						}
+						else
+						{
+							const LONG MoveAngle = AngleFromPoint2(
+								pAvatar->mfX(), pAvatar->mfY(),
+								moveTargetX, moveTargetY, 0);
+							FIXED_VECTOR_3D tp;
+							tp.dx = 0;
+							tp.dy = (LONG)(pAvatar->mfGetMarchRate()) << PLAYER_FIXEDPT;
+							tp.dz = 0;
+							Rotate((POINT*)&tp, MoveAngle + pAvatar->fFollowPlayer.dAngle);
+							if (pAvatar->mfCheckNewPosition2(&tp, pAvatar->mfGetMarchRate()) == iNOTHING
+								&& !pAvatar->mfIsNastySector(
+										pAvatar->mfX() + PLAYER_INT_VAL(tp.dx),
+										pAvatar->mfY() + PLAYER_INT_VAL(tp.dy)))
+							{
+								pAvatar->FaceTo(pAvatarEnemy->mfX(), pAvatarEnemy->mfY());
+								pAvatar->mfMoveToXYA(
+									pAvatar->mfX() + PLAYER_INT_VAL(tp.dx),
+									pAvatar->mfY() + PLAYER_INT_VAL(tp.dy),
+									pAvatar->mfAngle());
+							}
+							if (pAvatar->fFollowPlayer.dAngle > 0)
+								pAvatar->fFollowPlayer.dAngle = -(pAvatar->fFollowPlayer.dAngle);
+							else
+								pAvatar->fFollowPlayer.dAngle = -(pAvatar->fFollowPlayer.dAngle) + 8;
+						}
+					}
+					else
+					{
+						pAvatar->fFollowPlayer.dAngle = 8;
+					}
+
 				}
 			}
 			break;
 	case AI_SEARCH:		// Stay in this mode until activated.
-			pAvatar->hEnemy = pAvatar->mfFindClosestVisibleFoe();
+			pAvatar->hEnemy = pAvatar->mfFindClosestFoe();
 			if (pAvatar->hEnemy != fERROR)
 			{
 				CAvatar * const pAvatarEnemy = (CAvatar * const) BLKPTR(pAvatar->hEnemy);
@@ -449,16 +567,102 @@ void CAvatar::FollowPlayer (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 				                                 pAvatar->mfY(),
 				                                 pAvatarEnemy->mfX(),
 				                                 pAvatarEnemy->mfY());
-				
-				if (pAvatar->mfCanIHitHim(pAvatarEnemy, distance, pAvatar->fContactDistance))
+
+				// [Issue 36] Awareness of every visible enemy (including this one) is
+				// refreshed once per frame by mfMarkVisibleFoesAware() at the top of
+				// FollowPlayer, so a hero spotting an as-yet-unaware enemy has already
+				// made the whole party aware of it before this awareness gate runs.
+
+				if (distance > MaxChaseDistance)
 				{
-					pAvatar->Status = AI_DEFEND;
+					// Enemy found by sector reject but too far to chase -- ignore it.
+					pAvatar->mfSethEnemy(fERROR);
+					if ((pAvatar->mfGetArtSequence() != ATTACK1SEQ &&
+					     pAvatar->mfGetArtSequence() != ATTACK2SEQ &&
+					     pAvatar->mfGetArtSequence() != DEFENDSEQ)
+					      || pAvatar->mfTestSequenceDone()
+					   )
+					{
+						pAvatar->mfStartAnimationOnce(STANDSEQ);
+					}
+				}
+				else if (!pAvatarEnemy->mfIsAware())
+				{
+					// [Issue 36] Awareness gate: the party has not seen this enemy
+					// recently (or awareness has timed out) -- not a valid target, so
+					// the hero awaits orders rather than chasing an unseen enemy.
+					pAvatar->mfSethEnemy(fERROR);
+					if ((pAvatar->mfGetArtSequence() != ATTACK1SEQ &&
+					     pAvatar->mfGetArtSequence() != ATTACK2SEQ &&
+					     pAvatar->mfGetArtSequence() != DEFENDSEQ)
+					      || pAvatar->mfTestSequenceDone()
+					   )
+					{
+						pAvatar->mfStartAnimationOnce(STANDSEQ);
+					}
+				}
+				else if (pAvatar->mfIsNastySector(pAvatarEnemy->mfX(), pAvatarEnemy->mfY()))
+				{
+					// [Issue 36] Dangerous-terrain rejection: the candidate is standing
+					// in lava/acid/deep water, so it is not a valid target.
+					pAvatar->mfSethEnemy(fERROR);
+					if ((pAvatar->mfGetArtSequence() != ATTACK1SEQ &&
+					     pAvatar->mfGetArtSequence() != ATTACK2SEQ &&
+					     pAvatar->mfGetArtSequence() != DEFENDSEQ)
+					      || pAvatar->mfTestSequenceDone()
+					   )
+					{
+						pAvatar->mfStartAnimationOnce(STANDSEQ);
+					}
+				}
+				else if (pAvatar->mfCanIHitHim(pAvatarEnemy, distance, pAvatar->fContactDistance))
+				{
 					pAvatarEnemy->mfEngage();
-					// GWP HACK HACK!
-					goto StartDefend;
+					if (pAvatar->mfGetAttackMode() == FIGHT_SEQUENCE::ATM_DEFEND)
+					{
+						// [Issue 36] A defending PC (e.g. a spellcaster, or one halted to
+						// defend) that re-acquires a target already in melee range locks
+						// on but HOLDS -- it must not swing.
+						pAvatar->Status = AI_DEFEND;
+						// GWP HACK HACK!
+						goto StartDefend;
+					}
+					else
+					{
+						// [Issue 36] An ATTACKING PC re-acquiring a target already in melee
+						// range (e.g. the next enemy right after it defeated its previous
+						// one) must keep fighting with its current fighting style.  The old
+						// "GWP HACK HACK" forced AI_DEFEND for every style here, so a fighter
+						// using slow attack 1 would stop attacking and just defend the
+						// instant it picked up an adjacent foe.
+						pAvatar->fChaseStartTick = 0;
+						pAvatar->Status = AI_ATTACK;
+						goto Start_Attack;
+					}
+				}
+				else if (pAvatar->mfGetAttackMode() == FIGHT_SEQUENCE::ATM_DEFEND)
+				{
+					// [Issue 36] A defending PC (e.g. a spellcaster sitting in its default
+					// `defend` stance) must HOLD position -- it must never auto-pursue into
+					// melee.  Previously AI_SEARCH unconditionally went to AI_MOVING,
+					// dragging defending casters into melee and out of casting range.
+					// Attackers fall through to the AI_MOVING pursuit below.
+					pAvatar->mfSethEnemy(fERROR);
+					if ((pAvatar->mfGetArtSequence() != ATTACK1SEQ &&
+					     pAvatar->mfGetArtSequence() != ATTACK2SEQ &&
+					     pAvatar->mfGetArtSequence() != DEFENDSEQ)
+					      || pAvatar->mfTestSequenceDone()
+					   )
+					{
+						pAvatar->mfStartAnimationOnce(STANDSEQ);
+					}
 				}
 				else
 				{
+					// [Issue 36] Begin a fresh pursuit: reset the chase give-up timer so it
+					// does not inherit a stale start time from a previous target.
+					pAvatar->fChaseStartTick = 0;
+					pAvatar->Status = AI_MOVING;
 					if ((pAvatar->mfGetArtSequence() != ATTACK1SEQ &&
 					     pAvatar->mfGetArtSequence() != ATTACK2SEQ &&
 					     pAvatar->mfGetArtSequence() != DEFENDSEQ)
@@ -489,10 +693,17 @@ Start_Attack:
 			if (pAvatar->hEnemy == fERROR)
 			{
 				// Find nearest un-engaged foe.
-				pAvatar->mfSethEnemy (pAvatar->mfFindClosestVisibleFoe());
+				pAvatar->mfSethEnemy (pAvatar->mfFindClosestFoe());
 				if (pAvatar->hEnemy != fERROR)
 				{
 					CAvatar *pAvatarEnemy = (CAvatar *) BLKPTR(pAvatar->hEnemy);
+					const LONG acquireDist = aprox_dist(
+						pAvatar->mfX(), pAvatar->mfY(),
+						pAvatarEnemy->mfX(), pAvatarEnemy->mfY());
+					if (acquireDist > MaxChaseDistance)
+					{
+						// Enemy found by sector reject but too far -- ignore, prefer
+						// nearby targets.
 					if (!IsPointerGood(pAvatarEnemy))
 					{
 						pAvatar->mfSethEnemy(fERROR);
@@ -502,9 +713,12 @@ Start_Attack:
 						pAvatarEnemy->mfEngage();
 					}
 				}
-				else
+
+				if (pAvatar->hEnemy == fERROR)
 				{
-					pAvatar->mfFreezeFrame(ATTACK1SEQ, 0);
+					// No usable target in range (none found or all too far to chase).
+					pAvatar->Status = AI_SEARCH;
+					pAvatar->mfStartAnimationOnce(STANDSEQ);
 				}
 			}
 			// GWP END DEMO HACK
@@ -540,18 +754,30 @@ Start_Attack:
 						pAvatar->Status = AI_SEARCH;
 						pAvatarEnemy->mfDisEngage();
 					}
-					else if (!pAvatar->mfCanIHitHim(pAvatarEnemy, distance, pAvatar->fContactDistance))
-					{
-						pAvatar->Status = AI_MOVING;
-						pAvatarEnemy->mfDisEngage();
-					}
 					else
 					{
+						const BOOL atkCanSee = pAvatar->mfCanSeeAvatar(pAvatarEnemy);
+						if (atkCanSee)
+							pAvatarEnemy->mfMarkAware();
+						// [Issue 36] Keep attacking only while we currently have LOS.
+						// If the enemy slips behind a wall, drop back to AI_MOVING and
+						// pathfind rather than continuing to swing through the wall.
+						// Spectres are exempt: a hero keeps attacking a phased spectre.
+						const BOOL atkTargetIsSpectre =
+							(pAvatarEnemy->GetAIFuncIndex() == AI_FUNC_SPECTRE);
+						if (!pAvatar->mfCanIHitHim(pAvatarEnemy, distance, pAvatar->fContactDistance) ||
+						    (!atkCanSee && !atkTargetIsSpectre))
+						{
+							pAvatar->Status = AI_MOVING;
+							pAvatarEnemy->mfDisEngage();
+						}
+						else
+						{
 						if (pAvatar->hEnemy == fERROR)
 						{
 							pAvatar->Status = AI_SEARCH;
 						}
-						
+
 						pAvatar->mfTestAndGiveDamage(pAvatar->hEnemy);
 						if (pAvatar->hEnemy == fERROR)
 						{
@@ -602,8 +828,9 @@ Start_Attack:
 					}
 				}
 			}
+		}
 			break;
-			
+
 	case AI_DEFEND:
 StartDefend:
 			// Hold your position as best you can.
@@ -646,10 +873,12 @@ StartDefend:
 					
 					if (distance > pAvatar->fContactDistance)
 					{
-						// we've disengaged.
-						pAvatar->Status = AI_SEARCH;
+						// [Issue 36] Enemy backed away -- hold position, don't chase.
+						// Stay in AI_DEFEND so mfFindClosestVisibleFoe() re-acquires
+						// if they return.
 						pAvatar->mfSethEnemy(fERROR);
 						pAvatarEnemy->mfDisEngage();
+						pAvatar->mfFreezeFrame(ATTACK1SEQ, 0);
 					}
 					else
 					{
