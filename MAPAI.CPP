@@ -5423,7 +5423,7 @@ CreateHldng:
 
 			npc_ai[rlm].CurrentAction = action;
 			if(units[TargetUnit].Realm == HomeRealm && TargetProvince > NO_PROVINCE && TargetProvince < NO_PROVINCE2)
-				AddReport(	IMMEDIATE_NPC_ASSASSIN, CurrentRealm, TargetProvince, 0);
+				AddReport(	IMMEDIATE_NPC_ASSASSIN, CurrentRealm, TargetProvince, units[TargetUnit].Icon);
 
 			SetScrewed((REALM::REALM_TYPE)units[TargetUnit].Realm, CurrentRealm, FALSE );
 			DeleteUnit(TargetUnit, FALSE );

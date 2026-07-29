@@ -4199,7 +4199,7 @@ spyexit:	;
 							
 							AddSndObj((BIRTHRT_SND)SND_UI_SUCCEEDED,0,VOLUME_NINETY);
 							if (whichProv > NO_PROVINCE && whichProv < NO_PROVINCE2)
-								SendReportTo(whichRealm, IMMEDIATE_NPC_ASSASSIN, HomeRealm, whichProv, 0);
+								SendReportTo(whichRealm, IMMEDIATE_NPC_ASSASSIN, HomeRealm, whichProv, units[iSelectedUnit].Icon);
 							SetScrewed(whichRealm, HomeRealm, TRUE );
 				  			DeleteUnit(iSelectedUnit, TRUE );
 						}

@@ -40,6 +40,7 @@
 #define LOY_LEVEL		9
 #define UNIT_TITLE		10
 #define ALLY_LEVEL		11
+#define UNIT_ICON		12
 #define IMMEDIATE	1024
 
 /* ------------------------------------------------------------------------
