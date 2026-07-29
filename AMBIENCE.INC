@@ -233,4 +233,4 @@ LONG AmbientSoundScene5[] =
 };
 
 // make this zero_based
-#define AMBIENT_SOUND_SCENE_5_TOTAL (sizeof(AmbientSoundScene4)/sizeof(LONG))
+#define AMBIENT_SOUND_SCENE_5_TOTAL (sizeof(AmbientSoundScene5)/sizeof(LONG))

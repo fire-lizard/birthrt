@@ -92,7 +92,7 @@ extern HINSTANCE hInstApp;
 /* ------------------------------------------------------------------------
    Global Variables
    ------------------------------------------------------------------------ */
-BOOL PlayEnvironmentalSounds = TRUE;
+BOOL PlayEnvironmentalSounds = FALSE;	// no scene loaded yet, so no ambience
 BOOL UIPlayEnvironmentalSounds = TRUE;
 SHORT WhichEnvironmentalSound = 0;
 #ifdef _WINDOWS
@@ -224,6 +224,10 @@ SHORT AddSndObj( BIRTHRT_SND  WaveID, SHORT randomCount, LONG MyThingsIndex)
 	// calculate distance from camera to thing
 	else
 	{
+		// a released or never-created thing leaves a stale index behind
+		if(MyThingsIndex >= MAX_THINGS || mythings[MyThingsIndex].valid != TRUE)
+			return fERROR;
+
 		// set the pan
 		pan = CalculatePan(MyThingsIndex);
 		volume = aprox_dist(PLAYER_INT_VAL(player.x),
@@ -427,10 +431,31 @@ void UpdateLoopingSoundObjects(void)
 
 			else
 			{
+				const LONG ThingIndex = LoopingSoundThing[i].ThingTypeIndex;
+
+				// the thing this loop was attached to can go away with the
+				// scene; drop the entry instead of reading past mythings
+				if(ThingIndex < 0 || ThingIndex >= MAX_THINGS || mythings[ThingIndex].valid != TRUE)
+				{
+					if(LoopingSoundThing[i].InstanceTag != fERROR)
+					{
+#ifdef WINDOWS_SOUND
+						PauseWave(LoopingSoundThing[i].wave);
+#else
+#ifdef AUDIO_LIB
+						kernel->AudioStop(LoopingSoundThing[i].wave, LoopingSoundThing[i].InstanceTag);
+#endif
+#endif
+						LoopingSoundCount--;
+					}
+					RemoveLoopingSoundFromArray(i);
+					continue;
+				}
+
 				distance= aprox_dist(PLAYER_INT_VAL(player.x),
 			               			  PLAYER_INT_VAL(player.y),
-			               			  mythings[LoopingSoundThing[i].ThingTypeIndex].x,
-			               			  mythings[LoopingSoundThing[i].ThingTypeIndex].y);
+			               			  mythings[ThingIndex].x,
+			               			  mythings[ThingIndex].y);
 
 				distance = TweakVolume(distance);
 			}
@@ -503,6 +528,9 @@ Arguments  the index into the array returned by AddLoopingSound (above)
 extern "C"
 void RemoveLoopingSound(LONG ArrayIndex)
 {
+	// AddLoopingSound hands back fERROR when the array is full
+	if(ArrayIndex < 0 || ArrayIndex >= MAX_SOUND_THINGS)
+		return;
 
 	if(LoopingSoundThing[ArrayIndex].InstanceTag != fERROR)
 	{
@@ -625,7 +653,9 @@ void ServiceSOLAudio(void)
 		KernelAudioService();
 #endif
 
-	if(PlayEnvironmentalSounds && UIPlayEnvironmentalSounds && SFXVolumeIndex)
+	// WhichEnvironmentalSound is the scene's ambience profile; 0 means the
+	// current scene has none, so don't run the countdown at all
+	if(PlayEnvironmentalSounds && UIPlayEnvironmentalSounds && SFXVolumeIndex && (WhichEnvironmentalSound > 0) )
 	{
 		// play random environmental sounds at random number of frames
 		FramesTilNextSound--;

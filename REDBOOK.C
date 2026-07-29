@@ -625,6 +625,11 @@ void ResumeSuspendedMusic(void)
 	MusicSuspended = FALSE;
 }
 
+BOOL IsMusicSuspended(void)
+{
+	return MusicSuspended;
+}
+
 int GetMusicVolume(void)
 {
 	return(VolumeIndex);

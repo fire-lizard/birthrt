@@ -3768,6 +3768,8 @@ void SelectGameType(LONG MenuCombo, LONG type)
 
 				dturn_mode = REPORT_DONE_MODE;
 				SetRedrawMainMapLevel();
+				ResumeSuspendedMusic();
+				PlayTrack(REDBOOK_REALM);
 
 				fControlMode = (type-10) | 0x100;	// selected tutorial
 				break;
@@ -3863,6 +3865,8 @@ void SelectGameType(LONG MenuCombo, LONG type)
 			AddGameKeys();
 			
 			fTutorialSelected = FALSE;
+			ResumeSuspendedMusic();
+			PlayTrack(REDBOOK_REALM);
 			RunAdvOnly();
 			
 			DescribeAdventure();
@@ -3908,6 +3912,8 @@ void SelectGameType(LONG MenuCombo, LONG type)
 			AddGameKeys();
 			
 			fTutorialSelected = FALSE;
+			ResumeSuspendedMusic();
+			PlayTrack(REDBOOK_REALM);
 			RunBattlesOnly();
 			
 			RunMenus();
