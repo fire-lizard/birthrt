@@ -951,7 +951,7 @@ LONG DoGetGameData(LONG lArray_Id, LONG lStruct_Id, LONG lArray_Index)
 					return (LONG)places[lArray_Index].NextPlace;
 				
 				case	MPPLACE_SCENE:
-					return (LONG)places[lArray_Index].scene;
+					return (LONG)(intptr_t)places[lArray_Index].scene;
 				
 				case	MPPLACE_IICONBITM:
 					return (LONG)places[lArray_Index].iIconBitm;

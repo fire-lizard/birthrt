@@ -1891,14 +1891,14 @@ void PaintReportMenu (LONG MenuCombo, LONG)
 				if (realm[i].mfIsPlayable())
 					print_textf(X, Y, DKBROWN, "^fsans8.pcx%s^fsans5.pcx^B110,0,60,5,`,%d,%d,1,0,%dPLAYER|^B180,0,60,5,`,%d,%d,2,0,%dDM CONTROL|^B250,0,60,5,`,%d,%d,3,0,%dCOMPUTER|",
 						realm[i].mfGetName(),
-						(LONG) WhoControls, i, (realm[i].mfIsPlayerCtrl() && !realm[i].mfIsDMCtrl()),
-						(LONG) WhoControls, i, realm[i].mfIsDMCtrl(),
-						(LONG) WhoControls, i, (!realm[i].mfIsPlayerCtrl() && !realm[i].mfIsDMCtrl()) );
+						(LONG)(intptr_t) WhoControls, i, (realm[i].mfIsPlayerCtrl() && !realm[i].mfIsDMCtrl()),
+						(LONG)(intptr_t) WhoControls, i, realm[i].mfIsDMCtrl(),
+						(LONG)(intptr_t) WhoControls, i, (!realm[i].mfIsPlayerCtrl() && !realm[i].mfIsDMCtrl()) );
 				else
 					print_textf(X, Y, DKBROWN, "^fsans8.pcx%s^fsans5.pcx^c210^x140^xcNOT AVAIL|^c128^B180,0,60,5,`,%d,%d,2,0,%dDM CONTROL|^B250,0,60,5,`,%d,%d,3,0,%dCOMPUTER|",
 						realm[i].mfGetName(),
-						(LONG) WhoControls, i, realm[i].mfIsDMCtrl(),
-						(LONG) WhoControls, i, (!realm[i].mfIsPlayerCtrl() && !realm[i].mfIsDMCtrl()) );
+						(LONG)(intptr_t) WhoControls, i, realm[i].mfIsDMCtrl(),
+						(LONG)(intptr_t) WhoControls, i, (!realm[i].mfIsPlayerCtrl() && !realm[i].mfIsDMCtrl()) );
 				Y+=11;
 			}
 		}

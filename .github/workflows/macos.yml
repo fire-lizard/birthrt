@@ -1,0 +1,67 @@
+# macOS / Apple-clang build.
+#
+# Unlike linux.yml this one starts green: the port was brought up against
+# Xcode 26.3 / Apple clang 17 on macOS 15 (x86_64) and both generators build
+# clean. Its job is to keep it that way.
+#
+# clang is stricter than the gcc that builds linux.yml and there is no
+# -fpermissive to fall back on (clang parses the flag and ignores it), so this
+# catches a class of problem the Linux job cannot. Run both.
+#
+# Not yet exercised anywhere: arm64. The bring-up ran on an Intel VM, so the
+# Apple Silicon path - ld64's handling of the link flags, and __attribute__
+# ((ms_struct)) on REGENT_DATA, which the static_assert in LOADSAVE.CPP is
+# what would catch - is still unproven. Switching this to an arm64 runner is
+# the cheapest way to close that gap.
+name: macos
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    # arm64. GitHub's Intel images are on their way out; if you still want
+    # x86_64 coverage, add an Intel runner here and pass
+    # -DCMAKE_PREFIX_PATH=/usr/local so CMake picks the Intel Homebrew SDL2
+    # rather than the arm64 one (Darwin.cmake prepends /opt/homebrew based on
+    # the HOST arch, not the target, so a cross build otherwise fails to link).
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install SDL2
+        run: brew install sdl2 ninja
+
+      # Ninja first, and this is the step to read: -k 0 keeps going after the
+      # first failure, so one run lists every translation unit clang rejects
+      # instead of just the alphabetically-first one. xcodebuild has no
+      # equivalent - it stops at the first error.
+      # CMAKE_PREFIX_PATH is belt-and-braces: CMake's Darwin.cmake already
+      # prepends /opt/homebrew, but only when the HOST is arm64, so being
+      # explicit keeps this working on either runner architecture.
+      - name: Configure (Ninja)
+        run: cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Debug -DCMAKE_PREFIX_PATH="$(brew --prefix)"
+
+      - name: Build (Ninja)
+        run: cmake --build build -j "$(sysctl -n hw.ncpu)" -- -k 0
+
+      # The Xcode generator is a separate risk from the compiler: multi-config,
+      # its own handling of the per-source LANGUAGE and COMPILE_OPTIONS
+      # properties. Runs even when the Ninja build failed, so one push reports
+      # on both.
+      - name: Configure (Xcode)
+        if: always()
+        run: cmake -B build-xcode -G Xcode -DCMAKE_PREFIX_PATH="$(brew --prefix)"
+
+      - name: Build (Xcode)
+        if: always()
+        run: cmake --build build-xcode --config Debug
+
+      # strumake is EXCLUDE_FROM_ALL, so the builds above never touch it and it
+      # can rot unnoticed - it did, and linux.yml has the same blind spot.
+      - name: Build strumake
+        if: always()
+        run: cmake --build build --target strumake

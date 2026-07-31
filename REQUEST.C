@@ -442,7 +442,7 @@ static void PaintRequests(void)
 		
 		if( Menus[CurRequest].Buttons[0].pfFunction != NULL )
 		{
-			(*Menus[CurRequest].Buttons[0].pfFunction)(
+			(*(PFVPP)Menus[CurRequest].Buttons[0].pfFunction)(
 				BUILD_LONG(CurRequest, Menus[CurRequest].Buttons[0].Id),
 				Menus[CurRequest].Buttons[0].Arg
 				);

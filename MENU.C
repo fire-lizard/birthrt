@@ -1063,7 +1063,7 @@ printf("MENU.C -	 SpinOut - cntSaveBkgnd: %d\n",cntSaveBkgnd);
 	
 	if( Menus[CurMenu].Buttons[0].pfFunction != NULL )
 	{
-		(*Menus[CurMenu].Buttons[0].pfFunction)(
+		(*(PFVPP)Menus[CurMenu].Buttons[0].pfFunction)(
 			BUILD_LONG(CurMenu, Menus[CurMenu].Buttons[0].Id),
 			Menus[CurMenu].Buttons[0].Arg
 			);
@@ -1178,7 +1178,7 @@ PFVLL GetButtonProc ( LONG MenuIndex, LONG ButtonId)
    Description - assign the function and arg as well as the hot key values
    Returns     - error if button id not found
    ======================================================================== */
-LONG SetButtonProc ( LONG MenuIndex, LONG ButtonId, PFVLL pFunc, LONG Val, LONG Key )
+LONG SetButtonProc ( LONG MenuIndex, LONG ButtonId, PFVLL pFunc, REGARG Val, LONG Key )
 {
 	LONG i;
 	
@@ -1203,7 +1203,7 @@ LONG SetButtonProc ( LONG MenuIndex, LONG ButtonId, PFVLL pFunc, LONG Val, LONG 
    Description - assign the function and arg as well as the hot key values
    Returns     - error if button id not found
    ======================================================================== */
-LONG ChangeButtonProc ( LONG MenuIndex, LONG ButtonId, PFVLL pFunc, LONG Val, LONG Key )
+LONG ChangeButtonProc ( LONG MenuIndex, LONG ButtonId, PFVLL pFunc, REGARG Val, LONG Key )
 {
 	LONG i;
 	LONG xOff = 0;
@@ -1869,7 +1869,7 @@ void DrawMenuSaveBitmap(LONG MenuId)
    Returns     - void
    ======================================================================== */
 #pragma unreferenced off
-void DecrementVal( LONG unused, LONG pVal )
+void DecrementVal( REGARG unused, REGARG pVal )
 #pragma unreferenced on
 {
 	LONG *pLocal = (LONG*)pVal;
@@ -1882,7 +1882,7 @@ void DecrementVal( LONG unused, LONG pVal )
    Returns     - void
    ======================================================================== */
 #pragma unreferenced off
-void IncrementVal( LONG unused, LONG pVal )
+void IncrementVal( REGARG unused, REGARG pVal )
 #pragma unreferenced on
 {
 	LONG *pLocal = (LONG*)pVal;
@@ -1895,7 +1895,7 @@ void IncrementVal( LONG unused, LONG pVal )
    Returns     - void
    ======================================================================== */
 #pragma unreferenced off
-void ToggleVal( LONG unused, LONG pVal )
+void ToggleVal( REGARG unused, REGARG pVal )
 #pragma unreferenced on
 {
 	LONG *pLocal = (LONG*)pVal;

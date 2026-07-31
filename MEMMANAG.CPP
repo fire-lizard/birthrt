@@ -118,7 +118,13 @@ static void 		ConcatinateMem();
 /* ------------------------------------------------------------------------ */
 /* Global Variables */
 
-shared_ptr<unsigned char[]> pHeap;
+/* unique_ptr, not shared_ptr: shared_ptr<T[]> is C++17 (P0414) and this
+   builds as C++11 (CMakeLists.txt). libstdc++ defines element_type as
+   remove_extent<T>::type unconditionally so it compiles there anyway;
+   libc++ - the only stdlib Xcode ships - honours the guard, and .get()
+   comes back as unsigned char(*)[]. unique_ptr<T[]> is C++11 on every
+   toolchain and pHeap is never copied or shared. */
+unique_ptr<unsigned char[]> pHeap;
 
 /* apBlocks holds byte OFFSETS into pHeap, not addresses. It used to hold
    addresses cast to ULONG, which only worked because the link forced every
@@ -190,7 +196,7 @@ ULONG InitMemManag (
 	cbFreemem = cbMaxFree - 4000;
 
 	// count down til we find the real size of free memory or we can't find enough
-	pHeap = shared_ptr<unsigned char[]>(new unsigned char[cbFreemem]);
+	pHeap.reset(new unsigned char[cbFreemem]);
 
 	printf("memory allocated: %d Starting at %p\n",cbFreemem, (void *)pHeap.get());
 

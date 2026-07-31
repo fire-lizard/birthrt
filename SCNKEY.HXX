@@ -73,7 +73,7 @@ public:
 		                        LONG  /* Roll */);
 	LONG mfGetKeyId();
 	PFVLL mfGetPrevFunc();
-	LONG mfGetPrevVal();
+	REGARG mfGetPrevVal();
 	void mfInitVals();
 	
 	// These key action fns get a handle to the key in the argument.
@@ -144,7 +144,7 @@ inline PFVLL KEY::mfGetPrevFunc() {
    Description - 
    Returns     - 
    ======================================================================== */
-inline LONG KEY::mfGetPrevVal() {
+inline REGARG KEY::mfGetPrevVal() {
 	return fOldKeyStruct.val;
 }
 

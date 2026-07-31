@@ -22,7 +22,17 @@
 #include "../TYPEDEFS.H"
 #include "../RESOURCE.H"
 
+/* Only MULPLAY.CPP uses <fstream>, and that file is Win32-only. Keeping the
+   include out of the POSIX build is not just about compile time: PLATFORM.H
+   macro-defines fopen() -> plat_fopen(), and libc++'s <fstream> calls fopen
+   from inside a template. Included after PLATFORM.H it either rebinds every
+   std::fstream to the game's path resolver (libc++ <= 20, silent) or fails to
+   compile with "no member named 'plat_fopen' in namespace 'std'" (libc++ >= 21).
+   Add <fstream> to the pre-include block in PLATFORM.H if the POSIX build ever
+   genuinely needs it. */
+#if defined(_WIN32)
 #include <fstream>
+#endif
 #include <climits>
 #if defined(_WIN32)
 #include "Direct.h"

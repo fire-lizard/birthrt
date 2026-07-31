@@ -18,7 +18,7 @@ public:
 	// what to do if clicked on
 	static void	mfLeftButton(CAvatar *);
 	static void mfRightButton(CAvatar *);
-	static SHORT FOLLOW_BTLCAP_DATA::FindUnengaged(CAvatar *, SHORT, THINGTYPE);
+	static SHORT FindUnengaged(CAvatar *, SHORT, THINGTYPE);
 	
 	SHORT		hLeader;	// Who I follow
 	LONG		Rate;		// My speed to keep up with him

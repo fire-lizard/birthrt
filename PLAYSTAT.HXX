@@ -234,7 +234,7 @@ public:
 	inline void mfMemorizeThisSpell(ITEMTYPE const);
 	void mfMemorizeAllInvSpells();
 	inline BOOL const mfIsMagicUser() const;
-	inline BOOL const PLAYER_STATS::mfIsMagicUser(PLAYER_CLASS_INFO::TYPE * pType,
+	inline BOOL const mfIsMagicUser(PLAYER_CLASS_INFO::TYPE * pType,
 		LONG * pLevel) const;
 
 	inline ALIGNMENT_INFO::TYPE	const mfGetAlignment() const;

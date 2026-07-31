@@ -19,14 +19,28 @@
    (WAD records, savegames, .AVA files) and in the memory manager's block
    table. On Windows they have to remain `long` so the typedefs agree with
    <windef.h>; everywhere else `long` is 64-bit, so use stdint. */
+#include <stdint.h>
 #if defined(_WIN32)
 	typedef signed long		LONG;
 	typedef unsigned long	ULONG;
 #else
-	#include <stdint.h>
 	typedef int32_t			LONG;
 	typedef uint32_t		ULONG;
 #endif
+
+/* The argument the region/menu/key system hands a callback. LONG cannot be
+   used for it: ~14 sites push a pointer through that argument, and LONG is
+   32 bits. The Linux build only survives because -no-pie loads the image at
+   0x400000, so every global fits. macOS has no equivalent - a 64-bit Mach-O
+   always reserves a 4GB __PAGEZERO, so __DATA starts at 0x100000000 on both
+   arm64 and x86_64, and clang rejects `(LONG)&global` outright ("cast from
+   pointer to smaller type loses information", an error with no warning group
+   and so nothing that -Wno- can downgrade).
+
+   Unconditionally intptr_t, including Win32: on MSVC x64 that stops the same
+   truncation, which is what /LARGEADDRESSAWARE:NO has been masking. LONG
+   itself must stay exactly 32 bits - it is in the on-disk structs. */
+typedef intptr_t			REGARG;
 
 /* The largest value a LONG holds. NOT <limits.h>'s LONG_MAX, which is the
    limit of C's `long`: 64-bit off Windows, so storing it in a LONG truncates
@@ -75,6 +89,9 @@ typedef void	(*PFVL)(LONG);
 typedef int		(*PFIL)(LONG);
 typedef void	(*PFVLLL)(LONG,LONG,LONG);
 typedef void	(*PFVLL)(LONG,LONG);
+/* The same callback, seen through pointer-width arguments. Only the handful
+   of callbacks that receive a pointer are declared this way; see REGARG. */
+typedef void	(*PFVPP)(REGARG,REGARG);
 typedef void	(*PFVLLB)(LONG,LONG,BOOL);
 typedef LONG	(*PFLLLL)(LONG,LONG,LONG);
 

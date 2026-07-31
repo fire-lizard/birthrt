@@ -639,7 +639,7 @@ SHORT load_FLC_sequence(ULONG iAnim, ULONG ttype, ULONG seq, ULONG Rotation)
    Description - loads a graphic for an object
    Returns     - the index of the new graphic in the obj_graphic table
    ======================================================================== */	
-static void load_obj_graphic(LONG i,
+void load_obj_graphic(LONG i,
 					  ULONG ttype,
 					  ULONG AnimationSeq,
 					  SBYTE rotation,

@@ -77,129 +77,129 @@ public:
 // ---------------------------------------------------------------------------
 // "GET" functions.
 
-inline THINGTYPE AVA_FILE::mfGetThingType() const
+inline THINGTYPE mfGetThingType() const
 {
 	return fThingType;
 }
 
-inline char * AVA_FILE::mfGetName()
+inline char * mfGetName()
 {
 	return fszName;
 }
 
-inline LONG AVA_FILE::mfGetTitle () const
+inline LONG mfGetTitle () const
 {
 	return fTitle;
 }
 
-inline LONG AVA_FILE::mfGetRace () const
+inline LONG mfGetRace () const
 {
 	return fRace;
 }
 
-inline LONG AVA_FILE::mfGetClass1 () const
+inline LONG mfGetClass1 () const
 {
 	return fClass1[0];
 }
 
-inline LONG AVA_FILE::mfGetClass1Level () const
+inline LONG mfGetClass1Level () const
 {
 	return fClass1[1];
 }
 
-inline LONG AVA_FILE::mfGetClass1Experience () const
+inline LONG mfGetClass1Experience () const
 {
 	return fClass1[2];
 }
 
-inline LONG AVA_FILE::mfGetClass2 () const
+inline LONG mfGetClass2 () const
 {
 // Can return -1, meaning there is no class 2.
 
 	return fClass2[0];
 }
 
-inline LONG AVA_FILE::mfGetClass2Level () const
+inline LONG mfGetClass2Level () const
 {
 	return fClass2[1];
 }
 
-inline LONG AVA_FILE::mfGetClass2Experience () const
+inline LONG mfGetClass2Experience () const
 {
 	return fClass2[2];
 }
 
-inline LONG AVA_FILE::mfGetStrength () const
+inline LONG mfGetStrength () const
 {
 	return fStrength;
 }
 
-inline LONG AVA_FILE::mfGetIntelligence () const
+inline LONG mfGetIntelligence () const
 {
 	return fIntelligence;
 }
 
-inline LONG AVA_FILE::mfGetDexterity () const
+inline LONG mfGetDexterity () const
 {
 	return fDexterity;
 }
 
-inline LONG AVA_FILE::mfGetWisdom () const
+inline LONG mfGetWisdom () const
 {
 	return fWisdom;
 }
 
-inline LONG AVA_FILE::mfGetConstitution () const
+inline LONG mfGetConstitution () const
 {
 	return fConstitution;
 }
 
-inline LONG AVA_FILE::mfGetCharisma () const
+inline LONG mfGetCharisma () const
 {
 	return fCharisma;
 }
 
-inline LONG AVA_FILE::mfGetTHAC0 () const
+inline LONG mfGetTHAC0 () const
 {
 	return fTHAC0;
 }
 
-inline LONG AVA_FILE::mfGetAlignment () const
+inline LONG mfGetAlignment () const
 {
 	return fAlignment;
 }
 
-inline LONG AVA_FILE::mfGetHitPoints () const
+inline LONG mfGetHitPoints () const
 {
 	return fHitPoints;
 }
 
-inline LONG AVA_FILE::mfGetArmorClass () const
+inline LONG mfGetArmorClass () const
 {
 	return fArmorClass;
 }
 
-inline LONG AVA_FILE::mfGetArmorType () const
+inline LONG mfGetArmorType () const
 {
 	return fArmorType;
 }
 
-inline LONG AVA_FILE::mfGetWeapon () const
+inline LONG mfGetWeapon () const
 {
 	return fWeapon;
 }
 
-inline LONG AVA_FILE::mfGetMorale () const
+inline LONG mfGetMorale () const
 {
 	return fMorale;
 }
 
-inline LONG AVA_FILE::mfGetTotalHitPoints () const
+inline LONG mfGetTotalHitPoints () const
 {
 	return fTotalHitPoints;
 }
 
-inline LONG AVA_FILE::mfGetExperience () const
+inline LONG mfGetExperience () const
 {
 // TODO: Figure out how fExperience relates to class experience.  I suppose
 // they might be the same things, or related somehow?
@@ -207,22 +207,22 @@ inline LONG AVA_FILE::mfGetExperience () const
 	return fExperience;
 }
 
-inline LONG AVA_FILE::mfGetAttacksPerRound () const
+inline LONG mfGetAttacksPerRound () const
 {
 	return fAttacksPerRound;
 }
 
-inline LONG AVA_FILE::mfGetBloodlineGrade () const
+inline LONG mfGetBloodlineGrade () const
 {
 	return fBloodlineGrade;
 }
 
-inline LONG AVA_FILE::mfGetBloodlineDerivation () const
+inline LONG mfGetBloodlineDerivation () const
 {
 	return fBloodlineDerivation;
 }
 
-inline LONG AVA_FILE::mfGetBloodlineStrength () const
+inline LONG mfGetBloodlineStrength () const
 {
 	return fBloodlineStrength;
 }
@@ -230,152 +230,152 @@ inline LONG AVA_FILE::mfGetBloodlineStrength () const
 // ---------------------------------------------------------------------------
 // "SET" functions.
 
-inline void	AVA_FILE::mfSetThingType (THINGTYPE thingType)
+inline void	mfSetThingType (THINGTYPE thingType)
 {
 	fThingType = thingType;
 }
 
-inline void AVA_FILE::mfSetStrength (LONG newVal)
+inline void mfSetStrength (LONG newVal)
 {
 	fStrength = newVal;
 }
 
-inline void AVA_FILE::mfSetDexterity (LONG newVal)
+inline void mfSetDexterity (LONG newVal)
 {
 	fDexterity = newVal;
 }
 
-inline void AVA_FILE::mfSetConstitution (LONG newVal)
+inline void mfSetConstitution (LONG newVal)
 {
 	fConstitution = newVal;
 }
 
-inline void AVA_FILE::mfSetIntelligence (LONG newVal)
+inline void mfSetIntelligence (LONG newVal)
 {
 	fIntelligence = newVal;
 }
 
-inline void AVA_FILE::mfSetWisdom (LONG newVal)
+inline void mfSetWisdom (LONG newVal)
 {
 	fWisdom = newVal;
 }
 
-inline void AVA_FILE::mfSetCharisma (LONG newVal)
+inline void mfSetCharisma (LONG newVal)
 {
 	fCharisma = newVal;
 }
 
-inline void AVA_FILE::mfSetRace (LONG newVal)
+inline void mfSetRace (LONG newVal)
 {
 	fRace = newVal;
 }
 
-inline void AVA_FILE::mfSetName (char * szNewName)
+inline void mfSetName (char * szNewName)
 {
 	strncpy (fszName, szNewName, MAX_NAME_LEN);
 }
 
-inline void AVA_FILE::mfSetTitle (LONG newVal)
+inline void mfSetTitle (LONG newVal)
 {
 	fTitle = newVal;
 }
 
-inline void AVA_FILE::mfSetDescription (LONG newVal)
+inline void mfSetDescription (LONG newVal)
 {
 	fDescription = newVal;
 }
 
-inline void AVA_FILE::mfSetAlignment (LONG newVal)
+inline void mfSetAlignment (LONG newVal)
 {
 	fAlignment = newVal;
 }
 
-inline void AVA_FILE::mfSetHitPoints (LONG newVal)
+inline void mfSetHitPoints (LONG newVal)
 {
 	fHitPoints = newVal;
 }
 
-inline void AVA_FILE::mfSetArmorClass (LONG newVal)
+inline void mfSetArmorClass (LONG newVal)
 {
 	fArmorClass = newVal;
 }
 
-inline void AVA_FILE::mfSetArmorType (LONG newVal)
+inline void mfSetArmorType (LONG newVal)
 {
 	fArmorType = newVal;
 }
 
-inline void AVA_FILE::mfSetWeapon (LONG newVal)
+inline void mfSetWeapon (LONG newVal)
 {
 	fWeapon = newVal;
 }
 
-inline void AVA_FILE::mfSetMorale (LONG newVal)
+inline void mfSetMorale (LONG newVal)
 {
 	fMorale = newVal;
 }
 
-inline void AVA_FILE::mfSetTotalHitPoints (LONG newVal)
+inline void mfSetTotalHitPoints (LONG newVal)
 {
 	fTotalHitPoints = newVal;
 }
 
-inline void AVA_FILE::mfSetTHAC0 (LONG newVal)
+inline void mfSetTHAC0 (LONG newVal)
 {
 	fTHAC0 = newVal;
 }
 
-inline void AVA_FILE::mfSetExperience (LONG newVal)
+inline void mfSetExperience (LONG newVal)
 {
 	fExperience = newVal;
 }
 
-inline void AVA_FILE::mfSetClass1 (LONG newVal)
+inline void mfSetClass1 (LONG newVal)
 {
 	fClass1[0] = newVal;
 }
 
-inline void AVA_FILE::mfSetClass1Level (LONG newVal)
+inline void mfSetClass1Level (LONG newVal)
 {
 	fClass1[1] = newVal;
 }
 
-inline void AVA_FILE::mfSetClass1Experience (LONG newVal)
+inline void mfSetClass1Experience (LONG newVal)
 {
 	fClass1[2] = newVal;
 }
 
-inline void AVA_FILE::mfSetClass2 (LONG newVal)
+inline void mfSetClass2 (LONG newVal)
 {
 	fClass2[0] = newVal;
 }
 
-inline void AVA_FILE::mfSetClass2Level (LONG newVal)
+inline void mfSetClass2Level (LONG newVal)
 {
 	fClass2[1] = newVal;
 }
 
-inline void AVA_FILE::mfSetClass2Experience (LONG newVal)
+inline void mfSetClass2Experience (LONG newVal)
 {
 	fClass2[2] = newVal;
 }
 
-inline void AVA_FILE::mfSetAttacksPerRound (LONG newVal)
+inline void mfSetAttacksPerRound (LONG newVal)
 {
 	fAttacksPerRound = newVal;
 }
 
-inline void AVA_FILE::mfSetBloodlineGrade (LONG iGrade)
+inline void mfSetBloodlineGrade (LONG iGrade)
 {
 	fBloodlineGrade = iGrade;
 }
 
-inline void AVA_FILE::mfSetBloodlineDerivation (LONG iDerivation)
+inline void mfSetBloodlineDerivation (LONG iDerivation)
 {
 	fBloodlineDerivation = iDerivation;
 }
 
-inline void AVA_FILE::mfSetBloodlineStrength (LONG iStrength)
+inline void mfSetBloodlineStrength (LONG iStrength)
 {
 	fBloodlineStrength = iStrength;
 }
@@ -383,32 +383,32 @@ inline void AVA_FILE::mfSetBloodlineStrength (LONG iStrength)
 // ---------------------------------------------------------------------------
 // Misc. functions
 
-inline BOOL AVA_FILE::mfIsWizard ()
+inline BOOL mfIsWizard ()
 {
 	return m_class1 == CLASS_WIZARD || m_class2 == CLASS_WIZARD;
 }
 
-inline BOOL AVA_FILE::mfIsBard ()
+inline BOOL mfIsBard ()
 {
 	return m_class1 == CLASS_BARD || m_class2 == CLASS_BARD;
 }
 
-inline BOOL AVA_FILE::mfIsWizardOrBard ()
+inline BOOL mfIsWizardOrBard ()
 {
 	return mfIsWizard () || mfIsBard ();
 }
 
-inline void	AVA_FILE::mfSetRealmName (char * szName)
+inline void	mfSetRealmName (char * szName)
 {
 	strncpy (fszRealmName, szName, AVA_FILE::_MAX_REALM);
 }
 
-inline char * AVA_FILE::mfGetRealmName ()
+inline char * mfGetRealmName ()
 {
 	return fszRealmName;
 }
 
-inline LONG	AVA_FILE::mfGetWizardLevel ()
+inline LONG	mfGetWizardLevel ()
 {
 	LONG	level1 = 0;
 	LONG	level2 = 0;
@@ -421,7 +421,7 @@ inline LONG	AVA_FILE::mfGetWizardLevel ()
 	return MAX (level1, level2);
 }
 
-inline LONG	AVA_FILE::mfGetBardLevel ()
+inline LONG	mfGetBardLevel ()
 {
 	LONG	level1 = 0;
 	LONG	level2 = 0;

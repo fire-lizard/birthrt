@@ -36,6 +36,8 @@
 
 class WEAPON_INFO {
 public:
+/* See above: macOS <math.h> defines HUGE. */
+#undef HUGE
 	typedef enum {
 		NO_SIZE = 0,
 		SMALL,

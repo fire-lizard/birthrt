@@ -33,10 +33,10 @@ D32DosMemAlloc (
     int386 (0x31, &r, &r);
 
     if (r.x.cflag)				/* Failed */
-	    return ((ULONG) 0);
+	    return NULL;
     else
 	    return (void *) ((r.x.eax & 0xFFFF) << 4);
 #else
-	return ((ULONG) 0);
+	return NULL;
 #endif
 }

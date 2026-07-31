@@ -60,12 +60,21 @@ typedef struct
 	LONG x,y;       /*rectangle for region*/
 	LONG w,h;
 	LONG key;       /*alternate key press if any*/
-	LONG val;       /*Value to pass to function*/
-	LONG val2;      /*Second value to pass to function*/
+	REGARG val;     /*Value to pass to function*/
+	REGARG val2;    /*Second value to pass to function*/
 	PFVLL function;
 	LONG id;        /* id for this critter */
 	LONG lTipIndex; /* index into tooltip array for the tooltip string */
 } REGION;
+
+/* ~14 sites pass &global through val/val2. If either ever narrows back to
+   LONG, macOS truncates the address silently instead of failing to build -
+   the crash then lands somewhere else entirely. Fail here instead. */
+#if defined(__cplusplus)
+static_assert(sizeof(REGARG) >= sizeof(void *), "REGARG must hold a pointer");
+static_assert(sizeof(((REGION *)0)->val) >= sizeof(void *), "REGION.val must hold a pointer");
+static_assert(sizeof(((REGION *)0)->val2) >= sizeof(void *), "REGION.val2 must hold a pointer");
+#endif
 
 typedef enum
 {
@@ -117,7 +126,7 @@ static REGION *gpLastRegion = &regions[0];
    Description - adds a key (zero-size region) to the command list
    Returns     - void
    ======================================================================== */
-void add_key(LONG key,PFVLL func, LONG val, LONG val2)
+void add_key(LONG key,PFVLL func, REGARG val, REGARG val2)
 {
 	LONG i;
 	
@@ -135,8 +144,8 @@ void add_key(LONG key,PFVLL func, LONG val, LONG val2)
    ======================================================================== */
 void replace_key_vals(LONG key, 
 		 PFVLL pNewFunc,
-		 LONG NewVal,
-		 LONG NewVal2,
+		 REGARG NewVal,
+		 REGARG NewVal2,
 		 PTR_KEYSTRUCT pOldKeyStruct)
 {
 	
@@ -250,7 +259,7 @@ static void add_tooltip(LONG i, LONG idTip)
    Description - adds an area to the screen that activates when clicked on
    Returns     - void
    ======================================================================== */
-LONG add_region(LONG x, LONG y, LONG w, LONG h, LONG key, PFVLL func, LONG val, LONG val2, LONG id, int idTip)
+LONG add_region(LONG x, LONG y, LONG w, LONG h, LONG key, PFVLL func, REGARG val, REGARG val2, LONG id, int idTip)
 {
 	LONG i = fERROR;
 
@@ -406,7 +415,7 @@ REGION_EVENT_TYPE check_regions(void)
 		if (key_status(pThisRegion->key))
 		{
 			AddSndObj( SND_UI_BUTTON_CLICK, NULL, VOLUME_NINETY);
-			(*pThisRegion->function)(pThisRegion->val, pThisRegion->val2);
+			(*(PFVPP)pThisRegion->function)(pThisRegion->val, pThisRegion->val2);
 			EventHandled = REGION_HANDLED_EVENT;
 			break;
 		}
@@ -503,7 +512,7 @@ SKIP_TIP:
 				)
 			{
 				AddSndObj( SND_UI_BUTTON_CLICK, NULL, VOLUME_NINETY);
-				(*pThisRegion->function)(pThisRegion->val, pThisRegion->val2);
+				(*(PFVPP)pThisRegion->function)(pThisRegion->val, pThisRegion->val2);
 				EventHandled = REGION_HANDLED_EVENT;
 				break;
 			}
@@ -550,7 +559,7 @@ REGION_EVENT_TYPE check_regions(void)
 		if (key_status(pThisRegion->key))
 		{
 			AddSndObj( SND_UI_BUTTON_CLICK, NULL, VOLUME_NINETY);
-			(*pThisRegion->function)(pThisRegion->val, pThisRegion->val2);
+			(*(PFVPP)pThisRegion->function)(pThisRegion->val, pThisRegion->val2);
 			EventHandled = REGION_HANDLED_EVENT;
 			break;
 		}
@@ -565,7 +574,7 @@ REGION_EVENT_TYPE check_regions(void)
 				)
 			{
 				AddSndObj( SND_UI_BUTTON_CLICK, NULL, VOLUME_NINETY);
-				(*pThisRegion->function)(pThisRegion->val, pThisRegion->val2);
+				(*(PFVPP)pThisRegion->function)(pThisRegion->val, pThisRegion->val2);
 				EventHandled = REGION_HANDLED_EVENT;
 				break;
 			}
@@ -977,7 +986,7 @@ BOOL change_tooltip(PFVLL func, LONG key, LONG x, LONG y,
    ======================================================================== */
 
 BOOL change_function(PFVLL func, LONG key, LONG x, LONG y, 
-					PFVLL NewFunc, LONG NewKey, LONG NewVal, LONG NewVal2,
+					PFVLL NewFunc, LONG NewKey, REGARG NewVal, REGARG NewVal2,
 					CHANGE_REGION_MODE crMode)
 {
 	BOOL Result = FALSE;

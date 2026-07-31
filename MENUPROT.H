@@ -74,7 +74,7 @@ typedef struct _BUTTON {
 	LONG			H;
 	LONG			Key;			// hot key short cut
 	PFVLL			pfFunction;		// function if region activated
-	LONG			Arg;			// user arg passed to function
+	REGARG			Arg;			// user arg passed to function (may be a pointer)
 	int				idToolTip;		// Tooltip for the region.
 } BUTTON;
 
@@ -116,13 +116,13 @@ void HideSubMenu(LONG, LONG index);
 void HideSubMenuWithClick(LONG MenuCombo, LONG index);
 void HideMenu(LONG Index);
 void RunMenus(void);
-void IncrementVal( LONG unused, LONG pVal );
-void DecrementVal( LONG unused, LONG pVal );
-void ToggleVal(LONG unused,  LONG pVal );
+void IncrementVal( REGARG unused, REGARG pVal );
+void DecrementVal( REGARG unused, REGARG pVal );
+void ToggleVal(REGARG unused,  REGARG pVal );
 LONG SetButtonValue ( LONG MenuIndex, LONG ButtonId, LONG Val);
 LONG GetButtonValue ( LONG MenuIndex, LONG ButtonId);
-LONG SetButtonProc ( LONG MenuIndex, LONG ButtonId, PFVLL pFunc, LONG Val, LONG Key );
-LONG ChangeButtonProc ( LONG MenuIndex, LONG ButtonId, PFVLL pFunc, LONG Val, LONG Key );
+LONG SetButtonProc ( LONG MenuIndex, LONG ButtonId, PFVLL pFunc, REGARG Val, LONG Key );
+LONG ChangeButtonProc ( LONG MenuIndex, LONG ButtonId, PFVLL pFunc, REGARG Val, LONG Key );
 LONG SetButtonLabel ( LONG MenuIndex, LONG ButtonId, int iLabel, LONG Color );
 LONG SetButtonLabelColor ( LONG MenuIndex, LONG ButtonId, LONG Color );
 LONG GetButtonLabelColor(LONG MenuIndex, LONG ButtonId, LONG *pLabelColor);
@@ -147,9 +147,20 @@ LONG GetButtonHLabelColor(LONG MenuIndex, LONG ButtonId, LONG *pLabelColor);
 void PaintActiveMenu(LONG AMenu);
 BOOL IsMenuActive(LONG MenuId);
 PFVLL GetButtonProc(LONG MenuIndex, LONG ButtonId);
+/* ponytail: these three still move BUTTON.Arg through a 32-bit LONG, so they
+   would truncate a pointer Arg. No live path does: the only pointer ever put
+   in Arg is &fContinueLoop on D_QUESTION1/QUESTION_BTN1, and these are called
+   only on the D_AVATAR, TUTORIAL, SYSHELP and D_HELPKEYS buttons, which all
+   hold plain handles. Widen to REGARG if that ever stops being true - it
+   reaches ~20 call sites plus the stale private prototype in BATTLEUI.CPP. */
 LONG GetButtonArg(LONG MenuIndex, LONG ButtonId);
 BOOL IsButtonHilighted ( LONG MenuIndex, LONG ButtonId);
 
+/* No PFVPP overloads for SetButtonProc/ChangeButtonProc, unlike REGIONS.H:
+   ~30 sites call these as SetButtonProc(menu, btn, NULL, 0, 0), and NULL is a
+   null pointer constant that converts to PFVLL and PFVPP equally well - an
+   overload pair makes every one of them ambiguous. Exactly one site passes a
+   pointer-taking callback (GAMEMAP.CPP, ToggleVal), and it casts. */
 #if defined (__cplusplus)
 }
 #endif

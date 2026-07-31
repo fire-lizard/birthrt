@@ -107,11 +107,11 @@ void CleanupAfterActnMenu (void);
 static void DeleteActnMenuRegions (void);
 void DoneHoldAction(LONG, LONG);
 void CancelHoldAction(LONG, LONG);
-void DispSuccess (void);
+static void DispSuccess (void);
 void MapAIPlayerResponseWaitSync (void);
 void UpdateHoldingFlag (void);
 void SuspendTimeLimit (void);
-void InitActionGlobals (void);
+static void InitActionGlobals (void);
 LONG cntUnits_ (void);
 LONG UnitsHere (PROVINCE prov, REALM::REALM_TYPE realm);
 
@@ -411,7 +411,7 @@ void ReconstructMap (void)
    Description - 
    Returns     -
    ======================================================================== */
-void NextPrev (LONG val, LONG);
+void NextPrev (REGARG val, REGARG);
 BOOL DoPageProvince(LONG *startCount, LONG provCount, LONG countToPrint, LONG counter, LONG x, LONG y)
 {
 	BOOL rv = FALSE;
@@ -425,7 +425,7 @@ BOOL DoPageProvince(LONG *startCount, LONG provCount, LONG countToPrint, LONG co
 		if(*startCount > 1)
 		{
 			DrawLittleButton(x+10, y+1, 50, 8, FALSE);
-			add_region(x+10, y+1, 50, 8, D_KEY_PREV, NextPrev,-countToPrint,(LONG)startCount,0, -1);
+			add_region(x+10, y+1, 50, 8, D_KEY_PREV, NextPrev,(REGARG)-countToPrint,(REGARG)startCount,0, -1);
 			print_textf(x+10+25, y+6, DKBROWN, STRMGR_GetStr(STR_ACTNMENU_PREV_PAGE));
 			rv = TRUE;
 		}
@@ -433,7 +433,7 @@ BOOL DoPageProvince(LONG *startCount, LONG provCount, LONG countToPrint, LONG co
 		if(*startCount <= (provCount - countToPrint))
 		{
 			DrawLittleButton(x+65, y+1, 50, 8, FALSE);
-			add_region(x+65, y+1, 50, 8, D_KEY_NEXT, NextPrev,countToPrint,(LONG)startCount,0, -1);
+			add_region(x+65, y+1, 50, 8, D_KEY_NEXT, NextPrev,(REGARG)countToPrint,(REGARG)startCount,0, -1);
 			print_textf(x+65+25, y+6, DKBROWN, STRMGR_GetStr(STR_ACTNMENU_NEXT_PAGE));
 			rv = TRUE;
 		}
@@ -910,14 +910,14 @@ void SelectMulUnits (LONG unitid, LONG index)
 }
 
 /*	======================================================================== */
-void IncNum (LONG lpNum, LONG)
+void IncNum (REGARG lpNum, REGARG)
 {
 	checkGoldReg = 0;
 	UBYTE * pNum = (UBYTE*)lpNum;
 	*pNum = *pNum + 1;
 }
 /*	======================================================================== */
-void DecNum (LONG lpNum, LONG)
+void DecNum (REGARG lpNum, REGARG)
 {
 	checkGoldReg = 0;
 	UBYTE * pNum = (UBYTE*)lpNum;
@@ -936,7 +936,7 @@ void DecNumWithSign (LONG, LONG)
 	modLevel -= 1;
 }
 /*	======================================================================== */
-void SetNum (LONG lpNum, LONG i)
+void SetNum (REGARG lpNum, REGARG i)
 {
 	UBYTE * pNum = (UBYTE*)lpNum;
 
@@ -946,7 +946,7 @@ void SetNum (LONG lpNum, LONG i)
 	fAllowRollButton += (*pNum!=0);
 }
 /*	======================================================================== */
-void NextPrev (LONG val, LONG lpStart)
+void NextPrev (REGARG val, REGARG lpStart)
 {
 	LONG *pStart = (LONG *)lpStart;
 	*pStart += val;
@@ -994,7 +994,7 @@ void SetupMod (LONG x, LONG y, UBYTE * pNum, LONG NumMin, LONG Base, LONG dirFac
 	if ((LONG)(*pNum) < NumMax)
 	{
 		DrawLittleButton(x, y-1, 10, 4, FALSE);
-		add_region(x-6, y-3, 18, 8, 0, IncNum, (LONG)pNum, 0, 0, -1);
+		add_region(x-6, y-3, 18, 8, 0, IncNum, (REGARG)pNum, 0, 0, -1);
 	}
 	else
 		color_rect(x-1, y-2, 10, 4, LTTAN-4);
@@ -1004,7 +1004,7 @@ void SetupMod (LONG x, LONG y, UBYTE * pNum, LONG NumMin, LONG Base, LONG dirFac
 	if ((LONG)(*pNum) > NumMin)
 	{
 		DrawLittleButton(x, y+6, 10, 4, FALSE);
-		add_region(x-6, y+4, 18, 8, 0, DecNum, (LONG)pNum, 0, 0, -1);
+		add_region(x-6, y+4, 18, 8, 0, DecNum, (REGARG)pNum, 0, 0, -1);
 	}
 	else
 		color_rect(x-1, y+6, 10, 4, LTTAN-4);
@@ -2315,7 +2315,7 @@ void PaintAgitate (LONG x, LONG y, LONG h)
 							if (province[i].Loyalty < 3)
 							{
 								DrawLittleButton(x+xRAISE, y+1, 25, 8, (iSelectedHolding[i][0]==2 || iSelectedHolding[i][0]==4));
-								add_region(x+xRAISE, y+1, 25, 8, 0, SetNum,(LONG)&iSelectedHolding[i][0],2,0, -1);
+								add_region(x+xRAISE, y+1, 25, 8, 0, SetNum,(REGARG)&iSelectedHolding[i][0],2,0, -1);
 							}
 							else
 								color_rect(x+xLOWER, y+1, 25, 8, LTTAN-4);
@@ -2324,7 +2324,7 @@ void PaintAgitate (LONG x, LONG y, LONG h)
 							if (province[i].Loyalty>0)
 							{
 								DrawLittleButton(x+xLOWER, y+1, 25, 8, (iSelectedHolding[i][0]==3 || iSelectedHolding[i][0]==5));
-								add_region(x+xLOWER, y+1, 25, 8,0, SetNum,(LONG)&iSelectedHolding[i][0],3,0, -1);
+								add_region(x+xLOWER, y+1, 25, 8,0, SetNum,(REGARG)&iSelectedHolding[i][0],3,0, -1);
 							}
 							else
 								color_rect(x+xLOWER, y+1, 25, 8, LTTAN-4);
@@ -4314,7 +4314,10 @@ void PaintRule (LONG x, LONG y, LONG h)
 	LONG	i, j, f, q, xx, tmpIndex;
 	LONG 	startY, level, select, index, tmp_index, totalLevel;
 	LONG	success, result;
-	UBYTE	dummy = 0;
+	// Static, not automatic: its address goes to IncNum/DecNum through a
+	// region that outlives this frame (PaintRule registers no matching
+	// del_region). Same reason as fContinueLoop in GAMEMAP.CPP.
+	static UBYTE	dummy = 0;
 	LONG		provCount;
 	LONG		flag = 0;
 	LONG		counter = 0;
@@ -6211,7 +6214,7 @@ void PaintRealmSpell(LONG x, LONG y, LONG h)
 						if(province[tmpIndex].Loyalty < 3)
 						{
 							DrawLittleButton(x+200, y+1, 25, 8, (iSelectedHolding[count][0]==2 || iSelectedHolding[count][0]==4));
-							add_region(x+200, y+1, 25, 8, 0, SetNum,(LONG)&iSelectedHolding[count][0],2,0, -1);
+							add_region(x+200, y+1, 25, 8, 0, SetNum,(REGARG)&iSelectedHolding[count][0],2,0, -1);
 						}
 						print_textf(x+200+13, y+6, DKBROWN, "^F00^c%s", STRMGR_GetStr(STR_ACTN_RAISE));
 						if(province[tmpIndex].Dispel>0)
@@ -6219,7 +6222,7 @@ void PaintRealmSpell(LONG x, LONG y, LONG h)
 						if(province[tmpIndex].Loyalty > 0)
 						{
 							DrawLittleButton(x+250, y+1, 25, 8, (iSelectedHolding[count][0]==3 || iSelectedHolding[count][0]==5));
-							add_region(x+250, y+1, 25, 8,0, SetNum,(LONG)&iSelectedHolding[count][0],3,0, -1);
+							add_region(x+250, y+1, 25, 8,0, SetNum,(REGARG)&iSelectedHolding[count][0],3,0, -1);
 						}
 						print_textf(x+250+13, y+6, DKBROWN, "^c%s", STRMGR_GetStr(STR_ACTN_LOWER));
 
@@ -6244,13 +6247,13 @@ void PaintRealmSpell(LONG x, LONG y, LONG h)
 				if(province[iSelectedProvince].Loyalty < 3)
 				{
 					DrawLittleButton(x+200, y+1, 25, 8, (iSelectedHolding[7][0]==2));
-					add_region(x+200, y+1, 25, 8, 0, SetNum,(LONG)&iSelectedHolding[7][0],2,0, -1);
+					add_region(x+200, y+1, 25, 8, 0, SetNum,(REGARG)&iSelectedHolding[7][0],2,0, -1);
 				}
 				print_textf(x+200+13, y+6, DKBROWN, "^F00^c%s", STRMGR_GetStr(STR_ACTN_RAISE));
 				if(province[iSelectedProvince].Loyalty > 0)
 				{
 					DrawLittleButton(x+250, y+1, 25, 8, (iSelectedHolding[7][0]==3));
-					add_region(x+250, y+1, 25, 8,0, SetNum,(LONG)&iSelectedHolding[7][0],3,0, -1);
+					add_region(x+250, y+1, 25, 8,0, SetNum,(REGARG)&iSelectedHolding[7][0],3,0, -1);
 				}
 				print_textf(x+250+13, y+6, DKBROWN, "^c%s", STRMGR_GetStr(STR_ACTN_LOWER));
 

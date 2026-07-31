@@ -194,9 +194,9 @@ public:
                               (GameDisplayStringFunction theEnumeratePlayersFunction,
                                long theContext);
 
-   virtual int PlatformNetworkModule::ForceStart( void );
+   virtual int ForceStart( void );
 
-   virtual void PlatformNetworkModule::DisablePlayers( void );
+   virtual void DisablePlayers( void );
 
    virtual ErrCode GetLocalPlayerID    ( long* thePlayerID );
    virtual ErrCode GetOtherPlayerID		( long* thePlayerID, int index ) ;
