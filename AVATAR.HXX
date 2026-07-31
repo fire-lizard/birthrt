@@ -361,7 +361,7 @@ public:				// Public for the dialog editor
 	static void DeleteAvatar(SHORT hAvatar);
 	
 	// GWP Remove the default Realm value when aibtlcap.cpp is available.
-	static LONG CAvatar::CreateAvatar(
+	static LONG CreateAvatar(
 			   LONG	Id,
 			   THINGTYPE	Type,
 			   LONG	X,
@@ -381,7 +381,7 @@ public:				// Public for the dialog editor
 			   THINGTYPE Type) const;
 			
 	inline void mfSetOriginalRemapColor(LONG const /* remapColor */);
-	inline void CAvatar::mfSetBeingControlled(BOOL const /* flag */);
+	inline void mfSetBeingControlled(BOOL const /* flag */);
 	
 	// The Menu Fns.
 	static void mfSwitchToStandStill(LONG);
@@ -497,7 +497,7 @@ public:				// Public for the dialog editor
 	inline static SHORT const mfGetPlayerAvatarHandle();
 	inline void  mfSetMeToThePlayer() const;
 	
-	static BOOL CAvatar::mfSetKillType(CAvatar *, THINGTYPE, LONG DamageLevel );
+	static BOOL mfSetKillType(CAvatar *, THINGTYPE, LONG DamageLevel );
 	
 	void mfStartNextFightSequence();
 	

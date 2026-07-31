@@ -952,7 +952,7 @@ void AddGameKeys(void)
 	{
 		extern BOOL fVeryFirstTime;
 
-		add_key(KEY_C, ToggleVal, (LONG)&fClimb, 0);
+		add_key(KEY_C, ToggleVal, 0, (REGARG)&fClimb);
       add_key(KEY_G, DumpScreen, 0, 0);            // dump screen buffer to .pcx
       add_key(KEY_F8, TextureLightTest, 0, 0);     // brighten things
       fVeryFirstTime = FALSE;                      // allow main menu to come up
@@ -967,7 +967,7 @@ void AddGameKeys(void)
 	add_key(KEY_E,  EditToggleSpeed,  0, 0);        // [d7-23-96 JPC]
 #endif
 
-	add_key(KEY_P, ToggleVal, (LONG)&fPosition, 0);
+	add_key(KEY_P, ToggleVal, 0, (REGARG)&fPosition);
 
 #if defined( _DEBUG) || defined(_EDIT)
 	add_key(KEY_W, toggle_ShowWadSize,0, 0);

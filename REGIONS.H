@@ -29,8 +29,8 @@ typedef enum {
 
 // Structure to return the previous key state in add_key & del_key.
 typedef struct _KeyStruct {
-	LONG	val;
-	LONG	val2;
+	REGARG	val;
+	REGARG	val2;
 	PFVLL	func;
 } KEYSTRUCT, *PTR_KEYSTRUCT;
 
@@ -51,19 +51,19 @@ extern "C" {
 
 /* regions.c */
 void add_key(LONG /* key */,
-				  PFVLL /* func */, 
-				  LONG /* val */, 
-				  LONG /* val2 */);
+				  PFVLL /* func */,
+				  REGARG /* val */,
+				  REGARG /* val2 */);
 #define replace_key(key,func,val, pStruct) replace_key_vals((key), (func), (val), 0, (pStruct))
-void replace_key_vals(LONG /* key */, 
+void replace_key_vals(LONG /* key */,
                  PFVLL /* pNewFunc */,
-                 LONG /* NewVal */,
-                 LONG /* NewVal2 */,
+                 REGARG /* NewVal */,
+                 REGARG /* NewVal2 */,
                  PTR_KEYSTRUCT /* pOldKeyStruct */);
 void del_key(LONG /* key */, 
              PTR_KEYSTRUCT /* pKeyStruct */);
 
-LONG add_region(LONG x,LONG y,LONG w,LONG h,LONG key,PFVLL func,LONG val, LONG val2,LONG id, int idToolTip);
+LONG add_region(LONG x,LONG y,LONG w,LONG h,LONG key,PFVLL func,REGARG val, REGARG val2,LONG id, int idToolTip);
 void del_region(PFVLL func,LONG key);
 void del_all_regions(void);
 REGION_EVENT_TYPE check_regions();
@@ -81,8 +81,8 @@ BOOL change_function(PFVLL Oldfunc,
                      LONG x, LONG y, 
                      PFVLL NewFunc,
 					 LONG NewKey,
-					 LONG NewVal,
-					 LONG NewVal2,
+					 REGARG NewVal,
+					 REGARG NewVal2,
 					 CHANGE_REGION_MODE crMode);
 
 BOOL del_region_xy(PFVLL Oldfunc,
@@ -93,5 +93,16 @@ BOOL del_region_xy(PFVLL Oldfunc,
 				   CHANGE_REGION_MODE crMode);
 #if defined (__cplusplus)
 }
+
+/* Overloads for the handful of callbacks that take a pointer and so are
+   declared void(REGARG,REGARG) rather than void(LONG,LONG). Everything else
+   still matches PFVLL above and is unaffected. Cast the function pointer
+   directly - laundering it through void* is only conditionally supported. */
+inline LONG add_region(LONG x,LONG y,LONG w,LONG h,LONG key,PFVPP func,REGARG val,REGARG val2,LONG id,int idToolTip)
+{ return add_region(x,y,w,h,key,(PFVLL)func,val,val2,id,idToolTip); }
+inline void add_key(LONG key,PFVPP func,REGARG val,REGARG val2)
+{ add_key(key,(PFVLL)func,val,val2); }
+inline void del_region(PFVPP func,LONG key)
+{ del_region((PFVLL)func,key); }
 #endif
 #endif // _REGIONS_H

@@ -95,8 +95,8 @@ typedef enum {
    ------------------------------------------------------------------------ */
 void WarDeclared(REALM::REALM_TYPE who, REALM::REALM_TYPE onWhom, BOOL fSend);	// from actnmenu.cpp
 static void RollNPCAction (LONG, LONG );
-void IncNum (LONG lpNum, LONG);
-void DecNum (LONG lpNum, LONG);
+void IncNum (REGARG lpNum, REGARG);
+void DecNum (REGARG lpNum, REGARG);
 static BOOL DoIHavePlace (PROVINCE prov, REALM::REALM_TYPE placerealm, MAP_ICON icon);
 static BOOL FindHolding (REALM::REALM_TYPE provrealm, REALM::REALM_TYPE placerealm, PROVINCE prov, MAP_ICON icon, LONG fMax);
 BOOL CheckUnit2ndMoveBlocked(LONG iMovingUnit, PROVINCE iCurProv, PROVINCE iNewProv);

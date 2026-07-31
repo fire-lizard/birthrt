@@ -1,2 +1,7 @@
 .vs
 out
+build
+build-xcode
+DerivedData
+*.xcodeproj
+.DS_Store

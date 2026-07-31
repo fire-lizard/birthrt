@@ -2560,7 +2560,7 @@ void DataAreaMode (LONG type, LONG fNotDepress)
 }
 
 /*	======================================================================== */
-void TempDataAreaMode (LONG flag_addr, LONG value)
+void TempDataAreaMode (REGARG flag_addr, REGARG value)
 {
 	static LONG save_mode_save;
 	static LONG save_dturn_mode;
@@ -2602,7 +2602,7 @@ void TempDataAreaMode (LONG flag_addr, LONG value)
 }
 
 /*	======================================================================== */
-void TempDataAreaModeSet (LONG flag_addr, LONG value)
+void TempDataAreaModeSet (REGARG flag_addr, REGARG value)
 {
 	SHORT * pFlag = (SHORT *)flag_addr;
 
@@ -2611,7 +2611,7 @@ void TempDataAreaModeSet (LONG flag_addr, LONG value)
 }
 
 /*	======================================================================== */
-void TempDataAreaModeOff (LONG flag_addr, LONG)
+void TempDataAreaModeOff (REGARG flag_addr, REGARG)
 {
 	SHORT * pFlag = (SHORT *)flag_addr;
 
@@ -4301,7 +4301,7 @@ void UpdateUnitAndPlaceCount (void)
 	Returns	- void
 	======================================================================== */
 BOOL DoPageProvince(LONG *startCount, LONG provCount, LONG countToPrint, LONG counter, LONG x, LONG y);
-void NextPrev (LONG val, LONG);
+void NextPrev (REGARG val, REGARG);
 static LONG		startCount = 1;
 static LONG		startCount1 = 1;
 static LONG		startCount2 = 1;
@@ -6119,7 +6119,7 @@ void AddDomainRegions (void)
 
 		if(fRealmSelected || fTutorialSelected )
 		{	
-			add_region(422,432,32,48,0,TempDataAreaMode,(LONG)&fSelectDomains,1,regSHOW_HOLDINGS, STR_GM_TT_SELECT_DOMAIN);
+			add_region(422,432,32,48,0,TempDataAreaMode,(REGARG)&fSelectDomains,1,regSHOW_HOLDINGS, STR_GM_TT_SELECT_DOMAIN);
 			add_region(456,432,32,48,0,DisplayHolding,LAW1_ICON,0,regSHOW_HOLDINGS, STR_GM_TT_DISPLAY_LAW);
 			add_region(490,432,32,48,0,DisplayHolding,GUILD1_ICON,0,regSHOW_HOLDINGS, STR_GM_TT_DISPLAY_GUILD);
 			add_region(524,432,32,48,0,DisplayHolding,TEMPLE1_ICON,0,regSHOW_HOLDINGS, STR_GM_TT_DISPLAY_TEMPLE);
@@ -10055,7 +10055,9 @@ void DisplayNPCResults(void)
 
 	// turn off the middle button
 	SetButtonLabel  (D_QUESTION1, QUESTION_BTN1, STR_OK, BTN_LABEL_COLOR );
-	SetButtonProc   (D_QUESTION1, QUESTION_BTN1, ToggleVal, (LONG)&fContinueLoop, D_KEY_OK );
+	/* ToggleVal takes REGARG now; SetButtonProc has no PFVPP overload
+	   (see MENUPROT.H), so cast. Arg reaches it as the second argument. */
+	SetButtonProc   (D_QUESTION1, QUESTION_BTN1, (PFVLL)ToggleVal, (REGARG)&fContinueLoop, D_KEY_OK );
 
 	ShowMenu(D_QUESTION1);
 

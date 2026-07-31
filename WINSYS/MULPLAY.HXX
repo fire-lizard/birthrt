@@ -589,7 +589,7 @@ public:
 
 	//---- Set control on and off
 
-	BOOL MultiPlayer::SendControl( int control );
+	BOOL SendControl( int control );
 
    //---- Message Loop
 

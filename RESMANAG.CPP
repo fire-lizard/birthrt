@@ -126,8 +126,8 @@ SHORT LoadLump (
 
 #if fUSE_RES_FILES
 // [d3-06-97 JPC]
-LONG FindExtensionIndex (CSTRPTR szResName);
-SHORT FindResourceSlot (CSTRPTR szResName, LONG iExtIndex, LONG * piSlot, LONG * piResFileSlot, BOOL fResfileRequired);
+static LONG FindExtensionIndex (CSTRPTR szResName);
+static SHORT FindResourceSlot (CSTRPTR szResName, LONG iExtIndex, LONG * piSlot, LONG * piResFileSlot, BOOL fResfileRequired);
 SHORT LoadPCXFromResFile (CSTRPTR szFileName, BOOL fNoScale, BOOL fLockRes, BOOL fRotated, LONG iResFileSlot);
 SHORT LoadFLCFromResFile (LONG iResFileSlot, BOOL fLockRes);
 #endif

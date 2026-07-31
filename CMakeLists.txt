@@ -167,32 +167,49 @@ else ()
 	target_include_directories (Birthrt PRIVATE ${CMAKE_CURRENT_SOURCE_DIR} ${SDL2_INCLUDE_DIRS})
 	# -rdynamic exports symbols into the dynamic table so the crash
 	# handler's backtrace shows function names rather than bare addresses.
+	# clang's Darwin driver translates it to ld64's -export_dynamic, so it
+	# is meaningful on macOS too.
 	#
-	# -no-pie is the Linux counterpart of the Windows build's
-	# /LARGEADDRESSAWARE:NO. The region/menu system hands callbacks their
-	# argument as a LONG (32-bit) and ~13 sites push a pointer through it
-	# (add_region(..., SetNum, (LONG)&iSelectedHolding[i][0], ...)). Every
-	# one of those targets is a global or a static, so loading the image at
-	# 0x400000 instead of a PIE's 0x555555550000 keeps their addresses
-	# inside 32 bits and the round trip is lossless.
-	# ponytail: the real fix is a pointer-width callback argument, which
-	# means changing PFVLL and every void Foo(LONG,LONG) callback in the
-	# game. Do that if a pointer to the stack or to mmap'd memory ever has
-	# to go through a region argument.
+	# -no-pie was the Linux counterpart of the Windows build's
+	# /LARGEADDRESSAWARE:NO: the region/menu system used to hand callbacks
+	# their argument as a 32-bit LONG while ~14 sites pushed a pointer
+	# through it, and loading the image at 0x400000 kept those addresses
+	# inside 32 bits. That deferral has now been cashed in - the argument is
+	# REGARG (intptr_t, TYPEDEFS.H) and the round trip is lossless
+	# everywhere - so -no-pie is no longer load-bearing. Kept on Linux only
+	# because the existing build is known-good with it.
+	#
+	# It could not have been carried to macOS in any case: clang forces PIC
+	# on both Darwin arches, ld64 ignores -no_pie on arm64, and every 64-bit
+	# Mach-O reserves a 4GB __PAGEZERO, so __DATA starts at 0x100000000 and
+	# no macOS global has ever fit in a LONG.
 	target_link_libraries (Birthrt ${SDL2_LIBRARIES})
-	target_link_options (Birthrt PRIVATE -rdynamic -no-pie)
-	target_compile_options (Birthrt PRIVATE -fno-pie)
+	if (APPLE)
+		target_link_options (Birthrt PRIVATE -rdynamic)
+	else ()
+		target_link_options (Birthrt PRIVATE -rdynamic -no-pie)
+		target_compile_options (Birthrt PRIVATE -fno-pie)
+	endif ()
 	set_target_properties (Birthrt PROPERTIES CXX_STANDARD 11)
 
 	# 1997 C++ predates most of what these would flag, and the noise buries
-	# the diagnostics that matter. -fpermissive is load-bearing: the sources
-	# rely on pre-standard conversions clang/gcc reject outright.
+	# the diagnostics that matter. -fpermissive is load-bearing on GCC: the
+	# sources rely on pre-standard conversions it would otherwise reject.
+	# It is GCC-only - clang parses it into its ignored-flags group and
+	# silently does nothing - so gate it rather than imply it does something
+	# on macOS. Anything clang rejects has to be fixed at the source; there
+	# is no permissive mode to fall back on.
 	# -Werror=overflow: the one warning class this port cannot afford to let
 	# scroll past. `LONG x = LONG_MAX` silently became -1 here and left the
 	# adventure monsters unable to pick a target; 19 sites had it. It is a
 	# constant-folding diagnostic, so it never fires on correct code.
+	# Note clang's "overflow" group is an empty GCC-compatibility stub, so
+	# this promotes nothing there; the clang spelling is
+	# -Werror=constant-conversion, not turned on until the macOS build is
+	# green and the existing hits have been counted.
 	target_compile_options (Birthrt PRIVATE
-		-fpermissive -fsigned-char -fno-strict-aliasing
+		$<$<CXX_COMPILER_ID:GNU>:-fpermissive>
+		-fsigned-char -fno-strict-aliasing
 		-Werror=overflow
 		-Wno-write-strings -Wno-narrowing -Wno-multichar
 		-Wno-invalid-offsetof -Wno-deprecated)
@@ -211,7 +228,11 @@ endif ()
 # Standalone string-table disassembler: strdat.dat -> strdat.txt + strenum.h,
 # the inverse of STRMAKE.CPP. Its own target because it owns main(), which
 # would collide with STRMAKE.CPP's in the game executable.
-add_executable (strumake EXCLUDE_FROM_ALL "STRUMAKE.CPP")
+# PLATFORM.CPP because STRUMAKE.CPP includes PLATFORM.H, whose non-Win32 arm
+# rewrites its four fopen() calls to plat_fopen(). Without it the target does
+# not link off Windows - never noticed because EXCLUDE_FROM_ALL means a plain
+# `cmake --build` never touches it.
+add_executable (strumake EXCLUDE_FROM_ALL "STRUMAKE.CPP" "PLATFORM.CPP")
 target_include_directories (strumake PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 if (MSVC)
 	target_compile_definitions (strumake PRIVATE _CRT_SECURE_NO_WARNINGS)

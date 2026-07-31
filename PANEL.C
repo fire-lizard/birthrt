@@ -420,7 +420,7 @@ static void PaintPanels(void)
 		
 		if( Menus[CurPanel].Buttons[0].pfFunction != NULL )
 		{
-			(*Menus[CurPanel].Buttons[0].pfFunction)(
+			(*(PFVPP)Menus[CurPanel].Buttons[0].pfFunction)(
 				BUILD_LONG(CurPanel, Menus[CurPanel].Buttons[0].Id),
 				Menus[CurPanel].Buttons[0].Arg
 				);
