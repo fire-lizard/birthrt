@@ -2514,15 +2514,17 @@ void CheckHolding(LONG place, REALM::REALM_TYPE realm_, BOOL fSend)
 		
 	for (i=0; i<MAX_PLACES; ++i)
 	{
-		if(places[i].Realm == realm_
+		if(i != place					// don't merge a holding into itself
+				&& places[i].Realm == realm_
 				&& places[i].Icon == places[place].Icon
 				&& FindProvForPlace(i)==prov)
 		{
-			if(places[place].Level > places[i].Level)
-				places[i].Level = (places[i].Level > 0) ? (places[place].Level + 1) : places[place].Level;
-		 	else
-				places[i].Level = (places[place].Level > 0) ? (places[i].Level + 1)	: places[i].Level;
-		
+			// Absorbing a holding adds its levels.  The rest of the game treats the
+			// sum of same-type holding levels in a province as the quantity capped by
+			// CivLevel/MagLevel (see CheckAndFixSourceLevels and the RULE screen), so
+			// merging must preserve that sum -- the old "bigger one +1" lost levels.
+			places[i].Level = places[i].Level + places[place].Level;
+
 			DeleteHolding (prov, place, fSend);
 			SetGameData(MP_PLACES, MPPLACE_LEVEL, i, places[i].Level, fSend );
 			SetGameData(MP_PLACES, MPPLACE_IICONBITM, i, places[i].Icon+(((places[i].Level<8)?places[i].Level:7)/2), fSend );
