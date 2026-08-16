@@ -1,0 +1,5 @@
+// The window class in WINSYS/MACHINE.C asks for LoadIcon(hInst,"Birthright4"),
+// which has returned NULL since the retail .rc was lost - the name is kept.
+// Id 1 is the same icon again, so Explorer/the taskbar pick it for the exe.
+1           ICON    "BIRTHRT.ICO"
+Birthright4 ICON    "BIRTHRT.ICO"
