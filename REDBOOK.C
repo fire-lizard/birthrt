@@ -592,6 +592,8 @@ void UISetMusicVolume(int volume)
 	if( ( (InstallationType == INSTALL_LARGE ) && !GetCDTrack()) || (InstallationType != INSTALL_LARGE) )
 #endif
 	{
+		if(volume < 0)				// stale options file can hold a negative musvol
+			volume = 0;
 		VolumeIndex = volume;
 		if(volume == 0)
 		{

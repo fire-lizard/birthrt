@@ -224,6 +224,8 @@ void OptAdjLevel(LONG which, LONG what)
             musvol += what;
             if (musvol > 10)
                 musvol = 10;
+            if (musvol < 0)
+                musvol = 0;
 			UISetMusicVolume(musvol);
             break;
 
