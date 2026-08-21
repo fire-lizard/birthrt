@@ -431,8 +431,7 @@ BOOL AppInit( HINSTANCE hInst, HINSTANCE hPrev, LPSTR szCmdLine, int sw )
 
 	GameMain();
 
-	hcStd = LoadCursor( hInstApp, chCursorName);
-	SetCursor(hcStd);
+	WinCursorSet();
 
 	PostMessage(hwndApp, WM_SIZE, SIZE_RESTORED, MAKELPARAM(640, 480));
 	
@@ -593,6 +592,12 @@ void WinCursorSet()
 	//---- Have to do this for the target cursor in adventures
 
 	hcStd = LoadCursor( hInstApp, chCursorName);
+
+	// ponytail: the retail .rc with the DAGGER/TARGET/WAITCURS cursors is lost, so
+	// LoadCursor returns NULL and SetCursor(NULL) blanked the pointer every frame.
+	// Fall back to the system arrow, like the SDL build does.
+	if ( hcStd == NULL )
+		hcStd = LoadCursor( NULL, IDC_ARROW );
 
 	if ( hcStd != GetCursor() )
 	{
