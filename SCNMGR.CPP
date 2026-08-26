@@ -576,6 +576,22 @@ void SCENE_MGR::mfReleaseSceneToMap(LONG,LONG)
 		HideSubMenu(0,D_AVATAR_INVENTORY);
 		HideSubMenu(0,D_AVATAR_ATTRIBUTES);
 		
+		// Releasing a combat scene only runs mfCombatRelease, which hands the
+		// scene back to the adventure AI - the adventure teardown never happens.
+		// Drop out of combat first (the way AdvExit does) so the second release
+		// takes down the combat panels, the adventure team and the region stack.
+		// Without this the panels keep painting avatars mfDeleteScene just freed.
+		{
+			SCENE_AI::STATE SceneState;
+			SCENE_AI::SCENE_TYPE SceneType;
+			pCurrentScene->mfGetSceneAIState(&SceneState, &SceneType);
+			if (SceneType == SCENE_AI::COMBAT_SCENE)
+			{
+				pCurrentScene->mfSetSceneState(SCENE_AI::RELEASE);
+				pCurrentScene->mfCallSceneAI();
+			}
+		}
+		
 		pCurrentScene->mfSetSceneState(SCENE_AI::RELEASE);
 		pCurrentScene->mfCallSceneAI();
 		pCurrentScene->mfDeleteScene();
