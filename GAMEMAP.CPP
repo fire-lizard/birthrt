@@ -5172,7 +5172,7 @@ BOOL UpdateDataArea (void)
 				DrawShield(x+6,y,(REALM::REALM_TYPE)i);
 				init_gfont(FONT_SANS_8PT);
 				xs = gtext_width(realm[i].mfGetName());
-				print_textf(x+20, y, DKBROWN, "^F%02d%s", (xs>112)?21:2, realm[i].mfGetName());
+				print_textf(x+20, y, StatusColor[(RealmStatus[i][HomeRealm])&0x0F], "^F%02d%s", (xs>112)?21:2, realm[i].mfGetName());
 				DrawBitmap(x+144, (SHORT)y, iCheck[realm[i].mfShowHoldings()], 0, 0, 20, 20);
 				add_region(x+144, y, 30,12,0,ToggleShowHoldings,i,0,0, STR_NULL);
 				y+=12;
