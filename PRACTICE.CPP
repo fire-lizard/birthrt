@@ -3795,27 +3795,29 @@ void SelectGameType(LONG MenuCombo, LONG type)
 				fPractice = FALSE;
 				fTutorialSelected = FALSE;
 				fTutorialFirstBattle = FALSE;
-				NewGameConfirmed(0, lMultiFlagLocal);
 
-		    	// release a running scene, calls InitDomainTurn
+		    	// release a running scene, calls InitDomainTurn. This must come BEFORE
+				// NewGameConfirmed: it only works at map level, and from inside a battle or
+				// an adventure it returned without reloading rlmstart.dat. Realm selection
+				// then ran on the scene's leftovers - after Battles Only every regent's unit
+				// is -1 (ClearRegentUnits), so a realm showed no regents and no Begin Rule.
 				if (fDomainTurn == FALSE)
 				{
 					master_game_type = GAME_NORMAL;
 					dturn_mode = START_NEW_OR_LOAD;
 			    	SCENE_MGR::mfReleaseSceneToMap(0,0);
 				}
-				else
-				{
-					// exit and release current domain turn
-					if (iLgMap != fERROR)		// if domain turn IS active
-						InitDomainTurn(0);
+				NewGameConfirmed(0, lMultiFlagLocal);
 
-			  		// start a new domain turn UI
-					fDomainTurn = FALSE;
-					master_game_type = GAME_NORMAL;
-					dturn_mode = START_NEW_OR_LOAD;
+				// exit and release current domain turn
+				if (iLgMap != fERROR)		// if domain turn IS active
 					InitDomainTurn(0);
-				}
+
+		  		// start a new domain turn UI
+				fDomainTurn = FALSE;
+				master_game_type = GAME_NORMAL;
+				dturn_mode = START_NEW_OR_LOAD;
+				InitDomainTurn(0);
 
 				dturn_mode = CHARSEL_MODE;
 				SetButtonFlag(D_GAMEBUTTON, 0, D_INVISIBLE);
