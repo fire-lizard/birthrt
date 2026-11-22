@@ -1186,46 +1186,6 @@ static void AppExit(void)
 	SDL_Quit();
 }
 
-/* brsetup.cfg drives the install type and CD path, exactly as on Win32. */
-static BOOL ReadSetupCfg(void)
-{
-	FILE *fp = fopen("brsetup.cfg", "r");
-	char  cpBuffer[256];
-	LONG  fileResult;
-
-	if (fp == NULL)
-		return FALSE;
-
-	InstallationType = 2;					/* English default */
-
-	do
-	{
-		fileResult = GetNextLine(fp, cpBuffer, sizeof(cpBuffer));
-		if (fileResult != EOF)
-		{
-			if (strcmp(cpBuffer, "[LOGCOMMENT]") == 0)
-			{
-				fLogComment = TRUE;
-			}
-			else if (strcmp(cpBuffer, "[INSTALL_TYPE]") == 0)
-			{
-				fileResult = GetNextLine(fp, cpBuffer, sizeof(cpBuffer));
-				InstallationType = atoi(cpBuffer);
-			}
-			else if (strcmp(cpBuffer, "[CD]") == 0)
-			{
-				fileResult = GetNextLine(fp, cpBuffer, sizeof(cpBuffer));
-				strcpy(CDDrive, cpBuffer);
-				strcat(CDDrive, ":\\");
-			}
-		}
-	} while (fileResult != EOF);
-
-	strcpy(InstallPath, ".\\");
-	fclose(fp);
-	return TRUE;
-}
-
 static BOOL AppInit(void)
 {
 	install_keyint();

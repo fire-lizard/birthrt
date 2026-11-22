@@ -255,18 +255,13 @@ void ClearMessageQueue(void)
 BOOL AppInit( HINSTANCE hInst, HINSTANCE hPrev, LPSTR szCmdLine, int sw )
 {
 	WNDCLASS clsex;
-	FILE *fp;
 	char cpBuffer[256];
-	LONG fileResult;
-	char path[256];
-	int X2, Y2;
-	HWND hwndTemp;
 	JOYINFO joyInfo;
 	JOYCAPS joyCaps;
 
     //---- Is there another instance of BirthRight running
-    hwndTemp = FindWindow( szClassName,	    // address of class name
-                           szAppName    );	// address of window name
+    HWND hwndTemp = FindWindow(szClassName, // address of class name
+                               szAppName);	// address of window name
 
     if ( hwndTemp != NULL )
     {
@@ -322,8 +317,8 @@ BOOL AppInit( HINSTANCE hInst, HINSTANCE hPrev, LPSTR szCmdLine, int sw )
 	cx = 2;
 	cy = GetSystemMetrics(SM_CYCAPTION) + 1 ;
 	
-	X2 = GetSystemMetrics(SM_CXFULLSCREEN) / 2;
-	Y2 = GetSystemMetrics(SM_CYFULLSCREEN) / 2;
+	int X2 = GetSystemMetrics(SM_CXFULLSCREEN) / 2;
+	int Y2 = GetSystemMetrics(SM_CYFULLSCREEN) / 2;
 
 	if((X2 * 2) < 650)
 	{
@@ -354,45 +349,11 @@ BOOL AppInit( HINSTANCE hInst, HINSTANCE hPrev, LPSTR szCmdLine, int sw )
 	// -- Make the world a little more random
 	srand(GetTickCount());
 
-	// Find the installation type.
-	fp=fopen("brsetup.cfg","r");
-	if(fp==NULL)
-	{
-#if defined (_DEBUG)
-			fatal_error("Unable to open brsetup.cfg file.  Game not properly installed.");
-#endif
-			return FALSE;
-	}
 	InstallationType=2;  // set to English as default
-	do
-	{
-		fileResult = GetNextLine(fp,cpBuffer,sizeof(cpBuffer));
-		if(fileResult != EOF)
-		{
-			if(strcmp(cpBuffer,"[LOGCOMMENT]") == 0)
-			{
-				fLogComment = TRUE;
-			}
-			else
-			if(strcmp(cpBuffer,"[INSTALL_TYPE]") == 0)
-			{
-				fileResult = GetNextLine(fp,cpBuffer,sizeof(cpBuffer));
-				InstallationType = atoi(cpBuffer);
-			}
-			else if(strcmp(cpBuffer,"[CD]") == 0)
-			{
-				fileResult = GetNextLine(fp,cpBuffer,sizeof(cpBuffer));
-				strcpy(CDDrive,cpBuffer);
-				strcat(CDDrive,":\\");
-			}
-		}
-	}while(fileResult != EOF);
-	// 2 = english, 1 = french, 0 = german
+	fLogComment = TRUE;
+	strcat(CDDrive, "D:\\");
 
-// FOREIGN LANGUAGES ARE NOT IN SEPERATE SUBDIRECTORIES [ABC] 9/23/97
-//		case 2:
-			strcpy(InstallPath,".\\");
-	fclose(fp);
+	strcpy(InstallPath,".\\");
 	#ifdef _WINDOWS
 	#ifdef _DEBUG
 		RandomLogOpen ();
