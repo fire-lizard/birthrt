@@ -1226,12 +1226,6 @@ static BOOL AppInit(void)
 
 	srand((unsigned)SDL_GetTicks());
 
-	if (!ReadSetupCfg())
-	{
-		fprintf(stderr, "Unable to open brsetup.cfg. Game not properly installed.\n");
-		return FALSE;
-	}
-
 	GameMain();
 
 	return TRUE;
