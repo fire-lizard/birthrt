@@ -18,39 +18,10 @@
 #include "SCENE.HXX"
 #include "SOUND.HXX"
 
-// [MDB] HACK for inventory
-extern "C" {
-int iHackHasKey = FALSE;
-}
-
 // GWP hack for Testing purposes.
 const LONG SoundDelay = 7;
 static const LONG MaxChaseDistance = 1000;
 
-/* ========================================================================
-   Function    - mfFollowPlayer
-   Description - Switch from following the adventure team to following a
-                 player.
-   Returns     -
-   ======================================================================== */
-
-void FOLLOW_PLAYER_DATA::mfFollowPlayer()
-{
-	fFollowState = THE_PLAYER;
-	// Start the player out, where we currently are.
-	if (fhAvatar != fERROR)
-	{
-		CAvatar const * const pAvatar = (CAvatar const * const) BLKPTR(fhAvatar);
-		if (IsPointerGood(pAvatar))
-		{
-			SetPlayer(pAvatar->mfX(),
-			          pAvatar->mfY(),
-			          pAvatar->mfZ(),
-			          pAvatar->mfAngle(),
-			          0);
-		}
-	}
-}
 /* ========================================================================
    Function	- FollowPlayer
    Description - AI Proc to be a "player"

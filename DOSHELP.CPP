@@ -271,26 +271,3 @@ void DOSHelpControl (LONG MenuCombo, LONG arg)
 			break;
 	}
 }
-
-LONG DOSHELP_ContextOffset(LONG Context)
-{
-	LONG offset = 0;
-	
-	if (Context < 1 || Context > MAX_CONTEXTS)
-		return 0;
-	
-	FILE *context_file = FileOpen(DOSHELP_CONTEXT_FILE, "rb");
-	if (context_file == NULL)
-	{
-#ifdef _DEBUG
-		fatal_error("Can't open DOS Help Context File");
-#endif	
-		return 0;
-	}
-	
-	fseek(context_file, Context * sizeof(LONG), SEEK_SET);
-	fread(&offset, 1, sizeof(LONG), context_file);
-	FileClose(context_file);
-	
-	return offset;
-}

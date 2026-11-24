@@ -715,29 +715,6 @@ void StatWriteAllTo(FILE *fp)
 }
 
 /* ========================================================================
-   Function    - StatWriteAll
-   Description - Write a temporary PLAYER_STATS array save file
-   Returns     -
-   ======================================================================== */
-
-void StatWriteAll()
-{
-    FILE *fp;
-    char filename[128];
-
-    if (! playerStatsInitted )
-        return;
-
-    strcpy(filename, "playstat.sav");
-    fp = FileOpen(filename, "wb");
-    if (fp) {
-	    StatWriteAllTo(fp);
-	    fflush(fp);
-	    FileClose(fp);
-    }
-}
-
-/* ========================================================================
    Function    - LoadStats
    Description - Load the stats for this avatar from a .ava file
    Returns     - handle to stats structure
@@ -1010,44 +987,6 @@ void PLAYER_STATS::mfMemorizeAllInvSpells()
 	     	(*itor)->mfGainOne();
 	     }
 	}
-}
-
-/* ========================================================================
-   Function    - IsAvatarDead
-   Description - C callable function to determine whether or not an Avatar
-                 (passed in by a thingtype) is dead or not.
-   Returns     - TRUE if the avatar is dead
-   ======================================================================== */
-extern "C"
-BOOL IsAvatarDead(THINGTYPE t)
-{
-//WRC, this function is going to slow the map down a lot...
-//there must be a faster way to turn a THINGTYPE into a CAvatar...
-
-	if (SCENE_MGR::hCurrentScene==fERROR)
-		return TRUE;
-
-	SCENE const * pCurrentScene=(SCENE const *) BLKPTR(SCENE_MGR::hCurrentScene);
-
-	for (LONG i=0;i<MAX_AVATARS;i++)
-	{
-		if (pCurrentScene->Avatars[i] != fERROR)
-		{
-			CAvatar* pAvaTesting=(CAvatar*)BLKPTR(pCurrentScene->Avatars[i]);
-			if (pAvaTesting->ThingType==t)
-			{
-				if(pAvaTesting->hPlayerStats == fERROR)
-					return FALSE;
-
-				PLAYER_STATS const * pAvatarStats=(PLAYER_STATS const *)BLKPTR(pAvaTesting->hPlayerStats);
-				
-				if (pAvatarStats->mfGetCurHitPoints()<=0)
-					return TRUE;
-				return FALSE;
-			}
-		}
-	}
-	return TRUE;
 }
 
 /* ========================================================================

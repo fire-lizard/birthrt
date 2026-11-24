@@ -13,9 +13,6 @@
 .		CleanUpBlock	- perform housekeeping on a block of memory
 .		MergeBlocks		- If current and next blocks are free then concatinate them
 .		ReportFreeMem	- return the largest block that could be made by compaction
-.		CompactMem		- move blocks around to concentrate free memory
-.		PurgeMem			- remove purged blocks to satisfy an allocation request
-.		MoveFreeBlock	- swap the positions of an empty and an inuse block
 
 	Contains the following general functions:
 +		InitMemManag	- initializes the memory manager
@@ -30,7 +27,6 @@
 +		SetClass1		- mark a block as class 1
 +		SetClass2		- mark a block as class 2
 +		SetClassTemp	- mark a block as temporary
-.		GetBlockIndex	- find the block index cooresponding to a pointer
 +		NewExternalBlock - Make a block header point to a block outside the manager
 +		NewBlock			- allocates a new block of memory
 +		DisposBlock		- deallocates a block of memory. if a resource, inform the resource manager
@@ -158,7 +154,7 @@ struct meminfo {
 	ULONG		FreeLinAddrSpace;
 	ULONG		SizeOfPageFile;
 	ULONG		Reserved[3];
-} MemInfo;
+};
 
 static ULONG	cbFreemem;
 	
@@ -502,31 +498,6 @@ ATTR_BLK_TYPE GetBlockAttr (SHORT i)
 }
 
 /* ========================================================================
-	GetDataBlkSize	- returns the size of a data block in bytes (Less any
-					  debug or header info we choose to keep.  The difference
-					  in the addresses of the current block and the next
-					  block is the size of the current block.
-	======================================================================== */
-ULONG GetDataBlkSize (LONG i)
-{
-#if RES_MANAGER
-	if (IsResourceHandle(i))
-	{
-		i = Query_iResBlock(i);	// Convert a resource handle to a memory handle.
-		if ( i <= 0 || i > cNumBlkHeads)
-		{
-			return 0L;
-		}
-	}
-#endif
-	
-	if (aiNextBlk[i] == fERROR)		/* handle size request of ENDBLOCK */
-		return 0L;
-
-	return apBlocks[aiNextBlk[i]] - apBlocks[i];
-}
-
-/* ========================================================================
 	GetBlockSize	- returns the size of a block in bytes
 	The difference in the addresses of the current block and the next
 	block is the size of the current block.
@@ -536,24 +507,6 @@ ULONG	GetBlockSize (LONG i)
 	if (aiNextBlk[i] == fERROR)		/* handle size request of ENDBLOCK */
 		return 0L;
 	return (apBlocks[aiNextBlk[i]] - apBlocks[i]);
-}
-
-/* ========================================================================
-	GetBlockIndex	-  Recover a lost pointer back to the handle.
-	======================================================================== */
-SHORT	GetBlockIndex (PTR p)
-{
-	SHORT	iHandle;
-
-	for (iHandle = aiNextBlk[START_BLOCK];
-	     (abBlockAttr[iHandle] & BLKTYPEMASK) != ENDBLK;
-		 iHandle = aiNextBlk[iHandle])			/* move to next block */
-	{
-		if (HEAPPTR(apBlocks[iHandle]) == p)
-			return (iHandle);
-	}
-
-	return fERROR;
 }
 
 /* ========================================================================

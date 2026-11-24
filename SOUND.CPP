@@ -21,18 +21,9 @@
 #include "PLATFORM.H"
 #endif
 
-#if defined (WINDOWS_SOUND)
-	#include "PLATFORM.H"
-#else
-#endif
 
 #include "SYSTEM.H"
 
-#if defined (WINDOWS_SOUND)
-#include "WINSYS/WAVE.H"
-#include "WINSYS/SNDUTIL.H"
-#include "WINSYS/SWINUTIL.H"
-#endif
 
 #if defined (AUDIO_LIB)
 #include "KERNAUD.HPP"
@@ -77,14 +68,6 @@ LONG TweakVolume(LONG);
 static void ModifySndObject(LONG , int, int );
 void RemoveLoopingSoundFromArray(LONG);
 
-#ifdef WINDOWS_SOUND
-extern "C" {
-extern HWND	hwndApp;
-extern HINSTANCE hInstApp;
-}
-#ifdef AUDIO_LIB
-#endif
-#endif
 /* ------------------------------------------------------------------------
    Global Variables
    ------------------------------------------------------------------------ */
@@ -98,7 +81,6 @@ extern HWND hwndApp;
 HWND hMyWnd;
 #endif
 SHORT UserNumSFXPlaying = 4;
-extern BOOL SlideShowPlaying;
 /* ------------------------------------------------------------------------
    Local Variables
    ------------------------------------------------------------------------ */
@@ -106,7 +88,6 @@ extern BOOL SlideShowPlaying;
 static SHORT FullVolumeDistance = 100;
 static SHORT HalfVolumeDistance = 200;
 static SHORT SFXVolumeIndex = 10;
-static BOOL PauseAllSounds_Hits = 0;
 static BOOL AudioInitialized = FALSE;
 static LONG TotalEnvironSnds = 0;
 static LONG TotalLoopingSounds = 0;
@@ -133,14 +114,7 @@ static DECL_VECTOR_DATA(LOOPING_SOUND_THING,LoopingSoundThing,MAX_SOUND_THINGS);
 unsigned long SndRandom ( LONG val )
 {
 
-#ifdef _WINDOWS
-
    return (unsigned long) ( GetTickCount() % val );
-
-#else
-   return ( unsigned long ) ( clock() % val );
-
-#endif
 
 }
 
@@ -154,7 +128,6 @@ extern "C"
 SHORT AddSndObj( BIRTHRT_SND  WaveID, SHORT randomCount, LONG MyThingsIndex)
 {
 	LONG volume;
-	int pan = 50;
 
 	if(!AudioInitialized || (!SFXVolumeIndex && !fMusic)  )
 		return fERROR;
@@ -173,7 +146,6 @@ SHORT AddSndObj( BIRTHRT_SND  WaveID, SHORT randomCount, LONG MyThingsIndex)
 
 	if(MyThingsIndex < 0)
 	{
-		pan = 50;	// center
 		switch(MyThingsIndex)
 		{
 		case VOLUME_PRIORITY:
@@ -214,7 +186,7 @@ SHORT AddSndObj( BIRTHRT_SND  WaveID, SHORT randomCount, LONG MyThingsIndex)
 				break;
 			case ENVIRON_SND:
 				volume =  5 + SndRandom(60);
-				pan = SndRandom(100);	
+				SndRandom(100);	
 				break;
 		}
 	}
@@ -225,8 +197,6 @@ SHORT AddSndObj( BIRTHRT_SND  WaveID, SHORT randomCount, LONG MyThingsIndex)
 		if(MyThingsIndex >= MAX_THINGS || mythings[MyThingsIndex].valid != TRUE)
 			return fERROR;
 
-		// set the pan
-		pan = CalculatePan(MyThingsIndex);
 		volume = aprox_dist(PLAYER_INT_VAL(player.x),
 							PLAYER_INT_VAL(player.y),
 							mythings[MyThingsIndex].x,
@@ -348,9 +318,6 @@ void ModifySndObject(LONG tag, int volume, int pan)
 #ifdef AUDIO_LIB
 					kernel->AudioStop(LoopingSoundThing[i].wave, LoopingSoundThing[i].InstanceTag);
 #endif
-#ifdef WINDOWS_SOUND
-					PauseWave( (USHORT) LoopingSoundThing[i].wave );
-#endif
 					LoopingSoundThing[i].InstanceTag = fERROR;
 				}
 				if(volume != NULL)
@@ -358,16 +325,10 @@ void ModifySndObject(LONG tag, int volume, int pan)
 #ifdef AUDIO_LIB
 					kernel->AudioVolume((int)LoopingSoundThing[i].wave, (int)volume* GetGlobalVolume() / 10, (int)LoopingSoundThing[i].InstanceTag);
 #endif
-#ifdef WINDOWS_SOUND
-					SetWaveVolume( (USHORT) LoopingSoundThing[i].wave, (int) -(MAX_VOLUME - volume) * 16 ) ;
-#endif
 					if(pan != NULL)
 					{
 #ifdef AUDIO_LIB
 						kernel->AudioPan((int)LoopingSoundThing[i].wave, pan,(int)LoopingSoundThing[i].InstanceTag);
-#endif
-#ifdef WINDOWS_SOUND
-						SetWavePan( (USHORT) LoopingSoundThing[i].wave, pan ) ;
 #endif
 					}
 				}
@@ -436,12 +397,8 @@ void UpdateLoopingSoundObjects(void)
 				{
 					if(LoopingSoundThing[i].InstanceTag != fERROR)
 					{
-#ifdef WINDOWS_SOUND
-						PauseWave(LoopingSoundThing[i].wave);
-#else
 #ifdef AUDIO_LIB
 						kernel->AudioStop(LoopingSoundThing[i].wave, LoopingSoundThing[i].InstanceTag);
-#endif
 #endif
 						LoopingSoundCount--;
 					}
@@ -477,12 +434,8 @@ void UpdateLoopingSoundObjects(void)
 			}
 			else if((LoopingSoundThing[i].InstanceTag != fERROR) && (LoopingSoundThing[i].wave > 0))
 			{
-#ifdef WINDOWS_SOUND
-				PauseWave(LoopingSoundThing[i].wave);
-#else
 #ifdef AUDIO_LIB
 				kernel->AudioStop(LoopingSoundThing[i].wave, LoopingSoundThing[i].InstanceTag);
-#endif
 #endif
 				LoopingSoundThing[i].InstanceTag = fERROR;
 				LoopingSoundCount--;
@@ -596,20 +549,11 @@ void InitializeSoundSystem(void)
 	{
 		// Please leave this as TRUE unless you talk with
 		// Greg about why you need to change it.
-#ifdef _WINDOWS
 		kernel->AudioSetVolReduction(TRUE);
-#else
-		kernel->AudioSetVolReduction(FALSE);
-#endif
 		AudioInitialized = TRUE;
 		kernel->AudioSetChannels(2);
 
-#ifndef _WINDOWS
-		kernel->AudioDefaultBits();
-		kernel->AudioSetRate(22050);
-#else
 		hMyWnd = hwndApp;
-#endif
 	}
 #endif
 
@@ -767,24 +711,6 @@ LONG FadeToReset ( void )
 }
 
 /*************************************************************************
-Function Check for sound playing
-Purpose
-**************************************************************************/
-BOOL	CheckSoundPlaying (void)
-{
-	if(!AudioInitialized)
-		return FALSE;
-#ifdef WINDOWS_SOUND
-	return FALSE;
-#else
-	BOOL	rv = FALSE;
-#ifdef AUDIO_LIB
-	rv = (BOOL)kernel->AudioActiveSamples();
-#endif
-	return rv;
-#endif
-}
-/*************************************************************************
 Function
 Purpose
 **************************************************************************/
@@ -794,16 +720,12 @@ BOOL CheckASound(int sound, int tag)
 
 	if(!AudioInitialized)
 		return FALSE;
-#ifdef WINDOWS_SOUND
-	return FALSE;
-#else
 	BOOL	rv = FALSE;
 #ifdef AUDIO_LIB
 	if( (tag > 0) && (sound > 0) )
 		rv = (BOOL)kernel->AudioSampleVolume(sound, &vol,tag);
 #endif
 	return rv;
-#endif
 
 }
 
@@ -815,13 +737,9 @@ void	StopASound (int reqSound, int SoundTag)
 {
 	if(!AudioInitialized)
 		return;
-#ifdef WINDOWS_SOUND
-	PauseWave( reqSound );
-#else
 #ifdef AUDIO_LIB
 	if( (SoundTag > 0) &&(reqSound > 0))
 		kernel->AudioStop(reqSound,SoundTag);
-#endif
 #endif
 }
 
@@ -844,12 +762,8 @@ void KillSoundsNoFade(void)
 {
 	if(!AudioInitialized)
 		return;
-#ifdef WINDOWS_SOUND
-	StopAllWave();
-#else
 #ifdef AUDIO_LIB
 	kernel->AudioStopAll();
-#endif
 #endif
 	SoundFade = fERROR;
 }

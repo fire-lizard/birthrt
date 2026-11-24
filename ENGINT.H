@@ -20,15 +20,15 @@
    Defines and Compile Flags
    ------------------------------------------------------------------------ */
 #define TEXTURE_PATH			"TEXTURES\\"
+#if defined(_EDIT)
+#define MAX_TEXTURES			(230)
+#else
 #define MAX_TEXTURES			(200)
+#endif
 #define DARKEST				31
 
 /* divide a 32bit fixed pt by 2^n */
-#ifdef _WINDOWS
 #define DARKEN_FACTOR		(16-fHighRes)
-#else
-#define DARKEN_FACTOR		(16-graphics_mode)
-#endif
 
 #define EXPAND_FACTOR (1)                  // use this to expand the map
 
@@ -157,6 +157,11 @@ typedef struct {
 	LONG	n1;		// The index into the texture array
 	LONG	n2;		// The index into the texture array
 	LONG	n3;		// The index into the texture array
+#if defined (_EDIT)
+	UBYTE	n1_noTexture;
+	UBYTE	n2_noTexture;
+	UBYTE	n3_noTexture;
+#endif
 	LONG	sec_ptr;
 } BR_SIDEDEF;
 
@@ -215,6 +220,10 @@ typedef struct{
 	LONG		ch;   					/*floor -n- ceiling*/
 	LONG		f_flat;
 	LONG		c_flat;  /*index's for texures*/
+#if defined(_EDIT)
+	UBYTE		f_flat_noTexture;
+	UBYTE		c_flat_noTexture;
+#endif
 	LONG		light;
 	LONG		special;
 	SHORT		tag;
@@ -266,32 +275,21 @@ extern "C" {
 
 /* blockm.c */
 SHORT* get_blockm (LONG px1,LONG py1);
-void show_block_lines (void);
 
 /* convert.c */
-LONG segs_match(SHORT a,SHORT b);
-LONG single_sided(LONG s);
-LONG ssector_to_hei(LONG s);
 LONG sector_to_fh(ULONG sec);
 LONG sector_to_ch(ULONG sec);
-LONG seg_to_ceil(LONG s,LONG side);
 LONG seg_to_sector(LONG s,LONG side);
-LONG line_to_sector(LONG l,LONG side);
 void seg_to_tname(LONG s,LONG side,char *n);
 LONG sector_to_light(ULONG sect);
-LONG seg_two_sided(LONG s);
 LONG seg_to_texture_num(LONG seg,LONG side,LONG pos);
-LONG seg_to_txoff(LONG seg,LONG side); // [d6-07-96 JPC]
-LONG seg_to_tyoff(LONG seg,LONG side);
 void seg_to_txoff_tyoff(LONG seg,LONG side, LONG * xoff, LONG * yoff);
 
 /* extent.c */
 void clear_extents(void);
 void mark_sect_visible(LONG s);
-LONG sect_visible(LONG s);
 LONG extent_visible(LONG x1,LONG x2);
 void add_extent(LONG x1,LONG x2);
-void fill_extent(LONG x);
 LONG clip_span(LONG x,LONG * y1,LONG * y2,LONG *clipped);
 LONG clip_obj(LONG x,LONG * y1,LONG * y2,LONG *clipped);
 

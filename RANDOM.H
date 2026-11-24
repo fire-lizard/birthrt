@@ -23,7 +23,5 @@ void InitRandomLog(void);
 void RandomLogOpen ( void );
 void RandomLogClose ( void );
 
-void LogFlush ( void );
-
 #endif
 #endif

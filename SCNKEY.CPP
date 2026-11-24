@@ -270,82 +270,6 @@ void KEY::mfCreateKey(char *cpBuffer, HDL_KEY hKey)
 	}
 }
 /* ========================================================================
-   Function    - mfCreateSetCamera
-   Description - Make a SetCamera Key handle and stick it on the keyboard.
-   Returns     - HDL to a key
-   ======================================================================== */
-HDL_KEY KEY::mfCreateSetCamera (char *cpKeyIdStr,
-                                              LONG KeyId,
-                                              LONG X,
-                                              LONG Y,
-                                              LONG Z,
-                                              LONG Angle,
-                                              LONG Pitch,
-                                              LONG Roll)
-{
-	HDL_KEY hKey = fERROR;
-	
-	hKey = NewBlock(sizeof(KEY));
-	
-	if (hKey != fERROR)
-	{
-		DumbAutoLockPtr<KEY> pKey(hKey);
-		
-		pKey->mfInitVals();
-		
-		pKey->fKeyId = KeyId;
-		pKey->mfChangeCameraLocation(X, Y, Z, Angle, Pitch, Roll);
-		
-		replace_key_vals(KeyId, KEY::mfCallBackSetCamera, hKey, 0, &pKey->fOldKeyStruct);
-		
-		strncpy(pKey->fcpKeyIdStr, cpKeyIdStr, sizeof(pKey->fcpKeyIdStr) - 1);
-		pKey->fcpKeyIdStr[sizeof(pKey->fcpKeyIdStr) - 1] = 0;
-		strncpy(pKey->fcpKeyFuncName, "SetCamera", sizeof(pKey->fcpKeyFuncName) - 1);
-		pKey->fcpKeyFuncName[sizeof(pKey->fcpKeyFuncName) - 1] = 0;
-
-	}
-	return hKey;
-}
-
-/* ========================================================================
-   Function    - mfCreateMoveCamera
-   Description - Make a SetCamera Key handle and stick it on the keyboard.
-   Returns     - HDL to a key
-   ======================================================================== */
-HDL_KEY KEY::mfCreateMoveCamera (char *cpKeyIdStr,
-                                              LONG KeyId,
-                                              LONG X,
-                                              LONG Y,
-                                              LONG Z,
-                                              LONG Angle,
-                                              LONG Pitch,
-                                              LONG Roll)
-{
-	HDL_KEY hKey = fERROR;
-	
-	hKey = NewBlock(sizeof(KEY));
-	
-	if (hKey != fERROR)
-	{
-		DumbAutoLockPtr<KEY> pKey(hKey);
-		
-		pKey->mfInitVals();
-		
-		pKey->fKeyId = KeyId;
-		pKey->mfChangeCameraLocation(X, Y, Z, Angle, Pitch, Roll);
-		
-		replace_key_vals(KeyId, KEY::mfCallBackMoveCamera, hKey, 0, &pKey->fOldKeyStruct);
-		
-		strncpy(pKey->fcpKeyIdStr, cpKeyIdStr, sizeof(pKey->fcpKeyIdStr) - 1);
-		pKey->fcpKeyIdStr[sizeof(pKey->fcpKeyIdStr) - 1 ] = 0;
-		strncpy(pKey->fcpKeyFuncName, "MoveCamera", sizeof(pKey->fcpKeyFuncName) - 1);
-		pKey->fcpKeyFuncName[sizeof(pKey->fcpKeyFuncName) - 1] = 0;
-
-	}
-	return hKey;
-}
-
-/* ========================================================================
    Function    - mfCallBackSetCamera
    Description - Hot Key fn to set the camera to a new location.
    Returns     - 
@@ -413,6 +337,7 @@ void KEY::mfCallBackAttachPlayer(LONG, LONG)
     fAnyKeyChanged = FALSE;
     SCENE_MGR::fgCamera.mfSetCameraState(GAME_CAMERA::FOLLOW_PLAYER);
 }
+#if defined(SCENE_EDITOR)
 
 /* ========================================================================
    Function    - mfWriteKeyData
@@ -439,3 +364,4 @@ void KEY::mfWriteKeyData(FILE *fp)
 		fprintf(fp,"\n");
 	}
 }
+#endif

@@ -158,45 +158,6 @@ TermDSound(void)
 }
 
 BOOL
-GetCaps(LPDSCAPS lpDsCaps)
-
-//	Get the direct sound device capabilities into a DSCAPS structure.
-
-{
-	memset(lpDsCaps, 0, sizeof(DSCAPS));
-	lpDsCaps->dwSize = sizeof(DSCAPS);
-
-	hr = gpds->GetCaps(lpDsCaps);
-	if( hr != DS_OK ) {
-		DSDisplayError(hr,"GetCaps",FALSE);
-		return FALSE;
-	}
-	return TRUE;
-}
-
-BOOL
-GetPrimaryFormat(DWORD *rate, WORD *bits, WORD *channels)
-
-//	Returns the current format of the primary direct sound playback buffer.
-
-{
-WAVEFORMATEX	getWfx;
-
-	// get the format into a WAVEFORMATEX structure
-	hr = primaryDSB->GetFormat(&getWfx,sizeof(WAVEFORMATEX),NULL);
-	if( hr != DS_OK ) {
-		DSDisplayError(hr,"GetFormat",FALSE);
-		return FALSE;
-	}
-
-	*rate			= getWfx.nSamplesPerSec;
-	*bits			= getWfx.wBitsPerSample;
-	*channels	= getWfx.nChannels;
-
-	return TRUE;
-}
-
-BOOL
 SetPrimaryFormat(DWORD *rate, WORD *bits, WORD *channels)
 
 //	Sets the format of the primary direct sound playback buffer.  The format
@@ -253,8 +214,6 @@ DSound::Init(DWORD buffSize,LPSTR sampPtr,DWORD sampSize,WORD bits,DWORD rate,WO
 //	Initialize the DSound object prior to playing it.
 
 {
-LPVOID		buffPtr1, buffPtr2;
-DWORD			buffLen1, buffLen2;
 
 	// if secondary buffer size is zero, then this a static buffer which
 	// will be loaded and played in its entirety
@@ -373,132 +332,6 @@ DSound::IsPlaying(void)
 	return (nowPlaying || nowPaused);
 }
 
-DWORD
-DSound::GetReadPos(void)
-
-//	Return the sample's byte index position of the byte which will be read
-//	next into the DSound buffer.  I.e. bytes prior to this have already been
-//	processed and may be overwritten.
-
-{
-	return readPos;
-}
-
-DWORD
-DSound::GetBytesRead(void)
-
-//	Return the total number of bytes which have been read so far.  This is
-//	useful for tracking looping buffers which must be back-filled.
-
-{
-	return totBytesRead;
-}
-
-DWORD
-DSound::GetBytesPlayed(void)
-
-//	Return the total number of bytes which have been played so far.  This is
-//	always less than or equal to GetBytesRead and represents the current
-//	play position.
-
-{
-DWORD	dsPlayPos, writePos, nextPos;
-DWORD	writeLen;
-DWORD	driverBytesPlayed;
-DWORD	bytesPlayed;
-DWORD	currTime;
-DWORD	elapsedTime;
-
-	if (!nowPlaying)
-		return 0;
-
-	// get the current play and write positions
-	hr = pDSB->GetCurrentPosition(&dsPlayPos,&writePos);
-	if( hr != DS_OK )
-		DSDisplayError(hr,"GetCurrentPosition",FALSE);
-	nextPos = nextWritePosition;
-
-	// examine the arrangement of play, write, and next positions to
-	// determine what the next write length would be - i.e. how much of the
-	// secondary buffer can be filled.  
-	// dsPlayPos = position which is currently playing
-	// writePos  = position at which it is safe to write
-	// nextPos   = next position into which we will write (one more than last write)
-
-	if (dsPlayPos < writePos) {
-		if (dsPlayPos < nextPos) {
-			if (writePos < nextPos) {
-				// play, write, next
-				writeLen = secondaryBuffSize - nextPos + dsPlayPos;
-			} else {
-				// play, next, write (error)
-				writeLen = secondaryBuffSize - writePos + dsPlayPos;
-			}
-		} else {
-				// next, play, write
-				writeLen = dsPlayPos - nextPos;
-		}
-	} else {
-		if (writePos < nextPos) {
-			if (nextPos < dsPlayPos) {
-				// write, next, play
-				writeLen = dsPlayPos - nextPos;
-			} else {
-				// write, play, next (error)
-				writeLen = dsPlayPos - writePos;
-			}
-		} else {
-				// next, write, play (error)
-				writeLen = dsPlayPos - writePos;
-		}
-	}
-
-	// subtracting the write length from the secondary buffer size leaves
-	// the amount which has been read but not yet played.  Subtracting this
-	// from totBytesRead (of the input buffer) gives the total bytes which
-	// have been played.
-
-	driverBytesPlayed = totBytesRead - (secondaryBuffSize - writeLen);
-
-	// The following code is to compensate for a problem exhibited by some
-	// Direct Sound drivers.  That is, instead of returning a coutinously
-	// increasing value for play position, these drivers return the same
-	// value for a time, and then make a large jump in value.  The result is 
-	// a staircase function.  This causes the Duck movie player to be jerky.
-	// The solution is to return a value based on elapsed time, with
-	// occasional (every three seconds) corrections back to the returned
-	// value in order to control rate drift.
-
-	currTime = timeGetTime();
-
-	elapsedTime = currTime - prevTime;
-
-	// make a drift correction every 3 seconds
-	if (elapsedTime > 3000) {
-		prevTime = prevDriverTime;
-		prevBytesPlayed = prevDriverBytesPlayed;
-		elapsedTime = currTime - prevTime;
-	}
-
-	// compute the bytes played based on elapsed time
-	bytesPlayed = prevBytesPlayed + ((elapsedTime * bytesPerSec) / 1000);
-
-	// whenever the returned value changes, save the values prior to the
-	// change for when we do a drift correction
-	if (driverBytesPlayed != prevDriverBytesPlayed) {
-		prevDriverBytesPlayed = driverBytesPlayed;
-		prevDriverTime = currTime;
-	}
-
-	// make sure we don't go backward
-	if (bytesPlayed < lastBytesPlayed)
-		bytesPlayed = lastBytesPlayed;
-
-	lastBytesPlayed = bytesPlayed;
-
-	return bytesPlayed;
-}
-
 BOOL
 DSound::Stop(void)
 
@@ -514,46 +347,6 @@ DSound::Stop(void)
 		DSDisplayError(hr,"Stop",FALSE);
 		return FALSE;
 	}
-	return TRUE;
-}
-
-BOOL
-DSound::Pause(void)
-
-//	Pause the sample.
-
-{
-	// just stop it
-	nowPaused	= TRUE;
-	nowPlaying	= FALSE;
-	pauseTime = timeGetTime();
-	hr = pDSB->Stop();
-	if( hr != DS_OK ) {
-		DSDisplayError(hr,"Pause",FALSE);
-		return FALSE;
-	}
-	return TRUE;
-}
-
-BOOL
-DSound::Resume(void)
-
-//	Resume playing after a pause.
-
-{
-	if (!Initialized)
-		return FALSE;
-
-	// start playing at the current position
-	hr = pDSB->Play(0,0,howPlay);
-	if( hr != DS_OK ) {
-		DSDisplayError(hr,"Resume",FALSE);
-		return FALSE;
-	}
-	prevDriverTime += timeGetTime() - pauseTime;
-	prevTime += timeGetTime() - pauseTime;
-	nowPlaying		= TRUE;
-	nowPaused		= FALSE;
 	return TRUE;
 }
 
@@ -612,34 +405,6 @@ DSound::SetLoop(BOOL loop)
 
 {
 	loopSnd = loop;
-}
-
-void
-DSound::DumpBuffer(int dumpCount, int n)
-
-// Dump the contents of the secondary buffer to disk file disk file
-// "dsound.<dumpCount><n>".  Used for debugging.
-
-{
-LPVOID		buffPtr1, buffPtr2;
-DWORD			buffLen1, buffLen2;
-int			fd;
-char			mbuff[30];
-
-	Pause();
-
-	hr = pDSB->Lock(0,1,&buffPtr1,&buffLen1,&buffPtr2,&buffLen2,0);
-	if( hr != DS_OK ) {
-		DSDisplayError(hr,"Lock",FALSE);
-		return;
-	}
-
-	sprintf(mbuff,"dsound.%d%d",dumpCount,n);
-	fd = open(mbuff, O_CREAT | O_TRUNC | O_BINARY | O_RDWR, S_IWRITE);
-	write(fd,buffPtr1,secondaryBuffSize);
-	close(fd);
-
-	Resume();
 }
 
 BOOL
@@ -750,16 +515,6 @@ DWORD	bytesToPlay;
   	return FillBuffer(sampPtr,startPos,writeLen);
 }
 
-LPSTR
-DSound::GetErrorMsg(void)
-
-// Return pointer to the error message text buffer.  This should be called
-// if the service routine returns FALSE indicating an error occured.
-
-{
-	return (LPSTR)errBuff;
-}
-
 void
 DSound::PrimeBuffer(LPSTR sampPtr)
 
@@ -834,7 +589,6 @@ DSound::CopyData(LPSTR sampPtr, LPSTR writePtr, DWORD writeLen, BOOL FirstBuffer
 {
 LPSTR		newWritePtr;
 DWORD		newWriteLen;
-DWORD	 	nextPos;
 
 	if (bytesLeft > writeLen) {
 		// normal case - write full length to buffer

@@ -36,7 +36,9 @@ public:
 	void mfInitVals ();
 	char * mfGetSceneName();
 	void mfSetSceneName(char * /* cpName */) ;
+#if defined(SCENE_EDITOR)
 	void mfWriteSceneName(FILE *);
+#endif
 
 	BOOL mfIsSet();
 protected:
@@ -86,6 +88,7 @@ inline BOOL SCENE_INFO::mfIsSet()
 {
 	return fcpSceneName.mfIsSet();
 }
+#if defined(SCENE_EDITOR)
 /* ========================================================================
    Function    - mfWriteSceneName
    Description - 
@@ -95,5 +98,6 @@ inline void SCENE_INFO::mfWriteSceneName(FILE *fp)
 {
 	fcpSceneName.mfWriteFileName(fp);
 }
+#endif
 
 #endif // _SCNINFO_HXX

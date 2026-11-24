@@ -126,8 +126,6 @@ void IncActionTurn(void);
 
 void StartWaitingMenu(LONG, LONG);
 
-void GetMultiPlayerHelp( LONG, LONG );
-
 extern LONG cheated;
 
 // REMOVE LATER ( HACK VERSION )
@@ -162,17 +160,11 @@ SHORT				iMPDCtrlIc = fERROR, iMPDCtr2Ic = fERROR;
 
 //---- Temp of the real chat send in mulplay.cpp
 
-#ifdef _WINDOWS
 static int  TempChatSend[MAX_PLAYERS+1];  // Who to send chat messages to
 static int  TempChatRec[MAX_PLAYERS+1];  // Who to send chat messages to
 static char szTempName[NAME_SIZE+2];
 static char szTempGame[NAME_SIZE+2];
 static char szTempNumber[1+2];
-static int  TempProt;
-#else
-static int TempChatSend[8+1]; // Who to send chat messages to
-static int TempChatRec[8+1];  // Who to send chat messages to
-#endif
 
 static int fWeb  = TRUE;
 static int fQuestion = FALSE;
@@ -207,10 +199,6 @@ static BOOL gMPStartGameLoop = TRUE;
 
 int iTTimeLimit = iTT_None;  //---- Turn time limit default None
 
-BOOL		fSyncPending = FALSE;
-
-LONG       lSaveHighlight;
-    
 extern BOOL char_selected;		// from game.cpp
 extern BOOL fDomainTurn;		// from gamemap.cpp
 extern BOOL fInfoOnlyDomainUI;	// from gamemap.cpp
@@ -350,16 +338,12 @@ void SetMPControlMode ( void )
 
 void PaintWebStart( LONG MenuCombo, LONG )
 {
-	int i;
 
 	// set the statement text
-	LONG	mx,my;
 	LONG	xOff = 0;
 	LONG	yOff = 0;
 	LONG	MenuId, ButtonId;
 	char	textbuf[1024];
-
-	char *  ptemp;
 
 	LONG X;
 	LONG Y;
@@ -586,79 +570,6 @@ void ShowVoteWaitWindow(LONG, LONG)
 #endif
 
 }	//---- End of ShowVoteWaitWindow()
-
-/* ========================================================================
-   Function    - ShowSyncWait
-   Description - Show the sync wait window
-   Returns     -
-   ======================================================================== */
-void ShowSyncWaitWindow( LONG sync, LONG)
-{
-
-#ifdef _WINDOWS
-
-	int i;
-	BOOL fDone;
-
-	//---- Send Sync ( let others know we are here )
-
-	//GEH ABC and I agree that it is better to hang here
-	//GEH then to just Finalize
-	while (!AMultiPlayer.SendSync( sync ))
-	{
-		AMultiPlayer.LookForMessages();
-
-		LOGCOMMENTSLEEP
-		if ( fLogComment )
-		{
-		char temp[200];
-		sprintf ( temp, "ShowSyncWaitWindow - SendSync Failed!");
-		RandomLogComment ( temp );
-		}
-	}
-
-	//---- Pre check if all syncs have come in
-
-	for ( i = 0; i < MAX_PLAYERS; i++ )
-	{
-		DWORD dwId;
-
-		//---- Get Player info ( Name etc )
-
-		dwId = AMultiPlayer.GetAPlayerId ( i );
-
-		if ( dwId != kNoPlayer )
-		{
-			//---- are they at this sync point also
-
-			if ( !AMultiPlayer.GetSync( sync, i ) )
-			{
-				fDone = FALSE;
-				break;
-			}
-		}
-	}
-
-	//---- Everyone has synced ( they were waiting for us )
-
-	if ( fDone )
-	{
-		AMultiPlayer.ResetSync( sync );
-		fSyncPending = FALSE;
-		return;
-	}
-
-	//---- Turn on our params
-
-	SetupSyncWait( sync );
-
-	ShowMenu(D_MULTIWAIT);
-
-	RunMenus();
-
-#endif
-
-}	//---- End of ShowSyncWaitWindow()
 
 /* ========================================================================
    Function    - UpdateChatValues
@@ -956,7 +867,6 @@ void ShowChatSelectWindow(LONG, LONG)
   ======================================================================== */
 void DoneChatSelect( LONG MenuCombo, LONG )
 {
-	int i;
 
    DoButtonMove ( MenuCombo );
 
@@ -1021,8 +931,6 @@ void PaintChatSelect(LONG MenuCombo, LONG)
 	LONG mx, my;
    char buffer[100];
 	int i;
-	int color;
-	int x;
 	int done;
 
 	SPLIT_LONG(MenuCombo, MenuId, ButtonId);
@@ -1229,72 +1137,6 @@ void PaintChatSelect(LONG MenuCombo, LONG)
 }
 
 /* ========================================================================
-   Function    - AddInputSpace
-   Description - Adds space at end of string that input routine expects
-   Returns     -
-   ======================================================================== */
-
-void AddInputSpace ( int type )
-{
-	int i;
-
-#ifdef _WINDOWS
-
-	switch ( type )
-	{
-		case TYPE_NAME:
-			//---- Pre fill name for player entry
-
-			strcpy ( szTempName, AMultiPlayer.GetPlayerName() );
-
-			//---- Last char needs to be diff
-			if ( szTempName[(i = strlen(szTempName))-1] != ' ' )
-			{
-				szTempName[i]   = ' ';
-				szTempName[i+1] = 0;
-			}
-			break;
-
-		case TYPE_GAME:
-			//---- Pre fill name for game entry
-
-			strcpy ( szTempGame, AMultiPlayer.GetGameName() );
-
-			//---- Last char needs to be diff
-			if ( szTempGame[(i=strlen(szTempGame))-1] != ' ' )
-			{
-				szTempGame[i]   = ' ';
-				szTempGame[i+1] = 0;
-			}
-		    break;
-
-		case TYPE_NUMBER:
-			//---- Pre fill number entry
-
-           if ( AMultiPlayer.GetNumPlayers() < 2 ||
-                AMultiPlayer.GetNumPlayers() > 8    )
-           {
-   			sprintf ( szTempNumber, "%1.1d", 2 );
-           }
-           else
-           {
-   			sprintf ( szTempNumber, "%1.1d", AMultiPlayer.GetNumPlayers() );
-           }
-
-			//---- Last char needs to be diff
-			if ( szTempNumber[(i=strlen(szTempNumber))-1] != ' ' )
-			{
-				szTempNumber[i]   = ' ';
-				szTempNumber[i+1] = 0;
-			}
-			break;
-
-	}
-#endif
-
-}
-
-/* ========================================================================
    Function    - RemoveInputSpace
    Description - remove space at end of string that input routine needed
    Returns     -
@@ -1407,7 +1249,6 @@ void ShowMultiPlayerMenu(LONG, LONG)
 		if (!fDomainTurn)		// only allowed to start at the map level
 			return;
 
-#ifdef _WINDOWS
 		char pszTemp[MAX_PATH];
 		
 		//GEH
@@ -1491,68 +1332,7 @@ void ShowMultiPlayerMenu(LONG, LONG)
 		SetMultiPlayerEnvironment( 0, 0 );
 		ShowMenu(D_MULTIENV);
 		
-#else
-		return;    //---- Not in DOS Should never be here in DOS
-#endif
 	}
-}
-
-/* ========================================================================
-   Function    - DispMultiOpts
-   Description - displays current options ( bottom part of menu )
-   Returns     -
-   ======================================================================== */
-void DispMultiOpts(int fProt, LONG MenuId )
-{
-	LONG mx, my;
-	char buffer[100];
-	char buffer1[100];
-
-#ifdef _WINDOWS
-
-	init_gfont(FONT_SANS_8PT);
-
-	//---- Name
-
-	GetButtonPosition( MenuId, 5, &mx, &my );
-	sprintf( buffer, "%s %s",
-			 STRMGR_GetStr(STR_MULTIMENU_NAME),
-			 AMultiPlayer.GetPlayerName() );
-
-	gprint_text(mx, my, buffer, OUR_YELLOW );
-
-	//---- Protocol
-
-	GetButtonPosition( MenuId, 6, &mx, &my );
-
-	sprintf( buffer, "%s %s",
-			 STRMGR_GetStr(STR_MULTIMENU_PROT),
-			 AMultiPlayer.GetProtocol() );
-
-	gprint_text( mx, my, buffer, OUR_YELLOW );
-
-	//---- Game
-
-	GetButtonPosition( MenuId, 7, &mx, &my );
-
-	sprintf( buffer, "%s %s",
-			 STRMGR_GetStr(STR_MULTIMENU_GAME),
-			 AMultiPlayer.GetGameName() );
-
-	gprint_text(mx, my, buffer, OUR_YELLOW );
-
-	//---- Players
-
-	GetButtonPosition( MenuId, 8, &mx, &my );
-
-	sprintf( buffer, "%s %d",
-			 STRMGR_GetStr(STR_MULTIMENU_PLAYR),
-			 AMultiPlayer.GetNumPlayers() );
-
-	gprint_text(mx, my, buffer, OUR_YELLOW );
-
-#endif
-
 }
 
 #ifdef _WINDOWS
@@ -1591,126 +1371,6 @@ void SetScrollButtons ( void )
 #endif
 
 /* ========================================================================
-   Function    - GetMultiPlayerHelp
-   Description - Get multiplayer help.
-   Returns     -
-   ======================================================================== */
-void GetMultiPlayerHelp( LONG, LONG )
-{
-
-#ifdef _WINDOWS
-
-   if ( mouse_button == 2 )
-   {
-
-   	//---- clicked on something
-
-	    switch ( m_mode )
-   	{
-   		case MENU_TYPESEL:
-          	    SystemHelp( STR_MULTITYPE_SEL,
-                           STR_MULTITYPE_HELP_SEL_TEXT, H_Multiplayer, 0, 0 );
-               break;
-
-	    	case MENU_INIT:
-           	SystemHelp( STR_MULTIMENU_SEL,
-                           STR_MULTIMENU_HELP_SEL_TEXT, H_Select_Game_Environment, 0, 0 );
-   			break;
-
-   		case MENU_COMP:
-             	SystemHelp( STR_MULTIMENU_YN,
-                           STR_MULTIMENU_HELP_YN_TEXT, H_Multiplayer, 0, 0 );
-   			break;
-
-   		case MENU_NAME:
-             	SystemHelp( STR_MULTIMENU_YN,
-                           STR_MULTIMENU_HELP_YN_TEXT, H_Multiplayer, 0, 0 );
-   			break;
-
-   		case MENU_PROT:
-             	SystemHelp( STR_MULTIMENU_SP,
-                           STR_MULTIMENU_HELP_SP_TEXT, H_Select_Protocol, 0, 0 );
-   			break;
-
-		    case MENU_JOINNEW:
-       	    SystemHelp( STR_MULTIMENU_JN,
-                           STR_MULTIMENU_HELP_JN_TEXT, H_Multiplayer, 0, 0 );
-   			break;
-
-	    	case MENU_JOINDONE:
-           	SystemHelp( STR_MULTIMENU_SJ,
-                           STR_MULTIMENU_HELP_SJ_TEXT, H_Multiplayer, 0, 0 );
-   			break;
-
-	    	case MENU_NEWNAME:
-           	SystemHelp( STR_MULTIMENU_NGP,
-                           STR_MULTIMENU_HELP_NGP_TEXT, H_Multiplayer, 0, 0 );
-   			break;
-
-	    	case MENU_NEWNO:
-           	SystemHelp( STR_MULTIMENU_NP,
-                           STR_MULTIMENU_HELP_NP_TEXT, H_Multiplayer, 0, 0 );
-   			break;
-
-//	    	case MENU_NEWDONE:
-
-	    	default:
-		    	break;
-   	}
-
-   }
-
-#endif
-
-	return;
-
-}  //---- End of GetMultiPlayerHelp()
-
-/* ========================================================================
-   Function    - ScrollMultiPlayerMenu
-   Description - Back up one menu
-   Returns     - 0 is up 1 is down
-   ======================================================================== */
-void ScrollMultiPlayerMenu(LONG MenuCombo, LONG down )
-{
-
-#ifdef _WINDOWS
-
-   if ( mouse_button == 2 )
-   {
-       GetMultiPlayerHelp ( 0, 0 );
-   }
-	else
-	{
-   	if ( m_mode == MENU_JOINDONE )
-	   {
-
-           DoButtonMove ( MenuCombo );
-
-           if ( !down )
-           {
-              if ( iGameTop )
-                  iGameTop--;
-           }
-           else
-           {
-               if ( (iNumGames - iGameTop)  > MP_SL )
-               {
-                   iGameTop++;
-               }
-           }
-
-           SetScrollButtons();
-
-   	}
-
-	}
-
-#endif
-
-}
-
-/* ========================================================================
    Function    - PaintWaitingMenu
    Description -
    Returns     -
@@ -1718,17 +1378,13 @@ void ScrollMultiPlayerMenu(LONG MenuCombo, LONG down )
 
 void PaintWaitingMenu( LONG MenuCombo, LONG )
 {
-	int i;
 	int numplayers;
 
 	// set the statement text
-	LONG	mx,my;
 	LONG	xOff = 0;
 	LONG	yOff = 0;
 	LONG	MenuId, ButtonId;
 	char	textbuf[1024];
-
-	char *  ptemp;
 
 	LONG X;
 	LONG Y;
@@ -1894,13 +1550,10 @@ void PaintWaitingTypeMenu( LONG MenuCombo, LONG )
 {
 
 	// set the statement text
-	LONG	mx,my;
 	LONG	xOff = 0;
 	LONG	yOff = 0;
 	LONG	MenuId, ButtonId;
 	char	textbuf[1024];
-
-	char *  ptemp;
 
 	LONG X;
 	LONG Y;
@@ -2014,7 +1667,6 @@ void PaintWaitingRealmMenu( LONG MenuCombo, LONG )
 	char buffer[100];
 	LONG mx, my;
 	int i;
-	int numplayers;
 	int fDone = TRUE;
 
 	SPLIT_LONG(MenuCombo, MenuId, ButtonId );
@@ -2108,32 +1760,6 @@ void PaintWaitingRealmMenu( LONG MenuCombo, LONG )
 }
 
 /* ========================================================================
-   Function    - CancelWaitingRealmMenu
-   Description -
-   Returns     -
-   ======================================================================== */
-void CancelWaitingRealmMenu(LONG MenuCombo, LONG)
-{
-
-   DoButtonMove ( MenuCombo );
-
-#ifdef _WINDOWS
-
-	AMultiPlayer.Finalize();
-
-#endif
-
-	HideSubMenu(0, D_MULTIWAIT );
-
-	//---- wait for menu to minimize
-
-	RunMenus();
-
-	GAMEToggleMainMenu(TRUE,0);  //---- start up main menu
-
-}
-
-/* ========================================================================
    Function    - PaintVoteWait()
    Description - Paint the vote wait screen
    Returns     -
@@ -2145,8 +1771,6 @@ void PaintVoteWait(LONG MenuCombo, LONG)
 	LONG mx, my;
 	char buffer[100];
 	int i;
-	int color;
-	int x;
 	int fDone = TRUE;
 	int data1;
 	int data2;
@@ -2279,95 +1903,6 @@ void PaintVoteWait(LONG MenuCombo, LONG)
 }
 
 /* ========================================================================
-   Function    - PaintWaitingSyncMenu
-   Description - Paint waiting for other players to sync
-   Returns     -
-   ======================================================================== */
-
-void PaintWaitingSyncMenu( LONG MenuCombo, LONG sync )
-{
-	LONG MenuId, ButtonId;
-	char buffer[100];
-	LONG mx, my;
-	int i;
-	int numplayers;
-	int fDone = TRUE;
-
-	SPLIT_LONG(MenuCombo, MenuId, ButtonId );
-
-	//---- Title screen
-
-	GetButtonPosition( MenuId, 0, &mx, &my );
-	init_gfont(FONT_TITL_40PT);
-   sprintf(buffer, "^N%s", STRMGR_GetStr(STR_MULTIWAIT_TITLE));
-	print_textf(mx + 25 + 48, my + 23, 0, buffer);
-
-	//--- Select Players Line
-
-	init_gfont(FONT_SANS_8PT);
-
-#ifdef _WINDOWS
-
-	for ( i = 0; i < MAX_PLAYERS; i++ )
-	{
-		DWORD dwId;
-
-		//---- Get Player info ( Name etc )
-
-		dwId = AMultiPlayer.GetAPlayerId ( i );
-
-		if ( dwId != kNoPlayer )
-		{
-
-			//---- are they at this sync point also
-
-           if ( AMultiPlayer.GetSync( sync, i ) )
-			{
-				sprintf( buffer,
-						 "%s",
-						 AMultiPlayer.GetOpponentName(i) );
-			}
-			else
-			{
-				sprintf( buffer,
-						 "%s - %s",
-						 AMultiPlayer.GetOpponentName(i),
-						 STRMGR_GetStr(STR_MULTIWAIT_TITLE) );
-
-				fDone = FALSE;
-			}
-
-			GetButtonPosition( MenuId, i+1, &mx, &my );
-
-			gprint_text(mx, my, buffer, WHITE );
-
-		}
-
-	}
-
-	//---- Everyone has synced
-
-	if ( fDone )
-	{
-		fSyncPending = FALSE;
-		HideSubMenu(0, D_MULTIWAIT );
-		RunMenus();								//---- wait for menu to minimize
-		AMultiPlayer.ResetSync( sync );
-	}
-
-   #ifdef _DEBUG
-   //---- Break out
-	if ( GetAsyncKeyState( VK_F10 ) & 0x8000 )
-	{
-		AMultiPlayer.Finalize();
-	}
-	#endif
-
-#endif
-
-}
-
-/* ========================================================================
    Function    - PaintMPOver
    Description -
    Returns     -
@@ -2375,16 +1910,12 @@ void PaintWaitingSyncMenu( LONG MenuCombo, LONG sync )
 
 void PaintMPOver( LONG MenuCombo, LONG )
 {
-	int i;
 
 	// set the statement text
-	LONG	mx,my;
 	LONG	xOff = 0;
 	LONG	yOff = 0;
 	LONG	MenuId, ButtonId;
 	char	textbuf[1024];
-
-	char *  ptemp;
 
 	LONG X;
 	LONG Y;
@@ -2489,23 +2020,6 @@ void SetupWaitMultiType ( void )
 	SetButtonProc   (D_QUESTION1, QUESTION_BTN1, CancelWaitingTypeMenu, 0, D_KEY_CANCEL );
 	SetButtonHilight(D_QUESTION1, QUESTION_BTN1, FALSE );
 
-}
-
-/* ========================================================================
-   Function    - SetupSyncWait
-   Description - Setup waiting for players to sync
-   Returns     -
-   ======================================================================== */
-
-void SetupSyncWait ( int sync )
-{
-
-	SetButtonProc (D_MULTIWAIT, 0, PaintWaitingSyncMenu, sync, 0 );
-
-   SetButtonArt    (D_MULTIWAIT, 8, "UI\\CHTBTN2C.PCX" );
-	SetButtonLabel  (D_MULTIWAIT, 8, -1, 0 );  //---- turn off cancel button
-	SetButtonHilight(D_MULTIWAIT, 8, FALSE );
-	SetButtonProc   (D_MULTIWAIT, 8, 0, 0, 0);
 }
 
 /* ========================================================================
@@ -2646,7 +2160,6 @@ void CheckQuestion( LONG MenuCombo, LONG index )
 void PaintAdventQuestion(LONG MenuCombo, LONG val)
 {
 	// set the statement text
-	LONG	mx,my;
 	LONG	xOff = 0;
 	LONG	yOff = 0;
 	LONG	MenuId, ButtonId;
@@ -2777,13 +2290,10 @@ void CheckQuit( LONG MenuCombo, LONG index )
 void PaintMultiQuit(LONG MenuCombo, LONG val)
 {
 	// set the statement text
-	LONG	mx,my;
 	LONG	xOff = 0;
 	LONG	yOff = 0;
 	LONG	MenuId, ButtonId;
 	char	textbuf[1024];
-
-	char *  ptemp;
 
 	LONG X;
 	LONG Y;
@@ -2877,9 +2387,6 @@ void SetupMultiQuit ( void )
 void StartSync ( LONG sync )
 {
 #ifdef _WINDOWS
-	LONG	i;
-	LONG	rv;
-	BOOL	fDone;
 
 	if ( IsMultiPlayer() )
 	{
@@ -3987,7 +3494,7 @@ void PaintMultiPlayerJoin ( LONG MenuCombo, LONG )
 #ifdef _WINDOWS
 	SHORT i;
 	LONG MenuId, ButtonId;
-	LONG mx,my,mw,mh;
+	LONG mx,my;
 	CHAR buffer[256];
 	static LONG WaitTime = 0;
 	
@@ -4037,7 +3544,6 @@ void PaintMultiPlayerJoin ( LONG MenuCombo, LONG )
 
 		fEnumerate = 3;
 		iGameTop = 0;        //---- Start at the top of the list
-#ifdef _WINDOWS
 		for ( i = 0; i < MAX_GAMES; i++ )
 		{
 			if ( *AMultiPlayer.GetAGames(i) == 0 )
@@ -4046,9 +3552,6 @@ void PaintMultiPlayerJoin ( LONG MenuCombo, LONG )
 			}
 		}
 		iNumGames = i;
-#else
-		iNumGames = 0;
-#endif
 		// -- Turn on/off the scroll buttons
 		SetScrollButtons();
 		mouse_click = 0;
@@ -4222,9 +3725,8 @@ void DoneMultiPlayerJoin ( LONG MenuCombo, LONG )
 void PaintMultiPlayerCreate (LONG MenuCombo, LONG )
 {
 #ifdef _WINDOWS
-	SHORT i;
 	LONG MenuId, ButtonId;
-	LONG mx,my,mw,mh;
+	LONG mx,my;
 	CHAR buffer[256];
 	
 	SPLIT_LONG(MenuCombo, MenuId, ButtonId);

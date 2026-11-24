@@ -233,7 +233,6 @@ class SPELL_INFO
 				const BOOL mfCheckSphereType(const SPHERE_TYPE);
 				
 				inline CASTERTYPE mfGetType() const;
-				inline LEVEL mfGetLevel() const;
 				inline BOOL mfIsReversable() const;
 				inline SAVING_THROW mfGetSavingThrow() const;
 				inline SAVETYPE mfGetSaveType() const;
@@ -284,11 +283,6 @@ inline const SPELL_INFO::SPELL_ITEM SPELL_INFO::mfGetSpell(SPELL_INFO::TYPE t)
 inline SPELL_INFO::CASTERTYPE SPELL_INFO::SPELL_ITEM::mfGetType() const
 {
 	return Type;
-}
-
-inline SPELL_INFO::LEVEL SPELL_INFO::SPELL_ITEM::mfGetLevel() const
-{
-	return Level;
 }
 
 inline BOOL SPELL_INFO::SPELL_ITEM::mfIsReversable() const

@@ -64,8 +64,6 @@ LONG CAMERA_SETUP_DATA::mfReadCameraData(FILE *fp)
 		
 	    for (i = 0; i < count; i++)
 	    {
-			char cpKeyword[20];
-			LONG Value;
 			
 			Result = GetNextLine(fp, cpBuffer, sizeof(cpBuffer));
 		}

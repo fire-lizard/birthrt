@@ -24,6 +24,7 @@
 /* ------------------------------------------------------------------------
    Defines and Compile Flags
    ------------------------------------------------------------------------ */
+#if defined(_CHARED)			// The rest of this file is used only by the Character Editor
 #define RACEABILITY_MIN_VALUES		0
 #define RACEABILITY_MAX_VALUES		1
 /* ------------------------------------------------------------------------
@@ -32,12 +33,13 @@
 /* ------------------------------------------------------------------------
    Prototypes
    ------------------------------------------------------------------------ */
-static void LimitAdjustment(SBYTE *const spValue);
 static void GetRaceAbilities(
-	const RACE_INFO::TYPE	/* PlayerRace */, 
+	const RACE_INFO::TYPE	/* PlayerRace */,
 	const ABILITY::TYPE 	/* AbilityType */,
 	SBYTE * const 			/* psHighValue */,
 	SBYTE * const	      	/* psLowValue */);
+static const SBYTE GetExceptionalStrength(
+	const SHORT RollValue);
 
 /* ------------------------------------------------------------------------
    Global Variables
@@ -90,103 +92,6 @@ static const RACEABILITYREQ RaceAbilityReq[] = {
 	)
 };
 
-// Table of mandatory adjustments if you are one of these races.
-static const ABILITY	RaceAdjustment[] = {
-//     S   D  Cn   I   W  Ch
-	ABILITY(  0, -2,  2,  0,  0,  0),		// Dwarf
-	ABILITY( -1,  1, -1,  1,  0,  0),		// Elf
-	ABILITY(  0,  1, -1,  0,  0,  0),		// HalfElf (No Change)
-	ABILITY( -2,  1,  0,  0,  1,  0),		// Halfling
-	ABILITY(  0, -1,  0,  0,  1,  0),		// Anuirean
-	ABILITY(  0,  1,  0,  0, -1,  0),		// Brecht
-	ABILITY(  0,  0, -1,  1,  0,  0),		// Khinasi
-	ABILITY(  0,  0,  1,  0,  0, -1),		// Rjurik
-	ABILITY(  1,  0,  0, -1,  0,  0)		// Vos
-};
-
-#define MAX_ADJUSTMENT_VALUE	20
-#define MIN_ADJUSTMENT_VALUE	3
-
-static const SBYTE GetExceptionalStrength(
-	const SHORT RollValue);
-
-/* =======================================================================
-   Function    - static LimitAdjustment
-   Description - Limit the Adjustment to reasonable values
-   Returns     - void
-   ======================================================================== */
-static void LimitAdjustment(SBYTE * const spValue)
-{
-	if (*spValue > MAX_ADJUSTMENT_VALUE)
-	{
-		*spValue = MAX_ADJUSTMENT_VALUE;
-	}
-	else if (*spValue < MIN_ADJUSTMENT_VALUE)
-	{
-		*spValue = MIN_ADJUSTMENT_VALUE;
-	}
-}
-
-/* =======================================================================
-   Function    - mfAdjustAbilty
-   Description - Looks up the Ability Adjustment based on Race and adjust the
-                 numbers accordingly
-   Returns     - void
-   ======================================================================== */
-inline void ABILITY::mfAdjustAbilities(
-	ABILITY const *pAdjustment,
-	const ABILITY::TYPE  AbilityType)
-{
-	fAbilities[AbilityType] += pAdjustment->fAbilities[AbilityType];
-	LimitAdjustment(&fAbilities[AbilityType]);
-}
-
-/* =======================================================================
-   Function    - mfAdjustAllAbilties
-   Description - Looks up the Ability Adjustment based on Race and call the
-                 proper adjustment routine.
-   Returns     - void
-   ======================================================================== */
-void ABILITY::mfAdjustAllAbilities (
-	const RACE_INFO::TYPE Race)
-{
-	if (Race != RACE_INFO::NOT_SET)
-	{
-		ABILITY const *paAdjustment = &RaceAdjustment[Race];
-
-		mfAdjustAbilities(paAdjustment, STRENGTH);
-		mfAdjustAbilities(paAdjustment, DEXTERITY);
-		mfAdjustAbilities(paAdjustment, CONSTITUTION);
-		mfAdjustAbilities(paAdjustment, INTELLIGENCE);
-		mfAdjustAbilities(paAdjustment, WISDOM);
-		mfAdjustAbilities(paAdjustment, CHARISMA);
-	}
-}
-
-/* =======================================================================
-   Function    - mfChangeRaceAbilities
-   Description - Looks up the Ability Adjustment based on Race and change the
-                 numbers accordingly
-   Returns     - void
-   ======================================================================== */
-void ABILITY::mfChangeRaceAbilities(
-	const RACE_INFO::TYPE OldRace, 
-	const RACE_INFO::TYPE NewRace)
-{
-	if (OldRace != RACE_INFO::NOT_SET)
-	{
-		ABILITY const *paOldAdjustment = &RaceAdjustment[OldRace];
-
-		fAbilities[STRENGTH]		-= paOldAdjustment->fAbilities[STRENGTH];
-		fAbilities[DEXTERITY]	   	-= paOldAdjustment->fAbilities[DEXTERITY];
-		fAbilities[CONSTITUTION]	-= paOldAdjustment->fAbilities[CONSTITUTION];
-		fAbilities[INTELLIGENCE]	-= paOldAdjustment->fAbilities[INTELLIGENCE];
-	   	fAbilities[WISDOM]	   		-= paOldAdjustment->fAbilities[WISDOM];
-		fAbilities[CHARISMA]		-= paOldAdjustment->fAbilities[CHARISMA];
-	}
-	mfAdjustAllAbilities(NewRace);	
-}
-
 /* =======================================================================
    Function    - GetRaceAbilties
    Description - Looks up the Ability Min and Max based for a given TYPE
@@ -194,7 +99,7 @@ void ABILITY::mfChangeRaceAbilities(
    Returns     - void
    ======================================================================== */
 static void GetRaceAbilities(
-	const RACE_INFO::TYPE PlayerRace, 
+	const RACE_INFO::TYPE PlayerRace,
 	const ABILITY::TYPE AbilityType,
 	SBYTE * const psHighValue,
 	SBYTE * const psLowValue)
@@ -245,7 +150,7 @@ const SBYTE RollAbility(
 	while (sResult < sDefaultLowValue && sResult > sDefaultHighValue);
 
 	return sResult;
-	
+
 }
 
 /* =======================================================================
@@ -291,7 +196,7 @@ const SBYTE RollStrength(
 	const RACE_INFO::TYPE PlayerRace)	// PlayerRace can be RACE_NOT_SET
 {
 	// First roll the basic range.
-	SBYTE	sResult = RollAbility(PlayerRace, 
+	SBYTE	sResult = RollAbility(PlayerRace,
 		                          ABILITY::STRENGTH,
 								  MAX_ROLLED_STRENGTH_RATING,
 								  MIN_ROLLED_STRENGTH_RATING);
@@ -305,20 +210,5 @@ const SBYTE RollStrength(
 
 	return sResult;
 }
+#endif	// _CHARED
 
-/* =======================================================================
-   Function    - RollAllAbilities
-   Description - Generate a valid Charisma value for a given player Race.
-   Returns     - Charisma Value
-   ======================================================================== */
-void ABILITY::RollAllAbilities(
-	const RACE_INFO::TYPE PlayerRace	// PlayerRace can be RACE_NOT_SET
-	)
-{
-	fAbilities[STRENGTH]		= RollStrength(PlayerRace);
-	fAbilities[DEXTERITY]		= RollDexterity(PlayerRace);
-	fAbilities[CONSTITUTION]	= RollConstitution(PlayerRace);
-	fAbilities[INTELLIGENCE]	= RollIntelligence(PlayerRace);
-	fAbilities[WISDOM]	  	 	= RollWisdom(PlayerRace);
-	fAbilities[CHARISMA]		= RollCharisma(PlayerRace);
-}

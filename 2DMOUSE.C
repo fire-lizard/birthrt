@@ -7,7 +7,6 @@
    ========================================================================
    Contains the following general functions:
    
-   mouse_move		-Move the character using the mouse as input.
    handle_2dmouse	-Checks the mouse for buttons, calls appropriate funcs
    
    Contains the following internal functions:
@@ -40,16 +39,6 @@ static PFVLLL	pfMouseObjectClicked = NULL;
 static PFVLLL	pfMouseFloorClicked = NULL;
 static PFVL		pfRightButtonClicked = NULL;
 static PFVL		pfLeftButtonClicked = NULL;
-
-/* ========================================================================
-   Function    - mouse_move
-   Description - Move the character using the mouse as input.
-   Returns     - void
-   ======================================================================== */
-
-void mouse_move()
-{
-}
 
 /* ========================================================================
    Function    - SetMouseClicked

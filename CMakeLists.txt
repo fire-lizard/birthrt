@@ -9,18 +9,18 @@ set (BIRTHRT_CORE
 	"ACTIONS.CPP" "ACTIONS.HXX" "ACTNMENU.CPP" "ACTNMENU.HXX"
 	"ADVENTUR.CPP" "ADVENTUR.HXX" "ADVPREP.CPP" "ADVPREP.HXX"
 	"AIBTLCAP.CPP" "AIBTLCAP.HXX" "AIFIREBL.CPP" "AIFIREBL.HXX"
-	"AIFNDTYP.HXX" "AIFOLCAP.HXX" "AIFOLID.HXX" "AIFOLPLY.CPP"
+	"AIFOLCAP.HXX" "AIFOLID.HXX" "AIFOLPLY.CPP"
 	"AIFOLPLY.HXX" "AIFOLPTH.CPP" "AIFOLPTH.HXX" "AIFTSEQ.CPP"
 	"AIFTSEQ.HXX" "AIGARGL.CPP" "AIGARGL.HXX" "AIGUARD.HXX"
 	"AIHARPY.CPP" "AIHARPY.HXX" "AIHHOUND.CPP" "AIHHOUND.HXX"
-	"AIHORSE.CPP" "AIHORSE.HXX" "AILEADER.CPP" "AILEADER.HXX"
-	"AIPATHPT.HXX" "AIPONG.CPP" "AIPONG.HXX" "AIPTHLDR.HXX"
+	"AIHORSE.CPP" "AIHORSE.HXX" "AILEADER.HXX"
+	"AIPATHPT.HXX" "AIPONG.CPP" "AIPONG.HXX"
 	"AISPECTR.CPP" "AISPECTR.HXX" "AISPIDER.CPP" "AISPIDER.HXX"
 	"AISTUN.CPP" "AISTUN.HXX" "AIWYVERN.CPP" "AIWYVERN.HXX"
 	"ALIGNMNT.CPP" "ALIGNMNT.HXX" "AMBIENCE.INC" "ANIM.CPP"
 	"ANIM.H" "APPEAR.CPP" "APPEAR.HXX" "ARMOR.CPP"
-	"ARMOR.HXX" "ARROW.H" "ASSERT.C" "ATHING.CPP"
-	"ATHING.HXX" "AVA.CPP" "AVA.HXX" "AVATAR.CPP"
+	"ARMOR.HXX" "ASSERT.C" "ATHING.CPP"
+	"ATHING.HXX" "AVATAR.CPP"
 	"AVATAR.HXX" "BATTLE.CPP" "BATTLE.HXX" "BATTLEUI.CPP"
 	"BATTLEUI.HXX" "BLOCKM.C" "BLOOD.CPP" "BLOOD.HXX"
 	"BLOODEFF.CPP" "BLOODREQ.CPP" "BLOODREQ.HXX" "BUMP.C"
@@ -31,8 +31,8 @@ set (BIRTHRT_CORE
 	"COMBDATA.CPP" "COMBDATA.HXX" "COMBOPTS.CPP" "COMBOPTS.HXX"
 	"COMBTARG.CPP" "COMBTARG.HXX" "CONSTITN.CPP" "CONSTITN.HXX"
 	"CONTEXT.HXX" "CONVERT.C" "CTHING.HXX" "CUE.C"
-	"DEBUG.C" "DEBUG.H" "DEMOFLIC.CPP" "DESCRIBE.CPP"
-	"DESCRIBE.HXX" "DEU.H" "DEXTERIT.CPP" "DEXTERIT.HXX"
+	"DEBUG.C" "DEBUG.H" "DESCRIBE.CPP"
+	"DESCRIBE.HXX" "DEXTERIT.CPP" "DEXTERIT.HXX"
 	"DICE.C" "DICE.H" "DOORS.C" "DOORS.H"
 	"DOSHELP.CPP" "DOSHELP.HXX" "DYNAMTEX.C" "DYNAMTEX.H"
 	"EFFSEPAR.HXX" "ENGINE.H" "ENGINT.H" "EXPERIEN.CPP"
@@ -47,8 +47,8 @@ set (BIRTHRT_CORE
 	"INTELLI.HXX" "INVNBUTS.HXX" "INVNGUI.CPP" "INVNGUI.HXX"
 	"INVNTORY.CPP" "INVNTORY.HXX" "ITEMEFF.CPP" "ITEMEQP.CPP"
 	"ITEMEQP.HXX" "ITEMTYPE.CPP" "ITEMTYPE.HXX" "ITEMUTIL.CPP"
-	"ITEMUTIL.HXX" "LEVEL.C" "LIGHT.H" "LISTBOX.CPP"
-	"LISTBOX.HXX" "LOADSAVE.CPP" "LOADSAVE.HXX" "MACHINE.H"
+	"ITEMUTIL.HXX" "LEVEL.C" "LIGHT.H"
+	"LOADSAVE.CPP" "LOADSAVE.HXX" "MACHINE.H"
 	"MACHINT.H" "MAGIC.C" "MAGIC.H" "MAIN.CPP"
 	"MAIN.HXX" "MAP.C" "MAP.H" "MAPAI.CPP"
 	"MAPAI.HXX" "MAPAITBL.CPP" "MAPEFF.CPP" "MAPICON.HXX"
@@ -60,8 +60,8 @@ set (BIRTHRT_CORE
 	"PLACES.HXX" "PLAYCLAS.CPP" "PLAYCLAS.HXX" "PLAYER.CPP"
 	"PLAYER.HXX" "PLAYHIT.CPP" "PLAYHIT.HXX" "PLAYID.CPP"
 	"PLAYID.HXX" "PLAYRACE.CPP" "PLAYRACE.HXX" "PLAYSTAT.CPP"
-	"PLAYSTAT.HXX" "POINT.C" "POISON.HXX" "PRACTICE.CPP"
-	"PROTO.H" "PROVDATA.CPP" "PROVDATA.HXX" "PROVTAX.C"
+	"PLAYSTAT.HXX" "POINT.C" "PRACTICE.CPP"
+	"PROVDATA.CPP" "PROVDATA.HXX" "PROVTAX.C"
 	"PROVTAX.H" "RANDOM.C" "RANDOM.H" "REALM.CPP"
 	"REALM.HXX" "REDBOOK.C" "REDBOOK.H" "REGEN.CPP"
 	"REGEN.HXX" "REGENTS.CPP" "REGENTS.HXX" "REGIONS.C"
@@ -75,41 +75,39 @@ set (BIRTHRT_CORE
 	"SCNKEY.CPP" "SCNKEY.HXX" "SCNMAP.CPP" "SCNMAP.HXX"
 	"SCNMGR.CPP" "SCNMGR.HXX" "SCNMUSIC.HXX" "SCNNOTES.HXX"
 	"SCNPLACE.HXX" "SCNSCTOR.HXX" "SCNVER.CPP" "SCNVER.HXX"
-	"SECTORS.C" "SECTORS.H" "SINCOS.H" "SLFRDEMO.CPP"
-	"SLFRDEMO.HXX" "SNDDATA.H" "SNDVOX.CPP" "SNDVOX.HXX"
+	"SECTORS.C" "SECTORS.H" "SINCOS.H"
+	"SNDVOX.CPP" "SNDVOX.HXX"
 	"SOUND.CPP" "SOUND.HXX" "SOUNDFX.HXX" "SPANS.C"
 	"SPECIAL.H" "SPELL.CPP" "SPELL.HXX" "SPELLEFF.CPP"
 	"SPELLPRO.CPP" "SPELLPRO.HXX" "STATSMOD.HXX" "STRENGTH.CPP"
-	"STRENGTH.HXX" "strenum.h" "STRINT.H" "STRMAKE.CPP"
+	"STRENGTH.HXX" "strenum.h" "STRINT.H"
 	"STRMGR.C" "STRMGR.H" "SYSINT.H" "SYSTEM.C"
 	"SYSTEM.H" "TASK.C" "TASK.H" "TEXTURES.C"
 	"THINGS.C" "THINGS.H" "THINGTYP.H" "TIMER.C"
-	"TMSGBOX.CPP" "TMSGBOX.HXX" "TOTALS.H" "TUTOR.CPP"
+	"TMSGBOX.CPP" "TMSGBOX.HXX" "TUTOR.CPP"
 	"TUTOR.HXX" "TUTRMENU.CPP" "TUTRMENU.HXX" "TYPEDEFS.H"
-	"UNITS.CPP" "UNITS.HXX" "VDPMI.C" "VECTOR.HXX"
+	"UNITS.CPP" "UNITS.HXX" "VECTOR.HXX"
 	"VERSION.CPP" "VERSION.HXX" "WADTHING.H" "WEAPON.CPP"
 	"WEAPON.HXX" "WISDOM.CPP" "WISDOM.HXX" "PLATFORM.H"
 	"PLATFORM.CPP")
 
-# Windows-only: DirectDraw/DirectSound/DirectPlay, the Win32 message loop
-# and the character-editor dialogs. The POSIX build leaves these out; the
+# Windows-only: DirectDraw/DirectSound/DirectPlay and the Win32 message
+# loop. The POSIX build leaves these out; the
 # SDL backend that replaces them is not written yet.
 set (BIRTHRT_WIN32
-	"CHARED.CPP" "CHARED.HXX" "CHAREDIN.CPP" "CHAREDIN.HXX"
-	"CHAREDSY.H" "GETFILE.CPP" "GETFILE.HXX" "WINSYS/AFXRES.H"
-	"WINSYS/CRC.CPP" "WINSYS/DDRAW.CPP" "WINSYS/DDRAWPRO.H" "WINSYS/DPLAYUTS.H"
+	"WINSYS/CRC.CPP" "WINSYS/DDRAW.CPP" "WINSYS/DDRAWPRO.H"
 	"WINSYS/FILEXFER.CPP" "WINSYS/FILEXFER.HXX" "WINSYS/GMULPLAY.CPP" "WINSYS/GMULPLAY.HXX"
-	"WINSYS/GOTOURL.CPP" "WINSYS/GOTOURL.H" "WINSYS/INETPROC.INC" "WINSYS/KEYINT.C"
-	"WINSYS/MACHINE.C" "WINSYS/MCIUTIL.C" "WINSYS/MCIUTIL.H" "WINSYS/MDS.H"
-	"WINSYS/MDSUTIL.C" "WINSYS/MESSQUE.CPP" "WINSYS/MESSQUE.HXX" "WINSYS/MONO.CPP"
+	"WINSYS/GOTOURL.CPP" "WINSYS/GOTOURL.H" "WINSYS/KEYINT.C"
+	"WINSYS/MACHINE.C"
+	"WINSYS/MESSQUE.CPP" "WINSYS/MESSQUE.HXX" "WINSYS/MONO.CPP"
 	"WINSYS/MONO.H" "WINSYS/MONO_C.CPP" "WINSYS/MONO_C.H" "WINSYS/MOUSE.C"
-	"WINSYS/MULPLAY.CPP" "WINSYS/MULPLAY.HXX" "WINSYS/MUSIUTIL.C" "WINSYS/MUSIUTIL.H"
-	"WINSYS/MUSIUTIS.H" "WINSYS/PNETMOD.CPP" "WINSYS/PNETMOD.HXX" "WINSYS/PNETTYPE.H"
-	"WINSYS/REGISTRS.H" "WINSYS/REGISTRY.C" "WINSYS/REGISTRY.H" "WINSYS/SIERRANW.H"
-	"WINSYS/SNDUTIL.C" "WINSYS/SNDUTIL.H" "WINSYS/SNDUTILS.H" "WINSYS/SNTYPES.H"
-	"WINSYS/SNWVALID.H" "WINSYS/STATUS.C" "WINSYS/STATUS.H" "WINSYS/SWINUTIL.C"
-	"WINSYS/SWINUTIL.H" "WINSYS/SYSGRAPH.CPP" "WINSYS/UTIL.C" "WINSYS/WAVE.C"
-	"WINSYS/WAVE.H" "WINSYS/WINRES.H" "KERNAUD.CPP" "KERNAUD.HPP"
+	"WINSYS/MULPLAY.CPP" "WINSYS/MULPLAY.HXX"
+	"WINSYS/PNETMOD.CPP" "WINSYS/PNETMOD.HXX" "WINSYS/PNETTYPE.H"
+	"WINSYS/SIERRANW.H"
+	"WINSYS/SNTYPES.H"
+	"WINSYS/SNWVALID.H" "WINSYS/STATUS.C" "WINSYS/STATUS.H"
+	"WINSYS/SYSGRAPH.CPP" "WINSYS/UTIL.C"
+	"KERNAUD.CPP" "KERNAUD.HPP"
 	"SOLAUDIO/Dsound.cpp" "SOLAUDIO/DSOUND.HPP"
 	"BIRTHRT.RC")
 
@@ -227,8 +225,7 @@ else ()
 endif ()
 
 # Standalone string-table disassembler: strdat.dat -> strdat.txt + strenum.h,
-# the inverse of STRMAKE.CPP. Its own target because it owns main(), which
-# would collide with STRMAKE.CPP's in the game executable.
+# the inverse of STRMAKE.CPP. Its own target because it owns main().
 # PLATFORM.CPP because STRUMAKE.CPP includes PLATFORM.H, whose non-Win32 arm
 # rewrites its four fopen() calls to plat_fopen(). Without it the target does
 # not link off Windows - never noticed because EXCLUDE_FROM_ALL means a plain
@@ -237,4 +234,56 @@ add_executable (strumake EXCLUDE_FROM_ALL "STRUMAKE.CPP" "PLATFORM.CPP")
 target_include_directories (strumake PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 if (MSVC)
 	target_compile_definitions (strumake PRIVATE _CRT_SECURE_NO_WARNINGS)
+endif ()
+
+# String-table compiler: strdat.txt -> strdat.dat + strenum.h. Same shape
+# as strumake above, for the same reasons.
+add_executable (strmake EXCLUDE_FROM_ALL "STRMAKE.CPP" "PLATFORM.CPP")
+target_include_directories (strmake PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+if (MSVC)
+	target_compile_definitions (strmake PRIVATE _CRT_SECURE_NO_WARNINGS)
+endif ()
+
+# Birthright I Character Editor (1997, Windows only) - source kept for a
+# possible future tool; no target builds it. It was a separate program built
+# from the game sources with _CHARED defined: MAINCHED.CPP and
+# WINSYS/MACHINEX.C stand in for MAIN.CPP and WINSYS/MACHINE.C, and
+# CHARED.CPP, CHAREDIN.CPP, AVA.CPP and GETFILE.CPP are the editor itself.
+# The game modules it needs (ability and bloodline rolls, name tables) keep
+# that code under #if defined(_CHARED). Its dialog resources (Chared.rc) were
+# never in this repository - RESOURCE.H and CHAREDSY.H hold the control ids -
+# so the dialogs would have to be recreated before it can run.
+
+# Birthright I level and scene editors (1996-97, Windows only). Both are the
+# game itself built with extra defines and sources, so these options turn the
+# Birthrt target into an editor - give them their own build directory:
+#   BIRTHRT_LEVEL_EDITOR  _EDIT ("WAD Builders Edition"): adds EDIT.C (walls,
+#                         textures, lighting) and SAVEPWAD.C (saves the level
+#                         as a PWAD).
+#   BIRTHRT_WADBUILDERS   _WADBUILDERS: a few designer conveniences (walk
+#                         through walls, quit without confirming).
+#   BIRTHRT_SCENE_EDITOR  SCENE_EDITOR: adds DLG_EDIT.CPP (place characters,
+#                         edit their AI); saves the .scn file via
+#                         SCENE::mfWriteSceneFile.
+# All off by default; the hooks in the game sources sit under those #if's, so
+# the normal game never compiles them. The options combine and every
+# combination compiles and links. Their dialog resources were never in this
+# repository, so the dialogs would have to be recreated before either editor
+# can run.
+option (BIRTHRT_LEVEL_EDITOR "Build Birthrt as the level editor (Windows only)" OFF)
+option (BIRTHRT_WADBUILDERS "Add the WAD Builders designer conveniences (Windows only)" OFF)
+option (BIRTHRT_SCENE_EDITOR "Build Birthrt as the scene editor (Windows only)" OFF)
+if (NOT WIN32 AND (BIRTHRT_LEVEL_EDITOR OR BIRTHRT_WADBUILDERS OR BIRTHRT_SCENE_EDITOR))
+	message (FATAL_ERROR "The Birthright editors are Win32 dialog code - Windows only.")
+endif ()
+if (BIRTHRT_LEVEL_EDITOR)
+	target_sources (Birthrt PRIVATE "EDIT.C" "EDIT.H" "SAVEPWAD.C" "SAVEPWAD.H")
+	target_compile_definitions (Birthrt PRIVATE _EDIT)
+endif ()
+if (BIRTHRT_WADBUILDERS)
+	target_compile_definitions (Birthrt PRIVATE _WADBUILDERS)
+endif ()
+if (BIRTHRT_SCENE_EDITOR)
+	target_sources (Birthrt PRIVATE "DLG_EDIT.CPP" "DLG_EDIT.H")
+	target_compile_definitions (Birthrt PRIVATE SCENE_EDITOR)
 endif ()

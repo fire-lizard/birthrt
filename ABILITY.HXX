@@ -76,13 +76,12 @@ public:
 			SBYTE /* WISDOM */,
 			SBYTE /* CHARISMA */);
 	~ABILITY() {}
-	
-	void mfAdjustAllAbilities(const RACE_INFO::TYPE);
-	void mfChangeRaceAbilities( const RACE_INFO::TYPE /* OldRace */, 
-								const RACE_INFO::TYPE /* NewRace */);
-	const SBYTE mfGetAbility(const TYPE) const;			
-	
-	SBYTE const mfGetStrength() const;			
+
+#if defined(_CHARED)			// Character Editor only
+	const SBYTE mfGetAbility(const TYPE) const;
+#endif
+
+	SBYTE const mfGetStrength() const;
 	SBYTE const mfGetDexterity() const;			
 	SBYTE const mfGetConstitution() const;			
 	SBYTE const mfGetIntelligence() const;			
@@ -96,26 +95,18 @@ public:
 	void mfSetWisdom(SBYTE const /* newValue */);			
 	void mfSetCharisma(SBYTE const /* newValue */);			
 	
-	void RollAllAbilities(const RACE_INFO::TYPE);	// PlayerRace can be RACE_NOT_SET
-	
 	LONG mfReadData(FILE *);
 	void mfWriteData(FILE *) const;
 	void mfInitData();
 				
 protected:
 private:
-	void mfAdjustAbilities (ABILITY const *, const TYPE);
 	SBYTE fAbilities[ABILITY_MAX_NUMBER]; // Use the ABILTITY_TYPE to index in this array.
 	
 };
 typedef ABILITY *PTR_ABILITY;
 
-/* ------------------------------------------------------------------------
-   Macros   
-   ------------------------------------------------------------------------ */
-/* ------------------------------------------------------------------------
-   Prototypes
-   ------------------------------------------------------------------------ */
+#if defined(_CHARED)			// Character Editor only (CHARED.CPP)
 const SBYTE RollAbility(
 	const RACE_INFO::TYPE PlayerRace,	// PlayerRace can be RACE_NOT_SET
 	const ABILITY::TYPE	AbilityType,
@@ -133,6 +124,14 @@ const SBYTE RollCharisma( const RACE_INFO::TYPE); 		// PlayerRace can be RACE_NO
 const SBYTE RollDexterity( const RACE_INFO::TYPE); 	// PlayerRace can be RACE_NOT_SET
 
 const SBYTE RollStrength(const RACE_INFO::TYPE);
+#endif
+
+/* ------------------------------------------------------------------------
+   Macros   
+   ------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------
+   Prototypes
+   ------------------------------------------------------------------------ */
 /* ------------------------------------------------------------------------
    Global Variables
    ------------------------------------------------------------------------ */
@@ -152,12 +151,6 @@ inline ABILITY::ABILITY(
 		fAbilities[CHARISMA]		= bCharisma;
 }
    
-// mfGetAbility
-inline const SBYTE ABILITY::mfGetAbility(const ABILITY::TYPE atype) const
-{
-	return fAbilities[atype];
-}
-	
 // Read the text data from the .ava files.
 inline LONG ABILITY::mfReadData(FILE *fp)
 {
@@ -196,6 +189,13 @@ inline void ABILITY::mfInitData()
 	}
 }
 
+#if defined(_CHARED)			// Character Editor only
+// mfGetAbility
+inline const SBYTE ABILITY::mfGetAbility(const ABILITY::TYPE atype) const
+{
+	return fAbilities[atype];
+}
+
 /* =======================================================================
    Function    - RollIntelligence
    Description - Generate a valid Intelligence value for a given player Race.
@@ -204,7 +204,7 @@ inline void ABILITY::mfInitData()
 inline const SBYTE RollIntelligence(
 	const RACE_INFO::TYPE PlayerRace)	// PlayerRace can be RACE_NOT_SET
 {
-	return RollAbility(PlayerRace, 
+	return RollAbility(PlayerRace,
 		               ABILITY::INTELLIGENCE,
 					   MAX_ROLLED_INTELLIGENCE_RATING,
 					   MIN_ROLLED_INTELLIGENCE_RATING);
@@ -218,7 +218,7 @@ inline const SBYTE RollIntelligence(
 inline const SBYTE RollWisdom(
 	const RACE_INFO::TYPE PlayerRace)	// PlayerRace can be RACE_NOT_SET
 {
-	return RollAbility(PlayerRace, 
+	return RollAbility(PlayerRace,
 		               ABILITY::WISDOM,
 					   MAX_ROLLED_WISDOM_RATING,
 					   MIN_ROLLED_WISDOM_RATING);
@@ -232,7 +232,7 @@ inline const SBYTE RollWisdom(
 inline const SBYTE RollConstitution(
 	const RACE_INFO::TYPE PlayerRace)	// PlayerRace can be RACE_NOT_SET
 {
-	return RollAbility(PlayerRace, 
+	return RollAbility(PlayerRace,
 		               ABILITY::CONSTITUTION,
 					   MAX_ROLLED_CONSTITUTION_RATING,
 					   MIN_ROLLED_CONSTITUTION_RATING);
@@ -246,7 +246,7 @@ inline const SBYTE RollConstitution(
 inline const SBYTE RollDexterity(
 	const RACE_INFO::TYPE PlayerRace)	// PlayerRace can be RACE_NOT_SET
 {
-	return RollAbility(PlayerRace, 
+	return RollAbility(PlayerRace,
 		               ABILITY::DEXTERITY,
 					   MAX_ROLLED_DEXTERITY_RATING,
 					   MIN_ROLLED_DEXTERITY_RATING);
@@ -260,11 +260,12 @@ inline const SBYTE RollDexterity(
 inline const SBYTE RollCharisma(
 	const RACE_INFO::TYPE PlayerRace)	// PlayerRace can be RACE_NOT_SET
 {
-	return RollAbility(PlayerRace, 
+	return RollAbility(PlayerRace,
 		               ABILITY::CHARISMA,
 					   MAX_ROLLED_CHARISMA_RATING,
 					   MIN_ROLLED_CHARISMA_RATING);
 }
+#endif
 
 inline SBYTE const ABILITY::mfGetStrength() const
 {

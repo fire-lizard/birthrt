@@ -103,7 +103,6 @@ void CollapseUnits(SHORT UnitIndex);
 
 void DumpScreen (LONG, LONG);
 void toggle_ShowWadSize (LONG, LONG);
-void BattleCameraPosition(LONG, LONG);
 void CheckMissileRange();
 void CheckMagicRange();
 static void SetMagicRegions(void);
@@ -134,12 +133,6 @@ LONG GetButtonValue ( LONG MenuIndex, LONG ButtonId );
 
 void SetBattleUIMouseCursor (void);
 
-static PFVLLL	fPrevObjMouseCallback = 0;
-static PFVLLL	fPrevWallMouseCallback = 0;
-static PFVLLL	fPrevFloorMouseCallback = 0;
-static PFVL		fPrevRightMouseCallback = 0;
-static void FieldFloorClick(LONG ButtonClicked, LONG SectorClicked, LONG WhichType);
-static void FieldObjectClick(LONG ButtonClicked, LONG ObjectClicked, LONG WhichType);
 static BOOL ConvertFieldToGrid( LONG fx, LONG fy, LONG *gx, LONG *gy, BOOL *home);
 static BOOL WhichGridHalf( LONG CX, LONG CY, SHORT *Row, SHORT *Column, BOOL *Home);
 
@@ -183,7 +176,6 @@ SHORT	sOldBattleMode = BTLUI_MODE_RESERVES;
 static CHAR		cBattleField = '0';
 
 static	BOOL	HomeStrengthLarger = FALSE;
-static	SHORT	sBattleCameraCount = 50;
 static	BYTE	bBattleCameraMode = BTLUI_CAMERA_FIXED;
 
 static SHORT	battleTroops = fERROR;
@@ -192,14 +184,9 @@ static SHORT	startLoc = -2;	// invalid
 SHORT	hUnitInfo = fERROR;
 SHORT	hMissile = fERROR;
 
-static SHORT	sBattleCameraState = CAMERA_BEHIND;
-
 BOOL		fBattleMovement = FALSE;
 BOOL		fBattleReserves = FALSE;
 
-static LONG		UnitFieldX = 0;
-static LONG		UnitFieldY = 0;
-static BOOL		UnitFieldCursor = FALSE;
 
 static LONG		BattleCountDown;
 static LONG		MovementCountDown;
@@ -315,11 +302,6 @@ STR_STATUS_RESURRECTION,
 
 };
 DEFINE_VECTOR_CLASS(int, StatusText);
-
-#ifndef _WINDOWS
-extern "C" {
-}
-#endif
 
 BOOL fBattleFreezeTime = FALSE;
 BOOL fBattleNextTurn = FALSE;
@@ -528,20 +510,12 @@ void ReleaseBattleUI(SCENE &rScene)
    ======================================================================== */
 void BattleMoveCamera(void)
 {
-	LONG	Temp;
-	BOOL	fPosition = FALSE;
 	SHORT	HomeUnitCount, HomeUnitAlive, HomeUnitTotal;
 	SHORT	AwayUnitCount, AwayUnitAlive, AwayUnitTotal;
 	SHORT	ResvCount, ResvAlive, ResvTotal;
 	SHORT	HomeTotal, AwayTotal;
 	
-	LONG	TargetAngle;
-	LONG	TargetRadius;
-	LONG	TargetHeight;
-	LONG	TargetPitch;
 	
-	static	BOOL	fRotatedCamera = FALSE;
-	static	POINT	TempPoint = {0,-1500};
 	static 	BOOL fOldMoving = !fUnitsStillMoving;
 		
 	// run battle clock
@@ -797,16 +771,6 @@ void BattleMoveCamera(void)
 }
 
 /* ========================================================================
-   Function    - BattleCameraPosition
-   Description - change the camera position mode
-   Returns     -
-   ======================================================================== */
-void BattleCameraPosition(LONG where, LONG)
-{
-	sBattleCameraState = (SHORT)where;
-}
-
-/* ========================================================================
    Function    - BattleCameraHighView
    Description - move the camera to a global position
    Returns     -
@@ -921,14 +885,11 @@ void BattleCameraFollow(LONG, LONG)
    ======================================================================== */
 void BattleControlGrid(LONG MenuCombo, LONG DataCombo)
 {
-	CHAR	buffer[CHAT_CHARS];
-	SHORT	i,r,c;
+	SHORT	r,c;
 	BOOL	home;
 	LONG	Row, Column;
 	LONG	MenuId, ButtonId;
 	LONG	CalledByMouse, location;
-	LONG	mx, my;
-	SHORT	Health, color;
 	SHORT	Movement;
 	CAvatar *pAvatar;
 	
@@ -1365,7 +1326,6 @@ void BattleReservesGrid(LONG MenuCombo, LONG unused)
 	LONG	mx,my;
 	LONG	MenuId, ButtonId;
 	CAvatar *pAvatar;
-	char n[256];
 	SPLIT_LONG(MenuCombo, MenuId, ButtonId);
 	
 	if( GetButtonPosition( MenuId, 0, &mx, &my ) == fERROR)
@@ -1730,7 +1690,6 @@ void BattleStatusPaint(LONG MenuCombo)
 	SHORT	UnitCount, UnitAlive, UnitTotal;
 	SHORT	AwayColor = RED;
 	SHORT	HomeColor = LT_BLUE;
-	SHORT	color;
 	LONG	MenuId, ButtonId;
 	CAvatar	*pAvatar;
 	
@@ -1948,7 +1907,6 @@ void BattleUnitInfoPaint(LONG MenuCombo)
 {
 	LONG		mx,my;
 	LONG		tx,ty;
-	SHORT		i,j;
 	SHORT		w,h;
 	SHORT		W,H;
 	SHORT		type;
@@ -1956,7 +1914,6 @@ void BattleUnitInfoPaint(LONG MenuCombo)
 	CHAR		buffer[80];
 	SHORT		Health;
 	SHORT		color;
-	SHORT		r,c;
 	LONG		MenuId, ButtonId;
 	SHORT		iBitm;
 	BITMPTR		pBitm;
@@ -2147,7 +2104,7 @@ void BattleMagicPaint(LONG MenuCombo)
 	
  	if (battleTroops != fERROR)
  	{
-	 	CAvatar * const pAvatar = (CAvatar * const )BLKPTR(battleTroops);
+	 	BLKPTR(battleTroops);
 	 	SHORT	i;
 	 	
 	 	// add a text to select movement
@@ -2202,7 +2159,7 @@ void BattleMissilePaint(LONG MenuCombo)
 	   ----------------------------------------------------------------- */
  	if (battleTroops != fERROR)
  	{
-	 	CAvatar * const pAvatar = (CAvatar * const)BLKPTR(battleTroops);
+	 	BLKPTR(battleTroops);
 	 	SHORT	i;
 	 	
 	 	// add a text to select movement
@@ -2299,7 +2256,7 @@ void BattleMovePaint(LONG MenuCombo)
 	else
  	if (battleTroops != fERROR)
  	{
-	 	CAvatar * const pAvatar = (CAvatar * const)BLKPTR(battleTroops);
+	 	BLKPTR(battleTroops);
 	 	SHORT	i;
 	 	
 	 	// add a text to select movement
@@ -2323,7 +2280,7 @@ void BattleMovePaint(LONG MenuCombo)
    ======================================================================== */
 void BattleSelTroopsPaint(LONG MenuCombo, LONG unused)
 {
-	SHORT	i,j;
+	SHORT	i;
 	LONG	x,y,mx,my;
 	LONG	MenuId, ButtonId;
 	CHAR	buffer[80];
@@ -2762,7 +2719,6 @@ void CheckMissileRange()
    ======================================================================== */
 BOOL BattleMissilesReady(CAvatar *pAvatar)
 {   	
-	SHORT	buttonId;
 	
 	if (GetBattleMissile(pAvatar->fBtlCap.OfficerIcon) && 
 		pAvatar->fBtlCap.MissileCount < BattleTick )
@@ -2912,24 +2868,6 @@ void BattleUpdateTime(void)
 }
 
 /* ========================================================================
-   Function    - HilightUnit
-   Description - hilight the square of the hMissile unit
-   Returns     -
-   ======================================================================== */
-void HilightUnit(void)
-{
-	if (hMissile == fERROR)
-		return;
-		
-	CAvatar * const pAvatar = (CAvatar * const)BLKPTR(hMissile);
-	
-	LONG const l = (pAvatar->fBtlCap.Row * GRID_MAX_COLS) + pAvatar->fBtlCap.Column;
-	SetButtonHilightArt ( D_BTL_CONTROL, l+2, BTLUI_HOME_HILIGHT);
-	SetButtonHilight( D_BTL_CONTROL, l+2, TRUE);
-	fUpdatePanels = TRUE;
-}
-
-/* ========================================================================
    Function    - DecreaseBattleScreen
    Description - Reduce the viewing area.
    Returns     -
@@ -3076,7 +3014,6 @@ SHORT FixUnitsArray( SHORT UnitIndex )
    ======================================================================== */
 void CollapseUnits(SHORT UnitIndex) // either home or away
 {
-	SHORT	NextIndex;
 	SHORT	CheckIndex = 0;
 	SHORT	MyType;
 	
@@ -3127,63 +3064,6 @@ void CollapseUnits(SHORT UnitIndex) // either home or away
 	
 	} while (UnitIndex != fERROR);
 }
-
-/* ========================================================================
-   Function    - HilightShooter
-   Description - turn on the light for a grid with a legal shooter
-   Returns     - SHORT 1 if move valid and grid turned on
-   ======================================================================== */
-SHORT HilightShooter(
-	LONG	MenuId,		// menu id of battle panel
-	LONG	R,			// row
-	LONG	C,			// column
-	LONG	Magic,		// FALSE = missile TRUE = magic
-	BOOL	*Success	// was this test a success
-)
-{
-	// look at home locations
-	const SHORT	l = (R * GRID_MAX_COLS) + C;
-	// assume false
-	*Success = FALSE;
-	
-	if(GetWhosWhere(R,C,WW_HOME) != fERROR)
-	{
-		SHORT	hTemp = hUnitInfo;
-		CAvatar * const pAvatar = (CAvatar * const )BLKPTR(GetWhosWhere(R,C,WW_HOME));
-		
-		if (pAvatar->hPlayerStats == fERROR)
-			return TRUE;
-			
-		DumbAutoLockPtr<PLAYER_STATS const> const dhPlayerStats(pAvatar->hPlayerStats);
-		
-		if( Magic )
-		{
-			if (!BattleMagicReady(pAvatar))
-				return TRUE;
-		}
-		else
-		{
-			if (!BattleMissilesReady(pAvatar))
-				return TRUE;
-		}
-			
-		// only if in searching mode
-		if( pAvatar->Status != CAvatar::AI_SEARCH)
-			return TRUE;
-			
-		hUnitInfo = GetWhosWhere(R,C,WW_HOME);
-		if(CheckMissileRangeSub(R,C))
-		{
-			SetButtonHilightArt ( MenuId, l+2, BTLUI_HOME_HILIGHT);
-			SetButtonHilight( MenuId, l+2, TRUE);
-			fUpdatePanels = TRUE;
-			*Success = TRUE;
-		}
-		hUnitInfo = hTemp;
-	}
-	
-	return TRUE;	// ok move, keep looking
-}   			
 
 /* #################################################################
    #################################################################
@@ -3508,23 +3388,12 @@ void BattleCancelMissile(LONG, LONG)
 }
 
 /* ========================================================================
-   Function    - BattleCancelSelUnit
-   Description - get out of SelUnit mode
-   Returns     -
-   ======================================================================== */
-void BattleCancelSelUnit(LONG, LONG)
-{
-	BattlePanelMode(BUILD_LONG(D_BTL_CONTROL,0),sOldBattleMode);
-}
-
-/* ========================================================================
    Function    - BattleCancelMove
    Description -
    Returns     -
    ======================================================================== */
 void BattleCancelMove(LONG, LONG)
 {
-	SHORT		i;
 	
 	// if from the reserves, put him back
 	if(startLoc == -1)
@@ -3677,47 +3546,6 @@ void ClearMagicRegions(void)
 	del_region(BattleMissileBox,0);
 }
 
-// This code is not called right now. I removed it because it was using context
-// numbers that were removed from the help file. dlj 5/30/97
-
-/* ========================================================================
-   Function    - HilightMissile
-   Description - turn on the light for a grid with a legal missile target
-   Returns     - SHORT 1 if move valid and grid turned on
-   ======================================================================== */
-SHORT HilightMissile(
-	LONG	MenuId,		// menu id of battle panel
-	LONG	R,			// row
-	LONG	C,			// column
-	LONG	Away,		// check the away side
-	BOOL	*Success	// was this test a success
-)
-{
-	// look at enemy locations
-	const SHORT	l = (R * GRID_MAX_COLS) + C;
-	SHORT		hUnit;
-	
-	// assume false
-	*Success = FALSE;
-	
-	// if the enemy is asking, add one to the row
-	if(Away)
-		hUnit = GetWhosWhere(R,C,WW_AWAY);
-	else
-		hUnit = GetWhosWhere(R,C,WW_HOME);
-		
-	// if someone from enemy army is in this square, hilight
-	if(hUnit != -1)
-	{
-		SetButtonHilightArt ( MenuId, l+2, BTLUI_AWAY_HILIGHT);
-		SetButtonHilight( MenuId, l+2, TRUE);
-		fUpdatePanels = TRUE;
-		*Success = TRUE;
-	}
-	
-	return TRUE;	// ok move, keep looking
-}
-
 /* #################################################################
    #################################################################
    #################################################################
@@ -3756,7 +3584,6 @@ void SetWhosWhere(SHORT Row, SHORT Col, BOOL Home, SHORT hAvatar)
    ======================================================================== */
 static BOOL ConvertFieldToGrid( LONG fx, LONG fy, LONG *gx, LONG *gy, BOOL *home)
 {
-	LONG	i;
 		
 	// find x -> column
 	if (fx >= FIELDGRID1_X && fx < FIELDGRID2_X)
@@ -3909,7 +3736,6 @@ void SetBattleUIMouseCursor (void)
 	LONG	DataCombo;
 	LONG	MenuCombo;
 	LONG	CursorType = BTL_CURSOR_CANCEL;
-	LONG	UnitType;
 	
 	ConvertScreenToFloor(cursor_x, cursor_y, &fx, &fy);
 	if (!ConvertFieldToGrid(fx, fy, &Column, &Row, &Home))
@@ -4013,7 +3839,6 @@ void SetBattleUIMouseCursor (void)
 void ChangeBattleCursor (CHAR *pArtName, BOOL HotSpot)
 {
 	CHAR	pPathName[40];
-#ifdef _WINDOWS
 	if (sDrawMode == iDDRAW)
 	{
 		// set mouse to be his icon art
@@ -4025,14 +3850,6 @@ void ChangeBattleCursor (CHAR *pArtName, BOOL HotSpot)
 	}
 	else
 		init_mouse(pArtName, HotSpot);
-#else
-	// set mouse to be his icon art
-	SysHideCursor();
-	SetPurge(cursor_bitmap);
-	sprintf(pPathName, "graphics\\%s.pcx", pArtName);
-	cursor_bitmap = GetResourceStd(pPathName, FALSE);
-	SysShowCursor();
-#endif
 }
 
 /* #################################################################
@@ -4325,7 +4142,7 @@ void BattleLooseProc(LONG MenuCombo, LONG button)
    ======================================================================== */
 void PaintBattleLose (LONG MenuCombo, LONG )
 {	
-	SHORT	i,j;
+	SHORT	i;
 	LONG	X,Y;
 	LONG	mx,my;
 	LONG	MenuId, ButtonId;
@@ -4483,7 +4300,6 @@ void PaintBattleLose (LONG MenuCombo, LONG )
    ======================================================================== */
 void BattleWin(LONG, LONG)
 {
-	LONG	regentUnit;
 	
 	fUpdatePanels = TRUE;
 	RunPanels();
@@ -4601,7 +4417,7 @@ void BattleWinProc(LONG MenuCombo, LONG button)
    ======================================================================== */
 void PaintBattleWin (LONG MenuCombo, LONG )
 {	
-	SHORT	i,j;
+	SHORT	i;
 	LONG	X,Y;
 	LONG	mx,my;
 	LONG	MenuId, ButtonId;
@@ -4609,7 +4425,7 @@ void PaintBattleWin (LONG MenuCombo, LONG )
 	CHAR	temp[256];
 	CHAR	temp2[256];
 	CHAR	buffer[256];
-	SHORT	PFBM, Troops, dummy;
+	SHORT	PFBM;
 	SHORT	UnitIndex;
 	SHORT	Count = 0;
 	char RealmName[80];
@@ -4809,11 +4625,6 @@ void BattleRetreatProc(LONG MenuCombo, LONG button)
 	}
 }
 
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-void BattleSelMissile(LONG , LONG )
-{
-	// bad function!
-}
 /* ========================================================================
    Function    - CheckBattleGrid
    Description - 

@@ -7,7 +7,6 @@
    ========================================================================
    Contains the following internal functions:
    Exists					- Tests to see if a file exists in the current dir
-   text_len					- finds the length of a string
 
    Contains the following general functions:
 	SaveVideoSet			-
@@ -20,7 +19,6 @@
 	line						-
 	detect_scale			-
 
-   gplot_char				- plots a character
    gtext_width				- calculates the width of a string
    gtext_height			- calculates the height of a string
    gprint_text				- prints a line
@@ -194,7 +192,6 @@ LONG		tab_width = (640 / 16);	// half-inch tabs, assuming 8" pagewidth
 LONG		scale = NORM_SCALE;
 LONG		inter_char_space = INTER_CHAR_SPACE;
 SHORT		cur_type_and_size = 9999;
-LONG		av[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,2};
 char		cFraction[] = {0,91,92,93,94,96,123,124,125,126};
 
 BOOL		fDoRemap = FALSE;
@@ -208,11 +205,6 @@ LONG		GameSpecificGlobal_w = 0;
 LONG		GameSpecificGlobal_h = 0;
 BOOL		GameSpecificArray1[20]={FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE};
 BOOL		GameSpecificArray2[20]={FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE};
-
-static LONG ldMarginTop = 0;
-static LONG ldMarginBottom = 0;
-static LONG ldMarginLeft = 0;
-static LONG ldMarginRight = 0;
 
 static UBYTE	lighten[256] = {
 /*			  0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31 */
@@ -329,10 +321,6 @@ void get_margin_size(LONG *Left, LONG *Right, LONG *Top, LONG *Bottom)
 
 void set_screen_size (LONG w, LONG h)
 {
-#ifndef _WINDOWS
-	screen_buffer_width = w;
-	screen_buffer_height = h;
-#endif
 	window_width = w;
 	window_height = h;
 
@@ -346,37 +334,6 @@ void set_screen_size (LONG w, LONG h)
 		set_view_size (margin_left, margin_top,
 			window_width-margin_left/2-margin_right/2,
 			window_height-margin_top/2-margin_bottom/2);
-}
-
-void dec_view_size(LONG dummy1, LONG dummy2)
-{
-	if(ldMarginTop < 200)
-	{
-		ldMarginTop += 20;
-		ldMarginBottom += 20;
-		ldMarginLeft += 20;
-		ldMarginRight += 20;
-	}
-
-	memset(screen, 0, MAX_VIEW_WIDTH * MAX_VIEW_HEIGHT);
-}
-
-void inc_view_size(LONG dummy1, LONG dummy2)
-{
-	if(ldMarginTop >= 20)
-	{
-		ldMarginTop -= 20;
-		ldMarginBottom -= 20;
-		ldMarginLeft -= 20;
-		ldMarginRight -= 20;
-	}
-
-	clear_display();
-	// [d10-21-96 JPC] Auto-res work.
-	if (fHighRes)
-		set_margin_size(ldMarginTop, ldMarginRight, ldMarginTop, ldMarginBottom);
-	else
-		set_margin_size(ldMarginTop/2, ldMarginRight/2, ldMarginTop/2, ldMarginBottom/2);
 }
 
 /* =======================================================================
@@ -839,7 +796,6 @@ SHORT gprint_text (LONG x, LONG y, char *text, LONG color)
 	LONG	le = 9999;
 	LONG	max_h = 0;
 	LONG	antialias = color * 256;
-	LONG	antialias2 = color * 256;
 	LONG	OrigColor = color;
 	SHORT	yHeight = 0;
 	BOOL	fAngle = FALSE;
@@ -958,8 +914,6 @@ SHORT gprint_text (LONG x, LONG y, char *text, LONG color)
 			}
 			else if (c == 'a')								/* change antialias color */
 			{
-				LONG j;
-				
 				if (!isdigit(text[i]) ||
 					!isdigit(text[i+1]) ||
 					!isdigit(text[i+2]))
@@ -970,10 +924,7 @@ SHORT gprint_text (LONG x, LONG y, char *text, LONG color)
 					return 0;
 #endif
 				}
-				j = (text[i++]-'0') * 100;
-				j += (text[i++]-'0') * 10;
-				j += (text[i++]-'0');
-				antialias2 = j * 256;
+				i += 3;
 			}
 			else if (c == 'D')								/* print number as decimal */
 			{
@@ -2293,7 +2244,6 @@ static void ScaleBitmap_fine (SHORT x, SHORT y, SHORT iBitm, SHORT bx, SHORT by,
 {
 	LONG		xx, yy;
 	LONG		i;
-	LONG 		startX, startY;
 	LONG		wid, hei, ww, hh, x_offset;
 	FIXED16		tsx, tsy;
 	LONG		xinc, yinc;
@@ -2305,8 +2255,6 @@ static void ScaleBitmap_fine (SHORT x, SHORT y, SHORT iBitm, SHORT bx, SHORT by,
 	PTR		sptr, sptr_;
 	BYTE		pix;
 
-	startX = x;
-	startY = y;
 	if (iBitm == fERROR)							// check for bad source bitmap
 		return;
 
@@ -2618,11 +2566,6 @@ void ScaleBitmap (SHORT x, SHORT y, SHORT iBitm, SHORT bx, SHORT by, SHORT w, SH
 void ScaleBitmapX (SHORT x, SHORT y, SHORT iBitm, SHORT bx, SHORT by, SHORT w, SHORT h, SHORT scale)
 {
 	ScaleBitmap_fine (x, y, iBitm, bx, by, w, h, scale*256L,256L*256L);
-}
-
-void ScaleBitmapY (SHORT x, SHORT y, SHORT iBitm, SHORT bx, SHORT by, SHORT w, SHORT h, SHORT scale)
-{
-	ScaleBitmap_fine (x, y, iBitm, bx, by, w, h, 256L*256L,scale*256L);
 }
 
 /* ====================================================================

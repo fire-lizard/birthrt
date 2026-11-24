@@ -120,7 +120,6 @@
 // -- 
 // -----------------------------------------------------------------
 
-#ifdef _WINDOWS
 	#define NO_KEY				0
 	#define KEY_ESCAPE		VK_ESCAPE
 	#define KEY_1				'1'
@@ -208,135 +207,6 @@
 	#define KEY_DOWNRIGHT	VK_NEXT	/* numeric keypad 3, or pgdn */
 	#define KEY_INSERT		VK_INSERT
 	#define KEY_DELETE		VK_DELETE
-#else
-	#define NO_KEY				0
-	#define KEY_ESCAPE		1
-	#define KEY_1				2
-	#define KEY_2				3
-	#define KEY_3				4
-	#define KEY_4				5
-	#define KEY_5				6
-	#define KEY_6				7
-	#define KEY_7				8
-	#define KEY_8				9
-	#define KEY_9				10
-	#define KEY_0				11
-	#define KEY_MINUS			12
-#ifdef _FRENCHVER	
-	#define KEY_EQUAL			53
-#else
-	#define KEY_EQUAL			13
-#endif
-	#define KEY_BACKSPACE	14
-	#define KEY_TAB 			15
-#ifdef _FRENCHVER	
-	#define KEY_Q				30
-#else
-	#define KEY_Q				16
-#endif
-#ifdef _FRENCHVER	
-	#define KEY_W				44
-#else
-	#define KEY_W				17
-#endif
-	#define KEY_E				18
-	#define KEY_R				19
-	#define KEY_T				20
-#ifdef _GERMANVER	
-	#define KEY_Y				44
-#else
-	#define KEY_Y				21
-#endif
-	#define KEY_U				22
-	#define KEY_I				23
-	#define KEY_O				24
-	#define KEY_P				25
-	#define KEY_LEFTSQUARE	26	/* "[" */
-	#define KEY_RIGHTSQUARE 27	/* "]" */
-	#define KEY_RETURN		28
-	#define KEY_ENTER			28
-	#define KEY_CTRL			29
-	#define KEY_CONTROL		29
-#ifdef _FRENCHVER	
-	#define KEY_A				16
-#else
-	#define KEY_A				30
-#endif
-	#define KEY_S				31
-	#define KEY_D				32
-	#define KEY_F				33
-	#define KEY_G				34
-	#define KEY_H				35
-	#define KEY_J				36
-	#define KEY_K				37
-	#define KEY_L				38
-#ifdef _FRENCHVER	
-	#define KEY_SEMICOLON	51
-#else
-	#define KEY_SEMICOLON	39
-#endif
-	#define KEY_QUOTE			40
-	#define KEY_BACKQUOTE	41
-	#define KEY_LEFTSHIFT	42
-	#define KEY_BACKSLASH	43
-#ifdef _FRENCHVER	
-	#define KEY_Z				17
-#else
-	#ifdef _GERMANVER	
-		#define KEY_Z			21
-	#else
-		#define KEY_Z			44
-	#endif
-#endif
-	#define KEY_X				45
-	#define KEY_C				46
-	#define KEY_V				47
-	#define KEY_B				48
-	#define KEY_N				49
-#ifdef _FRENCHVER	
-	#define KEY_M			   39
-#else
-	#define KEY_M				50
-#endif
-#ifdef _FRENCHVER	
-	#define KEY_COMMA			50
-#else
-	#define KEY_COMMA			51
-#endif
-	#define KEY_PERIOD		52
-	#define KEY_SLASH			53
-	#define KEY_RIGHTSHIFT	54
-	#define KEY_PRINTSCREEN	55
-	#define KEY_ALT 			56
-	#define KEY_SPACEBAR		57
-	#define KEY_SPACE			57
-	#define KEY_CAPSLOCK		58
-	#define KEY_F1				59
-	#define KEY_F2				60
-	#define KEY_F3				61
-	#define KEY_F4				62
-	#define KEY_F5				63
-	#define KEY_F6				64
-	#define KEY_F7				65
-	#define KEY_F8				66
-	#define KEY_F9				67
-	#define KEY_F10 			68
-	#define KEY_NUMLOCK		69
-	#define KEY_SCROLLLOCK	70
-	#define KEY_UPLEFT		71	/* numeric keypad 7, or home */
-	#define KEY_UP				72	/* numeric keypad 8, or up arrow */
-	#define KEY_UPRIGHT		73	/* numeric keypad 9, or pgup */
-	#define KEY_OTHERMINUS	74	/* "-" by numeric keypad */
-	#define KEY_LEFT			75	/* numeric keypad 4, or left arrow */
-	#define KEY_CENTER		76	/* numeric keypad 5 */
-	#define KEY_RIGHT			77	/* numeric keypad 6, or right arrow */
-	#define KEY_OTHERPLUS	78	/* "+" by numeric keypad */
-	#define KEY_DOWNLEFT		79	/* numeric keypad 1, or end */
-	#define KEY_DOWN			80	/* numeric keypad 2, or down arrow */
-	#define KEY_DOWNRIGHT	81	/* numeric keypad 3, or pgdn */
-	#define KEY_INSERT		82
-	#define KEY_DELETE		83
-#endif
 
 // movement key masks
 #define KEY_LEFT_BIT			0x00000001
@@ -382,7 +252,6 @@ extern "C" {
 #endif
 
 /* blockm.c */
-POINT GetBlockCornerFromXY(LONG x,LONG y);
 SHORT* get_blockm (LONG px1,LONG py1);
 
 //WRC Fixed Camera functions (mirrors etc...)  these are bad icky things.
@@ -392,10 +261,8 @@ SHORT* get_blockm (LONG px1,LONG py1);
 LONG lines_intersect(LONG x1,LONG y1,LONG x2,LONG y2,LONG x3,LONG y3,LONG x4,LONG y4);
 
 /* convert.c */
-LONG seg_to_height(LONG s,LONG side);
 
 /* cue.c */
-void SetArtPath ( CSTRPTR pArtPath );
 void CreateShadeTable ( UBYTE  *ptrPalette, LONG  percIntensity, LONG  percTranslucent, LONG  percRed, LONG  percGreen, LONG  percBlue );
 void init_shade_table(CHAR *Name);
 void color_rect (LONG x,LONG y,LONG w,LONG h,LONG s);
@@ -409,7 +276,6 @@ void zoom_shade_edged_rect (LONG x, LONG y, LONG w, LONG h, LONG s, SHORT hDest)
 void zoomout_shade_edged_rect (LONG x, LONG y, LONG w, LONG h, LONG s, SHORT hDest);
 
 /* level.c */
-void SetWadPath ( CSTRPTR pWadPath );
 void load_level(char *name, LONG PlayerStart);
 void load_new_wad(char *name, LONG PlayerStart);
 
@@ -423,14 +289,12 @@ LONG AngleFromPoint2 ( LONG X1, LONG Y1, LONG X2, LONG Y2, LONG Resolution );
 LONG RelativeAngle( LONG Angle1, LONG Angle2 );
 void RotateAnglePoint (POINT *p, POINT *origin, ULONG a);
 void xlate(POINT *p);
-void xlatePoint(POINT *p,POINT a);
 //rot8_angle coord-system is on the Std. Cartesian Coord System.
 //Nova engine is based on the (0=north,64=east)
 #define Rotate(pPoint,angle) rot8_angle((pPoint),-(angle))
 void rot8 (POINT *p);
 void rot8dbl (POINT *p);
 void rot8_angle (POINT *p,ULONG a);
-void rot8_r_angle(POINT *p,ULONG OldAngle, ULONG DeltaAngle,LONG radius);
 
 /* reject.c */
 BOOL reject(LONG MySector, LONG HisSector);

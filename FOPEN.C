@@ -58,28 +58,6 @@ static void CloseOldestFile ();
 static FILE * FileInQueue (CSTRPTR pszFile, CSTRPTR pszAccess);
 static SHORT DiskInQueue (CSTRPTR pszFile);
 
-#ifndef _WINDOWS
-int __far crit_error_handler(unsigned deverr, unsigned errcode, unsigned far *devhdr)
-{
-	return(_HARDERR_IGNORE);
-}
-#endif
-
-void SetInt24(void)
-{
-#ifndef _WINDOWS
-	prev_int_24 = _dos_getvect( 0x24 );
-	_harderr(crit_error_handler);
-#endif
-}
-
-void ClearInt24(void)
-{
-#ifndef _WINDOWS
-	_dos_setvect( 0x24, prev_int_24 );
-#endif
-}
-
 void CheckHandles ()
 {
 // Call at startup to figure out how many file handles we can have.

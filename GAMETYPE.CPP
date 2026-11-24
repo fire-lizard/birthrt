@@ -790,33 +790,6 @@ GAME_TTYPE::GAME_ITEM const GAME_TTYPE::game_ttypes[] = {
 
  };
 
-/* ========================================================================
-   Function    - mfGetThingType
-   Description - Given a file name convert it to a thing type.
-   Returns     - THINGTYPE enumeration
-   ======================================================================== */
-const THINGTYPE GAME_TTYPE::mfGetThingType(char const * cpFileName)
-{
-	LONG i;
-	GAME_ITEM const * pGameTType;
-	THINGTYPE Result = NO_THING;
-	GAME_ITEM const * const pLastItem = &GAME_TTYPE::game_ttypes[LAST_GAME_THING];
-	
-	// What a hideous method of searching!
-	// Use pointers for speed.
-	for (i = FIRST_GAME_THING, pGameTType = &GAME_TTYPE::game_ttypes[FIRST_GAME_THING];
-		 pGameTType <= pLastItem;
-		 pGameTType++, i++)
-	{
-		if (strcmp(pGameTType->fttype.name, cpFileName) == 0)
-		{
-			Result = (THINGTYPE)(i);
-			break;
-		}
-	}
-	return Result;
-}
-
 const BOOL GAME_TTYPE::mfIsMissileBlocker (THINGTYPE const type)
 {
 // [d1-09-97 JPC] Added so fireballs won't blow up when they hit bushes.

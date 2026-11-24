@@ -90,10 +90,6 @@ typedef SHORT HDL_AVATAR;
 #include "AIPONG.HXX"
 #endif
 
-#if !defined(_AIPTHLDR_HXX)
-#include "AIPTHLDR.HXX"
-#endif
-
 #if !defined(_AIFOLCAP_HXX)
 #include "AIFOLCAP.HXX"
 #endif
@@ -180,7 +176,6 @@ typedef enum {
    Prototypes
    ----------------------------------------------------------------- */
 
-SHORT AvatarIdToHdl ( LONG Id );
 inline LONG AvatarHdlToId ( SHORT Hdl );
 void mfReadType(FILE *, THINGTYPE *);
 void mfWriteType(FILE *, THINGTYPE);
@@ -350,10 +345,11 @@ public:				// Public for the dialog editor
 	inline AIFUNC GetAIFuncIndex() const;
 	
 	inline void mfGetContactPoint(POINT_3D * const) const;
-	
+#if defined(SCENE_EDITOR)
 	inline BOOL mfShouldSaveToSceneFile();
 	void mfWriteSceneData(FILE * const fp);
-	
+#endif
+
 	inline void mfInitVals();
 	inline LONG mfReadRestOfSceneData(FILE * const fp);
 	
@@ -491,13 +487,11 @@ public:				// Public for the dialog editor
 	
 	static SHORT PlayerAvatarHandle;	// The avatar that is following the player structure
 	static const LONG	ActivationDistance;
-	static const LONG	fgTauntDelay;	// How long to wait for the next taunt.
 	
 	// Which avatar is being controled by the keyboard "player."
 	inline static SHORT const mfGetPlayerAvatarHandle();
 	inline void  mfSetMeToThePlayer() const;
 	
-	static BOOL mfSetKillType(CAvatar *, THINGTYPE, LONG DamageLevel );
 	
 	void mfStartNextFightSequence();
 	
@@ -915,11 +909,13 @@ inline LONG CAvatar::mfReadRestOfSceneData(FILE * const fp)
 	}
 	return Result;
 }
+#if defined(SCENE_EDITOR)
 // Test to see if this avatar will be saved in the scene file.
 inline BOOL CAvatar::mfShouldSaveToSceneFile()
 {
 	return ((attrib.RuntimeCreated == FALSE) ? TRUE : FALSE);
 }
+#endif
 
 /* ========================================================================
    Function    - AvatarHdlToId

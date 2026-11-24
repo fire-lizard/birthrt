@@ -2070,196 +2070,6 @@ DEFINE_VECTOR_CLASS(UNIT_TYPE, units);
 /* ??? */
 
 /* ========================================================================
-   Function    - ValidateUnitsArray
-   Description - make a pass throught the units array and check that all
-                 the links are correct and that each unit has valid data.
-                 last minute effort to fix many possible bugs
-                 GEH 12/3/96 
-   Returns     - 
-   ======================================================================== */
-void ValidateUnitsArray(void)
-{
-	SHORT	sCount;
-	
-	for(sCount = 1;				// first possible valid unit
-		sCount < MAX_UNITS;		// last valid unit
-		++sCount 				// check each unit for being a list head
-		)
-	{
-		// first check if this unit is valid
-		// ValidUnit will print it's own errors
-		if (ValidateUnit(sCount))
-		{
-			// not if this unit is the start of a list, check the list
-			if (units[sCount].Joined == 0)
-			{
-				ValidateUnitList(sCount);
-			}
-		}
-	}
-}
-
-/* ========================================================================
-   Function    - ValidateUnitList
-   Description - Validate a unit and all the units below it in 
-                 the linked list.  Call this with the head of a list.
-   Returns     - TRUE This list OK, FALSE Errors found
-   ======================================================================== */
-BOOL ValidateUnitList(SHORT UnitIndex)
-{
-	SHORT	NextUnit;
-	SHORT	UnitCount = 0;
-	BOOL	fRetVal = TRUE;
-	
-	// scan the list for bad units
-	for(NextUnit = units[UnitIndex].NextUnit;
-		NextUnit != -1;
-		NextUnit = units[NextUnit].NextUnit
-		)
-	{
-		// check for a list that is too long
-		if(++UnitCount > gUnitStackSize)
-		{
-			printf("Units Array List ERROR! List greater then %d units[%d]!", 
-				gUnitStackSize,
-				UnitIndex );
-			fRetVal = FALSE;
-#ifdef _DEBUG			
-			fatal_error("Units array error!");
-#endif
-			goto End;
-		}
-		
-		// check for infinite loops
-		if (NextUnit == UnitIndex)
-		{
-			printf("Units Array List ERROR! INFINITE LOOP units[%d]!", 
-				NextUnit, UnitIndex );
-			fRetVal = FALSE;
-#ifdef _DEBUG			
-			fatal_error("Units array error!");
-#endif
-			goto End;
-		}
-		
-		// check for off the end of list
-		if (NextUnit > MAX_UNITS)
-		{
-			printf("Units Array List ERROR! units[%d] > MAX_UNITS in list headed by units[%d]!", 
-				NextUnit, UnitIndex );
-			fRetVal = FALSE;
-#ifdef _DEBUG			
-			fatal_error("Units array error!");
-#endif
-			goto End;
-		}
-		
-		// check for invalid link to unit 0
-		if (NextUnit == 0)
-		{
-			printf("Units Array List ERROR! NextUnit == 0 in list headed by units[%d]!", 
-				UnitIndex );
-			fRetVal = FALSE;
-#ifdef _DEBUG			
-			fatal_error("Units array error!");
-#endif
-			goto End;
-		}
-		
-		// check for invalid unit
-		if (!ValidateUnit(NextUnit))
-		{
-			printf("Units Array List ERROR! units[%d] is invalid member of a list headed by units[%d]!", 
-				NextUnit, UnitIndex );
-			fRetVal = FALSE;
-#ifdef _DEBUG			
-			fatal_error("Units array error!");
-#endif
-			goto End;
-		}
-	}
-	
-End:
-	return fRetVal;
-}
-
-/* ========================================================================
-   Function    - ValidateUnit
-   Description - Validate a single unit
-   Returns     - TRUE This unit OK, FALSE Errors found
-   ======================================================================== */
-BOOL ValidateUnit(SHORT UnitIndex)
-{
-	BOOL	fRetVal = TRUE;
-	
-	// Realm should be less then REALM_COUNT
-	if (units[UnitIndex].Realm >= REALM::REALM_COUNT)
-	{
-		printf("Units Array ERROR! units[%d].Realm (%d) >= REALM_COUNT", 
-			UnitIndex, units[UnitIndex].Realm);
-		fRetVal = FALSE;
-#ifdef _DEBUG			
-			fatal_error("Units array error!");
-#endif
-		goto End;
-	}		
-		
-	// a valid unit has a value greater then NO_COUNTRY
-	if (units[UnitIndex].Realm != REALM::NO_COUNTRY)
-	{
-		// a valid unit has a province value less then PROVINCE_COUNT
-		if (units[UnitIndex].Realm >= PROVINCE_COUNT)
-		{
-			printf("Units Array ERROR! units[%d].province (%d) >= PROVINCE_COUNT", 
-				UnitIndex, units[UnitIndex].province);
-			fRetVal = FALSE;
-#ifdef _DEBUG			
-			fatal_error("Units array error!");
-#endif
-			goto End;
-		}
-	
-		// a valid unit has a province not equal to zero
-		if (units[UnitIndex].Realm == 0)
-		{
-			printf("Units Array ERROR! units[%d].province (%d) == 0", 
-				UnitIndex, units[UnitIndex].province);
-			fRetVal = FALSE;
-#ifdef _DEBUG			
-			fatal_error("Units array error!");
-#endif
-			goto End;
-		}
-	
-		// a valid unit has a icon value less then or equal RHUOBHE_UNIT_ICON
-		if (units[UnitIndex].Icon > RHUOBHE_UNIT_ICON)
-		{
-			printf("Units Array ERROR! units[%d].Icon (%d) > RHUOBHE_UNIT_ICON", 
-				UnitIndex, units[UnitIndex].province);
-			fRetVal = FALSE;
-#ifdef _DEBUG			
-			fatal_error("Units array error!");
-#endif
-			goto End;
-		}
-	
-		// a valid unit has a icon value not equal to zero
-		if (units[UnitIndex].Icon == 0)
-		{
-			printf("Units Array ERROR! units[%d].Icon (%d) == 0", 
-				UnitIndex, units[UnitIndex].province);
-			fRetVal = FALSE;
-#ifdef _DEBUG			
-			fatal_error("Units array error!");
-#endif
-			goto End;
-		}
-	}
-End:
-	return fRetVal;
-}   
-
-/* ========================================================================
    Function    - CheckUnitStack
    Description - Make sure the stack is below the minimum number of troops.
    Returns     - TRUE if ok, FALSE If split out.
@@ -2410,7 +2220,7 @@ BOOL RegentDeathTest (void)
 LONG DeleteUnit (SHORT iUnit, BOOL fSend, BOOL ReOrderStack )
 {
 	LONG	NewUnitLeader = units[iUnit].NextUnit;
-	LONG	i, k, m, n;
+	LONG	i, k;
 	BOOL	dataNotSent = TRUE;	// Flag so we only transfer the data once.
 
 	// remove the deleted unit from the list
@@ -2466,7 +2276,6 @@ LONG DeleteUnit (SHORT iUnit, BOOL fSend, BOOL ReOrderStack )
 		{
 			if (regents[i].mfGetunit() == iUnit)
 			{
-				REALM::REALM_TYPE Original_realm_ = regents[i].mfGetOriginalRealm();
 
 				//	moved to PaintDiplomacy, tribute became payroll 7/16/97 ABC
 				//// Were was tribute being paid to an unlanded lieutenent?
@@ -2671,7 +2480,7 @@ LONG CalcUnitValues (LONG iUnit)
 /* ======================================================================== */
 void MoveSubUnitUpList (LONG iUnit, LONG iStartUnit)
 {
-	LONG	i, iNext, iPrev, n, j;
+	LONG	i, iNext, iPrev;
 
 	if (iUnit == iStartUnit) return;
 
@@ -2729,7 +2538,6 @@ LONG CreateUnitNJ (PROVINCE prov, MAP_ICON icon, LONG id, REALM::REALM_TYPE real
 {
 	LONG	j=1;
 	LONG	i;
-	LONG	f = FALSE;
 
 	RequestUnitsIndex(&j, fSend);
 
@@ -2831,7 +2639,6 @@ void RequestUnitsIndex (LONG *index, BOOL fSend)
 {
 	LONG	j = 1;
 
-#ifdef _WINDOWS
 	// if we are the master or a single player game or an NPC
 	if ((IsMultiPlayer() && AMultiPlayer.IsMaster()) || !IsMultiPlayer() || fSend==FALSE)
 	{
@@ -2850,13 +2657,6 @@ void RequestUnitsIndex (LONG *index, BOOL fSend)
 		j = GetGameData(MP_GAMEDATA, MPGAMESEMIPHORE_UNITINDEX, 0);
 		*index = j;
 	}
-
-#else
-	// single player game
-	while ( j < MAX_UNITS && units[j].Realm != REALM::NO_COUNTRY )
-		++j;
-	*index = j;
-#endif
 
 	LOGCOMMENTSLEEP
 	if ( fLogComment )

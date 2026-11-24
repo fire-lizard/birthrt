@@ -68,7 +68,6 @@ public:
 	static void mfRightButton(CAvatar *);
 	
 	// function to show this guys inventory
-	static void mfShowInventory(LONG, LONG);
 	
 	// battle control
 	static void mfMelee(CAvatar *);
@@ -87,12 +86,9 @@ public:
 	static BOOL mfMoveBack(LONG, LONG);
 	static BOOL mfMoveLeft(LONG, LONG);
 	static BOOL mfMoveRight(LONG, LONG);
-	static void mfCharge(LONG);
-	static void mfEngage(LONG);
 	static void mfFallBack(LONG);
 	static BOOL mfMoraleCheck(CAvatar *);
 	static void mfRout(LONG,BOOL,BOOL);
-	static void mfStand(LONG, LONG);
     
 	static LONG mfTerrainSpeed(CAvatar *, SHORT);
 

@@ -111,14 +111,11 @@ SHORT gRemapColors[cREMAP_GROUPS][2] = {
 /*  34 */	BLACK_GRAD,GREEN_GRAD,
 };
 
-LONG shade_to_change = 33;
-LONG fact_to_change = 0;
 LONG percIntensity[3] = {55,80,90};
 LONG percTranslucent[3] = {0,0,25};
 LONG percRed[3] = {100,100,100};
 LONG percGreen[3] = {100,100,100};
 LONG percBlue[3] = {100,100,100};
-LONG toggle_pannel = FALSE;
 
 CHAR art_path[80] = "graphics\\";
 
@@ -850,16 +847,3 @@ void shade_edged_rect (LONG x,LONG y,LONG w,LONG h,LONG s)
 		shade_rect (x+1,y+h-1,w-2,1,s-1);
 	}
 }
-
-/* ========================================================================
-   Function    - SetArtPath
-   Description - Set up the path of where the art and palette files are
-   Returns     - void
-   ======================================================================== */
-void SetArtPath ( CSTRPTR pArtPath )
-{
-	/* copy the first 79 chars into pwad_path */
-	strncpy(art_path, pArtPath, 79);
-}
-
-/* ======================================================================= */

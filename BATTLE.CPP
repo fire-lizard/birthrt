@@ -314,63 +314,6 @@ LONG ResolveBattleCard(
 }
 
 /* ========================================================================
-   Function    - ResolveBattleMagic
-   Description - Use Battle Magic Tables to resolve a phase of conflict
-   Returns     - battle result (see battle.h)
-   ======================================================================== */
-LONG ResolveBattleMagic( LONG	Attack )
-{
-	LONG	ReturnVal;
-	
-	// GEH This should be looked into later
-	if( Attack == 1 )	// wizard spells
-	{
-		ReturnVal = random(4) + 2;
-	}
-	else
-	if( Attack == 2 )	// priest spells
-	{
-		ReturnVal = random(4) + 2;
-	}
-	else	
-		ReturnVal = BTL_N;	// no-op
-	
-	return ReturnVal;
-}
-
-/* ========================================================================
-   Function    - BattleRound
-   Description - make a pass through the battle ai
-   Returns     - battle phase must end
-   ======================================================================== */
-BOOL BattleRound( void )
-{
-	BOOL bResult = TRUE;
-	
-	// every 100 frames in Arcade mode
-	// or each Phase in Phase mode
-	// else just return
-	
-	//Movement Phase
-	//	Attacker moves
-	// 	Defender moves
-	//Attack Phase
-	//	Resolve magical attacks
-	//	Resolve stationary missle attacks
-	//	Resolve charge attacks
-	//	Resolve melee attacks
-	//	Resolve moving missle attacks
-	//Morale Phase
-	//	Routed units flee
-	//	Units forced to fall back do so
-	//	Routed units attempt morale checks
-	//	Surrender or withdrawal
-	//Repeat
-	
-	return bResult;
-}
-
-/* ========================================================================
    Function    - GetBattleClass
    Description - returns data out of the battle array
    Returns     - 

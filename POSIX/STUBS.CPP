@@ -1,9 +1,9 @@
 /* ========================================================================
    STUBS.CPP - the Windows-only subsystems the portable core still calls.
 
-   DirectDraw, MCI (AVI playback), the wave-device probe and the URL
-   launcher.  None of them have a Linux equivalent that matters for
-   getting the game up: the SDL backend owns presentation.
+   DirectDraw, the wave-device probe and the URL launcher.  None of them
+   have a Linux equivalent that matters for getting the game up: the SDL
+   backend owns presentation.
    ======================================================================== */
 #include "../PLATFORM.H"
 
@@ -15,7 +15,7 @@
 #include "../MACHINT.H"
 
 /* DDRAWPRO.H wraps its prototypes in extern "C", so these must match.
-   MCIUTIL.H and GOTOURL.H do not - and every .C in this project builds as
+   GOTOURL.H does not - and every .C in this project builds as
    C++ - so those stay C++-mangled below. Get this wrong and it shows up
    as an undefined symbol at link time, not a compile error. */
 extern "C" {
@@ -46,21 +46,6 @@ HINSTANCE FindExecutable(const char *, const char *, char *)
 }
 
 void DirectDrawSaveScreen(void)		{}
-
-/* -- MCI ---------------------------------------------------------------- */
-BOOL mci_OpenAVI(void)				{ return FALSE; }
-void mci_CloseAVI(void)				{}
-BOOL mci_PlayAVI(char *, HWND)		{ return FALSE; }
-void mci_StopAVI(void)				{}
-
-DWORD mci_Init(void)				{ return 1; }
-DWORD mci_OpenFile(LPSTR)			{ return 1; }
-DWORD mci_OpenDevice(LPSTR)			{ return 1; }
-DWORD mci_Close(void)				{ return 0; }
-DWORD mci_Stop(void)				{ return 0; }
-DWORD mci_Rewind(void)				{ return 0; }
-DWORD mci_Play(void)				{ return 1; }
-DWORD mci_GetPosition(void)			{ return 0; }
 
 BOOL GotoURL(const char *, int)		{ return FALSE; }
 BOOL CheckURL(const char *)			{ return FALSE; }

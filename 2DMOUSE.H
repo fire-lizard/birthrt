@@ -47,7 +47,6 @@ extern "C" {
 extern "C" {
 #endif
 
-void mouse_move(void);
 void handle_2dmouse(void);
 PFVLLL SetMouseClicked (WadThingType Type, PFVLLL pfClickFunc );
 PFVL SetLeftButtonClicked(PFVL pfClickFunc );

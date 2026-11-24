@@ -133,7 +133,6 @@ public:
 	static const DICE *mfGetSmallCreatureDamage(const TYPE);
 	static const BOOL mfIsWeaponAvailable(const TYPE, const RACE_INFO::TYPE);
 	
-	static const TYPE mfFindType(char *);
 
 protected:
 private:

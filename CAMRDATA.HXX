@@ -46,18 +46,14 @@ enum {
 class CAMERA_DATA {
 public:
 	void mfInitVals();
-	void mfSetCameraData(LONG  /* X */, 
-		                 LONG  /* Y */, 
-		                 LONG  /* Z */, 
-		                 LONG  /* Angle */, 
-		                 LONG  /* Pitch */, 
-		                 LONG  /* Roll */);
 	void mfSetCamera();
 	void mfMoveCamera();
 	void mfSwoopCamera();
 	BOOL mfIsAtCameraPosition();
+#if defined(SCENE_EDITOR)
 	
 	void mfWriteData (FILE *);
+#endif
 	BOOL mfReadData	(char * /* cpBuffer */ );
 	
 protected:
@@ -87,26 +83,6 @@ inline void CAMERA_DATA::mfInitVals()
 	fa = 0;
 	fp = 0;
 	fr = 0;
-}
-
-/* ========================================================================
-   Function    - mfSetCameraData
-   Description - 
-   Returns     - 
-   ======================================================================== */
-inline void CAMERA_DATA::mfSetCameraData(
-                     LONG  X, 
-	                 LONG  Y, 
-	                 LONG  Z, 
-	                 LONG  Angle, 
-	                 LONG  Pitch, 
-	                 LONG  /* Roll */)
-{
-	fx = X;
-	fy = Y;
-	fz = Z;
-	fa = Angle;
-	fp = Pitch;
 }
 
 /* ========================================================================
@@ -170,6 +146,7 @@ inline BOOL CAMERA_DATA::mfReadData (char * cpBuffer)
 											&fr)) ? TRUE : FALSE);
 }
 
+#if defined(SCENE_EDITOR)
 /* ========================================================================
    Function    - mfWriteData
    Description - Write the data back to the scene file.
@@ -180,4 +157,5 @@ inline void CAMERA_DATA::mfWriteData (FILE *fp)
 	fprintf(fp,"%d\t%d\t%d\t%d\t%d\t%d\n", fx, fy, fz, fa, fp, 0);
 }
 
+#endif
 #endif // _CAMRDATA_HXX

@@ -347,8 +347,6 @@ LONG ItemEffects::MapTeleport(LONG Combo,LONG Arg,LONG Action)
 									//the item
  	SPLIT_COMBO(Combo,Itemtype,hPlayerStats); //extract the data from the Combo
 
-	ItemType& Item=ItemTypes[Itemtype]; //A reference to the item
-
 	if(fDomainTurn)
 	{
 		return NOT_SUPPORTED;

@@ -6,10 +6,6 @@
    Author: 	Chris Phillips & Greg Hightower & Gary Powell
    ========================================================================
 
-   Contains the following general functions:
-   push_camera				-pushes the camera onto the camera stack
-   pull_camera				-pulls a camera from the stack
-
    ======================================================================== */
 
 /* ------------------------------------------------------------------------
@@ -73,7 +69,6 @@ enum {
    Global Variables
    ------------------------------------------------------------------------ */
 CAMERA camera;	// used by the engine to do the main view.
-LONG camera_stack_ptr=0;
 
 extern BOOL fAIAutoRes;
 
@@ -1314,7 +1309,6 @@ void RotateSwoopCamera(CAMERA *pCamera)
 void RotateCameraAroundPoint(CAMERA * pCamera, LONG KeyState )
 {
 	LONG	Temp;
-	BOOL	fPosition = FALSE;
 	POINT	TempPoint;
 	FIXED_VECTOR_3D NewPoint;
 	PLAYER TempPlayer;
@@ -1382,7 +1376,6 @@ void RotateCameraAroundPoint(CAMERA * pCamera, LONG KeyState )
    		else
 	   		pCamera->Current.a += ((Temp>0) ? pCamera->Rate[2] : -pCamera->Rate[2] );
 			
-		fPosition = TRUE;
 	}
 	
 	if( pCamera->RTarget.radius != pCamera->Current.radius )
@@ -1393,7 +1386,6 @@ void RotateCameraAroundPoint(CAMERA * pCamera, LONG KeyState )
 		if (abs(Temp) <= pCamera->Rate[0]*2)
 			pCamera->Current.radius = pCamera->RTarget.radius;
 		
-		fPosition = TRUE;
 	}
 	
 	// get the point relative to the target that

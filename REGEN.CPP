@@ -126,19 +126,3 @@ void Regenerator::Service()
 		}
 	}
 }
-
-void Regenerator::WipeNonPlayers()
-{
-	for (LONG i=0;i<MAX_REGENERATORS;i++)
-	{
-		if (RegenList[i].fValid)
-		{
-			DumbHandlePtr<PLAYER_STATS> pPS(RegenList[i].hAvatarStats);
-
-			if (isPlayer(pPS->hAvatar))
-				continue;
-		
-			RegenList[i].fValid=FALSE;
-		}
-	}
-}

@@ -9,12 +9,10 @@
    InventoryGUI::
     mfPaintSpellBoxes  -Paints the spell boxes
     mfPaintListBoxLine -Paints one of the lines of the listbox
-    mfPaintArmsBoxes   -Paints the arms boxes
     mfPaintMiscInfoBox -Prints whatever needs to be in the MiscInfo Box
 
    Contains the following general functions:
    InventoryGUI::
-    mfAddToActiveInventory -Adds the specified item to one of the active boxes
     mfPaint                -Paints the menu
     mfInit                 -Initializes the instance
 
@@ -31,7 +29,6 @@
 #include "HANDLE.HXX"
 #include "GAME.H"
 #include "GAMEMAP.HXX"
-#include "LISTBOX.HXX"
 #include "ITEMEQP.HXX"
 #include "ITEMTYPE.HXX"
 #include "INVNTORY.HXX"
@@ -54,10 +51,6 @@ extern SHORT localActiveRegent;
    Static data
    ------------------------------------------------------------------------ */
 InventoryGUI StaticInventoryGUI::GUI;
-
-#ifndef _WINDOWS
-void InvokeDebugger(LONG,LONG);
-#endif 
 
 BOOL  fPreparingSpells  = FALSE;
 static BOOL  fPickingRecipient = FALSE;
@@ -169,7 +162,7 @@ void InventoryGUI::mfClearSpellBox(LONG,LONG b)
 		{
 			// unequip this item and remove from hot box
 			LONG Arg=BUILD_LONG((*itor)->mfType(),AvatarStatsHdl);
-			LONG Result=ItemTypes[(*itor)->mfType()].mfEffect(Arg,UNEQUIP);
+			ItemTypes[(*itor)->mfType()].mfEffect(Arg,UNEQUIP);
 			AvatarInventory.SpellBoxes[b] = fERROR;
 			return;
 		}
@@ -209,21 +202,6 @@ void InventoryGUI::mfClearSpellBox(LONG,LONG b)
 	}
 	else if (AvatarInventory.SpellBoxes[b] != fERROR)
 		AvatarInventory.mfClearSpellBox(b);
-}
-
-void InventoryGUI::mfUseSpellBox(LONG,LONG b)
-{
-	if (fPickingRecipient)
-	{
-	    return;
-	}
-
-	DumbAutoLockPtr<PLAYER_STATS > const pPlayerStats(AvatarStatsHdl);
-	ObjectList& AvatarInventory=pPlayerStats->mfGetInventory();
-
-//	doesn't work.
-
-	AvatarInventory.mfActivateSpellBox(b);
 }
 
 void InventoryGUI::mfScroll(LONG a,LONG d)
@@ -324,7 +302,6 @@ void InventoryGUI::mfPaintCategoryButtonText(LONG MenuId) const
 void InventoryGUI::mfPaintActionButtonText(LONG MenuId) const
 {
 	LONG ButX,ButY,ButW,ButH;
-	const char* Label;
 	LONG GetMe;
 	LONG button;
 	
@@ -454,11 +431,6 @@ void InventoryGUI::mfPaintSpellBoxes(ObjectList const & Ol,LONG MenuId) const
 	paint_tooltips();
 }
 
-void InventoryGUI::mfPaintListBoxIcon(LONG Line,ObjectList const & Ol,LONG MenuId) const
-{
-    return;
-}
-
 /* ========================================================================
    Function    - InventoryGUI::mfPaintListBoxLine
    Description - Paints all the lines of the listbox
@@ -550,8 +522,6 @@ void InventoryGUI::mfPaintListBoxLine(LONG Lines,ObjectList & Ol,LONG MenuId) co
 		GetButtonSize(MenuId,INV_BUT_LBNAME1+Line,&TextW,&TextH);	
 		GetButtonSize(MenuId,INV_BUT_LBNUMBER1+Line,&NumW,&NumH);
 
-		LONG CurrTextX;
-		LONG CurrTextY;
 		LONG TextMarginX=4;  //margins!
 		LONG TextMarginY=4;
 
@@ -1019,14 +989,6 @@ void InventoryGUI::mfTakeFromAvailSpells(LONG MC,LONG d)
 
 }
 
-void InventoryGUI::mfPurge(LONG,LONG)
-{
-	DumbAutoLockPtr<PLAYER_STATS> const pPlayerStats(AvatarStatsHdl);
-	ObjectList& AvatarInventory=pPlayerStats->mfGetInventory();
-	
-	AvatarInventory.mfDeinit();
-}
-
 void InventoryGUI::mfUseHighlightedObject(LONG a,LONG)
 {
 	if (mouse_button==2)
@@ -1377,20 +1339,4 @@ void StaticInventoryGUI::mfDisplay(LONG a,LONG Combo)
 	}
 	else
 		printf("couldn't show invntory because handle was fERROR\n");
-}
-
-/* ========================================================================
-   Function    - StaticInventoryGUI::mfAddItem
-   Description - Adds an Item to the Inventory on the screen
-   Returns     - void
-   ======================================================================== */
-void StaticInventoryGUI::mfAddItem(LONG,LONG Itype)
-{
-	SHORT AvatarStatsHdl=GUI.GetStatsHdl();
-	DumbAutoLockPtr<PLAYER_STATS > const pPlayerStats(AvatarStatsHdl);
-	ObjectList& AvatarInventory=pPlayerStats->mfGetInventory();
-	
-	printf("adding %s to player's inventory\n",GAME_TTYPE::mfGetDescription(ItemTypes[Itype].mfGameType()));
-	
-	AvatarInventory.mfAddItem((ITEMTYPE)Itype);
 }

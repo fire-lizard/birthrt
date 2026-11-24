@@ -53,17 +53,15 @@ public:
 		LORD,
 		THANE,
 	}TITLE;
+	TITLE fTitle;
+#if defined(_CHARED)			// Character Editor only
 	static inline char const * const mfGetTitle(const TITLE title)
 	{
 	 return(STRMGR_GetStr(player_title_table[title]));
 	}
-	static inline GAME_STRING mfGetTitleIndex(const TITLE title)
-	{
-		return(player_title_table[title]);
-	}
-	TITLE fTitle;
 private:
 	static GAME_STRING const player_title_table[];
+#endif
 };
 
 class PLAYER_DESCRIPTION{
@@ -72,17 +70,7 @@ public:
 		NOT_SET = 0,
 
 	}DES;
-	static inline char const * const mfGetDescription(const DES desp)
-	{
-	 return(STRMGR_GetStr(player_des_table[desp]));
-	}
-	static inline GAME_STRING mfGetDesIndex(const DES desp)
-	{
-		return(player_des_table[desp]);
-	}
 	DES fDescription;
-private:
-	static GAME_STRING const player_des_table[];
 };
 
 #endif //_PLAYID_HXX_

@@ -13,7 +13,6 @@
    draw_node            -???
    draw_ssector         -???
    process_seg          -???
-   calc_x_texture_info  -???
    draw_wall            -draws a wall
    draw_lower_wall      -draws a lower wall
    draw_upper_wall      -draws an upper wall
@@ -28,6 +27,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#ifdef _EDIT
+	#include <windows.h>
+	#include "edit.h"
+#endif
 #include "DEBUG.H"
 #include "SYSTEM.H"
 #include "ENGINE.H"
@@ -92,7 +95,6 @@ long local_camera_x,local_camera_y;
    Global Variables
    ------------------------------------------------------------------------ */
 LONG first=TRUE;
-LONG level_first=TRUE;
 LONG frames=0;
 BOOL gfFindFirstSeg = TRUE;	// [d7-24-96 JPC]
 
@@ -125,8 +127,6 @@ LONG floor_z;
 LONG gtxoff;
 LONG tyoff;
 
-LONG print_one_pass=FALSE;
-
 UBYTE * shade;
 LONG	SectLight = 0;
 LONG	NSEWLight = 0;
@@ -155,21 +155,6 @@ int gMax = 0;
 char gNodeHit[DEBUG_NODES];
 #endif
 
-#define DEBUG_SCALE	(10)
-void debug_draw_seg_line(long x1,long y1,long x2,long y2,long c)
-{
-	x1-=camera.x>>8;
-	x2-=camera.x>>8;
-	y1-=camera.y>>8;
-	y2-=camera.y>>8;
-   x1=x1/DEBUG_SCALE;
-   y1=y1/DEBUG_SCALE;
-   x2=x2/DEBUG_SCALE;
-   y2=y2/DEBUG_SCALE;
-   line(x1+320,y1+240,x2+320,y2+240,c);
-
-}
-
 void scale_col_ttop(LONG sx,LONG dx,LONG dy,LONG dye,
 				LONG clipped,LONG src_inc)
 {
@@ -187,13 +172,6 @@ void scale_col_ttop(LONG sx,LONG dx,LONG dy,LONG dye,
 		return;
 #endif
 
-#if !defined(_WINDOWS)
-	if (fAIMoving)
-	{
-	    if (dx & 1)
-	 	 	return;									// skip every other column
- 	}
-#endif
 	tsy.lval = (tyoff << 16) + (clipped * src_inc);
 
 	++dye;
@@ -273,39 +251,6 @@ void scale_col_ttop(LONG sx,LONG dx,LONG dy,LONG dye,
 		
 		tsy.lval &= wrapMask;							/* texture wraps at wrapMask */
 		
-#if !defined(_WINDOWS)
-		if (fAIMoving)
-		{
-			// GWP For DOS Low res draw every other scan line the same for walls.
-			if (light == 0)
-			{
-				do {
-					// Use just the integer part of tsy to index into the texture
-					// tptr.  (tsy is a fixed point integer.)
-					// If we are moving only call this fn 1/2 as many times, so we
-					// duplicate this pixel in the next pixel over to the right.
-					*(sptr+1)=*sptr = tptr[tsy.TwoHalves.sHigh];
-					
-					// Increment to the next pixel from the texture.
-					tsy.lval = ((tsy.lval+src_inc) & wrapMask);
-					
-					// advance the offscreen buffer to the next location below this pixal.
-					sptr += sptr_inc;
-				} while (sptr < sptr_end);
-			}
-			else
-			{
-				do {
-					// Sames as above, except look up the color of the pixel through
-					// the shade table. (Makes things look dark at a distance.)
-					*(sptr+1)=*sptr = shade[ tptr[tsy.TwoHalves.sHigh] ];
-					tsy.lval = ((tsy.lval+src_inc) & wrapMask);
-					sptr += sptr_inc;
-				} while (sptr < sptr_end);
-			}
-		}
-		else
-#endif
 		{
 			if (light == 0)
 			{
@@ -327,17 +272,6 @@ void scale_col_ttop(LONG sx,LONG dx,LONG dy,LONG dye,
 	}
 	else
 	{
-#if !defined(_WINDOWS)
-		if (fAIMoving)
-		{
-			do
-			{
-				*(sptr+1) = *sptr = BLACK;
-				sptr += sptr_inc;
-			} while (sptr < sptr_end);
-		}
-		else
-#endif
 		{
 			do
 			{
@@ -524,37 +458,6 @@ void render_view(LONG fskipmap)
 	}
 
 	++frames;
-}
-
-/* =======================================================================
-   Function    - LineInFrustrum
-   Description - Simplified version of clip_line that only does trivial rejection.
-	              Theory: we can get a speed increase by avoiding the iterations
-                 of the genuine clip_line.
-                 Algorithm seems to be similar to the Cohen-Sutherland algorithm
-                 discussed in Foley and van Dam et. al., except we are checking whether the
-                 endpoints of a line are within the view frustrum instead of whether
-                 the endpoints are within a square viewing window.
-	Returns     - TRUE if line is in frustrum, FALSE if not.
-	Note        - [d3-03-97 JPC]
-   ======================================================================== */
-BOOL LineInFrustrum (POINT a, POINT b)
-{
-	LONG  x1, y1, x2, y2;
-	LONG  code1, code2;
-	
-	x1 = a.x * lens_factor;
-	y1 = a.y * NORMAL_LENS;
-	x2 = b.x * lens_factor;
-	y2 = b.y * NORMAL_LENS;
-	
-	code1 = ((y1 < x1)<<1) + (y1 < -x1);
-	code2 = ((y2 < x2)<<1) + (y2 < -x2);
-	
-	if ((code1 & code2) || (y1<0 && y2<0)) // both outside frustrum on same side
-		return FALSE;
-
-	return TRUE;
 }
 
 /* =======================================================================
@@ -1224,6 +1127,14 @@ void add_floor_span(LONG x,LONG y,LONG sect)
 			}
 		}
 	}
+#ifdef _EDIT
+// [d6-03-96 JPC]
+// This is very similar to the "check for click" just above; but it is
+// separate code so the editor will be easier to remove.
+			if (gfFindSeg)
+            EditCheckCoordinates (x, last_post_y, last_post_ye, sect,
+               0, 0, typeFLOOR);
+#endif
 }
 
 /* =======================================================================
@@ -1305,6 +1216,13 @@ void add_ceil_span(LONG x,LONG y,LONG sect)
 		floor_lastb_y=y2;
 	}
 	last_post_x=x;last_post_y=y;last_post_ye=y2;
+#ifdef _EDIT
+// [d6-03-96 JPC]
+// Similar to floor check in add_floor_span:
+			if (gfFindSeg)
+            EditCheckCoordinates (x, last_post_y, last_post_ye, sect & 0x7FFF,
+               0, 0, typeCEILING);
+#endif
 }
 
 /* =======================================================================
@@ -1318,7 +1236,6 @@ static LONG draw_wall(LONG seg, LONG side)
 	LONG scaned[MAX_VIEW_WIDTH];
 	LONG scanedt[MAX_VIEW_WIDTH];
 	FIXED16 src_x;
-	LONG new_w;
 	LONG x1,x2,save_x1;
 	LONG xsrc_inc;
 	LONG clipped;
@@ -1445,7 +1362,7 @@ static LONG draw_wall(LONG seg, LONG side)
 
 	/* get x texture constants */
 	// [d11-05-96 JPC] Add side parameter.
-	new_w = CalcXTextureInfo (&xsrc_inc,&src_x.lval,side, segs[seg].flip);
+	CalcXTextureInfo (&xsrc_inc,&src_x.lval,side, segs[seg].flip);
 
 	/* set sector lighting */
 	SectLight = sector_to_light(front_sect);
@@ -1570,6 +1487,11 @@ static LONG draw_wall(LONG seg, LONG side)
 					scale_col_ttop(src_x.TwoHalves.sHigh,x1,scanedt[x1],scaned[x1],clipped,(shift_16_colhei)/delta_y);
 				}
 			}
+#ifdef _EDIT
+// [d6-03-96 JPC] Editor needs to know what we clicked on.
+			if (gfFindSeg)
+            EditCheckCoordinates (x1, scanedt[x1], scaned[x1], seg, MIDDLE_TEXTURE, FRONT, typeWALL);
+#endif
 
 			src_x.lval += xsrc_inc;
 			++x1;
@@ -1762,6 +1684,13 @@ static LONG draw_lower_wall(LONG seg, LONG side)
 		{
 			scale_col_ttop(src_x.TwoHalves.sHigh,x1,scanedt[x1],scaned[x1],clipped,(shift_16_colhei)/delta_y);
 		}
+#ifdef _EDIT
+// [d6-03-96 JPC]
+      if (gfFindSeg)
+      {
+         EditCheckCoordinates (x1, scanedt[x1], scaned[x1], seg, LOWER_TEXTURE, side, typeWALL);
+      }
+#endif
 		src_x.lval+=xsrc_inc;
 		++x1;
 	}
@@ -1949,6 +1878,11 @@ static LONG draw_upper_wall(LONG seg, LONG side)
 		{
 			scale_col_ttop(src_x.TwoHalves.sHigh,x1,scanedt[x1],scaned[x1],clipped,(shift_16_colhei)/delta_y);
 		}
+#ifdef _EDIT
+// [d6-03-96 JPC]
+      if (gfFindSeg)
+         EditCheckCoordinates (x1, scanedt[x1], scaned[x1], seg, UPPER_TEXTURE, side, typeWALL);
+#endif
 		src_x.lval+=xsrc_inc;
 		++x1;
 	}

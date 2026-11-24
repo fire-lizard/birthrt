@@ -107,7 +107,6 @@ void BeginRule2(LONG, LONG);
 void SelectAdvParty(void);
 void EndAdvParty(LONG, LONG);
 void DisplayAdvParty(void);
-void ReturnFromAdventure(LONG, LONG);
 void PaintBattleMagicPrep(LONG, LONG);
 void PaintMoreInfo (LONG, LONG);
 void ToggleShowParty(LONG i, LONG);

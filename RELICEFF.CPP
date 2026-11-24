@@ -129,8 +129,6 @@ LONG ItemEffects::HammerOfThunder(LONG Combo,LONG Arg,LONG Action)
 									//the item
  	SPLIT_COMBO(Combo,Itemtype,hPlayerStats); //extract the data from the Combo
 
-	ItemType& Item=ItemTypes[Itemtype]; //A reference to the item
-
 	switch(Action)
 	{
 		case ACTIVATE:

@@ -126,9 +126,6 @@ enum {
 #include "SOUNDFX.HXX"
 
 // now build the totals list
-#ifdef WINDOWS_SOUND
-#include "TOTALS.H"
-#endif
 
 /* ------------------------------------------------------------------------
    Typedefs

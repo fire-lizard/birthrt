@@ -44,8 +44,6 @@
    Prototypes
    ------------------------------------------------------------------------ */
 ITEMTYPE SpellTypeToItemTypeIdx(SPELL_INFO::TYPE);
-SPELL_INFO::TYPE ItemTypeToSpellType(ITEMTYPE);
-SPELL_INFO::LEVEL SpellLevel(ITEMTYPE);
 REALM_SPELL_INFO::TYPE ItemTypeToRlmSpellType(ITEMTYPE);
 LONG RlmSpellLevel(ITEMTYPE);
 

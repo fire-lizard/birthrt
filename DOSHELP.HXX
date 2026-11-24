@@ -28,6 +28,4 @@ typedef enum
    ------------------------------------------------------------------------ */
 void InitDOSHelp (HELP_TOPIC which, LONG where);
 
-LONG DOSHELP_ContextOffset(LONG Context);
-
 #endif // _DOSHELP_HXX

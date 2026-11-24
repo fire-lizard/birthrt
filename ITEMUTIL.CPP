@@ -58,37 +58,6 @@ ITEMTYPE SpellTypeToItemTypeIdx(SPELL_INFO::TYPE t)
 }
 
 /* ========================================================================
-   Function    - ItemTypeToSpellType
-   Description - Convert a Itemtype to a spell
-   Returns     - 
-   ======================================================================== */
-
-SPELL_INFO::TYPE ItemTypeToSpellType(ITEMTYPE iType)
-{
-	if (ItemTypes[iType].mfCategory() == IC_SPELL)
-	    return (SPELL_INFO::TYPE) ItemTypes[iType].mfGetExtendedData();
-	    
-    return SPELL_INFO::NO_SPELL;
-
-}
-
-/* ========================================================================
-   Function    - SpellLevel
-   Description - Get the level of a spell given the item type.
-   Returns     - The Spell level.
-   ======================================================================== */
-
-SPELL_INFO::LEVEL SpellLevel(ITEMTYPE iType)
-{
-	SPELL_INFO::TYPE const spType = ItemTypeToSpellType(iType);
-	
-	if (spType != SPELL_INFO::NO_SPELL)
-		return SPELL_INFO::mfGetSpell(spType).mfGetLevel();
-		
-	return SPELL_INFO::LEVEL_0;
-}
-
-/* ========================================================================
    Function    - ItemTypeToRlmSpellType
    Description - Convert a Itemtype to a spell
    Returns     - 

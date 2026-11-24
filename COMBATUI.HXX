@@ -104,7 +104,6 @@ void CombatReturnToMap(LONG /* unused */ , LONG /* unused */ );
 void CombatShowStatusKey(LONG  /* menuid */, LONG  /* BottomMenuFlag */  );
 void CombatShowInventoryKey(LONG /* unused */ , LONG /* unused */);
 
-BOOL GetCombatMenuUp();
 void SetCombatMenuUp(BOOL gCMR);
 
 //WRC [24.3.97]

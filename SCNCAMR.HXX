@@ -40,6 +40,13 @@ public:
 	
 	LONG mfReadCameraData(FILE *);
 	
+#if defined(SCENE_EDITOR)
+	void mfInitVals ();
+	void mfWriteCameraData(FILE *fp);
+	
+	LONG mfCountOfChanges();
+	void mfSetCameraAccelleration(LONG );
+#endif
 protected:
 private:
 	void *operator new (size_t stAllocateBlock);	// Can't use new/delete
@@ -53,5 +60,55 @@ private:
 #endif
 	
 };
+
+/* ========================================================================
+   Function    - mfInitVals
+   Description - Initialize the member data.
+   Returns     - 
+   ======================================================================== */
+#if defined(SCENE_EDITOR)
+inline void CAMERA_SETUP_DATA::mfInitVals () 
+{
+	fbCameraAccellerationSet = FALSE;
+	fCameraAccelleration = SHRT_MAX;
+	
+	// Reset the global variable too.
+}
+#endif
+
+/* ========================================================================
+   Function    - mfWriteCameraData
+   Description - Write the scene camera data.
+   Returns     - 
+   ======================================================================== */
+#if defined(SCENE_EDITOR)
+inline void CAMERA_SETUP_DATA::mfWriteCameraData(FILE *fp) 
+{
+	if (fbCameraAccellerationSet == TRUE)
+	{
+		fprintf(fp, "Accelleration %ld\n", fCameraAccelleration);
+	}
+}
+
+/* ========================================================================
+   Function    - mfCountOfChanges
+   Description - Write the first line of the scene camera data.
+   Returns     - 
+   ======================================================================== */
+inline LONG CAMERA_SETUP_DATA::mfCountOfChanges() 
+{
+	return (fbCameraAccellerationSet);
+}
+#endif
+
+#if defined(SCENE_EDITOR)
+inline void CAMERA_SETUP_DATA::mfSetCameraAccelleration(LONG val ) 
+{
+	fbCameraAccellerationSet = TRUE;
+	fCameraAccelleration = val;
+	
+	// Set the global variable too.
+}
+#endif
 
 #endif // SCNCAMR_HXX

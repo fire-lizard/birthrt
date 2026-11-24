@@ -47,24 +47,15 @@ public:
 		RACE_MAX_NUMBER
 	} TYPE;
 
+#if defined(_CHARED)			// Character Editor only
 	static char const * const mfGetRaceName(const TYPE);
 private:
-	
+
 	static GAME_STRING const fpRaceInfoTable[];
+#endif
 };
 
-typedef RACE_INFO *PTR_RACE_INFO;
-
-/* ------------------------------------------------------------------------
-   Macros   
-   ------------------------------------------------------------------------ */
-/* ------------------------------------------------------------------------
-   Prototypes
-   ------------------------------------------------------------------------ */
-/* ------------------------------------------------------------------------
-   Global Variables
-   ------------------------------------------------------------------------ */
-
+#if defined(_CHARED)			// Character Editor only
 // Get the description name of the character's race.
 inline char const * const RACE_INFO::mfGetRaceName(
 	const RACE_INFO::TYPE PlayerRace)
@@ -78,5 +69,16 @@ inline char const * const RACE_INFO::mfGetRaceName(
 		return STRMGR_GetStr(fpRaceInfoTable[PlayerRace]);
 	}
 }
+#endif
+
+/* ------------------------------------------------------------------------
+   Macros   
+   ------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------
+   Prototypes
+   ------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------
+   Global Variables
+   ------------------------------------------------------------------------ */
 
 #endif // _PLAYRACE_HXX

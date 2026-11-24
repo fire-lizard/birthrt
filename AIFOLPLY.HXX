@@ -55,7 +55,6 @@ public:
 	                            LONG * const /* pFloor */,
 										 LONG * const /* pFallHeight */,
 										 LONG * const /* pStartFallZ */) const;
-	void mfFollowPlayer();
 	inline void mfFollowAdventureTeam();
 	inline void mfSwapPlaces(FOLLOW_PLAYER_DATA &);
 	

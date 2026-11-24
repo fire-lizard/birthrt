@@ -49,6 +49,12 @@
 #include "SCNVER.HXX"
 #endif
 
+#if defined(SCENE_EDITOR)
+#if !defined(_SCNKEY_HXX)
+#include "SCNKEY.HXX"
+#endif
+#endif
+
 #if !defined(_STRENUM_H)
 #include "strenum.h"
 #endif
@@ -98,6 +104,10 @@ public:
 	void mfSetSceneState(SCENE_AI::STATE /* SceneStateFlag */);
 	void mfSetSceneType(SCENE_AI::SCENE_TYPE type );
 	void mfGetSceneAIState(SCENE_AI::STATE *, SCENE_AI::SCENE_TYPE *) const;
+#if defined(SCENE_EDITOR)
+	BOOL mfWriteSceneFile();	// Used by scene editor.
+	BOOL mfAddHotKey(HDL_KEY hNewKey);
+#endif
 
 	BOOL const mfGetExitScene(LONG &/* id */, char ** const /* cpNewSceneName */ ); 
 	char *mfGetSceneName();
@@ -105,8 +115,6 @@ public:
     char *mfGetBackGroundMusic();
     void mfSetScenePallet();
     static void mfDrawMapStuff();
-	LONG mfAvatarIndex( LONG /* Id */);
-    static void mfDeleteAvatar(SHORT);
     
     GAME_STRING const mfGetNote(LONG const /* NoteId */) const;
     
@@ -165,13 +173,16 @@ private:
     
     LONG				fOpeningDialog;
 	
+#if defined(SCENE_EDITOR)
+	// Needed for scene editing.
+	char				fcpWadName[20];
+#endif
 	char				fcpPalName[20];
 
 	char				cpThisSceneName[20];
     
 	// Callbacks for button clicks
 	static void mfSceneButtonObject(LONG, LONG, LONG);
-	static void mfSceneButtonFloor(LONG, LONG, LONG);
 	
     void mfReadSceneFile( char * /* cpSceneFile */,
                           LONG /* playerStartLocation */);
@@ -191,6 +202,23 @@ private:
     LONG mfReadQuestThingType(FILE *);
     LONG mfReadDialogTripLines(FILE *);
     LONG mfReadOpeningDialog(FILE *);
+    
+#if defined(SCENE_EDITOR)
+	void mfWriteSceneFileVersion(FILE *);
+	void mfWriteWadName(FILE *);
+	void mfWritePalletName(FILE *);
+	void mfWriteAvatars(FILE *);
+	void mfWritePlaces(FILE *);
+	void mfWriteSectors(FILE *);
+	void mfWriteKeys(FILE *);
+	void mfWriteExitPoints(FILE *);
+	void mfWriteMap(FILE *fp);
+	void mfWritePanoramaData (FILE *);
+	void mfWriteCameraData(FILE *) ;
+	void mfWriteSelfRunningDemoData (FILE *) ;
+	void mfWriteMusicData (FILE *) ;
+	void mfWriteDialogs (FILE *) ;
+#endif
     
     void mfDeleteSectors();
     void mfDeletePlaces();
@@ -309,6 +337,39 @@ inline void SCENE::mfSetSceneType(SCENE_AI::SCENE_TYPE type )
 {
 	fSceneAI.mfSetSceneType( type);
 }
+
+/* ========================================================================
+   Function    - mfAddHotKey
+   Description - Add a new hot key to the scene.
+                 To be called while the game is running. For user defined
+                 hot keys.
+   Returns     - 
+   ======================================================================== */
+#if defined(SCENE_EDITOR)
+inline BOOL SCENE::mfAddHotKey(HDL_KEY hNewKey) 
+{
+	HDL_KEYS hKeys = NewBlock(sizeof(HDL_KEY) * (fMaxKeys + 1));
+	const BOOL bResult = (hKeys != fERROR) ? TRUE : FALSE;
+	
+	if (bResult)
+	{
+		PTR_KEYS pNewKeys = (PTR_KEYS) BLKPTR(hKeys);
+		
+		if (fMaxKeys > 0 && fhKeys != fERROR)
+		{
+			PTR_KEYS pOldKeys = (PTR_KEYS) BLKPTR(fhKeys);
+			memcpy(pNewKeys, pOldKeys, sizeof(HDL_KEY) * fMaxKeys);
+			DisposBlock(fhKeys);
+		}
+		
+		pNewKeys[fMaxKeys] = hNewKey;
+		fhKeys = hKeys;
+		fMaxKeys++;
+	}
+	
+	return bResult;
+}
+#endif
 
 /* ========================================================================
    Function    - mfGetCommandFileName

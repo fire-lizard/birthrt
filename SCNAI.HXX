@@ -99,7 +99,6 @@ private:
 	static void mfSceneInit(SCENE &);
 	static void mfScenePlay(SCENE &);
 	static void mfScenePause(SCENE &);
-	static void mfSceneWaitForKey(SCENE &);
 	static void mfSceneFadeOut(SCENE &);
 	static void mfSceneRelease(SCENE &);
 	

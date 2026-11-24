@@ -83,7 +83,6 @@ void RedrawProcessPanel(void);
 /* ------------------------------------------------------------------------
    Global Variables
    ------------------------------------------------------------------------ */
-static LONG iVal0, iVal1, iVal2, iVal3;
 
 LONG iGameData;
 
@@ -1091,8 +1090,6 @@ LONG DoGetGameData(LONG lArray_Id, LONG lStruct_Id, LONG lArray_Index)
 BOOL SetGameData( LONG lArray_Id, LONG lStruct_Id, LONG lArray_Index, 
 				   LONG lData, BOOL fSend )
 {
-#ifdef _WINDOWS
-	int timeNow;
 
 	if( IsMultiPlayer() )
 	{
@@ -1130,11 +1127,6 @@ BOOL SetGameData( LONG lArray_Id, LONG lStruct_Id, LONG lArray_Index,
 		return TRUE;
 	}
 
-#else
-	DoSetGameData(lArray_Id, lStruct_Id, lArray_Index, lData);
-	return TRUE;
-#endif
-
 }	//---- End of SetGameData()
 
 //@@@@@@  REMOVED by DLJ
@@ -1153,7 +1145,6 @@ BOOL SetGameData( LONG lArray_Id, LONG lStruct_Id, LONG lArray_Index,
 LONG GetGameData(LONG lArray_Id, LONG lStruct_Id, LONG lArray_Index)
 {
 #ifdef _WINDOWS
-	int timeNow;
 
 	if( IsMultiPlayer() )
 	{
@@ -1196,9 +1187,8 @@ LONG GetGameData(LONG lArray_Id, LONG lStruct_Id, LONG lArray_Index)
    ======================================================================== */
 void RequestPlacesIndex(LONG *index, BOOL fSend)
 {
-	LONG mycount, mytmp, arg;
+	LONG mytmp;
 
-#ifdef _WINDOWS
 	// if we are the master or a single player game or an NPC
 	if ((IsMultiPlayer() && AMultiPlayer.IsMaster()) || !IsMultiPlayer() || fSend==FALSE)
 	{
@@ -1217,12 +1207,6 @@ void RequestPlacesIndex(LONG *index, BOOL fSend)
 		mytmp = GetGameData(MP_GAMEDATA, MPGAMESEMIPHORE_PLACEINDEX, 0);
 		*index = mytmp;
 	}
-
-#else
-	// single player game
-	for (mytmp=0; mytmp < MAX_PLACES && places[mytmp].Realm != REALM::NO_COUNTRY; mytmp++){}
-	*index = mytmp;
-#endif
 
 }
 
@@ -1334,7 +1318,6 @@ void SendResult(LONG iWhichAction, LONG iWhichProvince, LONG iWhichHolding, LONG
 LONG WaitForResult(LONG iWhichAction, LONG iWhichProvince, LONG iWhichHolding)
 {
 	int  iWhichRealm;
-	LONG lPlayerId;
 
 #ifdef _WINDOWS
 	// get the realm of the remote player
@@ -1351,10 +1334,6 @@ LONG WaitForResult(LONG iWhichAction, LONG iWhichProvince, LONG iWhichHolding)
 #ifdef _WINDOWS
 		if ( IsMultiPlayer() )
 		{
-			// get the players id
-
-			lPlayerId = lRealmSelectedByPlayer[iWhichRealm];
-	
 			// wait for a reply
 			while(TRUE)
 			{
@@ -1420,7 +1399,6 @@ LONG AskAndWaitForTargetPlayer(LONG iWhichAction, LONG iWhichProvince, LONG iWhi
 	LONG	iNewSuccess = iSuccess;
 	LONG	timer, timer2;
 	BOOL	fFirstTime = FALSE;
-	int	iPlayerId;
 	static LONG oldSuccess = 999;
 
 	// find the realm of the target
@@ -1447,9 +1425,6 @@ LONG AskAndWaitForTargetPlayer(LONG iWhichAction, LONG iWhichProvince, LONG iWhi
 		if ( IsMultiPlayer() )
 		{
 			// put up a wait cursor
-	
-			// get the players id
-			iPlayerId = lRealmSelectedByPlayer[iWhichRealm];
 	
 			// add a sound "Waiting for remote player"
 			AddSndObj((BIRTHRT_SND)SND_UI_WAITING_FOR_AN_OPPONENT1,0,VOLUME_NINETY);
@@ -1628,52 +1603,6 @@ BOOL IsMulPlayerandRealm(int realm)
 	return AMultiPlayer.IsMultiPlayerandRealm(realm);
 }
 
-/* ========================================================================
-   Function    - WaitForSemiphore
-   Description - Wait for a specific game semiphore
-   Returns     - Value in the semiphore
-   ======================================================================== */
-LONG WaitForSemiphore(LONG iWhichSemiphore)
-{
-	LONG val;
-	static int count = 0;
-
-	// wait for the semiphore to be set
-	while( lGameSemiphore[iWhichSemiphore] < 1 )
-	{
-		count++;
-		#ifdef _MULTIMONO
-			mono_printf(0,0,"WaitForSemiphore %d count %d", iWhichSemiphore, count );
-		#endif
-
-		AMultiPlayer.LookForMessages();
-
-		WindowsMessages();
-
-		#ifdef _DEBUG
-		if ( GetAsyncKeyState( VK_F10 ) & 0x8000 )
-		{
- 			AMultiPlayer.Finalize();
- 			return 0;
-		}
-		#endif
-
-		Sleep(0);
-	}
-
-	val = lGameSemiphore[iWhichSemiphore];
-
-	#ifdef _MULTIMONO
-		mono_printf(0,4,"Got Semiphore %d data %d", iWhichSemiphore, val);
-	#endif
-
-	// reset the semiphore when done
-
-	lGameSemiphore[iWhichSemiphore] = -1;
-
-	return val;
-
-}
 #endif
 
 /* ========================================================================
@@ -1726,33 +1655,6 @@ void HandleMultiPlayerEvents (void)
 	}
 #endif
 
-}
-
-/* ========================================================================
-   Function    - CheckSum
-   Description - Given a memory block, compute a checksum to see if it has
-   				 changed.
-   Returns     - a checksum value.
-   ======================================================================== */
-ULONG CheckSum (char * p, ULONG l)
-{
-	ULONG *	pl = (ULONG *)p;
-	ULONG		ls;
-	ULONG		j;
-	ULONG		Result = 0;
-
-	// Add four bytes at a time ignoring overflow.
-	ls = l / sizeof(ULONG);
-	for (j=0; j < ls; j++)
-		Result += pl[j];
-
-	// Add in the last 1-3 bytes if necessary.
-	ls = l % sizeof(ULONG);
-	if (ls)
-		for (j=0; j < ls; j++)
-			Result += p[j];
-
-	return Result;
 }
 
 /*	======================================================================== */

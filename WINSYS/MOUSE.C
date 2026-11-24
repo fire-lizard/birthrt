@@ -8,13 +8,10 @@
    Contains the following internal functions:
 
    Contains the following general functions:
-   handle_mouse          -Reads the mouse, calls read_mouse
    init_mouse            -Initializes the mouse
    set_mouse_max         -sets the max screen value for the mouse
    read_mouse            -sets the position and button state variables
    set_mouse_position    -sets the mouse's position
-   set_cursor            -sets the active cursor
-   load_cursors          -loads the cursors
    draw_cursor           -draws a cursor
    cursor_in_box         -checks to see if the cursor is in a bounding box
 
@@ -190,7 +187,6 @@ void update_buttons()
    ======================================================================== */
 void SysHideCursor (void)
 {
-#ifndef _CHARED
 	LONG	xy, x, y, yy, w, h, pix;
 
 	if (!mouse_present || fMouseHidden) return;
@@ -213,7 +209,6 @@ void SysHideCursor (void)
 	memset(&st[0], 0, 1024);
 	
 	// force this new data to the display
-#endif
 }
 
 /* ========================================================================
@@ -224,7 +219,6 @@ void SysHideCursor (void)
 
 void ForceCursor (void)
 {
-#ifndef _CHARED
 	PTR	p;
 	LONG	xy, x, y, yy, w, h, pix;
 
@@ -247,7 +241,6 @@ void ForceCursor (void)
 				plot(cursor_x+x, cursor_y+y, antia_table[(pix*256)+(st[xy]=get_pixel(cursor_x+x, cursor_y+y))] );
 	
 	// force this new data to the display
-#endif
 }
 
 /* ========================================================================

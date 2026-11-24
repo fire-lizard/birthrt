@@ -135,7 +135,6 @@ extern LONG		GameSpecificGlobal_h;
    ------------------------------------------------------------------------ */
 // private
 static void TogglePartyCheck(LONG i, LONG);
-static void SelectAdventures(void);
 static void DescribeAdvPrep(void);
 static void AdvPrepIncTut(LONG, LONG);
 static void MagicPrep(SHORT AdvIndex);
@@ -159,7 +158,7 @@ void DataAreaMode (LONG type, LONG dummy);
    ======================================================================== */
 void AdventurePrep(void)
 {
-	SHORT	i,x,y,me;
+	SHORT	i,x,y;
 	LONG	MenuCombo;
 	
 	HideMenu(D_GAMEBUTTON);
@@ -252,8 +251,8 @@ void AdventurePrep(void)
    ======================================================================== */
 void AdvPrepPaint (LONG MenuCombo, LONG )
 {
-	SHORT	i,j;
-	LONG    x,y,w,h;
+	SHORT	i;
+	LONG    x,y;
 	FILE	*in;
 	SHORT	iBitm;
 	CHAR    buffer[20];
@@ -530,13 +529,11 @@ static void AdvPrepIncTut(LONG, LONG)
    ======================================================================== */
 void AdvPrepDone (LONG MenuCombo, LONG )
 {
-	SHORT 	j,count=0;
+	SHORT 	count=0;
 	SHORT	HomeIndex, AwayIndex;
 	LONG	who, me;	  // loop index, unit# of selection
-	LONG	unit;		 // index for unit search loop
 	LONG	lastGuy = -1; // lockstep link
 	LONG    MenuId, ButtonId;
-	LONG	index;
 	LONG	iPartyLead;
 	BOOL	fSend = FALSE;
 	
@@ -579,7 +576,6 @@ void AdvPrepDone (LONG MenuCombo, LONG )
 		
 		for (who=0; who<LIST_SIZE; ++who)
 		{
-			BOOL did_break = FALSE;
 			
 			if (Adventures[who] != fERROR)
 			{
@@ -979,7 +975,6 @@ void BuildAdventureList(void)
 {
 	SHORT	i,j;
 	SHORT	count = 0;
-	SHORT	numGoing = 0;
 
 	SHORT activeRegentUnit = regents[localActiveRegent].mfGetunit();
 	SHORT realRegentUnit = regents[realm[HomeRealm].mfGetRegent()].mfGetunit();

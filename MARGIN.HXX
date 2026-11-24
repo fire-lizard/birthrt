@@ -55,7 +55,6 @@ public:
 	static BOOL const mfReduceScreenSize(LONG, LONG);
 	static BOOL const mfIncreaseScreenSize(LONG, LONG);
 	static void const mfClearBorder(void);
-	static void mfRestoreCurrentSize();
 	static void mfResetCurrentSize();
 	static BOOL const mfIsScreenReduced()
 	{

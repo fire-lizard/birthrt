@@ -52,7 +52,6 @@
    ------------------------------------------------------------------------ */
 // list the default values
 #define PLAYER_SPEED			2
-#define INIT_FACT				TargetFactor=105;
 #define MAX_STEP_HEIGHT         25   // [RCC]
 #define PLAYER_WIDTH			12		// [d12-06-96 JPC] reduced from 16
 											// so players can get through doors
@@ -70,6 +69,14 @@
 																// up or down
 #define LOOK_PITCH			(3 * MAX_PITCH / 4)	// [d3-16-97 JPC] fixed amount
 																// to look up or down
+
+#if defined (_EDIT)
+// [d7-23-96 JPC] for extra-fine movement control.
+// ("maxSpeed" is toggled in EditToggleSpeed.)
+extern "C" int maxSpeed = 31 << PLAYER_FIXEDPT;
+#undef  MAX_XY_SPEED						
+#define MAX_XY_SPEED maxSpeed
+#endif
 
 /* ------------------------------------------------------------------------
    Macros
@@ -93,15 +100,7 @@ LONG	fExitLevel = 0;
 extern "C" {
 // for line to line wad teleports
 // auto low res for fast movement
-#if defined (_WINDOWS)
 BOOL fAIAutoRes = TRUE;
-#else
-BOOL fAIAutoRes = FALSE;					// [d11-12-96 JPC] has no effect in DOS
-#endif
-
-#if !defined(_WINDOWS)
-BOOL fAIMoving = FALSE;
-#endif
 
 BOOL	fFreeze = FALSE;
 TELEPORT_DATA teleport_data;
@@ -136,14 +135,8 @@ static int	keyRun;
 static int	keyRun2;
 static int	keyAutoCenter;
 
-BOOL fJumpPressed = FALSE;
 // Player velocity movement.
 static LONG		vx=0, vy=0, vz=0, va=0, vp=0, vh=0;
-
-// where to move the player to
-LONG	TargetFactor, TargetFactor2;
-LONG	TargetH, TargetA, TargetP, TargetX, TargetY;
-PLAYER	Target;
 
 /* ========================================================================
    Function    - InitPlayer
@@ -1051,52 +1044,14 @@ LONG MovePlayer( LONG KeyState )
 		   (fJumping && (vx || vy || vz || va || vp))
 		   )
 		{
-#if defined(_WINDOWS)
 			set_lowres(0L, 0L);
-#else
-			fAIMoving = TRUE;
-#endif
 		}
 		else
 		{
-#if defined(_WINDOWS)
 			set_hires(0L, 0L);
-#else
-			fAIMoving = FALSE;
-#endif
 		}
 	}
 	return 1;
-}
-
-/* ========================================================================
-   Function    - SetPlayerTarget
-   Description - Set the player target position
-   Returns     - void
-   ======================================================================== */
-void SetPlayerTarget( LONG	X, LONG	Y, LONG	H, LONG	A, LONG	P )
-{
-	TargetX=X<<PLAYER_FIXEDPT;	// x and y use 24.8 fixed point
-	TargetY=Y<<PLAYER_FIXEDPT;
-	TargetH=H;
-	TargetP=P;
-	TargetA=A;
-	
-	TargetFactor = 105;
-}
-
-/* ========================================================================
-   Function    - SetPlayerSpeed
-   Description - Adjust the player speed values
-   Returns     - old speed
-   ======================================================================== */
-LONG SetPlayerSpeed(LONG Speed)
-{
-	LONG oldSpeed = PlayerSpeed;
-	PlayerSpeed = Speed;
-	PlayerHiresSpeed = PlayerSpeed;
-	PlayerLoresSpeed = PlayerSpeed * 3 / 2;
-	return oldSpeed;
 }
 
 /* ========================================================================
@@ -1124,32 +1079,9 @@ LONG SetPlayerJump(LONG RiseVelocity, LONG FallRate, LONG TerminalVelocity)
 	return 1;
 }
 
-/* ========================================================================
-   Function    - PlayerFreeze
-   Description - set the freeze flag which halts movement and falling
-   Returns     -
-   ======================================================================== */
-void PlayerFreeze(LONG NewFlag)
-{
-	if(NewFlag == -1)
-		fFreeze = !fFreeze;
-	else
-		fFreeze = NewFlag;
-}
+/*	======================================================================== */
 
-/* ========================================================================
-   Function    - PlayerFlying
-   Description - set the flying flag to allow players to defy gravity
-   Returns     -
-   ======================================================================== */
-void PlayerFlying(LONG, LONG NewFlag)
-{
-	if(NewFlag == -1)
-		player.Flying = !player.Flying;
-	else
-		player.Flying = NewFlag;
-}
-
+#if defined(_EDIT) || defined(SCENE_EDITOR)
 /* ========================================================================
    Function    - PlayerClimbing
    Description - set the climb flag to allow players to defy gravity
@@ -1162,9 +1094,7 @@ void PlayerClimbing(LONG, LONG NewFlag)
 	else
 		fClimb = NewFlag;
 }
-
-/*	======================================================================== */
-
+#endif
 /* ========================================================================
    Function    - ConvertScreenToFloor
    Description - convert screen point on floor to world coord

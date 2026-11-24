@@ -113,6 +113,9 @@ private:
 									// for player stats.
 	friend void ObjectList::AddPriestSpells(SHORT hPlayerStats);
 	friend void StatReadAllFrom(FILE *fp);
+#if defined(SCENE_EDITOR)
+	friend struct SCENE_EDITOR_STATS_ACCESS;	// DLG_EDIT.CPP
+#endif
 	friend BOOL ExpCheck(PLAYER_STATS * pPS);
 	friend void GainExp(PLAYER_STATS * pPS, const LONG ExpAmount,
 	             const BOOL CanGainLevelNow);
@@ -201,10 +204,6 @@ public:
 	inline char const * const mfGetName() const;
 	inline void mfSetName(CSTRPTR szName);
 // [d4-23-97 JPC] mfGetNameIndex is no longer meaningful.
-	inline char const * const mfGetTitle() const;
-	inline GAME_STRING const mfGetTitleIndex() const;
-	inline char const * const mfGetDescription() const;
-	inline GAME_STRING const mfGetDesIndex() const;
 	inline RACE_INFO::TYPE mfGetRace() const;	 // [d5-14-97 JPC]
 	inline SHORT const mfGetStr() const;
 	inline SHORT const mfGetInt() const;
@@ -231,7 +230,6 @@ public:
 	SHORT const mfCanMemorize(SPELL_INFO::CASTERTYPE , SPELL_INFO::LEVEL) const;
 	SHORT const mfMemorized(SPELL_INFO::CASTERTYPE , SPELL_INFO::LEVEL);
 	BOOL const mfCanIMemorizeThisSpell( ITEMTYPE const);
-	inline void mfMemorizeThisSpell(ITEMTYPE const);
 	void mfMemorizeAllInvSpells();
 	inline BOOL const mfIsMagicUser() const;
 	inline BOOL const mfIsMagicUser(PLAYER_CLASS_INFO::TYPE * pType,
@@ -261,7 +259,6 @@ typedef PLAYER_STATS *PTR_PLAYER_STATS;
 void StatReadAllFrom(FILE *fp);
 void StatWriteAllTo(FILE *fp);
 void StatReadAll();
-void StatWriteAll();
 
 SHORT LoadStats(LONG ID,SHORT hAvatar);
 THINGTYPE const GetThingTypeFromID(LONG const ID);
@@ -272,9 +269,6 @@ SHORT LoadAVD (
 	BOOL /* fRotated */,
 	LONG /* iResFileSlot */);
 
-extern "C"{
-BOOL IsAvatarDead(THINGTYPE);
-}
 /* ------------------------------------------------------------------------
    Global Variables
    ------------------------------------------------------------------------ */
@@ -504,30 +498,6 @@ inline void PLAYER_STATS::mfSetName (CSTRPTR szName)
 }
 
 // [d4-09-97, 4-23-97 JPC] Abolished this function because we no longer have this data.
-
-inline char const * const PLAYER_STATS::mfGetTitle() const
-{
-	mfValidateData();
-	return TitleClass.mfGetTitle(TitleClass.fTitle);
-}
-
-inline GAME_STRING const PLAYER_STATS::mfGetTitleIndex() const
-{
-	mfValidateData();
-	return (GAME_STRING)(TitleClass.mfGetTitleIndex(TitleClass.fTitle));
-}
-
-inline char const * const PLAYER_STATS::mfGetDescription() const
-{
-	mfValidateData();
-	return (char *)(DesClass.mfGetDescription(DesClass.fDescription));
-}
-
-inline GAME_STRING const PLAYER_STATS::mfGetDesIndex() const
-{
-	mfValidateData();
-	return (GAME_STRING)(DesClass.mfGetDesIndex(DesClass.fDescription));
-}
 
 inline RACE_INFO::TYPE PLAYER_STATS::mfGetRace() const
 {
@@ -796,18 +766,6 @@ inline BOOL const PLAYER_STATS::mfSpeedEnhanced() const
 inline SBYTE const PLAYER_STATS::mfGetNumberOfAttacks() const
 {
 	return NumberOfAttacks;
-}
-
-// add a charge on this spell. Be sure to test the capablity before
-// calling this fn.
-inline void PLAYER_STATS::mfMemorizeThisSpell(ITEMTYPE const NewSpell)
-{
-	InventoryItor itor(Inventory);
-	
-	if (itor.mfFind(NewSpell, IC_SPELL))
-	{
-		(*itor)->mfGainOne();
-	}
 }
 
 inline BOOL const PLAYER_STATS::mfIsMagicUser() const

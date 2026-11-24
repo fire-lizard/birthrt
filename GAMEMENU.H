@@ -117,9 +117,6 @@
 /* ------------------------------------------------------------------------
    Prototypes
    ------------------------------------------------------------------------ */
-#ifndef _WINDOWS
-void InvokeDebugger(LONG,LONG);
-#endif
 
 void ShowStatusContextHelp(LONG MC,LONG HelpStr);
 

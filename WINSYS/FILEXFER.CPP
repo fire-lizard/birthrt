@@ -726,9 +726,8 @@ int FileXfer::GetSyncId( int sync, int index )
 
 void FileXfer::SetSync( void )
 {
-	int iSync,i,j; 
+	int iSync,i; 
 	
-	FPBRHeader pBRHead = (FPBRHeader) (&(lpGenericMsgBuf->cData[0]));
 	FPBRSync pSync = (FPBRSync) (&(lpGenericMsgBuf->cData[0]) + sizeof(FBRHeader));
 
 	for(i=0;i<MAX_PLAYERS;i++)

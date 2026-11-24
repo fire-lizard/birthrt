@@ -128,7 +128,6 @@ SHORT NewExternalBlock (PTR p);
 SHORT SetBlockAttr (SHORT i, ATTR_BLK_TYPE mask, ATTR_BLK_TYPE value);
 ATTR_BLK_TYPE GetBlockAttr (SHORT i);
 ULONG GetBlockSize (LONG i);
-ULONG GetDataBlkSize (LONG i);
 SHORT _NewBlock (ULONG cBytes);
 SHORT _NewBlockHigh (ULONG cBytes);
 SHORT _SetPurge (SHORT );

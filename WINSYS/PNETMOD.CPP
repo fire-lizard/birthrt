@@ -91,9 +91,6 @@ DEFINE_GUID( GAME_GUID3,
              0xea7cc2e2, 0xc7b, 0x11d0, 0x81, 0xb8, 0x0, 0xaa, 0x0, 0x47, 0xb, 0xe8);
 
 const int MAX_ENUM_TIMEOUT  = (2500);   //---- Wait for 2 1/2 seconds the first time
-const int MAX_ENUM_TIMEOUT2 = (2500);   //---- Wait for another 2 1/2 seconds
-
-const int iMYACTIONINDEX	 = (0);
 
 //---- Pointers to function of SIGS dll's																	   
 
@@ -281,9 +278,8 @@ int PlatformNetworkModule::CheckConnectStatus( void )
 	if ( hDPlay != NULL &&
 		 lpfnSNWCheckPlayerConnectStatus != NULL )
 	{
-		int i;
 				  
-	 	i = lpfnSNWCheckGameConnectStatus();
+	 	lpfnSNWCheckGameConnectStatus();
 
 	}
 
@@ -524,8 +520,6 @@ ErrCode PlatformNetworkModule::CreateNetworkGame ( char *playername )
 						}
 						else
 						{
-							lpfnHideGatheringPlaceFunc lpfnSNWHideGatheringPlace = (lpfnHideGatheringPlaceFunc)
-											GetProcAddress( (HINSTANCE) hDPlay, "HideGatheringPlace" );
 
 						}
 
@@ -2016,15 +2010,12 @@ ErrCode PlatformNetworkModule::ReceiveMessages (	DWORD dwWait,
 	ErrCode	ecError = kMessageNotReceived;
 
 	HRESULT	hResult = DP_OK;
-	int		iResult = 0;
 
 	DWORD	dwExit = FALSE;   //---- exit read loop
 
 	DPID	dpFromId  = 0;
 	DPID	dpToId    = dwPlayerId;
 	DWORD	dwBytes   = MAX_NETBUFF;
-	DWORD	dwCount   = 0;
-	DWORD	dwHeaderSize = sizeof(NETMSG);
 	char	errstr[500] ;
 	DWORD	dwFlag ;
 	DWORD	Ticks ;
@@ -2513,7 +2504,7 @@ receivemessagesendwhileSigs:
 							lpRecBuff->MsgId, lpRecBuff->ulSync, dpFromId );
 						#endif	
 						
-						ErrCode bERR = SendMessage( dpFromId, ACK, 
+						SendMessage( dpFromId, ACK, 
 							NULL, 0, lpRecBuff->ulSync, 0, 0 );
 	
 						// -- record that we recieved a SYNC message
@@ -2824,10 +2815,6 @@ ErrCode PlatformNetworkModule::SendMessage (	DWORD  dpToId,
 	DWORD   dwFlag ;
 	char    errstr[256] ;
 
-	DPID     dpFromId2 = dpToId;
-	DPID     dpToId2   = dwPlayerId;
-	DWORD    dwBytes   = MAX_NETBUFF;
-
 	ErrCode  err;
 
 	if ( fSigs )
@@ -2982,7 +2969,6 @@ ErrCode PlatformNetworkModule::SendMessage (	DWORD  dpToId,
 			// -- Do ACK receiving loop
 			do
 			{
-				dwBytes = MAX_NETBUFF;
 
 				//---- service sound
 				run_timers();
@@ -3171,7 +3157,6 @@ outSigs:
 
 			do
 			{
-				dwBytes = MAX_NETBUFF;
 
 				run_timers();	//---- service sound
 
@@ -3441,12 +3426,8 @@ int PlatformNetworkModule::ForceStart( void )
 {
    int    y;
    USHORT usNumPlayers = 0;
-	HRESULT hResult   ;
-	int	    iResult	  = 0;
 	DWORD   dwLenMsg  = sizeof (NETMSG);
-	DWORD   dwTimeOut ;
 	DWORD   dwFlag ;
-	char    errstr[256] ;
 
 	//---- Count up the players in the game 
 		
@@ -3510,7 +3491,7 @@ int PlatformNetworkModule::ForceStart( void )
 
    //---- Broadcast message 
 
-   hResult = lpDP3A->Send( dwPlayerId, 0,
+   lpDP3A->Send( dwPlayerId, 0,
 									dwFlag, lpSndBuff, dwLenMsg );
 
    return 1;

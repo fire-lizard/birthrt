@@ -334,8 +334,6 @@ public:
 	inline	void mfSetAgitateUsed();
 	inline	void mfSetSpyUsed();
 	inline	void mfIncFreeAction();
-	
-	inline	void mfReset();
 protected:
 private:
 	UBYTE	fusedLtAction;
@@ -415,16 +413,6 @@ inline void NPC_ACTION_DATA::mfIncFreeAction()
 	++fusedFreeAction;
 }
 
-inline void NPC_ACTION_DATA::mfReset()
-{
-	fusedLtAction = 0;
-	fusedFreeForge = 0;
-	fusedFreeMagic = 0;
-	fusedFreeAgitate = 0;
-	fusedFreeSpy = 0;
-	fusedFreeAction = 0;
-}
-
 /* ------------------------------------------------------------------------
    Global Variables
    ------------------------------------------------------------------------ */
@@ -452,7 +440,6 @@ LONG SpendNPCRegency (LONG who, LONG rp, BOOL fSend);
 LONG OfferHolding(void);
 BOOL CanAfford (LONG costGBNow, LONG costRegNow, LONG costGBPerTurn, REALM::REALM_TYPE realm_);
 LONG DemandHolding(REALM::REALM_TYPE realm_, SHORT oldDemand);
-void ResetNPCActionData();
 BOOL ForeignUnitsHere (PROVINCE prov, REALM::REALM_TYPE _realm);
 
 /* ======================================================================== */

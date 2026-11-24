@@ -93,7 +93,6 @@ void ScrollOpenBitmap (SHORT x, SHORT y, SHORT iBitm, SHORT bx, SHORT by, SHORT 
 
 	BITMPTR pBitm=(BITMPTR)BLKPTR(iBitm);
 	long Height=pBitm->h;
-	long CenterY=y+Height/2;
 	
 	LONG HalfHeight=Height/2;
 	LONG i=HalfHeight;

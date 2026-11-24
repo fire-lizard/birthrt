@@ -247,7 +247,6 @@ void BuildAutoArmy (LONG , LONG );
 void BuildListSel (LONG , LONG );
 void BuildListAdd (LONG , LONG );
 void BuildListRemove (LONG , LONG );
-void BuildListClear (LONG , LONG );
 void BuildUnitSel (LONG , LONG );
 void BuildTerrainSel (LONG , LONG );
 void BuildArmyReload (LONG, LONG );
@@ -281,13 +280,11 @@ void BattleHelpProc( LONG, LONG );
 void BackToGame(LONG, LONG);
 
 void VictoryScreen(PFVLL, PFVLL );
-void VictoryScreenProc(LONG , LONG );
 
 void DefeatScreen(PFVLL NewPaintProc, PFVLL NewDoneProc);
 
 void ShowAllAnimations(LONG, LONG);
 
-void SystemHelp( CHAR *, LONG, PFVLL, LONG );
 void SystemHelp( int, int, LONG, PFVLL, LONG );
 void SystemHelp( CHAR *, CHAR *, LONG, PFVLL, LONG );
 
@@ -298,8 +295,6 @@ void init_game(void);
 void LoadingSceneProc( LONG MenuCombo, LONG );
 void SetLoadingProgress( LONG Percent );
 
-void GAMEToggleAnimation(LONG /* unused */, LONG /* unused */ );
-extern BOOL fAIAnimate;
 extern SHORT iTroopUnit;
 
 /* loadsave.cpp */

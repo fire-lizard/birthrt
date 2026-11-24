@@ -18,55 +18,6 @@
 
    ----------------------------------------------------------------- */
 
-LONG ItemEffects::Generic(LONG Combo,LONG,LONG action)
-{	
-	ITEMTYPE IType;
-	SHORT hPlayerStats;
- 	SPLIT_COMBO(Combo,IType,hPlayerStats);
-
-	ItemType& Item=ItemTypes[IType];
-	
-	if(fDomainTurn)
-	{
-		return NOT_SUPPORTED;
-	}
-	if(fBattleCombat)
-	{
-		return NOT_SUPPORTED;
-	}
-	else	// adventure level
-	{
-		switch(action)
-		{
-			case ACTIVATE:
-			{
-				char buffer1[100], buffer2[100];
-				strcpy(buffer1, STRMGR_GetStr(STR_ITEM_YOU_USE_THE));
-				sprintf(buffer2, "%s %s",buffer1, Item.mfGetName());
-				mfMessageBox(Item.mfGetName(), buffer2);
-				return DONT_DROP;
-			}
-				
-			case PICKUP:
-				break;
-			case EQUIP:
-				printf("Generic object EQUIP effect called\n");
-				break;
-			case UNEQUIP:
-				printf("Generic object UNEQUIP effect called\n");
-				break;
-			case DROP:
-				printf("Generic object DROP effect called\n");
-				break;
-			case SERVICE:
-				break;
-			default:
-				return NOT_SUPPORTED;
-		}
-	}
-	return OK;
-}
-
 LONG ItemEffects::Levitate(LONG Combo,LONG Arg,LONG Action)
 {
 	ITEMTYPE		IType;
@@ -376,8 +327,6 @@ LONG ItemEffects::RingInfravision(LONG Combo,LONG Arg,LONG action)
  	
 	ItemType&		Item=ItemTypes[IType];
 
-	ActiveItem* ai;
-
 	if(fDomainTurn)
 	{
 		if (action == EQUIP)
@@ -438,8 +387,6 @@ LONG ItemEffects::SeeInDark(LONG Combo,LONG Arg,LONG action)
  	
 	ItemType&		Item=ItemTypes[Itemtype];
 	
-	ActiveItem* ai;
-
 	if(fDomainTurn)
 	{
 		return NOT_SUPPORTED;
@@ -875,9 +822,6 @@ LONG ItemEffects::BookOfVileDarkness(LONG Combo,LONG Arg,LONG Action)
 LONG ItemEffects::CloakProtect(LONG Combo,LONG Arg,LONG Action)
 {
 
-	SHORT			ac_mod;
-	SHORT			max_ac;
-	SHORT			cur_ac;
 	ITEMTYPE		IType;
 	SHORT			hPlayerStats;
 	
@@ -909,7 +853,6 @@ LONG ItemEffects::CloakProtect(LONG Combo,LONG Arg,LONG Action)
 			{
 				DumbAutoLockPtr<PLAYER_STATS>	const pPlayerStats(hPlayerStats);
 				LONG ProtLevel=(SHORT)(Arg & 0x0000FFFF);
-				LONG ProtType=(SHORT)(Arg & 0xFFFF0000);
 
 				pPlayerStats->StatsMod.mfModifyStats(STATSMOD::ARMORCLASS_MOD, -ProtLevel);
 				pPlayerStats->StatsMod.mfModifyStats(STATSMOD::SAVES_MOD, ProtLevel);
@@ -920,7 +863,6 @@ LONG ItemEffects::CloakProtect(LONG Combo,LONG Arg,LONG Action)
 			{
 				DumbAutoLockPtr<PLAYER_STATS>	const pPlayerStats(hPlayerStats);
 				LONG ProtLevel=(SHORT)(Arg & 0x0000FFFF);
-				LONG ProtType=(SHORT)(Arg & 0xFFFF0000);
 
 				pPlayerStats->StatsMod.mfModifyStats(STATSMOD::ARMORCLASS_MOD, ProtLevel);
 				pPlayerStats->StatsMod.mfModifyStats(STATSMOD::SAVES_MOD, -ProtLevel);
@@ -1400,8 +1342,6 @@ LONG ItemEffects::Parchment(LONG Combo,LONG Arg,LONG Action)
 	
  	SPLIT_COMBO(Combo,IType,hPlayerStats);
  	
-	ItemType&		Item=ItemTypes[IType];
-
 	if(fDomainTurn)
 	{
 	   return NOT_SUPPORTED;
@@ -1618,8 +1558,6 @@ LONG ItemEffects::RingResistance(LONG Combo,LONG Arg,LONG Action)
 	
  	SPLIT_COMBO(Combo,IType,hPlayerStats);
  	
-	ItemType&		Item=ItemTypes[IType];
-
 	//else	// adventure level
 	// works in all modes
 	{

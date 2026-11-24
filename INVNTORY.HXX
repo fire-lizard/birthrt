@@ -133,7 +133,6 @@ class InventoryNode
 		//attrib flags
 		static UBYTE const fValid;		//valid
 		static UBYTE const fWorn;		//currently equipped
-		static UBYTE const fIgnorable;	//can ignore me in total counts, if you need to
 		static UBYTE const fHidden;		//mfFind can't find me
 
 	public:
@@ -168,10 +167,6 @@ class InventoryNode
 		inline void mfDecrementCharges();
 		inline void mfSetCharges(SHORT const);
 		inline SHORT const mfGetCharges() const ;
-		
-		inline BOOL mfCanIgnore() const;
-		inline void mfIgnore();
-		void mfUnIgnore();
 		
 		inline BOOL mfHidden() const;
 		
@@ -210,7 +205,6 @@ class ObjectList
 		inline void mfMakeHead(ITEMTYPE const,SHORT const, SHORT const);
 		BOOL const mfCatsMatch(ItemCategory const,ItemCategory const);
 		void mfSortSpellsByLevel();
-		inline SHORT const mfGetAvatarID();
 		inline void mfSetAvatarID(SHORT const);
 
 	public:
@@ -233,14 +227,11 @@ class ObjectList
 		inline BOOL const mfisEmpty();
 
 		//these all have subtle differences...
-		LONG const mfTotalItems();			//counts number of items
-		LONG const mfTotalDifferentItems();	//counts number of different items
 		LONG const mfLength();		  		//counts number of different items
 		LONG const mfLength(ItemCategory const);//counts number of instances of a certain category
 		LONG const mfCountItems();			//counts different items, ignoring items with charges
 
 		LONG const mfNonEmptyLength(ItemCategory const);
-		BOOL const mfDoesContain(ITEMTYPE const);
 		BOOL const mfDoIHaveItem(THINGTYPE const);
 		BOOL const mfCanICastSpell(ITEMTYPE const);
 		LONG mfSellMundane(void);
@@ -261,12 +252,8 @@ class ObjectList
 		inline ObjectList();
 		~ObjectList();
 
-		//debug func.
-		void mfPrint();
-
 		//Save stuff	
 		void mfSaveTo(FILE *fp);
-		void mfLoad();
 		void mfLoadFrom(FILE *fp);
 		void ReadINV(SHORT hPlayerStats, LONG ID);
 		void AddPriestSpells(SHORT hPlayerStats);
@@ -337,8 +324,6 @@ class InventoryItor
 		void mfDropItem(LONG const /* x */,LONG const /* y */);
 		
 		BOOL const mfFind(ITEMTYPE const Type);
-		BOOL const mfFind(ITEMTYPE const Type, ItemCategory const);
-		void mfDropItem(LONG const /* x */,LONG const /* y */, BOOL);
 		
 		inline void mfLast();
 		
@@ -369,11 +354,6 @@ inline void ObjectList::mfDeinit()
 	this->~ObjectList();
 }	
 	
-inline SHORT const ObjectList::mfGetAvatarID()      
-{
-	return AvatarID;
-}
-
 inline void ObjectList::mfSetAvatarID(SHORT const a)
 {
 	AvatarID=a;
@@ -455,19 +435,6 @@ inline void InventoryNode::mfSetCharges(SHORT const val)
 inline SHORT const InventoryNode::mfGetCharges() const
 {
 	return (SHORT) Charges;
-}
-
-inline BOOL InventoryNode::mfCanIgnore() const
-{
-	return Attribs&fIgnorable;
-}
-inline void InventoryNode::mfIgnore()
-{
- 	Attribs|=fIgnorable;
-}
-inline void InventoryNode::mfUnIgnore()
-{
-	Attribs&=(~fIgnorable);
 }
 
 inline void InventoryNode::mfInit(

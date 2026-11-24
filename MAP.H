@@ -159,16 +159,11 @@ void SetMapHighlightEnemies(LONG,LONG);
 void SetMapHighlightSecretDoors(LONG,LONG);
 void SetMapHighlightTraps(LONG,LONG);
 void SetMapHighlightEvil(LONG,LONG);
-void SetMapHighlightInvisibleCreatures(LONG,LONG);
 void SetMapHighlightMagic(LONG,LONG);
 void SetMapHighlightQuestObject(LONG,LONG);
 
-BOOL SetMapCameraDraw(LONG);
-BOOL SetMapPlayerDraw(LONG); 
-BOOL SetMapGridDraw(LONG);
 BOOL SetMapShowAll(LONG,LONG);
 BOOL SetMapDraw(LONG,LONG);
-BOOL SetMapFullScreen(LONG,LONG);
 
 PFV SetMapGameDraw(PFV pfGameFunc);
 void DrawMap (LONG,LONG,LONG,LONG);
@@ -183,7 +178,6 @@ void DrawMapQuestObject(void);
 
 void MapTeleport(LONG code);  
 
-BOOL IsAvatarDead(THINGTYPE);
 
 void ZoomMapAbsolute(LONG,LONG);
 

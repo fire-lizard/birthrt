@@ -257,13 +257,8 @@ void PushLoadSaveButton(LONG MenuCombo)
 void SaveGameFiles(FILE *fp)
 {
 
-    REALM_STRUCT	*pRmS;
-    REGENT			*pRgS;
-    PROV_FILE		*pPrS;
-    PLACE_FILE		*pPlS;
 
-    char buffer[BUFSIZE];
-    LONG ver, i, j, saved, size, count;
+    LONG ver, i, j, size, count;
     LONG dummy = 0;
     LONG newIPlaces = 1;
 
@@ -839,7 +834,6 @@ void LoadGameFiles(FILE *fp)
     /* Load npc_ai[] */
 
 	run_timers();
-    NPC_AI *pNA = (NPC_AI *) buffer;
     fread(&size, sizeof(LONG), 1, fp);
     assert(size == sizeof(NPC_AI));
     fread(&count, sizeof(LONG), 1, fp);
@@ -2002,28 +1996,4 @@ void PaintLoadSaveMenu (LONG MenuCombo, LONG)
     	add_region(menu_x+200, menu_y+108, 24, 60, NO_KEY, ScrollGame, -1, 0, 0, -1);
     	add_region(menu_x+200, menu_y+168, 24, 60, NO_KEY, ScrollGame,  1, 0, 0, -1);
     }
-}
-
-BOOL GetHelpBit(SHORT bitno)
-{
-	unsigned long x;
-	
-	if (bitno < 0 || bitno > 31)
-		return TRUE;
-		
-	x = (1 << bitno) & helpbits;
-	return (x != 0);
-}
-
-void SetHelpBit(SHORT bitno)
-{
-	if (bitno < 0 || bitno > 31)
-		return;
-	
-	helpbits |= (1 << bitno);
-}
-
-void SetAllHelpBits(void)
-{
-	helpbits = 0xFFFFFFFF;
 }

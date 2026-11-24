@@ -192,13 +192,10 @@ void init_things (LONG * PlayerStart);
 void purge_thing (LONG /* ThingIndex */ );
 void purge_all_things (void);
 void set_thing (LONG index,LONG x,LONG y,LONG z,LONG a);
-void move_thing (LONG t,LONG dx,LONG dy);
 void move_thing_to (LONG t,LONG nx,LONG ny);
 void LoopSequenceContinuously (LONG t, ULONG sequence);
 void LoopSequenceOnce (LONG t, ULONG sequence);
 void PlaySequenceOnce (LONG t, ULONG sequence);
-BOOL TestSequenceDone (LONG t);
-LONG SequenceFrameNumber (LONG t);
 void remove_thing (LONG t);
 void add_thing (LONG t,LONG ss);
 void clear_thing_spans (void);
@@ -217,13 +214,11 @@ BOOL ThingIsHeatSource (LONG thingIndex);
 BOOL ThingIsCold (LONG thingIndex);
 BOOL ThingIsMagic (LONG thingIndex);
 BOOL ThingIsEvil (LONG thingIndex);
-BOOL ThingIsPickupable (LONG thingIndex);
 USHORT get_center_point(SHORT iAnim);
 LONG get_scale(SHORT iAnim);
 void change_scale_adjust(LONG t, LONG newScale);
 void ChangeThingZ (LONG iSector);
 void SetFrame(LONG t /* ThingIndex */, ULONG iSeq, SHORT iFrame);
-void sort_things_from_camera(LONG);
 void SetDontDrawCloser(LONG /* ThingIndex */);
 void ClearDontDrawCloser();
 
@@ -234,7 +229,6 @@ void InitMagicThings(SHORT * /* pMagicObjects */,
 					 LONG /* MagicThingIndex */,
 					 LONG /* QuestThingIndex */ );
 
-LONG QuestItemMythingsIndex(void);
 SHORT DisposeIDataBlk (SHORT iResBlk, SHORT iMemBlk);
 SHORT LoadIData (
 	CSTRPTR szFileName,

@@ -91,7 +91,6 @@ typedef struct _BATTLE_TROOP_INFO {
    ------------------------------------------------------------------------ */
 
 LONG ResolveBattleCard( LONG AIcon, LONG Attatck, LONG DIcon, LONG Defense);
-BOOL BattleRound( void );
 
 SHORT GetBattleClass( SHORT unit_icon );
 SHORT GetBattleMove( SHORT unit_icon );

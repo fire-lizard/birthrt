@@ -110,14 +110,11 @@ extern "C" {
 void InitMenuSys(PMENU UserMenus, LONG Count);
 void ReleaseMenu(LONG Index);
 void ShowSubMenu(LONG, LONG index);
-void QuitSystem(LONG, LONG);
 void ShowMenu(LONG Index);
 void HideSubMenu(LONG, LONG index);
 void HideSubMenuWithClick(LONG MenuCombo, LONG index);
 void HideMenu(LONG Index);
 void RunMenus(void);
-void IncrementVal( REGARG unused, REGARG pVal );
-void DecrementVal( REGARG unused, REGARG pVal );
 void ToggleVal(REGARG unused,  REGARG pVal );
 LONG SetButtonValue ( LONG MenuIndex, LONG ButtonId, LONG Val);
 LONG GetButtonValue ( LONG MenuIndex, LONG ButtonId);
@@ -128,7 +125,6 @@ LONG SetButtonLabelColor ( LONG MenuIndex, LONG ButtonId, LONG Color );
 LONG GetButtonLabelColor(LONG MenuIndex, LONG ButtonId, LONG *pLabelColor);
 LONG SetButtonPosition ( LONG MenuIndex, LONG ButtonId, LONG X, LONG Y );
 LONG GetButtonPosition ( LONG MenuIndex, LONG ButtonId, LONG *X, LONG *Y );
-LONG SetButtonSize ( LONG MenuIndex, LONG ButtonId, LONG W, LONG H );
 LONG GetButtonSize ( LONG MenuIndex, LONG ButtonId, LONG *W, LONG *H );
 LONG GetButtonFlags ( LONG MenuIndex, LONG ButtonId );
 LONG SetButtonFlag ( LONG MenuIndex, LONG ButtonId, LONG Flag );
@@ -139,21 +135,17 @@ LONG GetButtonArt(LONG MenuIndex, LONG ButtonId, CSTRPTR *pArt);
 LONG SetButtonArt ( LONG MenuIndex, LONG ButtonId, CSTRPTR pArtPath);
 LONG SetButtonHilightArt ( LONG MenuIndex, LONG ButtonId, CSTRPTR pArtPath);
 LONG SetButtonHilight ( LONG MenuIndex, LONG ButtonId, BOOL Hilight );
-LONG SetUpdate(LONG MenuIndex, LONG ButtonId);
-LONG CleanUpdate(LONG MenuIndex, LONG ButtonId);
 LONG SetButtonToolTip(LONG MenuIndex, LONG ButtonId, LONG NewToolTip);
 LONG ChangeButtonToolTip(LONG MenuIndex, LONG ButtonId, LONG NewToolTip);
 LONG GetButtonHLabelColor(LONG MenuIndex, LONG ButtonId, LONG *pLabelColor);
 void PaintActiveMenu(LONG AMenu);
 BOOL IsMenuActive(LONG MenuId);
-PFVLL GetButtonProc(LONG MenuIndex, LONG ButtonId);
 /* ponytail: these three still move BUTTON.Arg through a 32-bit LONG, so they
    would truncate a pointer Arg. No live path does: the only pointer ever put
    in Arg is &fContinueLoop on D_QUESTION1/QUESTION_BTN1, and these are called
    only on the D_AVATAR, TUTORIAL, SYSHELP and D_HELPKEYS buttons, which all
    hold plain handles. Widen to REGARG if that ever stops being true - it
    reaches ~20 call sites plus the stale private prototype in BATTLEUI.CPP. */
-LONG GetButtonArg(LONG MenuIndex, LONG ButtonId);
 BOOL IsButtonHilighted ( LONG MenuIndex, LONG ButtonId);
 
 /* No PFVPP overloads for SetButtonProc/ChangeButtonProc, unlike REGIONS.H:

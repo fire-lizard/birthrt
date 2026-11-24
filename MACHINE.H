@@ -99,11 +99,7 @@ void draw_cursor(void);
 LONG cursor_in_box (LONG x1,LONG y1,LONG w,LONG h);
 
 /* utils.c */
-#if defined(_WINDOWS)
 LONG get_time();
-#else
-#define get_time()		(*(volatile LONG *)(0x46c) )
-#endif
 void fatal_error(const char *format, ...);
 void pause(LONG t);
 

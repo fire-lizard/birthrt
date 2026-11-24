@@ -1177,33 +1177,6 @@ DEFINE_VECTOR_DATA(CSTRPTR,place_names) = {
 DEFINE_VECTOR_CLASS(CSTRPTR, place_names);
 
 /* ========================================================================
-   Function    - IsRelicFound
-   Description - has the relic for this scene found
-   Returns     - TRUE if already found
-   ======================================================================== */
-BOOL IsRelicFound( SHORT NameIndex )
-{
-	BOOL found = FALSE;
-	SHORT i;
-	
-	if (NameIndex == 0)
-		return TRUE;	// invalid index
-	
-	for (i=0; i < MAX_PLACES; i++)
-	{
-		if (places[i].iName == NameIndex)
-		{
-			found = TRUE;
-			break;
-		}
-	}
-	if (found)
-		return places[i].fRelicFound;
-	else
-		return TRUE;	// you can't get this relic if the place is gone
-}
-
-/* ========================================================================
    Function    - SetRelicFound
    Description - set the relic for this scene found
    Returns     - 
@@ -1222,16 +1195,6 @@ void SetRelicFound( SHORT NameIndex )
 			break;
 		}
 	}
-}
-
-/* ========================================================================
-   Function    - GetCastleName
-   Description - 
-   Returns     - return the name of this holding, only castle has name.
-   ======================================================================== */
-LONG GetCastleName( SHORT PlacesIndex )
-{
-	return( (LONG) places[PlacesIndex].iName);
 }
 
 /*	======================================================================== */

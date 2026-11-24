@@ -19,10 +19,6 @@
    ------------------------------------------------------------------------ */
 #include <stdio.h>
 
-#ifndef _WINDOWS
-#include <bios.h>
-#endif
-
 #include "TASK.H"
 #include "MACHINE.H"
 

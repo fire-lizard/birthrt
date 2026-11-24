@@ -5,15 +5,11 @@
    Filename: THINGS.C     -Manages things in nova
    Author: Chris Phillips, Alan Clark, Wes Cumberland
    ========================================================================
-   Contains the following internal functions:
-   no_draw_sort           - sorts things
-
    Contains the following general functions:
    load_obj_graphic       - loads a graphic for an object
    create_thing           - validates a new entry in the things table
    init_things            - takes wad-loaded things data, and turns it to nova data
    set_thing              - set the xyza of a thing
-   move_thing             - moves a thing in nova???
    move_thing_to          - moves a thing in nova???
    remove_thing           - removes a thing from a sector in nova???
    add_thing              - adds a thing to a sector in nova???
@@ -22,7 +18,6 @@
    draw_thing_spans       - ???
    draw_thing             - draws a thing
    draw_things            - draw all the things in nova sector?
-   sort_things            - sorts things
 
    ======================================================================== */
 /* ®RM250¯------------------------------------------------------------------------
@@ -50,18 +45,6 @@ extern UBYTE				shade_table[];
 
 #define QUIETDEGRADE 1
 
-#if !defined (ASSERT)
-	#if defined(_DEBUG)
-		#ifdef _WINDOWS
-				#define ASSERT(arg) if(!(arg)) SS_Assert(gszSourceFile, __LINE__)
-		#else
-				#define ASSERT(arg) {if(!(arg))fatal_error("ASSERTION FAILED %s,%i\n",gszSourceFile, __LINE__);}
-		#endif	
-	#else
-		#define ASSERT(__ignore) ((void)0)
-	#endif
-#endif
-
 /* ------------------------------------------------------------------------
    Notes
 	------------------------------------------------------------------------ */
@@ -69,7 +52,6 @@ extern UBYTE				shade_table[];
 /* ------------------------------------------------------------------------
    Defines and Compile flags
    ------------------------------------------------------------------------ */
-#define HEIGHT_DIFF_OK	32					// for AddThingToAdjacentSubsectors
 
 //GEH this should live somewhere else.  I will try to move it later.
 typedef struct _MinMem {
@@ -172,7 +154,6 @@ LONG			last_obj_graphic=0;
 LONG			objClicked = -1;	// item number clicked on
 WadThingType	typeClicked = iNOTHING;	// type of thing clicked on
 LONG			butClicked = 0;		// which button clicked
-LONG			torchh,torchw;
 char			cAction[MAX_ANIMATIONSEQ] = {'S','W','D','A','F','X','C','E','L','G','B','M','Z'};
 char			cRotation[] = {'0','3','5','7','9'};
 PTR	TTypePtr = NULL;
@@ -200,7 +181,6 @@ static MAGIC_ITEMS_INFO gMagicItems = { 0, 0, 0, -1, -1 };
 
 // for internet
 LONG			inetStartX, inetStartY, inetStartA;
-BOOL			fDisplayTitles = FALSE;
 
 static SHORT debug_cTypes[300];
 
@@ -1217,117 +1197,6 @@ void set_thing (LONG t, LONG x, LONG y, LONG z, LONG a)
 }
 
 /* ========================================================================
-   Function    - move_thing
-   Description - moves a thing in nova???
-   Returns     - void
-   ======================================================================== */
-void move_thing (LONG ThingIndex, LONG dx, LONG dy)
-{
-	LONG orig_ss;
-	LONG new_ss;
-
-	CHECK_THING_INDEX(t,"move_thing");
-
-	// GWP We already know this.
-	orig_ss = mythings[ThingIndex].ssect;
-
-	mythings[ThingIndex].x+=dx;
-	mythings[ThingIndex].y+=dy;
-	new_ss=find_ssector(mythings[ThingIndex].x,mythings[ThingIndex].y);
-
-	// [d9-04-96 JPC] Added the SSP_WATER and SSP_DEEP_WATER tests to the
-	// following; otherwise, objects will sometimes walk on the water.
-	// (The Z coordinate does not stay put; various routines like to set
-	// it back to the floor.  This seems the best place to intervene.)
-	// [d10-09-96 JPC] Added SSP_LAVA.
-	if(orig_ss!=new_ss ||
-	   sectors[mythings[ThingIndex].sect].special == SSP_WATER ||
-       sectors[mythings[ThingIndex].sect].special == SSP_ACID_FLOOR ||
-       sectors[mythings[ThingIndex].sect].special == SSP_LAVA ||
-	   sectors[mythings[ThingIndex].sect].special == SSP_DEEP_WATER)
-	{
-		LONG sect;
-		LONG FloorHeight;
-		LONG CeilingHeight;
-		LONG Special;
-		LONG Tag;
-		
-		if (orig_ss == new_ss)
-		{
-			sect = mythings[ThingIndex].sect;
-			FloorHeight = sectors[sect].fh;
-			CeilingHeight = sectors[sect].ch;
-			Special = sectors[sect].special;
-		}
-		else
-		{
-			if(new_ss<0 || new_ss>=MAX_SSECTORS)
-			{
-				printf("move_thing: Bad ssector (%d) for mything[%d]\n",new_ss, ThingIndex);
-				return;
-			}
-			
-			remove_thing(ThingIndex);
-			add_thing(ThingIndex, new_ss);
-			
-			ssector_to_sector_info(mythings[ThingIndex].x,
-										  mythings[ThingIndex].y,
-										  new_ss,
-										  &sect,
-										  &FloorHeight,
-										  &CeilingHeight,
-										  &Special,
-										  &Tag);
-		}
-
-#if 01
-		// [d8-21-96 JPC] Trick the things into thinking the floor height
-		// is lower than it really is if the sector is a water sector.
-		if (Special == SSP_WATER ||
-		    Special == SSP_ACID_FLOOR ||
-		    Special == SSP_LAVA)
-		{
-			FloorHeight -= mythings[ThingIndex].heiScaled / 4;
-		}
-		else if (Special == SSP_DEEP_WATER)
-		{
-			FloorHeight -= (mythings[ThingIndex].heiScaled * 3) / 4;
-		}
-#endif
-
-		if (IsFlyingThing(ThingIndex))
-		{
-			if (FloorHeight > mythings[ThingIndex].z)
-			{
-				mythings[ThingIndex].z = FloorHeight;
-			}
-			else
-			{
-				LONG ThingHeight = mythings[ThingIndex].heiScaled;
-
-				if (CeilingHeight < (ThingHeight + mythings[ThingIndex].z))
-				{
-					const LONG NewHeight = CeilingHeight - ThingHeight;
-					mythings[ThingIndex].z = (NewHeight > FloorHeight) ? NewHeight : FloorHeight;
-				}
-			}
-		}
-		else
-		{
-			if (HangsFromCeiling(ThingIndex) == TRUE)
-			{
-				mythings[ThingIndex].z = CeilingHeight - mythings[ThingIndex].heiScaled;
-			}
-			else
-			{
-				mythings[ThingIndex].z = FloorHeight;
-			}
-		}
-	}
-
-}
-
-/* ========================================================================
    Function    - move_thing_to
    Description - moves a thing in nova???
    Returns     - void
@@ -1503,48 +1372,6 @@ void PlaySequenceOnce (LONG t, ULONG sequence)
 	mythings[t].bControl  = START_FLAG;
 	mythings[t].Frozen = FALSE;
 	mythings[t].SkipFrame = FALSE;
-}
-
-/* =======================================================================
-	
-	======================================================================= */
-BOOL TestSequenceDone (LONG t)
-{
-	CHECK_THING_INDEX(t,"TestSequenceDone");
-	BOOL Result = TRUE;
-	
-	if (mythings[t].bControl & REWIND_FLAG)
-	{
-		Result = ((mythings[t].bControl & (FRAME_MASK+START_FLAG)) == IDLE_FRAME);
-	}
-	else
-	{
-		if (mythings[t].iAnim > 0)
-		{
-			ANIMPTR pAnim = (ANIMPTR) BLKPTR(mythings[t].iAnim);
-			if (pAnim->totalFrames > 0 &&
-			    pAnim->frame >= pAnim->totalFrames - 1)
-			{
-				Result = TRUE;
-			}
-			else
-			{
-				Result = FALSE;
-			}
-		}
-	}
-
-	return Result;
-}
-
-/* =======================================================================
-	
-	======================================================================= */
-LONG SequenceFrameNumber (LONG t)
-{
-	CHECK_THING_INDEX(t,"SequenceFrameNumber");
-
-	return (mythings[t].bControl & FRAME_MASK);
 }
 
 /* =======================================================================
@@ -1731,14 +1558,6 @@ static void scale_obj (LONG t, LONG sx, LONG dx, LONG dy, LONG dye, LONG clipped
 	if (bptr == NULL)
 		return;
 		
-#if !defined(_WINDOWS)
-	if (fAIMoving)
-	{
-		if (dx & 1)
-			return;
-	}
-#endif
-	
 	++dye;
 	if (sx < 0 || sx >= bptr->h)
 		return;
@@ -1755,23 +1574,6 @@ static void scale_obj (LONG t, LONG sx, LONG dx, LONG dy, LONG dye, LONG clipped
 	{
 		if (light == 0)
 		{
-#if !defined(_WINDOWS)
-			if (fAIMoving)
-			{
-				do {
-					pix = tptr[tsy>>15];	/* objects are part of lighting model */
-					// Test for transparency
-					if (pix)
-					{
-						*(sptr+1)=*sptr = (UBYTE)pix;		
-					}
-			
-					tsy += src_inc;
-					sptr += sptr_inc;
-				} while(sptr < sptr_end);
-			}
-			else
-#endif
 			{
 				do {
 					pix = tptr[tsy>>15];	/* objects are part of lighting model */
@@ -1789,23 +1591,6 @@ static void scale_obj (LONG t, LONG sx, LONG dx, LONG dy, LONG dye, LONG clipped
 		else
 		{
 			
-#if !defined(_WINDOWS)
-			if (fAIMoving)
-			{
-				do {
-					pix = shade[tptr[tsy>>15]];	/* objects are part of lighting model */
-					// Test for transparency
-					if (pix)
-					{
-						*(sptr+1)=*sptr = (UBYTE)pix;		
-					}
-			
-					tsy += src_inc;
-					sptr += sptr_inc;
-				} while(sptr < sptr_end);
-			}
-			else
-#endif
 			{
 				do {
 					pix = shade[tptr[tsy>>15]];	/* objects are part of lighting model */
@@ -1824,16 +1609,6 @@ static void scale_obj (LONG t, LONG sx, LONG dx, LONG dy, LONG dye, LONG clipped
 	else
 	{
 		
-#if !defined(_WINDOWS)
-		if (fAIMoving)
-		{
-			do {
-				*(sptr+1)=*sptr = BLACK;
-				sptr += sptr_inc;
-			} while (sptr < sptr_end);
-		}
-		else
-#endif
 		{
 			do {
 				*sptr = BLACK;
@@ -2534,15 +2309,6 @@ void draw_things (LONG ss)
 
 	if ((i = ssector_things[ss]) == -1)				// get first thing
 	{
-#if EXTRATHINGS
-		// [d11-05-96 JPC]
-		// Nothing is "officially" in this subsector, so check the
-		// overflow from neighboring subsectors.
-		if ((i = subsectorExtraThings[ss]) != -1)
-		{
-			draw_thing (i);
-		}
-#endif
 		return;
 	}
 
@@ -2603,14 +2369,6 @@ void draw_things (LONG ss)
 	if (mythings[i].valid == TRUE)
 		draw_thing(i);
 
-#if EXTRATHINGS
-	// [d11-05-96 JPC] Implement the kludge to keep dead things from clipping
-	// inappropriately.
-	if ((i = subsectorExtraThings[ss]) != -1)
-	{
-		draw_thing(i);
-	}
-#endif
 }
 
 /* ========================================================================
@@ -3436,11 +3194,6 @@ void decode_delta_flc (PTR pData, ANIMPTR pAnim)
 #endif
 }
 
-// see below
-void sort_things_from_camera(LONG n)
-{
-}
-
 /* ======================================================================= */
 BOOL ThingIsHeatSource (LONG thingIndex)
 {
@@ -3477,17 +3230,6 @@ BOOL ThingIsMagic (LONG thingIndex)
    return ((
 	((TTYPE *)(TTypePtr + (G_TTypeSize * thingIndex)))->attrib
 	& MAGIC) ? TRUE : FALSE);
-}
-
-/* ======================================================================= */
-BOOL ThingIsPickupable (LONG thingIndex)
-{
-// Return TRUE if the player can pick the thing up.
-// ---------------------------------------------------------------------------
-
-   return ((
-	((TTYPE *)(TTypePtr + (G_TTypeSize * thingIndex)))->attrib
-	& MAPCPICK) ? TRUE : FALSE);
 }
 
 /* ======================================================================= */
@@ -3667,96 +3409,10 @@ void InitMagicThings(SHORT * pMagicThingTypes,
 
 }
 
-LONG QuestItemMythingsIndex(void)
-{
-	return gMagicItems.QuestItemMythingsIndex;
-}
-
 LONG GetQuestThing(void)
 {
 	return gMagicItems.QuestItem;
 }
-
-#if EXTRATHINGS
-/* ===========================================================================
-	Function		- AddThingToAdjacentSubsectors
-	Description - Call to add a thing to adjacent subsectors.
-					  Example of use: call for a dead thing to keep it
-					  from being clipped by a small subsector.
-	Note			- This is a slow routine, so only call it when needed
-					  (such as initial placement or positioning a dead thing).
-	Return      - nothing
-	=========================================================================== */
-void AddThingToAdjacentSubsectors (LONG ThingIndex)
-{
-	LONG 			thing_ss;
-	LONG 			other_ss;
-	LONG			x;
-	LONG			y;
-	LONG 			sect;
-	LONG 			FloorHeight;
-	LONG 			CeilingHeight;
-	LONG 			Special;
-	LONG 			Tag;
-	LONG			xAdd;
-	LONG			yAdd;
-	SHORT 		w;
-	BITMPTR		pBitm;
-	ANIMPTR		pAnim;
-
-	thing_ss = mythings[ThingIndex].ssect;
-	x = mythings[ThingIndex].x;
-	y = mythings[ThingIndex].y;
-
-	if (mythings[ThingIndex].iBitm != fERROR)
-	{
-		pBitm = (BITMPTR) BLKPTR(mythings[ThingIndex].iBitm);
-		w = max (pBitm->w, pBitm->h);
-	}
-	else if (mythings[ThingIndex].iAnim != fERROR)
-	{
-		pAnim = (ANIMPTR)BLKPTR(mythings[ThingIndex].iAnim);
-		w = pAnim->height;
-	}
-	else
-	{
-		w = mythings[ThingIndex].widScaled;
-	}
-
-	// Check various points the full width of the image in all directions
-	// from its x,y.  (Note that a dead thing, which only has one or two frames,
-	// will appear to rotate around its feet as you move around it.  So we
-	// need to check all subsectors that might be in the circle described
-	// by the rotation of the dead body.)
-	for (yAdd = -w; yAdd <= w; yAdd += w/8)
-	{
-		for (xAdd = -w; xAdd <= w; xAdd += w/8)
-		{
-			if (xAdd != 0 && yAdd != 0)
-			{
-				other_ss = find_ssector (x + xAdd, y + yAdd);
-				if (other_ss != thing_ss &&
-					subsectorExtraThings[other_ss] != ThingIndex
-					)
-				{
-					ssector_to_sector_info(x + xAdd, y + yAdd, other_ss, &sect, &FloorHeight,
-						&CeilingHeight, &Special, &Tag);
-					if (FloorHeight - sectors[mythings[ThingIndex].sect].fh < HEIGHT_DIFF_OK)
-					{
-						if (subsectorExtraThings[other_ss] == -1)
-							subsectorExtraThings[other_ss] = ThingIndex;
-					}
-				}
-			}
-		}
-	}
-}
-#else
-void AddThingToAdjacentSubsectors (LONG ThingIndex)
-{
-	// do nothing; leave in for a while so others can compile.
-}
-#endif
 
 /* ========================================================================
    Function    - LoadIData

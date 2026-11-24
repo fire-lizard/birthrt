@@ -5,13 +5,9 @@
    Filename: KEYINT.C    -Handles keyboard input and installing the interrupt
    Author: Chris Phillips
    ========================================================================
-   Contains the following internal functions: 
-   key_rtn               -used as our new keyboard interrupt
-
    Contains the following general functions:
    install_keyint        -installs the new interrupt
    remove_keyint         -reinstalls the old interrupt, removes the new one
-   wait_for_space        -wait for a the spacebar to be pressed
    keys_down             -checks to see if any keys are down
    key_status            -returns the status of a key
    

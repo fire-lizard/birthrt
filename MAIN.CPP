@@ -20,11 +20,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#ifndef _WINDOWS
-#include <bios.h>
-#else
 #include "PLATFORM.H"
-#endif
 
 //included by gamemap.hxx commented out to fix the "Segment too large"
 //compiler error that seems to pop up randomly
@@ -73,8 +69,8 @@ extern "C" {
 void TextureLightTest (LONG arg1, LONG arg2);
 void EditToggleSpeed (LONG arg1, LONG arg2);
 void EditDebugFunction (LONG arg1, LONG arg2);
-void SysForceCursor (void);
 }
+void SysForceCursor (void);	// C++ linkage, like the other callers (GAMEMAP.CPP etc.)
 #endif
 
 /* ------------------------------------------------------------------------
@@ -157,13 +153,11 @@ extern LONG cheated;
 
 SHORT	gUnitStackSize = 15;
 
-LONG fDialogUp;
 BOOL bShowWadSize=FALSE;
 BOOL bDumpScreen=FALSE;
 BOOL fPosition = FALSE;
 void print_point(LONG,LONG);
 void ActivateSegment(LONG, LONG);
-void CoverInitDomain(LONG, LONG);
 
 extern LONG	DifficultyLevel;
 extern BOOL fInfoOnlyDomainUI;
@@ -173,19 +167,6 @@ extern LONG FlcDelay;
 /* ========================================================================
 
 	======================================================================== */
-
-#ifndef _WINDOWS
-void InvokeDebugger(LONG,LONG)
-{
-	union REGS regs;
-	int386(0x03,&regs,&regs);
-}
-#endif
-
-void SortThings(LONG, LONG)
-{
-	sort_things_from_camera(tot_nodes-1);
-}
 
 void toggle_ShowWadSize (LONG, LONG)
 {
@@ -236,7 +217,6 @@ void PrintLocationInfo(void)
 // Hack to switch between Direct draw and regular windows.
 // GWP It crashes in direct draw and switching back out.
 // CAM Not any more!
-#if defined (_WINDOWS)
 extern LONG lSavedX;
 extern LONG lSavedY;
 void ToggleDirectDraw(LONG, LONG)
@@ -302,14 +282,6 @@ extern void DirectDrawPreFrame( void )
 } // DirectDrawPreFrame
 
  // -- routine in sysgraph.c
-#else
-extern "C" void DirectDrawPreFrame( void )
-{
-}
-extern "C" void DirectDrawSaveScreen( void )
-{
-}
-#endif
 
 // GWP HACK DEMO CODE
 void GoToBattleScene(LONG, LONG)
@@ -365,7 +337,6 @@ static void machine_post_frame()
 	// save new time
 	lTime = get_time();
 
-#ifdef _WINDOWS
 	if ( sDrawMode == iGDI )
 	{
 
@@ -376,11 +347,6 @@ static void machine_post_frame()
 	{
  		update_screen();
 	}
-#else
-
-	if(!fRender)
-		update_screen();
-#endif
 
 	if (SCENE_MGR::fFadeToNextScene == SCENE_MGR::FADE_IN)
 	{
@@ -652,9 +618,8 @@ void GameMain(void)
 {
 	LONG i;
 	// Initialize Memory Manager, check for less than full needed memory
-	const LONG MemAvailable = InitMemManag(4098L, 3072L, 14000, FALSE);
+	InitMemManag(4098L, 3072L, 14000, FALSE);
 
-#ifndef _CHARED
 {
 	gUnitStackSize = 15;
 	
@@ -671,12 +636,6 @@ void GameMain(void)
 	// Install mouse handler.. check_regions will look at cursor_x
 	// cursor_y and mouse_button
 	init_mouse("DAGGER",CURSOR_HOTSPOT_UL);
-#if !defined (_WINDOWS)
-	if (!mouse_present)
-	{
-		fatal_error("You must have a mouse to run Birthright.  No mouse was detected.");
-	}
-#endif	
 	
 	for (i=0; i<MAX_UNITS; i++)
 		units[i].iIconBitm = fERROR;
@@ -723,11 +682,6 @@ void GameMain(void)
 			return;
 	}
 //=================================
-#endif
-
-#ifndef _WINDOWS	
-	// only checks for button clicks
-	add_timer(1,update_buttons);
 #endif
 
 	// preload a song from CD
@@ -810,15 +764,7 @@ void GameMain(void)
 	
 	SysShowCursor();
 	
-#ifndef _WINDOWS
-	// the Windows main loop takes care of calling our MainLoop
-	while(1)
-	{
-		MainLoop();  // call the main loop
-	}
-#endif
 }
-#endif
 }
 
 /* ========================================================================
@@ -885,12 +831,6 @@ void DumpScreen (LONG, LONG)
 	{
 		szFileName[7]++;
 	}
-}
-// GWP Hack so it will compile.
-void CoverInitDomain(LONG, LONG)
-{
-	TurnOffAllSounds();
-	InitDomainTurn(0);
 }
 /* =======================================================================
 	Function    - ActivateSegment
@@ -1006,10 +946,6 @@ void AddGameKeys(void)
 	add_key(KEY_F9, EditDebugFunction, 2, 0);        // [d7-01-96 JPC]
 #endif
 
-#if defined(_DEBUG) && !defined(_WINDOWS)
-	add_key(KEY_N, InvokeDebugger, 0, 0);
-#endif
-
 }
 
 /* ========================================================================
@@ -1034,7 +970,6 @@ int	printf( const char *__format, ... )
 void PlayIntro(void)
 {
 	SHORT   bitm;
-	LONG    now;
 	BOOL	fFlicPlayedComplete;
 
 	FadeOut(100);
@@ -1441,7 +1376,6 @@ void PlayFinale(LONG WinningRealm,LONG)
 	CHAR	rlm[10];
 	CHAR	battle[10];
 	CHAR	game[10];
-	SHORT	i;
 	SHORT	bitm;
 	LONG	now;
 	CHAR 	*Dash;
@@ -1822,7 +1756,7 @@ void FadeTo (LONG red, LONG green, LONG blue, LONG steps)
 {
 	UBYTE	CardPal[768];
 	UBYTE	TempPal[768];
-	LONG	i, j, c;
+	LONG	i, j;
 
 printf("FadeTo called %d/%d/%d, %d\n", red, green, blue, steps);
 
@@ -1994,15 +1928,12 @@ tryagain:
 
 void NewIntro (void)
 {
-	LONG			i = 0, j, oj, curScreen = 99, x=0, ox=999, y, z=0, oz=999;
+	LONG			i = 0, j, curScreen = 99;
 	LONG			startTime;
 	SHORT			iScreen_[12];
-	SHORT			curSound = fERROR;
 	int			SoundTag = fERROR;
 	LONG			fZoom = 0;
 	SHORT			iDark = fERROR;
-	LONG			hash[256];
-	SHORT			bitm;
 	static char* scrname[] = {	"INTRO\\SCREEN0.PCX",
 				       	"INTRO\\SCREEN1.PCX",
 				       	"INTRO\\SCREEN2.PCX",
@@ -2077,7 +2008,6 @@ void NewIntro (void)
 					cx = 0; cy = 0; cw = 640; ch = 480;
 					break;
 
-#ifdef _WINDOWS
 				case 12:	CrossFade(iDark, 1); break;
 				case 13:	CrossFade(iDark, 4); break;
 				case 14:	CrossFade(iDark, 20); break;
@@ -2087,36 +2017,17 @@ void NewIntro (void)
 				case 22: CrossFade(iScreen, 4); break;
 				case 23: CrossFade(iScreen, 20); break;
 				case 24: CrossFade(iScreen, 75); break;
-#else
-				case 12:	FadeOut(1); break;
-				case 13:	FadeOut(180); break;
-				case 14:	FadeOut(1000); break;
-				case 15:	FadeOut(3000); break;
-				case 16:	FadeOut(5000); break;
-				case 21: DrawBitmap(cx, cy, iScreen, cx, cy, cw, ch); update_screen(); FadeIn(1); break;
-				case 22: DrawBitmap(cx, cy, iScreen, cx, cy, cw, ch); update_screen(); FadeIn(200); break;
-				case 23: DrawBitmap(cx, cy, iScreen, cx, cy, cw, ch); update_screen(); FadeIn(1000); break;
-				case 24: DrawBitmap(cx, cy, iScreen, cx, cy, cw, ch); update_screen(); FadeIn(4000); break;
-#endif
 
 				case 30: SoundTag = AddSndObj(SND_INTRO_FLC_VOX1,0,-1); break;
 
-				case 40: fPan=get_time(); x = 0; break;
-				case 41: fWindow=get_time(); x = 0; break;
+				case 40: fPan=get_time(); break;
+				case 41: fWindow=get_time(); break;
 
 				case 51:	FadeTo(255, 255, 255, -3); break;			// white flash..
 
-#ifdef _WINDOWS
 				case 52:	FadeTo(255, 255, 255, -40); break;			// ..and fade away
-#else
-				case 52:	FadeTo(255, 255, 255, -500); break;			// ..and fade away
-#endif
 
-#ifdef _WINDOWS
 				case 60: CrossFade(iScreen,50); break;	// crossfade
-#else
-				case 60: CrossFade(iScreen,80); break;		// crossfade
-#endif
 				// default
 				case 61: wx = 0; wy = 0; ww = 640; wh = 480; break;
 				// zoom down to Spider
@@ -2147,11 +2058,7 @@ void NewIntro (void)
 					run_timers();
 					set_pal((char *)&CurPal[0]);
 					run_timers();
-#ifdef _WINDOWS
 					FadeIn(1);
-#else
-					FadeOut(1);
-#endif
 					break;
 
 			}

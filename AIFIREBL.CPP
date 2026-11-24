@@ -212,7 +212,6 @@ void CAvatar::FireBall (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 				PLAYER TempPlayer;
 				FIXED_VECTOR_3D NewVector, OldVector;
 				LONG const Rate=pAvatar->mfGetMarchRate();
-				WadThingType Result = iNOTHING;
 				LONG BumpDistance;
 				
 				LONG BumpIndex;
@@ -349,7 +348,6 @@ void CAvatar::FireBall (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 									//go after him or her
 									
 									CAvatar * const pEnemy = (CAvatar * const) BLKPTR(pAvatar->hEnemy);
-									SHORT hOldEnemy=pAvatar->hEnemy;
 
 									//inflicts same type of damage as lightning
 									pCastAvatar->mfInflictMagicDamage(pEnemy, LIGHTNING_1, pAvatar->fDamage);

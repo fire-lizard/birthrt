@@ -183,23 +183,6 @@ void const MARGIN_CONTROL::mfClearBorder(void)
 }
 
 /* ========================================================================
-   Function    - mfRestoreCurrentSize
-   Description - Shrink the screen to the previous screen state.
-   Returns     - 
-   ======================================================================== */
-void MARGIN_CONTROL::mfRestoreCurrentSize()
-{
-	LONG i;
-	for (i = 0; i < fReductionCount; i++ )
-	{
-		clear_display();
-		mfIncreaseMargin();
-	}
-	
-	fUpdatePanels = TRUE;
-}
-
-/* ========================================================================
    Function    - mfResetCurrentSize
    Description - set the screen to the previous stored screen state.
    Returns     - 

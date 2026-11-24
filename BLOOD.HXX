@@ -49,19 +49,19 @@ public:
 		MAX_BLOOD_STRENGTH
 	} TYPE;
 	
+#if defined(_CHARED)			// Character Editor only
 	class BLOODLINE_STRENGTH_DATA {
 	public:
 		GAME_STRING	Name;
 		DICE	Score;				// Unknown usefulness of this value.
 	};
-	
+
 	static char const * const mfGetName(const TYPE);
-	static const DICE *mfGetScore(const TYPE);
 
 private:
 	static BLOODLINE_STRENGTH_DATA fpBloodlineStrengthInfo[];
+#endif
 };
-typedef BLOODLINE_STRENGTH_INFO *PTR_BLOODLINE_STRENGTH_INFO;
 
 // Note: This enum type is used as an index into several arrays
 //       which track Bloodline Derivation information. Don't re-order it!
@@ -82,13 +82,13 @@ public:
 		MAX_DERIVATION
 	} TYPE;
 
+#if defined(_CHARED)			// Character Editor only
 	static char const * const mfGetName(const TYPE);
-	
+
 private:
 	static GAME_STRING fpBloodlineDerivationInfo[];
+#endif
 };
-
-typedef BLOODLINE_DERIVATION_INFO *PTR_BLOODLINE_DERIVATION_INFO;
 
 // Note: This enum type is used as an index into several arrays
 //       which track Blood Ability information. Don't re-order it!
@@ -134,13 +134,7 @@ public:
 		MAX_ABILITIES
 	} BLOOD_ABILITY;
 	
-	static char const * const mfGetName(const BLOOD_ABILITY);
-	
-private:
-	static GAME_STRING	fpBloodAbilityInfo[];
 };
-
-typedef BLOOD_ABILITY_INFO *PTR_BLOOD_ABILITY_INFO;
 
 // Every blooded player gets a list of abilities, this is
 // how its stored.
@@ -175,18 +169,12 @@ typedef PLAYER_BLOOD_INFO *PTR_PLAYER_BLOOD_INFO;
    Global Variables
    ------------------------------------------------------------------------ */
 
+#if defined(_CHARED)			// Character Editor only
 // Get the name of this bloodline strength.
 inline char const * const BLOODLINE_STRENGTH_INFO::mfGetName(
 	const BLOODLINE_STRENGTH_INFO::TYPE type)
 {
 	return STRMGR_GetStr(fpBloodlineStrengthInfo[type].Name);
-}
-
-// Get the score dice for this bloodline strength.
-inline const DICE *BLOODLINE_STRENGTH_INFO::mfGetScore(
-	const BLOODLINE_STRENGTH_INFO::TYPE type)
-{
-	return &fpBloodlineStrengthInfo[type].Score;
 }
 
 // Get the name of this bloodline derivation.
@@ -195,12 +183,6 @@ inline char const * const BLOODLINE_DERIVATION_INFO::mfGetName(
 {
 	return STRMGR_GetStr(fpBloodlineDerivationInfo[type]);
 }
-
-// Get the name of this blood ability.
-inline char const * const BLOOD_ABILITY_INFO::mfGetName(
-	const BLOOD_ABILITY_INFO::BLOOD_ABILITY bloodAbility)
-{
-	return STRMGR_GetStr(fpBloodAbilityInfo[bloodAbility]);
-}
+#endif
 
 #endif // _BLOOD_H

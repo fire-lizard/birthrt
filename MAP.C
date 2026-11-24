@@ -17,20 +17,12 @@
    DrawMapThing             -draws an object on the map with few params
    MapHandleSecretSSect     -handles the visibility of "secret" linedefs
    DrawMapBlockLinedefs     -draws linedefs in a block from the blockmap
-   DrawLinedef				-draws a linedef on the map
 
    Contains the following general functions:
    SetMapDraw               -toggles map mode
    ZoomMap                  -changes the map's zoom factor
    DrawMap                  -shows the map
    DrawMapStyledObject      -draws an object on the map with many params
-   DrawMapAvatar            -draws an avatar on the map
-   ShowFullMap              -Reveals all the lines and things on the map
-   SetMapCameraDraw         -Sets whether to draw the camera on the map
-   SetMapPlayerDraw         -Sets whether to draw the player on the map
-   SetMapGridDraw           -Sets whether to draw the grid on the map
-   SetGameMapDraw           -Sets the function that the higher level uses to
-   							-draw the active objects (avatars)
 
    ======================================================================== */
 /* ------------------------------------------------------------------------
@@ -262,7 +254,6 @@ void CalcWadBounds(LONG* rx, LONG* ry, LONG* rw, LONG* rh)
 void MapTeleport(LONG code)
 {
 	static LONG PrevFS=0;
-	static LONG PrevDM=0;
 
 	static POINT PrevOrigin={0,0};
 	static POINT PrevCenter={0,0};
@@ -275,7 +266,6 @@ void MapTeleport(LONG code)
 		fPause=TRUE;
 		PrevFS=gMapInfo.fFullScreen;
 		gMapInfo.fFullScreen=TRUE;
-		PrevDM=gMapInfo.fDrawMap;
 		gMapInfo.fDrawMap=TRUE;
 	
 		PrevOrigin=gMapInfo.ScreenOrigin;
@@ -388,19 +378,6 @@ void SetMapHighlightMagic(LONG unused,LONG arg)
 
 /* ========================================================================
    Function    - SetMapHighlightInvisibleCreatures
-   Description - Sets the range to highlight InvisibleCreatures
-   Returns     - void
-   ======================================================================== */
-void SetMapHighlightInvisibleCreatures(LONG unused,LONG arg)
-{
-	//since this is not a flag, we can't "toggle" it, so this equation
-	//will suffice. this equation only works if !0 == 1.
-
-	gMapInfo.Highlight.InvisibleCreatures=arg*(!gMapInfo.Highlight.InvisibleCreatures);
-}
-
-/* ========================================================================
-   Function    - SetMapHighlightInvisibleCreatures
    Description - Flags the map to draw the Quest Object 
    Returns     - void
    ======================================================================== */
@@ -410,52 +387,6 @@ void SetMapHighlightQuestObject(LONG unused,LONG arg)
 		gMapInfo.Highlight.QuestObject=!gMapInfo.Highlight.QuestObject;
 	else
 		gMapInfo.Highlight.QuestObject=arg;
-}
-
-/* ========================================================================
-   Function    - SetMapCameraDraw
-   Description - Sets whether or not to draw the Camera on the map
-   Returns     - What it was set to before
-   ======================================================================== */
-BOOL SetMapCameraDraw(LONG arg)
-{
-	BOOL og=gMapInfo.fDrawCamera;
-	if (arg==TOGGLE)
-		gMapInfo.fDrawCamera=!gMapInfo.fDrawCamera;
-	else
-		gMapInfo.fDrawCamera=arg;
-	return og;
-}
-
-/* ========================================================================
-   Function    - SetMapPlayerDraw
-   Description - Sets whether or not to draw the Player on the map
-   Returns     - What it was set to before
-   ======================================================================== */
-BOOL SetMapPlayerDraw(LONG arg)
-{
-	BOOL og=gMapInfo.fDrawPlayer;
-	if (arg==TOGGLE)
-		gMapInfo.fDrawPlayer=!gMapInfo.fDrawPlayer;
-	else
-		gMapInfo.fDrawPlayer=arg;
-	return og;
-}
-
-/* ========================================================================
-   Function    - SetMapGridDraw
-   Description - Sets whether or not to draw the Grid on the Map
-   Returns     - What it was set to before
-   ======================================================================== */
-BOOL SetMapGridDraw(LONG arg)
-{
-	BOOL og=gMapInfo.fDrawGrid;
-
-	if (arg==TOGGLE)
-		gMapInfo.fDrawGrid=!gMapInfo.fDrawGrid;
-	else
-		gMapInfo.fDrawGrid=arg;
-	return og;
 }
 
 /* =======================================================================
@@ -468,28 +399,6 @@ PFV SetMapGameDraw(PFV pfGameFunc)
 	PFV ReturnMe=gMapInfo.GameDrawFunc;
 	gMapInfo.GameDrawFunc = pfGameFunc;
 	return ReturnMe;
-}
-
-/* ========================================================================
-   Function    - SetMapFullScreen
-   Description - toggles FS map mode
-   Returns     - the old value
-   ======================================================================== */
-BOOL SetMapFullScreen(LONG unused, LONG arg)
-{
-	BOOL old=gMapInfo.fFullScreen;
-
-	if (arg==TOGGLE)
-	{
-		gMapInfo.fFullScreen=!gMapInfo.fFullScreen;
-		
-	}
-	else
-	{
-		gMapInfo.fFullScreen = arg;
-	}
-
-	return old;
 }
 
 /* ========================================================================
@@ -895,36 +804,6 @@ void DrawMapThing(LONG i,LONG angled)
 
 		DrawMapStyledObject(&o,angle,color,shape,radius,MAP_SCALED);
 	}
-}
-
-/* ========================================================================
-   Function    - DrawMapBoundingBox
-   Description - Draws the bounding box that the map uses to determine which
-                 things to draw.
-   Returns     - void
-   ======================================================================== */
-void DrawMapBoundingBox(void)
-{
-#if _DEBUG
-	
-	POINT w,x,y,z;
-
-	//(should never get drawn, but just in case)
-	//draw bound box
-	w.x=(gMapInfo.WorldCenter.x)-ZOOMED_BOUNDING_BOX_RAD_X;	//3rd Quad
-	w.y=(gMapInfo.WorldCenter.y)-ZOOMED_BOUNDING_BOX_RAD_Y;
-	x.x=(gMapInfo.WorldCenter.x)+ZOOMED_BOUNDING_BOX_RAD_X; //1st Quad
-	x.y=(gMapInfo.WorldCenter.y)+ZOOMED_BOUNDING_BOX_RAD_Y;
-	y.x=(gMapInfo.WorldCenter.x)-ZOOMED_BOUNDING_BOX_RAD_X; //2nd Quad
-	y.y=(gMapInfo.WorldCenter.y)+ZOOMED_BOUNDING_BOX_RAD_Y;
-	z.x=(gMapInfo.WorldCenter.x)+ZOOMED_BOUNDING_BOX_RAD_X; //4th Quad
-	z.y=(gMapInfo.WorldCenter.y)-ZOOMED_BOUNDING_BOX_RAD_Y;
-
-	DrawMapXLine(x,y,MAP_YELLOW);
-	DrawMapXLine(y,w,MAP_YELLOW);
-	DrawMapXLine(w,z,MAP_YELLOW);
-	DrawMapXLine(z,x,MAP_YELLOW);
-#endif
 }
 
 /* ========================================================================

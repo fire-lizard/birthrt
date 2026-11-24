@@ -36,11 +36,6 @@
 #include "WINSYS/MULPLAY.HXX"
 #endif
 
-// Its in stdlib.h
-#ifndef _WINDOWS
-#define min(a,b)  ((a>b)?(b):(a))
-#endif
-
 /* -----------------------------------------------------------------------
    Prototypes
    ----------------------------------------------------------------------- */
@@ -348,8 +343,6 @@ void GainExp(PLAYER_STATS * pPS, const LONG ExpAmount,
     PLAYER_CLASS_LIST::PLAYER_CLASS_DATA *pCD;
 
     SHORT index, num_classes;
-    SHORT current_level;
-    LONG  current_xp;
     LONG  xp_for_next_level;
     LONG  xp_for_yet_another_level;
 

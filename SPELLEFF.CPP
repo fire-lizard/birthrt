@@ -330,7 +330,6 @@ LONG ItemEffects::BarkSkin(LONG Combo,LONG Arg,LONG Action)
 
 				LONG 			PriestClass=CANT_CAST_SPELLS;
 				LONG 			PriestLevel=0;
-				LONG 			ACSet=0;
 
 				Item.mfMessage(STR_ACTIVATE_BARKSKIN);
 				if (pPlayerStats->hAvatar != fERROR)
@@ -351,7 +350,6 @@ LONG ItemEffects::BarkSkin(LONG Combo,LONG Arg,LONG Action)
 				break;
 			case DEACTIVATE:
 			{
-				LONG ACSet;
 				LONG 			PriestClass=CANT_CAST_SPELLS;
 				LONG 			PriestLevel=0;
 
@@ -415,7 +413,6 @@ LONG ItemEffects::MagicalVestement(LONG Combo,LONG Arg,LONG Action)
 
 				LONG PriestClass=CANT_CAST_SPELLS;
 				LONG PriestLevel=0;
-				LONG ACSet=0;
 
 				PriestClass=pPlayerStats->mfGetSpellCastClass(SPELL_INFO::PRIEST);
 				if (PriestClass==CANT_CAST_SPELLS)
@@ -442,7 +439,6 @@ LONG ItemEffects::MagicalVestement(LONG Combo,LONG Arg,LONG Action)
 			{
 				DumbAutoLockPtr<PLAYER_STATS> const pPlayerStats(hAvatarStats);
 
-				LONG const *pACSet=0;
 				LONG PriestClass=CANT_CAST_SPELLS;
 				LONG PriestLevel=0;
 
@@ -602,8 +598,6 @@ LONG ItemEffects::MagicMissileSpell(LONG Combo,LONG Arg,LONG Action)
 	
  	SPLIT_COMBO(Combo,IType,hAvatarStats);
  	
-	ItemType&		Item=ItemTypes[IType];
-
 	if(fDomainTurn)
 	{
 		return NOT_SUPPORTED;
@@ -688,81 +682,6 @@ LONG ItemEffects::MagicMissileSpell(LONG Combo,LONG Arg,LONG Action)
 	return OK; //everything went ok	
 }
 											
-LONG ItemEffects::IceStormSpell(LONG Combo,LONG Arg,LONG Action)
-{
-	ITEMTYPE		IType;
-	SHORT			hAvatarStats;
-	
- 	SPLIT_COMBO(Combo,IType,hAvatarStats);
- 	
-	ItemType&		Item=ItemTypes[IType];
-
-	if(fDomainTurn)
-	{
-		return NOT_SUPPORTED;
-	}
-	if(fBattleCombat)
-	{
-		switch(Action)
-		{
-			case ACTIVATE:
-				fBtlMagicType = BTLCAP_MAGIC_PLASMA;
-				fBtlMagicResult = BTL_R;
-				break;
-			case DEACTIVATE:
-				break;
-			case PICKUP:
-				break;
-			case DROP:
-				break;
-			case EQUIP:
-				break;
-			case UNEQUIP:
-				break;
-			case SERVICE:
-				break;
-			default:
-				return NOT_SUPPORTED;
-		}
-	}
-	else	// adventure level
-	{
-	
-		switch(Action)
-		{
-			case ACTIVATE:
-			{
-				DICE dice={3,10,0};
-
-				DumbAutoLockPtr<PLAYER_STATS const> const pPlayerStats(hAvatarStats);
-				if (pPlayerStats->hAvatar != fERROR)
-				{
-					DumbHandlePtr<CAvatar>		pAvatar(pPlayerStats->hAvatar);
-					
-					mfSound(SND_ICE_STORM1,NULL,pAvatar->ThingIndex);
-					pAvatar->mfCreateFireBall( GetNewId(), PLASMA_BALL_1, RollDice(&dice));
-				}
-			}
-				break;
-			case DEACTIVATE:
-				break;
-			case PICKUP:
-				break;
-			case DROP:
-				break;
-			case EQUIP:
-				break;
-			case UNEQUIP:
-				break;
-			case SERVICE:
-				break;
-			default:
-				return NOT_SUPPORTED;
-		}
-	}
-	return OK; //everything went ok	
-}
-
 LONG ItemEffects::ConeOfColdSpell(LONG Combo,LONG Arg,LONG Action)
 {
 	ITEMTYPE		IType;
@@ -770,8 +689,6 @@ LONG ItemEffects::ConeOfColdSpell(LONG Combo,LONG Arg,LONG Action)
 	
  	SPLIT_COMBO(Combo,IType,hAvatarStats);
  	
-	ItemType&		Item=ItemTypes[IType];
-
 	if(fDomainTurn)
 	{
 		return NOT_SUPPORTED;
@@ -858,8 +775,6 @@ LONG ItemEffects::ChainLightningSpell(LONG Combo,LONG Arg,LONG Action)
 	
  	SPLIT_COMBO(Combo,IType,hAvatarStats);
  	
-	ItemType&		Item=ItemTypes[IType];
-
 	if(fDomainTurn)
 	{
 		return NOT_SUPPORTED;
@@ -947,8 +862,6 @@ LONG ItemEffects::DeathSpell(LONG Combo,LONG Arg,LONG Action)
 	
  	SPLIT_COMBO(Combo,IType,hAvatarStats);
  	
-	ItemType&		Item=ItemTypes[IType];
-
 	if(fDomainTurn)
 	{
 		return NOT_SUPPORTED;
@@ -1260,8 +1173,6 @@ LONG ItemEffects::MeteorSwarmSpell(LONG Combo,LONG Arg,LONG Action)
 	
  	SPLIT_COMBO(Combo,IType,hAvatarStats);
  	
-	ItemType&		Item=ItemTypes[IType];
-
 	if(fDomainTurn)
 	{
 		return NOT_SUPPORTED;
@@ -1345,8 +1256,6 @@ LONG ItemEffects::PowerKillSpell(LONG Combo,LONG Arg,LONG Action)
 	
  	SPLIT_COMBO(Combo,IType,hAvatarStats);
  	
-	ItemType&		Item=ItemTypes[IType];
-
 	if(fDomainTurn)
 	{
 		return NOT_SUPPORTED;
@@ -1430,8 +1339,6 @@ LONG ItemEffects::TimeStopSpell(LONG Combo,LONG Arg,LONG Action)
 	
  	SPLIT_COMBO(Combo,IType,hAvatarStats);
  	
-	ItemType&		Item=ItemTypes[IType];
-
 	if(fDomainTurn)
 	{
 		return NOT_SUPPORTED;
@@ -1471,91 +1378,6 @@ LONG ItemEffects::TimeStopSpell(LONG Combo,LONG Arg,LONG Action)
 
    ----------------------------------------------------------------- */
 
-LONG ItemEffects::FireStormSpell(LONG Combo,LONG Arg,LONG Action)
-{
-	ITEMTYPE		IType;
-	SHORT			hAvatarStats;
-	
- 	SPLIT_COMBO(Combo,IType,hAvatarStats);
- 	
-	ItemType&		Item=ItemTypes[IType];
-
-	if(fDomainTurn)
-	{
-		return NOT_SUPPORTED;
-	}
-	if(fBattleCombat)
-	{
-		switch(Action)
-		{
-			case ACTIVATE:
-				fBtlMagicType = BTLCAP_MAGIC_NO_ATTACK;
-				fBtlMagicResult = BTL_D;
-				break;
-			case DEACTIVATE:
-				break;
-			case PICKUP:
-				break;
-			case DROP:
-				break;
-			case EQUIP:
-				break;
-			case UNEQUIP:
-				break;
-			case SERVICE:
-				break;
-			default:
-				return NOT_SUPPORTED;
-		}
-	}
-	else	// adventure level
-	{
-		switch(Action)
-		{
-			case ACTIVATE:
-			{
-				DumbAutoLockPtr<PLAYER_STATS const> const pPlayerStats(hAvatarStats);
-				DICE			dice={0,0,0};
-				LONG			PriestLevel = 0;
-				
-				LONG PriestClass=pPlayerStats->mfGetSpellCastClass(SPELL_INFO::PRIEST);
-				if (PriestClass!=CANT_CAST_SPELLS)
-					PriestLevel=pPlayerStats->mfGetLevel(PriestClass);
-			
-				dice.sbNumberOfDice=PriestLevel;
-				dice.sbNumberOfSides=8;
-				dice.sbModifier=0;
-			
-				LONG const Damage=RollDice(&dice);
-				
-				if (pPlayerStats->hAvatar != fERROR)
-				{
-					DumbHandlePtr<CAvatar>		pAvatar(pPlayerStats->hAvatar);
-					mfSound(SND_FIRESTORM1,NULL,pAvatar->ThingIndex);
-					pAvatar->mfSetDamageDealt(Damage);
-					pAvatar->mfCreateFireBall( GetNewId(), FIREBALL_1,Damage);
-				}
-			}		
-				break;
-			case DEACTIVATE:
-			case PICKUP:
-			case DROP:
-			case EQUIP:
-			case UNEQUIP:
-			case SERVICE:
-				break;
-			default:
-				return NOT_SUPPORTED;
-		}
-			
-	}
-	return OK; //everything went ok	
-}
-
-/* -----------------------------------------------------------------
-
-   ----------------------------------------------------------------- */
-
 LONG ItemEffects::HolyWordSpell(LONG Combo,LONG Arg,LONG Action)
 {
 	ITEMTYPE		IType;
@@ -1563,8 +1385,6 @@ LONG ItemEffects::HolyWordSpell(LONG Combo,LONG Arg,LONG Action)
 	
  	SPLIT_COMBO(Combo,IType,hAvatarStats);
  	
-	ItemType&		Item=ItemTypes[IType];
-
 	if(fDomainTurn)
 	{
 		return NOT_SUPPORTED;
@@ -1793,88 +1613,6 @@ LONG ItemEffects::LocateObject(LONG Combo,LONG Arg,LONG Action)
 	return OK; //everything went ok	
 }
 
-LONG ItemEffects::TurnUndead(LONG Combo,LONG Arg,LONG Action)
-{
-	SHORT Itemtype;  				//the index in ItemTypes of the Item
-									//being activated
-	SHORT hAvatarStats;   			//the stats of the avatar who's activating
-									//the item
- 	SPLIT_COMBO(Combo,Itemtype,hAvatarStats); //extract the data from the Combo
-
-	ItemType& Item=ItemTypes[Itemtype]; //A reference to the item
-
-	if(fDomainTurn)
-	{
-		return NOT_SUPPORTED;
-	}
-	if(fBattleCombat)
-	{
-		return NOT_SUPPORTED;
-	}
-	else	// adventure level
-	{
-		
-		switch(Action)
-		{
-			case ACTIVATE:
-			{
-				DumbAutoLockPtr<PLAYER_STATS const> const pPlayerStats(hAvatarStats);
-				if (pPlayerStats->hAvatar != fERROR)
-				{
-					DumbHandlePtr<CAvatar>		pAvatar(pPlayerStats->hAvatar);
-			
-					if (pAvatar->hEnemy==fERROR)
-						return CANT_COMPLETE;
-					
-					DumbHandlePtr<CAvatar>		pEnemy(pAvatar->hEnemy);
-					if (pEnemy->hPlayerStats == fERROR)
-						return CANT_COMPLETE;
-					DumbAutoLockPtr<PLAYER_STATS > const pEnemyStats(pEnemy->hPlayerStats);
-			
-					DICE			DamageDice;
-	
-					mfSound(SND_GENERAL_MAGIC1,NULL,pAvatar->ThingIndex);
-					
-					LONG PriestClass=pPlayerStats->mfGetSpellCastClass(SPELL_INFO::PRIEST);
-					if (PriestClass==CANT_CAST_SPELLS)
-						return CANT_COMPLETE;
-	
-					LONG PriestLevel=pPlayerStats->mfGetLevel(PriestClass);
-					
-					DamageDice.sbNumberOfDice=PriestLevel;
-					DamageDice.sbNumberOfSides=4;
-					DamageDice.sbModifier=0;
-					LONG const DamageDone=RollDice(&DamageDice);
-					
-					if(pEnemy->mfType()==ZOMBIE ||
-						pEnemy->mfType() == SKELETON ||
-						pEnemy->mfType() == SPECTRE)
-					{
-						pAvatar->mfSetDamageDealt(DamageDone);
-						pAvatar->mfInflictMagicDamage(pEnemy,CRUMBLE_1,DamageDone);
-					}
-				}
-			}
-				break;
-			case DEACTIVATE:
-				break;
-			case PICKUP:
-				break;
-			case DROP:
-				break;
-			case EQUIP:
-				break;
-			case UNEQUIP:
-				break;
-			case SERVICE:
-				break;
-			default:
-				return NOT_SUPPORTED;
-		}
-	}
-	return OK; //everything went ok	
-}
-
 LONG ItemEffects::StoneUndead(LONG Combo,LONG Arg,LONG Action)
 {
 	SHORT Itemtype;  				//the index in ItemTypes of the Item
@@ -1882,8 +1620,6 @@ LONG ItemEffects::StoneUndead(LONG Combo,LONG Arg,LONG Action)
 	SHORT hAvatarStats;   			//the stats of the avatar who's activating
 									//the item
  	SPLIT_COMBO(Combo,Itemtype,hAvatarStats); //extract the data from the Combo
-
-	ItemType& Item=ItemTypes[Itemtype]; //A reference to the item
 
 	if(fDomainTurn)
 	{
@@ -1948,8 +1684,6 @@ LONG ItemEffects::FleshToStone(LONG Combo,LONG Arg,LONG Action)
 									//the item
  	SPLIT_COMBO(Combo,Itemtype,hAvatarStats); //extract the data from the Combo
 
-	ItemType& Item=ItemTypes[Itemtype]; //A reference to the item
-
 	if(fDomainTurn)
 	{
 		return NOT_SUPPORTED;
@@ -2004,72 +1738,6 @@ LONG ItemEffects::FleshToStone(LONG Combo,LONG Arg,LONG Action)
 	return OK; //everything went ok	
 }
 
-LONG ItemEffects::ResistFire(LONG Combo,LONG Arg,LONG Action)
-{
-	SHORT Itemtype;  				//the index in ItemTypes of the Item
-									//being activated
-	SHORT hAvatarStats;   			//the stats of the avatar who's activating
-									//the item
- 	SPLIT_COMBO(Combo,Itemtype,hAvatarStats); //extract the data from the Combo
-
-	ItemType& Item=ItemTypes[Itemtype]; //A reference to the item
-
-	if(fDomainTurn)
-	{
-		return NOT_SUPPORTED;
-	}
-	if(fBattleCombat)
-	{
-		return NOT_SUPPORTED;
-	}
-	else	// adventure level
-	{
-		switch(Action)
-		{
-			case ACTIVATE:
-			{
-				if (!mfAddActiveItem(ItemEffects::ResistFire,Combo,Arg,Item.mfDuration(hAvatarStats)))
-					return CANT_COMPLETE;
-
-				DumbAutoLockPtr<PLAYER_STATS> const pPlayerStats(hAvatarStats);
-		
-				Item.mfMessage(STR_ACTIVATE_RESISTFIRE);
-				
-				if (pPlayerStats->hAvatar != fERROR)
-				{
-					DumbHandlePtr<CAvatar>		pAvatar(pPlayerStats->hAvatar);
-					mfSound(SND_GENERAL_MAGIC1,NULL,pAvatar->ThingIndex);
-				}
-			  	pPlayerStats->StatsMod.mfModifyStats(STATSMOD::FIRE_RESIST_MOD,100);
-			}
-				break;
-			case DEACTIVATE:
-			{
-				DumbAutoLockPtr<PLAYER_STATS> const pPlayerStats(hAvatarStats);
-
-				Item.mfMessage(STR_DEACTIVATE_RESISTFIRE);
-				
-				pPlayerStats->StatsMod.mfModifyStats(STATSMOD::FIRE_RESIST_MOD,-100);
-				mfRemoveActiveItem(ItemEffects::ResistFire,Combo,Arg);
-			}
-				break;
-			case PICKUP:
-				break;
-			case DROP:
-				break;
-			case EQUIP:
-				break;
-			case UNEQUIP:
-				break;
-			case SERVICE:
-				break;
-			default:
-				return NOT_SUPPORTED;
-		}
-	}
-	return OK; //everything went ok	
-}
-
 LONG ItemEffects::SpritualHammer(LONG Combo,LONG Arg,LONG Action)
 {
 	SHORT Itemtype;  				//the index in ItemTypes of the Item
@@ -2077,8 +1745,6 @@ LONG ItemEffects::SpritualHammer(LONG Combo,LONG Arg,LONG Action)
 	SHORT hAvatarStats;   			//the stats of the avatar who's activating
 									//the item
  	SPLIT_COMBO(Combo,Itemtype,hAvatarStats); //extract the data from the Combo
-
-	ItemType& Item=ItemTypes[Itemtype]; //A reference to the item
 
 	if(fDomainTurn)
 	{
@@ -2243,8 +1909,6 @@ LONG ItemEffects::Disintigrate(LONG Combo,LONG Arg,LONG Action)
 									//the item
  	SPLIT_COMBO(Combo,Itemtype,hAvatarStats); //extract the data from the Combo
 
-	ItemType& Item=ItemTypes[Itemtype]; //A reference to the item
-
 	if(fDomainTurn)
 	{
 		return NOT_SUPPORTED;
@@ -2382,8 +2046,6 @@ LONG ItemEffects::FlameStrike(LONG Combo,LONG Arg,LONG Action)
 	SHORT hAvatarStats;   			//the stats of the avatar who's activating
 									//the item
  	SPLIT_COMBO(Combo,Itemtype,hAvatarStats); //extract the data from the Combo
-
-	ItemType& Item=ItemTypes[Itemtype]; //A reference to the item
 
 	if(fDomainTurn)
 	{
@@ -2609,8 +2271,6 @@ LONG ItemEffects::ShockingGrasp(LONG Combo,LONG Arg,LONG Action)
 									//the item
  	SPLIT_COMBO(Combo,Itemtype,hAvatarStats); //extract the data from the Combo
 
-	ItemType& Item=ItemTypes[Itemtype]; //A reference to the item
-
 	if(fDomainTurn)
 	{
 		return NOT_SUPPORTED;
@@ -2788,8 +2448,6 @@ LONG ItemEffects::Knock(LONG Combo,LONG Arg,LONG Action)
 									//the item
  	SPLIT_COMBO(Combo,Itemtype,hAvatarStats); //extract the data from the Combo
 
-	ItemType& Item=ItemTypes[Itemtype]; //A reference to the item
-
 	if(fDomainTurn)
 	{
 		return NOT_SUPPORTED;
@@ -2841,8 +2499,6 @@ LONG ItemEffects::UndeadTurn(LONG Combo,LONG Arg,LONG Action)
 	SHORT hPlayerStats;
  	SPLIT_COMBO(Combo,IType,hPlayerStats);
  	
-	ItemType& Item=ItemTypes[IType];
-	
 	if(fDomainTurn)
 	{
 		return NOT_SUPPORTED;
@@ -2931,8 +2587,6 @@ LONG ItemEffects::ImprovedFireball(LONG Combo,LONG Arg,LONG Action)
 	
  	SPLIT_COMBO(Combo,IType,hPlayerStats);
  	
-	ItemType&		Item=ItemTypes[IType];
-
 	if(fDomainTurn)
 	{
 		return NOT_SUPPORTED;
@@ -3014,8 +2668,6 @@ LONG ItemEffects::ActInfravision(LONG Combo,LONG Arg,LONG action)
  	
 	ItemType&		Item=ItemTypes[IType];
 
-	ActiveItem* ai;
-
 	if(fDomainTurn)
 	{
 		return NOT_SUPPORTED;
@@ -3068,8 +2720,6 @@ LONG ItemEffects::Resurrection(LONG Combo,LONG Arg,LONG Action)
 	SHORT hAvatarStats;   			//the stats of the avatar who's activating
 									//the item
  	SPLIT_COMBO(Combo,Itemtype,hAvatarStats); //extract the data from the Combo
-
-	ItemType& Item=ItemTypes[Itemtype]; //A reference to the item
 
 	if(fDomainTurn)
 	{

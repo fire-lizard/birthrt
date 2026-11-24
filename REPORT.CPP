@@ -107,7 +107,6 @@ static DECL_VECTOR_DATA(SHORT,sHoldings,LAND_REALM_COUNT);
 DECL_VECTOR_DATA(SHORT,sProvinces,LAND_REALM_COUNT);
 DECL_VECTOR_DATA(SHORT,sScores,LAND_REALM_COUNT);
 static SHORT	newCount;
-static SHORT	startCount;
 static SHORT	sMyUnits = 0;
 SHORT			sMyProvinces = 0;
 BOOL			AdvisorReportOn = FALSE;
@@ -126,7 +125,6 @@ static SHORT	oldCountBuilt = FALSE;
 
 static char n[REPORT_BUFFER_SIZE];
 static char n1[REPORT_BUFFER_SIZE];
-static char szReport[REPORT_BUFFER_SIZE * 2];
 
 static int		iCurSubj;
 static BOOL		sndPlayed = FALSE;
@@ -365,7 +363,6 @@ extern LONG		report_done_dturn_mode;
 extern LONG		iHotSeatMultiplayerIndex;
 
 LONG iOldSite;
-static int iAbort = FALSE;
 
 int		SoundTag = fERROR;
 BIRTHRT_SND	iWhichSound;
@@ -838,8 +835,6 @@ void SendReportTo (LONG iRealm, LONG subject, LONG index1, LONG index2, LONG ind
    ======================================================================== */
 void AddReportTo (LONG iRealm, LONG subject, LONG index1, LONG index2, LONG index3)
 {
-	LONG	i;
-	int		iSubImm = FALSE;
 
 	// if an AI sent a report to us, add it
 	if(iRealm == HomeRealm)
@@ -957,11 +952,8 @@ LONG iWhichVox;
    ======================================================================== */
 void GiveReport (LONG lArg)
 {
-	LONG		now;
 	LONG		newTop;
 	LONG		i, j, r, t;
-	char		buff[80];
-	FILE		*in;
 	REALM::REALM_TYPE		testRealm;
 
 	iWhosReport = 0;
@@ -1626,7 +1618,6 @@ void AdvisorButton(LONG iWhichButton, LONG)
    ======================================================================== */
 void PaintReportButtons (LONG MenuCombo, LONG)
 {
-	LONG	MenuId, ButtonId;
 	LONG	x,y;
 	LONG	w,h;
 	int		i;
@@ -1808,14 +1799,11 @@ void DoNothing (LONG, LONG)
 // this routine paints all of the reports except loyalty
 void PaintReportMenu (LONG MenuCombo, LONG)
 {
-	LONG	i, j, s, p, sz_type, last;
+	LONG	i;
 	LONG	X,Y;
 	LONG	W,H;
-	LONG	startY;
 	LONG	top;
 	LONG	MenuId, ButtonId;
-	LONG	iStrPrinted = FALSE;
-	CHAR	color = 228;
 	CHAR	temp1[80];
 	CHAR	temp2[80];
 
@@ -1944,7 +1932,6 @@ void PaintReportMenu (LONG MenuCombo, LONG)
 		temp1,
 		temp2,
 		551+(date/4))+4;
-	startY = Y;
 
 	if(iWhichReport < 4)	// intro text
 		Y += print_textf(X, Y, DKBROWN, n);
@@ -2000,7 +1987,6 @@ void DoneReportMenu1 (LONG arg, LONG arg1)
 static void PaintImmediateReport (LONG MenuCombo, LONG)
 {
 	// set the statement text
-	LONG	mx,my;
 	LONG	xOff = 0;
 	LONG	yOff = 0;
 	LONG	MenuId, ButtonId;
@@ -2062,15 +2048,11 @@ void PaintLoyaltyTable (LONG MenuCombo, LONG)
 
 	LONG x;
 	LONG y;
-	LONG w;
-	LONG h;
 	
 	SPLIT_LONG(MenuCombo, MenuId, ButtonId);
 
 	x = Menus[MenuId].Buttons[0].X;
 	y = Menus[MenuId].Buttons[0].Y;
-	w = Menus[MenuId].Buttons[0].W;
-	h = Menus[MenuId].Buttons[0].H;
 
 	// print title
 	print_textf(x+37, y+58, DKBLUE, STRMGR_GetStr(STR_LOYALTY_RPT));
@@ -2242,10 +2224,7 @@ static void DrawPointsBar (REALM::REALM_TYPE iRealm, SHORT scaleWidth, LONG x, L
 static void PaintProvinceTable (LONG x, LONG y, LONG w, LONG h)
 {
 	SHORT	i;
-	SHORT	j = 0;
 	SHORT	startY = y;
-	SHORT	startX = x;
-	SHORT	scoreWidth;
 	SHORT	scaleWidth;
 	SHORT	points;
 	char	szRealm[40];
@@ -2329,9 +2308,7 @@ static void PaintProvinceTable (LONG x, LONG y, LONG w, LONG h)
 static void PaintUnitsTable (LONG x, LONG y, LONG w, LONG h)
 {
 	SHORT	i;
-	SHORT	j = 0;
 	SHORT	startY = y;
-	SHORT	startX = x;
 	char	szRealm[40];
 
 	// print title
@@ -2517,10 +2494,7 @@ static SHORT ShowAtWar(REALM::REALM_TYPE me, BOOL hasBeenShown[], LONG x, LONG y
 static void PaintWarReport (LONG x, LONG y, LONG w, LONG h)
 {
 	SHORT	startY = y;
-	SHORT	startX = x;
-	char	szRealm[40];
 	BOOL	printed = FALSE;
-	int		iSwordDisplay = FALSE;
 	BOOL	warShown[LAND_REALM_COUNT];
 	LONG	i;
 	
@@ -2607,10 +2581,7 @@ static void PaintWarReport (LONG x, LONG y, LONG w, LONG h)
 static void PaintAllianceReport(LONG x, LONG y, LONG w, LONG h)
 {
 	SHORT	i;
-	SHORT	j;
-	SHORT	k;
 	SHORT	startY = y;
-	SHORT	startX = x;
 	SHORT	topY;
 	char	szRealm[40];
 	SHORT	column;
@@ -2735,10 +2706,7 @@ done:
 static void PaintInvestitureReport(LONG x, LONG y, LONG w, LONG h)
 {
 	SHORT	i;
-	SHORT	j;
-	SHORT	k;
 	SHORT	startY = y;
-	SHORT	startX = x;
 	char	szRealm[40];
 	SHORT	column = 0;
 	SHORT	topY;

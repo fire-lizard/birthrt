@@ -65,8 +65,9 @@ public:
 	                        BOOL	/* Fade to next scene if TRUE */);
 
 	static void mfDoAI();
-	static void mfToggleScenePause(LONG, LONG);
+#if defined(_EDIT) || defined(SCENE_EDITOR)
 	static void mfSetScenePause(BOOL const bState);
+#endif
 	inline static BOOL const mfIsScenePaused();
 	inline static BOOL const mfIsSceneRequested();
 

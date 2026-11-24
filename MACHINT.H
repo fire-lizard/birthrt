@@ -34,10 +34,6 @@
 extern "C" {
 #endif
 
-#ifndef _WINDOWS
-void __interrupt __far key_rtn (void);
-#endif
-
 void install_keyint(void);
 void remove_keyint(void);
 

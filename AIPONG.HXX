@@ -36,7 +36,6 @@ public:
 	// Read from Scene File
 	const LONG mfReadData(FILE *fp);
 	
-	static void mfSwitchToPingPong(LONG);
 	VECTOR		Movement;
 	
 	LONG		HomeX;

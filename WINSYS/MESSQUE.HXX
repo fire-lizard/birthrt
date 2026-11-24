@@ -64,8 +64,6 @@
 
    int Get_MessQueTS( long type, long subtype, PMESSQUE pMessBuf );
 
-   int DelAll_MessQue ( long type );    
-
    int Get_MessQueTS1( long type, long subtype, long data0, PMESSQUE pMessBuf );
 
 #endif

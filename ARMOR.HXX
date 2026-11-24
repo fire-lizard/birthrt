@@ -88,7 +88,6 @@ public:
 	static const SBYTE mfGetArmorClass(const TYPE);
 	static const SBYTE mfGetWeaponAdjust(const TYPE, const WEAPON_INFO::STYLE);
 	static const BOOL mfIsArmorAllowed(const TYPE, const RACE_INFO::TYPE);
-	static const TYPE mfFindType(char *);
 	
 private:
 	static const ARMOR_ITEM fpArmorInfoTable[];
@@ -127,11 +126,9 @@ public:
 		SBYTE	fbRacesAvailable[RACE_INFO::RACE_MAX_NUMBER];	// Use Player Race Type to index
 	};
 	
-	static char *mfGetName(const TYPE);
 	static const SBYTE mfGetMeleeModifer(const TYPE);
 	static const SBYTE mfGetMissleModifer(const TYPE);
 	static const BOOL mfIsShieldAllowed(const TYPE, const RACE_INFO::TYPE);
-	static const TYPE mfFindType(char *);
 	
 private:
 	static const SHIELD_ITEM fpShieldInfoTable[];
@@ -158,12 +155,6 @@ inline const BOOL ARMOR_INFO::mfIsArmorAllowed(
 	const RACE_INFO::TYPE PlayerRace)
 {
 	return fpArmorInfoTable[ArmorType].fbRacesAvailable[PlayerRace];
-}
-
-// Get the shield description name.
-inline char *SHIELD_INFO::mfGetName(const SHIELD_INFO::TYPE ShieldType)
-{
-	return fpShieldInfoTable[ShieldType].fcpName;
 }
 
 // Get the Melee modifier for characters using this shield

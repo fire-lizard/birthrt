@@ -76,9 +76,6 @@ extern "C" {
 // auto low res for fast movement
 extern BOOL	fAIAutoRes;
 extern BOOL	fHighRes;
-#if !defined(_WINDOWS)
-extern BOOL	fAIMoving;
-#endif
 
 extern LONG	PlayerSpeed;
 extern LONG	PlayerJumpVelocity;
@@ -117,14 +114,12 @@ void StopPlayer();
 LONG CheckMoveKeys(void);
 BOOL SwoopToTarget ( POSITION *pStart, POSITION *pTarget);
 LONG MovePlayer( LONG KeyState );
+#if defined(_EDIT) || defined(SCENE_EDITOR)
+void PlayerClimbing(LONG, LONG NewFlag);
+#endif
 LONG MoveToward(LONG X,LONG Y,LONG TargetX,LONG TargetY,LONG Rate,LONG *NewX,LONG *NewY);
-void SetPlayerTarget( LONG	X, LONG	Y, LONG	H, LONG	A, LONG	P );
-LONG SetPlayerSpeed(LONG Speed);
 LONG SetPlayerSize(LONG Width, LONG Height);
 LONG SetPlayerJump(LONG RiseVelocity, LONG FallRate, LONG TerminalVelocity);
-void PlayerFreeze(LONG NewFlag);
-void PlayerFlying(LONG, LONG NewFlag);
-void PlayerClimbing(LONG, LONG NewFlag);
 void ConvertScreenToFloor(LONG cursor_x, LONG cursor_y, LONG *sx, LONG *sy);
 
 #endif

@@ -10,12 +10,9 @@
    Contains the following general functions:
    clear_extents         -resets the extent arrays
    mark_sect_visible     -marks a sector as visible from curr. location
-   sect_visible          -is the sector visible?
    extent_visible        -???
    add_extent            -adds an extent to the list???
-   fill_extent           -???
    clip_span			 -???
-   clip_object			 -???
 
    ======================================================================== */
 /* ------------------------------------------------------------------------
@@ -81,16 +78,6 @@ void mark_sect_visible(LONG s)
 }
 
 /* ========================================================================
-   Function    - sect_visible
-   Description - is the sector visible?
-   Returns     - the value of the sector_visible table (TRUE or FALSE)
-   ======================================================================== */
-LONG sect_visible(LONG s)
-{
-	return(sector_visible[s]);
-}
-
-/* ========================================================================
    Function    - extent_visible
    Description - ???
    Returns     - TRUE or FALSE
@@ -127,18 +114,6 @@ void add_extent(LONG x1,LONG x2)
 	i=x1;
 	while(i<x2)
 		top_extent[i++]=9999;
-}
-
-/* ========================================================================
-   Function    - fill_extent
-   Description - ???
-   Returns     - void
-   ======================================================================== */
-void fill_extent(LONG x)
-{
-	h_extent[x]=1;
-	bot_extent[x]=0;
-	top_extent[x]=9999;
 }
 
 /* =======================================================================

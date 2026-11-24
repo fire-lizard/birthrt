@@ -144,8 +144,6 @@ static void		SaveString	 	( long lLBId, char* theString,
 
 static	BOOL		fSigs      = FALSE;   //---- Using sigs protocol
 
-static	HWND		hwndWait   = NULL;
-
 static	NETMSG	nm;					// junk area for message header
 
 static int			iGameType = iMPGT_NONE;
@@ -2473,7 +2471,6 @@ BOOL MultiPlayer::Finalize( int type )
 {
 	int x;
    int iFlag = 0;
-   BOOL fFoundMaster = FALSE;
 
 	LOGCOMMENTSLEEP
 	if ( fLogComment )
@@ -2506,13 +2503,10 @@ BOOL MultiPlayer::Finalize( int type )
 						RandomLogComment ( temp );
 					}
 
-					fFoundMaster = TRUE;
 					break;
 				}
 			}
 		}
-		else
-			fFoundMaster = FALSE; // because I'm the master
 		
 		//---- If anyone is out there Tell everyone we left
 		{
@@ -2586,7 +2580,6 @@ BOOL MultiPlayer::Finalize( int type )
 int MultiPlayer::InitPre ( int doSigs )
 {
 	BOOL fOK = TRUE;
-   ErrCode err = kNoError;
 
 	if ( (eStatus == iMPS_NONE) || 
 		 (eStatus == iMPS_ENDED)   )
@@ -2834,8 +2827,6 @@ BOOL MultiPlayer::SendGameType( void )
 	fSent		= FALSE;
 	short sSize = 0;
 	PCHAR pMsg  = NULL;
-
-	int x;
 
 	//---- Master only sends this message
 
@@ -4127,12 +4118,6 @@ BOOL MultiPlayer::HandleSpecialMessages( UCHAR ucMsgId, long lMsgNum )
 			{
 			pMsg = &cRcvBuf[0] + sizeof(BRHeader);
 			
-			// -- get gold pointer
-			UBYTE *pGoldData = (UBYTE *)((PBRAdminMessage)pMsg)->GoldData;
-			
-			// -- get gold regency
-			UBYTE *pRegencyData = (UBYTE *)((PBRAdminMessage)pMsg)->RegencyData;
-			
 			// -- decode data array
 			
 			}
@@ -4373,7 +4358,6 @@ void MultiPlayer::ReadCfg( void )
 {
 
 	CHAR szFile[MAX_PATH] = "";
-	short temp;
 
 	sprintf( szFile, "%s", pszCfg );
 
@@ -4520,7 +4504,7 @@ BOOL MultiPlayer::SendFile( PSZ pszPath, PCHAR pszFile )
 	CHAR szFName[MAX_PATH] = "";
 	unsigned int p_index;
 	DWORD idNext;
-	LONG	i,j,c;
+	LONG	i,j;
 
 	// -- Check for a dead object
 
@@ -4604,7 +4588,6 @@ BOOL MultiPlayer::SendFile( PSZ pszPath, PCHAR pszFile )
 		{
 			// -- Why 10, you ask?
 			i = 10;
-			c = 0;
 			
 			AMultiPlayer.SendSyncTo( iMPS_SYNC_GO, idNext );
 			
@@ -4743,7 +4726,6 @@ void MultiPlayer::WriteCfg( void )
 {
 
 	CHAR szFile[MAX_PATH] = "";
-	short temp;
 	sprintf( szFile, "%s", pszCfg );
 
 	std::ofstream ofile( szFile, std::ios::out );
@@ -5057,31 +5039,6 @@ BOOL StartSIGS( void )
 
 		fStartGame = ( 0 == AMultiPlayer.GetPlayerId() );
 
-		// --
-		// -- Deal with the game info
-		// --
-
-		//---- Master ??
-
-		if ( fStartGame )
-		{
-			PNETGAMEINFO pngiInfo = NULL;
-
-			// --
-			// -- Setup the game description
-			// --
-
-			pngiInfo = AMultiPlayer.GetGameInfo();
-
-		}
-		else
-		{
-			 // --
-			 // -- Receive the game information
-			 // --
-
-		}
-
 		 // --
 		 // -- Get the other player's name for the chat box
 		 // --
@@ -5213,7 +5170,6 @@ void EndWait( USHORT usTypeOfWait )
 static void SaveString( long lContext, char* theString, 
  						 long theIndex, PNETGAMEINFO pnm )
 {
-	int len;
 	LPGUID lpGuid = (LPGUID) pnm;
 
 	if ( *lpGuid == DPSPGUID_IPX )
@@ -5381,38 +5337,6 @@ LONG HowManyPlayers( void )
 	return AMultiPlayer.HowManyPlayers();
 }
 
-void MDisplayInfo (CSTRPTR szFrame, int iformat, ...)
-{
-	char		texbuffer[200];
-	va_list argp;
-	SHORT		iBkgnd, w, h, x, y;
-	char		*format;
-	
-	if ((iBkgnd = GetResourceStd(szFrame, FALSE)) == fERROR)
-		return;
-
-	format = STRMGR_GetStr(iformat);
-
-	w = ((BITMPTR)BLKPTR(iBkgnd))->w;
-	h = ((BITMPTR)BLKPTR(iBkgnd))->h;
-	x = (SHORT)((((640-l_map)/2)+l_map) - w - 20);
-
-	SysHideCursor();
-
-	DrawBitmap(x, (SHORT)(240-(h/2)), iBkgnd, 0, 0, w, h);
-
-	va_start(argp, iformat);
-	vsprintf(texbuffer,format,argp);
-
-	print_textf(x+7, 235, DKBROWN, texbuffer);
-
-	SysShowCursor();
-
-	SetPurge(iBkgnd);
-	va_end(argp);
-
-}
-
 // ------------------------------------------------------------------
 //
 //   FileProgress
@@ -5529,8 +5453,6 @@ BOOL MultiPlayer::IsMultiPlayerandRealm( int realm )
 BOOL DoMultiRealmStuff(SHORT HomeRealm, int iWhichRegent )
 {
 	int ok = FALSE;
-	int timeNow;
-	DWORD dMyId;
 
 	// player has selected a realm
 	// put the players id into the selected array

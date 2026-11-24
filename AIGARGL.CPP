@@ -43,7 +43,6 @@
    ------------------------------------------------------------------------ */
 static LONG FlyHeight = 100;
 static LONG FlyDownDistance = 400;
-static LONG WingFlappingFrame = 2;
 /* ========================================================================
    Function	- Gargoyles
    Description - AI function to bounce off the monster box looking for 
@@ -240,7 +239,7 @@ void CAvatar::Gargoyles (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 			
 			if (pAvatar->hPlayerStats != fERROR)
 			{
-				const PTR_PLAYER_STATS pPlayerStats = (const PTR_PLAYER_STATS)BLKPTR(pAvatar->hPlayerStats);
+				BLKPTR(pAvatar->hPlayerStats);
 
 				if (pAvatar->hEnemy == fERROR)
 				{

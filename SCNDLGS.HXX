@@ -45,6 +45,9 @@ class DIALOG_TRIPLINES
 public:
 	inline void mfInitVals();
 	inline LONG	const mfReadData(FILE *);
+#if defined(SCENE_EDITOR)
+	inline void mfWriteData(FILE *);
+#endif
 	inline LONG const mfGetStringId() const;
 	inline BOOL const mfMatchTripLineNumber(LONG const /* TripLine */ ) const;
 	inline BOOL const mfTripLineSeen() const;
@@ -80,6 +83,14 @@ inline LONG const DIALOG_TRIPLINES::mfGetStringId() const
 {
 	return fStringNumber;
 }
+
+#if defined(SCENE_EDITOR)
+// Write the dialog data back to the scene file (inverse of mfReadData).
+inline void DIALOG_TRIPLINES::mfWriteData(FILE *fp)
+{
+	fprintf(fp, "%ld %ld\n", fTripLineNumber, fStringNumber - STR_DIALOG_BASE_NUMBER);
+}
+#endif
 
 // Read the dialog data in from the scene files.
 inline LONG const DIALOG_TRIPLINES::mfReadData(FILE *fp)

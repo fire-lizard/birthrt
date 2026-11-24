@@ -34,6 +34,7 @@
 /* ------------------------------------------------------------------------
    Global Variables
    ------------------------------------------------------------------------ */
+#if defined(_CHARED)			// Character Editor only
 GAME_STRING const RACE_INFO::fpRaceInfoTable[] = {
 		STR_RACE_DWARF,
 		STR_RACE_ELF,
@@ -47,3 +48,4 @@ GAME_STRING const RACE_INFO::fpRaceInfoTable[] = {
 		STR_RACE_GOBLIN,
 		STR_RACE_GNOLLS
 };
+#endif

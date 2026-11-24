@@ -20,21 +20,10 @@ int  debugf(const char* format, ...);
 extern "C" {
 #endif
 
-// Prototypes.
-#if defined(_WINDOWS)
-	void InitDebug ( void );
-	void SS_Assert(char *, int);
-	void SS_printf (const char *format, ... );
-#endif
+#if defined(_EDIT)
 void	ErrorMessage (const char *format, ...);
-
-// Various macros.
-#if !defined(_WINDOWS) // not Windows
-
-	#define InitDebug()
-	#define debugf	printf
-
-#endif // _WINDOWS
+#define ASSERT assert
+#endif
 
 // Use the following definitions for things that haven't been defined above
 // (in which case the macros drop out).

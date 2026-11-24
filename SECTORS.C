@@ -8,13 +8,9 @@
    Contains the following internal functions:
 
    Contains the following general functions:
-   raise_sector_floor    -raises the floor of a Sector
-   raise_sector_ceiling  -raises the cieling of a Sector
    point_to_sector_info  - get floor, ceiling, special and tag info
    point_to_sector       -???
    point_to_floor_height -???
-   point_to_ceiling_height -???
-   point_to_sector_special - return the special value for sector at point
    find_ssector          -???
    point_to_ssector      -???
    tag_to_sector         -finds a sector with the specified tag
@@ -26,6 +22,9 @@
    ------------------------------------------------------------------------ */
 #if !defined(_RELEASE)
 #include <stdio.h>
+#endif
+#if defined (_EDIT)
+#include <windows.h>
 #endif
 #include "SYSTEM.H"
 #include "ENGINE.H"
@@ -69,28 +68,6 @@ extern LONG first_seg;
 extern BOOL	gfWadLoaded;
 								
 /* =======================================================================
-   Function    - raise_sector_floor
-   Description - raises the floor of a sector
-   Returns     - the new floor height
-   ======================================================================== */
-LONG raise_sector_floor(LONG s,LONG inc)
-{
-	sectors[s].fh+=(SHORT)inc;
-	return(sectors[s].fh);
-}
-
-/* =======================================================================
-   Function    - raise_sector_ceiling
-   Description - raises the ceiling of a sector
-   Returns     - the new ceiling height
-   ======================================================================== */
-LONG raise_sector_ceiling(LONG s,LONG inc)
-{
-	sectors[s].ch+=(SHORT)inc;
-	return(sectors[s].ch);
-}
-
-/* =======================================================================
    Function    - point_to_sector
    Description - ???
    Returns     - a ULONG
@@ -100,18 +77,6 @@ ULONG point_to_sector(LONG x,LONG y)
 	LONG	sector, floor, ceiling, special, tag;
 	point_to_sector_info( x, y, &sector, &floor, &ceiling, &special, &tag);
 	return sector;
-}
-
-/* =======================================================================
-   Function    - point_to_sector_special
-   Description - return the special from the sector at point
-   Returns     - LONG
-   ======================================================================== */
-LONG point_to_sector_special(LONG x, LONG y)
-{
-	LONG	sector, floor, ceiling, special, tag;
-	point_to_sector_info( x, y, &sector, &floor, &ceiling, &special, &tag);
-	return special;
 }
 
 /* =======================================================================
@@ -234,18 +199,6 @@ LONG point_to_floor_height(LONG x,LONG y)
 	LONG	sector, floor, ceiling, special, tag;
 	point_to_sector_info( x, y, &sector, &floor, &ceiling, &special, &tag);
 	return floor;
-}
-
-/* =======================================================================
-   Function    - point_to_ceiling_height
-   Description - ???
-   Returns     - a LONG
-   ======================================================================== */
-LONG point_to_ceiling_height(LONG x,LONG y)
-{
-	LONG	sector, floor, ceiling, special, tag;
-	point_to_sector_info( x, y, &sector, &floor, &ceiling, &special, &tag);
-	return ceiling;
 }
 
 /* =======================================================================

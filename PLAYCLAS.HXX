@@ -85,13 +85,7 @@ public:
 		GAME_STRING  ClassName;
 		CLASS_HIT_DICE_TABLE  const *HitDiceTable;
 	};
-	
-	// As players gain experiece points their class limits need
-	// to be checked to see that they stay within the race bounds.
-	static void mfGetPlayerClassLimits( PLAYER_CLASS_INFO::TYPE /* PlayerClass */, 
-										RACE_INFO::TYPE /* PlayerRace */, 
-										SBYTE * /* psbHighValue */);
-	
+
 	static char const * const mfGetName(const TYPE);
 	static DICE const * mfGetDice(const TYPE, const SBYTE /* sbLevel */ );
 	static const SBYTE mfGetThac0(const TYPE, const SBYTE /* sbLevel */ );
@@ -143,10 +137,6 @@ typedef enum {
 /* ------------------------------------------------------------------------
    Prototypes
    ------------------------------------------------------------------------ */
-CLASS_TEST_TYPE TestPlayerClassLimits( PLAYER_CLASS_INFO::TYPE,
-									   RACE_INFO::TYPE,
-									   PTR_ABILITY,
-									   SBYTE /* sbLevel */);
 			
 /* ------------------------------------------------------------------------
    Global Variables

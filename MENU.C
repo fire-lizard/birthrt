@@ -143,15 +143,6 @@ void ShowSubMenu(LONG unused, LONG index)
 }
 
 /* ========================================================================
-   Function    - QuitSystem
-   Description - Coverfn to be used by the menus.
-   Returns     -
-   ======================================================================== */
-void QuitSystem(LONG unused, LONG zero)
-{
-	quit_sys(zero);
-}
-/* ========================================================================
    Function    -
    Description -
    Returns     -
@@ -1086,15 +1077,6 @@ printf("MENU.C -	 SpinOut - cntSaveBkgnd: %d\n",cntSaveBkgnd);
 		ScreenCopy(0, x, y, w, h, SC_HIGH_RES);
 	}
 
-	#ifndef _WINDOWS
-	if (fIsFadedOut)
-	{
-		fIsFadedOut--;
-		if (fIsFadedOut==0)
-			FadeIn(100);
-	}
-	#endif
-
 End:
 	SysShowCursor();
 }
@@ -1151,26 +1133,6 @@ LONG GetButtonValue ( LONG MenuIndex, LONG ButtonId )
 		return fERROR;
 			
 	return Menus[MenuIndex].Buttons[i].Arg;
-}
-
-/* ========================================================================
-   Function    - GetButtonProc
-   Description - returns the function pointer of that button
-   Returns     - NULL if not found or if button has no proc
-   ======================================================================== */
-PFVLL GetButtonProc ( LONG MenuIndex, LONG ButtonId)
-{
-	LONG i;
-	
-	for (i = 0; i < Menus[MenuIndex].MenuButtonCount; i++)
-		if (Menus[MenuIndex].Buttons[i].Id == ButtonId)
-			break;
-
-	// check for error
-	if (i == Menus[MenuIndex].MenuButtonCount)
-		return NULL;
-		
-	return Menus[MenuIndex].Buttons[i].pfFunction;
 }
 
 /* ========================================================================
@@ -1397,29 +1359,6 @@ LONG SetButtonPosition ( LONG MenuIndex, LONG ButtonId, LONG X, LONG Y )
 }
 
 /* ========================================================================
-   Function    - SetButtonSize
-   Description - Change the w and h of a button
-   Returns     - error if button id not found
-   ======================================================================== */
-LONG SetButtonSize ( LONG MenuIndex, LONG ButtonId, LONG W, LONG H )
-{
-	LONG i;
-	
-	for (i = 0; i < Menus[MenuIndex].MenuButtonCount; i++)
-	{
-		if (Menus[MenuIndex].Buttons[i].Id == ButtonId)
-			break;
-	}
-	// check for error
-	if (i == Menus[MenuIndex].MenuButtonCount)
-		return fERROR;
-		
-	Menus[MenuIndex].Buttons[i].W = W;
-	Menus[MenuIndex].Buttons[i].H = H;
-	return fNOERR;
-}
-
-/* ========================================================================
    Function    - SetButtonArt
    Description - Change the button art ptr
    Returns     - error if button id not found
@@ -1512,44 +1451,6 @@ BOOL IsButtonHilighted ( LONG MenuIndex, LONG ButtonId)
 	return Menus[MenuIndex].Buttons[i].Flags &D_HILIGHTED;
 }
 
-/* ========================================================================
-   Function    - SetUpdate
-   Description -
-   Returns     -
-   ======================================================================== */
-LONG  SetUpdate( LONG MenuIndex, LONG ButtonId)
-{
-	LONG i;
-	for(i = 0; i< Menus[MenuIndex].MenuButtonCount; i++)
-	{
-		if(Menus[MenuIndex].Buttons[i].Id == ButtonId)
-			break;
-	}
-	if(i == Menus[MenuIndex].MenuButtonCount)
-		return fERROR;
-
-	Menus[MenuIndex].Buttons[i].Flags |= D_UPDATE;
-	return fNOERR;
-}
-/* ========================================================================
-   Function    - CleanUpdate
-   Description -
-   Returns     -
-   ======================================================================== */
-LONG CleanUpdate( LONG MenuIndex, LONG ButtonId)
-{
-	LONG i;
-	for(i = 0; i< Menus[MenuIndex].MenuButtonCount; i++)
-	{
-		if(Menus[MenuIndex].Buttons[i].Id == ButtonId)
-			break;
-	}
-	if(i == Menus[MenuIndex].MenuButtonCount)
-		return fERROR;
-
-	Menus[MenuIndex].Buttons[i].Flags &= ~D_UPDATE;
-	return fNOERR;
-}
 	
 /* ========================================================================
    Function    - GetButtonPosition
@@ -1795,27 +1696,6 @@ LONG GetButtonArt(LONG MenuIndex, LONG ButtonId, CSTRPTR *pArt)
 }
 
 /* ========================================================================
-   Function    - GetButtonArt
-   Description - return the button Arg
-   Returns     - error if button id not found
-   ======================================================================== */
-LONG GetButtonArg(LONG MenuIndex, LONG ButtonId)
-{
-	LONG i;
-	
-	for (i = 0; i < Menus[MenuIndex].MenuButtonCount; i++)
-	{
-		if (Menus[MenuIndex].Buttons[i].Id == ButtonId)
-			break;
-	}
-	// check for error
-	if (i == Menus[MenuIndex].MenuButtonCount)
-		return fERROR;
-		
-	return Menus[MenuIndex].Buttons[i].Arg;
-}
-
-/* ========================================================================
    Function    - IsMenuActive
    Description - is a given menu currently in the Active list
    Returns     - BOOL
@@ -1832,61 +1712,6 @@ BOOL IsMenuActive(LONG MenuId)
 	}
 	
 	return FALSE;
-}
-
-/* ========================================================================
-   Function    - DrawMenuSaveBitmap
-   Description - draw the current save background at this menu coord
-   Returns     - 
-   ======================================================================== */
-void DrawMenuSaveBitmap(LONG MenuId)
-{
-	SHORT amenu;
-	SHORT i;
-	
-	// NOTE: this is a really bad way to zoom and backgrounds.
-	// We will surely be dumping this in BR2
-	
-	// find the active menu
-	for (i=0;i<MAX_ACTIVE_MENUS;i++)
-	{
-		amenu = ActiveMenus[MenuId];
-	
-		if (amenu == MenuId)
-		{
-			SHORT	X = Menus[MenuId].Buttons[0].X-1;
-			SHORT	Y = Menus[MenuId].Buttons[0].Y-1;
-			SHORT	W = Menus[MenuId].Buttons[0].W+3;
-			SHORT	H = Menus[MenuId].Buttons[0].H+2;
-			DrawBitmap(X,Y,hDest[amenu],0,0,W,H);
-		}
-	}
-}
-
-/* ========================================================================
-   Function    - DecrementVal
-   Description - Generic routine for add_regions
-   Returns     - void
-   ======================================================================== */
-#pragma unreferenced off
-void DecrementVal( REGARG unused, REGARG pVal )
-#pragma unreferenced on
-{
-	LONG *pLocal = (LONG*)pVal;
-	pLocal[0]--;
-}
-
-/* ========================================================================
-   Function    - IncrementVal
-   Description - Generic routine for add_regions
-   Returns     - void
-   ======================================================================== */
-#pragma unreferenced off
-void IncrementVal( REGARG unused, REGARG pVal )
-#pragma unreferenced on
-{
-	LONG *pLocal = (LONG*)pVal;
-	pLocal[0]++;
 }
 
 /* ========================================================================
@@ -1917,53 +1742,3 @@ void QuitSys( LONG unused, LONG unused2 )
 
 void ScaleBitmapX (SHORT x, SHORT y, SHORT iBitm, SHORT bx, SHORT by, SHORT w, SHORT h, SHORT scale);
 
-//this function is still very much a Work in Progress.... it's ugly as butt.
-void InvToStats(LONG a,LONG b)
-{
-	LONG i=256;
- 	SHORT hInvBitm=fERROR;
- 	SHORT hStaBitm=fERROR;
-	FILE* temp=fopen("temp.tmp","rt");
-	LONG max;
-	double multiplier;
-	a=b;
-
-	fscanf(temp,"%i %lf",&max,&multiplier);
-	fclose(temp);
-
-	//we'll turn these back on later.
-	Menus[D_AVATAR_INVENTORY].Buttons[0].Flags &=~D_ZOOM;
-	Menus[D_AVATAR_ATTRIBUTES].Buttons[0].Flags &=~D_ZOOM;
-	
-	HideMenu(D_AVATAR_INVENTORY);
-	hInvBitm = GetResourceStd (Menus[D_AVATAR_INVENTORY].Buttons[0].pArt, TRUE);
-	hStaBitm = GetResourceStd (Menus[D_AVATAR_ATTRIBUTES].Buttons[0].pArt, TRUE);
-	if (hInvBitm!=fERROR && hStaBitm!=fERROR)
-	{
-		while (i<max)
-		{
-			clear_screen();
-
-			ScaleBitmapX(0,0,hInvBitm,0,0,1000,1000,i);
-			print_textf(320,0,WHITE,"^F11%i (%i,%i)",i,cursor_x,cursor_y);
-			update_screen();
-			i*=multiplier;
-		}
-
-		while (i>256)
-		{
-			clear_screen();
-			
-			ScaleBitmapX(0,0,hStaBitm,0,0,1000,1000,i);
-			print_textf(320,0,WHITE,"^F11%i (%i,%i)",i,cursor_x,cursor_y);
-			update_screen();
-			i/=multiplier;
-		}
-			
-	}
-	ShowMenu(D_AVATAR_ATTRIBUTES);
-
-	Menus[D_AVATAR_INVENTORY].Buttons[0].Flags |=D_ZOOM;
-	Menus[D_AVATAR_ATTRIBUTES].Buttons[0].Flags |=D_ZOOM;
-
-}

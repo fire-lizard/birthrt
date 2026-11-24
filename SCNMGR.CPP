@@ -108,16 +108,6 @@ LONG const GetNewId()
 }
 
 /* ========================================================================
-   Function    - mfToggleScenePause
-   Description - Change the game running state.
-   Returns     - void
-   ======================================================================== */
-void SCENE_MGR::mfToggleScenePause(LONG, LONG)
-{
-	mfSetScenePause(((fScenePaused == TRUE) ? FALSE : TRUE));
-}
-
-/* ========================================================================
    Function    - mfToggleFollowCamera
    Description - Change Whether the camera is behind the player or is the player.
    Returns     - void
@@ -134,6 +124,7 @@ void SCENE_MGR::mfToggleFollowCamera(LONG, LONG)
 	}
 }
 
+#if defined(_EDIT) || defined(SCENE_EDITOR)
 /* ========================================================================
    Function    - mfSetScenePause
    Description - Set the game state
@@ -189,6 +180,7 @@ void SCENE_MGR::mfSetScenePause(BOOL const bState)
 		
 	}
 }
+#endif
 /* ========================================================================
    Function    - mfLoadScene
    Description - Load the current scene.
@@ -562,6 +554,9 @@ Error:
 void SCENE_MGR::mfReleaseSceneToMap(LONG,LONG)
 {
 
+#if defined (_EDIT)
+	return;										// [d8-09-96 JPC] can't get to map
+#endif											// from editor.
 	ResetEnvironmentalSoundState();
 	SuspendMusic();
 	if (hCurrentScene != fERROR)
