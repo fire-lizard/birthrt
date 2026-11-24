@@ -978,7 +978,7 @@ static void OnCommand (HWND hwnd, int id, HWND hwndCtl, UINT codeNotify)
 }
 
 // ---------------------------------------------------------------------------
-BOOL CALLBACK SelectInventoryWndProc (
+INT_PTR CALLBACK SelectInventoryWndProc (
    HWND     hwnd,                      // handle to dialog box
    UINT     uMsg,                      // message
    WPARAM   wParam,                    // first message parameter

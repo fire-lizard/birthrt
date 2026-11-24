@@ -244,32 +244,49 @@ if (MSVC)
 	target_compile_definitions (strmake PRIVATE _CRT_SECURE_NO_WARNINGS)
 endif ()
 
-# Birthright I Character Editor (1997, Windows only) - source kept for a
-# possible future tool; no target builds it. It was a separate program built
-# from the game sources with _CHARED defined: MAINCHED.CPP and
+# Birthright I Character Editor (1997, Windows only). A separate program
+# built from the game sources with _CHARED defined: MAINCHED.CPP and
 # WINSYS/MACHINEX.C stand in for MAIN.CPP and WINSYS/MACHINE.C, and
 # CHARED.CPP, CHAREDIN.CPP, AVA.CPP and GETFILE.CPP are the editor itself.
 # The game modules it needs (ability and bloodline rolls, name tables) keep
-# that code under #if defined(_CHARED). Its dialog resources (Chared.rc) were
-# never in this repository - RESOURCE.H and CHAREDSY.H hold the control ids -
-# so the dialogs would have to be recreated before it can run.
+# that code under #if defined(_CHARED). CHARED.RC comes from the BirP project
+# (github.com/birthrightnet/BirP) with its version block, cursors and res\
+# icons dropped. Opt-in; output is CHARED.EXE.
+option (BIRTHRT_CHARACTER_EDITOR "Build the 1997 Character Editor (CHARED.EXE, Windows only)" OFF)
+if (BIRTHRT_CHARACTER_EDITOR)
+	if (NOT WIN32)
+		message (FATAL_ERROR "BIRTHRT_CHARACTER_EDITOR needs Windows")
+	endif ()
+	set (CHARED_SRC ${BIRTHRT_CORE} ${BIRTHRT_WIN32})
+	list (REMOVE_ITEM CHARED_SRC "MAIN.CPP" "WINSYS/MACHINE.C" "BIRTHRT.RC")
+	add_executable (Chared WIN32 ${CHARED_SRC}
+		"MAINCHED.CPP" "WINSYS/MACHINEX.C" "CHARED.CPP" "CHARED.HXX"
+		"CHAREDIN.CPP" "CHAREDIN.HXX" "AVA.CPP" "AVA.HXX"
+		"GETFILE.CPP" "GETFILE.HXX" "CHAREDSY.H" "CHARED.RC")
+	set_target_properties (Chared PROPERTIES OUTPUT_NAME "CHARED")
+	target_link_libraries (Chared "C:/Program Files (x86)/Microsoft DirectX 9.0 SDK (April 2005)/Lib/x64/ddraw.lib"
+		"C:/Program Files (x86)/Windows Kits/10/Lib/10.0.26100.0/um/x64/winmm.lib")
+	target_link_options (Chared PRIVATE "/LARGEADDRESSAWARE:NO")
+	target_compile_definitions (Chared PRIVATE AUDIO_LIB _CHARED)
+	target_compile_options (Chared PRIVATE "$<$<CONFIG:Release>:/Zi>")
+	target_link_options (Chared PRIVATE "$<$<CONFIG:Release>:/DEBUG>")
+endif ()
 
 # Birthright I level and scene editors (1996-97, Windows only). Both are the
 # game itself built with extra defines and sources, so these options turn the
 # Birthrt target into an editor - give them their own build directory:
 #   BIRTHRT_LEVEL_EDITOR  _EDIT ("WAD Builders Edition"): adds EDIT.C (walls,
-#                         textures, lighting) and SAVEPWAD.C (saves the level
-#                         as a PWAD).
+#                         textures, lighting), SAVEPWAD.C (saves the level
+#                         as a PWAD) and their dialogs, EDIT.RC.
 #   BIRTHRT_WADBUILDERS   _WADBUILDERS: a few designer conveniences (walk
 #                         through walls, quit without confirming).
 #   BIRTHRT_SCENE_EDITOR  SCENE_EDITOR: adds DLG_EDIT.CPP (place characters,
-#                         edit their AI); saves the .scn file via
-#                         SCENE::mfWriteSceneFile.
+#                         edit their AI) and its dialogs, DLG_EDIT.RC; saves
+#                         the .scn file via SCENE::mfWriteSceneFile.
 # All off by default; the hooks in the game sources sit under those #if's, so
 # the normal game never compiles them. The options combine and every
-# combination compiles and links. Their dialog resources were never in this
-# repository, so the dialogs would have to be recreated before either editor
-# can run.
+# combination compiles and links. EDIT.RC and DLG_EDIT.RC come from the BirP
+# project's copy of the game's 1997 resource script (NOVA95.RC).
 option (BIRTHRT_LEVEL_EDITOR "Build Birthrt as the level editor (Windows only)" OFF)
 option (BIRTHRT_WADBUILDERS "Add the WAD Builders designer conveniences (Windows only)" OFF)
 option (BIRTHRT_SCENE_EDITOR "Build Birthrt as the scene editor (Windows only)" OFF)
@@ -277,13 +294,13 @@ if (NOT WIN32 AND (BIRTHRT_LEVEL_EDITOR OR BIRTHRT_WADBUILDERS OR BIRTHRT_SCENE_
 	message (FATAL_ERROR "The Birthright editors are Win32 dialog code - Windows only.")
 endif ()
 if (BIRTHRT_LEVEL_EDITOR)
-	target_sources (Birthrt PRIVATE "EDIT.C" "EDIT.H" "SAVEPWAD.C" "SAVEPWAD.H")
+	target_sources (Birthrt PRIVATE "EDIT.C" "EDIT.H" "SAVEPWAD.C" "SAVEPWAD.H" "EDIT.RC")
 	target_compile_definitions (Birthrt PRIVATE _EDIT)
 endif ()
 if (BIRTHRT_WADBUILDERS)
 	target_compile_definitions (Birthrt PRIVATE _WADBUILDERS)
 endif ()
 if (BIRTHRT_SCENE_EDITOR)
-	target_sources (Birthrt PRIVATE "DLG_EDIT.CPP" "DLG_EDIT.H")
+	target_sources (Birthrt PRIVATE "DLG_EDIT.CPP" "DLG_EDIT.H" "DLG_EDIT.RC")
 	target_compile_definitions (Birthrt PRIVATE SCENE_EDITOR)
 endif ()

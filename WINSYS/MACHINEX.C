@@ -61,7 +61,6 @@ extern char chCursorName[32];
 
 static void ParseCmdLine (LPSTR szCmdLine);
 
-void CheckCD(void);
 
 LONG WINAPI MainWndProc( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam );
 void AppExit(void);
@@ -70,8 +69,6 @@ void WaitForMessageQueueToEmpty( void );
 // void load_new_wad(char *n, LONG);
 void OpenAFile(void);
 
-int InitRedBook(void);
-int ShutdownRedBook(void);
 
 
 /* ------------------------------------------------------------------------
@@ -106,7 +103,7 @@ HWND	hwndChat = NULL;
 WORD wNetWork;
 #endif
 
-HWND	hwndApp;
+extern HWND	hwndApp;
 HDC		gdcScreen;
 HCURSOR hcStd;
 HINSTANCE hInstApp;
@@ -293,7 +290,6 @@ BOOL AppInit( HINSTANCE hInst, HINSTANCE hPrev, LPSTR szCmdLine, int sw )
 	// Initialize any memory, time, etc statistics
 	// These will be calced and printed/dumped in
 	// close_statistics <see statistics.c>
-	init_statistics();
 
 	// Install a kbrd handler.. check_regions will call key_status
 	// on PC this uses key_stat array. On PC keyint will fill in array
@@ -392,8 +388,6 @@ BOOL AppInit( HINSTANCE hInst, HINSTANCE hPrev, LPSTR szCmdLine, int sw )
 // 	#endif
 
 
-	// start up the redbook player
-	InitRedBook();								// finds the CD
 	//InitializeSoundSystem();
 
 /*
@@ -405,17 +399,13 @@ BOOL AppInit( HINSTANCE hInst, HINSTANCE hPrev, LPSTR szCmdLine, int sw )
 	//GEH SetPriorityClass(GetCurrentProcess(), HIGH_PRIORITY_CLASS);
 	
 
-#if defined (_RELEASE)
-	// make sure the cd is in	
-	CheckCD();
-	if(fQuitting == TRUE)
-		return (FALSE);
-#endif
 
 
 	GameMain();
 
 	hcStd = LoadCursor( hInstApp, chCursorName);
+	if ( hcStd == NULL )
+		hcStd = LoadCursor( NULL, IDC_ARROW );
 	SetCursor(hcStd);
 
 
@@ -537,6 +527,8 @@ void WinCursorSet()
 	//---- Have to do this for the target cursor in adventures
 
 	hcStd = LoadCursor( hInstApp, chCursorName);
+	if ( hcStd == NULL )
+		hcStd = LoadCursor( NULL, IDC_ARROW );
 
 	if ( hcStd != GetCursor() )
 	{

@@ -86,13 +86,13 @@ static BOOL IsWarrior (int iClass);
 static int CheckAccess (char * szPathname);
 static BOOL UpdateAvaData(HWND hwnd);
 
-BOOL CALLBACK CharedWndProc (
+INT_PTR CALLBACK CharedWndProc (
    HWND     hwnd,                      // handle to dialog box
    UINT     uMsg,                      // message
    WPARAM   wParam,                    // first message parameter
    LPARAM   lParam);                   // second message parameter
 
-BOOL CALLBACK SelectRegentWndProc (
+INT_PTR CALLBACK SelectRegentWndProc (
    HWND     hwnd,                      // handle to dialog box
    UINT     uMsg,                      // message
    WPARAM   wParam,                    // first message parameter
@@ -1018,7 +1018,10 @@ static BOOL UpdateAvaData(HWND hwnd)
 	// PLAYER_CLASS_LIST::mfReadTextData.
 	gAvaData.mfSetClass2Experience (0);
 
-	gAvaData.mfSetAttacksPerRound (ComboBox_GetCurSel (GetDlgItem (hwnd, IDC_ATTACKS_PER_ROUND)) + 1);
+	// CHARED.RC (BirP's copy) has no attacks-per-round box; without this
+	// check every save would overwrite the loaded value with 1.
+	if (GetDlgItem (hwnd, IDC_ATTACKS_PER_ROUND) != NULL)
+		gAvaData.mfSetAttacksPerRound (ComboBox_GetCurSel (GetDlgItem (hwnd, IDC_ATTACKS_PER_ROUND)) + 1);
 
 	gAvaData.mfSetBloodlineDerivation (ComboBox_GetCurSel (GetDlgItem (hwnd, IDC_BLOODLINE)));
 
@@ -1511,7 +1514,7 @@ void CharedDoEditorDialog ()
 	}
 }
 
-BOOL CALLBACK CharedWndProc (
+INT_PTR CALLBACK CharedWndProc (
    HWND     hwnd,                      // handle to dialog box
    UINT     uMsg,                      // message
    WPARAM   wParam,                    // first message parameter
@@ -1678,7 +1681,7 @@ static void SelectRegentOnCommand (HWND hwnd, int id, HWND hwndCtl, UINT codeNot
 	}
 }
 
-BOOL CALLBACK SelectRegentWndProc (
+INT_PTR CALLBACK SelectRegentWndProc (
    HWND     hwnd,                      // handle to dialog box
    UINT     uMsg,                      // message
    WPARAM   wParam,                    // first message parameter

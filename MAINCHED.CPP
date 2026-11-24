@@ -137,7 +137,6 @@ extern PTR GDIscreen;
 extern LONG tot_thing_spans;
 extern BOOL fDrawing;
 extern LONG	cbWad_Uses;
-extern BOOL fQuitting;
 
 extern BOOL JustLoadWad;
 extern BOOL fAutoRestoreCursor;
@@ -165,6 +164,7 @@ BOOL fGraphInitialized = FALSE;
 BOOL fIsFadedOut = FALSE;
 }
 
+extern BOOL fQuitting;					// defined in WINSYS\MACHINEX.C (C++ linkage)
 extern SHORT fFadedOut;
 extern LONG cheated;
 
@@ -223,3 +223,45 @@ void CPPQuitSys(LONG, LONG)
 /* ========================================================================
 
 	======================================================================== */
+
+/* ========================================================================
+	The editor shares game modules that call into the game's main loop and
+	option code. It never runs a game frame, so these are empty.
+	======================================================================== */
+BOOL fStartSIGS = FALSE;
+
+void MenuLoop()
+{
+}
+
+void DirectDrawPreFrame()
+{
+}
+
+void AddGameKeys()
+{
+}
+
+void AddGlobalKeys()
+{
+}
+
+void ToggleDirectDraw(LONG, LONG)
+{
+}
+
+void GoToBattleScene(LONG, LONG)
+{
+}
+
+void PlayGorgon(LONG, LONG)
+{
+}
+
+void PlayFinale(LONG, LONG)
+{
+}
+
+extern "C" void SetGameResolution(LONG, LONG)
+{
+}

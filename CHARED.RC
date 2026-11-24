@@ -1,0 +1,229 @@
+// Birthright Character Editor dialogs (DIALOG_CHARED, DIALOG_SELCHAR,
+// DIALOG_CHARINV), from the BirP project's source/CHARED.RC
+// (https://github.com/birthrightnet/BirP). Dropped from that copy: its version
+// block (it needs BirP's pversion.hxx) and its cursors and res\ icons, which
+// neither repository has. winsys\afxres.h became <winres.h>.
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include <winres.h>
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+DIALOG_CHARED DIALOG FIXED IMPURE  0, 0, 400, 278
+STYLE DS_MODALFRAME | DS_3DLOOK | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "Birthright Character Editor"
+FONT 8, "Helv"
+BEGIN
+    EDITTEXT        IDE_CHARNAME,45,20,96,13,ES_AUTOHSCROLL | ES_WANTRETURN
+    COMBOBOX        IDC_TITLE,45,37,96,50,CBS_DROPDOWNLIST | CBS_HASSTRINGS | 
+                    WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_RACE,45,53,96,50,CBS_DROPDOWNLIST | CBS_HASSTRINGS | 
+                    WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_ALIGNMENT,45,69,96,50,CBS_DROPDOWNLIST | 
+                    CBS_HASSTRINGS | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_ARMOR,45,85,96,50,CBS_DROPDOWNLIST | CBS_HASSTRINGS | 
+                    WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_WEAPON,45,101,96,50,CBS_DROPDOWNLIST | 
+                    CBS_HASSTRINGS | WS_VSCROLL | WS_TABSTOP
+    EDITTEXT        IDE_HIT_POINTS,45,117,37,12,ES_AUTOHSCROLL | 
+                    ES_WANTRETURN
+    PUSHBUTTON      "Roll",IDB_ROLL_HITPOINTS,89,117,33,12
+    PUSHBUTTON      "<",IDB_PORT_PREV,175,83,21,14
+    PUSHBUTTON      ">",IDB_PORT_NEXT,198,83,21,14
+    EDITTEXT        IDE_STRENGTH,65,163,24,13,ES_AUTOHSCROLL | ES_WANTRETURN
+    EDITTEXT        IDE_INTELLIGENCE,65,177,24,13,ES_AUTOHSCROLL | 
+                    ES_WANTRETURN
+    EDITTEXT        IDE_DEXTERITY,65,191,24,13,ES_AUTOHSCROLL | 
+                    ES_WANTRETURN
+    EDITTEXT        IDE_WISDOM,65,205,24,13,ES_AUTOHSCROLL | ES_WANTRETURN
+    EDITTEXT        IDE_CONSTITUTION,65,219,24,13,ES_AUTOHSCROLL | 
+                    ES_WANTRETURN
+    EDITTEXT        IDE_CHARISMA,65,233,24,13,ES_AUTOHSCROLL | ES_WANTRETURN
+    PUSHBUTTON      "Roll",IDB_ROLL_STATS,93,187,33,26
+    COMBOBOX        IDC_CLASS1,188,164,72,50,CBS_DROPDOWNLIST | 
+                    CBS_HASSTRINGS | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_LEVEL1,188,182,33,80,CBS_DROPDOWNLIST | 
+                    CBS_HASSTRINGS | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "Roll",IDB_ROLL_LEVEL1,227,182,33,12
+    COMBOBOX        IDC_CLASS2,310,164,72,50,CBS_DROPDOWNLIST | 
+                    CBS_HASSTRINGS | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_LEVEL2,310,182,32,80,CBS_DROPDOWNLIST | 
+                    CBS_HASSTRINGS | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "Roll",IDB_ROLL_LEVEL2,348,182,33,12
+    COMBOBOX        IDC_BLOODLINE,192,219,63,50,CBS_DROPDOWNLIST | 
+                    CBS_HASSTRINGS | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_BLOOD_GRADE,192,238,63,50,CBS_DROPDOWN | WS_TABSTOP
+    EDITTEXT        IDE_BLOOD_STRENGTH,300,238,32,12,ES_AUTOHSCROLL | 
+                    ES_WANTRETURN
+    PUSHBUTTON      "Roll",IDB_ROLL_BLOODLINE,350,222,33,26
+    PUSHBUTTON      "Set Inventory >>",IDB_INVENTORY,250,18,139,14
+    PUSHBUTTON      "Save this character",IDB_SAVE,250,37,139,14
+    PUSHBUTTON      "Load a new character",IDB_LOAD,250,56,139,14
+    PUSHBUTTON      "Restore Defaults",IDB_RESTORE,250,75,139,14
+    PUSHBUTTON      "Quit",IDOK,250,94,139,14
+    LTEXT           "Realm:",IDS_STATICTEXT,9,4,25,8,NOT WS_GROUP
+    LTEXT           "Text",IDS_REALM,47,4,93,10,NOT WS_GROUP
+    LTEXT           "Name:",IDS_STATICTEXT,9,20,25,8,NOT WS_GROUP
+    LTEXT           "Title:",IDS_TITLE,9,36,20,8,NOT WS_GROUP
+    LTEXT           "Race:",IDS_RACE,9,52,23,8,NOT WS_GROUP
+    LTEXT           "Alignment:",IDS_ALIGNMENT,9,68,32,8,NOT WS_GROUP
+    LTEXT           "Armor:",IDS_ARMOR,9,85,24,8,NOT WS_GROUP
+    LTEXT           "Weapon:",IDS_WEAPON,9,102,31,8,NOT WS_GROUP
+    CONTROL         "",IDP_APPEARANCE,"Static",SS_BLACKFRAME | SS_SUNKEN,175,
+                    18,44,63
+    GROUPBOX        "Attributes",IDS_STATICTEXT,11,150,123,107,BS_LEFT
+    LTEXT           "Strength:",IDS_STRENGTH,17,163,31,10,NOT WS_GROUP
+    LTEXT           "Intelligence:",IDS_INTELLIGENCE,17,177,39,8,NOT 
+                    WS_GROUP
+    LTEXT           "Dexterity:",IDS_DEXTERITY,17,191,31,8,NOT WS_GROUP
+    LTEXT           "Wisdom:",IDS_WISDOM,17,205,30,8,NOT WS_GROUP
+    LTEXT           "Constitution:",IDS_CONSTITUTION,17,219,39,8,NOT 
+                    WS_GROUP
+    LTEXT           "Charisma:",IDS_CHARISMA,17,233,33,8,NOT WS_GROUP
+    GROUPBOX        "Class(es)",IDS_STATICTEXT,142,150,255,50,BS_LEFT
+    LTEXT           "Class 1:",IDS_CLASS1,149,164,27,8,NOT WS_GROUP
+    LTEXT           "Level:",IDS_LEVEL1,150,182,20,8,NOT WS_GROUP
+    LTEXT           "Class 2:",IDS_CLASS2,269,164,27,8,NOT WS_GROUP
+    LTEXT           "Level:",IDS_LEVEL2,270,182,20,8,NOT WS_GROUP
+    GROUPBOX        "Bloodline",IDS_STATICTEXT,142,207,255,50,BS_LEFT
+    LTEXT           "Derivation",IDS_BLOODLINE,149,223,34,8,NOT WS_GROUP
+    LTEXT           "Strength:",IDS_BLOOD_STRENGTH,262,238,29,8,NOT WS_GROUP
+    LTEXT           "Grade",IDS_BLOOD_GRADE,149,240,32,8,NOT WS_GROUP
+    LTEXT           "Hit Points:",IDS_HIT_POINTS,9,119,34,8,NOT WS_GROUP
+    DEFPUSHBUTTON   "Button1",IDC_BUTTON1,291,129,35,13,NOT WS_VISIBLE | 
+                    WS_DISABLED | NOT WS_TABSTOP
+END
+
+DIALOG_SELCHAR DIALOG FIXED IMPURE  23, 26, 251, 226
+STYLE DS_MODALFRAME | DS_3DLOOK | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "Birthright Character Editor Select Regent"
+FONT 8, "Helv"
+BEGIN
+    LTEXT           "Select a Character:",IDS_SELECT_CHARACTER,14,12,69,8,
+                    NOT WS_GROUP
+    LISTBOX         IDL_SELECT_CHARACTER,14,24,176,188,LBS_HASSTRINGS | 
+                    WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "OK",IDOK,201,24,39,14
+    PUSHBUTTON      "Cancel",IDCANCEL,201,45,40,14
+END
+
+DIALOG_CHARINV DIALOGEX 8, 0, 395, 251
+STYLE DS_MODALFRAME | DS_3DLOOK | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "Birthright Character Editor Select Inventory"
+FONT 8, "Helv", 0, 0, 0x1
+BEGIN
+    LTEXT           "Realm:",IDS_STATICTEXT,6,15,33,9,NOT WS_GROUP
+    LTEXT           "Character:",IDS_STATICTEXT,6,33,34,9,NOT WS_GROUP
+    LTEXT           "[Realm name]",IDS_INV_REALM,42,15,71,9,NOT WS_GROUP
+    LTEXT           "[Character Name]",IDS_INV_CHAR,42,33,97,9,NOT WS_GROUP
+    PUSHBUTTON      "Roll",IDB_INV_ROLL,145,24,40,29
+    PUSHBUTTON      "Accept selections and return to main dialog",IDOK,233,9,
+                    152,14
+    PUSHBUTTON      "Cancel selections and return to main dialog",IDCANCEL,
+                    233,30,152,14
+    LTEXT           "Select Magic Items:",IDS_STATICTEXT,6,59,77,8,NOT 
+                    WS_GROUP
+    LISTBOX         IDL_SELECT_MAGIC_ITEMS,6,73,110,50,LBS_SORT | 
+                    LBS_HASSTRINGS | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "SELECTED:",IDS_STATICTEXT,123,59,77,8,NOT WS_GROUP
+    LISTBOX         IDL_LIST_MAGIC_ITEMS,124,74,90,50,LBS_SORT | WS_VSCROLL | 
+                    WS_TABSTOP
+    LTEXT           "Select Blood Abilities:",IDS_STATICTEXT,235,60,71,8,NOT 
+                    WS_GROUP
+    LISTBOX         IDL_SELECT_BLOOD_ABILITIES,236,73,71,50,LBS_SORT | 
+                    LBS_HASSTRINGS | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "SELECTED:",IDS_STATICTEXT,314,60,71,8,NOT WS_GROUP
+    LISTBOX         IDL_LIST_BLOOD_ABILITIES,315,74,70,50,LBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+    GROUPBOX        "Bards and Wizards Only",IDS_STATICTEXT,7,132,381,95,
+                    BS_LEFT
+    LTEXT           "Select Spells:",IDS_SELECT_SPELLS_1,19,146,69,11,NOT 
+                    WS_GROUP
+    LISTBOX         IDL_SELECT_SPELLS,18,162,91,50,LBS_SORT | LBS_HASSTRINGS | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "SELECTED:",IDS_SELECT_SPELLS_2,117,146,69,11,NOT 
+                    WS_GROUP
+    LISTBOX         IDL_LIST_SPELLS,118,162,70,50,LBS_SORT | WS_VSCROLL | 
+                    WS_TABSTOP
+    LTEXT           "Select Realm Spells:",IDS_SELECT_REALM_SPELLS_1,203,147,
+                    77,8,NOT WS_GROUP
+    LISTBOX         IDL_SELECT_REALM_SPELLS,206,161,91,50,LBS_SORT | 
+                    LBS_HASSTRINGS | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "SELECTED:",IDS_SELECT_REALM_SPELLS_2,306,147,77,8,NOT 
+                    WS_GROUP
+    LISTBOX         IDL_LIST_REALM_SPELLS,307,161,70,50,LBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+END
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include <winres.h>\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Same icon as BIRTHRT.RC: WINSYS/MACHINEX.C asks for "Birthright4", and id 1
+// comes first so Explorer/the taskbar pick it for the exe.
+1                       ICON    DISCARDABLE     "BIRTHRT.ICO"
+BIRTHRIGHT4             ICON    DISCARDABLE     "BIRTHRT.ICO"
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
