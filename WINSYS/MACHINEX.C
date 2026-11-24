@@ -39,7 +39,6 @@ X   machine_post_frame    -does postframe things, such as updating the screen
 #include "ddrawpro.h"
 
 // name of first scene in this
-extern char pInitScene[];
 // extern char pwad[];
 extern char chCursorName[32];
 

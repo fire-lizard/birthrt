@@ -89,7 +89,6 @@ BOOL	JoyButton1 = FALSE, JoyButton2 = FALSE;
 BOOL	JoyButton3 = FALSE, JoyButton4 = FALSE;
 
 extern HWND hwndApp;			/* GAME.CPP */
-extern char pInitScene[];
 extern BOOL fLogComment;
 
 /* ------------------------------------------------------------------------

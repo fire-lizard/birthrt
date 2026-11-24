@@ -996,8 +996,10 @@ void WriteErrFile(char *n)
 	// write to file
 	f=fopen("errfile.err","a+");
 	if(f != NULL)
+	{
 		fprintf(f,"Texture not found:%s - Generic texture assigned\n",n);
-	fclose(f);
+		fclose(f);
+	}
 }
 
 #if defined (_EDIT) || defined (_WADBUILDERS)

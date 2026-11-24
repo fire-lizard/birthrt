@@ -20,6 +20,8 @@
 
 #if defined(_EDIT)
 #include "edit.h"
+#include "SAVEPWAD.H"			// GetFileName, for the start-up scene/WAD picker
+extern BOOL JustLoadWad;		// WINSYS/MACHINE.C
 #endif
 
 #include "SYSTEM.H"
@@ -139,7 +141,6 @@ BOOL			fAutoMode = FALSE;
 
 extern int iChatKey;
 char		pwad[40] = "";
-char		pInitScene[9] = "worldmap";
 void SetRedrawMainMapLevel (void);
 
 extern BOOL fVeryFirstTime;
@@ -341,13 +342,42 @@ void init_game()
     // We wait to scan the resfiles until after the intro has played.
     ScanResFiles ();
 
-	if (pwad[0] == 0)			// check for command line override
+	// No first scene is queued: the old one, "worldmap", is in no install,
+	// and a queued request for it could end the game with a fatal error.
+	char *pStartWad = pwad;		// command line override: load that WAD
+
+#if defined (_EDIT)
+	// The level editor has no realm map to start from and the Windows build
+	// takes no WAD on the command line, so ask what to open: a scene (it
+	// brings its WAD and, for the scene editor, its avatars) or a bare WAD.
+	char szStartFile[_MAX_PATH];
+	char szStartTitle[_MAX_PATH];
+
+	if (pwad[0] == 0)
 	{
-		SCENE_MGR::mfRequestNewScene( pInitScene , TYPE_PLAYERSTART1, TRUE); // load first scene
+		if (!GetFileName (hwndApp, "SCENES", "Scenes and WADs (*.SCN;*.WAD)\0*.SCN;*.WAD\0", "SCN",
+				szStartFile, szStartTitle, OFN_FILEMUSTEXIST, GFN_OPEN))
+			fatal_error ("The level editor needs a scene or a WAD to open.");
+
+		char *pExt = strrchr (szStartTitle, '.');
+		if (pExt != NULL && _stricmp (pExt, ".SCN") == 0)
+		{
+			*pExt = 0;			// the scene loader adds "SCENES\" and ".SCN"
+			if (strlen (szStartTitle) > 8)
+				fatal_error ("Scene names are at most 8 characters: %s", szStartTitle);
+			SCENE_MGR::mfRequestNewScene (szStartTitle, TYPE_PLAYERSTART1, TRUE);
+		}
+		else
+		{
+			pStartWad = szStartFile;
+			JustLoadWad = TRUE;
+		}
 	}
-	else
+#endif
+
+	if (pStartWad[0] != 0)
 	{
-		load_new_wad(pwad, TYPE_PLAYERSTART1);
+		load_new_wad(pStartWad, TYPE_PLAYERSTART1);
 		add_task(1,handle_doors,0);  	//once every frame see if any doors moving
 		add_task(1,HandleLifts,0);  	//once every frame see if any lifts moving
 		add_task(1,HandleFloors,0);  	//once every frame see if any floors moving

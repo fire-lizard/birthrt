@@ -679,7 +679,13 @@ void SCENE_MGR::mfDoAI()
 		{
 			if (gfWadLoaded == FALSE)
 			{
-				fatal_error("ERROR: scnmgr.cpp No Wad loaded.\n");
+#if defined (_EDIT)
+				fatal_error("ERROR: scnmgr.cpp No Wad loaded.\n");	// no map to go back to
+#else
+				// Nothing loaded and nothing queued: go back to the map,
+				// as a failed scene load does above.
+				SCENE_MGR::mfReleaseSceneToMap(0,0);
+#endif
 			}
 			else
 			{
