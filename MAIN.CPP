@@ -64,6 +64,10 @@
 extern HWND hwndApp;
 #endif
 
+#if defined (SCENE_EDITOR)
+#include "DLG_EDIT.H"			// SetEditmode: the scene editor's E key
+#endif
+
 #if defined (_EDIT) || defined (_WADBUILDERS)
 extern "C" {
 void TextureLightTest (LONG arg1, LONG arg2);
@@ -664,8 +668,8 @@ void GameMain(void)
 	// get the right language
 	OpenResFile_("wave.res");
 	OpenResFile_("INTRO.RES");
-	
-#if !defined (_EDIT)
+
+#if !defined (_EDIT) && !defined (SCENE_EDITOR)
 //=================================
 	clear_key_status(0);
 	if (!JustLoadWad)
@@ -894,6 +898,10 @@ void AddGameKeys(void)
       add_key(KEY_F8, TextureLightTest, 0, 0);     // brighten things
       fVeryFirstTime = FALSE;                      // allow main menu to come up
 	}
+#endif
+
+#if defined (SCENE_EDITOR)
+	add_key(KEY_E, (PFVLL)SetEditmode, 0, 0);		// scene editor: edit mode on/off
 #endif
 
 #if _LAN && defined(_DEBUG)

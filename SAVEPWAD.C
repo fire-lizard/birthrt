@@ -21,7 +21,9 @@
 //
 //
 
-#if defined(_EDIT)							// level editor only (see EDIT.C)
+// The PWAD writer is level editor only (see EDIT.C); GetFileName at the end
+// is also the scene editor's start-up file picker (GAME.CPP).
+#if defined(_EDIT) || defined(SCENE_EDITOR)
 /* ------------------------------------------------------------------------
    Includes
    ------------------------------------------------------------------------ */
@@ -36,6 +38,8 @@
 #include "machine.h"
 #include "debug.h"
 #include "savepwad.h"
+
+#if defined(_EDIT)
 
 // #define NumVertexes 2000			// RCC - this should be read from file and allocated
 
@@ -335,6 +339,7 @@ BOOL MakePwad(char* PwadName)
 	fclose(pwadFile);
    return TRUE;
 }
+#endif	// _EDIT
 
 
 // ---------------------------------------------------------------------------
@@ -393,4 +398,4 @@ BOOL GetFileName(HWND i_hwnd, LPCSTR i_szDirName, LPCSTR i_szFilter, LPCSTR i_sz
 
 // ---------------------------------------------------------------------------
 // ---------------------------------------------------------------------------
-#endif	// _EDIT
+#endif	// _EDIT || SCENE_EDITOR

@@ -272,24 +272,30 @@ if (BIRTHRT_CHARACTER_EDITOR)
 	target_link_options (Chared PRIVATE "$<$<CONFIG:Release>:/DEBUG>")
 endif ()
 
-# Birthright I level and scene editors (1996-97, Windows only). Both are the
-# game itself built with extra defines and sources, so these options turn the
-# Birthrt target into an editor - give them their own build directory:
+# Birthright I level editor (1996-97, Windows only). It is the game itself
+# built with extra defines and sources, so these options turn the Birthrt
+# target into the editor - give it its own build directory:
 #   BIRTHRT_LEVEL_EDITOR  _EDIT ("WAD Builders Edition"): adds EDIT.C (walls,
 #                         textures, lighting), SAVEPWAD.C (saves the level
 #                         as a PWAD) and their dialogs, EDIT.RC.
 #   BIRTHRT_WADBUILDERS   _WADBUILDERS: a few designer conveniences (walk
 #                         through walls, quit without confirming).
-#   BIRTHRT_SCENE_EDITOR  SCENE_EDITOR: adds DLG_EDIT.CPP (place characters,
-#                         edit their AI) and its dialogs, DLG_EDIT.RC; saves
-#                         the .scn file via SCENE::mfWriteSceneFile.
+# The two combine. The level editor has no realm map: it starts by asking for
+# a scene or a WAD to open.
+#
+# Birthright I scene editor (Windows only): BIRTHRT_SCENE_EDITOR builds a
+# separate SCENEDIT.EXE next to Birthrt.exe - the game sources with
+# SCENE_EDITOR defined, plus DLG_EDIT.CPP (place characters, edit their AI)
+# and its dialogs, DLG_EDIT.RC, and SAVEPWAD.C for its file picker. It skips
+# the intro and the realm map, asks for a scene to open, and E switches edit
+# mode; the .scn file is saved via SCENE::mfWriteSceneFile.
+#
 # All off by default; the hooks in the game sources sit under those #if's, so
-# the normal game never compiles them. The options combine and every
-# combination compiles and links. EDIT.RC and DLG_EDIT.RC come from the BirP
-# project's copy of the game's 1997 resource script (NOVA95.RC).
+# the normal game never compiles them. EDIT.RC and DLG_EDIT.RC come from the
+# BirP project's copy of the game's 1997 resource script (NOVA95.RC).
 option (BIRTHRT_LEVEL_EDITOR "Build Birthrt as the level editor (Windows only)" OFF)
 option (BIRTHRT_WADBUILDERS "Add the WAD Builders designer conveniences (Windows only)" OFF)
-option (BIRTHRT_SCENE_EDITOR "Build Birthrt as the scene editor (Windows only)" OFF)
+option (BIRTHRT_SCENE_EDITOR "Build the scene editor (SCENEDIT.EXE, Windows only)" OFF)
 if (NOT WIN32 AND (BIRTHRT_LEVEL_EDITOR OR BIRTHRT_WADBUILDERS OR BIRTHRT_SCENE_EDITOR))
 	message (FATAL_ERROR "The Birthright editors are Win32 dialog code - Windows only.")
 endif ()
@@ -301,6 +307,13 @@ if (BIRTHRT_WADBUILDERS)
 	target_compile_definitions (Birthrt PRIVATE _WADBUILDERS)
 endif ()
 if (BIRTHRT_SCENE_EDITOR)
-	target_sources (Birthrt PRIVATE "DLG_EDIT.CPP" "DLG_EDIT.H" "DLG_EDIT.RC")
-	target_compile_definitions (Birthrt PRIVATE SCENE_EDITOR)
+	add_executable (Scenedit WIN32 ${BIRTHRT_CORE} ${BIRTHRT_WIN32}
+		"DLG_EDIT.CPP" "DLG_EDIT.H" "DLG_EDIT.RC" "SAVEPWAD.C" "SAVEPWAD.H")
+	set_target_properties (Scenedit PROPERTIES OUTPUT_NAME "SCENEDIT")
+	target_link_libraries (Scenedit "C:/Program Files (x86)/Microsoft DirectX 9.0 SDK (April 2005)/Lib/x64/ddraw.lib"
+		"C:/Program Files (x86)/Windows Kits/10/Lib/10.0.26100.0/um/x64/winmm.lib")
+	target_link_options (Scenedit PRIVATE "/LARGEADDRESSAWARE:NO")
+	target_compile_definitions (Scenedit PRIVATE AUDIO_LIB SCENE_EDITOR)
+	target_compile_options (Scenedit PRIVATE "$<$<CONFIG:Release>:/Zi>")
+	target_link_options (Scenedit PRIVATE "$<$<CONFIG:Release>:/DEBUG>")
 endif ()

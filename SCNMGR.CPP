@@ -554,7 +554,7 @@ Error:
 void SCENE_MGR::mfReleaseSceneToMap(LONG,LONG)
 {
 
-#if defined (_EDIT)
+#if defined (_EDIT) || defined (SCENE_EDITOR)
 	return;										// [d8-09-96 JPC] can't get to map
 #endif											// from editor.
 	ResetEnvironmentalSoundState();
@@ -679,7 +679,7 @@ void SCENE_MGR::mfDoAI()
 		{
 			if (gfWadLoaded == FALSE)
 			{
-#if defined (_EDIT)
+#if defined (_EDIT) || defined (SCENE_EDITOR)
 				fatal_error("ERROR: scnmgr.cpp No Wad loaded.\n");	// no map to go back to
 #else
 				// Nothing loaded and nothing queued: go back to the map,
