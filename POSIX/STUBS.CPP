@@ -1,11 +1,9 @@
 /* ========================================================================
    STUBS.CPP - the Windows-only subsystems the portable core still calls.
 
-   DirectDraw, MCI (CD audio and AVI playback), the wave-device probe and
-   the URL launcher.  None of them have a Linux equivalent that matters
-   for getting the game up: the SDL backend owns presentation, and the
-   1997 CD-audio path already degrades to silence when no CD is present
-   (see REDBOOK.C), which is exactly the state these stubs report.
+   DirectDraw, MCI (AVI playback), the wave-device probe and the URL
+   launcher.  None of them have a Linux equivalent that matters for
+   getting the game up: the SDL backend owns presentation.
    ======================================================================== */
 #include "../PLATFORM.H"
 
@@ -49,16 +47,7 @@ HINSTANCE FindExecutable(const char *, const char *, char *)
 
 void DirectDrawSaveScreen(void)		{}
 
-/* -- MCI ----------------------------------------------------------------
-   mci_OpenCD failing is the "no CD drive" path the game already handles:
-   fCDAvailible stays FALSE and music falls back to MUSIC\<n>.WAV. */
-DWORD mci_OpenCD(void)				{ return 1; }		/* non-zero == error */
-DWORD mci_CloseCD(void)				{ return 0; }
-DWORD mci_StopCD(void)				{ return 0; }
-DWORD mci_CheckCDBusy(void)			{ return 0; }
-DWORD mci_PlayCD(HWND, BYTE, BYTE, BYTE, BYTE, BYTE, BYTE, BYTE)
-									{ return 1; }
-
+/* -- MCI ---------------------------------------------------------------- */
 BOOL mci_OpenAVI(void)				{ return FALSE; }
 void mci_CloseAVI(void)				{}
 BOOL mci_PlayAVI(char *, HWND)		{ return FALSE; }

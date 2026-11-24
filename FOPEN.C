@@ -25,10 +25,6 @@
 
 void SetRedrawMainMapLevel (void);
 
-// this is the drive letter of the cdrom as in "d:"
-extern char CDDrive[4];
-extern BOOL fCDAvailible;
-
 // [d3-26-97 JPC]
 // Keep track of the files we open with an array of FILEOPENREC structures.
 #define MAX_FILE_RECORDS   8           // how many files can be open at once
@@ -61,9 +57,6 @@ static void RecordClose (FILE * fp, int handle);
 static void CloseOldestFile ();
 static FILE * FileInQueue (CSTRPTR pszFile, CSTRPTR pszAccess);
 static SHORT DiskInQueue (CSTRPTR pszFile);
-
-// track file access modes
-static FILE_MODE fmCurrentFileMode = FILEOPEN_MIXED_MODE;
 
 #ifndef _WINDOWS
 int __far crit_error_handler(unsigned deverr, unsigned errcode, unsigned far *devhdr)
@@ -124,8 +117,7 @@ void CheckHandles ()
 	}
 }
 
-// directly replaces the fopen call, first tests the hard drive
-// then checks the CDROM
+// directly replaces the fopen call
 // [d4-01-97 JPC] First check whether file is already in our "open" array.
 FILE * FileOpen(
 	CSTRPTR pszFile,
@@ -133,7 +125,6 @@ FILE * FileOpen(
 )
 {
 	FILE	*pFile = NULL;
-	char	chFileName[_MAX_PATH] = "";
 	char	chResolved[_MAX_PATH];
 
 	/* Every path the game passes is Win32-shaped and of arbitrary case.
@@ -153,66 +144,18 @@ FILE * FileOpen(
 		return pFile;
 	}
 
-	/* if file not on local drive, check CDROM */
-	if( fmCurrentFileMode == FILEOPEN_MIXED_MODE )
-	{
-		if ( access( pszFile, ( F_OK ) ) != 0 )
-		{
-			// if CDROM is available
-			if(!CheckCDError())
-			{
-				if( '\0' != CDDrive[0] )
-				#if defined(_MULTIPLAY_ONLY)
-					sprintf(chFileName, "%sBIRTHRT\\%s", CDDrive, pszFile);
-				#else
-					sprintf(chFileName, "%s%s", CDDrive, pszFile);
-				#endif
-			}
-			else
-			{
-				return( pFile );
-			}
-		}
-		else
-		{
-			strcpy(chFileName, pszFile);
-		}
-	}
-	else
-	if( fmCurrentFileMode == FILEOPEN_CDROM_ONLY)
-	{
-		// if CDROM is available
-		if(!CheckCDError())
-		{
-			if( '\0' != CDDrive[0] )
-				#if defined(_MULTIPLAY_ONLY)
-					sprintf(chFileName, "%sBIRTHRT\\%s", CDDrive, pszFile);
-				#else
-					sprintf(chFileName, "%s%s", CDDrive, pszFile);
-				#endif
-		}
-		else
-		{
-			return( pFile );
-		}
-	}
-	else // fmCurrentFileMode == FILEOPEN_HARDDRIVE_ONLY
-	{
-		strcpy(chFileName, pszFile);
-	}
-	
 	// Returns -1 if file doesn't exist
-	if( ( access( chFileName, ( F_OK ) ) ) == 0 )
+	if( ( access( pszFile, ( F_OK ) ) ) == 0 )
 	{
 		// if the fopen fails, NULL is returned
-		pFile = fopen( chFileName, pszAccess );
+		pFile = fopen( pszFile, pszAccess );
 
 		// If open fails, close a file and try the fopen again.
 		// If this fails, we're done for.  Caller needs to handle the error.
 		if (pFile == NULL)
 		{
 			CloseOldestFile ();
-			pFile = fopen( chFileName, pszAccess );
+			pFile = fopen( pszFile, pszAccess );
 		}
 		if (pFile != NULL)
 			RecordOpen (pszFile, pszAccess, pFile, -1);
@@ -226,8 +169,7 @@ SHORT DiskOpen(
 	CSTRPTR pszFile
 )
 {
-	SHORT	iFile;
-	char	chFileName[_MAX_PATH] = "";
+	SHORT	iFile = -1;
 	char	chResolved[_MAX_PATH];
 
 	PlatResolvePath(chResolved, pszFile, sizeof(chResolved));
@@ -241,41 +183,18 @@ SHORT DiskOpen(
 		return iFile;
 	}
 
-	/* if file not on local drive, check CDROM */
-	if( ( access( pszFile, ( F_OK ) ) ) != 0 )
-	{
-		// if CDROM is available
-		if(!CheckCDError())
-		{
-			if( '\0' != CDDrive[0] )
-				#if defined(_MULTIPLAY_ONLY)
-					sprintf(chFileName, "%sBIRTHRT\\%s", CDDrive, pszFile);
-				#else
-					sprintf(chFileName, "%s%s", CDDrive, pszFile);
-				#endif
-		}
-		else
-		{
-			return( iFile );
-		}
-	}
-	else
-	{
-		strcpy(chFileName, pszFile);
-	}
-	
 	// Returns -1 if file doesn't exist
-	if( ( access( chFileName, ( F_OK ) ) ) == 0 )
+	if( ( access( pszFile, ( F_OK ) ) ) == 0 )
 	{
 		// if the open fails, -1 is returned
-		iFile = open( chFileName, O_BINARY|O_RDONLY );
+		iFile = open( pszFile, O_BINARY|O_RDONLY );
 
 		// If open fails, close a file and try the open again.
 		// If this fails, we're done for.  Caller needs to handle the error.
 		if (iFile == -1)
 		{
 			CloseOldestFile ();
-			iFile = open( chFileName, O_BINARY|O_RDONLY );
+			iFile = open( pszFile, O_BINARY|O_RDONLY );
 		}
 		if (iFile != -1)
 			RecordOpen (pszFile, "", NULL, iFile);
@@ -290,13 +209,12 @@ LONG FileAccess(
 )
 {
 	LONG iFile = -1;
-	char	chFileName[_MAX_PATH];
 	char	chResolved[_MAX_PATH];
 
 	PlatResolvePath(chResolved, pszFile, sizeof(chResolved));
 	pszFile = chResolved;
 
-	// Check resource files, then local drive, then CD-ROM.
+	// Check resource files, then local drive.
 	if (ResourceFileAccess (pszFile) == 0)
 	{
 		iFile = 0;
@@ -305,24 +223,7 @@ LONG FileAccess(
 	{
 		iFile = 0;
 	}
-	else
-	{
-		// if CDROM is available
-		if(!CheckCDError())
-		{
-			if( '\0' != CDDrive[0] )
-			{
-				#if defined(_MULTIPLAY_ONLY)
-					sprintf(chFileName, "%sBIRTHRT\\%s", CDDrive, pszFile);
-				#else
-					sprintf(chFileName, "%s%s", CDDrive, pszFile);
-				#endif
-				if( ( access( chFileName, ( F_OK ) ) ) == 0 )
-					iFile = 0;
-			}
-		}
-	}
-	
+
 	// Returns -1 if file doesn't exist
 
 	return( iFile );
@@ -619,21 +520,4 @@ void CloseAllFiles ()
 			gFileRecord[i].fOpened = FALSE;
 		}
 	}
-}
-
-/* ========================================================================
-   Function    - SetFileMode
-	Description - define the locations to look for files
-	Returns     - old file mode
-	======================================================================== */
-FILE_MODE SetFileMode ( FILE_MODE NewFileMode )
-{
-	FILE_MODE OldMode = fmCurrentFileMode;
-	// ponytail: this port has no CD - the install dir holds the full CD
-	// contents, so CD-only requests (release multiplayer stat reload,
-	// chared restore) read from the hard drive instead.
-	if (NewFileMode == FILEOPEN_CDROM_ONLY)
-		NewFileMode = FILEOPEN_HARDDRIVE_ONLY;
-	fmCurrentFileMode = NewFileMode;
-	return OldMode;
 }

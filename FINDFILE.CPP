@@ -70,7 +70,6 @@ BOOL FindUserSceneFiles ( char * pPath, char * pExt )
 {
 	CHAR				ScenePath[128];
 	LONG				cFiles = 0;
-	FILE_MODE		oldFileMode;
 	SCENE::SCENE_TYPE	SceneType;
 	SCENE::SCENE_DATA	SceneData;
 	char				SceneNames[MAX_SCENE_FILES][13];
@@ -89,7 +88,6 @@ BOOL FindUserSceneFiles ( char * pPath, char * pExt )
 	memset( &SceneNames[0][0], 0, MAX_SCENE_FILES*13 );
 	
 	// open directory and read scene file names
-	oldFileMode = SetFileMode( FILEOPEN_HARDDRIVE_ONLY );
 	// paw through the whole dir for each scene file
 	for (int index = 0; index < names.size(); index++)
 	{
@@ -138,9 +136,6 @@ BOOL FindUserSceneFiles ( char * pPath, char * pExt )
 		if ( UserSceneCount >= MAX_ADV_SITES)
 			break;
 	}
-	
-	// reset file access mode
-	SetFileMode( oldFileMode );
-	
+
 	return TRUE;
 }

@@ -313,11 +313,8 @@ void DoneHelpMenu(LONG , LONG)
 			if (sDrawMode == iDDRAW)
               DDSetCooperative ( FALSE );
 
-			if( '\0' != CDDrive[0] )
-				sprintf(chFileName, "%s%s%s", CDDrive,InstallPath, "BIRTHRT.HLP");
-			else
-				sprintf(chFileName, "%s%s", InstallPath, "BIRTHRT.HLP");
-			
+			sprintf(chFileName, "%s%s", InstallPath, "BIRTHRT.HLP");
+
 			WinHelp(hwndApp, chFileName, HELP_CONTENTS, 0);
 			break;
 #else
@@ -335,11 +332,8 @@ void DoneHelpMenu(LONG , LONG)
 			if (sDrawMode == iDDRAW)
               DDSetCooperative ( FALSE );
 
-			if( '\0' != CDDrive[0] )
-				sprintf(chFileName, "%s%s%s", CDDrive,InstallPath,  "GAMEPLAY.HLP");
-			else
-				sprintf(chFileName, "%s%s", InstallPath, "GAMEPLAY.HLP");
-			
+			sprintf(chFileName, "%s%s", InstallPath, "GAMEPLAY.HLP");
+
 			WinHelp(hwndApp, chFileName, HELP_CONTENTS, 0);
 			break;
 #else
@@ -2738,7 +2732,6 @@ void Sinners(LONG, LONG)
 	SHORT	hBitm;
 	LONG	now;
 	
-	StopRedBook();
 	TurnOffAllSounds();
 	PlayTrack(SND_WIN_GAME_MUSIC1);
 	
@@ -2908,11 +2901,8 @@ void GetMoreInfo( LONG MenuCombo, LONG Context )
    if (sDrawMode == iDDRAW)
        DDSetCooperative ( FALSE );
 
-	if( '\0' != CDDrive[0] )
-		sprintf(chFileName, "%s%s%s", CDDrive,InstallPath,  "GAMEPLAY.HLP");
-	else
-		sprintf(chFileName, "%s%s", InstallPath, "GAMEPLAY.HLP");
-			
+	sprintf(chFileName, "%s%s", InstallPath, "GAMEPLAY.HLP");
+
 	WinHelp( hwndApp, chFileName, HELP_CONTEXT, Context );
 
 #else

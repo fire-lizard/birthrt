@@ -25,13 +25,4 @@ DWORD mci_Rewind		( void );
 DWORD mci_Play			( void );
 DWORD mci_GetPosition	( void );
 
-DWORD mci_OpenCD		( void );
-DWORD mci_CloseCD		( void );
-DWORD mci_PlayCD		( HWND hWndNotify, BYTE bTrack, BYTE bStartMin, 
-								BYTE bStartSec, BYTE bStartFrame, BYTE bEndMin, 
-									BYTE bEndSec, BYTE bEndFrame);
-
-DWORD mci_StopCD		( void );
-DWORD mci_CheckCDBusy	( void );
-
 // MciUtil.h

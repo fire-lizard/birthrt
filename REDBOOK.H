@@ -29,7 +29,6 @@ extern "C" {
 #endif
 
 extern int				fMusic;					/* redbook.c */
-extern SHORT			UserCDVolume;			/* redbook.c */
 extern SHORT	ucWhichTrack;			// redbook.c
 
 #if defined (__cplusplus)
@@ -44,13 +43,8 @@ extern "C" {
 #endif
 
 /* redbook.c */
-int PlayRedBook (ULONG start, ULONG length);
-int StopRedBook (void);
 int PlayTrack (SHORT track);
-unsigned long FindTrackStart (unsigned char track);
 int CheckCDBusy (void);
-int PlayCDMusic (unsigned short tune);
-void LoadMusicFromCD(short);
 
 #if defined (__cplusplus)
 }

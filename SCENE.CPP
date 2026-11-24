@@ -175,7 +175,6 @@ void SCENE::mfLoadScene(char * cpSceneFile,
 	// [AmbientSound] section we would otherwise keep playing the old one.
 	ResetEnvironmentalSoundState();
 	// Re-initialize the internal variables.
-	StopRedBook();
 	TurnOffAllSounds();
 	SuspendMusic();
 	fVersion.mfInitVals();
@@ -861,8 +860,6 @@ LONG SCENE::mfReadMusicTrack(FILE *fp)
 
 	if(Result != EOF)
 		ucWhichTrack = (SHORT) atol(cpBuffer);
-
-	LoadMusicFromCD(ucWhichTrack);
 
 	return Result;
 }

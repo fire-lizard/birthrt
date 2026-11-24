@@ -7,7 +7,7 @@
    this implementation drives SOLAUDIO's DSound sample class directly.
 
    Sample data comes from, in order:
-     1. <id>.WAV in the working directory (voice scratch, e.g. 499.wav)
+     1. <id>.WAV in the working directory (voice scratch)
      2. MUSIC\<id>.WAV                    (digital music tracks - streamed)
      3. <id>.WAV via the resource manager (effects in wave.res - the
         resource handle is kept and the pointer re-fetched every use, so

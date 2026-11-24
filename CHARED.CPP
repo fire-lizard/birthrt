@@ -1223,7 +1223,6 @@ static void OnCommand (HWND hwnd, int id, HWND hwndCtl, UINT codeNotify)
 			{
 				// flush out all old file data and reload cdrom image
 				CloseAllFiles ();
-				SetFileMode ( FILEOPEN_CDROM_ONLY );
 				if (ReadAVAFile ())
 				{
 					InitFieldsFromAVAFile (hwnd);
@@ -1236,7 +1235,6 @@ static void OnCommand (HWND hwnd, int id, HWND hwndCtl, UINT codeNotify)
 				}
 				ReadINVFile ();
 				gfSetInventory = FALSE;
-				SetFileMode ( FILEOPEN_MIXED_MODE );
 				EnableWindow (GetDlgItem (hwnd, IDB_SAVE), gfSaveOK);
 			}
 			break;

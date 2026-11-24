@@ -122,11 +122,6 @@ extern void ActivateControlSet(void);
 extern void SetGameResolution(LONG, LONG);
 #endif
 
-int InitRedBook(void);
-extern "C" {
-int ShutdownRedBook(void);
-int StopRedBook (void);
-}
 /* ------------------------------------------------------------------------
    Code
   ------------------------------------------------------------------------ */
@@ -409,7 +404,6 @@ void UpdateOptionSettings(void)
 		ResumePausedSounds();
 	
 	SetGlobalVolume(sfxvol);
-    UserCDVolume = musvol * 10;
     UserNumSFXPlaying = sfxchan;
     UIPlayEnvironmentalSounds = sfxenv;
 	COMBAT_ARCADE_SPEED::mfSetNewValue((SBYTE) (10 - combat_speed));

@@ -39,10 +39,6 @@ extern "C" {
 #define VOLUME_PRIORITY -12
 	
 #define ADVENTURE_MUSIC 7
- 
-#define INSTALL_SMALL   0
-#define INSTALL_MEDIUM 1
-#define INSTALL_LARGE   2
    /* ------------------------------------------------------------------------
 	Macros   
    ------------------------------------------------------------------------ */

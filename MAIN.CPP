@@ -157,9 +157,6 @@ extern LONG cheated;
 
 SHORT	gUnitStackSize = 15;
 
-SHORT InstallationType;
-char CDDrive[4];
-
 LONG fDialogUp;
 BOOL bShowWadSize=FALSE;
 BOOL bDumpScreen=FALSE;
@@ -1296,7 +1293,6 @@ void PlayCredits(LONG,LONG)
 	SHORT	bitm;
 	LONG	now;
 	
-	StopRedBook();
 	KillSoundsNoFade();
 	PlayTrack(103);
 	
@@ -1450,8 +1446,7 @@ void PlayFinale(LONG WinningRealm,LONG)
 	LONG	now;
 	CHAR 	*Dash;
 	SHORT  prevTrack = ucWhichTrack;
-	
-	StopRedBook();
+
 	KillSoundsNoFade();
 
 	// this sound doesn't play

@@ -8,7 +8,7 @@
    top of SOLAUDIO's DirectSound backend (SOLAUDIO/Dsound.cpp).
 
    Wave data resolution, in order:
-     1. <id>.WAV in the working directory (voice scratch files, e.g. 499.wav)
+     1. <id>.WAV in the working directory (voice scratch files)
      2. MUSIC\<id>.WAV                    (digital music tracks)
      3. <id>.WAV via the resource manager (sound effects in wave.res)
    ======================================================================== */

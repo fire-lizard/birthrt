@@ -34,11 +34,6 @@
 #include "../MENU.H"			/* sMenusUp */
 #include "../SOUND.HXX"			/* TurnOffAllSounds, ShutDownSoundSystem */
 
-/* REDBOOK.C; MACHINE.C declared these locally too. Every .C here builds
-   as C++, so these stay C++-mangled - no extern "C". */
-int InitRedBook(void);
-int ShutdownRedBook(void);
-
 /* ------------------------------------------------------------------------
    Globals that used to live in WINSYS
    ------------------------------------------------------------------------ */
@@ -1160,7 +1155,6 @@ void AppIdle(void)
    ======================================================================== */
 void quit_sys(LONG)
 {
-	StopRedBook();
 	TurnOffAllSounds();
 	ShutDownSoundSystem();
 	CloseAllFiles();
@@ -1172,7 +1166,6 @@ static void AppExit(void)
 	close_graph();
 	remove_keyint();
 	TurnOffAllSounds();
-	ShutdownRedBook();
 	QuitMemManag();
 
 	free(gFrameBuf);

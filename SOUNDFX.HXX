@@ -36,10 +36,6 @@ SND_LOSE_COMBAT_MUSIC_TOTAL = 1,
 SND_WIN_GAME_MUSIC1 = 124,
 SND_WIN_GAME_MUSIC_TOTAL = 1,
 
-//	*****************************************************************
-//	INTEGER #499 RESERVED FOR MUSIC TRACK COPIED TO DISK AT LOAD TIME
-//	*****************************************************************
-
 //	SOUNDS FOR GORGON'S PLOT FLCs
 
 SND_FOOTSTEP1 = 500,

@@ -861,14 +861,7 @@ SHORT LoadAVD (
 {
 	SHORT hPlayerStats = fERROR;
 	FILE * pFileRead;
-	FILE_MODE OldFileMode;
-	
-	// in the multiplayer game, we don't want any altered avatar file
-	#ifndef _DEBUG
-	if ( fStartMultiGame )
-		OldFileMode = SetFileMode( FILEOPEN_CDROM_ONLY );
-	#endif
-	
+
 	//GEH 9/97 We will never be using this feature and it is slowing
 	//down the game.  Bye, Bye for now
 	//else
@@ -900,15 +893,9 @@ SHORT LoadAVD (
 			pPlayerStats->mfReadTextData(pFileRead);
 		}
 
-		FileClose(pFileRead);		
+		FileClose(pFileRead);
 	}
-	
-	// in the multiplayer game, reset file mode
-	#ifndef _DEBUG
-	if ( fStartMultiGame )
-		SetFileMode( OldFileMode );
-	#endif
-	
+
 	return hPlayerStats;
 	
 Error:

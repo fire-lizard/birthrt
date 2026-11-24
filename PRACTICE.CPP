@@ -2353,7 +2353,6 @@ void PlayBtlFinale(void)
 	SHORT	bitm;
 	LONG	now;
 	
-	StopRedBook();
 	KillSoundsNoFade();
 
 	// this sound doesn't play
@@ -3360,7 +3359,6 @@ void PlayAdvFinale(void)
 	SHORT	bitm;
 	LONG	now;
 	
-	StopRedBook();
 	KillSoundsNoFade();
 
 	// this sound doesn't play

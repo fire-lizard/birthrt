@@ -48,10 +48,6 @@
 /* ------------------------------------------------------------------------
    Notes
    ------------------------------------------------------------------------ */
-int InitRedBook(void);
-extern "C" {
-int StopRedBook (void);
-}
 
 /* ------------------------------------------------------------------------
    Defines and Compile Flags
@@ -242,7 +238,7 @@ SHORT AddSndObj( BIRTHRT_SND  WaveID, SHORT randomCount, LONG MyThingsIndex)
 	{
 #ifdef AUDIO_LIB
 		// adjust volume for user options
-		if( (WaveID == 499) || ( (WaveID >= 101) && (WaveID < 125) ) ) // this is music (101..111 are the MUSIC\ tracks)
+		if( (WaveID >= 101) && (WaveID < 125) ) // this is music (101..111 are the MUSIC\ tracks)
 			volume = volume * GetMusicVolume() / 10;  // GetMusicVolume returns an index, 1 - 10, ten is loudest
 		else
 			volume = volume * SFXVolumeIndex / 10;
@@ -632,8 +628,6 @@ void ShutDownSoundSystem(void)
 		KernelAudioTerminate();
 #endif
 
-	remove("499.wav");
-
 	AudioInitialized = FALSE;
 }
 
@@ -758,12 +752,10 @@ LONG FadeToReset ( void )
 				
 				// -- shut down
 				ShutDownSoundSystem();
-				StopRedBook();
 				
 				// -- restart
 				InitializeSoundSystem();
-				InitRedBook();
-				
+
 				// -- restore volume levels
 				SetGlobalVolume(sfxvol);
 				UISetMusicVolume(musvol);
@@ -850,7 +842,6 @@ void TurnOffAllSounds(void)
 
 void KillSoundsNoFade(void)
 {
-	StopRedBook();
 	if(!AudioInitialized)
 		return;
 #ifdef WINDOWS_SOUND

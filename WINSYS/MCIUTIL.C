@@ -12,7 +12,6 @@
 #include <string.h>
 #include <Digitalv.h>
 
-extern BOOL fSound;
  
 static VOID positionMovie(HWND hWnd);
 
@@ -21,7 +20,6 @@ static	FARPROC fpOldAVIWndProc = NULL;
 static	HWND hwndApp = NULL;
 
 MCI_OPEN_PARMS mci_OpenParms;    //---- Open parameters for mci 
-UINT wCDDeviceID;
 UINT wAVIDeviceId = 0;
 HWND        ghwndMovie;		/* window handle of the movie */
 BOOL fSkipCheck = FALSE;
@@ -371,120 +369,6 @@ DWORD mci_GetPosition ( void )
    return ( status.dwReturn );
 
 }   //---- End of mci_GetPosition()
-
-DWORD mci_OpenCD(void)
-{
-	DWORD dwReturn = 0L;
-
-    MCI_OPEN_PARMS mciOpenParms;
-
-    // Open the CD audio device by specifying the device name.
-    mciOpenParms.lpstrDeviceType = "cdaudio";
-    if (dwReturn = mciSendCommand( (MCIDEVICEID) NULL, MCI_OPEN,
-									MCI_OPEN_TYPE, (DWORD)(LPVOID) &mciOpenParms) )
-    {
-        // Failed to open device. Don't close it; just return error.
-        return (dwReturn);
-    }
-
-    // The device opened successfully; get the device ID.
-    wCDDeviceID = mciOpenParms.wDeviceID;
-
-	return (1L);
-}
-
-DWORD mci_CloseCD(void)
-{
-	return (mciSendCommand(wCDDeviceID, MCI_CLOSE, 0, (DWORD)NULL));
-}
-
-// Plays a given CD audio track using MCI_OPEN, MCI_PLAY. Returns as 
-// soon as playback begins. The window procedure function for the given
-// window will be notified when playback is complete. Returns 0L on
-// success; otherwise, returns an MCI error code.
-DWORD mci_PlayCD(HWND hWndNotify, BYTE bTrack, BYTE bStartMin, BYTE bStartSec, BYTE bStartFrame, BYTE bEndMin, BYTE bEndSec, BYTE bEndFrame)
-{
-    DWORD dwReturn = 0L;
-    MCI_SET_PARMS mciSetParms;
-    MCI_PLAY_PARMS mciPlayParms;
-
-	// GEH Not So. fails running from CD for now, so just exit
-
-	// if in network play or sound effects are off, don't use redbook sounds
-	if(fSound == FALSE)
-		return(FALSE);
-
-    // Set the time format to track/minute/second/frame (TMSF).
-    mciSetParms.dwTimeFormat = MCI_FORMAT_TMSF;
-
-    if (dwReturn = mciSendCommand(wCDDeviceID, MCI_SET, 
-        MCI_SET_TIME_FORMAT, (DWORD)(LPVOID) &mciSetParms))
-    {
-        return (dwReturn);
-    } 
-
-    // Begin playback from the given track and play until the beginning 
-    // of the next track. The window procedure function for the parent 
-    // window will be notified with an MM_MCINOTIFY message when 
-    // playback is complete. Unless the play command fails, the window 
-    // procedure closes the device.
-    mciPlayParms.dwFrom = 0L;
-    mciPlayParms.dwTo = 0L;
-	if(bStartMin == 0 && bEndMin == 0 && bStartSec == 0 && bEndSec == 0)
-	{
-	    mciPlayParms.dwFrom = MCI_MAKE_TMSF(bTrack, 0, 0, 0);
-    	mciPlayParms.dwTo = MCI_MAKE_TMSF(bTrack + 1, 0, 0, 0);
-	    mciPlayParms.dwCallback = (DWORD) hWndNotify;
-
-    	dwReturn = mciSendCommand(wCDDeviceID, MCI_PLAY,
-        	MCI_FROM | MCI_TO | MCI_NOTIFY, (DWORD)(LPVOID) &mciPlayParms);
-	}
-	else
-	{
-	    mciPlayParms.dwFrom = MCI_MAKE_TMSF(bTrack, bStartMin, bStartSec, bStartFrame);
-    	mciPlayParms.dwTo = MCI_MAKE_TMSF(bTrack, bEndMin, bEndSec, bEndFrame);
-	    mciPlayParms.dwCallback = (DWORD) NULL;
-
-    	dwReturn = mciSendCommand(wCDDeviceID, MCI_PLAY,
-        	MCI_FROM | MCI_TO, (DWORD)(LPVOID) &mciPlayParms);
-	}
-
-    return (dwReturn);
-}	//---- End of mci_PlayCD
-
-DWORD mci_StopCD ( void )
-{
-
-   DWORD   dwResult;
-
-   dwResult = mciSendCommand ( wCDDeviceID,
-                               MCI_STOP,
-                               MCI_WAIT,
-                               (DWORD)(LPVOID) NULL );
-
-   return ( dwResult );
-
-}   //---- End of mci_Stop()
-
-DWORD mci_CheckCDBusy ( void )
-{
-
-   DWORD   dwResult;
-   MCI_STATUS_PARMS	mciStatusParms;
-
-   mciStatusParms.dwItem = MCI_STATUS_MODE;
-   
-   dwResult = mciSendCommand ( wCDDeviceID,
-                               MCI_STATUS,
-                               MCI_STATUS_ITEM,
-                               (DWORD)(LPVOID) &mciStatusParms );
-
-   // returns 1 if CD is busy
-   dwResult = (DWORD)(!(mciStatusParms.dwReturn & 0x00000001));
-   
-   return ( dwResult );
-
-}   //---- End of mci_CheckCDBusy()
 
 /*--------------------------------------------------------------+
 | initAVI - initialize avi libraries				|

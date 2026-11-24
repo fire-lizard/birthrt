@@ -61,9 +61,6 @@ LONG WINAPI MainWndProc( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam );
 void AppExit(void);
 void WaitForMessageQueueToEmpty( void );
 
-int InitRedBook(void);
-int ShutdownRedBook(void);
-
 /* ------------------------------------------------------------------------
    Global Variables
    ------------------------------------------------------------------------ */
@@ -85,7 +82,6 @@ BOOL fMusic = TRUE;        // [d11-09-96 JPC] moved here from REGISTRS.H
 BOOL gDontFight = FALSE;
 #endif
 							
-extern UINT wCDDeviceID;
 extern int iWhichTrack;
 
 #ifdef _WINDOWS
@@ -349,9 +345,7 @@ BOOL AppInit( HINSTANCE hInst, HINSTANCE hPrev, LPSTR szCmdLine, int sw )
 	// -- Make the world a little more random
 	srand(GetTickCount());
 
-	InstallationType=2;  // set to English as default
-	fLogComment = TRUE;
-	strcat(CDDrive, "D:\\");
+	fLogComment = FALSE;
 
 	strcpy(InstallPath,".\\");
 	#ifdef _WINDOWS
@@ -632,7 +626,6 @@ int WINAPI WinMain( HINSTANCE hInstExe, HINSTANCE hInstPrev, LPSTR szCmdLine, in
 void quit_sys(LONG arg)
 {
 	WinHelp(hwndApp, "BIRTHRT.HLP", HELP_QUIT, 0);
-	StopRedBook();
 	TurnOffAllSounds();
 	ShutDownSoundSystem();
 	CloseAllFiles();							// [d4-09-97 JPC]
@@ -652,9 +645,7 @@ void AppExit(void)
 	close_graph();
 	remove_keyint();
 	TurnOffAllSounds();
-	// Must be called before HeapDestroy!
-	ShutdownRedBook();
-	
+
 	QuitMemManag();	// Call this before you distroy the heap.
 	HeapDestroy(hHeap);
 }

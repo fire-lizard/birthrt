@@ -149,13 +149,6 @@
 #define fLEFTKERN			0x40
 #define fRIGHTKERN		0x20
 
-/************************************************************
-	Defines for type of installation selected by user, CD-ROM drive letter
-************************************************************/
-#define INSTALL_SMALL   0
-#define INSTALL_MEDIUM 1
-#define INSTALL_LARGE   2
-
 /* ------------------------------------------------------------------------
 	Structure defines
    ------------------------------------------------------------------------ */
@@ -327,7 +320,6 @@ extern void DrawLittleButton(LONG, LONG, LONG, LONG, LONG);
 /* game.cpp */
 void GAMEToggleMainMenu(LONG fState, LONG);
 char* GetSourcePath(void);
-BOOL CheckCDError(void);
 
 /* vdpmi.c */
 void * D32DosMemAlloc ( ULONG size );
@@ -340,8 +332,6 @@ void * D32DosMemAlloc ( ULONG size );
 extern BOOL fGraphInitialized;	// main.cpp
 extern BOOL fIsFadedOut;
 
-extern char CDDrive[4];
-extern SHORT InstallationType;   /*main.cpp*/
 extern char InstallPath[256];
 extern COLORSPEC		CurPal[256];
 extern LONG  			screen_buffer_width;	/* system.c */
