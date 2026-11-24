@@ -1203,19 +1203,4 @@ DEFINE_VECTOR_DATA(ACTION_STR,szAIAction) = {
 			STR_ACTN_STR_PASSING	   		 };
 DEFINE_VECTOR_CLASS(ACTION_STR, szAIAction);
 
-/* ========================================================================
-   Function    - ResetNPCActionData
-   Description - call this fn at the beginning of the 3 actions turn.
-   Returns     - 
-   ======================================================================== */
-
-void ResetNPCActionData()
-{
-	LONG i;
-	
-	for(i = 0; i <= REALM::TUORNEN; ++i)
-	{
-		npcActionData[i].mfReset();
-	}
-}
 /* ======================================================================== */

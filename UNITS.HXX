@@ -78,9 +78,6 @@ extern DECL_VECTOR_CLASS(UNIT_TYPE, units);
 /* -----------------------------------------------------------------
    Prototypes
    ----------------------------------------------------------------- */
-void ValidateUnitsArray(void);
-BOOL ValidateUnitList(SHORT UnitIndex);
-BOOL ValidateUnit(SHORT UnitIndex);
 BOOL CheckUnitStack (LONG iUnit, BOOL fSend );
 LONG JoinUnits_sub (LONG iUnit, LONG iUnit2, BOOL fSend );
 void JoinUnits (LONG iUnit, LONG iUnit2);

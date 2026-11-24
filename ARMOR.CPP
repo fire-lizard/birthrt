@@ -115,50 +115,6 @@ const SHIELD_INFO::SHIELD_ITEM SHIELD_INFO::fpShieldInfoTable[] = {
 };
 
 /* ========================================================================
-   Function    - mfFindType
-   Description - Matchup the armor name to its type.
-   Returns     - 
-   ======================================================================== */
-const ARMOR_INFO::TYPE ARMOR_INFO::mfFindType(char * cpArmorName)
-{
-	TYPE Result = NO_ARMOR;
-	LONG i;
-	
-	for (i = FIRST_ARMOR; i < ARMOR_MAX_INDEX; i++)
-	{
-		if (0 == strncmp(ARMOR_INFO::mfGetName((TYPE)i), cpArmorName, strlen(ARMOR_INFO::mfGetName((TYPE) i))))
-		{
-			Result = (TYPE) i;
-			break;
-		}
-	}
-	
-	return Result;
-}
-
-/* ========================================================================
-   Function    - mfFindType
-   Description - Match up the shield name to its type.
-   Returns     - 
-   ======================================================================== */
-const SHIELD_INFO::TYPE SHIELD_INFO::mfFindType(char * cpShieldName)
-{
-	TYPE Result = NO_SHIELD;
-	LONG i;
-	
-	for (i = FIRST_SHIELD; i < SHIELD_MAX_INDEX; i++)
-	{
-		if (0 == strncmp(SHIELD_INFO::mfGetName((TYPE)i), cpShieldName, strlen(SHIELD_INFO::mfGetName((TYPE) i))))
-		{
-			Result = (TYPE) i;
-			break;
-		}
-	}
-	
-	return Result;
-}
-
-/* ========================================================================
    Function    - mfGetWeaponAdjust
    Description - For a given weapon style get the best adjustment.
    Returns     - A modifier for ToHit.

@@ -101,7 +101,6 @@ extern void IncActionTurn(void);
 extern BOOL ExpCheck(PLAYER_STATS * pPS);
 extern void GainExp(PLAYER_STATS * pPS, const LONG ExpAmount,
 					const BOOL CanGainLevelNow);
-extern LONG GetCastleName( SHORT PlacesIndex );
 void static TestAndPutLiveOneInFront();
 
 static void ShowCombatUIMenu(SCENE & /* rScene */);
@@ -121,12 +120,6 @@ void ForceHires ();
 
 extern void SetRelicFound( SHORT PlacesIndex );
 
-static void CombatEndHelpProc(LONG , LONG );
-
-BOOL GetCombatMenuUp()
-{
-    return gCombatMenuRequested;
-}
 void SetCombatMenuUp(BOOL gCMR)
 {
     gCombatMenuRequested = gCMR;
@@ -1263,7 +1256,6 @@ static void ShowCombatUIMenu(SCENE & rScene)
 		DumbAutoLockPtr<COMBAT_SCENE_DATA> const pcsdData(rScene.fhData);
 		LONG MenuXPos = 0;
 		LONG MenuYPos = 0;
-		LONG i;
 		LONG NumberOfFollowers = 0;
 		
 #if defined (_WINDOWS)
@@ -1376,9 +1368,7 @@ static void ShowCombatUIMenu(SCENE & rScene)
    ======================================================================== */
 void InitCombatUI(SCENE & rScene)
 {
-	SHORT hLeader = fERROR;
 	DumbAutoLockPtr<COMBAT_SCENE_DATA> const pcsdData(rScene.fhData);
-	LONG i;
 	
 	pcsdData->mfInitCombatVals();
 	
@@ -2905,6 +2895,22 @@ void CombatToggleViewKey(LONG , LONG )
 	}
 }
 
+#if defined (_EDIT)
+// C hooks to call IncreaseAdventureScreen and DecreaseAdventureScreen.
+extern "C" {
+void CCallIncreaseAdventureScreen (LONG, LONG)
+{
+	IncreaseAdventureScreen (0, 0);
+}
+
+void CCallDecreaseAdventureScreen (LONG, LONG)
+{
+	DecreaseAdventureScreen (0, 0);
+}
+}
+
+
+#endif
 /* ========================================================================
    Function    - AdventureFixUnitsArray
    Description - Remove dead units and send them back to thier provinces.

@@ -42,7 +42,9 @@ public:
 	char * mfGetFileName();
 	void mfSetFileName(char * /* cpName */) ;
 	LONG mfReadFileName(FILE *);
+#if defined(SCENE_EDITOR)
 	void mfWriteFileName(FILE *);
+#endif
 	BOOL mfIsSet();
 	
 protected:
@@ -108,6 +110,7 @@ inline LONG FILENAME::mfReadFileName (FILE *fp)
 	}
 	return Result;
 }
+#if defined(SCENE_EDITOR)
 /* ========================================================================
    Function    - mfWriteFileName
    Description - Write the data back to the file.
@@ -117,5 +120,6 @@ inline void FILENAME::mfWriteFileName (FILE *fp)
 {
 	fprintf(fp, "%s\n", fcpFileName);
 }
+#endif
 
 #endif // _FILENAME_HXX

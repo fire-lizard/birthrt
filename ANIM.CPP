@@ -88,7 +88,6 @@ SHORT NextFrame (SHORT iAnim, SHORT sequence, SHORT rotation, UBYTE * pCtrl, SHO
 	SHORT			seq_and_rot; 
 	SHORT     		r;
 	SHORT			old_sequence;
-	SHORT			old_rotation;
 	SHORT			continue_flag = 0;
 	SHORT			rv = fERROR;
  	SHORT      		dframe;
@@ -140,7 +139,6 @@ SHORT NextFrame (SHORT iAnim, SHORT sequence, SHORT rotation, UBYTE * pCtrl, SHO
 
 	/* prepare for sequence check and frame decoding */
     old_sequence = (SHORT)(pAnim->sequence / NUMROTATIONS);
-	old_rotation = (SHORT)(pAnim->sequence % NUMROTATIONS);
 	dframe = pAnim->frame;
 
 	/* check for sequence change */

@@ -46,31 +46,10 @@ typedef SHORT HDL_KEY;
 class KEY {
 public:
 	void mfCreateKey(char *, HDL_KEY);
+#if defined(SCENE_EDITOR)
 	void mfWriteKeyData(FILE *);
-	static HDL_KEY mfCreateSetCamera(char * /* Key Id String */,
-	                                 LONG /* KeyId */,
-	                                 LONG /* X */, 
-	                                 LONG /* Y */, 
-	                                 LONG /* Z */, 
-	                                 LONG /* Angle */,
-	                                 LONG /* Pitch */, 
-	                                 LONG /* Roll */);
-	static HDL_KEY mfCreateMoveCamera(char * /* Key Id String */,
-	                                  LONG /* KeyId */,
-	                                  LONG /* X */, 
-	                                  LONG /* Y */, 
-	                                  LONG /* Z */, 
-	                                  LONG /* Angle */, 
-	                                  LONG /* Pitch */, 
-	                                  LONG /* Roll */);
+#endif
 	
-	// Note: Don't call this if it isn't a Camera Key!
-	void mfChangeCameraLocation(LONG  /* X */, 
-		                        LONG  /* Y */, 
-		                        LONG  /* Z */, 
-		                        LONG  /* Angle */, 
-		                        LONG  /* Pitch */, 
-		                        LONG  /* Roll */);
 	LONG mfGetKeyId();
 	PFVLL mfGetPrevFunc();
 	REGARG mfGetPrevVal();
@@ -105,22 +84,6 @@ typedef SHORT HDL_KEYS;
 typedef KEY *PTR_KEY;
 typedef HDL_KEY *PTR_KEYS;
     
-	// Note: Don't call this if it isn't a Camera Key!
-/* ========================================================================
-   Function    - mfChangeCameraLocation
-   Description - 
-   Returns     - 
-   ======================================================================== */
-inline void KEY::mfChangeCameraLocation(LONG  X, 
-	                        LONG  Y, 
-	                        LONG  Z, 
-	                        LONG  Angle, 
-	                        LONG  Pitch, 
-	                        LONG  Roll)
-{
-	fCameraData.mfSetCameraData(X,Y,Z,Angle,Pitch,Roll);
-}
-
 /* ========================================================================
    Function    - mfGetKeyId
    Description - 

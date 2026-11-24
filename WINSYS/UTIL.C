@@ -89,15 +89,11 @@ void fatal_error(const char *format, ...)
 	fprintf(f,"Fatal Error:%s\n",texbuffer);
 	fclose(f);
 
-#if defined (_WINDOWS)
 	if ( sDrawMode == iGDI )
 	{
 		// JPC.
 		MessageBox (NULL, texbuffer, "FATAL ERROR", MB_OK);
 	}
-#else
-	printf("Exiting...\n");
-#endif
 	
 #if defined(_DEBUG)
 	// if debuggable, crash into the debugger
@@ -128,12 +124,11 @@ LONG get_time()
    ======================================================================== */
 void pause(LONG t)
 {
-LONG end,now;
+LONG end;
 
 	//I belive a "tick" is 1/18 of a second
 
 	end=get_time()+t;
-	now=0;
 	while(get_time()<end);
 
 }

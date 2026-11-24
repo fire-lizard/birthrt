@@ -160,7 +160,6 @@ static LONG			reportFlag = 0;
 static LONG			iNewScreen = 0;
 static LONG			iCancel = 1; 
 static LONG			additionalamt = 0;
-static LONG			startPlace = 0;
 static PROVINCE 	iSelectedProvince = NO_PROVINCE;
 static LONG 		iSelectedOneHolding = 99;
 static LONG 		iSelectedUnit = 0;
@@ -452,7 +451,6 @@ BOOL DoPageProvince(LONG *startCount, LONG provCount, LONG countToPrint, LONG co
 
 static BOOL ProcessGoldAndReg (LONG mode)
 {
-	LONG	j;
 
 	// DM controlled realms get unlimited resources
 	if (iCurAction != HOLD_ACTION && realm[HomeRealm].mfIsDMCtrl())
@@ -735,7 +733,6 @@ void SelectProvince (LONG prov, LONG)
 /*	======================================================================== */
 void Selection (LONG prov, LONG index)
 {
-	LONG i, j;
 	checkGoldReg = 0;
 
 	fAllowRollButton -= (iSelection[index]!=0);
@@ -1346,7 +1343,7 @@ static LONG			MaxPlace;
 static LONG LargestSource (PROVINCE prov, LONG place, REALM::REALM_TYPE ThisRealm)
 {
 	LONG			j, k, i;
-	LONG			route, route2;
+	LONG			route;
 
 	// find a SOURCE we own in prov
 	if (prov)
@@ -1406,7 +1403,6 @@ FollowLeyLine:
 
 void PaintForgeLeyLine (LONG x, LONG y, LONG h)
 {
-	BOOL		f = FALSE;
 	LONG		i;
 	LONG		j, k;
 	LONG		startY;
@@ -1854,7 +1850,6 @@ BOOL RecursiveRoadFollower (PROVINCE prov)
 /* ======================================================================== */
 void PaintTradeRoute (LONG x, LONG y, LONG h)
 {
-	BOOL			f = FALSE;
 	LONG			i;
 	LONG			j, k;
 	LONG			startY;
@@ -2082,10 +2077,8 @@ void PaintTradeRoute (LONG x, LONG y, LONG h)
 
 void PaintMuster (LONG x, LONG y, LONG h)
 {
-	SHORT		i, j;
+	SHORT		i;
 	SHORT		startY;
-	SHORT		units;
-	UBYTE		numType;
 	SHORT 	troops=0;     // number of troops you already have
 	LONG		provCount = 0;
 	LONG		provCount1 = 0;
@@ -2705,16 +2698,13 @@ void PaintDiplomacy (LONG x, LONG y, LONG h)
 	LONG	lPageDone = FALSE;
 	LONG	lPageDone1 = FALSE;
 	LONG	answer, alignMod;
-	LONG	investor, victim, target_province;
- 	PTR_PLAYER_STATS pYourStat;
+	LONG	investor, victim;
  	LONG	myAlign=0; 
  	LONG	yourAlign=0;
  	LONG	relicMod=0;
  	LONG	modifyMod=0;
- 	LONG	warMod=0;
 	static LONG reaction=0;
 	static LONG	typAlliance = 0;
-	UBYTE	coReaction;
 
 	del_region(NextPrev,0);
  	if (playerstats[ActiveRegent] != fERROR)
@@ -3319,7 +3309,6 @@ DiplomacyRestart:
 
 						investor = HomeRealm;
 						victim = iSelectedRealm;
-						target_province = iSelection[4];
 						province[iSelection[4]].Realm = HomeRealm;
 						SetGameData(MP_PROVINCE, MPPROV_REALM, iSelection[4], HomeRealm, TRUE );
 					}
@@ -3362,7 +3351,6 @@ DiplomacyRestart:
 
 						investor = iSelectedRealm;
 						victim = HomeRealm;
-						target_province = iSelection[7];
 						province[iSelection[7]].Realm = iSelectedRealm;
 						SetGameData(MP_PROVINCE, MPPROV_REALM, iSelection[7], iSelectedRealm, TRUE );
 					}
@@ -4313,8 +4301,8 @@ static	LONG		tmp_provCount=0;
 
 void PaintRule (LONG x, LONG y, LONG h)
 {
-	LONG	i, j, f, q, xx, tmpIndex;
-	LONG 	startY, level, select, index, tmp_index, totalLevel;
+	LONG	i, j, f, q, xx;
+	LONG 	startY, level, index, tmp_index, totalLevel;
 	LONG	success, result;
 	// Static, not automatic: its address goes to IncNum/DecNum through a
 	// region that outlives this frame (PaintRule registers no matching
@@ -4691,8 +4679,6 @@ void PaintRule (LONG x, LONG y, LONG h)
 void PaintCreateHolding (LONG x, LONG y, LONG h)
 {
 	LONG  i, j, k, startY, startX, success, result;
-	LONG  realm_flag = 0;
-	LONG  prov_flag = 0;
 	LONG  holding[] = {0, 0, 0, 0};
 	LONG		provCount = 0;
 	LONG		counter = 0;
@@ -5836,7 +5822,7 @@ void PaintInvestiture(LONG x, LONG y, LONG h)
    ======================================================================== */
 void PaintRealmSpell(LONG x, LONG y, LONG h)
 {
-	LONG			i, h1, j, q, level, slevel, count, tmpIndex, distance;
+	LONG			i, h1, j, level, slevel, count, tmpIndex, distance;
 	LONG			MaxLevel, iUnit;
 	LONG			startX = x;
 	LONG			flag = 0;
@@ -6566,7 +6552,6 @@ md_exit: 		init_gfont(FONT_SANS_8PT);
 				break;
 
 			case ITEM_SPELL_TRANSPORT:
-				LONG test_prov;
 				modLevel=level;
 				if(pStat->StatsMod.mfGetMod(STATSMOD::TRANSPORT_MOD) > 0 && modLevel < 15)
 					modLevel = 15;
@@ -7044,11 +7029,10 @@ static void InitActionGlobals (void)
    ======================================================================== */
 void PaintDomainAction (LONG MenuCombo, LONG iAction)
 {
-	SHORT	i, j;
+	SHORT	i;
 	LONG	X,Y;
 	LONG	W,H;
 	LONG	MenuId, ButtonId;
-	CHAR	color = 228;
 
 	DeleteActnMenuRegions();
 	iCurAction = iAction;
@@ -7251,7 +7235,6 @@ void AdjustHoldingLevel (PROVINCE prov, BOOL fSend)
 {
 	LONG		count, tmpIndex, tmp, j, i;
 	LONG		holding[6];
-	char		n[40];
 
 	for(j = 0; j<6; ++j)
 		holding[j] = 0;
@@ -7529,8 +7512,6 @@ void DoneDomainAction (LONG MenuCombo, LONG)
 {
 	LONG	i, j, k, index, dLevel, tmp, count, tmpIndex, iUnit;
 	LONG	lAction = FALSE;
-	LONG	x = 320;
-	LONG	y = 240;
 	LONG	f;
 	SHORT	MenuId, ButtonId;
 	SPLIT_LONG(MenuCombo, MenuId, ButtonId);
@@ -8384,11 +8365,9 @@ void RollOthersAction (LONG, LONG)
    ======================================================================== */
 void PaintOthersAction (LONG MenuCombo, LONG)
 {
-	SHORT	i, j;
 	LONG	X,Y;
 	LONG	W,H;
 	LONG	MenuId, ButtonId;
-	LONG	result = 0;
 	LONG	startY;
 
 	SPLIT_LONG(MenuCombo, MenuId, ButtonId);
@@ -8604,14 +8583,6 @@ void DisplayOthersAction ( LONG iFromId, LONG lAction, LONG lProv, LONG lHold, L
 }
 
 /* ======================================================================== */
-void DoOthersAction(LONG, LONG)
-{
-	// test routine Baruk-Azik is agitating Ghonallison
-	// chance is 9
-	DisplayOthersAction(0, DIPLOMACY, 85, 0, 9);
-}
-
-/* ======================================================================== */
 void NeverOthersDiplomacy(LONG, LONG)
 {
 	ResumeTimeLimit();
@@ -8644,7 +8615,7 @@ void NeverOthersDiplomacy(LONG, LONG)
 /* ======================================================================== */
 BOOL NPCResult(SHORT flag)
 {
-	LONG 	TProvince, holding, gold, offgold, trib, tmp, value, victim;
+	LONG 	gold, offgold, trib, tmp, value, victim;
 
 	if (flag)
 	{
@@ -8970,7 +8941,7 @@ void NoOthersDiplomacy(LONG, LONG)
 /* ======================================================================== */
 void PaintOthersDiplomacy (LONG MenuCombo, LONG)
 {
-	LONG	k, i, tmpIndex, j;
+	LONG	i, tmpIndex, j;
 	LONG	MenuId, ButtonId;
 	LONG	x, y, w, h;
 

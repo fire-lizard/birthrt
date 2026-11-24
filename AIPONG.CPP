@@ -315,7 +315,7 @@ void CAvatar::PingPong (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 	case AI_ATTACK:
 			if (pAvatar->hPlayerStats != fERROR)
 			{
-				const PTR_PLAYER_STATS pPlayerStats = (const PTR_PLAYER_STATS)BLKPTR(pAvatar->hPlayerStats);
+				BLKPTR(pAvatar->hPlayerStats);
 
 				if (pAvatar->hEnemy == fERROR)
 				{
@@ -348,10 +348,6 @@ void CAvatar::PingPong (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 					else
 					if(pAvatarTarget->hPlayerStats != fERROR)
 					{
-						
-						// First check how far away the foe is.
-						const LONG distance = aprox_dist(pAvatar->mfX(), pAvatar->mfY(),
-														 pAvatarTarget->mfX(), pAvatarTarget->mfY());
 						
 						if (pAvatar->mfCanSeeAvatar(pAvatarTarget))
 						{
@@ -726,25 +722,4 @@ void CAvatar::PingPong (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 			}
 			break;
 	}
-}
-
-/* ========================================================================
-   Function	- mfSwitchToPingPong
-   Description - Hide the dialog and send the avatar on the way.
-   Returns	 - void
-   ======================================================================== */
-
-void PINGPONG_DATA::mfSwitchToPingPong(LONG hAvatar)
-{
-	CAvatar *pAvatar = (CAvatar *) BLKPTR((SHORT) hAvatar);
-	
-	//GEH move Rate amount in a random direction
-	
-	pAvatar->fPingPong.Movement.dx = 0;
-	pAvatar->fPingPong.Movement.dy = -(pAvatar->mfGetWalkRate());
-	pAvatar->fPrev.Status = CAvatar::AI_INIT;
-	
-	pAvatar->SetAIFuncIndex(CAvatar::AI_FUNC_PING_PONG);
-	
-	pAvatar->Status = CAvatar::AI_END_LISTEN;
 }

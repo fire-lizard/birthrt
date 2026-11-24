@@ -9,11 +9,7 @@
 
    Contains the following general functions:
    clear_spans           -clears the spans arrays
-   add_line              -???
-   draw_lines            -???
    draw_spans            -???
-   open_span             -???
-   close_span            -???
    add_span_event_start  -???
    add_span_event_end    -???
 
@@ -89,9 +85,7 @@ static void draw_span( LONG isx, LONG isy, LONG isx_end, UBYTE* tex, LONG cz,
 static void draw_cspan(LONG isx, LONG isy, LONG isx_end, UBYTE* tex, LONG cz,
 	LONG size, LONG scale, ULONG tex_mask, LONG light);
 	
-static void close_span (ULONG x,ULONG y,ULONG sector);
 static void closeout_span (LONG y);
-static void open_span (ULONG x,ULONG y,ULONG sector);
 
 /* ------------------------------------------------------------------------
    Global Variables

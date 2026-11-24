@@ -43,8 +43,6 @@ void CAvatar::Spectres (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 	{
 	case AI_INIT:
 			
-			THINGTYPE type;
-			type = pAvatar->mfType();
 			
 			if(pAvatar->mfType() != SPECTRE
 			   &&pAvatar->mfType() != T_SPECTRE
@@ -243,7 +241,7 @@ void CAvatar::Spectres (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 	case AI_ATTACK:
 			if (pAvatar->hPlayerStats != fERROR)
 			{
-				const PTR_PLAYER_STATS pPlayerStats = (const PTR_PLAYER_STATS)BLKPTR(pAvatar->hPlayerStats);
+				BLKPTR(pAvatar->hPlayerStats);
 
 				if (pAvatar->hEnemy == fERROR)
 				{

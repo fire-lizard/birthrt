@@ -7,7 +7,6 @@
    ========================================================================
    Contains the following private functions:
    ObjectList::
-    mfPrevNodeIdx() -Gets the index of the node before Current
     mfMakeHead()    -Gets a blank item and makes a head for the list
 
    Contains the following general functions:
@@ -23,7 +22,6 @@
     mfDropItem(ITEMTYPE)     -Drops an Item with a certain type
     mfDropItem(ITEMTYPE,LONG,LONG)-Drops an Item with a certain type into the world
     mfFind                   -Advances current to the next occurence of a type
-    mfPrint                  -Debug func to print the list.
     mfFind                   -finds the next item with the specified type
 
    ======================================================================== */
@@ -99,7 +97,6 @@ UBYTE ObjectList::IDs=0;
 
 UBYTE const InventoryNode::fValid=0x01;
 UBYTE const InventoryNode::fWorn=0x02;
-UBYTE const InventoryNode::fIgnorable=0x04;
 UBYTE const InventoryNode::fHidden=0x08;
 
 extern SHORT BARelicFound;			// from practice.cpp
@@ -227,7 +224,6 @@ void ShowQuestItemVictoryScreen(void)
 
 LONG GetLevelFiendIndex(void)
 {
-	POINT ReturnMe;
 	
 	for (LONG i=0;i<MAX_THINGS;++i)
 	{
@@ -596,45 +592,6 @@ void ObjectList::mfInit(SHORT a,LONG ID)
 
 }
 
-//Total, counting each one's quantity.
-LONG const ObjectList::mfTotalItems()
-{
-	InventoryItor itor(*this);
-	LONG i;
-	
-	for (i = 0, itor = begin();
-	     itor != end();
-	     ++itor)
-	{
-		if ((*itor)->mfCategory() !=IC_SPELL
-			&& (*itor)->mfCategory() !=IC_BLOODAB
-			&& (*itor)->mfCategory() !=IC_REALM_SPELL
-			)
-			i+=(*itor)->mfHowMany();
-	}
-	return i;
-}
-
-//Total number of different items... ignores quantity
-LONG const ObjectList::mfTotalDifferentItems()
-{
-	InventoryItor itor(*this);
-	LONG i;
-	
-	for (i = 0, itor = begin();
-	     itor != end();
-	     ++itor)
-	{
-		if ((*itor)->mfCategory() !=IC_SPELL
-			&& (*itor)->mfCategory() !=IC_BLOODAB
-			&& (*itor)->mfCategory() !=IC_REALM_SPELL
-			)
-			++i;
-			
-	}
-	return i;
-}
-
 //Total number of different items... ignores any item with charges (hack for now)
 LONG const ObjectList::mfCountItems()
 {
@@ -697,52 +654,10 @@ LONG const ObjectList::mfNonEmptyLength(ItemCategory const cat)
 	return i;
 }
 
-void ObjectList::mfLoad()
-{
-	FILE* DatFile;
-
-	char FileName[40];
-	SHORT Header;
-	SHORT Data[2]; //[0]=Type [1]=Quantity
-	SHORT Items;
-	LONG i;
-	
-	SHORT ID=mfGetAvatarID();
-
-	sprintf(FileName,"%sid%i.inv",SAVEDIR,ID);
-	if(!Exists(FileName))
-	{
-		return;
-	}
-	
-	DatFile=fopen(FileName,"rb");
-	if (!DatFile)
-	{
-		return;
-	}
-	
-	fread(&Header,sizeof(SHORT),1,DatFile);
-
-	if (Header!=MAX_ITEM_TYPES)
-	{
-		return;
-	}
-	
-	fread(&Items,sizeof(SHORT),1,DatFile);
-	
-	for (i=0;i<Items;++i)//!feof(DatFile))
-	{
-		fread(Data,sizeof(SHORT),2,DatFile);
-		mfAddItem((ITEMTYPE)Data[0], (SHORT) Data[1], 0, FALSE);
-	}
-	mfSortSpellsByLevel();
-	fclose(DatFile);
-}
-
 void ObjectList::mfSaveTo(FILE *fp)
 {
 	SHORT iteminfo[2];
-	LONG  size, count;
+	LONG  count;
 	
     count = mfLength();
 
@@ -761,7 +676,7 @@ void ObjectList::mfSaveTo(FILE *fp)
 
 void ObjectList::mfLoadFrom(FILE *fp)
 {
-    LONG size, count;
+    LONG count;
     LONG i;
     SHORT iteminfo[2];
 
@@ -846,7 +761,6 @@ void ObjectList::mfChangeSpellBox(LONG a, InvenIndex newI)
 void ObjectList::mfAddToSpellBoxes(LONG const to,ItemCategory const cat)
 {
 	LONG i;
-	LONG EmptyIndex;
 	
 	InventoryItor itor(*this);
 	
@@ -1035,18 +949,6 @@ InvenIndex const ObjectList::mfGetSpellBox(LONG const a) const
 }
 
 /* ========================================================================
-   Function    - ObjectList::mfDoesContain(ITEMTYPE)
-   Description - attempts to find an occurence of a particular item
-   Returns     - whether or not it found it.
-   ======================================================================== */
-BOOL const ObjectList::mfDoesContain(ITEMTYPE const it)
-{	
-	InventoryItor itor(*this);
-	
-	return (itor.mfFind(it));
-}
-
-/* ========================================================================
    Function    - ObjectList::mfGameTypetoItemType(LONG)
    Description - Finds an ItemType associated with a GameType
    Returns     - the ItemType
@@ -1232,21 +1134,6 @@ AddItemStatus const ObjectList::mfAddItem(ITEMTYPE const Type)
     return mfAddItem(Type, (SHORT) 1, (SHORT)0, TRUE);
 }
 
-/* ========================================================================
-   Function    - ObjectList::mfPrint()
-   Description - Debug function, printf's the list
-   Returns     - nothing
-   ======================================================================== */
-void ObjectList::mfPrint()
-{
-   InventoryItor itor(*this);
-
-   for (itor = begin(); itor != end(); ++itor)
-   {
-   		ItemTypes[(*itor)->mfType()].mfPrint();
-   }
-}
-	
 #define BUFLEN 120
 
 void ObjectList::ReadINV(SHORT hPlayerStats, LONG id)
@@ -1533,41 +1420,6 @@ LONG const InventoryItor::mfActivateCurrent()
    		 (starts looking at Current)
    Returns     - void
    ======================================================================== */
-BOOL const InventoryItor::mfFind(ITEMTYPE const Type, ItemCategory const cat)
-{
-	if (Type==ITEM_NO_THING)
-		return FALSE;
-
-	BOOL Result = FALSE;
-	
-	// If this is the second call to this fn. advance one before looking again.
-	if (fCurrentIndex != fInventory.begin() &&
-		fCurrentIndex != fInventory.end() &&
-	    mfData()->mfType() == Type)
-	{
-		++(*this);
-	}
-
-	for(mfAdvance(cat);
-	    fCurrentIndex != fInventory.end();
-		mfAdvanceToNext(cat))
-	{
-		if (mfData()->mfType() == Type
-			&& !mfData()->mfHidden())
-		{
-			Result = TRUE;
-			break;
-		}
-	}
-	return Result;
-}
-
-/* ========================================================================
-   Function    - mfFind(ITEMTYPE)
-   Description - Advances Current to the next node with the specified type
-   		 (starts looking at Current)
-   Returns     - void
-   ======================================================================== */
 BOOL const InventoryItor::mfFind(ITEMTYPE const Type)
 {	
 	if (Type==ITEM_NO_THING)
@@ -1754,52 +1606,6 @@ void InventoryItor::mfDropItem(LONG const x, LONG const y)
 	mfDropItem();
 }
 
-/* ========================================================================
-   Function    - mfDropItem
-   Description - Deletes the current item and inserts it into the world
-                 at (x,y) this one is overloaded so that the caller can
-                 specify whether or not to put it on top of the person who
-                 is dropping it.
-   Returns     -
-   ======================================================================== */
-void InventoryItor::mfDropItem(LONG const x, LONG const y, BOOL fWilliamTell)
-{
-	//WilliamTell, the apple, on top, get it?
-	
-	if (!fDomainTurn)
-	{
-		InventoryNode * const pCurrentNode = mfData();
-		if (!pCurrentNode)
-			return;
-		
-		DumbAutoLockPtr< PLAYER_STATS > const pAvatarStats(this->fInventory.hAvatarStats);
-		DumbAutoLockPtr< CAvatar > const pAvatar(pAvatarStats->hAvatar);
-		
-		THINGTYPE const GameType=ItemTypes[pCurrentNode->mfType()].mfGameType();
-		LONG NewThingZ;
-
-		if (fWilliamTell)
-		{
-			LONG Floor;
-			LONG Ceiling;
-			LONG Special;
-			
-			pAvatar->mfGetSectorInfo(&Floor, &Ceiling, &Special);
-			
-			NewThingZ=Floor+pAvatar->mfDeathHeight();
-		}
-		else
-			NewThingZ=point_to_floor_height(x,y);
-			
-		LONG const ThingIndex = create_thing((LONG)GameType,x,y,NewThingZ);
-		mythings[ThingIndex].angle = 0;
-		LONG const ss = find_ssector(mythings[ThingIndex].x,
-		 						     mythings[ThingIndex].y);
-		add_thing(ThingIndex,ss);
-	}
-	mfDropItem();
-}
-
 void InventoryItor::mfChangeTo(ITEMTYPE it)
 {
 	//need to check for this in the spellboxes
@@ -1880,7 +1686,6 @@ void MultiDropItem(LONG iRegentIndex, LONG iItemtype)
 	======================================================================== */
 void ObjectList::ClearSpells(SHORT AvatarStatsHdl)
 {
-	BOOL   retVal = FALSE;	// assume the worst
 	DumbAutoLockPtr<PLAYER_STATS > const pPS(AvatarStatsHdl);
 	ObjectList& Inv=pPS->mfGetInventory();
 	

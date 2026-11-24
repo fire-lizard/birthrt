@@ -9,20 +9,11 @@
    Contains the following internal functions:
 
    Contains the following general functions:
-   segs_match            -???
-   single_sided          -Tests to see if a LineDef is single sided or not
-   ssector_to_hei        -???
-   seg_to_height         -???
    sector_to_fh          -floor height of a sector
    sector_to_ch          -ceiling height of a sector
-   seg_to_ceil           -???
    seg_to_sector         -finds the sector a seg is in
-   line_to_sector        -finds the sector a line is in
-   seg_to_tname          -finds the texture name on a seg
    sector_to_light       -finds the light level of a sector
-   seg_two_sided         -finds if a seg is two sided
    seg_to_texture_num    -???
-   seg_to_tyoff          -finds the offset of the texture on the seg
 
    ======================================================================== */
 /* ------------------------------------------------------------------------
@@ -58,61 +49,6 @@
 extern BYTE * gSectorLight;
 
 /* =======================================================================
-   Function    - segs_match
-   Description - ???
-   Returns     - TRUE or FALSE
-   ======================================================================== */
-LONG segs_match(SHORT a,SHORT b)
-{
-	if( (segs[a].a==segs[b].a) && (segs[a].b==segs[b].b) )
-		return(TRUE);
-	if( (segs[a].a==segs[b].b) && (segs[a].b==segs[b].a) )
-		return(TRUE);
-	return(FALSE);
-}
-
-/* =======================================================================
-   Function    - single_sided
-   Description - finds whether or not a line is single_sided
-   Returns     - TRUE or FALSE
-   ======================================================================== */
-LONG single_sided(LONG s)
-{
-	if(linedefs[segs[s].lptr].psdt==-1)
-		return(TRUE);
-	return(FALSE);
-}
-
-/* =======================================================================
-   Function    - ssector_to_hei
-   Description - ???
-   Returns     - a LONG
-   ======================================================================== */
-LONG ssector_to_hei(LONG s)
-{
-	return((LONG)seg_to_height(ssectors[s].o,0));
-}
-
-/* =======================================================================
-   Function    - seg_to_height
-   Description - ???
-   Returns     - a LONG
-   ======================================================================== */
-LONG seg_to_height(LONG s,LONG side)
-{
-LONG l,sec,sided;
-	l=(LONG)segs[s].lptr;
-
-	if(side==1)
-		sided=(LONG)linedefs[l].psdt;
-	else
-		sided=(LONG)linedefs[l].psdb;
-
-	sec=(LONG)sidedefs[sided].sec_ptr;
-	return((LONG)sectors[sec].fh);
-}
-
-/* =======================================================================
    Function    - sector_to_fh
    Description - finds the floor height of a sector
    Returns     - the floor height
@@ -133,25 +69,6 @@ LONG sector_to_ch(ULONG sec)
 }
 
 /* =======================================================================
-   Function    - seg_to_ceil
-   Description - ???
-   Returns     - a LONG
-   ======================================================================== */
-LONG seg_to_ceil(LONG s,LONG side)
-{
-LONG l,sec,sided;
-	l=(LONG)segs[s].lptr;
-
-	if(side==1)
-		sided=(LONG)linedefs[l].psdt;
-	else
-		sided=(LONG)linedefs[l].psdb;
-
-	sec=(LONG)sidedefs[sided].sec_ptr;
-	return((LONG)sectors[sec].ch);
-}
-
-/* =======================================================================
    Function    - seg_to_sector
    Description - finds a the sector a seg is in
    Returns     - the sector
@@ -160,24 +77,6 @@ LONG seg_to_sector(LONG s,LONG side)
 {
 LONG l,sec,sided;
 	l=(LONG)segs[s].lptr;
-
-	if(side==1)
-		sided=(LONG)linedefs[l].psdt;
-	else
-		sided=(LONG)linedefs[l].psdb;
-
-	sec=(LONG)sidedefs[sided].sec_ptr;
-	return((LONG)sec);
-}
-
-/* =======================================================================
-   Function    - line_to_sector
-   Description - finds the sector a line is in
-   Returns     - the sector
-   ======================================================================== */
-LONG line_to_sector(LONG l,LONG side)
-{
-LONG sec,sided;
 
 	if(side==1)
 		sided=(LONG)linedefs[l].psdt;
@@ -258,18 +157,6 @@ LONG sector_to_light(ULONG sect)
 }
 
 /* =======================================================================
-   Function    - seg_two_sided
-   Description - finds if a seg is two sided
-   Returns     - TRUE or FALSE
-   ======================================================================== */
-LONG seg_two_sided(LONG s)
-{
-	if(linedefs[segs[s].lptr].psdt==-1)
-		return(FALSE);
-	return(TRUE); /*assume true*/
-}
-
-/* =======================================================================
    Function    - seg_to_texture_num
    Description - ???
    Returns     - a LONG
@@ -332,47 +219,4 @@ void seg_to_txoff_tyoff(LONG seg,LONG side, LONG * ptxoff, LONG * ptyoff)
 		*ptxoff = sidedefs[sided].xoff;
 		*ptyoff = sidedefs[sided].yoff;
 	}
-}
-/* =======================================================================
-   Function    - seg_to_txoff
-   Description - finds the x-offset of the texture on a side of the seg
-   Returns     - the offset
-   Comment     - JPC added this 6-07-96.  Copied from seg_to_tyoff.
-                 Called from draw_wall, etc., in RENDER.C.
-   ======================================================================== */
-LONG seg_to_txoff(LONG seg,LONG side)
-{
-   LONG l,sided;
-
-	l=(LONG)segs[seg].lptr;
-
-	if(side==1)
-		sided=(LONG)linedefs[l].psdt;
-	else
-		sided=(LONG)linedefs[l].psdb;
-
-	if(sided==-1)
-		return(0);
-	return(sidedefs[sided].xoff);
-}
-
-/* =======================================================================
-   Function    - seg_to_tyoff
-   Description - finds the y-offset of the texture on a side of the seg
-   Returns     - the offset
-   ======================================================================== */
-LONG seg_to_tyoff(LONG seg,LONG side)
-{
-LONG l,sided;
-
-	l=(LONG)segs[seg].lptr;
-
-	if(side==1)
-		sided=(LONG)linedefs[l].psdt;
-	else
-		sided=(LONG)linedefs[l].psdb;
-
-	if(sided==-1)
-		return(0);
-	return(sidedefs[sided].yoff);
 }

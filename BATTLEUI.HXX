@@ -275,7 +275,6 @@ void BattleWin(LONG, LONG);
 void BattleWinProc(LONG MenuCombo, LONG button);
 void CheckDefeatOfGorgon( void );
 
-void BattleSelMissile(LONG MenuCombo, LONG );
 void BattleSelMagic(LONG MenuCombo, LONG );
 
 void BattleControlGrid(LONG,LONG location);
@@ -307,13 +306,10 @@ SHORT BattleLookAround(
 
 void BattleMissile(LONG , LONG MenuCombo);
 void BattleMagic(LONG , LONG MenuCombo);
-void BattleSelMissile(LONG MenuCombo, LONG );
 BOOL BattleMagicReady(CAvatar *pAvatar);
 
 // PFGRIDTEST type functions
 SHORT HilightHomeMovement(LONG MenuId,LONG R,LONG C,LONG, BOOL *T);
-SHORT HilightMissile( LONG MenuId, LONG R, LONG C, LONG, BOOL *T );
-void HilightUnit(void);
 SHORT CheckEnemy( LONG MenuId, LONG R, LONG C, LONG, BOOL *T );
 void HilightMissileRange(void);
 void HilightMyTroops(void);
@@ -322,14 +318,12 @@ BOOL CheckMissileRangeSub(SHORT R, SHORT C);
 
 void HilightMissileShooter(void);
 void HilightMagicShooter(void);
-SHORT HilightShooter( LONG MenuId, LONG R, LONG C, LONG, BOOL *T );
 
 void BattleCancel(LONG, LONG);
 void BattleFallBack(LONG, LONG);
 
 void BattleCancelMissile(LONG MenuCombo, LONG);
 void BattleCancelMove(LONG MenuCombo, LONG);
-void BattleCancelSelUnit(LONG, LONG);
 
 void BattleCameraHighView(LONG, LONG);
 void BattleCameraFollow(LONG, LONG);

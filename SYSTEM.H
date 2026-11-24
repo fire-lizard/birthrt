@@ -253,9 +253,7 @@ void _assert(BOOL fTest,char *FileName, SHORT LineNum);
 
 /* timer.c */
 void init_timers();
-void close_timers(void);
 void add_timer(LONG freq,PFV func);
-void remove_timer(PFV func);
 void run_timers();
 void TickDelay(LONG);
 
@@ -285,7 +283,6 @@ void DrawBitm (SHORT x, SHORT y, SHORT iBitm, SHORT xb, SHORT yb, SHORT w, SHORT
 void DrawBitmap (SHORT x, SHORT y, SHORT iBitm, SHORT xb, SHORT yb, SHORT w, SHORT h);
 void ScaleBitmap (SHORT, SHORT, SHORT, SHORT, SHORT, SHORT, SHORT, SHORT);
 void ScaleBitmapX (SHORT, SHORT, SHORT, SHORT, SHORT, SHORT, SHORT, SHORT);
-void ScaleBitmapY (SHORT, SHORT, SHORT, SHORT, SHORT, SHORT, SHORT, SHORT);
 
 SHORT SaveBitmap (SHORT x, SHORT y, SHORT w, SHORT h);
 void ZoomBitmap(SHORT x, SHORT y, SHORT iBitm, SHORT xb, SHORT yb,
@@ -309,8 +306,6 @@ void ScrollClosedBitmap(SHORT x, SHORT y, SHORT iBitm, SHORT xb, SHORT yb,
 
 SHORT _OpenBitm (SHORT w, USHORT h, BOOL fLocked);
 BOOL Exists( char *filename);
-void dec_view_size(LONG arg1, LONG arg2);
-void inc_view_size(LONG arg1, LONG arg2);
 void inc_lens (LONG, LONG);
 void dec_lens (LONG, LONG);
 
@@ -320,9 +315,6 @@ extern void DrawLittleButton(LONG, LONG, LONG, LONG, LONG);
 /* game.cpp */
 void GAMEToggleMainMenu(LONG fState, LONG);
 char* GetSourcePath(void);
-
-/* vdpmi.c */
-void * D32DosMemAlloc ( ULONG size );
 
 /* ------------------------------------------------------------------------
    Global Variables
@@ -336,7 +328,6 @@ extern char InstallPath[256];
 extern COLORSPEC		CurPal[256];
 extern LONG  			screen_buffer_width;	/* system.c */
 extern LONG  			screen_buffer_height;
-extern LONG				graphics_mode;
 extern PTR				screen;
 extern LONG				lens_factor;
 

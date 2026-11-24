@@ -35,15 +35,7 @@
 
 SHORT CAvatar::PlayerAvatarHandle=fERROR;
 const LONG CAvatar::ActivationDistance = 1000;
-const LONG CAvatar::fgTauntDelay = 50;
 
-// [d11-05-96 JPC] Experiment for keeping dead things from clipping so badly.
-#define EXTRATHINGS 0	// conform to #define in THINGS.C
-#if EXTRATHINGS
-extern "C" {
-void AddThingToAdjacentSubsectors (LONG ThingIndex);
-}
-#endif
 
 void CAvatar::SetAIFuncIndex(AIFUNC aif)
 {
@@ -680,36 +672,6 @@ void CAvatar::mfClearAllLoopingSnds()
 }
 
 /* ========================================================================
-   Function    - AvatarIdToHdl
-   Description - find the Id, return the hThis
-   				 Note: If you can store the handle not the ID. Unless the
-   				       game could kill off the avatar and not notify you.
-   Returns     -
-   ======================================================================== */
-SHORT AvatarIdToHdl ( LONG Id )
-{
-	SHORT	i;
-	SHORT	hdl = (SHORT)fERROR; // assume id not found
-	PTR_SCENE pCurrentScene = 0;
-	
-	pCurrentScene = (PTR_SCENE) BLKPTR(SCENE_MGR::hCurrentScene);
-	for(i=0;i<MAX_AVATARS;++i)
-	{
-		if (pCurrentScene->Avatars[i] != fERROR)
-		{
-			CAvatar const * const pA = (CAvatar const * const) BLKPTR(pCurrentScene->Avatars[i]);
-			if(pA->Id == Id)
-			{
-				hdl = pA->hThis;
-				break;
-			}
-		}
-	}
-	
-	return hdl;
-}
-
-/* ========================================================================
    Function    - FindClosestFoe
    Description - Search the entire Avatar list and find the closest unengaged
                  foe. Of the 5 closest foes, pick the closest one with the
@@ -1209,8 +1171,6 @@ void CAvatar::mfKillAvatar(CAvatar * const pEnemyAvatar)
 
 	// [d11-05-96 JPC] Add dead thing to adjacent subsectors to help with
 	// clipping problem.
-#if EXTRATHINGS
-#endif
 
 	// If the Enemy had a target DisEngage that one.
 	if (pEnemyAvatar->hEnemy != fERROR)
@@ -1932,21 +1892,6 @@ const MOVEMENT_RATE CAvatar::mfGetMarchRate() const
 }
 
 /* ========================================================================
-   Function    - mfSetKillType
-   Description - stores the type of kill someone placed on us
-   Returns     - BOOL TRUE already killed
-   ======================================================================== */
-BOOL CAvatar::mfSetKillType(CAvatar *pAvatar, THINGTYPE Type, LONG DamageLevel)
-{
-	if(pAvatar->KillType != NO_THING )
-		return TRUE; // previous kill
-		
-	pAvatar->KillType = Type;
-	pAvatar->fDamage = DamageLevel;
-	return FALSE; // no previous kills
-}
-
-/* ========================================================================
    Function    - mfBeginPause
    Description - Begin a pause sequence. Wait for the next command.
    Returns     -
@@ -2220,6 +2165,119 @@ void CAvatar::mfTurnToStone()
 	}
 }
 
+#if defined(SCENE_EDITOR)
+/* ========================================================================
+   Function    - mfWriteData
+   Description - Write to Scene File
+   Returns     - 
+   ======================================================================== */
+void LEADER_DATA::mfWriteData(FILE *fp) 
+{
+	SHORT		sActualFollowers = 0;
+	SHORT		i;
+	
+	SHORT *pShortList = (SHORT *)(BLKPTR(hdlSlotList));
+	for(i=0;i<sMaxFollowers;i++)
+	{
+		if (pShortList[i] != (SHORT)fERROR)
+			sActualFollowers++;
+	}
+	fprintf(fp, "%hd %hd\n", sActualFollowers, sMaxFollowers);
+	for(i=0;i<sMaxFollowers;i++)
+	{
+		if (pShortList[i] != (SHORT)fERROR)
+			fprintf(fp, "%hd\n", AvatarHdlToId(pShortList[i]));
+	}
+	fprintf(fp, "\n");
+	
+	PLAYER *pPointList = (PLAYER *)(BLKPTR(hdlPathDeltas));
+	if (sActualFollowers > 0)
+	{
+		for(i=0;i<sMaxFollowers;i++)
+		{
+			fprintf(fp, "%d %d %d %d %d\n", 
+				pPointList[i].x, 
+				pPointList[i].y, 
+				pPointList[i].z, 
+				pPointList[i].a,
+				pPointList[i].p);
+		}
+	}
+}
+	
+
+#if defined(SCENE_EDITOR)
+// Saves avatar ID to disk
+void CAvatar::Save(void)
+{
+	// Don't save the troops from a battle captain.
+	if (attrib.RuntimeCreated == FALSE)
+	{
+		char szFileName[20] = { "scenes\\"};
+		char szID[10];
+		FILE *pFileWrite;
+	
+		strcat(szFileName, "id");
+		sprintf(szID, "%ld", Id);
+		strcat(szFileName, szID);
+		strcat(szFileName, ".ava");
+	
+		pFileWrite = FileOpen(szFileName,"wb");
+			
+		if (pFileWrite == NULL)			// OOPS!  No file
+				return;
+	
+		fwrite(&Version, 	sizeof(long), 1, pFileWrite);
+		if (hPlayerStats != fERROR)
+		{
+			PTR_PLAYER_STATS pPlayerStats = (PTR_PLAYER_STATS) BLKPTR(hPlayerStats);
+			pPlayerStats->mfWriteData(pFileWrite);
+		}
+	
+		FileClose(pFileWrite);		
+	}
+}
+#endif
+
+/* ========================================================================
+   Function    - mfWriteSceneData
+   Description - Write to the scene file the current state of the Avatar's AI and any info
+				it needs.
+   Returns     -
+   ======================================================================== */
+void CAvatar::mfWriteSceneData(FILE * const fp)
+{
+	if (mfShouldSaveToSceneFile())
+	{
+		fprintf(fp, "%ld %ld %ld %ld %ld %ld\n",
+			Id,
+			mfX(),
+			mfY(),
+			mfZ(),
+			mfAngle(),
+			GetAIFuncIndex()
+			);
+			
+		// SCENE EDITOR: only the AI functions that mfReadRestOfSceneData reads.
+		switch(GetAIFuncIndex())
+		{
+		case AI_FUNC_FOLLOW_PATH:
+			fFollowPath.mfWriteData(fp);
+			break;
+		case AI_FUNC_PING_PONG:
+			fPingPong.mfWriteData(fp);
+			break;
+		case AI_FUNC_BATTLE_CAPTAIN:
+			fBtlCap.mfWriteData(fp);
+			break;
+		case AI_FUNC_FOLLOW_PLAYER:
+			fFollowPlayer.mfWriteData(fp);
+			break;
+		}
+	}
+}
+
+#endif
 /* ========================================================================
    Function    - mfRotateToCamera
    Description - Wait until you are facing the camera and then go to the next phase.

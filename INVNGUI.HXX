@@ -34,7 +34,6 @@
     mfSetNextSpellBox      -Sets the player's next spell box
     mfClearSpellBox        -Clears one of the player's spellboxes
     mfAddToSpellBoxes      -Sets one of the player's blank spell boxes
-    mfUseSpellBox          -Acvtivates one of the player's spell boxes
     mfAddToActiveInventory -Adds an item to one of the player's boxes
     mfToggleDemBoxes       -Toggles the Outline of the regions on the menu
     mfPrintWeaponInfo      -Prints weapon info about the player's current weap
@@ -70,10 +69,6 @@
 
 #if !defined(_GMENUENM_H)
 #include "GMENUENM.H"
-#endif
-
-#if !defined(_LISTBOX_HXX)
-#include "LISTBOX.HXX"
 #endif
 
 #if !defined(_HMGR_HXX)
@@ -125,7 +120,6 @@ class InventoryGUI
 
 		void mfPaintSpellBoxes(ObjectList const & ,LONG) const;
 		void mfPaintListBoxLine(LONG,ObjectList & ,LONG) const;
-		void mfPaintListBoxIcon(LONG,ObjectList const & ,LONG) const;
 		void mfPaintMiscInfoBox(ObjectList & ,LONG) const;
 		void mfPaintArmsBoxes(ObjectList&,LONG);
 		void mfPaintCategoryButtonText(LONG) const;
@@ -142,11 +136,8 @@ class InventoryGUI
 		void mfChangeCurrCat(LONG,LONG c);
 		void mfAddToSpellBoxes(LONG,LONG);
 		void mfClearSpellBox(LONG,LONG);
-		void mfUseSpellBox(LONG,LONG);
 		void mfAddToAvailSpells(LONG,LONG);
 		void mfTakeFromAvailSpells(LONG,LONG);
-		
-		void mfPurge(LONG,LONG);
 		
 		InventoryGUI();
 		void mfInit(SHORT);
@@ -178,20 +169,16 @@ class StaticInventoryGUI
 		static void mfChangeCurrCat(LONG,LONG);
 		static void mfClearSpellBox(LONG,LONG);
 		static void mfAddToSpellBoxes(LONG,LONG);
-		static void mfUseSpellBox(LONG,LONG);
 		static void mfToggleDemBoxes(LONG,LONG);
 		static void mfPrintWeaponInfo(LONG,LONG);
 		static void mfPrintArmorInfo(LONG,LONG);
 		static void mfDropItem(LONG,LONG);
 		static void mfGiveItem(LONG,LONG);
 		static void mf(LONG,LONG); //cool....
-		static void mfAddItem(LONG,LONG); //cool....
 		static void mfAddToAvailSpells(LONG,LONG);
 		static void mfTakeFromAvailSpells(LONG,LONG);
 		static void Hide(LONG,LONG);
 		static void ShowStatus(LONG,LONG);
-		static void mfLoad(LONG,LONG);
-		static void mfPurge(LONG,LONG);
 		
 };
 
@@ -252,11 +239,6 @@ inline void StaticInventoryGUI::mfAddToSpellBoxes(LONG a,LONG b)
 {
 	GUI.mfAddToSpellBoxes(a,b);
 }
-inline void StaticInventoryGUI::mfUseSpellBox(LONG a,LONG b)
-{
-	GUI.mfUseSpellBox(a,b);
-}
-
 inline void StaticInventoryGUI::mfToggleDemBoxes(LONG,LONG)
 {
 	GUI.DrawRedBoxes=!GUI.DrawRedBoxes;
@@ -282,11 +264,6 @@ inline void StaticInventoryGUI::mfTakeFromAvailSpells(LONG a,LONG b)
 	GUI.mfTakeFromAvailSpells(a,b);
 }
 
-inline void StaticInventoryGUI::mfPurge(LONG a,LONG b)
-{
-	GUI.mfPurge(a,b);
-}
-
 inline void StaticInventoryGUI::ShowStatus(LONG a,LONG b)
 {
 	GUI.HlMgr.HighlightButton(a,1);
@@ -304,13 +281,6 @@ inline void StaticInventoryGUI::Hide(LONG a,LONG b)
 	//need a delay!	
 	GUI.HlMgr.Clear();
 	HideSubMenu(a,D_AVATAR_INVENTORY);
-}
-
-inline void StaticInventoryGUI::mfLoad(LONG,LONG)
-{
-	DumbAutoLockPtr<PLAYER_STATS> const pPlayerStats(GUI.GetStatsHdl());
-	ObjectList& Ol=pPlayerStats->mfGetInventory();
-	Ol.mfLoad();
 }
 
 #endif

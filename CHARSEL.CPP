@@ -11,7 +11,6 @@
    void DomainNewGame (LONG, LONG)
    void DisplayRealmSelection(void)
    void SelectRegent(LONG, LONG)
-   void EndSelectDomain(void)
    void BeginRule(LONG, LONG)
    void SelectAdvParty(void)
 
@@ -288,7 +287,6 @@ static ButtonInfo Buttons[2][2];
 /* ------------------------------------------------------------------------
    Global Variables
    ------------------------------------------------------------------------ */
-static char SourcePath[256];
 SHORT localActiveRegent;
 static SHORT iRegent1 = fERROR;
 static SHORT iRegent2 = fERROR;
@@ -305,7 +303,6 @@ static char  inParty[ADVENTURER_LIST_SIZE] = {0};
 static LONG  numGoing;
 static SHORT iLocalCheck[2];
 static LONG  iPartyLead;
-static LONG  iRegentProvince;
 static LONG  iAdvMode;
 static LONG  iAdvCountdown;
 LONG  iSiteChosen;
@@ -357,7 +354,6 @@ void IncActionTurn(void);
    Extern Prototypes
    ------------------------------------------------------------------------ */
 void ReconstructMap(void);
-void DoSlideShow(LONG iWhich);
 void crease (LONG x, LONG y, LONG w, LONG h);
 void UpdateDataArea(void);
 void DataAreaMode (LONG type, LONG dummy);
@@ -542,7 +538,6 @@ printf("DomainNewGame - char_selected:%d\n",char_selected);
 
 		if (!char_selected)
 		{
-#ifdef _WINDOWS
 			if ( IsMultiPlayer() )
 			{
 				NewGameConfirmed( 0,lMultiFlag );
@@ -551,9 +546,6 @@ printf("DomainNewGame - char_selected:%d\n",char_selected);
 			{
 				OpenGameSelect(0,lMultiFlag);
 			}
-#else
-			OpenGameSelect(0,lMultiFlag);
-#endif
 			return;
 		}
 
@@ -639,7 +631,6 @@ void NewGameConfirmed2(BOOL fMulti)
 
 void NewGameConfirmed(LONG,LONG lMultiFlag)
 {
-	LONG i;
 
 #ifdef _WINDOWS
 
@@ -925,10 +916,7 @@ extern LONG		map_scale;
 
 void DisplayRealmSelection(void)
 {
-	PLAYER_STATS		*pStat1, *pStat2;
-	SHORT					hStat;
-	char					buff[80];
-	int					i, y = 40;
+	int					i;
 
 	// draw left panel
 	DrawBitmap (0, 0, iDTurnBk, (SHORT)(DATA_AREA_MAX-l_map), 0, (SHORT)l_map, 480);
@@ -954,10 +942,6 @@ void DisplayRealmSelection(void)
 
 	if (HomeRealm>0)
 	{
-		REALM_STRUCT_PTR	pRealm   = &realm[HomeRealm];
-		unsigned int		Regent_  = pRealm->mfGetRegent();
-		REGENT_PTR			pRegent1 = &regents[(HomeRealm * 2) - 1];
-		REGENT_PTR			pRegent2 = &regents[(HomeRealm * 2)];
 
 		if(iOldRealm != HomeRealm)
 		{
@@ -1243,7 +1227,7 @@ void SelectRegent(LONG arg1, LONG arg2)
 
 void BeginRule(LONG, LONG)
 {
-	int i, j;
+	int i;
 
 	TurnOffAllSounds();
 
@@ -1450,7 +1434,6 @@ void PaintMoreInfo (LONG MenuCombo, LONG )
 	char	textbuf[4096];
 	char	buff[80];
 	FILE	*in;
-	char path[256];
 	SPLIT_LONG(MenuCombo, MenuId, ButtonId);
 	LONG	startY;
 
@@ -1510,7 +1493,6 @@ void PaintMoreInfo (LONG MenuCombo, LONG )
    ======================================================================== */
 void SelectAdvParty(void)
 {
-	int i;
 
 	iAdvMode = ADV_GETPARTY;
 	localActiveRegent = ActiveRegent;
@@ -1637,7 +1619,6 @@ void EndAdvParty(LONG i, LONG j)
 				
 				for (who=0; who<ADVENTURER_LIST_SIZE; who++)
 				{
-					BOOL did_break = FALSE;
 					me = whoIndex[who];
 					if (me == -1)  /* end of list */
 						break;
@@ -1651,7 +1632,6 @@ void EndAdvParty(LONG i, LONG j)
 						       if (units[unit].NextUnit == me)
 						       {
 							       units[unit].NextUnit = units[me].NextUnit;
-							       did_break = TRUE;
 							       break;
 						       }
 						    }
@@ -1734,28 +1714,6 @@ void EndAdvParty(LONG i, LONG j)
 			iAdvMode = ADV_GETPARTY;
 			SetRedrawMainMapLevel();
 	}
-}
-
-void ReturnFromAdventure(LONG, LONG)
-{
-	LONG	who, me;	  // loop index, unit# of selection
-
-    for (who=0; who<ADVENTURER_LIST_SIZE; who++)
-    {
-		me = whoIndex[who];
-		if (me == -1)  /* end of list */
-			break;
-
-		if (inParty[who] && units[me].province == NO_PROVINCE)
-		{
-		    units[me].province = units[me].DestProvince;
-		    units[me].DestProvince = NO_PROVINCE;
-		}
-	}
-
-	TutorialActionNumber++;
-	TutorialScreenNumber = 0;
-
 }
 
 /* ========================================================================
@@ -2163,7 +2121,6 @@ void DisplayAdvParty(void)
 void SelectAdvSite(void)
 {
 	int i, j = 0;
-	int k;
 	int count;
 	int level;
 	int rndsite;

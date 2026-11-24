@@ -11,7 +11,6 @@
    get_texture           -gets a texture from somewhere???
    get_floor_texture     -gets a floor texture from somewhere???
    scale_col_ttop        -???
-   scale_col_tbot        -???
    scrape                -???
    hscrape               -???
 
@@ -23,6 +22,9 @@
 #include <string.h>
 #include "PLATFORM.H"
 #include <ctype.h>
+#if defined (_EDIT)
+#include <windows.h>
+#endif
 #include "DEBUG.H"
 #include "SYSTEM.H"
 #include "ENGINE.H"
@@ -96,6 +98,13 @@ extern   LONG  gMinLight;              // [d9-23-96 JPC] Minimum allowed value f
 extern   LONG  gMaxLight;              // [d9-23-96 JPC] Maximum allowed value for light.
 extern	LONG	gRemapIndex;				// [d7-29-96 JPC] experimental
 
+// [d9-10-96 JPC]
+#if defined (_EDIT)
+BOOL		gfMessageShown;
+int		gcTextures;
+extern BOOL gfFullBrightness;				// defined in EDIT.C
+#endif
+
 /* ========================================================================
    Function    - get_texture
    Description - gets a texture from somewhere???
@@ -146,9 +155,25 @@ LONG get_texture (char *in, ULONG * o_status)
 
 	t=last_texture++;
 
+#if defined (_EDIT)
+	// Keep track of how many textures we tried to load,
+	// even if we can't load them all.
+	++gcTextures;							
+#endif	
+
 	if(last_texture>MAX_TEXTURES)
 	{
+#if defined (_EDIT)
+		last_texture = MAX_TEXTURES;
+		if (!gfMessageShown)
+		{
+			MessageBox (NULL, "Too many textures in get_texture", "Error", MB_OK);
+			gfMessageShown = TRUE;
+			goto LoadGenericTexture;
+		}
+#else
 		fatal_error("Exceeded MAX_TEXTURES in get_texture");
+#endif
 	}
 	textures[t].type = NORMAL_TEX;			/* not see-through, not sky */
 	sprintf(textures[t].name,"%s",n);
@@ -230,6 +255,10 @@ LONG get_texture (char *in, ULONG * o_status)
 	// write the texture name to the err file
 	WriteErrFile(n);
 
+#if defined (_EDIT)
+LoadGenericTexture:
+#endif
+
 	// [MDB] assign the generic texture
 	sprintf(tn, "%s%s.pcx", TEXTURE_PATH,"genwall");
 	textures[t].t = tex = GetResourceRot(tn);
@@ -257,7 +286,11 @@ LONG get_texture (char *in, ULONG * o_status)
    ======================================================================== */
 void load_sky_textures (void)
 {
+#if defined (_EDIT)
+#define LST_DEFAULT_NAME "BACK03"
+#else
 #define LST_DEFAULT_NAME "BACK01"
+#endif
 
 	int		iLastChar;
 	ULONG		i;
@@ -403,9 +436,25 @@ LONG get_floor_texture(char *in)
 
 	t=last_texture++;
 
+#if defined (_EDIT)
+	// Keep track of how many textures we tried to load,
+	// even if we can't load them all.
+	++gcTextures;							
+#endif	
+
 	if(last_texture>=MAX_TEXTURES)
 	{
+#if defined (_EDIT)
+		last_texture = MAX_TEXTURES;
+		if (!gfMessageShown)
+		{
+			MessageBox (NULL, "Too many textures in get_floor_texture", "Error", MB_OK);
+			gfMessageShown = TRUE;
+			goto LoadGenericTexture;
+		}
+#else
 		fatal_error("Exceeded MAX_TEXTURES in get_floor_texture");
+#endif
 	}
 
 	// [d12-04-96 JPC] Old location of SKY code; moved it up.
@@ -525,6 +574,10 @@ LONG get_floor_texture(char *in)
 	// write the texture name to the err file
 	WriteErrFile(n);
 
+#if defined (_EDIT)
+LoadGenericTexture:
+#endif
+
 	// [MDB] assign the generic texture
 	sprintf(tn, "%s%s.pcx", TEXTURE_PATH,"genflr");
 	textures[t].t = tex = GetResourceRot(tn);
@@ -626,14 +679,6 @@ void scrape(LONG x,			// column to draw in
 	LONG 		margin_left, margin_right, margin_top, margin_bottom;
 	ULONG		t_size = wid * sky_textures[0].h;
 
-	// GWP for Low res skip scan lines.
-#if !defined(_WINDOWS)
-	if (fAIMoving)
-	{
-		if (x & 1)
-			return;
-	}
-#endif
 	
 	++yEnd;
 	get_margin_size(&margin_right,&margin_left,&margin_top,&margin_bottom);
@@ -705,17 +750,6 @@ void scrape(LONG x,			// column to draw in
 		skyPtr = ((PTR)BLKPTR((SHORT)sky_textures[10].t)) + sizeof(BITMHDR);
 		// Draw the last "yStart" lines of the generic sky texture
 		// above our panel.
-#if !defined(_WINDOWS)
-		if (fAIMoving)
-		{
-			do {
-				*(sptr+1)=*sptr = skyPtr[tsy];
-				sptr += sptr_inc;
-				tsy += tptr_inc;
-			} while (tsy < wid);
-		}
-		else
-#endif
 		{
 			do {
 				*sptr = skyPtr[tsy];
@@ -730,24 +764,6 @@ void scrape(LONG x,			// column to draw in
 	tptr = ((PTR)BLKPTR((SHORT)sky_textures[panel].t)) + sizeof(BITMHDR);
 	tsy = (yStart*wid) + x;
 	
-#if !defined(_WINDOWS)
-	if (fAIMoving)
-	{
-		do {
-			if (tsy >= t_size)
-			{
-				tsy = x;
-				// textures[11] is BACK01X.PCX, which is all grass.
-				// on bottom.
-				tptr = ((PTR)BLKPTR((SHORT)sky_textures[11].t)) + sizeof(BITMHDR);
-			}
-			*(sptr+1)=*sptr = tptr[tsy];
-			sptr += sptr_inc;
-			tsy += tptr_inc;
-		} while (sptr < sptr_end);
-	}
-	else
-#endif
 	{
 		do {
 			if (tsy >= t_size)
@@ -983,6 +999,45 @@ void WriteErrFile(char *n)
 		fprintf(f,"Texture not found:%s - Generic texture assigned\n",n);
 	fclose(f);
 }
+
+#if defined (_EDIT) || defined (_WADBUILDERS)
+/* ======================================================================== */
+void TextureLightTest (LONG arg1, LONG arg2)
+{
+// This is the callback function for various light tests.
+// This is not intended to be a permanent function, but you never know.
+// The keys are set up in MAIN: GameMain, which calls REGIONS: add_key.
+// ---------------------------------------------------------------------------
+
+	switch (arg1)
+	{
+		case 0:									// F7 key tests
+#if defined (_EDIT)
+			gfFullBrightness = !gfFullBrightness;
+#else
+			gfTestMagicLightSwitch = !gfTestMagicLightSwitch;
+#endif
+			break;
+
+		case 1:									// F8
+			// [d7-15-96 JPC] Replace old test with color remap test.
+			// gcMagicTemporaryLight = 160;	// effect lasts 160 frames
+#if 01
+			gfTestMagicLightSwitch = !gfTestMagicLightSwitch;
+#else
+			if (gRemapIndex == 0)
+				gRemapIndex = WRAITH_REMAP;
+			else
+				gRemapIndex = 0;
+#endif
+			break;
+
+		case 2:									// F9
+			gfInfraVision = !gfInfraVision;
+			break;
+	}
+}
+#endif
 
 // ---------------------------------------------------------------------------
 void TextureFrameHandler (LONG arg)

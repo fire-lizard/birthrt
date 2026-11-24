@@ -8,7 +8,6 @@
    ========================================================================
    Contains the following internal functions:
    load_blockmap       -loads the load_blockmap from the wad
-   load_rejects        -loads the reject table from the wad
    load_things         -loads the load_things from the wad
    load_linedefs       -loads the load_linedefs from the wad
    load_sidedefs       -loads the load_sidedefs from the wad
@@ -18,7 +17,6 @@
    load_nodes          -loads the load_nodes from the wad
    load_sectors        -loads the load_sectors from the wad
    load_wall_textures  -loads the load_wall_textures from the wad
-   load_flats          -loads the load_flats from the wad
 
    Contains the following general functions:
    load_level          -handles the loading of a doom-style wad.
@@ -31,6 +29,11 @@
 #include <stdio.h>
 #include <string.h>
 #include <fcntl.h>
+
+#if defined (_EDIT)
+#include <windows.h>
+#include "edit.h"
+#endif
 
 #include "DEBUG.H"
 
@@ -80,7 +83,6 @@ static void load_wall_textures(void);
 /* ------------------------------------------------------------------------
    Global Variables
    ------------------------------------------------------------------------ */
-FILE		*	fptr;
 
 CSTRPTR	level_name = "E1M1";
 CHAR		pwad_name[40] = "castle86.wad";
@@ -409,6 +411,11 @@ LONG numRead;
 		sidedefs[i].n1=get_texture((char*) &t[i].n1[0], &status);
 		sidedefs[i].n2=get_texture((char*) &t[i].n2[0], &status);
 		sidedefs[i].n3=get_texture((char*) &t[i].n3[0], &status);
+#if defined(_EDIT)
+		sidedefs[i].n1_noTexture = 0;
+		sidedefs[i].n2_noTexture = 0;
+		sidedefs[i].n3_noTexture = 0;
+#endif
 		sidedefs[i].sec_ptr = t[i].sec_ptr;
 	}
 	
@@ -685,6 +692,9 @@ void PurgeLevel(void)
 	remove_task(HandleFloors);
 	remove_task(HandleCeilings);
 	remove_task(TextureFrameHandler);
+#if defined (_EDIT)
+	SendMessage(ghwndEditWallDlg, WM_CLOSE, 0, 0);
+#endif
 
 	printf("Freemem at end of level: %d\n", ReportFreeMem(TRUE));
 	init_doors();								// [d11-14-96 JPC] removes all sounds
@@ -749,71 +759,3 @@ void load_new_wad(char *name, LONG PlayerStart)
 	printf("Freemem before loading %s: %d\n", name, ReportFreeMem(TRUE));
 	load_level(name,PlayerStart);
 }
-
-/* ========================================================================
-   Function    - SetWadPath
-   Description - Set up the path of where the .WAD file is
-   Returns     - void
-   ======================================================================== */
-void SetWadPath ( CSTRPTR pWadPath )
-{
-	/* copy the first 79 chars into pwad_path */
-	strncpy(pwad_path, pWadPath, 79);
-}
-
-// ===========================================================================
-#if !defined (_RELEASE)
-void CreateResourceScript ()
-{
-// [d3-20-97 JPC] If user invoked DOS NOVA with "g wadname," generate a
-// resource script for the WAD.
-// Example:
-//		nova g wads\braem_mw.wad
-//
-// Note that you have to specify both the WAD directory and the .WAD extension.
-
-	FILE *		fit;
-	LONG			num;						// 32-bit WAD header fields, see load_level
-	LONG			id;
-	LONG			h;
-	char			lev[30];
-	IWAD_ENTRY	ent;
-	THING			t;
-	int			cThings;
-	int			i;
-	int			filepos;
-	char			szWadName[_MAX_PATH];
-	extern char	pwad[];						// name of WAD file, initialized in
-													// MACHINE.C: parse_cmdline.
-
-	sprintf (szWadName,"%s", pwad);
-	fit = FileOpen(szWadName, "rb");
-	if (fit == NULL)
-		fatal_error("Can't open PWAD file \"%s\"", szWadName);
-	
-	fread(&id,sizeof(LONG),1,fit);	/*id*/
-	fread(&num,sizeof(LONG),1,fit);	/*num items*/
-	fread(&h,sizeof(LONG),1,fit);	/*table offset*/
-	fseek(fit,h,SEEK_SET);
-	strcpy(lev,level_name);
-	strupr(lev);
-	while(strcmp(lev,ent.name)!=0)
-	{
-		if(fread(&ent,sizeof(IWAD_ENTRY),1,fit)==0)	/*entry*/
-			fatal_error("Can't find level %s",lev);
-	}
-
-	fread (&ent, sizeof(IWAD_ENTRY), 1, fit);	/*things*/
-	cThings = ent.size/sizeof(THING);
-	fseek (fit, ent.offset, SEEK_SET);
-	for (i = 0; i < cThings; ++i)
-	{
-		filepos = ftell (fit);
-		fread (&t, sizeof(THING), 1, fit);
-		printf ("Thing %d type = %d\n", i, t.type);	
-	}
-	FileClose (fit);
-}
-#endif
-
-// ===========================================================================

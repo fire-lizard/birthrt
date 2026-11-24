@@ -33,10 +33,6 @@
 class GAME_KEYS {
 public:
 	typedef enum {
-		CURRENT = 0
-	} VERSION;
-	
-	typedef enum {
 	
 		STOP_RUNNING_DEMO,
 		SKIP_TO_NEXT_FRAME,
@@ -123,25 +119,14 @@ public:
 		MAX_KEYS
 	} KEY;
 	
-	static VERSION const mfGetVersion();
-	
 	static LONG const mfGetKey(KEY const /* keyType */ );
 	static LONG const mfSetKey(KEY const /* keyType */,
 						  LONG const /* keyConst */);
 	
-	static LONG const mfReadRawData(FILE * const /* fp */ );
-	static LONG const mfWriteRawData(FILE * const /* fp */ );
-	
 protected:
 private:
-	static VERSION	fVersion;
 	static SHORT	fKeyDefinitions[MAX_KEYS];
 };
-
-inline GAME_KEYS::VERSION const GAME_KEYS::mfGetVersion()
-{
-	return fVersion;
-}
 
 inline LONG const GAME_KEYS::mfGetKey(GAME_KEYS::KEY const  keyType  )
 {
@@ -154,22 +139,6 @@ inline LONG const GAME_KEYS::mfSetKey(GAME_KEYS::KEY const keyType, LONG const k
 	LONG const Result = fKeyDefinitions[keyType];
 	
 	fKeyDefinitions[keyType] = (SHORT) keyConst;
-	return Result;
-}
-
-inline LONG const GAME_KEYS::mfReadRawData(FILE * const fp )
-{
-	LONG Result = fread(&fVersion, sizeof(GAME_KEYS::VERSION), 1, fp);
-	Result = fread(fKeyDefinitions, sizeof(SHORT), MAX_KEYS, fp);
-	
-	return Result;
-}
-
-inline LONG const GAME_KEYS::mfWriteRawData(FILE * const fp )
-{
-	LONG Result = fwrite(&fVersion, sizeof(GAME_KEYS::VERSION), 1, fp);
-	Result = fwrite(fKeyDefinitions, sizeof(SHORT), MAX_KEYS, fp);
-	
 	return Result;
 }
 

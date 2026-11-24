@@ -35,8 +35,6 @@ extern BOOL fLogComment;
 #define iMPT_UNIT		8
 #define iMPT_PING		6
 
-static int		DumpString				( char *s );
-
 enum
 {
 	iMPM_SEND,
@@ -64,8 +62,6 @@ DWORD dwMMsgMaxLoop[GenericMultiPlayer::iMP_NUMTYPES]     = {   20,  120,  120 }
 
 typedef FileXfer *(*PNEWFILEXFER) ( GamePrintFunction pPrintFunc, ErrCode *err );
 typedef void (*PDELETEFILEXFER) ( FileXfer * );
-
-static FARPROC	fpOldEditWndProc = NULL;
 
 // -- End Local Stuff
 
@@ -211,7 +207,6 @@ void GenericMultiPlayer::SetRunDir( PSZ pszRunDirectory )
 
 int GenericMultiPlayer::CheckConnectStatus( void )
 {
-   long Id = 0;
 
    return ( pnmGame.CheckConnectStatus ( ) );
 
@@ -536,8 +531,6 @@ BOOL GenericMultiPlayer::Initialize( PlayType usType )
 {
 
    ErrCode err = kNoError;
-	CHAR szName[MAX_PATH] = "";
-	PNEWFILEXFER pNew = NULL;
 	int x;
 
 	// -- Save the type
@@ -1417,21 +1410,5 @@ void PaintAckLED(int k, DWORD id2, BOOL localAcks)
 //----
 //----  Dialog Windows
 //----
-
-#ifdef _MULTIMONO
-
-// -- Debug statements from NetPlay.dll
-static int DumpString( char *s )
-{
-
-#ifdef _MULTIMONO
-    mono_puts( 0,19, s );
-#endif
-
-    return 1;
-
-} // DumpString
-
-#endif
 
 // GMulPlay.cpp

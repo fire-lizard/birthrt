@@ -99,24 +99,3 @@ const WEAPON_INFO::WEAPON_ITEM WEAPON_INFO::fpWeaponTableInfo[] = {
 	{STR_WEAPON_QUARTER_STAFF,	  		WEAPON_INFO::LARGE,		WEAPON_INFO::BLUDGEONING, 4, {1, 6, 0}, {1,  6, 0}, ra[26]}
 };
 
-/* ========================================================================
-   Function    - mfFindType
-   Description - Attach the avatar to the menu buttons & show the menu.
-   Returns     - 
-   ======================================================================== */
-const WEAPON_INFO::TYPE WEAPON_INFO::mfFindType(char * cpWeaponName)
-{
-	TYPE Result = NO_WEAPON;
-	LONG i;
-	
-	for (i = FIRST_WEAPON; i < WEAPON_MAX_INDEX; i++)
-	{
-		if (0 == strncmp(WEAPON_INFO::mfGetName((TYPE)i), cpWeaponName, strlen(WEAPON_INFO::mfGetName((TYPE) i))))
-		{
-			Result = (TYPE) i;
-			break;
-		}
-	}
-	
-	return Result;
-}

@@ -341,28 +341,6 @@ extern "C" HDC DDGetDC( BOOL fBack )
 
 //--------------------------------------------------------------------------
 //
-//  BOOL DDGetSurfaceWidth
-//
-//  Description:
-//		Return the surface width of the primary surface.
-//
-//  Arguments:
-//		none
-//
-//  Return surface width
-//
-//--------------------------------------------------------------------------
-extern "C" DWORD DDGetSurfaceWidth( void )
-{
-	DDSURFACEDESC dds;
-
-	IDirectDrawSurface_GetSurfaceDesc( lpDDSPrimary, &dds );
-
-	return ( dds.dwWidth );
-} // DDgetSurfaceWidth
-
-//--------------------------------------------------------------------------
-//
 //  BOOL DDInitialize
 //
 //  Description:
@@ -381,7 +359,6 @@ extern "C" BOOL DDInitialize ( HWND hwndMain, BOOL fGDI )
 
    DDSURFACEDESC   ddsd;
    DDSCAPS         ddscaps;
-	int rval;
         
     // -- Save the requested state information
 	fUsingGDI = fGDI;

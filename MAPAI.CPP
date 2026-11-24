@@ -111,10 +111,6 @@ PROVINCE DemandProvince();
 LONG FindProvForDemand (PROVINCE prov, LONG base);
 void UpdateHoldingFlag (void);
 
-#ifdef _WINDOWS
-void BroadcastAllienceTable ( void );
-#endif
-
 extern void SysForceCursor (void);
 
 extern void RandomLogComment ( char * szString );
@@ -202,7 +198,6 @@ extern volatile BOOL	fAnyKeyChanged;
 extern BOOL			fTutorialSelected;
 extern BOOL			mundane_descriptions;
 extern LONG			fOtherDipMP;
-extern BOOL			fSyncPending;
 extern int			iTTimeLimit;
 extern LONG			WaitingCount;
 extern LONG			WaitingWho;
@@ -235,7 +230,7 @@ void logreroll( SHORT LineNum )
    ======================================================================== */
 void DoNPCAdmin (void)
 {
-	LONG	i, j, k, l, rlm, hr, fr, iUnit, roll, surplus;
+	LONG	i, j, l, rlm, hr, fr, iUnit, roll, surplus;
 
 	hr = HomeRealm;
 	fr = fFinalRoll;
@@ -676,13 +671,11 @@ static void RollNPCAction (LONG, LONG)
    ======================================================================== */
 void PaintNPCAction (LONG MenuCombo, LONG)
 {
-	SHORT	i, j, m=-1;
+	SHORT	m=-1;
 	LONG	X,Y;
 	LONG	W,H;
 	LONG	MenuId, ButtonId;
-	LONG	result = 0;
 	LONG	startY;
-	UBYTE	success;
 	char FormatString[80];
 	char actionBuffer[80];
 
@@ -1013,7 +1006,7 @@ DoItAgain:
 
 BOOL IsBorder (PROVINCE prov, REALM::REALM_TYPE realm, SHORT action, LONG purpose)
 {
-	LONG	i, j, testprov_border, testprov_borderrealm;
+	LONG	i, testprov_border, testprov_borderrealm;
 
 	for (i=0; i<7; ++i)
 	{
@@ -1112,8 +1105,7 @@ LONG UnitsHere (PROVINCE prov, REALM::REALM_TYPE _realm)
    ======================================================================== */
 static BOOL UnitsHereNotUs (REALM::REALM_TYPE OurRealm, PROVINCE prov)
 {
-	LONG	i, iUnit;
-	LONG	cUnits = 0;
+	LONG	i;
 
 	for (i=1; i<MAX_UNITS; ++i)
 	{
@@ -1150,7 +1142,6 @@ LONG ProvDist (LONG cur_prov, LONG dest_prov, LONG cProvDist, BOOL fTerrainDontC
 	LONG	i, dx, dy, dist;
 	LONG	test_prov;
 	LONG	best_prov = 0;
-	LONG	best_border = 0;
 	LONG	min_dist = 99999999;
 
 	if (cProvDist==0)
@@ -1168,7 +1159,6 @@ LONG ProvDist (LONG cur_prov, LONG dest_prov, LONG cProvDist, BOOL fTerrainDontC
 		{
 			min_dist = dist;
 			best_prov = test_prov;
-			best_border = i;
 		}
 	}
 
@@ -1204,98 +1194,6 @@ static BOOL FindProvWithSrcTmp( REALM::REALM_TYPE ourRealm, PROVINCE prov, BOOL 
 	 	return TRUE;
 	else 
 		return FALSE;
-}
-/* ========================================================================
-   Function    - 
-   Description -  sub function to support FindProv for NPC Diplomacy
-   Returns     -
-   ======================================================================== */
-LONG FindProvForDIP (PROVINCE prov, BOOL realm_flag, LONG base)
-{
-   LONG c, j;
-   LONG t = 0;
-
-   if ((realm_flag && province[prov].Realm != CurrentRealm)
-   	||(!realm_flag&&province[prov].Realm == CurrentRealm))
-   {
-		t = base;
-		// there is a forein unit (if realm_flag == TRUE)
-		// or there is a our unit (if realm_flag == FALSE)
-	   for (c = 1; c < MAX_UNITS; ++c)
-		{
-	   	if (units[c].Realm != REALM::NO_COUNTRY
-				&& ((!realm_flag && units[c].Realm == CurrentRealm)
-					|| (realm_flag && units[c].Realm != CurrentRealm))
-				&& UnitFinalProvince(c) == prov && units[c].Joined == 0)
-	   	{
-	   		t -= 20;
-	   		break;
-	   	}
-		}
-
-	  	// find a foreign castle or our castle if realm_flag == FALSE
-		CheckAndFixPlaces(prov);
-	  	j = c = province[prov].FirstPlace;
-	  	while (c!=0)
-	  	{
-	  		if ((	(realm_flag && places[j].Realm != CurrentRealm)
-	  				||(!realm_flag && places[j].Realm == CurrentRealm))
-				 && places[j].Icon == CASTLE1_ICON)
-	  		{
-	  			t -= 10;
-	  			break;
-	  		}
-	  		c = places[j].NextPlace;
-	  		j = province[prov].FirstPlace+c;
-	  	}
-
-   	if ( province[prov].Terrain==FOREST
-			|| province[prov].Terrain == SWAMP
-			|| province[prov].Terrain == MOUNTN
-			|| province[prov].Terrain == HILLS )
-		{
-   		if (realm_flag)
-				t += 20;
-			else
-				t -= 20;
-		}
-   
-   }
-
-   return t;
-
-}
-
-/* ========================================================================
-   Function    - 
-   Description -  sub function to support FindProv for NPC Diplomacy
-   Returns     -
-   ======================================================================== */
-BOOL OfferProvince()
-{
-	LONG i,t;
-	LONG maxReaction=0;
-	LONG pr=0;
-	LONG base=100;
-	for(i=1; i<PROVINCE_COUNT; ++i)
-	{
-		t = FindProvForDIP((PROVINCE)i, FALSE, base);
-		if(t==0)
-			continue;
-		t += random(10);
-		if(t > maxReaction)
-		{
-			maxReaction = t;
-			pr = i;
-		}
-	}
-	if (pr)			// if a province was selected
-	{
-		StartProvince = (PROVINCE)pr;
-		return TRUE;
-	}
-	return FALSE;
-
 }
 /* ========================================================================
    Function    - 
@@ -1456,8 +1354,7 @@ StopLooking:
    ======================================================================== */
 BOOL FindProv (SHORT action)
 {
-	LONG	i, t, c, s;
-	LONG	maxReaction=0;
+	LONG	i, t, c;
 	LONG	j = 999;
 	LONG	f = FALSE;
 	LONG	pr = 0;
@@ -2104,7 +2001,6 @@ BOOL FindUnit (REALM::REALM_TYPE realm_, LONG action)
 {
 	LONG	i, c, iUnit;
 	LONG	j = 0;
-	LONG	cUnits = 0;
 	LONG	f = FALSE;
 	LONG	u = 0;
 	LONG	strTarget;
@@ -3272,7 +3168,7 @@ BOOL npc_move_ (PROVINCE cur_prov)
 /* ======================================================================== */
 BOOL npc_move (PROVINCE cur_prov)
 {
-	LONG	i, dx, dy;
+	LONG	dx, dy;
 	BOOL	fSend = (CurrentRealm == HomeRealm);
 	BOOL	retVal;
 
@@ -3492,7 +3388,6 @@ void SetHelped (REALM::REALM_TYPE Target, REALM::REALM_TYPE Active, BOOL fSend )
    ======================================================================== */
 void SetScrewed (REALM::REALM_TYPE Target, REALM::REALM_TYPE Active, BOOL fSend )
 {
-	LONG	k;
 
 	if (Target != REALM::ANY_REALM && Target != Active)
 	{
@@ -3511,7 +3406,7 @@ void SetScrewed (REALM::REALM_TYPE Target, REALM::REALM_TYPE Active, BOOL fSend 
 /* ======================================================================== */
 static BOOL TestInvaded (REALM::REALM_TYPE ourRealm, REALM::REALM_TYPE testRealm)
 {
-	LONG i, unit_test_prov;
+	LONG i;
 
 	if (AREALLIED(ourRealm, testRealm))
 		return FALSE;
@@ -3565,7 +3460,7 @@ static BOOL TestOccupied (REALM::REALM_TYPE thisRealm)
 /* ======================================================================== */
 BOOL TestAdjacent (REALM::REALM_TYPE ActiveRealm, REALM::REALM_TYPE testRealm)
 {
-	LONG	i, j;
+	LONG	i;
 
 	for (i=1; i<PROVINCE_COUNT; ++i)
 		if ( province[i].Realm == ActiveRealm
@@ -3690,7 +3585,6 @@ static BOOL TestEconMuchSmaller (REALM::REALM_TYPE thisRealm, REALM::REALM_TYPE 
 REALM::REALM_TYPE TestTriggers (USHORT Triggers)
 {
 	REALM::REALM_TYPE		i;
-	BOOL		f = TRUE;
 	BOOL		t1,t2,t3,t4,t5,t6,t7,t8,t9,t10,t11,t12,t13,t14,t15,t16;
 
 	// check for triggers
@@ -3875,36 +3769,6 @@ BOOL FindFoe (REALM::REALM_TYPE realm_, LONG action )
 	return FALSE;
 }
 
-/* ======================================================================== */
-#if 01
-CSTRPTR szTriggerTest (USHORT tests)
-{
-	switch (tests)
-	{
-		case (TEST_ALLY+TEST_ALLY_ATWAR)									: return "ALYWAR";
-		case (TEST_ALLY+TEST_ALLY_ATWAR+TEST_ADJACENT)				: return "ALYWARADJ";
-		case (TEST_BUILDUP+TEST_ADJACENT)								: return "BLDADJ";
-		case (TEST_BUILDUP+TEST_ADJACENT+TEST_ECONBIGGER)			: return "BLDADJBIG";
-		case (TEST_BROKE)														: return "BRK";
-		case (TEST_BROKE+TEST_ADJACENT+TEST_ECONSMALLER)			: return "BRKADJSML";
-		case (TEST_HATED+TEST_HATED_ATWAR+TEST_ADJACENT)			: return "HATWARADJ";
-		case (TEST_INVADED)													: return "INV";
-		case (TEST_INVADED+TEST_ECONBIGGER)								: return "INVBIG";
-		case (TEST_INVADED+TEST_ECONSMALLER)							: return "INVSML";
-		case (TEST_NOT_ALLY+TEST_NOUNITS+TEST_ADJACENT)				: return "NUNADJ";
-		case (TEST_NOT_ALLY+TEST_NOUNITS+TEST_ADJACENT+TEST_HATED)	: return "NUNADJHAT";
-		case (TEST_NOT_ALLY+TEST_NOUNITS+TEST_ADJACENT+TEST_ECONSMALLER)	: return "NUNADJSML";
-		case (TEST_OCCUPIED)													: return "OCC";
-		case (TEST_SCREWED+TEST_ADJACENT)								: return "SCRADJ";
-		case (TEST_SCREWED+TEST_ADJACENT+TEST_ECONBIGGER)			: return "SCRADJBIG";
-		case (TEST_SCREWED+TEST_ADJACENT+TEST_ECONSMALLER)			: return "SCRADJSML";
-		case (TEST_SCREWED+TEST_ECONBIGGER)								: return "SCRBIG";
-		case (TEST_SCREWED)													: return "SCR";
-	}
-	return "none";
-}
-#endif
-
 /* ========================================================================
    Function    - 
    Description - 
@@ -4071,11 +3935,10 @@ LONG DemandHolding (REALM::REALM_TYPE realm_, SHORT oldDemand)
    ======================================================================== */
 BOOL DoNPCAction (void)
 {
-	LONG				f, i, j, k, type, icon, min, roll, m, done;
+	LONG				f, i, j, k, type, icon, min, roll, m;
 	REALM::REALM_TYPE	rlm;
 	LONG				cAttemptedRolls, dist, gold, offgold, trib, value;
-	LONG				maxReaction = 0;
-	LONG				tmp, place, maxloops;
+	LONG				tmp;
 	LONG				minDist = 99;
 	AI_ACTION_PTR	p;
 	ACTIONS_			action;
@@ -4083,7 +3946,6 @@ BOOL DoNPCAction (void)
 
 	BOOL				fSync;
 	BOOL 				fSend;
-	LONG				holding;
 	PROVINCE			tmpProvince;
 	LONG				reaction;
 	static BOOL		fActionsOver = 0;  //---- action round over
@@ -4809,7 +4671,6 @@ CreateHldng:
 			}
 			#endif
 
-			#ifdef _WINDOWS
 			if ( IsMultiPlayer() )
 			{
 				if (action_turn[HomeRealm] > 3) {logreroll(__LINE__); goto ReRoll_;}
@@ -4818,9 +4679,6 @@ CreateHldng:
 			{
 				if (action_turn[HomeRealm] > 2) {logreroll(__LINE__); goto ReRoll_;}
 			}
-			#else
-			if (action_turn[HomeRealm] > 2) {logreroll(__LINE__); goto ReRoll_;}
-			#endif
 
 			if (fPlayerNeverDeclaredWar && (game_difficulty == DIF_EASY && date < 4)) {logreroll(__LINE__); goto ReRoll_;}
 			if (fPlayerNeverDeclaredWar && (game_difficulty == DIF_MEDIUM && date < 3)) {logreroll(__LINE__); goto ReRoll_;}
@@ -6450,50 +6308,4 @@ void MapAIPlayerResponseWaitSync (void)
 	#endif
 }
 
-/* ========================================================================
-   Function    - BroadcastGoldAndRegency
-	//NOTE: This routine is example only and is NOT WORKING!
-	Description - 
-	Returns     - 
-	======================================================================== */
-#ifdef _WINDOWS
-void BroadcastGoldAndRegency( void )
-{
-	LONG	i;
-	SHORT	Gold[LAND_REALM_COUNT];
-	SHORT	Regency[LAND_REALM_COUNT];
-	
-	for ( i = 1; i < LAND_REALM_COUNT; i++ )
-	{
-		Gold[i] = realm[i].mfGetTreasury();
-		Regency[i] = realm[i].mfGetRegency();
-	}
-	
-	// &Gold[0], not Gold[0]: the original passed the uninitialised element's
-	// value as a pointer. 16 bits of garbage looked like a pointer in 1997.
-	AMultiPlayer.AdminMessage((UBYTE *)&Gold[0], (UBYTE *)&Regency[0], "SEND ADMIN" );
-}
-#endif
-/* ========================================================================
-   Function    - BroadcastAllienceTable
-	Description - broadcast an allience table 
-	Returns     - 
-	======================================================================== */
-#ifdef _WINDOWS
-void BroadcastAllienceTable ( void )
-{
-	LONG	i;
-	
-	// send one realms reaction and status
-	for ( i = 0; i < REALM::REALM_COUNT; i++)
-	{
-		AMultiPlayer.AlliedMessage(
-			i, 
-			(UBYTE *)&RealmReaction[i][0], 
-			(UBYTE *)&RealmStatus[i][0], 
-			"SEND ALLIENCE" );
-	}
-	
-}
-#endif
 /* ======================================================================== */

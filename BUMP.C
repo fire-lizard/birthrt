@@ -1005,7 +1005,12 @@ LONG *BumpDistance)	// distance to line squared;
 	// You cannot get closer to a line than minDist.
 	// For now, it is half the player width.  (GEH changed to full width)
 	// THINK ABOUT: Perhaps the caller should set minDist.
+#ifdef _EDIT
+   minDist = 4;                        // [d6-05-96 JPC] make it easy to move
+                                       // when editing
+#else
 	minDist = (pPlayer->w * pPlayer->w); // square the distance to avoid square roots
+#endif
 
 	// This will probably have to come out later, because things might
 	// happen even when you're standing still.

@@ -343,9 +343,7 @@ DSound::DumpBuffer(int dumpCount, int n)
 BOOL	DetectDSound(void);
 BOOL	InitDSound(HWND);
 BOOL	TermDSound(void);
-BOOL	GetPrimaryFormat(DWORD *rate, WORD *bits, WORD *channels);
 BOOL	SetPrimaryFormat(DWORD *rate, WORD *bits, WORD *channels);
-BOOL	GetCaps(LPDSCAPS lpDsCaps);
 
 class DSound
 {
@@ -355,18 +353,11 @@ class DSound
 	BOOL		Init(DWORD buffSize,LPSTR sampPtr,DWORD sampSize,WORD bits,DWORD rate,WORD channels);
 	BOOL		Play(LPSTR sampPtr);
 	BOOL		IsPlaying(void);
-	DWORD		GetReadPos(void);
-	DWORD		GetBytesRead(void);
-	DWORD		GetBytesPlayed(void);
 	BOOL		Stop(void);
-	BOOL		Pause(void);
-	BOOL		Resume(void);
 	BOOL		SetVolume(WORD vol, WORD factor);
 	BOOL		SetPan(WORD panPercent, WORD factor);
 	void		SetLoop(BOOL loop);
 	BOOL		Service(LPSTR sampPtr);
-	LPSTR		GetErrorMsg(void);
-	void		DumpBuffer(int dumpCount, int n);
 
 	protected:
 	void	PrimeBuffer(LPSTR sampPtr);

@@ -129,9 +129,6 @@ void ClearSystemPalette(void)
 	HPALETTE ScreenPalette = 0;
 	HDC ScreenDC;
 	int Counter;
-	UINT nMapped = 0;
-	BOOL bOK = FALSE;
-	int  nOK = 0;
 	
 	//*** Reset everything in the system palette to black
 	for(Counter = 0; Counter < 256; Counter++)
@@ -153,7 +150,7 @@ void ClearSystemPalette(void)
 	if (ScreenPalette)
 	{
 		ScreenPalette = SelectPalette(ScreenDC,ScreenPalette,FALSE);
-		nMapped = RealizePalette(ScreenDC);
+		RealizePalette(ScreenDC);
 
 		if ( sDrawMode == iDDRAW )
 		{
@@ -162,11 +159,11 @@ void ClearSystemPalette(void)
 		}
 
 		ScreenPalette = SelectPalette(ScreenDC,ScreenPalette,FALSE);
-		bOK = DeleteObject(ScreenPalette);
+		DeleteObject(ScreenPalette);
 
 	}
 	
-	nOK = ReleaseDC(NULL, ScreenDC);
+	ReleaseDC(NULL, ScreenDC);
 	
 	return;
 }

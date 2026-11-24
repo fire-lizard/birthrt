@@ -27,32 +27,6 @@ static int iDebug = FALSE;
 extern HWND ghwndDebug;
 
 //----------------------------------------------------------------------------
-//  InitDebug()
-//
-//  Description:
-//
-//		Create the debug console.
-//
-//  Arguments: None
-//
-//
-//  Return :
-//
-//
-//----------------------------------------------------------------------------
-void InitDebug ( void );
-void InitDebug ( void )
-{
-
-   //---- Allow printf etc to work
-
-     AllocConsole();
-
-   iDebug = TRUE;
-
-}   //---- InitDebug ()
-
-//----------------------------------------------------------------------------
 //  debugf()
 //
 //  Description:
@@ -91,33 +65,15 @@ int debugf ( const char *format, ... )
 
 }   //---- End of debugf()
 
+#if defined(_EDIT)
 // ---------------------------------------------------------------------------
-#if 1
-// GWP PLEASE DON'T OVERWRITE THIS FN! [ssprintf]
-// JPC I can't find a function called ssprintf (as opposed to sprintf),
-// but I'll rename this one to SS_printf (SS for Synergistic Software)
-// to avoid confusion.
-void SS_printf (const char *format, ... );
-void SS_printf (const char *format, ... )
-{
-// [d4-23-96 JPC]
-// Synergistic Software printf.
-// In Windows, prints to the debug output device.
-// ---------------------------------------------------------------------------
-
-   char 			szTemp[256];
-	va_list 		argp;
-
-	va_start (argp, format);
-	vsprintf(szTemp, format, argp);
-	va_end (argp);
-   OutputDebugString (szTemp);
-   OutputDebugString ("\r");           // [d6-05-96 JPC]
-}
+#ifdef __cplusplus
+extern "C"
 #endif
-
-// ---------------------------------------------------------------------------
 void ErrorMessage (const char *format, ...);
+#ifdef __cplusplus
+extern "C"
+#endif
 void ErrorMessage (const char *format, ...)
 {
 // [d5-14-96 JPC]
@@ -133,46 +89,7 @@ void ErrorMessage (const char *format, ...)
 	va_end (argp);
 	MessageBox (NULL, szTemp, "Error", MB_OK);
 }
-
-// ---------------------------------------------------------------------------
-void SS_Assert (char * szSourceFile, int iLine)
-{
-// [d6-17-96 JPC]
-// Put up a message box with the assert in it, then abort.
-// This is for Watcom, which does not seem to have a nice assert system for
-// Windows--it seems DOS-specific (but maybe I just haven't found it yet).
-// ---------------------------------------------------------------------------
-
-	int			answer;
-	char			szError[128];
-
-	sprintf (szError, "Assert failed in %s, line %d\n\nEnd the program?", szSourceFile, iLine);
-	answer = MessageBox (NULL, szError, "Assertion failure!", MB_YESNO);
-	if (answer == IDYES)
-		fatal_error (szError);
-}
-
-// ---------------------------------------------------------------------------
-#else                                  // not _WINDOWS
-// ---------------------------------------------------------------------------
-void ErrorMessage (const char *format, ...);
-void ErrorMessage (const char *format, ...)
-{
-// [d5-14-96 JPC]
-// Print an informational message, not a fatal error.
-// ---------------------------------------------------------------------------
-
-   char 		szTemp[256];
-	va_list	argp;
-
-	va_start (argp, format);
-	vsprintf (szTemp, format, argp);
-	va_end (argp);
-   printf (szTemp);
-}
-
-// ---------------------------------------------------------------------------
-// ---------------------------------------------------------------------------
+#endif
 
 #endif   // _WINDOWS
 // Debug.c

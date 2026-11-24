@@ -30,14 +30,11 @@ X   machine_post_frame    -does postframe things, such as updating the screen
 #include "../ENGINE.H"
 #include "../DEBUG.H"
 
-#include "MCIUTIL.H"
-
 #include "../MAIN.HXX"
 #include "../SOUND.HXX"
 #include "../FILEUTIL.H"
 #include "mmsystem.h"
 
-// [d11-09-96 JPC] No longer use registry. #include "REGISTRY.H"
 #include "DDRAWPRO.H"
 
 // name of first scene in this
@@ -251,7 +248,6 @@ void ClearMessageQueue(void)
 BOOL AppInit( HINSTANCE hInst, HINSTANCE hPrev, LPSTR szCmdLine, int sw )
 {
 	WNDCLASS clsex;
-	char cpBuffer[256];
 	JOYINFO joyInfo;
 	JOYCAPS joyCaps;
 
@@ -314,7 +310,6 @@ BOOL AppInit( HINSTANCE hInst, HINSTANCE hPrev, LPSTR szCmdLine, int sw )
 	cy = GetSystemMetrics(SM_CYCAPTION) + 1 ;
 	
 	int X2 = GetSystemMetrics(SM_CXFULLSCREEN) / 2;
-	int Y2 = GetSystemMetrics(SM_CYFULLSCREEN) / 2;
 
 	if((X2 * 2) < 650)
 	{
@@ -870,42 +865,3 @@ void UpdateFPS(void)
 	}
 
 } // UpdateFPS
-
-void OpenAFile(void)
-{
-    OPENFILENAME OpenFileName;
-    TCHAR         szFile[MAX_PATH]      = "\0";
-	char szTemp[50] = "Wad files\0*.wad\0\0";
-
-    strcpy( szFile, "");
-
-    // Fill in the OPENFILENAME structure.
-    OpenFileName.lStructSize       = sizeof(OPENFILENAME);
-    OpenFileName.hwndOwner         = hwndApp;
-    OpenFileName.hInstance         = hInstApp;
-    OpenFileName.lpstrFilter       = szTemp;
-    OpenFileName.lpstrCustomFilter = NULL;
-    OpenFileName.nMaxCustFilter    = 0;
-    OpenFileName.nFilterIndex      = 0;
-    OpenFileName.lpstrFile         = szFile;
-    OpenFileName.nMaxFile          = sizeof(szFile);
-    OpenFileName.lpstrFileTitle    = NULL;
-    OpenFileName.nMaxFileTitle     = 0;
-    OpenFileName.lpstrInitialDir   = NULL;
-    OpenFileName.lpstrTitle        = "Open a File";
-    OpenFileName.nFileOffset       = 0;
-    OpenFileName.nFileExtension    = 0;
-    OpenFileName.lpstrDefExt       = NULL;
-    OpenFileName.lCustData         = 0;
-    OpenFileName.lpfnHook          = NULL;
-    OpenFileName.lpTemplateName    = NULL;
-    OpenFileName.Flags             = 0;//OFN_LONGNAMES;//OFN_EXPLORER; Watcom SDK support lacks these....
-
-    // Call the common dialog function.
-    if (GetOpenFileName(&OpenFileName))
-    {
-        // Load the file.
-		// PLAYER_START1 == -1
-		load_new_wad(OpenFileName.lpstrFile, -1L);
-	}
-}

@@ -40,15 +40,15 @@
 //       both store the exact same data. An Id and a SCENE_INFO.
 //       However its an agregate not an inherited model.
 
-typedef SHORT HDL_EXIT_POINT;
-
 class EXIT_POINT {
 public:
 	
 	void mfCreateExitPoint(char * cpBuffer);
+#if defined(SCENE_EDITOR)
+	void mfWriteExitPointData(FILE * fp);
+#endif
 	LONG mfGetId();
 	char *mfGetSceneName();
-	static char * mfGetDefaultScene();
 	void mfInitVals();
 	
 protected:
@@ -62,11 +62,8 @@ private:
 	
 	SCN_SECTOR fExitInfo;
 	
-	static char * fcpDefaultScene;
 };
 
-typedef SHORT HDL_EXIT_POINTS;
-typedef EXIT_POINT *PTR_EXIT_POINT;
 typedef EXIT_POINT *PTR_EXIT_POINTS;
 
 /* ========================================================================
@@ -79,6 +76,18 @@ inline void EXIT_POINT::mfCreateExitPoint(char * cpBuffer)
 	fExitInfo.mfCreateSector(cpBuffer);
 }
 
+/* ========================================================================
+   Function    - mfWriteExitPointData
+   Description - Write the data to the scene file.
+   Returns     - 
+   ======================================================================== */
+#if defined(SCENE_EDITOR)
+inline void EXIT_POINT::mfWriteExitPointData(FILE * fp) 
+{
+	fExitInfo.mfWriteSectorData(fp);
+}
+
+#endif
 /* ========================================================================
    Function    - mfGetId
    Description - Get this exit id.
@@ -99,16 +108,6 @@ inline char *EXIT_POINT::mfGetSceneName()
 	return fExitInfo.mfGetSceneName();
 }
 	
-/* ========================================================================
-   Function    - mfGetDefaultScene
-   Description - If an exit point was crossed and no scene specified go here.
-   Returns     - 
-   ======================================================================== */
-inline char * EXIT_POINT::mfGetDefaultScene()
-{
-	return fcpDefaultScene;
-}
-
 /* ========================================================================
    Function    - mfInitVals
    Description - Initialize the member data.

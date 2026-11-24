@@ -553,7 +553,6 @@ class ItemType
 		LONG mfEffect(LONG,LONG);
 
 		THINGTYPE mfGameType() 		const;
-		void mfPrint() 	       		const;
 		SHORT mfInfo() 			const;
 		const char* mfIconFile()	const;
 		SHORT const mfGetIconOn()	const;
@@ -626,8 +625,6 @@ class ItemEffects
 		static LONG Rescuee				(LONG,LONG,LONG);
 
 		static LONG None				(LONG,LONG,LONG);
-		static LONG Template			(LONG,LONG,LONG);
-		static LONG Generic				(LONG,LONG,LONG);
 		static LONG KeyExplanation		(LONG,LONG,LONG);
 		static LONG GoldCoins			(LONG,LONG,LONG);
 		static LONG FeatherFall			(LONG,LONG,LONG);
@@ -658,7 +655,6 @@ class ItemEffects
 		static LONG Invulnerable		(LONG,LONG,LONG);
 		static LONG Levitate			(LONG,LONG,LONG);
 		static LONG Flight				(LONG,LONG,LONG);
-		static LONG ResistFire			(LONG,LONG,LONG);
 		static LONG Invisibility		(LONG,LONG,LONG);
 		static LONG RingJump			(LONG,LONG,LONG);
 		static LONG RingProtect			(LONG,LONG,LONG);
@@ -683,7 +679,6 @@ class ItemEffects
 
 		static LONG HurlFireBall		(LONG,LONG,LONG);
 		static LONG FrostCone			(LONG,LONG,LONG);
-		static LONG IlluminateAreaRad	(LONG,LONG,LONG);
 		static LONG ElectricalBolt		(LONG,LONG,LONG);
 		static LONG ParalyzeAllInRad	(LONG,LONG,LONG);
 		static LONG CandleOfInvocation	(LONG,LONG,LONG);
@@ -740,7 +735,6 @@ class ItemEffects
 		static LONG PowerStunSpell		(LONG,LONG,LONG);
 		static LONG SpellImmunity		(LONG,LONG,LONG);
 		static LONG MagicMissileSpell	(LONG,LONG,LONG);
-		static LONG IceStormSpell		(LONG,LONG,LONG);
 		static LONG ConeOfColdSpell		(LONG,LONG,LONG);
 		static LONG ChainLightningSpell	(LONG,LONG,LONG);
 		static LONG DeathSpell			(LONG,LONG,LONG);
@@ -755,14 +749,12 @@ class ItemEffects
 
 		static LONG Light				(LONG,LONG,LONG);
 		static LONG Shillelagh			(LONG,LONG,LONG);
-		static LONG TurnUndead			(LONG,LONG,LONG);
 		static LONG BarkSkin			(LONG,LONG,LONG);
 		static LONG SpritualHammer		(LONG,LONG,LONG);
 		static LONG MagicalVestement	(LONG,LONG,LONG);
 		static LONG ProtectionFromEvil	(LONG,LONG,LONG);
 		static LONG FlameStrike			(LONG,LONG,LONG);
 		static LONG Resurrection		(LONG,LONG,LONG);
-		static LONG FireStormSpell		(LONG,LONG,LONG);
 		static LONG HolyWordSpell		(LONG,LONG,LONG);
 		
 		// blood abilities
@@ -874,10 +866,6 @@ inline THINGTYPE ItemType::mfGameType() const
 	return GameType;
 }
 
-inline void ItemType::mfPrint() const
-{
-	printf("%s\n",GAME_TTYPE::mfGetDescription(GameType));
-}
 inline SHORT ItemType::mfInfo() const
 {
 	return MiscInfo;

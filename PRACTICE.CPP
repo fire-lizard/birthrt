@@ -445,8 +445,6 @@ static SHORT SeenAllSites = 0;
 static SHORT iTroopRealm = 0;
 static SHORT iTroopType = A_INF_UNIT_ICON;
 static SHORT iTroopId = -1;
-static SHORT iTroopScale = FULL_SCALE;
-static SHORT iTroopWidth;
 static THINGTYPE iTroopThingType = INFANTRY;
 
 static BYTE iMyListSel = 0;
@@ -514,9 +512,6 @@ extern BOOL		fTutorialFirstBattle;
    Description - run the build army dialog
    Returns     - 
    ======================================================================== */
-LONG	BB_CurrentUnitSel = -1;
-LONG	BB_WarCardIcon = -1;
-
 void RunBattlesOnly(void)
 {
 	SHORT i;
@@ -598,9 +593,6 @@ void RunBattlesOnly(void)
 void BuildArmyPaint (LONG MenuCombo, LONG )
 {
 	SHORT	i,j;
-	LONG    X,Y,W,H;
-	LONG    mx,my;
-	CHAR    color = 228;
 	char    textbuf[3000];
 	char    buff[80];
 	LONG    MenuId, ButtonId;
@@ -922,68 +914,8 @@ void BuildListRemove (LONG MenuCombo, LONG )
 	fUpdatePanels = TRUE;
 }
 
-void BuildListClear (LONG MenuCombo, LONG )
-{
-	SHORT 	i;
-	SHORT	MenuId, ButtonId;
-
-	SPLIT_LONG(MenuCombo, MenuId, ButtonId);
-	
-	// click the button
-	if (mouse_button)
-	{
-		SetButtonHilight(MenuId, ButtonId, TRUE);
-		fUpdatePanels = TRUE;
-		RunPanels();
-		RunMenus();
-		update_screen();
-		TickDelay(4);
-		SetButtonHilight(MenuId, ButtonId, FALSE);
-		fUpdatePanels = TRUE;
-		RunPanels();
-		RunMenus();
-		update_screen();
-	}
-	
-  	/* -----------------------------------------------------------------
-	   Handle right clicks help
-	   ----------------------------------------------------------------- */
-	if(mouse_button == 2)
-	{
-		SystemHelp(STR_BB_HELP_LISTCLR_TITLE, STR_BB_HELP_LISTCLR_TEXT, -1, NULL, 0);
-	}
-	else
-	{
-		LONG i;
-		
-		memset(&units[970], 0, 15 * sizeof(UNIT_TYPE));	
-		memset(&units[985], 0, 15 * sizeof(UNIT_TYPE));	
-		
-		iMyListStart = -1;
-		iMyListSel = -1;
-		
-		iHisListStart = -1;
-		iHisListSel = -1;
-		
-		for (i = BB_MYARMY1; i <= BB_MYARMY15; i++)
-		{
-			SetButtonHilight(MenuId, i, FALSE);
-		}
-		
-		for (i = BB_HISARMY1; i <= BB_HISARMY15; i++)
-		{
-			SetButtonHilight(MenuId, i, FALSE);
-		}
-	}
-	fUpdatePanels = TRUE;
-	// Extra paint because the troop list is done in the paint routine.
-	RunPanels();
-	fUpdatePanels = TRUE;
-}
-
 void BuildUnitSel (LONG ButtonId, LONG )
 {
-	SHORT 	i;
 
   	/* -----------------------------------------------------------------
 	   Handle right clicks help
@@ -1152,7 +1084,6 @@ void BuildArmyRestartProc(LONG MenuCombo, LONG button)
 
 void BuildArmyReload (LONG MenuCombo, LONG )
 {
-	SHORT i;
 	
 	SHORT	MenuId, ButtonId;
 	SPLIT_LONG(MenuCombo, MenuId, ButtonId);
@@ -1392,7 +1323,6 @@ void ClearUnitLists(void)
 static void InitTroopDisplay (LONG type, LONG id, LONG realm)
 {
 	LONG typeID;
-	SHORT				hPlayerStats;
 	
 	iTroopId = id;
 	iTroopType = type;
@@ -1415,13 +1345,9 @@ static void InitTroopDisplay (LONG type, LONG id, LONG realm)
    ======================================================================== */
 static void PaintTroopCard()
 {
-	SHORT	i;
-	LONG	X,Y;
 	LONG	mx,my;
 	SHORT	tx,ty;
-	LONG	MenuId, ButtonId;
 	CHAR	buffer[150];
-	LONG	timedif;
 	SHORT	iBitm;
 	
 	// if not set, we have nothing to paint
@@ -1810,10 +1736,7 @@ static void PaintBattleScenarios()
 {
 	SHORT	i;
 	SHORT	y;
-	LONG	mx,my;
-	LONG	MenuId, ButtonId;
 	CHAR	buffer[80];
-	LONG	timedif;
 	SHORT	iBitm;
 	SHORT	color;
 	
@@ -1897,7 +1820,6 @@ static LONG AddUnit (SHORT StartIndex, LONG prov, LONG icon, LONG id, LONG realm
 {
 	char	n[40];
 	LONG	c=0, i, k, j;
-	LONG	f = FALSE;
 
 	j = StartIndex;
 	
@@ -1971,9 +1893,7 @@ static LONG AddUnit (SHORT StartIndex, LONG prov, LONG icon, LONG id, LONG realm
    ======================================================================== */
 static LONG DelUnit (SHORT StartIndex, SHORT KillIndex)
 {
-	char	n[40];
 	LONG	c=0, i, k, j;
-	LONG	f = FALSE;
 
 	for (i = StartIndex; i < StartIndex+15; i++)	// scan for head unit here
 	{ 
@@ -2071,9 +1991,9 @@ close_file:
    ======================================================================== */
 static BOOL ReadBtlScenario(FILE *fp, BOOL fCreateUnits)
 {
-	CHAR	buffer[80], buffer2[40];
+	CHAR	buffer[80];
 	SHORT	fileResult;
-	SHORT	i, iType;
+	SHORT	i;
 	SHORT	unitlist[15];
 	SHORT	count;
 	SHORT	iTerrainSubType;
@@ -2256,7 +2176,6 @@ static void WriteBtlStatFile(void)
 {
 	SHORT	i;
 	FILE	*fp;
-	CHAR	buffer[50];
 	
 	// read out current Scenario
 	fp = fopen("btlsts.dat", "w");	
@@ -2284,7 +2203,6 @@ static void WriteBtlStatFile(void)
 static void SetCurrentScenario(SHORT iValue)
 {
 	LONG	i;
-	FILE	*fp;
 	
 	CurrentScenario = iValue;
 	WriteBtlStatFile();
@@ -2344,12 +2262,7 @@ void PlayBtlFinale(void)
 {
 	CHAR	filename[40];
 	CHAR	name[10];
-	CHAR	temp[200];
 	CHAR	buffer[200];
-	CHAR	rlm[10];
-	CHAR	battle[10];
-	CHAR	game[10];
-	SHORT	i;
 	SHORT	bitm;
 	LONG	now;
 	
@@ -2453,7 +2366,7 @@ End:
    ======================================================================== */
 void RunAdvOnly(void)
 {
-	SHORT	i,x,y,me;
+	SHORT	i,x,y;
 	LONG	j;
 	
 	HideMenu(D_GAMEBUTTON);
@@ -2560,8 +2473,8 @@ void RunAdvOnly(void)
 
 void BuildAdvPaint (LONG MenuCombo, LONG )
 {
-	SHORT	i,j;
-	LONG    x,y,w,h;
+	SHORT	i;
+	LONG    x,y;
 	CHAR    buffer[20];
 	char    textbuf[3000];
 	char    buff[80];
@@ -2758,7 +2671,6 @@ void BuildAdvDone (LONG MenuCombo, LONG )
 	SHORT 	i,count=0;
 	SHORT	HomeIndex, AwayIndex;
 	LONG	me;	  // loop index, unit# of selection
-	LONG	unit;		 // index for unit search loop
 	LONG	lastGuy = -1; // lockstep link
 	LONG    MenuId, ButtonId;
 		
@@ -2952,7 +2864,7 @@ void BuildAdvDone (LONG MenuCombo, LONG )
 	
 void BuildAdvListSel (LONG MenuCombo, LONG )
 {
-	SHORT	i,index;
+	SHORT	index;
 	LONG    MenuId, ButtonId;
 	SPLIT_LONG(MenuCombo, MenuId, ButtonId);
 
@@ -3201,7 +3113,7 @@ void SelectAdventures(void)
    ======================================================================== */
 static void WriteAdvScenario(void)
 {
-	SHORT	i, count;
+	SHORT	i;
 	FILE	*fp;
 	
 	// open Scenario file
@@ -3213,26 +3125,26 @@ static void WriteAdvScenario(void)
 	for (i = 0; i < LIST_SIZE; i++)
 	{
 		UBYTE const val = (UBYTE) SiteList[i].mfGetSiteState();
-		count = fwrite(&val,sizeof(UBYTE),1,fp);
+		fwrite(&val,sizeof(UBYTE),1,fp);
 	}
 	
-	count = fwrite(&SeenAllSites,sizeof(SHORT),1,fp);
+	fwrite(&SeenAllSites,sizeof(SHORT),1,fp);
 	for (i = 0; i < LIST_SIZE; i++)
 	{
 		UBYTE const val = Adventurers[i].mfIsDead();
-		count = fwrite(&val,sizeof(UBYTE),1,fp);
+		fwrite(&val,sizeof(UBYTE),1,fp);
 	}
 	for (i = 0; i < LIST_SIZE; i++)
 	{
 		UBYTE const val = Adventurers[i].mfIsInParty();
-		count = fwrite(&val,sizeof(UBYTE),1,fp);
+		fwrite(&val,sizeof(UBYTE),1,fp);
 	}
 	for (i = 0; i < LIST_SIZE; i++)
 	{
 		UBYTE const val = Adventurers[i].mfGetRegentIndex();
-		count = fwrite(&val,sizeof(UBYTE),1,fp);
+		fwrite(&val,sizeof(UBYTE),1,fp);
 	}
-	count = fwrite(&iSite, sizeof(UBYTE), 1, fp);
+	fwrite(&iSite, sizeof(UBYTE), 1, fp);
 	
 	fclose(fp);
 }
@@ -3350,12 +3262,7 @@ void PlayAdvFinale(void)
 {
 	CHAR	filename[40];
 	CHAR	name[10];
-	CHAR	temp[200];
 	CHAR	buffer[200];
-	CHAR	rlm[10];
-	CHAR	battle[10];
-	CHAR	game[10];
-	SHORT	i;
 	SHORT	bitm;
 	LONG	now;
 	
@@ -3484,7 +3391,6 @@ void PaintGameSelect(LONG MenuCombo, LONG)
 	LONG	mx, my;
 	LONG	mw, mh;
 	char	buffer[80];
-	LONG	OrigColor;
 	
 	SPLIT_LONG(MenuCombo, MenuId, ButtonId);
 	
@@ -3559,7 +3465,6 @@ void NewGameConfirmed(LONG,LONG lMultiFlag);
 
 void ResetToNonTutorialAdventures (void)
 {
-	LONG	i;
 
 	advsite[0].name = "endie_mw";
 	advsite[0].realm = REALM::ALAMIE;

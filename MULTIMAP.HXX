@@ -18,7 +18,6 @@
 BOOL SetGameData(LONG lArray_Id, LONG lStruct_Id, LONG lArray_Index, LONG lData, BOOL fSend );
 LONG GetGameData(LONG lArray_Id, LONG lStruct_Id, LONG lArray_Index);
 BOOL IsMulPlayerandRealm(int realm);
-LONG WaitForSemiphore(LONG iWhichSemiphore);
 void SendMyMods(LONG iWhichAction, LONG iWhichProvince, LONG iWhichHold, LONG modRegency);
 void SendResult(LONG iWhichAction, LONG iWhichProvince, LONG iWhichHolding, LONG iResult);
 LONG WaitForResult(LONG iWhichAction, LONG iWhichProvince, LONG iWhichHolding);

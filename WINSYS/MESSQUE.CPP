@@ -115,37 +115,6 @@ int Get_MessQueTS( long type, long subtype, PMESSQUE pMessBuf )
 
 }
 
-//---- Delete all messages of this type 
-
-int DelAll_MessQue ( long /* type */ )
-{
-
-   int x = 0;
-   int y;
-
-   while ( x < Mess_Next )
-   {
-
-      if ( x == MAX_MESSQUE - 1 )
-      {
-         MessQue[MAX_MESSQUE-1].type = 0; // que full just blank type
-      }
-      else
-      {
-         for ( y = x; y < Mess_Next; y++ )
-         {    
-             memcpy ( &MessQue[y], &MessQue[y+1], sizeof (MESSQUE) ); 
-         }  
-      }
-
-      Mess_Next--;
-
-   }
-
-   return 1;
-
-}
-
 //
 //---- Special to remove a message based on first three params
 //

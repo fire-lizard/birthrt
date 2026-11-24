@@ -8,11 +8,6 @@
 
 	Contains the following internal functions:
 .		HashCRC			- Uses polynomial division to hash a string into a word
-.		ScanIFF			- Scan an IFF file for a mnenonic. Return following long value.
-
-	Contains the following general functions:
-.		OpenResFile		- Open a resource type file and create entries in map
-.		GetResource		- Load a file, do conversion and decompression
 
 	======================================================================== */
 /* ------------------------------------------------------------------------
@@ -191,11 +186,6 @@ RESTYPE	ResExtentions[cMAXEXTENTS] = {
 	{  NULL, NULL, NULL, NULL, NULL, NULL },
 	{  NULL, NULL, NULL, NULL, NULL, NULL }
 };
-
-#if 01
-// Get some idea of the size of a WAD-specific RES file.
-FILE *gFile;
-#endif
 
 /* ========================================================================
 	HashCRC	- Uses polynomial division to hash a string into a word
@@ -1353,7 +1343,6 @@ static void DecodeRotatedPCX(
 )
 {
 	ULONG ll = PCX->cbLine * PCX->h;
-	ULONG w =  PCX->w * PCX->h;
 	USHORT j;
 	ULONG l = 0;
 
@@ -1361,7 +1350,6 @@ static void DecodeRotatedPCX(
 	{
 		PTR pDD = pDest + j;
 		l = 0;
-		w = 0;
 		do
 		{
 			UBYTE c = *(pSS++);
@@ -1370,7 +1358,6 @@ static void DecodeRotatedPCX(
 				USHORT k = c & 0x3F;							/* run length */
 				c = *(pSS++);							/* run byte */
 				
-				w += k;	// GWP optimization.
 				while(k--)
 				{
 					pDD[l] = c;
@@ -1381,7 +1368,6 @@ static void DecodeRotatedPCX(
 			{
 				pDD[l] = c;
 				l += PCX->h;
-				w++;
 			}
 		} while (l < ll);
 		if (PCX->w < PCX->cbLine)
@@ -1926,36 +1912,6 @@ BOOL InitResourceManager(USHORT MaxResRequested)
 	return TRUE;
 }
 
-/* ========================================================================
-   Function    - FreeResourceManager
-   Description - free up the memory we used.
-   Returns     -
-   ======================================================================== */
-
-void FreeResourceManager()
-{
-#if defined (_WINDOWS)
-	if (iResBlock)
-		free(iResBlock);
-	if (lResNameCRC)
-		free(lResNameCRC);
-	if(iResExtIndex)
-		free(iResExtIndex);
-
-	iMaxResSlots = 0;
-#if fUSE_RES_FILES
-	if (gcbResOffset)
-		free(gcbResOffset);
-	if (giResFileNames)
-		free(giResFileNames);
-	if (gResFlags)								// [d4-13-97 JPC]
-		free (gResFlags);						// [d4-13-97 JPC]
-#endif
-
-#endif
-// For DOS we just let the system clean up the memory.
-
-}
 
 /* ========================================================================
    Function    - HashID

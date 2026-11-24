@@ -11,10 +11,7 @@ REDBOOK.C
 Game specific routines
 ------------------------------------------------------------------------------
 *****************************************************************************/
-#ifndef _WINDOWS
-#else
 #include "PLATFORM.H"
-#endif
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -34,11 +31,7 @@ int CheckCDBusy (void);
 /*#######################################################################\
 #    Global variables
 \#######################################################################*/
-#if defined (_WINDOWS)
 extern BOOL fMusic;
-#else
-int fMusic = 1;
-#endif
 
 static int CurrentSong = fERROR;
 static int CurrentTag = fERROR;
@@ -48,19 +41,6 @@ static SHORT PendingTrack = fERROR;
 SHORT ucWhichTrack = 0;
 static  SHORT volume_levels[] = {0, 13, 26, 38, 51, 64, 77, 90, 102, 115, 127};
 
-static int MusicVolume[] = {	
-	VOLUME_OFF  ,
-	VOLUME_TEN    ,
-	VOLUME_TWENTY ,
-	VOLUME_THIRTY ,
-	VOLUME_FORTY ,
-	VOLUME_FIFTY ,
-	VOLUME_SIXTY ,
-	VOLUME_SEVENTY ,
-	VOLUME_EIGHTY ,
-	VOLUME_NINETY ,
-	VOLUME_FULL
-};
 static int VolumeIndex = 10;
 /*#######################################################################\
 #    Routines

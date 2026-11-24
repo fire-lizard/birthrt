@@ -117,15 +117,12 @@ void ClearFlicSound(void)
 BOOL PlayFlic(char * fn, LONG secondsToWaitAtEnd)
 {
 	SHORT iAnim;
-	BOOL endflag=FALSE;
 	BOOL ffirst=TRUE;
 	BOOL fend=FALSE;
 	ANIMPTR pAnim;
 	iAnim = fERROR;
 	LONG timedif;
 	LONG lCurFrame = 0;
-	char n[256];
-	int tag = 33333;
 	frameSoundIndex = 0;
 	BOOL	fComplete = TRUE;	// assume all works compeletly
 

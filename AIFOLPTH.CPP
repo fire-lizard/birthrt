@@ -22,6 +22,7 @@
    inline member functions
    ----------------------------------------------------------------- */
 
+#if defined(SCENE_EDITOR)
 void FOLLOW_PATH_DATA::mfWriteData(FILE * fp)
 {
 	fprintf(fp, "%d\n", PathCount);
@@ -37,6 +38,7 @@ void FOLLOW_PATH_DATA::mfWriteData(FILE * fp)
 	}
 }
 
+#endif
 LONG FOLLOW_PATH_DATA::mfReadData(FILE *fp)
 {
 	char cpBuffer[80];

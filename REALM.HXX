@@ -371,24 +371,16 @@ inline void SET_NOT_FRIENDLY(REALM::REALM_TYPE const Attacking, REALM::REALM_TYP
 	{
 		RealmStatus[Attacking][Attacked]=STATUS_NEUTRAL;
 
-#ifdef _WINDOWS
 		if ( IsMultiPlayer() )
 			SetGameData(MP_REALMSTATUS, Attacking, Attacked, STATUS_NEUTRAL, TRUE );
-#else
-		SetGameData(MP_REALMSTATUS, Attacking, Attacked, STATUS_NEUTRAL, FALSE );
-#endif
 	}
 
 	if (((RealmStatus[Attacked][Attacking]) &0x0F) > STATUS_NEUTRAL)
 	{
 		RealmStatus[Attacked][Attacking]=STATUS_NEUTRAL;
 
-#ifdef _WINDOWS
 		if ( IsMultiPlayer() )
 			SetGameData(MP_REALMSTATUS, Attacked, Attacking, STATUS_NEUTRAL, TRUE );
-#else
-		SetGameData(MP_REALMSTATUS, Attacked, Attacking, STATUS_NEUTRAL, FALSE );
-#endif
 	}
 }
 /* ------------------------------------------------------------------------

@@ -75,6 +75,7 @@ const APPEARANCE_INFO::APPEARANCE_ITEM APPEARANCE_INFO::fpAppearanceInfoTable[]
 	SPIDER_KING,
 };
 
+#if defined(_CHARED)			// Character Editor only (CHARED.CPP)
 APPEARANCE_INFO::TYPE APPEARANCE_INFO::IndexFromType (THINGTYPE iType)
 {
 // Given a THINGTYPE, return the index of the corresponding appearance item.
@@ -93,4 +94,5 @@ APPEARANCE_INFO::TYPE APPEARANCE_INFO::IndexFromType (THINGTYPE iType)
 #endif
 	return FIRST_APPEARANCE;
 }
+#endif	// _CHARED
 #endif

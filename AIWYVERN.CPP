@@ -61,7 +61,6 @@ void CAvatar::Wyverns (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 	LONG flyHeight;
 	LONG WalkDistance;
 	LONG attack1Pts;
-	LONG attack2Pts;
 	BIRTHRT_SND waveId;
 	SHORT waveRange;
 	
@@ -76,7 +75,6 @@ void CAvatar::Wyverns (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 		flyHeight=FlyHeight2;
 		WalkDistance = WDistance2;
 		attack1Pts = 35;
-		attack2Pts = 10;
 		waveId = SND_WYVERN_WINGFLAP1;
 		waveRange = SND_WYVERN_WINGFLAP_TOTAL;
 	}
@@ -85,7 +83,6 @@ void CAvatar::Wyverns (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 		flyHeight=FlyHeight1;
 		WalkDistance = WDistance1;					// small wyvern
 		attack1Pts = 10;
-		attack2Pts = 5;
 		waveId = SND_SMALL_WYVERN_WINGFLAP1;
 		waveRange = SND_SMALL_WYVERN_WINGFLAP_TOTAL;
 	} 

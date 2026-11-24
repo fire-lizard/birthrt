@@ -46,7 +46,6 @@
 /* ------------------------------------------------------------------------
    Local Variables
    ------------------------------------------------------------------------ */
-GAME_KEYS::VERSION GAME_KEYS::fVersion(CURRENT);
 
 #ifdef _FOREIGNVER
 #ifdef _GERMANVER

@@ -9,7 +9,6 @@
 
    Contains the following general functions:
    get_blockm       -finds a block according to coordinates passed
-   show_block_lines -draws the block-grid (?)
    ======================================================================== */
 /* ------------------------------------------------------------------------
    Includes
@@ -53,33 +52,3 @@ SHORT* get_blockm (LONG px1,LONG py1)
 	return(bm);
 }
 
-/* =======================================================================
-   Function    - show_block_lines
-   Description - draws the grid lines on the map?
-   Returns     - void
-   ======================================================================== */
-void show_block_lines ()
-{
-}
-
-/* ========================================================================
-   Function    - GetBlockFromXY
-   Description - returns the starting Point of a block from world coords
-   Returns     - a corner of the block
-   ======================================================================== */
-POINT GetBlockCornerFromXY(LONG x,LONG y)
-{
-	POINT ReturnMe;
-
-	ReturnMe.x=(x-blockm_header.xo)/128;
-	ReturnMe.y=(y-blockm_header.yo)/128;
-
-	ReturnMe.x*=128;
-	ReturnMe.y*=128;
-
-	ReturnMe.x+=blockm_header.xo;
-	ReturnMe.y+=blockm_header.yo;
-
-	return ReturnMe;
-
-}

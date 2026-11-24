@@ -39,8 +39,12 @@
    ------------------------------------------------------------------------ */
 class SCENE_MUSIC_DATA {
 public:
-	char * mfGetBackgroundMusic();
+#if defined (SCENE_EDITOR)
+	BOOL mfIsSet();
+	BOOL mfIsBackgroundSet();
 	void mfWriteData(FILE *fp);
+#endif
+	char * mfGetBackgroundMusic();
 	
 	LONG mfReadData(FILE *fp);
 	
@@ -58,6 +62,30 @@ private:
    ------------------------------------------------------------------------ */
    
 /* ========================================================================
+   Function    - mfIsSet
+   Description - Test for whether this is a demo scene or not.
+   Returns     - 
+   ======================================================================== */
+#if defined (SCENE_EDITOR)
+inline BOOL SCENE_MUSIC_DATA::mfIsSet() 
+{
+	return fBackgroundMusic.mfIsSet();
+}
+#endif
+
+/* ========================================================================
+   Function    - mfIsBackgroundSet
+   Description - Test for whether The background music is set
+   Returns     - 
+   ======================================================================== */
+#if defined (SCENE_EDITOR)
+inline BOOL SCENE_MUSIC_DATA::mfIsBackgroundSet() 
+{
+	return fBackgroundMusic.mfIsSet();
+}
+#endif
+
+/* ========================================================================
    Function    - mfGetBackgroundMusic
    Description - Get the name of the Background Music.
    Returns     - 
@@ -66,6 +94,8 @@ inline char * SCENE_MUSIC_DATA::mfGetBackgroundMusic()
 {
 	return fBackgroundMusic.mfGetFileName();
 }
+
+#if defined (SCENE_EDITOR)
 /* ========================================================================
    Function    - mfWriteData
    Description - Write the scene file data.
@@ -75,6 +105,7 @@ inline void SCENE_MUSIC_DATA::mfWriteData(FILE *fp)
 {
 	fBackgroundMusic.mfWriteFileName(fp);
 }
+#endif
 
 /* ========================================================================
    Function    - mfReadData

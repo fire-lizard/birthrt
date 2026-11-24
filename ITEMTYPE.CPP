@@ -398,106 +398,6 @@ LONG ItemChargeHandler::NumChargedItems=NUMBER_OF_CHARGED_CHAIN;
 
 LONG ItemEffects::RealmGeneric(LONG Combo,LONG Arg,LONG Action)
 {Arg=Combo;Combo=Action;Action=Arg;return 0;}
-//this function is a helper for a coder trying to implement magic items.
-
-LONG ItemEffects::Template(LONG Combo, LONG Arg, LONG Action)
-{
-	//Combo has the ItemType as it's upper word, and the avatar who's
-	//activating the item as the lower word
-	
-	//Arg is a "free" argument, it is passed in from the array (see above)
-	//it is passed in from the ItemTypes array
-
-	//Action is what is happening to the item when this is called...
-	//SERVICE means it's being serviced (once per frame)
-	//EQUIP means it's being inserted into the spell boxes
-	//UNEQUIP means it's being taken from the spell boxes
-	//PICKUP means it's being picked up out of the wad.
-	//DROP means it's being dropped back into the wad.
-	//ACTIVATE means it's being used (invoked)
-	//DEACTIVATE means it's duration has run out and it is deactivating
-	//etc...
-
-	SHORT Itemtype;  				//the index in ItemTypes of the Item 
-									//being activated
-	SHORT hPlayerStats;   			//the stats of the avatar who's activating 
-									//the item
- 	SPLIT_COMBO(Combo,Itemtype,hPlayerStats); //extract the data from the Combo
-
-	ItemType& Item=ItemTypes[Itemtype]; //A reference to the item
-
-	// Note: Don't access these handles unless you can guarentee that there will
-	//	     be either an avatar or a stats structure active.
-	//       Generally copy them into the part of the code which needs them.
-	
-	if(fDomainTurn)
-	{
-		return NOT_SUPPORTED;
-	}
-	if(fBattleCombat)
-	{
-		return NOT_SUPPORTED;
-	}
-	else	// adventure level
-	{
-		switch(Action)
-		{
-			case ACTIVATE:
-				//put your code that represents what the Item does when used here
-				
-				//this means that the action couldn't be completed. This is most 
-				//useful for EQUIP and PICKUP, if they return CANT_COMPLETE, then 
-				//the avatar is not allowed to put the object into his spellboxes 
-				//or pick up the object (respectively).
-				//-------------
-				//The effect function must take care of adding and removing itself 
-				//from the ActiveItem list. when activated, add	the Item, and 
-				//remove it in the DEACTIVATE case.
-				
-				//the two arguments should always be the same as the ones that
-				//were passed to you in this function (Template)
-				//the first (arg1) MUST be the itemtype/avatarHandle Combo
-				//remember, the arguments that you pass the AddActiveItem func
-				//are the arguments that this function will be called with when
-				//it is being SERVICEd and DEACTIVATEd.
-				break;
-			case DEACTIVATE:
-				//this happens when the duration runs out.
-				//if you added the item to the active item list in ACTIVATE
-				//you'll want to remove it here.
-				//
-				//
-				//be sure that you pass in the same arguments as you passed in
-				//otherwise it won't deactivate. and weird stuff may happen.
-				break;
-			case PICKUP:
-				//this happens when the item is picked up, return CANT_COMPLETE
-				//to disable the avatar from picking this up
-				//example:
-				break;
-			case DROP:
-				//this is called when the item is dropped, it can be used to 
-				//"lock" an item to an avatar.
-				break;
-			case EQUIP:
-				//this is called when the item is added to the spellboxes
-				break;
-			case UNEQUIP:
-				//this is called when the item is deleted from the spellboxes
-				break;
-			case SERVICE:
-				//this is called everyframe that the item is active, so watch out
-				//for performance issues here...
-				//(try not to do any list-scans or input)
-				break;
-			default:
-				//an invalid action was passed, and is not supported, so we let
-				//the caller know that.
-				return NOT_SUPPORTED;
-		}
-	}
-	return OK; //everything went ok	
-}
 
 LONG ItemEffects::Regenerate(LONG Combo,LONG Arg,LONG Action)
 {
@@ -508,8 +408,6 @@ LONG ItemEffects::Regenerate(LONG Combo,LONG Arg,LONG Action)
 	
  	SPLIT_COMBO(Combo,Itemtype,hAvatarStats);
  	
-	ItemType&		Item=ItemTypes[Itemtype];
-	
 	if(fBattleCombat)
 	{
 		Result = NOT_SUPPORTED;
@@ -700,8 +598,6 @@ LONG ItemEffects::AddToAttribute(LONG Combo,LONG Arg,LONG Action)
 	
  	SPLIT_COMBO(Combo,Itemtype,hPlayerStats);
  	
-	ItemType&		Item=ItemTypes[Itemtype];
-
 	// works in all modes
 	switch(Action)
 	{
@@ -1048,8 +944,6 @@ LONG ItemEffects::SetAttrTo(LONG Combo,LONG Arg,LONG Action)
    ----------------------------------------------------------------- */
 LONG ItemEffects::Invulnerable(LONG Combo,LONG Arg,LONG Action)
 {
-	STATSMOD::MOD_TYPE	type;
-	LONG				mod;
 
 	ITEMTYPE		Itemtype;
 	SHORT			hPlayerStats;
@@ -1395,8 +1289,6 @@ LONG ItemEffects::ImproveArmor(LONG Combo,LONG Arg,LONG Action)
 {
 
 	SHORT			ac_mod;
-	SHORT			max_ac;
-	SHORT			cur_ac;
 	ITEMTYPE		Itemtype;
 	SHORT			hPlayerStats;
 	
@@ -1421,7 +1313,6 @@ LONG ItemEffects::ImproveArmor(LONG Combo,LONG Arg,LONG Action)
 				CAvatar const * const pAvatar = (CAvatar const * const) BLKPTR(pPlayerStats->hAvatar);
 				
 				ac_mod = (SHORT)(Arg & 0x0000FFFF);
-				max_ac = (SHORT)((Arg & 0x000F0000)>>16);
 
 				Item.mfMessage(STR_ACTIVATE_IMPROVE_ARMOR);
 				mfSound(SND_GENERAL_MAGIC1,1,pAvatar->ThingIndex);
@@ -1434,7 +1325,6 @@ LONG ItemEffects::ImproveArmor(LONG Combo,LONG Arg,LONG Action)
 				DumbAutoLockPtr< PLAYER_STATS > const pPlayerStats(hPlayerStats);
 				
 				ac_mod = (SHORT)(Arg & 0x0000FFFF);
-				max_ac = (SHORT)((Arg & 0x000F0000)>>16);
 
 				Item.mfMessage(STR_DEACTIVATE_IMPROVE_ARMOR);
 				pPlayerStats->StatsMod.mfModifyStats(STATSMOD::ARMORCLASS_MOD, ac_mod);
@@ -1469,8 +1359,6 @@ LONG ItemEffects::HurlFireBall(LONG Combo,LONG Arg,LONG Action)
 	
  	SPLIT_COMBO(Combo,Itemtype,hPlayerStats);
  	
-	ItemType&		Item=ItemTypes[Itemtype];
-
 	if(fDomainTurn)
 	{
 		return NOT_SUPPORTED;
@@ -1630,8 +1518,6 @@ LONG ItemEffects::FrostCone(LONG Combo,LONG Arg,LONG Action)
  	SPLIT_COMBO(Combo,Itemtype,hPlayerStats);
 	PLAYER_STATS * const pPlayerStats=(PLAYER_STATS* const)BLKPTR(hPlayerStats);
  	
-	ItemType&		Item=ItemTypes[Itemtype];
-	
 	if(fDomainTurn)
 	{
 		return NOT_SUPPORTED;
@@ -1731,70 +1617,6 @@ LONG ItemEffects::FrostCone(LONG Combo,LONG Arg,LONG Action)
 	}
 	return OK; //everything went ok	
 }
-LONG ItemEffects::IlluminateAreaRad(LONG Combo,LONG Arg,LONG Action)
-{
-
-	ITEMTYPE		Itemtype;
-	SHORT			hPlayerStats;
-	
- 	SPLIT_COMBO(Combo,Itemtype,hPlayerStats);
- 	
-	ItemType&		Item=ItemTypes[Itemtype];
-
-	if(fDomainTurn)
-	{
-		return NOT_SUPPORTED;
-	}
-	if(fBattleCombat)
-	{
-		return NOT_SUPPORTED;
-	}
-	else	// adventure level
-	{
-		switch(Arg)
-		{
-			case ACTIVATE:
-			{
-				if (!mfAddActiveItem(ItemEffects::IlluminateAreaRad,Combo,0,Item.mfDuration(hPlayerStats)))
-					return CANT_COMPLETE;
-				DumbAutoLockPtr< PLAYER_STATS > const pPlayerStats(hPlayerStats);
-				if (pPlayerStats->hAvatar == fERROR)
-					return CANT_COMPLETE;
-					
-				CAvatar const * const pAvatar = (CAvatar const * const) BLKPTR(pPlayerStats->hAvatar);
-				
-				Item.mfMessage(STR_ACTIVATE_LIGHT);
-				mfSound(SND_INFRAVISION1,1,pAvatar->ThingIndex);
-				gfTestMagicLightSwitch=TRUE;
-				break;
-			}
-			
-			case DEACTIVATE:
-			{
-				Item.mfMessage(STR_DEACTIVATE_LIGHT);
-				gfTestMagicLightSwitch=FALSE;
-				mfRemoveActiveItem(ItemEffects::IlluminateAreaRad,Combo,0);
-				break;
-			}
-			
-			case PICKUP:
-				break;
-			case DROP:
-				break;
-			case EQUIP:
-				break;
-			case UNEQUIP:
-				break;
-			case SERVICE:
-				break;
-			default:
-				return NOT_SUPPORTED;
-		}
-	}
-	
-	return OK;
-
-}
 /* -----------------------------------------------------------------
    
    ----------------------------------------------------------------- */
@@ -1807,8 +1629,6 @@ LONG ItemEffects::ElectricalBolt(LONG Combo,LONG Arg,LONG Action)
 	
  	SPLIT_COMBO(Combo,Itemtype,hPlayerStats);
  	
-	ItemType&		Item=ItemTypes[Itemtype];
-	
 	if(fDomainTurn)
 	{
 		return NOT_SUPPORTED;
@@ -1927,8 +1747,6 @@ LONG ItemEffects::ParalyzeAllInRad(LONG Combo,LONG Arg,LONG Action)
 	
  	SPLIT_COMBO(Combo,Itemtype,hPlayerStats);
  	
-	ItemType&		Item=ItemTypes[Itemtype];
-	
 	if(fDomainTurn)
 	{
 		return NOT_SUPPORTED;

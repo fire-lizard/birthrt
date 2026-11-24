@@ -46,10 +46,6 @@ public:
 	LONG const mfInflictDamageOnTarget( THINGTYPE const /* type */);
    	LONG const mfInflictMagicDamageOnTarget( THINGTYPE const /* KillType */,
 						LONG const /* Damage */ );
-	
-	void mfDamageRange( THINGTYPE const /* type */,
-	                   LONG * const /* minDamage */,
-	                   LONG * const /* maxDamage */) const;
 protected:
 private:
 	PLAYER_STATS * const  fpHeroStats;

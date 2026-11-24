@@ -16,10 +16,10 @@
    ------------------------------------------------------------------------ */
 #include <stdio.h>
 #include <ctype.h>
-#if defined(_WINDOWS)
 #include "PLATFORM.H"
-#else
-#include <time.h>
+
+#if defined(_EDIT)
+#include "edit.h"
 #endif
 
 #include "SYSTEM.H"
@@ -105,22 +105,11 @@ BOOL BattlePrep(void);
 void SpinOutBitmap (SHORT x, SHORT y, SHORT iBitm, SHORT bx, SHORT by, SHORT w, SHORT h,SHORT hDest, POINT start, POINT bck, SHORT bckw, SHORT bckh);
 void SpinInBitmap (SHORT x, SHORT y, SHORT iBitm, SHORT bx, SHORT by, SHORT w, SHORT h,SHORT hDest, POINT start, POINT bck, SHORT bckw, SHORT bckh);
 
-void PaintHelpKeys (LONG MenuCombo, LONG arg);
 void ToggleDirectDraw(LONG, LONG);
 
 #ifdef _WINDOWS
 HWND	hwndApp;
 #endif
-
-static void InitTroopDisplay (LONG type, LONG realm);
-static void PaintTroopCard();
-static LONG AddUnit (SHORT StartIndex, LONG prov, LONG icon, LONG id, LONG realm);
-static LONG DelUnit (SHORT StartIndex, SHORT KillIndex);
-static void MusterList( SHORT StartIndex );
-
-static void PaintHello( LONG MenuCombo, LONG );
-
-void NextHelpKeys(LONG, LONG);
 
 extern void SetRedrawMainMapLevel (void);
 
@@ -143,13 +132,10 @@ SHORT   ChatDisplaySize = 0;
 static CHAR		SysHelpTitle[80];
 static CHAR		SysHelpText[4096];
 static PFVLL	SysHelpProc;
-CHAR			SysHelpDialogArt[40];
 static BOOL     AttribFlag=FALSE;
 extern void PlayGorgon(LONG arg,LONG);
 // used in gamemap.cpp
 BOOL			fAutoMode = FALSE;
-
-BOOL fAIAnimate = TRUE;
 
 extern int iChatKey;
 char		pwad[40] = "";
@@ -248,7 +234,6 @@ MENU Menus[MAX_MENUS] = {
 SHORT hTroopBitm = fERROR;	// used by battle cards
 SHORT iTroopRealm = fERROR;	// used by battle cards
 SHORT iTroopType = fERROR;	// used by battle cards
-SHORT iTroopScale = FULL_SCALE;	// used by battle cards
 
 SHORT iHelpHighlight = 2;
 
@@ -264,7 +249,6 @@ struct{
 	char buffer[80];
 	USHORT seq;
 	}anim;
-static char	action[] = {'S','W','D','A','F','X','C','E','L','G','B','M','Z'};
 
 /* status at the start of the game */
 BOOL char_selected = FALSE;
@@ -275,7 +259,6 @@ LONG cheated = 0;
 
 // put here for now as JOHNC had game.cpp checked out
 extern SHORT iHelpHighlight;
-void DoSlideShow(LONG iWhich);
 
 void ShowHelpMenu ( LONG, LONG )
 {
@@ -303,7 +286,6 @@ void DoneHelpMenu(LONG , LONG)
 
 		case	RULES:
 
-#ifdef _WINDOWS
 	#ifdef _FOREIGNVER
 			InitDOSHelp(H_TOPIC_ATLAS, 0);
 			break;
@@ -317,13 +299,8 @@ void DoneHelpMenu(LONG , LONG)
 
 			WinHelp(hwndApp, chFileName, HELP_CONTENTS, 0);
 			break;
-#else
-			InitDOSHelp(H_TOPIC_ATLAS, 0);
-			break;
-#endif
 
 		case	GAMEPLAY:
-#ifdef _WINDOWS
 	#ifdef _FOREIGNVER
 			InitDOSHelp(H_TOPIC_RULES, 0);
 			break;
@@ -336,197 +313,8 @@ void DoneHelpMenu(LONG , LONG)
 
 			WinHelp(hwndApp, chFileName, HELP_CONTENTS, 0);
 			break;
-#else
-			InitDOSHelp(H_TOPIC_RULES, 0);
-			break;
-#endif
 	}
 
-}
-
-void DoSlideShow(LONG iWhich)
-{
-	CHAR	filename[40];
-	SHORT	i;
-	SHORT	bitm;
-	SHORT	hBitm;
-	LONG	now;
-	BITMPTR	p;
-
-	// remove the timer fuction that draws the mouse to stop the
-	// mouse from drawing, because the mouse code is so screwed
-	// up that SysHideCursor/SysShowCursor doesn't actually
-	// stop the mouse from drawing!
-
-	// save the background
-	hBitm = SaveBitmap(0, 0, 640, 480);
-	
-	fAnyKeyChanged = FALSE;
-	mouse_button = 0;
-
-	for(i = 1; i <= 15; i++)
-	{
-	
-		// start zoom sound early
-		
-		// get the file
-		switch(iWhich)
-		{
-			case 1:		// realm
-				sprintf(filename, "intro\\rlmtut%02d.pcx", i);
-				break;
-
-			case 2:		// adventure
-				sprintf(filename, "intro\\advtut%02d.pcx", i);
-				break;
-
-			case 3:		// battle
-				sprintf(filename, "intro\\btltut%02d.pcx", i);
-				break;
-		}
-		
-		bitm = GetResourceStd (filename, FALSE);
-  		
-		if (bitm != fERROR)
-		{
-			POINT start,bck;
-			
-			// set bitmap scale to 1:1
-			p = (BITMPTR) BLKPTR(bitm);
-			p->scale = UNITARY_SCALE;
-			p->x_ctr_pt = 0;
-
-			start.x = 320;
-			start.y = 240;
-			bck.x = 320;
-			bck.y = 240;
-			ZoomBitmap (0, 0, bitm, 0, 0, 640, 480, fERROR, start, bck, 640, 480);
-			init_gfont(FONT_SANS_12PT);
-			print_text_centered(320,12,"Click to continue - ESC to abort", WHITE);
-			update_screen();
-			SetPurge(bitm);
-			bitm = fERROR;
-			update_buttons();
-		}
-		else
-		{
-			continue; // can't find this one, try the next
-		}
-
-		// delay for mouse debounce
-		now=get_time() + 40;
-		while(get_time()<now)
-		{}
-
-		// delay 5 min
-		now=get_time() + 6000;
-
-		mouse_button = 0;
-		fAnyKeyChanged = FALSE;
-		
-		while(get_time()<now)
-		{
-			run_timers();
-			
-			#ifdef _WINDOWS
-			ClearMessageQueue();
-			#endif
-						
-			update_buttons();
-			if(mouse_button)
-			{
-				mouse_button = 0;
-				break;
-			}
-			else
-			if(fAnyKeyChanged)
-			{
-				if(key_status(KEY_ESCAPE))
-				{
-					iAbortSlideShow = TRUE;
-					goto End;
-				}
-				fAnyKeyChanged = FALSE;
-				clear_key_status(0);
-				break;
-			}
-		}
-	}
-End:
-	// restore background
-	DrawBitmap (0, 0, hBitm, 0, 0, 640, 480);
-	DisposBlock(hBitm);
-
-	fAnyKeyChanged = FALSE;
-	clear_key_status(0);
-	return;	
-}
-
-void NextHelpKeys(LONG, LONG)
-{
-	LONG arg;
-	arg = GetButtonArg(D_HELPKEYS, 0);
-	ChangeButtonProc (D_HELPKEYS, 0, PaintHelpKeys, arg+1, 0);
-}
-
-/* ========================================================================
-   Function    - PaintHelpKeys
-   Description - paint the text on the help menu
-   Returns     -
-   ======================================================================== */
-void PaintHelpKeys (LONG MenuCombo, LONG arg)
-{
-	LONG    X,Y,W,H;
-	LONG    mx,my;
-	LONG    MenuId, ButtonId;
-	CHAR    color = 228;
-	CHAR    buffer[10];
-	char    textbuf[4096];
-	char    buff[80];
-	FILE    *in;
-	SPLIT_LONG(MenuCombo, MenuId, ButtonId);
-
-	// get position of help screen
-	if( GetButtonPosition( MenuId, 1, &mx, &my ) == fERROR)
-		return;
-
-	X = mx;
-	Y = my - 5;
-
-	switch(arg)
-	{
-		case 1:	// realm info
-			sprintf(buff,"%sTEXT\\rlmhelp.txt",InstallPath);
-			break;
-
-		case 2:	// adventure info
-			sprintf(buff,"%sTEXT\\advhelp.txt",InstallPath);
-			break;
-
-		case 3:	// battle info
-			sprintf(buff,"%sTEXT\\btlhelp.txt",InstallPath);
-			break;
-	}
-
-	// clear the buffer
-	memset(&textbuf[0], 0, sizeof(textbuf));
-
-	in = FileOpen(buff, "r");
-	if(in != NULL)
-	{
-		fread(textbuf, sizeof(textbuf), 1, in);
-		FileClose(in);
-		gprint_text(X, Y, textbuf, color);
-	}
-	
-	if (arg == 3)
-	{
-		ChangeButtonProc (D_HELPKEYS, 2, HideSubMenuWithClick, D_HELPKEYS, KEY_N);
-	}
-	else
-	{
-		ChangeButtonProc (D_HELPKEYS, 2, NextHelpKeys, 0, KEY_N);
-	}
 }
 
 /* =======================================================================
@@ -565,6 +353,9 @@ void init_game()
 		add_task(1,HandleFloors,0);  	//once every frame see if any floors moving
 		add_task(1,HandleCeilings,0); //once every frame see if any ceilings moving
 		add_task(1,TextureFrameHandler,0);  //once every frame check lighting effects
+#ifdef _EDIT
+		EditOpeningMessage ();
+#endif
 	}
 }
 
@@ -623,9 +414,6 @@ void MainMenuClick (LONG MenuCombo, LONG ButtonVal)
 	SPLIT_LONG(MenuCombo, MenuId, ButtonId);
 	
 	// click the button
-#if !defined(_WINDOWS)	
-	if (ButtonVal != 6)
-#endif	
 	{
 		SetButtonHilight(MenuId, ButtonId, TRUE);
 		fUpdatePanels = TRUE;
@@ -970,7 +758,6 @@ void PaintAttributes (LONG MenuCombo, LONG )
 	SHORT	hBitm;
 	LONG	hPlayerStats;
 	SHORT	regentNum = 0;
-	char path[256];
 	
 	SPLIT_LONG(MenuCombo, MenuId, ButtonId);
 	
@@ -1266,16 +1053,6 @@ void PlayAnimation (LONG MenuCombo, LONG)
 	SetAnimSequence(iAnim, (anim.seq * NUMROTATIONS));
 }
 
-/* ========================================================================
-   Function    - GAMEToggleAnimation
-   Description - Set the whole dang game to stop moving.
-   Returns     - void
-   ======================================================================== */
-void GAMEToggleAnimation(LONG, LONG)
-{
-	fAIAnimate =  (fAIAnimate == TRUE) ? FALSE : TRUE;
-}
-
 void BackToGame(LONG, LONG)
 {
 
@@ -1467,7 +1244,6 @@ void InitBattleCard( SHORT UnitIndex )
    ======================================================================== */
 void InitBattleCard_alt (LONG type, LONG realm)
 {
-	SHORT				hPlayerStats;
 
 	iTroopType = type;
 	iTroopRealm = realm;
@@ -1482,13 +1258,10 @@ void InitBattleCard_alt (LONG type, LONG realm)
    ======================================================================== */
 void PaintBattleCard( LONG MenuCombo, LONG )
 {
-	SHORT	i;
-	LONG	X,Y;
 	LONG	mx,my;
 	SHORT	tx,ty;
 	LONG	MenuId, ButtonId;
 	CHAR	buffer[150];
-	LONG	timedif;
 	
 	SPLIT_LONG(MenuCombo, MenuId, ButtonId);
 
@@ -2079,7 +1852,6 @@ int PaintInputField(LONG lButtonId, char *szBuffer, LONG lBufLen, LONG lFont,
 					&& szBuffer[5] == 'I'
 					)
 				{
-					SHORT	Item;
 					
 					if(fDomainTurn)
 					{
@@ -2490,7 +2262,7 @@ void InventoryFromStatus(LONG MenuCombo, LONG)
 	//so their is no delay when the menus switch
 	CSTRPTR pArt;
 	GetButtonArt(D_AVATAR_INVENTORY,0,&pArt);
-	SHORT DummyLoader=GetResourceStd(pArt,TRUE);
+	GetResourceStd(pArt,TRUE);
 
 	LONG hPlayerStats = GetButtonValue(D_AVATAR_ATTRIBUTES, BUTNO_STATUS_HDL);
 
@@ -2542,7 +2314,7 @@ void StatusFromInventory(LONG MenuCombo, LONG)
 	//so their is no delay when the menus switch
 	CSTRPTR pArt;
 	GetButtonArt(D_AVATAR_INVENTORY,0,&pArt);
-	SHORT DummyLoader=GetResourceStd(pArt,TRUE);
+	GetResourceStd(pArt,TRUE);
 
 	LONG hPlayerStats = GetButtonValue(D_AVATAR_INVENTORY, INV_BUT_STATUS);
 
@@ -2614,9 +2386,7 @@ void DoneHelpKeys(LONG arg, LONG arg1)
 
 void PaintHelpScreen(LONG MenuCombo, LONG)
 {
-	int i;
 	LONG mx, my;
-	LONG X, Y, W, H;
 	char buffer[40];
 	LONG	MenuId, ButtonId;
 
@@ -2647,34 +2417,6 @@ void VictoryScreen(PFVLL NewPaintProc, PFVLL NewDoneProc)
 }
 
 /* ========================================================================
-   Function    - VictoryScreenProc
-   Description -
-   Returns     -
-   ======================================================================== */
-void VictoryScreenProc(LONG MenuCombo, LONG )
-{
-	LONG	MenuId, ButtonId;
-	SPLIT_LONG(MenuCombo, MenuId, ButtonId);
-	
-	// click the button
-	SetButtonHilight(MenuId, ButtonId, TRUE);
-	fUpdatePanels = TRUE;
-	RunPanels();
-	RunMenus();
-	update_screen();
-	TickDelay(4);
-	SetButtonHilight(MenuId, ButtonId, FALSE);
-	fUpdatePanels = TRUE;
-	RunPanels();
-	RunMenus();
-	update_screen();
-	TickDelay(4);
-	HideMenu(MenuId);
-	RunMenus();
-	KillSoundsNoFade();
-}
-
-/* ========================================================================
    Function    - DefeatScreen
    Description - put up the Defeat screen
    Returns     -
@@ -2692,45 +2434,14 @@ void DefeatScreen(PFVLL NewPaintProc, PFVLL NewDoneProc)
 }
 
 /* ========================================================================
-   Function    - DefeatScreenProc
-   Description -
-   Returns     -
-   ======================================================================== */
-void DefeatScreenProc(LONG MenuCombo, LONG )
-{
-	LONG	MenuId, ButtonId;
-	SPLIT_LONG(MenuCombo, MenuId, ButtonId);
-	
-	// click the button
-	SetButtonHilight(MenuId, ButtonId, TRUE);
-	fUpdatePanels = TRUE;
-	RunPanels();
-	RunMenus();
-	update_screen();
-	TickDelay(4);
-	SetButtonHilight(MenuId, ButtonId, FALSE);
-	fUpdatePanels = TRUE;
-	RunPanels();
-	RunMenus();
-	update_screen();
-	TickDelay(4);
-	HideMenu(MenuId);
-	RunMenus();
-	KillSoundsNoFade();
-}
-
-/* ========================================================================
    Function    - Sinners
    Description - Vain attemped at humor
    Returns     - No return beyond this point
    ======================================================================== */
 void Sinners(LONG, LONG)
 {
-	CHAR	filename[40];
-	SHORT	i;
 	SHORT	bitm;
 	SHORT	hBitm;
-	LONG	now;
 	
 	TurnOffAllSounds();
 	PlayTrack(SND_WIN_GAME_MUSIC1);
@@ -2887,7 +2598,6 @@ void GetMoreInfo( LONG MenuCombo, LONG Context )
 {
 	CHAR chFileName[80];
 
-#ifdef _WINDOWS
 	#ifdef _FOREIGNVER
 		LONG    MenuId, ButtonId;
 		SPLIT_LONG(MenuCombo, MenuId, ButtonId);
@@ -2905,61 +2615,8 @@ void GetMoreInfo( LONG MenuCombo, LONG Context )
 
 	WinHelp( hwndApp, chFileName, HELP_CONTEXT, Context );
 
-#else
-
-	LONG    MenuId, ButtonId;
-	SPLIT_LONG(MenuCombo, MenuId, ButtonId);
-
-	HideSubMenuWithClick(0, MenuId );
-	RunMenus();
-
-	InitDOSHelp(H_TOPIC_RULES, Context);
-
-#endif
-
 }
 
-/* ========================================================================
-   Function    - SystemHelp
-   Description - system help dialog using a text file
-                 NOTE: first line of text in file is the title, next line
-                 on is the text body
-   Returns     -
-   ======================================================================== */
-void SystemHelp(
-	CHAR *TextFile,
-	LONG MoreInfoTag,
-	PFVLL PaintProc = NULL,
-	LONG MenuControl = 0
-)
-{
-	CHAR	Title[80];
-	CHAR	Text[4096];
-	SHORT	fileResult;
-	FILE    *fp;
-
-	// clear the buffer
-	memset(&Title[0], 0, sizeof(Title));
-	memset(&Text[0], 0, sizeof(Text));
-
-	// read text in from file
-	if (TextFile != 0)
-	{
-		fp = FileOpen(TextFile, "r");
-		if (fp != NULL)
-		{
-			fileResult = GetNextLine(fp, Title, sizeof(Title));
-			if (fileResult == EOF)
-				return;
-				
-			fread(Text, sizeof(Text), 1, fp);
-			FileClose(fp);
-		}
-	}
-	
-	SystemHelp(&Title[0], &Text[0], MoreInfoTag, PaintProc, MenuControl);
-}
-	
 /* ========================================================================
    Function    - SystemHelp
    Description - system help dialog using a strmgr text index
@@ -3117,22 +2774,18 @@ void SystemHelp(
    ======================================================================== */
 void SystemHelpPaintProc( LONG MenuCombo, LONG )
 {
-	BOOL	fTitle = FALSE;
 	LONG	X,Y,W,H;
-	LONG	Y2;
 	LONG    MenuId, ButtonId;
 	LONG	TextHeight;
 	SPLIT_LONG(MenuCombo, MenuId, ButtonId);
 	
 	if (SysHelpTitle[0] != 0)
 	{
-		fTitle = TRUE;
 		
 		GetButtonPosition( MenuId, SYSHELP_TITLE, &X, &Y );
 		GetButtonSize( MenuId, SYSHELP_TITLE, &W, &H );
 		X += W / 2;
 		Y += H / 2;
-		Y2 = Y;			// may be use below
 		print_text_centered(X, Y, SysHelpTitle, WHITE);
 	}
 
@@ -3153,26 +2806,6 @@ void SystemHelpPaintProc( LONG MenuCombo, LONG )
 	
 	if (SysHelpProc != 0)
 		(*SysHelpProc)(MenuCombo, 0);
-}
-
-/* ========================================================================
-   Function    - PaintHello
-   Description -
-   Returns     -
-   ======================================================================== */
-void PaintHello( LONG MenuCombo, LONG )
-{
-	LONG	X,Y,W,H;
-	LONG    MenuId, ButtonId;
-	SPLIT_LONG(MenuCombo, MenuId, ButtonId);
-	
-	if( GetButtonPosition( MenuId, SYSHELP_TITLE, &X, &Y ) == fERROR)
-		return;
-		
-	if( GetButtonSize( MenuId, SYSHELP_TITLE, &W, &H ) == fERROR)
-		return;
-		
-	gprint_text(X,Y,"^F01Hello World!", BLACK);
 }
 
 /* ========================================================================

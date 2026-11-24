@@ -154,16 +154,6 @@ static const CLASS_HIT_DICE_TABLE RogueHitDiceTable[] = {
 	{{10, 6, 20}, 11}	// 20
 };
 
-// Note: These are the maximum levels a player of this race can
-//       become. Magicians can only be humans so their limit is Zero!
-static PLAYER_CLASS_LIMITS const PlayerClassLimitTable = {
-//      F  P   R  Pr        Wizard  Magician         Thief          Bard
-	{ 15,  0,  0, 12,            0,        0,            8,            0},	// Dwarf
-	{ 12,  0, 12,  0, UNRESTRICTED,        0,           12,            9},	// Elf
-	{ 14,  0, 16,  9,           12,        0,           12, UNRESTRICTED},	// HalfElf
-	{  7,  0,  7,  8,            0,        0, UNRESTRICTED,            0}		// Halfling
-};
-
 PLAYER_CLASS_INFO::PLAYER_CLASS_ITEM const PLAYER_CLASS_INFO::pPlayerClassInfoTable[] = {
 	{STR_CLASS_FIGHTER,	 	FighterHitDiceTable},
 	{STR_CLASS_PALADIN, 	FighterHitDiceTable},
@@ -275,73 +265,4 @@ const LONG PLAYER_CLASS_LIST::mfReadTextData(FILE * const fp)
 	}
 	
 	return Result;
-}
-
-/* =======================================================================
-   Function    - mfGetPlayerClassLimits
-   Description - Look up the High value for a given player Race. If no limitations
-                 don't change the input value.
-   Returns     - void
-   ======================================================================== */
-void PLAYER_CLASS_INFO::mfGetPlayerClassLimits(
-	PLAYER_CLASS_INFO::TYPE PlayerClass,
-	RACE_INFO::TYPE PlayerRace,
-	SBYTE *psbHighValue)
-{
-	switch (PlayerRace)
-	{
-	case RACE_INFO::DWARF:
-		*psbHighValue = PlayerClassLimitTable.Dwarf[PlayerClass];
-		break;
-	case RACE_INFO::ELF:
-		*psbHighValue = PlayerClassLimitTable.Elf[PlayerClass];
-		break;
-	case RACE_INFO::HALF_ELF:
-		*psbHighValue = PlayerClassLimitTable.HalfElf[PlayerClass];
-		break;
-	case RACE_INFO::HALFLING:
-		*psbHighValue = PlayerClassLimitTable.Halfling[PlayerClass];
-		break;
-	}
-}
-
-/* =======================================================================
-   Function    - TestPlayerClassLimits
-   Description - Looks up the Ability Min  based for a given ABILITY_TYPE
-                 and check to see if this is an ok player or not.
-   Returns     - void
-   ======================================================================== */
-CLASS_TEST_TYPE TestPlayerClassLimits(
-	PLAYER_CLASS_INFO::TYPE	PlayerClassType,
-	RACE_INFO::TYPE			PlayerRace,
-	PTR_ABILITY				pPlayerAbility,
-	SBYTE sbPlayerLevel)
-{
-	CLASS_TEST_TYPE cttResult = CLASS_INVALID;
-
-	// Is this an allowed race for this player type?
-	if (ClassAbilityTable[PlayerClassType].RacesAllowed[PlayerRace])
-	{
-		ABILITY const * pClassAbility = &ClassAbilityTable[PlayerClassType].minAbility;
-
-		// Note: Since no Minimum Strength is 18 I don't need to convert the players
-		//       Strength rating to its basic level.
-		if (pPlayerAbility->mfGetStrength()	 	>= pClassAbility->mfGetStrength() &&
-			pPlayerAbility->mfGetDexterity()	>= pClassAbility->mfGetDexterity() &&
-			pPlayerAbility->mfGetConstitution() >= pClassAbility->mfGetConstitution() &&
-			pPlayerAbility->mfGetIntelligence() >= pClassAbility->mfGetIntelligence() &&
-			pPlayerAbility->mfGetWisdom()		>= pClassAbility->mfGetWisdom() &&
-			pPlayerAbility->mfGetCharisma()	 	>= pClassAbility->mfGetCharisma())
-		{
-			SBYTE sbMaxClassLevel = UNRESTRICTED;
-			PLAYER_CLASS_INFO::mfGetPlayerClassLimits(PlayerClassType, PlayerRace, &sbMaxClassLevel);
-
-			if (sbMaxClassLevel >= sbPlayerLevel)
-			{
-				cttResult = CLASS_VALID;
-			}
-		}
-	}
-
-	return cttResult;
 }

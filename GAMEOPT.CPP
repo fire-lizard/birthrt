@@ -26,7 +26,6 @@
 #include "CHARSEL.HXX"
 #include "GAME.H"
 #include "SOUND.HXX"
-#include "LISTBOX.HXX"
 #include "MENU.H"
 #include "PANEL.H"
 #include "COMBATUI.HXX"
@@ -78,15 +77,9 @@ static const SHORT screen_resolutions[6][2] = {
 };
 static SHORT		old_screen_size = 0;
 
-static SHORT sound_levels[] = {0, 13, 26, 38, 51, 64, 77, 90, 102, 115, 127};
-
 static SHORT plusmin[2];
 
-#ifdef _WINDOWS
 static SHORT screen_mode = iGDI;
-#else
-static SHORT screen_mode = 0;    // 0 - GDI or 1 - DDRAW
-#endif
 
 SHORT sitecount[MAX_SITES] = {0};
 
@@ -318,11 +311,7 @@ void OpenOptions   (LONG, LONG)
    
 		//---- GDI or DDRAW
    
-#ifdef _WINDOWS
 		screen_mode = sDrawMode;
-#else
-		screen_mode = 0;
-#endif
 		new_mundane = mundane_descriptions;
 		
 		newControlMode = (fControlMode & MODE_MASK);
@@ -603,17 +592,12 @@ void OptionDefaults(LONG MenuCombo, LONG)
     for (i=0; i < OPT_ADJ_COUNT; i++)
         OptAdjLevel(i, 0);
 
-#ifdef _WINDOWS
-
 #ifndef _DEBUG
 	screen_mode = iGDI;
 #else
 	screen_mode = 0;
 #endif
 
-#else
-   screen_mode = 0;
-#endif
 	newControlMode = (fControlMode & MODE_MASK);
 
     return;
@@ -645,10 +629,10 @@ void PaintOptionAdj(LONG menu_x, LONG menu_y, SHORT row, OPT_ADJ_TYPE index)
 
 void PaintOptionMenu (LONG MenuCombo, LONG LoadSave)
 {
-	LONG	i, j, num_buttons;
+	LONG	i, num_buttons;
 	LONG	MenuId, ButtonId;
 	char	buffer[30];
-	LONG    menu_x, menu_y, color;
+	LONG    menu_x, menu_y;
 	
 	SPLIT_LONG(MenuCombo, MenuId, ButtonId);
 

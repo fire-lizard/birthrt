@@ -9,21 +9,13 @@
    Contains the following internal functions: 
 
    Contains the following general functions:
-   init_timer            -initializes the timer list
-   close_timer           -closes the timer list (must call this!)
    add_timer             -adds a timer to the list
-   remove_timer          -removes a timer from the list
-   run_timer             -runs through timer, deciding to execute them or not 
 
    ======================================================================== */
 /* ------------------------------------------------------------------------
    Includes
    ------------------------------------------------------------------------ */
 #include <stdio.h>
-
-#ifndef _WINDOWS
-#include <bios.h>
-#endif
 
 #include "SYSTEM.H"
 #include "MACHINE.H"
@@ -70,15 +62,6 @@ void init_timers()
 	}
 }
 
-/* ========================================================================
-   Function    - close_timers
-   Description - turn of the timer list
-   Returns     - void
-   ======================================================================== */
-void close_timers(void)
-{
-}
-
 /* =======================================================================
    Function    - add_timer
    Description - adds a timer to the list
@@ -110,28 +93,6 @@ void add_timer(LONG freq,PFV func)
 		timers[i].next=1;		//happen next frame
 	timers[i].func=func;
 	timers[i].active=TRUE;
-}
-
-/* =======================================================================
-   Function    - remove_timer
-   Description - removes a timer based on a pointer to a function
-   Returns     - void
-   ======================================================================== */
-void remove_timer(PFV func)
-{
-	LONG i;
-
-	if(func)
-	{
-		for(i=0;i<MAX_TIMERS;i++)
-		{
-			if(timers[i].func==func)
-			{
-				timers[i].active=FALSE;
-			}
-		}
-	}
-
 }
 
 /* =======================================================================

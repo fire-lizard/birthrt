@@ -7,8 +7,8 @@
    calls the portable core actually uses.
 
    Genuinely Windows-only code (DirectDraw/DirectSound/DirectPlay, the
-   Win32 message loop, the character-editor dialogs) is excluded from the
-   POSIX build in CMakeLists.txt rather than being #ifdef'd inline.
+   Win32 message loop) is excluded from the POSIX build in CMakeLists.txt
+   rather than being #ifdef'd inline.
    ======================================================================== */
 #ifndef _PLATFORM_H
 #define _PLATFORM_H

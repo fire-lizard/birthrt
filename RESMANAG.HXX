@@ -117,7 +117,6 @@ LONG ResourceFileAccess (CSTRPTR pszFile);
 // Call before initializing the memory manager. Or inside the memory
 // manager init fn.
 BOOL InitResourceManager(USHORT NumResHandles);
-void FreeResourceManager();
 
 #if defined (__cplusplus)
 }

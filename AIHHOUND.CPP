@@ -207,7 +207,7 @@ void CAvatar::HellHounds (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 	case AI_CASTSPELL:
 			if (pAvatar->hPlayerStats != fERROR)
 			{
-				const PTR_PLAYER_STATS pPlayerStats = (const PTR_PLAYER_STATS)BLKPTR(pAvatar->hPlayerStats);
+				BLKPTR(pAvatar->hPlayerStats);
 
 				if (pAvatar->hEnemy == fERROR)
 				{
@@ -291,7 +291,7 @@ void CAvatar::HellHounds (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 	case AI_ATTACK:
 			if (pAvatar->hPlayerStats != fERROR)
 			{
-				const PTR_PLAYER_STATS pPlayerStats = (const PTR_PLAYER_STATS)BLKPTR(pAvatar->hPlayerStats);
+				BLKPTR(pAvatar->hPlayerStats);
 
 				if (pAvatar->hEnemy == fERROR)
 				{

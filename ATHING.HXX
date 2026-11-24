@@ -63,8 +63,6 @@ public:
 	LONG const mfAngle() const;
 	LONG const mfHeight() const;//this gets what the height was last time the thing was drawn
 	LONG const mfWidth() const; 
-	LONG const mfDeathHeight();  //this gets the height of their death frame
-	void mfSetToDeathHeightWidth();
 	
 	THINGTYPE const mfType() const;
 	BOOL const mfIsVisible() const;
@@ -187,17 +185,6 @@ inline LONG const ArtThing::mfAngle() const
    ======================================================================== */
 inline LONG const ArtThing::mfHeight() const
 {
-	return mythings[ThingIndex].heiScaled;
-}
-
-/* ========================================================================
-   Function    - mfDeathHeight
-   Description - inline to return the height of the death frame
-   Returns     - 
-   ======================================================================== */
-inline LONG const ArtThing::mfDeathHeight()
-{
-	mfSetToDeathHeightWidth();
 	return mythings[ThingIndex].heiScaled;
 }
 

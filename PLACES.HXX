@@ -65,9 +65,7 @@ extern DECL_VECTOR_CLASS(CSTRPTR,place_names);
 /* ------------------------------------------------------------------------
    Prototypes
    ------------------------------------------------------------------------ */
-LONG GetCastleName( SHORT PlacesIndex );
 void SetRelicFound( SHORT NameIndex );
-BOOL IsRelicFound( SHORT NameIndex );
 LONG HoldingValue (LONG iHold);
 
 /* ------------------------------------------------------------------------

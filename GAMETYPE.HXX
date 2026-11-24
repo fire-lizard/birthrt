@@ -127,7 +127,6 @@ public:
 	inline static LONG const mfGetSTRMgrId(const THINGTYPE);
 	inline static const UBYTE mfGetWalkRate(const THINGTYPE);
 	inline static const UBYTE mfGetMarchRate(const THINGTYPE);
-	static const THINGTYPE mfGetThingType(char const * /* cpFileName */ );
 	inline static const char *mfGetArtFileName(const THINGTYPE);
 	inline static const BOOL mfIsLargeAvatar(const THINGTYPE);
 	inline static THINGTYPE const mfGetLowResType(THINGTYPE const);

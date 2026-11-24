@@ -135,28 +135,3 @@ void ArtThing::mfTestAndUseLowResArt()
 	}
 }
 
-/* ========================================================================
-   Function    - mfGetDeathFrameHeightWidth
-   Description - updates the height and width fields in the mythings array
-   Returns     -
-   ======================================================================== */
-void ArtThing::mfSetToDeathHeightWidth()
-{
-	//note: mt is a reference... we're modifying the array, not a copy
-	MYTHING& mt=mythings[ThingIndex];
-
-	if (mt.iAnim==fERROR)
-		return;
-	ANIMPTR pAnim=(ANIMPTR)BLKPTR(mt.iAnim);
-
-	//this moves memory, we need to reset pAnim afterwards.
-	load_FLC_sequence(mt.iAnim,mt.OriginalType,ANIMATION12SEQ,0);
-	SetAnimSequence(mt.iAnim,ANIMATION12SEQ*NUMROTATIONS);
-
-	if (mt.iAnim==fERROR)
-		return;
- 
-	pAnim=(ANIMPTR)BLKPTR(mt.iAnim);
-	mt.heiScaled=pAnim->width;
-	mt.widScaled=pAnim->height;
-}

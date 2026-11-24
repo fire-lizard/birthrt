@@ -33,29 +33,12 @@ class Regenerator
 		BOOL  fValid;
 	public:
 		static void InitList();
-		static void WipeNonPlayers();
 		static void Service();
 		static BOOL mfRegister(SHORT /* hAvatarStats */,LONG /* time */);
 		static void mfUnRegister(SHORT /* hAvatarStats */, LONG /* time */);
 };
 
-inline BOOL isPlayer(SHORT hAvatar);
 inline BOOL isGoodAvatar(SHORT hAvatar);
-
-inline BOOL isPlayer(SHORT hAvatar)
-{
-	if (hAvatar==fERROR)
-		return FALSE;
-
-	ADVENTURER_TEAM_ITOR AdvItor;
-	for (AdvItor = ADVENTURER::begin(); AdvItor != ADVENTURER::end();
-		AdvItor++)
-	{
-		if (hAvatar==*AdvItor)
-			return TRUE;
-	}
-	return FALSE;
-}
 
 inline BOOL isGoodAvatar(SHORT hAvatar)
 {

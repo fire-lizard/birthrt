@@ -54,10 +54,12 @@ BLOOD_ABILITY_INFO::BLOOD_ABILITY RollBloodlineAbility(
 PTR_BLOODLINE_ACQUISITION_LIST RollBloodlineAbilityAcquisition(
 	SBYTE	Strength);
 
+#if defined(_CHARED)			// Character Editor only (CHARED.CPP)
 BLOODLINE_STRENGTH_INFO::TYPE	RollBloodlineStrength(SHORT *psStrength);
 
 BLOODLINE_DERIVATION_INFO::TYPE RollBloodlineDerivation();
 
 LONG RollBloodlineNumericalStrength (BLOODLINE_STRENGTH_INFO::TYPE BloodStrengthType);
+#endif
 
 #endif // _BLOODREQ_HXX

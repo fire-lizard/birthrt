@@ -32,7 +32,6 @@ void FloorActivate (LONG iLinedef, LONG tag, LONG special);
 BOOL CeilingIsActive (LONG iSector);
 void CeilingActivate (LONG iLinedef, LONG tag, LONG special);
 
-BOOL LinedefIsSwingingDoor(LONG Ldidx);
 
 void DoorInfo (LONG special);
 

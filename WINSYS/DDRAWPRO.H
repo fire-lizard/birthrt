@@ -46,7 +46,6 @@ void    DDEraseScreen           ( void );
 HRESULT DDFlipScreen            ( LPDIRECTDRAWSURFACE lpDDSFlip );
 HRESULT DDFlipSurface           ( void );
 HDC	  DDGetDC					  ( BOOL fBack );
-DWORD	  DDGetSurfaceWidth		  ( void );
 HRESULT DDLockSurface           ( PCHAR *ppchBuf, long *pViewWidth );
 BOOL	  DDRealizePalette		  ( void );
 BOOL	  DDSetPaletteEntries	  ( void );

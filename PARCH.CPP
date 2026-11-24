@@ -88,7 +88,6 @@ void PaintParchment(LONG MenuCombo, LONG stringhandle)
 {
 	char	buffer[712];
 	LONG	menu_x, menu_y;
-	LONG	X,Y;
 	LONG	MenuId, ButtonId;
 	SPLIT_LONG(MenuCombo, MenuId, ButtonId);
 

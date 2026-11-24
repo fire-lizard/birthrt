@@ -22,8 +22,6 @@ LONG ItemEffects::BAHealing(LONG Combo,LONG AbilityStrength,LONG Action)
 									//the item
 	SPLIT_COMBO(Combo,Itemtype,hAvatarStats); //extract the data from the Combo
 	
-	ItemType& Item=ItemTypes[Itemtype]; //A reference to the item
-	
 	if(fDomainTurn)
 	{
 		return NOT_SUPPORTED;
@@ -437,8 +435,6 @@ LONG ItemEffects::BAHeightendAbility(LONG Combo,LONG Arg,LONG Action)
    ----------------------------------------------------------------- */
 LONG ItemEffects::BAEnhancedSense(LONG Combo,LONG Arg,LONG Action)
 {
-	DICE	dice;
-	LONG	mod;
 	LONG	RegentIndex;
 	
 	ITEMTYPE		IType;
@@ -532,8 +528,6 @@ LONG ItemEffects::BAEnhancedSense(LONG Combo,LONG Arg,LONG Action)
    ----------------------------------------------------------------- */
 LONG ItemEffects::BAFear(LONG Combo,LONG Arg,LONG Action)
 {
-	STATSMOD::MOD_TYPE	type;
-	LONG				mod;
 
 	ITEMTYPE		IType;
 	SHORT			hPlayerStats;

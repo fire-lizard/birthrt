@@ -45,8 +45,6 @@ void ShowMultiQuestion(LONG, LONG);
 void ShowMultiQuit(LONG, LONG);
 void ShowWaitMultiType(LONG, LONG);
 
-void ShowSyncWaitWindow( LONG sync, LONG);
-
 void SetChatSelect( LONG, LONG Key );
 void DoneChatSelect(LONG, LONG);
 void CancelChatSelect(LONG, LONG);
@@ -55,12 +53,9 @@ void SetMPControlMode ( void );
 
 void SetupMultiQuestion ( void );
 void SetMultiPlayerMenu( LONG, LONG Key );
-void GetMultiPlayerHelp( LONG, LONG );
 void DoneMultiPlayerMenu(LONG, LONG);
 void BackMultiPlayerMenu(LONG, LONG);
 void CancelMultiPlayerMenu(LONG, LONG);
-
-void ScrollMultiPlayerMenu(LONG, LONG down );
 
 void PaintMultiPlayerName (LONG MenuCombo, LONG );
 void SetMultiPlayerProtocol (LONG , LONG Index);
@@ -92,8 +87,6 @@ void SetupChatSelect	( void );
 void SetupWaitRealm	( void );
 void SetupMultiQuit 	( void );
 void SetupWaitMultiType ( void );
-
-void SetupSyncWait		( int sync );
 
 void StartInSIGS ( void );
 

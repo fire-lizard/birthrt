@@ -70,7 +70,6 @@ void CAvatar::Stunned (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 	{
 		case AI_INIT:
 		{
-			LONG deltaZ;
 		
 			pAvatar->Status = AI_MOVING;
 			pAvatar->attrib.IssuedChallange = FALSE;
@@ -184,17 +183,10 @@ void CAvatar::Stunned (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 			pAvatar->mfGetSectorInfo(&FloorHeight, &CeilingHeight, &Special);
 			
 			LONG Angle=0;
-			PLAYER TempPlayer;
-			FIXED_VECTOR_3D NewVector, OldVector;
 			const LONG Rate=pAvatar->mfGetMarchRate();
-			WadThingType Result = iNOTHING;
-			LONG BumpDistance;
-			LONG dz,dx,dy ;
 			LONG BumpIndex;
 
-			WadThingType bump;
-		
-			bump=pAvatar->mfMoveTowardWithBump(distance,
+			pAvatar->mfMoveTowardWithBump(distance,
 							pAvatar->fStunned.Target.x,
 							pAvatar->fStunned.Target.y,
 							20,

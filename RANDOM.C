@@ -64,26 +64,6 @@ void RandomLogClose ( void )
 	}
 }
 
-void RandomLogWrite ( unsigned long therand, char * szFileName, int iLineNumber )
-{
-	if ( fWrite )
-	{
-		numrands++;
-		RandomLogOpen();
-		if ( pFile )
-		{
-			fprintf ( pFile,
-							"%sR%u %12.12s@%d\n",
-							temp,
-							therand, 
-							szFileName,
-							iLineNumber );
-			sprintf (temp, "");
-		}
-		RandomLogClose();
-	}
-}
-
 void RandomLogComment ( char * szString )
 {
 	RandomLogOpen();
@@ -93,11 +73,7 @@ void RandomLogComment ( char * szString )
 
 		fprintf ( pFile, 
 				   "%s%s %s\n",
-#ifdef _WINDOWS
 					(IsMultiPlayer())?"^":"v",
-#else
-					" ",
-#endif
 					temp,
 				   szString );
 		sprintf (temp, "");
@@ -114,18 +90,6 @@ void RandomLogPrefix ( char * szString )
 {
 	if ( pFile && strlen(temp) < 1400)
 		strcat(temp, szString);
-}
-
-/* ========================================================================
-   Function    - LogFlush
-   Description - flush the log from the buffer to the file before we crash
-   Returns     - 
-   ======================================================================== */
-void LogFlush ( void )
-{
-	RandomLogOpen();
-	fflush ( pFile );
-	RandomLogClose();
 }
 
 /* ======================================================================== */

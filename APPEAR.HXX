@@ -73,8 +73,10 @@ public:
 	
 	static char const * const mfGetName (const TYPE);
 	static const THINGTYPE mfGetType (const TYPE);
+#if defined(_CHARED)			// Character Editor only
 	static TYPE IndexFromType (THINGTYPE iType);
-	
+#endif
+
 private:
 	static const APPEARANCE_ITEM fpAppearanceInfoTable[];
 };

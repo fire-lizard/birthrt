@@ -9,7 +9,6 @@
 
    Contains the following general functions:
    set_view          -sets various variables dealing with the players view
-   round             -rounds a number to the nearest integral value
    point_relation    -???
    back_face_point   -???
    aprox_dist        -approximate distance between two points
@@ -18,9 +17,6 @@
    rot8              -rotates a vector to player's angle
    rot8_angle        -rotates a vector to a specified angle
    proj              -???
-   cross_prod        -gives the cross product of two vectors
-   dot_prod          -gives the dot product of two vectors
-   unit_normal       -gives the unit_normal of a vector
    AngleFromPoint    -Return the angle of a point relative to another point
 
    ======================================================================== */
@@ -62,7 +58,6 @@ void RotateAnglePoint (POINT *p, POINT *origin, ULONG a);
    ------------------------------------------------------------------------ */
 
 LONG	view_sin, view_cos;
-LONG	anti_view_sin, anti_view_cos;
 
 /* ======================================================================
    Function    - set_view
@@ -70,7 +65,6 @@ LONG	anti_view_sin, anti_view_cos;
    Returns     - void
 	UTB CMP 10-28 Now calcs the view frustrum as well.
    ======================================================================== */
-LINE2D view_frust_right,view_frust_left;
 
 #define FRUST_LINE_LEN		(100<<4)
 void set_view()
@@ -241,17 +235,6 @@ void xlate(POINT *p)
 }
 
 /* =======================================================================
-   Function    - xlatePoint
-   Description - translates absolute coordinates to the player's position
-   Returns     - void
-   ======================================================================== */
-void xlatePoint(POINT *p,POINT a)
-{
-	p->x=p->x-a.x;
-	p->y=p->y-a.y;
-}
-
-/* =======================================================================
    Function    - rot8
    Description - rotates a point about the world orgin to the camera's angle
    				 Note: Y is postive in the 0 angle direction.
@@ -358,45 +341,6 @@ void rot8_angle (POINT *p,ULONG a)
 
 	p->y =(((((ax) * sin_table[a] ) )
 		 + (((p->y) * cos_table[a] ) )) / ANGLE_MULTI);
-}
-
-/* =======================================================================
-   Function    - rot8_r_angle
-   Description - rotates a point about the world orgin with a radius to a
-                 specified angle
-   				 Note: Y is postive in the 0 angle direction.
-   				       X is postive in the 64 bytian angle direction
-   				       (See "Computer Graphics" by Folly & vanDam p.203)
-   				       The Angle coordiate system used by this fn is
-   				             64
-   				              |
-   				          128-+-0
-   				              |
-   				             192
-   				       To convert to the nova engine coordinate system use
-   				       -a (angles)
-   				       Nova:
-   				              0
-   				              |
-   				          192-+-64
-   				              |
-   				             128
-   Returns     - void
-   ======================================================================== */
-void rot8_r_angle (POINT *p,ULONG OldAngle, ULONG DeltaAngle, LONG radius)
-{
-	const LONG RadiusxCosOldAngle = (radius * cos_table[OldAngle])/ANGLE_MULTI;
-	const LONG RadiusxSinOldAngle = (radius * sin_table[OldAngle])/ANGLE_MULTI;
-	
-	OldAngle = OldAngle % ANGLE_STEPS;
-	DeltaAngle = DeltaAngle % ANGLE_STEPS;
-
-   /* calculate SIN and COS using a look-up table */
-	p->x =((RadiusxCosOldAngle * cos_table[DeltaAngle])
-		 - (RadiusxSinOldAngle * sin_table[DeltaAngle])) / ANGLE_MULTI;
-
-	p->y =((RadiusxCosOldAngle * sin_table[DeltaAngle])
-		 + (RadiusxSinOldAngle * cos_table[DeltaAngle])) / ANGLE_MULTI;
 }
 
 /* =======================================================================

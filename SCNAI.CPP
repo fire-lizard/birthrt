@@ -37,7 +37,6 @@
 #include "PANEL.H"
 #include "SCENE.HXX"
 #include "SCNAI.HXX"
-#include "SLFRDEMO.HXX"
 #include "TUTRMENU.HXX"
 #include "LOADSAVE.HXX"
 #include "UNITS.HXX"
@@ -115,6 +114,12 @@ SCENE_AI::PFVS SCENE_AI::sfpSceneTable[SCENE_AI::MAX_SCENES][SCENE_AI::SCENE_MAX
    ======================================================================== */
 void SCENE_AI::mfScenePause (SCENE &rScene)
 {
+#if defined(SCENE_EDITOR)
+	// All the avatars have to stop moving so we can edit them!
+	//if (bEditMode)
+	{
+#endif
+
 	for(LONG i = 0; i < MAX_AVATARS; i++ )
 	{
 	    // This is a sparsly filled array.
@@ -127,74 +132,10 @@ void SCENE_AI::mfScenePause (SCENE &rScene)
 		   //GEH if (rScene.Avatars[i] != fERROR)
 	    }
 	}
-}
 
-/* ========================================================================
-   Function    - mfSceneWaitForKey
-   Description - Put up a "Done" button and wait for a keypress
-					  or mouse button click before launching an adventure WAD
-   Returns     - void
-	Notes       - 11-15-96 JPC
-					- [d11-17-96 JPC] Revision: in DOS, don't put up a button,
-					  just a prompt for a keypress or button.  (Could not
-					  figure out how to move the mouse in DOS without various
-					  flicker/failure to erase problems.)
-					  [d3-14-97 JPC] Don't process if (master_game_type == GAME_ADVENTURE)
-
-   ======================================================================== */
-void SCENE_AI::mfSceneWaitForKey (SCENE &rScene)
-{
-// [d3-13-97 JPC] Remove Windows code with button to make interface
-// consistent between DOS and Windows.  Still need to leave in the
-// Windows-specific call to WindowsMessages.
-
-	// [d3-14-97 JPC] If doing adventures only, don't wait for a key
-	// because the adventure-only routine has its own menu and button.
-	if (master_game_type == GAME_ADVENTURE)
-	{
-		rScene.mfSetSceneState(SCENE_AI::FADEOUT);
-  		return;									// premature return
+#if defined(SCENE_EDITOR)
 	}
-
-	print_textf(23, 457, BLACK, STRMGR_GetStr(STR_CS_WAITKEY));
-	ScreenCopy (0, 13, WB_Y, 280, 28, SC_DEFAULT_RES);
-	clear_key_status(0);
-	fAnyKeyChanged = FALSE;
-	mouse_button = 0;
-	while (1)
-	{
-#ifdef _WINDOWS
-		WindowsMessages();
 #endif
-		// We have to do this to keep the sound going in DOS.
-		run_timers();
-
-		update_buttons();
-		if (fAnyKeyChanged)
-		{
-			fAnyKeyChanged = FALSE;
-			clear_key_status(0);
-			break;
-		}
-		if(mouse_button)
-		{
-			break;
-		}
-	}
-	// [d12-03-96 JPC] Debounce the mouse button to prevent activating
-	// the Exit Adventure region under the DONE button.
-	do
-	{
-	   mouse_button = 0;
-#ifdef _WINDOWS
-		WindowsMessages();
-#endif
-		update_buttons();
-	} while (mouse_button);
-	
-	mouse_button = 0;
-	mouse_click = 0;
-	rScene.mfSetSceneState(SCENE_AI::FADEOUT);
 }
 
 /* ========================================================================
@@ -292,7 +233,6 @@ void SCENE_AI::mfBattleInit ( SCENE &rScene)
    ======================================================================== */
 void SCENE_AI::mfBattleRelease (SCENE &rScene)
 {
-	char path[256];	
 	fChatLineOn = FALSE;
 	
 	// release the control panel stuff

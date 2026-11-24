@@ -229,7 +229,6 @@ inline void COMBAT_SCENE_DATA::mfRestoreMenuVals()
 	
 inline void COMBAT_SCENE_DATA::mfResetMenuVals()
 {
-	SHORT Top;
 	if(fChatLineOn && fOldMarginTop < CHAT_DISPLAY_HEIGHT)
 		fOldMarginTop = CHAT_DISPLAY_HEIGHT;
 		

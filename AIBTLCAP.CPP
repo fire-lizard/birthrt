@@ -200,9 +200,7 @@ extern BOOL fUnitsStillMoving;
  */
 void CAvatar::BattleCapt (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 {
-	LONG		i;
-	PTR_SCENE	pCurrentScene = (PTR_SCENE) BLKPTR(SCENE_MGR::hCurrentScene);
-	SHORT		*pList; 
+	BLKPTR(SCENE_MGR::hCurrentScene);
 	SHORT				level;
 
 	switch( Status )
@@ -955,12 +953,10 @@ BOOL BtlCapGenerate( SHORT UnitIndex )
 void CAvatar::CreateBattleTroops(void)
 {
 	LONG i;
-	LONG k;
 	// Note : Don't lock the scene here, its already locked.
 	PTR_SCENE	pCurrentScene = (PTR_SCENE) BLKPTR(SCENE_MGR::hCurrentScene);
 	const LONG	X = mfX();
 	const LONG	Y = mfY();
-	const LONG	Z = mfZ();
 	SHORT		*pList;
 	
 	// init leader data
@@ -1023,7 +1019,6 @@ void CAvatar::MoveBattleTroops(void)
 	LONG	r,c;
 	const LONG X = mfX();
 	const LONG Y = mfY();
-	const LONG A = mfAngle();
 	SHORT	*pList;
 	
 	if (fBtlCap.Leader.hdlSlotList == fERROR)
@@ -1073,7 +1068,6 @@ SHORT ResolveAttack(SHORT hDefender, SHORT hAttacker, LONG AttackType)
 	SHORT	SpecialAttacker;
 	SHORT	SpecialDefender;
 	SHORT	type;
-	SHORT	i,j;
 		
 	//GEH just a little protection is fine
 	if(hDefender == fERROR || hAttacker == fERROR)
@@ -1616,11 +1610,9 @@ SHORT DecodeBattleMagic( CAvatar * pAvatar )
    ======================================================================== */
 SHORT ResolveBattleMagic(CAvatar *pDefender)
 {
-	SHORT	DefenderClass, DefenderValue;
 	SHORT	result;
 	SHORT	points = 0;
 	SHORT	Bonus;
-	SHORT	Special;
 		
 	fBattleStarted = TRUE;	// be sure we know fighting has started
 	
@@ -1779,15 +1771,6 @@ void BATTLE_CAPTAIN_DATA::mfRightButton(CAvatar *pAvatar)
 }
 
 /* ========================================================================
-   Function    - mfShowInventory
-   Description - 
-   Returns     - 
-   ======================================================================== */
-void BATTLE_CAPTAIN_DATA::mfShowInventory(LONG , LONG /* AvatarIndex */)
-{
-}
-
-/* ========================================================================
    Function    - mfMelee
    Description - stand and defend
    Returns     - 
@@ -1922,7 +1905,6 @@ void BATTLE_CAPTAIN_DATA::mfTryToEngageEnemyBtlCap(CAvatar *pAvatar)
 {
 	SHORT	hAvatar;
 	LONG	HisStatus;
-	SHORT	TestRow;
 	CAvatar *pOtherAvatar;
 	
 	// if in the reserves, bail
@@ -1996,8 +1978,6 @@ void BATTLE_CAPTAIN_DATA::mfTryToEngageEnemyBtlCap(CAvatar *pAvatar)
 void BATTLE_CAPTAIN_DATA::mfRunEnemyBtlCapAI(CAvatar *pAvatar)
 {
 	SHORT i;
-	CHAR temp[80];
-	CHAR buffer[80];
 	/* if not already engaged in battle, move about */
 	if(pAvatar->Engaged == 0)
 	{ 
@@ -2017,7 +1997,6 @@ void BATTLE_CAPTAIN_DATA::mfRunEnemyBtlCapAI(CAvatar *pAvatar)
 		if( pAvatar->fBtlCap.ActionCount < BattleTick)
 		{
 			SHORT r,c,best_r=0, best_c=0;
-			SHORT best_case=0;
 			
 			fUpdatePanels = TRUE;
 			
@@ -2148,7 +2127,6 @@ void BATTLE_CAPTAIN_DATA::mfRunEnemyBtlCapAI(CAvatar *pAvatar)
 BOOL BATTLE_CAPTAIN_DATA::mfKillTroop(CAvatar *pAvatar, THINGTYPE KillType )
 {
 	SHORT	i,j;
-	SHORT	DoMore = 50;
 	SHORT	*pList;
 	CAvatar *pTroop;
 	
@@ -3158,35 +3136,6 @@ BOOL BATTLE_CAPTAIN_DATA::mfMoveRight(LONG , LONG hAvatar)
 }
 
 /* ========================================================================
-   Function    - mfCharge
-   Description - set me/my troops charging for the next move
-   Returns     - 
-   ======================================================================== */
-void BATTLE_CAPTAIN_DATA::mfCharge(LONG hAvatar)
-{
-	if (hAvatar == fERROR)
-		return;
-		
-	CAvatar *pAvatar = (CAvatar *) BLKPTR((SHORT) hAvatar);
-	
-	pAvatar->Status = CAvatar::AI_END_LISTEN;
-}
-
-/* ========================================================================
-   Function    - mfEngage
-   Description - engage the enemy troops next clicked on
-   Returns     - 
-   ======================================================================== */
-void BATTLE_CAPTAIN_DATA::mfEngage(LONG hAvatar)
-{
-	if (hAvatar == fERROR)
-		return;
-		
-	CAvatar *pAvatar = (CAvatar *) BLKPTR((SHORT) hAvatar);
-	pAvatar->Status = CAvatar::AI_END_LISTEN;
-}
-
-/* ========================================================================
    Function    - mfFallBack
    Description - move me/my troops falling back
    Returns     - 
@@ -3743,21 +3692,6 @@ FallBackAndDie:
 }
 
 /* ========================================================================
-   Function    - mfStand
-   Description - stand and defend
-   Returns     - 
-   ======================================================================== */
-void BATTLE_CAPTAIN_DATA::mfStand(LONG , LONG hAvatar)
-{
-	if (hAvatar == fERROR)
-		return;
-		
-	CAvatar *pAvatar = (CAvatar *) BLKPTR((SHORT) hAvatar);
-	
-	pAvatar->Status = CAvatar::AI_END_LISTEN;
-}
-
-/* ========================================================================
    Function    - KillBattleCaptain
    Description - kill of a battle capt and his troops
    Returns     - 
@@ -3873,8 +3807,7 @@ void KillBattleCaptain(CAvatar *pAvatar)
 
 void CAvatar::FollowBtlCap (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 {
-	LONG	index;
-	PTR_SCENE pCurrentScene = (PTR_SCENE) BLKPTR(SCENE_MGR::hCurrentScene);
+	BLKPTR(SCENE_MGR::hCurrentScene);
 	SHORT rndnum;
 	
 	switch( Status )
