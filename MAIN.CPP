@@ -318,12 +318,10 @@ static void machine_post_frame()
 	static LONG	lTime = 0;
 
 	// no faster then 18.2 frames per second
-	if (lTime == get_time())
-	{
-		while(lTime == get_time())
-		{
-		}
-	}
+	// Sleep out the rest of the tick. The 1997 code spun here, which kept a
+	// whole core busy: a frame takes a few ms of the 55 ms tick.
+	while (lTime == get_time())
+		Sleep(1);
 	
 	// save new time
 	lTime = get_time();

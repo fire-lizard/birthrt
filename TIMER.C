@@ -17,6 +17,7 @@
    ------------------------------------------------------------------------ */
 #include <stdio.h>
 
+#include "PLATFORM.H"
 #include "SYSTEM.H"
 #include "MACHINE.H"
 
@@ -138,5 +139,6 @@ void TickDelay (LONG NumTicks)
 	while (get_time() < now+NumTicks)
 	{
 		run_timers();
+		Sleep(1);						// wait, don't spin: ticks are 55 ms
 	}
 }

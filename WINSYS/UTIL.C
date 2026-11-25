@@ -123,7 +123,9 @@ void fatal_error(const char *format, ...)
    ======================================================================== */
 LONG get_time()
 {
-	return(GetTickCount()/55);
+	// 64-bit: GetTickCount wraps to 0 after 49.7 days of uptime, and every
+	// "wait until tick N" in the game would stall across that jump.
+	return (LONG)(GetTickCount64()/55);
 }
 
 /* ========================================================================

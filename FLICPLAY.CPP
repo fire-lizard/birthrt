@@ -173,7 +173,8 @@ BOOL PlayFlic(char * fn, LONG secondsToWaitAtEnd)
 				{
 					// we have to do this to keep the sound going in DOS
 					run_timers();
-					
+					Sleep(1);			// wait, don't spin: ticks are 55 ms
+
 			#ifdef _WINDOWS
 					ClearMessageQueue();
 					// [d1-07-97 JPC] You can quit while intro is playing--check
@@ -238,6 +239,7 @@ BOOL PlayFlic(char * fn, LONG secondsToWaitAtEnd)
 		while(get_time() < timedif)
 		{
 			run_timers();
+			Sleep(1);
 		}
 	}
 
@@ -248,6 +250,7 @@ BOOL PlayFlic(char * fn, LONG secondsToWaitAtEnd)
 	while(get_time() < timedif)
 	{
 		run_timers();
+		Sleep(1);
 		if(mouse_button)
 		{
 			mouse_button = 0;

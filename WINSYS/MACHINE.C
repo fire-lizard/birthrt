@@ -190,6 +190,11 @@ void AppIdle(void)
 		MainLoop();
 
 	WindowsMessages();
+
+	// In the background the game doesn't run (no MainLoop), so block until
+	// the next message rather than polling for it - polling spun a core.
+	if (!fQuitting && !fAppHasFocus)
+		WaitMessage();
 }
 
 void WindowsMessages(void)
@@ -849,14 +854,15 @@ LONG WINAPI MainWndProc( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
 
 void UpdateFPS(void)
 {
-	static LONG lastTime = 0;
-	static LONG curTime = 0;
+	static DWORD lastTime = 0;
 	static LONG frames = 0;
+	DWORD curTime = timeGetTime();
 
-	curTime = timeGetTime();
 	frames++;
 
-	if(curTime - 1000 > lastTime)
+	// Unsigned: timeGetTime() counts ms since boot, and as a LONG it went
+	// negative after 24.8 days of uptime, so this never fired and F/S showed 0.
+	if(curTime - lastTime > 1000)
 	{
 		fps = frames;
 		lastTime = curTime;
