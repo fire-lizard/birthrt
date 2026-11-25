@@ -254,7 +254,7 @@ void PushLoadSaveButton(LONG MenuCombo)
 	TickDelay(4);
 }
 
-void SaveGameFiles(FILE *fp)
+void SaveGameFiles(FILE *fp, BOOL fStatRecords)
 {
 
 
@@ -490,7 +490,7 @@ void SaveGameFiles(FILE *fp)
     /*-------------------------------------------------------------------*/
     /* Save playerstats[]	*/
 
-    StatWriteAllTo(fp);
+    StatWriteAllTo(fp, fStatRecords);
 	run_timers();
 
 	/*-------------------------------------------------------------------*/
@@ -904,7 +904,8 @@ void LoadGameFiles(FILE *fp)
 	   The 1997 retail saves (tutorial and scenario starts) use the old
 	   32-bit layout we cannot parse; for those, fall back to the .AVA
 	   defaults (they ARE the scenario starting stats) and skip ahead to
-	   the realm-name block at the end of the file. */
+	   the realm-name block at the end of the file. So do rlmstart.dat
+	   and mpstart.dat, which carry no records (see WriteRealmStartData). */
 	{
 		LONG statsPos = ftell(fp);
 		LONG peek[3] = { 0, 0, -1 };

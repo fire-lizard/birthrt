@@ -584,7 +584,10 @@ void NewGameConfirmed2(BOOL fMulti)
 
 	// Every path into realm selection funnels through here; open up all
 	// existing ruled realms so any ruler in the game can be picked.
-	MakeAllRealmsSelectable();
+	// Except a scenario (a save made with the 1997 Scenario Editor,
+	// SCENED95): its author's Playable marks decide who can be picked.
+	if (!ScenarioInfo.IsScenario)
+		MakeAllRealmsSelectable();
 
 	ReconstructMap();
 	

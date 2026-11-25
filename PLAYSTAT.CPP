@@ -693,7 +693,7 @@ void StatReadAll()
    Returns     -
    ======================================================================== */
 
-void StatWriteAllTo(FILE *fp)
+void StatWriteAllTo(FILE *fp, BOOL fRecords)
 {
     LONG i, count;
 
@@ -703,9 +703,12 @@ void StatWriteAllTo(FILE *fp)
     count = MAX_ITEM_TYPES;
     fwrite( &count, sizeof(LONG), 1, fp);
 
-    count = CHARACTER_COUNT - 1;
+    // No records: a count that is not CHARACTER_COUNT - 1 makes the reader
+    // rebuild the stats from the .AVA files - this build and the 1997 ones
+    // (SCENED95.EXE) alike, whose record layout differs from ours.
+    count = fRecords ? CHARACTER_COUNT - 1 : 0;
     fwrite( &count, sizeof(LONG), 1, fp);
-    for (i=1; i < CHARACTER_COUNT; i++)
+    for (i=1; i <= count; i++)
     {
         DumbAutoLockPtr < PLAYER_STATS> const pPS(playerstats[i]);
         fwrite((PLAYER_STATS *) pPS, sizeof(PLAYER_STATS), 1, fp);

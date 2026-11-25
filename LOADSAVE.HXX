@@ -49,7 +49,7 @@ extern LONG master_game_type;
 void LoadGame (LONG, LONG);
 void SaveGame (LONG, LONG);
 void LoadGameFiles(FILE *);
-void SaveGameFiles(FILE *);
+void SaveGameFiles(FILE *, BOOL fStatRecords = TRUE);
 void LoadGameMulti(LONG, LONG);
 
 void LoadGameDoMulti(void);

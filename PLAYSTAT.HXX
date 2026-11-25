@@ -257,7 +257,7 @@ typedef PLAYER_STATS *PTR_PLAYER_STATS;
    Prototypes
    ------------------------------------------------------------------------ */
 void StatReadAllFrom(FILE *fp);
-void StatWriteAllTo(FILE *fp);
+void StatWriteAllTo(FILE *fp, BOOL fRecords = TRUE);
 void StatReadAll();
 
 SHORT LoadStats(LONG ID,SHORT hAvatar);

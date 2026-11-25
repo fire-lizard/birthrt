@@ -6094,7 +6094,7 @@ void WriteRealmStartData ( void )
 		perror("mpstart.dat");
 		fatal_error("failed writing initial conditions file");
 	}
-	SaveGameFiles(fp);
+	SaveGameFiles(fp, FALSE);	// no stat records - see the rlmstart.dat note below
 	fclose(fp);
 #endif
 
@@ -6112,7 +6112,11 @@ void WriteRealmStartData ( void )
 		perror("rlmstart.dat");
 		fatal_error("failed writing initial conditions file");
 	}
-	SaveGameFiles(fp);
+	// No stat records: whoever loads a start file rebuilds the stats from
+	// the .AVA files, which is all these records held. The 1997 Scenario
+	// Editor (SCENED95.EXE) loads rlmstart.dat on start-up and hangs on our
+	// record layout; without records it reads the .AVA files too.
+	SaveGameFiles(fp, FALSE);
 	fclose(fp);
 
 	fStartMultiGame = OldfStartMPG;
