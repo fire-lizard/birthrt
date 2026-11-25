@@ -549,7 +549,9 @@ static char ForeignWinToASCII[] =
 
 ULONG ConvertWinForeignToASCII (ULONG win_char)
 {
-	return (ULONG) ForeignWinToASCII [win_char];
+	// UBYTE: the values are font positions 128-255; as signed char they
+	// sign-extended, failed the printable test and every accented letter vanished
+	return (ULONG) (UBYTE) ForeignWinToASCII [win_char];
 }
 
 /* =======================================================================

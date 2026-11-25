@@ -2441,7 +2441,7 @@ void BowToPlayer(LONG MenuCombo, LONG)
 	
 	if(iAnim > 0 && anim.seq == STANDSEQ)
 	{
-		AddVoxSndType(VOX_CASTLE_INQUIRY, pPlayerStats->mfGetType());
+		AddVoxSndType(VOX_CASTLE_INQUIRY, pPlayerStats->mfGetType(), hPlayerStats);
 		
 		MarkOldAnimPurgable(iAnim, anim.seq);
 		anim.seq = BOWSEQ;

@@ -2174,7 +2174,7 @@ void JoinUnits (LONG iUnit, LONG iUnit2)
 	}
 
 	fJoinDialog = FALSE;						// either response
-	reqSound = CalcVoxSndObj(GameIconVOX[units[iUnit].Icon], VOX_CASTLE_ACKNOWLEDGE);
+	reqSound = CalcVoxSndObj(UnitVox(iUnit), VOX_CASTLE_ACKNOWLEDGE);
 	fRedrawAll = TRUE;
 	fCommandBattleLoop = FALSE;
 }

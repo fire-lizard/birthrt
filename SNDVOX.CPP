@@ -19,6 +19,10 @@
 #include "SOUND.HXX"
 #include "SNDVOX.HXX"
 #include "VECTOR.HXX"
+#include "UNITS.HXX"
+#include "REGENTS.HXX"
+#include "GAMEMAP.HXX"
+#include "PLAYSTAT.HXX"
 
 /* ------------------------------------------------------------------------
    Defines and Compile Flags
@@ -111,10 +115,10 @@ static VOX_TYPE VoxThings[] = {
 	VOX_DWARF_MALE_1,	       	// Dwarf Infantry
 	VOX_DWARF_MALE_1,		// Troop Dwarf Officer 1
 	VOX_DWARF_MALE_1,		// Troop Dwarf Officer 2
-	VOX_HUMAN_MALE_YOUNG_3,	 	// Elf Archer
- 	VOX_HUMAN_MALE_YOUNG_3,	 	// Elf Officer 2
-	VOX_HUMAN_MALE_YOUNG_3,	 	// Elf Infantry
-	VOX_HUMAN_MALE_YOUNG_3,	 	// Elf Officer 1
+	VOX_ELF_MALE_1,	 		// Elf Archer
+ 	VOX_ELF_MALE_1,	 		// Elf Officer 2
+	VOX_ELF_MALE_1,	 		// Elf Infantry
+	VOX_ELF_MALE_1,	 		// Elf Officer 1
 	VOX_DWARF_MALE_1,		// Troop Dwarf Officer 3
 	VOX_GOBLIN_MALE_1,	  	// Goblin Archer
 	VOX_GOBLIN_MALE_1,	  	// Goblin Cavalry
@@ -150,7 +154,7 @@ static VOX_TYPE VoxThings[] = {
 	VOX_HUMAN_MALE_MATURE_2,	// Troop Lord Male 6
 	VOX_HUMAN_FEMALE_MATURE_1,	// Elf Lady Lord
 	VOX_HUMAN_MALE_MATURE_2,	// Troop Lord Male 7
-	VOX_HUMAN_MALE_YOUNG_3,		// Elf Lord 1
+	VOX_ELF_MALE_1,			// Elf Lord 1
 	VOX_HUMAN_FEMALE_MATURE_2,	// Troop Lord Female 1
 	VOX_HUMAN_MALE_MATURE_1,	// Rogue
 	VOX_HUMAN_MALE_YOUNG_1,		// Royal Guard
@@ -188,8 +192,8 @@ static VOX_TYPE VoxThings[] = {
 	VOX_DWARF_MALE_1,	      	// Dwarf Lord 1
 	VOX_DWARF_MALE_1,	      	// Dwarf Guard
 	VOX_HUMAN_FEMALE_MATURE_2,	// Troop Priest Female 1
-	VOX_HUMAN_MALE_YOUNG_3,	      	// Elf Guard
-	VOX_HUMAN_MALE_YOUNG_3,	      	// Elf Lord 2
+	VOX_ELF_MALE_1,	      		// Elf Guard
+	VOX_ELF_MALE_1,	      		// Elf Lord 2
 	VOX_GNOLL_1,	      		// Gnoll 1
 	VOX_GNOLL_1,	      		// Gnoll Irregular
 	VOX_NO_ENTRY,		      		// Troop Wyvern 2
@@ -220,25 +224,85 @@ static VOX_TYPE VoxThings[] = {
 	VOX_HUMAN_MALE_MATURE_2,	// Royal Guard Intro
 	VOX_HUMAN_MALE_MATURE_2,	// Lord Throne
 };
-	
+
+/* ========================================================================
+   Function    - CharacterVox
+   Description - The elf and half-elf women's voices, which the tables never
+                 used: these women share their portraits and art with human
+                 women, so the character's race picks the voice. Voice is
+                 the table's choice (it tells a woman from a man), iRegent
+                 indexes regents[]. Only the castle and duel lines were
+                 recorded - like every woman's voice, these have no battle
+                 lines.
+   Returns     - the voice to use
+   ======================================================================== */
+static VOX_TYPE CharacterVox(VOX_TYPE Voice, LONG iRegent)
+{
+	if (Voice < VOX_HUMAN_FEMALE_YOUNG_1 || Voice > VOX_HUMAN_FEMALE_OLD_1)
+		return Voice;
+
+	switch (regents[iRegent].mfGetRace())
+	{
+	case HALFELF:
+		return VOX_HALF_ELF_FEMALE_1;
+	case ELF:
+		// two elf women's voices for the two elf women, Isaelie and Llytha
+		return (iRegent == LLYTHA_DAMAAN) ? VOX_ELF_FEMALE_2 : VOX_ELF_FEMALE_1;
+	default:
+		return Voice;
+	}
+}
+
+/* ========================================================================
+   Function    - StatsVox
+   Description - CharacterVox for the character with these stats, if any.
+   Returns     - the voice to use
+   ======================================================================== */
+static VOX_TYPE StatsVox(VOX_TYPE Voice, SHORT hPlayerStats)
+{
+	if (hPlayerStats != fERROR && playerStatsInitted)
+		for (LONG i = 1; i < CHARACTER_COUNT; i++)
+			if (playerstats[i] == hPlayerStats)
+				return CharacterVox(Voice, i);
+	return Voice;
+}
+
+/* ========================================================================
+   Function    - UnitVox
+   Description - The voice of a domain-map unit: its icon's, or for a
+                 character CharacterVox of that.
+   Returns     - the voice to use
+   ======================================================================== */
+VOX_TYPE UnitVox(LONG iUnit)
+{
+	VOX_TYPE const	Voice = GameIconVOX[units[iUnit].Icon];
+	LONG const		id = units[iUnit].id;
+
+	if (id >= 1000 && id < 3000)				// regent or lieutenant, see LoadStats
+		for (LONG i = 1; i < CHARACTER_COUNT; i++)
+			if (regents[i].mfGetid() == id)
+				return CharacterVox(Voice, i);
+	return Voice;
+}
+
 /* ========================================================================
    Function    - AddVoxSnd
-   Description - add a things correct voice sound 
-   Returns     - 
+   Description - add a things correct voice sound
+   Returns     -
    ======================================================================== */
-SHORT AddVoxSnd( VOX_BLOCK Block, LONG MyThingsIndex)
+SHORT AddVoxSnd( VOX_BLOCK Block, LONG MyThingsIndex, SHORT hPlayerStats)
 {
 	VOX_TYPE	Voice = VOX_NO_ENTRY;
-	
+
 	if( MyThingsIndex >= 0 && MyThingsIndex < MAX_THINGS)
 	{
 		LONG const VoxIndex = mythings[MyThingsIndex].OriginalType - FIRST_GAME_THING;
-		
+
 		if (VoxIndex >= 0 && VoxIndex < (sizeof(VoxThings)/ sizeof(VOX_TYPE)))
 		{
-			Voice = VoxThings[VoxIndex];
+			Voice = StatsVox(VoxThings[VoxIndex], hPlayerStats);
 		}
-		
+
 		if( Voice == VOX_NO_ENTRY ) // this thing isn't supported
 			return 0;
 		
@@ -285,17 +349,17 @@ SHORT AddVoxSndObj (VOX_TYPE Voice, VOX_BLOCK Block, LONG MyThingsIndex)
    Returns     - 
    ======================================================================== */
 
-SHORT AddVoxSndType( VOX_BLOCK Block, THINGTYPE ThingType)
+SHORT AddVoxSndType( VOX_BLOCK Block, THINGTYPE ThingType, SHORT hPlayerStats)
 {
 	VOX_TYPE	Voice = VOX_NO_ENTRY;
-	
+
 	if( ThingType >= 0 && ThingType <= LAST_GAME_AVATAR)
 	{
 		LONG const VoxIndex = ThingType - FIRST_GAME_THING;
-		
+
 		if (VoxIndex >= 0 && VoxIndex < (sizeof(VoxThings)/ sizeof(VOX_TYPE)))
 		{
-			Voice = VoxThings[VoxIndex];
+			Voice = StatsVox(VoxThings[VoxIndex], hPlayerStats);
 		}
 		
 		if( Voice == VOX_NO_ENTRY ) // this thing isn't supported

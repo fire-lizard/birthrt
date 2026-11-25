@@ -805,9 +805,9 @@ VOX_TYPE GameIconVOX[MAP_ICON_COUNT] = {
 /* M_IRR_UNIT_ICON	*/			VOX_HUMAN_MALE_MATURE_1,	// Mercenary Infantry
 /* M_PIK_UNIT_ICON	*/			VOX_HUMAN_MALE_MATURE_1,	// Mercenary Pikeman
 /* M_CAV_UNIT_ICON	*/			VOX_HUMAN_MALE_MATURE_2,	// Mercenary Officer
-/* E_INF_UNIT_ICON	*/			VOX_HUMAN_MALE_YOUNG_2,	 	// Elf Infantry
-/* E_BOW_UNIT_ICON	*/			VOX_HUMAN_MALE_YOUNG_3,	 	// Elf Archer
-/* E_CAV_UNIT_ICON	*/			VOX_HUMAN_MALE_MATURE_2,	// Elf Officer 2
+/* E_INF_UNIT_ICON	*/			VOX_ELF_MALE_1,	 	// Elf Infantry
+/* E_BOW_UNIT_ICON	*/			VOX_ELF_MALE_1,	 	// Elf Archer
+/* E_CAV_UNIT_ICON	*/			VOX_ELF_MALE_1,		// Elf Officer 2
 /* D_INF_UNIT_ICON	*/			VOX_DWARF_MALE_1,	      // Dwarf Infantry
 /* D_BOW_UNIT_ICON	*/			VOX_DWARF_MALE_1,	      // Dwarf Archer
 /* G_INF_UNIT_ICON	*/			VOX_GOBLIN_MALE_1,	  	// Goblin Infantry
@@ -843,8 +843,8 @@ VOX_TYPE GameIconVOX[MAP_ICON_COUNT] = {
 /* REG_WIZDF2_UNIT_ICON */		VOX_HUMAN_FEMALE_YOUNG_2,
 /* REG_GILDF1_UNIT_ICON */  	VOX_HUMAN_FEMALE_YOUNG_2,
 /* REG_PRSTF1_UNIT_ICON */		VOX_HUMAN_FEMALE_MATURE_2,
-/* REG_ELORD1_UNIT_ICON */		VOX_HUMAN_MALE_MATURE_2,
-/* REG_ELORD2_UNIT_ICON */		VOX_HUMAN_MALE_MATURE_2,
+/* REG_ELORD1_UNIT_ICON */		VOX_ELF_MALE_1,
+/* REG_ELORD2_UNIT_ICON */		VOX_ELF_MALE_1,
 /* REG_ELADY1_UNIT_ICON	*/		VOX_HUMAN_FEMALE_MATURE_2,
 /* REG_DLORD1_UNIT_ICON */		VOX_DWARF_MALE_1,
 /* REG_DLORD2_UNIT_ICON */		VOX_DWARF_MALE_1,
@@ -876,8 +876,8 @@ VOX_TYPE GameIconVOX[MAP_ICON_COUNT] = {
 /* LET_WIZDF2_UNIT_ICON */		VOX_HUMAN_FEMALE_YOUNG_2,
 /* LET_GILDF1_UNIT_ICON */  	VOX_HUMAN_FEMALE_YOUNG_2,
 /* LET_PRSTF1_UNIT_ICON */		VOX_HUMAN_FEMALE_MATURE_2,
-/* LET_ELORD1_UNIT_ICON */		VOX_HUMAN_MALE_MATURE_2,
-/* LET_ELORD2_UNIT_ICON */		VOX_HUMAN_MALE_MATURE_2,
+/* LET_ELORD1_UNIT_ICON */		VOX_ELF_MALE_1,
+/* LET_ELORD2_UNIT_ICON */		VOX_ELF_MALE_1,
 /* LET_ELADY1_UNIT_ICON	*/		VOX_HUMAN_FEMALE_MATURE_2,
 /* LET_DLORD1_UNIT_ICON */		VOX_DWARF_MALE_1,
 /* LET_DLORD2_UNIT_ICON */		VOX_DWARF_MALE_1,
@@ -4717,15 +4717,17 @@ BOOL UpdateDataArea (void)
 		//--------------------------------------------------
 		{
 			FILE *fp;
-			char cur_sav[25] = "savegame\\";
-			strcat(cur_sav, STRMGR_GetStr(STR_SAVEGAME));
+			char cur_sav[] = CURRENT_SAV;
  	 		if (Exists(cur_sav))
 				plat_remove (cur_sav);
 
     		mkdir("SaveGame");			// in case it's not there
 			fp = fopen(cur_sav, "wb");
-			SaveGameFiles(fp);
-			fclose(fp);
+			if (fp != NULL)
+			{
+				SaveGameFiles(fp);
+				fclose(fp);
+			}
 		}
 
 		LOGCOMMENTSLEEP
@@ -6453,7 +6455,7 @@ FINDLDR:
 	units[iUnit].province = units[l].province;
 	SetGameData(MP_UNITS, MPUNITS_PROVINCE, iUnit, units[iUnit].province, TRUE);
 
-	reqSound = CalcVoxSndObj(GameIconVOX[units[iUnit].Icon], VOX_CASTLE_INQUIRY);
+	reqSound = CalcVoxSndObj(UnitVox(iUnit), VOX_CASTLE_INQUIRY);
 	fRedrawAll = TRUE;
 }
 /* ======================================================================== */
@@ -6623,7 +6625,7 @@ void NewTutorial (BOOL fInReport)
 			gs = TutorialHelpMgr::GetHelp(l,TutorialScreenNumber);
 			init_gfont(21);
 			SysHideCursor();
-			print_textf(0, 0, DKBROWN, STRMGR_GetStr(gs));
+			print_textf(0, 0, DKBROWN, "%s", STRMGR_GetStr(gs));	// not a format: rus_rp tutorial text has bare % signs
 			if (GameSpecificGlobal_type == 5 || GameSpecificGlobal_type == 6)
 			{
 				x = GameSpecificGlobal_x + (GameSpecificGlobal_w/2) - 26;
@@ -7114,7 +7116,7 @@ void DomainTurnUI (void)
 										iSelectedUnit = (SHORT)j;
 										// speak if our troops or Awnshegh
 										if (units[j].Realm == HomeRealm || (units[j].Icon >= GORGON_UNIT_ICON && units[j].Icon <= RHUOBHE_UNIT_ICON) )
-											reqSound = CalcVoxSndObj(GameIconVOX[units[j].Icon], VOX_CASTLE_INQUIRY);
+											reqSound = CalcVoxSndObj(UnitVox(j), VOX_CASTLE_INQUIRY);
 									}
 
 									fRedrawAll = TRUE;
@@ -7200,7 +7202,7 @@ FINDLEADER:
 					Clear_fProv();
 					if (npc_move((PROVINCE) units[l].province))
 					{
-						reqSound = CalcVoxSndObj(GameIconVOX[units[iSelectedUnit].Icon], VOX_CASTLE_ACKNOWLEDGE);
+						reqSound = CalcVoxSndObj(UnitVox(iSelectedUnit), VOX_CASTLE_ACKNOWLEDGE);
 
 						if (units[iSelectedUnit].Joined)	// split unit out
 						{
@@ -8382,7 +8384,7 @@ LONG CheckUnitArrival (LONG iMovingUnit, BOOL fJoinAllowed)
 				{
 					fJoinDialog = (SHORT)iMovingUnit;
 					iJoinDialog_to = (SHORT)j;
-					reqSound = CalcVoxSndObj(GameIconVOX[units[iMovingUnit].Icon], VOX_CASTLE_INQUIRY);
+					reqSound = CalcVoxSndObj(UnitVox(iMovingUnit), VOX_CASTLE_INQUIRY);
 					return 0;
 				}
 				// if NPC realm, auto join

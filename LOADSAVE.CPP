@@ -962,8 +962,7 @@ void LoadGameFiles(FILE *fp)
 	for (i=1; i < 19; i++)
 		dact_ic_active[i] = TRUE;
 
-	char cur_sav[25] = "savegame\\";
-	strcat(cur_sav, STRMGR_GetStr(STR_SAVEGAME));
+	char cur_sav[] = CURRENT_SAV;
 
 	if (0 == access(cur_sav, F_OK))
 		plat_remove(cur_sav);
@@ -1104,8 +1103,7 @@ void SaveGame(LONG, LONG)
 			return;
 
 		// Doesn't exist.
-		char cur_sav[25] = "savegame\\";
-		strcat(cur_sav, STRMGR_GetStr(STR_SAVEGAME));
+		char cur_sav[] = CURRENT_SAV;
 		if ( 0 != access(cur_sav, F_OK))
 		{
 			CantSaveMsg();
@@ -1444,8 +1442,7 @@ void SaveGameDo(LONG MenuCombo, LONG forsure)
     char buffer[80];
     char buf1[FILENAME_LEN + 2];
 	
-	char cur_game[25] = "savegame\\";
-	strcat(cur_game, STRMGR_GetStr(STR_SAVEGAME));
+	char cur_game[] = CURRENT_SAV;
 
 	del_region(ScrollGame, 0);
 	del_region(SelectGame, 0);

@@ -356,7 +356,7 @@ void CAvatar::PingPong (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 							
 							if (pAvatar->attrib.IssuedTaunt == FALSE)
 							{
-								AddVoxSnd(VOX_DUEL_TAUNTS, pAvatar->ThingIndex);
+								AddVoxSnd(VOX_DUEL_TAUNTS, pAvatar->ThingIndex, pAvatar->hPlayerStats);
 								pAvatar->attrib.IssuedTaunt = TRUE;
 							}
 							
@@ -415,7 +415,7 @@ void CAvatar::PingPong (CAvatar *pAvatar, CAvatar::AISTATUS Status)
 						pAvatar->bumpTimer = 100;
 						if(pAvatar->attrib.IssuedChallange == FALSE)
 						{
-							AddVoxSnd(VOX_CHALLENGES, pAvatar->ThingIndex);
+							AddVoxSnd(VOX_CHALLENGES, pAvatar->ThingIndex, pAvatar->hPlayerStats);
 							pAvatar->attrib.IssuedChallange = TRUE;
 						}
 						break;

@@ -97,9 +97,12 @@ typedef enum {
 /* ------------------------------------------------------------------------
    Prototypes
    ------------------------------------------------------------------------ */
-SHORT AddVoxSnd( VOX_BLOCK Block, LONG MyThingsIndex);
+// hPlayerStats: the speaker's stats when it is a character, so that an elf or
+// half-elf woman gets her own race's voice; -1 (fERROR) goes by the art alone.
+SHORT AddVoxSnd( VOX_BLOCK Block, LONG MyThingsIndex, SHORT hPlayerStats = -1);
 SHORT AddVoxSndObj( VOX_TYPE Voice, VOX_BLOCK Block, LONG MyThingsIndex);
-SHORT AddVoxSndType( VOX_BLOCK Block, THINGTYPE ThingType);
+SHORT AddVoxSndType( VOX_BLOCK Block, THINGTYPE ThingType, SHORT hPlayerStats = -1);
+VOX_TYPE UnitVox( LONG iUnit);		// voice of a domain-map unit
 
 /* ------------------------------------------------------------------------
    Global Variables

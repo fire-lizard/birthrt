@@ -50,6 +50,11 @@ void LoadGame (LONG, LONG);
 void SaveGame (LONG, LONG);
 void LoadGameFiles(FILE *);
 void SaveGameFiles(FILE *, BOOL fStatRecords = TRUE);
+
+// The autosave written every domain turn. A fixed name: it used to come from
+// the string table (STR_SAVEGAME), which some translations lack or fill with
+// characters a file name cannot hold.
+#define CURRENT_SAV "savegame\\current.sav"
 void LoadGameMulti(LONG, LONG);
 
 void LoadGameDoMulti(void);
