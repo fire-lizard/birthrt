@@ -337,31 +337,3 @@ void KEY::mfCallBackAttachPlayer(LONG, LONG)
     fAnyKeyChanged = FALSE;
     SCENE_MGR::fgCamera.mfSetCameraState(GAME_CAMERA::FOLLOW_PLAYER);
 }
-#if defined(SCENE_EDITOR)
-
-/* ========================================================================
-   Function    - mfWriteKeyData
-   Description - Dump the Key data to a scene file
-   Returns     - void
-   ======================================================================== */
-
-void KEY::mfWriteKeyData(FILE *fp)
-{
-	fprintf(fp,"%s\t%s\t", fcpKeyIdStr, fcpKeyFuncName);
-	if (0 == strcmp("LoadScene", fcpKeyFuncName))
-	{
-		fscInfo.mfWriteSceneName(fp);
-	}
-	else
-	if ((0 == strcmp("SetCamera", fcpKeyFuncName)) ||
-		(0 == strcmp("MoveCamera", fcpKeyFuncName)))
-	{
-		fCameraData.mfWriteData(fp);
-	}
-	else
-	{
-		// AttachPlayer
-		fprintf(fp,"\n");
-	}
-}
-#endif

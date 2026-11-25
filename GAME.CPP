@@ -18,14 +18,6 @@
 #include <ctype.h>
 #include "PLATFORM.H"
 
-#if defined(_EDIT)
-#include "edit.h"
-#endif
-#if defined(_EDIT) || defined(SCENE_EDITOR)
-#include "SAVEPWAD.H"			// GetFileName, for the editors' start-up picker
-extern BOOL JustLoadWad;		// WINSYS/MACHINE.C
-#endif
-
 #include "SYSTEM.H"
 #include "ENGINE.H"
 #include "MACHINE.H"
@@ -348,49 +340,6 @@ void init_game()
 	// and a queued request for it could end the game with a fatal error.
 	char *pStartWad = pwad;		// command line override: load that WAD
 
-#if defined (_EDIT) || defined (SCENE_EDITOR)
-	// The editors have no realm map to start from and the Windows build takes
-	// no WAD on the command line, so ask what to open. A scene brings its WAD
-	// and its avatars; the level editor can also open a bare WAD.
-#if defined (_EDIT)
-	static const char szStartFilter[] = "Scenes and WADs (*.SCN;*.WAD)\0*.SCN;*.WAD\0";
-	static const char szNothingToOpen[] = "The level editor needs a scene or a WAD to open.";
-#else
-	static const char szStartFilter[] = "Scenes (*.SCN)\0*.SCN\0";
-	static const char szNothingToOpen[] = "The scene editor needs a scene to open.";
-#endif
-	char szStartFile[_MAX_PATH];
-	char szStartTitle[_MAX_PATH];
-
-	if (pwad[0] == 0)
-	{
-		if (!GetFileName (hwndApp, "SCENES", szStartFilter, "SCN",
-				szStartFile, szStartTitle, OFN_FILEMUSTEXIST, GFN_OPEN))
-			fatal_error (szNothingToOpen);
-
-		char *pExt = strrchr (szStartTitle, '.');
-		if (pExt != NULL && _stricmp (pExt, ".SCN") == 0)
-		{
-			*pExt = 0;			// the scene loader adds "SCENES\" and ".SCN"
-			if (strlen (szStartTitle) > 8)
-				fatal_error ("Scene names are at most 8 characters: %s", szStartTitle);
-			SCENE_MGR::mfRequestNewScene (szStartTitle, TYPE_PLAYERSTART1, TRUE);
-#if defined (SCENE_EDITOR)
-			MessageBox (hwndApp,
-				"Press E to switch edit mode on and off. In edit mode, left-click the "
-				"floor to add a character in front of you, and right-click a character "
-				"to edit it. Save from the character dialog.",
-				"Birthright Scene Editor", MB_OK | MB_ICONINFORMATION);
-#endif
-		}
-		else
-		{
-			pStartWad = szStartFile;
-			JustLoadWad = TRUE;
-		}
-	}
-#endif
-
 	if (pStartWad[0] != 0)
 	{
 		load_new_wad(pStartWad, TYPE_PLAYERSTART1);
@@ -399,9 +348,6 @@ void init_game()
 		add_task(1,HandleFloors,0);  	//once every frame see if any floors moving
 		add_task(1,HandleCeilings,0); //once every frame see if any ceilings moving
 		add_task(1,TextureFrameHandler,0);  //once every frame check lighting effects
-#ifdef _EDIT
-		EditOpeningMessage ();
-#endif
 	}
 }
 

@@ -6133,10 +6133,6 @@ void InitDomainTurn (LONG Fake)
 	LONG				i, j, k, cnt;
 	char				n[40];
 
-#if defined (_EDIT) || defined (SCENE_EDITOR)
-	return;								// [d8-09-96 JPC] can't get to map
-#endif									// from editor.
-
 	if (hSaveBkgnd != fERROR)		// throw away hSaveBkgnd (Menu.c)
 	{
 		DisposBlock(hSaveBkgnd);

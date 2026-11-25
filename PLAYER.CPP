@@ -70,14 +70,6 @@
 #define LOOK_PITCH			(3 * MAX_PITCH / 4)	// [d3-16-97 JPC] fixed amount
 																// to look up or down
 
-#if defined (_EDIT)
-// [d7-23-96 JPC] for extra-fine movement control.
-// ("maxSpeed" is toggled in EditToggleSpeed.)
-extern "C" int maxSpeed = 31 << PLAYER_FIXEDPT;
-#undef  MAX_XY_SPEED						
-#define MAX_XY_SPEED maxSpeed
-#endif
-
 /* ------------------------------------------------------------------------
    Macros
    ------------------------------------------------------------------------ */
@@ -430,13 +422,6 @@ LONG CheckMoveKeys(void)
 #ifdef _DEBUG
 	if (async_key_status(keyWalkThruWall) )
 		KeyState |= KEY_WALKTHRUWALL_BIT;
-#else
-#if defined (_WADBUILDERS)
-	// [d4-07-97 JPC] Allow walk through wall in WAD Builders' version
-	// even if not debug.
-	if (async_key_status(keyWalkThruWall) )	// WAD builders
-		KeyState |= KEY_WALKTHRUWALL_BIT;		// WAD builders
-#endif
 #endif
 	if (async_key_status(keyRun) )
 		KeyState |= KEY_RUN_BIT;
@@ -586,20 +571,17 @@ LONG MovePlayer( LONG KeyState )
 		
 	}
 
-#if !defined (_WADBUILDERS)
 	// [d1-10-97 JPC] Beta testers demanded modifications to the levitate
 	// spell.  In AD&D you aren't supposed to be able to move while levitating;
 	// our compromise is to let you move very slowly in the x and y directions.
 	// [d1-15-97 JPC] Added floor test; slow movement only applies if player
 	// is actually levitating, i.e., above the floor.
-	// [d4-07-97 JPC] Don't do this for WAD Builders' version.
    if (fClimb && player.z > floor)     // the global fClimb is TRUE if we're levitating
 	{
 		force_x /= 6;
 		force_y /= 6;
 		// Leave force_a alone; dividing it by 6 keeps you from turning at all.
 	}
-#endif
 
 	/* Look */
 	if (KeyState & KEY_LOOKUP_BIT)
@@ -938,11 +920,6 @@ LONG MovePlayer( LONG KeyState )
 			}
 		}
 	
-#ifdef _DEBUG
-#ifdef _WINDOWS
-#endif
-#endif
-	
 		// check bump into a wall
 		if(player.WalkThruWall == FALSE )
 		{
@@ -1081,20 +1058,6 @@ LONG SetPlayerJump(LONG RiseVelocity, LONG FallRate, LONG TerminalVelocity)
 
 /*	======================================================================== */
 
-#if defined(_EDIT) || defined(SCENE_EDITOR)
-/* ========================================================================
-   Function    - PlayerClimbing
-   Description - set the climb flag to allow players to defy gravity
-   Returns     -
-   ======================================================================== */
-void PlayerClimbing(LONG, LONG NewFlag)
-{
-	if(NewFlag == -1)
-		fClimb = !fClimb;
-	else
-		fClimb = NewFlag;
-}
-#endif
 /* ========================================================================
    Function    - ConvertScreenToFloor
    Description - convert screen point on floor to world coord

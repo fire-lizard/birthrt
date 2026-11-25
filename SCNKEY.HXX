@@ -46,9 +46,6 @@ typedef SHORT HDL_KEY;
 class KEY {
 public:
 	void mfCreateKey(char *, HDL_KEY);
-#if defined(SCENE_EDITOR)
-	void mfWriteKeyData(FILE *);
-#endif
 	
 	LONG mfGetKeyId();
 	PFVLL mfGetPrevFunc();

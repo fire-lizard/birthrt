@@ -8,10 +8,6 @@
 #if !defined(_AILEADER_H)
 #define _AILEADER_H
 
-#if defined(SCENE_EDITOR)
-#include <stdio.h>
-#endif
-
 #if !defined(_SYSTEM_H)
 #include "SYSTEM.H"
 #endif
@@ -22,11 +18,6 @@
 class LEADER_DATA 
 {
 public:
-#if defined(SCENE_EDITOR)
-	// Write to Scene File
-	// (SCENE EDITOR: defined in AVATAR.CPP; the original AILEADER.CPP is gone.)
-	void mfWriteData(FILE *fp);
-#endif
 	void mfDelete();
 
 	// called before scene file is read

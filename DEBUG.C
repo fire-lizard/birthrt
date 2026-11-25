@@ -65,31 +65,5 @@ int debugf ( const char *format, ... )
 
 }   //---- End of debugf()
 
-#if defined(_EDIT)
-// ---------------------------------------------------------------------------
-#ifdef __cplusplus
-extern "C"
-#endif
-void ErrorMessage (const char *format, ...);
-#ifdef __cplusplus
-extern "C"
-#endif
-void ErrorMessage (const char *format, ...)
-{
-// [d5-14-96 JPC]
-// Print an informational message, not a fatal error.
-// User's only choice is to press OK.
-// ---------------------------------------------------------------------------
-
-	char 			szTemp[256];
-	va_list		argp;
-
-	va_start (argp, format);
-	vsprintf (szTemp, format, argp);
-	va_end (argp);
-	MessageBox (NULL, szTemp, "Error", MB_OK);
-}
-#endif
-
 #endif   // _WINDOWS
 // Debug.c

@@ -23,9 +23,6 @@
 #if !defined(_RELEASE)
 #include <stdio.h>
 #endif
-#if defined (_EDIT)
-#include <windows.h>
-#endif
 #include "SYSTEM.H"
 #include "ENGINE.H"
 #include "ENGINT.H"

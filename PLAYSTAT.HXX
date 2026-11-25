@@ -113,9 +113,6 @@ private:
 									// for player stats.
 	friend void ObjectList::AddPriestSpells(SHORT hPlayerStats);
 	friend void StatReadAllFrom(FILE *fp);
-#if defined(SCENE_EDITOR)
-	friend struct SCENE_EDITOR_STATS_ACCESS;	// DLG_EDIT.CPP
-#endif
 	friend BOOL ExpCheck(PLAYER_STATS * pPS);
 	friend void GainExp(PLAYER_STATS * pPS, const LONG ExpAmount,
 	             const BOOL CanGainLevelNow);

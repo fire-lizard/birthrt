@@ -114,9 +114,6 @@ void StopPlayer();
 LONG CheckMoveKeys(void);
 BOOL SwoopToTarget ( POSITION *pStart, POSITION *pTarget);
 LONG MovePlayer( LONG KeyState );
-#if defined(_EDIT) || defined(SCENE_EDITOR)
-void PlayerClimbing(LONG, LONG NewFlag);
-#endif
 LONG MoveToward(LONG X,LONG Y,LONG TargetX,LONG TargetY,LONG Rate,LONG *NewX,LONG *NewY);
 LONG SetPlayerSize(LONG Width, LONG Height);
 LONG SetPlayerJump(LONG RiseVelocity, LONG FallRate, LONG TerminalVelocity);

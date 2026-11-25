@@ -108,7 +108,6 @@ extern LONG gcMagicTemporaryLight;  // defined in TEXTURES.C
 extern LONG gcFrames;               // defined in TEXTURES.C
 
 // Prototypes for lighting functions in various files.
-void TextureLightTest (LONG arg1, LONG arg2);
 void TextureFrameHandler (LONG arg);
 
 // Convert function into TWO macros, one that allows for heat sources,

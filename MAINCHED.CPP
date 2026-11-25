@@ -63,16 +63,6 @@
 #endif
 #endif
 
-
-#if defined (_EDIT) || defined (_WADBUILDERS)
-extern "C" {
-void TextureLightTest (LONG arg1, LONG arg2);
-void EditToggleSpeed (LONG arg1, LONG arg2);
-void EditDebugFunction (LONG arg1, LONG arg2);
-void SysForceCursor (void);
-}
-#endif
-
 /* ------------------------------------------------------------------------
 	Defines and Compile Flags
 	------------------------------------------------------------------------ */
