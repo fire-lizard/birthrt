@@ -27,10 +27,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#ifdef _EDIT
-	#include <windows.h>
-	#include "edit.h"
-#endif
 #include "DEBUG.H"
 #include "SYSTEM.H"
 #include "ENGINE.H"
@@ -1127,14 +1123,6 @@ void add_floor_span(LONG x,LONG y,LONG sect)
 			}
 		}
 	}
-#ifdef _EDIT
-// [d6-03-96 JPC]
-// This is very similar to the "check for click" just above; but it is
-// separate code so the editor will be easier to remove.
-			if (gfFindSeg)
-            EditCheckCoordinates (x, last_post_y, last_post_ye, sect,
-               0, 0, typeFLOOR);
-#endif
 }
 
 /* =======================================================================
@@ -1216,13 +1204,6 @@ void add_ceil_span(LONG x,LONG y,LONG sect)
 		floor_lastb_y=y2;
 	}
 	last_post_x=x;last_post_y=y;last_post_ye=y2;
-#ifdef _EDIT
-// [d6-03-96 JPC]
-// Similar to floor check in add_floor_span:
-			if (gfFindSeg)
-            EditCheckCoordinates (x, last_post_y, last_post_ye, sect & 0x7FFF,
-               0, 0, typeCEILING);
-#endif
 }
 
 /* =======================================================================
@@ -1487,11 +1468,6 @@ static LONG draw_wall(LONG seg, LONG side)
 					scale_col_ttop(src_x.TwoHalves.sHigh,x1,scanedt[x1],scaned[x1],clipped,(shift_16_colhei)/delta_y);
 				}
 			}
-#ifdef _EDIT
-// [d6-03-96 JPC] Editor needs to know what we clicked on.
-			if (gfFindSeg)
-            EditCheckCoordinates (x1, scanedt[x1], scaned[x1], seg, MIDDLE_TEXTURE, FRONT, typeWALL);
-#endif
 
 			src_x.lval += xsrc_inc;
 			++x1;
@@ -1684,13 +1660,6 @@ static LONG draw_lower_wall(LONG seg, LONG side)
 		{
 			scale_col_ttop(src_x.TwoHalves.sHigh,x1,scanedt[x1],scaned[x1],clipped,(shift_16_colhei)/delta_y);
 		}
-#ifdef _EDIT
-// [d6-03-96 JPC]
-      if (gfFindSeg)
-      {
-         EditCheckCoordinates (x1, scanedt[x1], scaned[x1], seg, LOWER_TEXTURE, side, typeWALL);
-      }
-#endif
 		src_x.lval+=xsrc_inc;
 		++x1;
 	}
@@ -1878,11 +1847,6 @@ static LONG draw_upper_wall(LONG seg, LONG side)
 		{
 			scale_col_ttop(src_x.TwoHalves.sHigh,x1,scanedt[x1],scaned[x1],clipped,(shift_16_colhei)/delta_y);
 		}
-#ifdef _EDIT
-// [d6-03-96 JPC]
-      if (gfFindSeg)
-         EditCheckCoordinates (x1, scanedt[x1], scaned[x1], seg, UPPER_TEXTURE, side, typeWALL);
-#endif
 		src_x.lval+=xsrc_inc;
 		++x1;
 	}

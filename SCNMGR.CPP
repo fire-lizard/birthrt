@@ -124,63 +124,6 @@ void SCENE_MGR::mfToggleFollowCamera(LONG, LONG)
 	}
 }
 
-#if defined(_EDIT) || defined(SCENE_EDITOR)
-/* ========================================================================
-   Function    - mfSetScenePause
-   Description - Set the game state
-   Returns     - void
-   ======================================================================== */
-void SCENE_MGR::mfSetScenePause(BOOL const bState)
-{
-	LONG i;
-
-	// Also stops the game clock from running.
-	fScenePaused = bState;
-
-	if (SCENE_MGR::hCurrentScene != fERROR)
-	{
-		PTR_SCENE pCurrentScene = (PTR_SCENE) BLKPTR(SCENE_MGR::hCurrentScene);
-
-		// Pause the scene so that the music keeps playing but the camera movement
-		// stops and the avatars freeze in place.
-		// (Flames & fires too)
-		
-		if (fScenePaused)
-		{
-			pCurrentScene->mfSetSceneState(SCENE_AI::PAUSED);
-			// For the momemt send all the AI's into a Paused state
-			for (i = 0; i < MAX_AVATARS; i++)
-			{
-				if (pCurrentScene->Avatars[i] != fERROR)
-				{
-					CAvatar *pAvatar = (CAvatar *) BLKPTR(pCurrentScene->Avatars[i]);
-					pAvatar->DoAI(CAvatar::AI_BEGIN_PAUSE);
-					
-					// Just incase he died.
-					
-				}
-			}
-		}
-		else
-		{
-			pCurrentScene->mfSetSceneState(SCENE_AI::PLAY);
-			// For the momemt send all the AI's into a Paused state
-			for (i = 0; i < MAX_AVATARS; i++)
-			{
-				if (pCurrentScene->Avatars[i] != fERROR)
-				{
-					CAvatar *pAvatar = (CAvatar *) BLKPTR(pCurrentScene->Avatars[i]);
-					pAvatar->DoAI(CAvatar::AI_END_PAUSE);
-					
-					// Just incase he died.
-					
-				}
-			}
-		}
-		
-	}
-}
-#endif
 /* ========================================================================
    Function    - mfLoadScene
    Description - Load the current scene.
@@ -554,9 +497,6 @@ Error:
 void SCENE_MGR::mfReleaseSceneToMap(LONG,LONG)
 {
 
-#if defined (_EDIT) || defined (SCENE_EDITOR)
-	return;										// [d8-09-96 JPC] can't get to map
-#endif											// from editor.
 	ResetEnvironmentalSoundState();
 	SuspendMusic();
 	if (hCurrentScene != fERROR)
@@ -679,13 +619,9 @@ void SCENE_MGR::mfDoAI()
 		{
 			if (gfWadLoaded == FALSE)
 			{
-#if defined (_EDIT) || defined (SCENE_EDITOR)
-				fatal_error("ERROR: scnmgr.cpp No Wad loaded.\n");	// no map to go back to
-#else
 				// Nothing loaded and nothing queued: go back to the map,
 				// as a failed scene load does above.
 				SCENE_MGR::mfReleaseSceneToMap(0,0);
-#endif
 			}
 			else
 			{

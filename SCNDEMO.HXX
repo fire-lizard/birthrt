@@ -46,9 +46,6 @@ public:
 	char * mfGetCommandFileName ();
 	LONG mfReadData (FILE *fp);
 	
-#if defined(SCENE_EDITOR)
-	void mfWriteData (FILE *fp);
-#endif
 	BOOL mfIsSet();
 
 protected:
@@ -94,18 +91,6 @@ inline LONG SCENE_DEMO_DATA::mfReadData (FILE *fp)
 	return fCommandFile.mfReadFileName(fp);
 }
 
-#if defined(SCENE_EDITOR)
-/* ========================================================================
-   Function    - mfWriteData
-   Description - Write the data back to the scene file.
-   Returns     - 
-   ======================================================================== */
-inline void SCENE_DEMO_DATA::mfWriteData (FILE *fp) 
-{
-	fCommandFile.mfWriteFileName(fp);
-}
-
-#endif
 /* ========================================================================
    Function    - mfIsSet
    Description - Test for whether this is a demo scene or not.

@@ -22,9 +22,6 @@
 #include <string.h>
 #include "PLATFORM.H"
 #include <ctype.h>
-#if defined (_EDIT)
-#include <windows.h>
-#endif
 #include "DEBUG.H"
 #include "SYSTEM.H"
 #include "ENGINE.H"
@@ -99,11 +96,6 @@ extern   LONG  gMaxLight;              // [d9-23-96 JPC] Maximum allowed value f
 extern	LONG	gRemapIndex;				// [d7-29-96 JPC] experimental
 
 // [d9-10-96 JPC]
-#if defined (_EDIT)
-BOOL		gfMessageShown;
-int		gcTextures;
-extern BOOL gfFullBrightness;				// defined in EDIT.C
-#endif
 
 /* ========================================================================
    Function    - get_texture
@@ -155,25 +147,9 @@ LONG get_texture (char *in, ULONG * o_status)
 
 	t=last_texture++;
 
-#if defined (_EDIT)
-	// Keep track of how many textures we tried to load,
-	// even if we can't load them all.
-	++gcTextures;							
-#endif	
-
 	if(last_texture>MAX_TEXTURES)
 	{
-#if defined (_EDIT)
-		last_texture = MAX_TEXTURES;
-		if (!gfMessageShown)
-		{
-			MessageBox (NULL, "Too many textures in get_texture", "Error", MB_OK);
-			gfMessageShown = TRUE;
-			goto LoadGenericTexture;
-		}
-#else
 		fatal_error("Exceeded MAX_TEXTURES in get_texture");
-#endif
 	}
 	textures[t].type = NORMAL_TEX;			/* not see-through, not sky */
 	sprintf(textures[t].name,"%s",n);
@@ -255,10 +231,6 @@ LONG get_texture (char *in, ULONG * o_status)
 	// write the texture name to the err file
 	WriteErrFile(n);
 
-#if defined (_EDIT)
-LoadGenericTexture:
-#endif
-
 	// [MDB] assign the generic texture
 	sprintf(tn, "%s%s.pcx", TEXTURE_PATH,"genwall");
 	textures[t].t = tex = GetResourceRot(tn);
@@ -286,11 +258,7 @@ LoadGenericTexture:
    ======================================================================== */
 void load_sky_textures (void)
 {
-#if defined (_EDIT)
-#define LST_DEFAULT_NAME "BACK03"
-#else
 #define LST_DEFAULT_NAME "BACK01"
-#endif
 
 	int		iLastChar;
 	ULONG		i;
@@ -436,25 +404,9 @@ LONG get_floor_texture(char *in)
 
 	t=last_texture++;
 
-#if defined (_EDIT)
-	// Keep track of how many textures we tried to load,
-	// even if we can't load them all.
-	++gcTextures;							
-#endif	
-
 	if(last_texture>=MAX_TEXTURES)
 	{
-#if defined (_EDIT)
-		last_texture = MAX_TEXTURES;
-		if (!gfMessageShown)
-		{
-			MessageBox (NULL, "Too many textures in get_floor_texture", "Error", MB_OK);
-			gfMessageShown = TRUE;
-			goto LoadGenericTexture;
-		}
-#else
 		fatal_error("Exceeded MAX_TEXTURES in get_floor_texture");
-#endif
 	}
 
 	// [d12-04-96 JPC] Old location of SKY code; moved it up.
@@ -573,10 +525,6 @@ LONG get_floor_texture(char *in)
 	// [MDB] could not find the texture so assign the generic one
 	// write the texture name to the err file
 	WriteErrFile(n);
-
-#if defined (_EDIT)
-LoadGenericTexture:
-#endif
 
 	// [MDB] assign the generic texture
 	sprintf(tn, "%s%s.pcx", TEXTURE_PATH,"genflr");
@@ -1001,45 +949,6 @@ void WriteErrFile(char *n)
 		fclose(f);
 	}
 }
-
-#if defined (_EDIT) || defined (_WADBUILDERS)
-/* ======================================================================== */
-void TextureLightTest (LONG arg1, LONG arg2)
-{
-// This is the callback function for various light tests.
-// This is not intended to be a permanent function, but you never know.
-// The keys are set up in MAIN: GameMain, which calls REGIONS: add_key.
-// ---------------------------------------------------------------------------
-
-	switch (arg1)
-	{
-		case 0:									// F7 key tests
-#if defined (_EDIT)
-			gfFullBrightness = !gfFullBrightness;
-#else
-			gfTestMagicLightSwitch = !gfTestMagicLightSwitch;
-#endif
-			break;
-
-		case 1:									// F8
-			// [d7-15-96 JPC] Replace old test with color remap test.
-			// gcMagicTemporaryLight = 160;	// effect lasts 160 frames
-#if 01
-			gfTestMagicLightSwitch = !gfTestMagicLightSwitch;
-#else
-			if (gRemapIndex == 0)
-				gRemapIndex = WRAITH_REMAP;
-			else
-				gRemapIndex = 0;
-#endif
-			break;
-
-		case 2:									// F9
-			gfInfraVision = !gfInfraVision;
-			break;
-	}
-}
-#endif
 
 // ---------------------------------------------------------------------------
 void TextureFrameHandler (LONG arg)

@@ -681,9 +681,6 @@ LONG WINAPI MainWndProc( HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
 		case WM_QUIT:
 		case WM_CLOSE:
 			fQuitting = TRUE;
-#ifdef _EDIT
-         SendMessage (ghwndEditWallDlg, WM_CLOSE, 0, 0);
-#endif
 			break;
 
 
@@ -843,23 +840,6 @@ Specifies flags that control the interpretation of the uIDCheckItem parameter an
 			mouse_button = 2;
 			return 0;
 
-#ifdef _EDIT
-// [d7-08-96 JPC] Restore this function for _EDIT
-		case WM_LBUTTONUP:
-//			GetClientRect(hwndApp, &rc);
-//			cursor_x = LOWORD(lParam);
-//			cursor_y = HIWORD(lParam);
-
-			//GEH scale mouse to draw buffer
-//			cursor_x = cursor_x * WindowWidth / rc.right;
-//			cursor_y = cursor_y * WindowHeight / rc.bottom;
-//			need_cursor_draw = FALSE;
-//			mouse_button = 0;
-// [d6-03-96 JPC]
-         EditWall (cursor_x, cursor_y, wParam);
-			return 0;
-#endif
-
 //		case WM_RBUTTONUP:
 //			GetClientRect(hwndApp, &rc);
 //			cursor_x = LOWORD(lParam);
@@ -1004,10 +984,6 @@ Specifies flags that control the interpretation of the uIDCheckItem parameter an
 	        SetFocus (hwnd);
 			break;
 		case WM_CHAR:
-#ifdef _EDIT
-// [d6-13-96 JPC]
-			EditHandleChar (wParam);
-#else
 			// if a dialog is active and an edit field has focus, add char to string
 #if 0
 			// GEH Replace with new menu code.
@@ -1029,17 +1005,11 @@ Specifies flags that control the interpretation of the uIDCheckItem parameter an
 				return 0L;
 			}
 #endif
-#endif
 			break;
 
 		case WM_KEYDOWN:
 			{
 			iKey = (int) wParam;
-
-#ifdef _EDIT
-// [d6-13-96 JPC]
-         EditHandleKeydown (iKey, hwnd);
-#else
 
 
 #if 0
@@ -1068,7 +1038,6 @@ Specifies flags that control the interpretation of the uIDCheckItem parameter an
 				}
 				key_stat[iKey] |= 0x40;					// key down
 			}
-#endif
 			}
 			break;
 

@@ -50,10 +50,6 @@ public:
 	void mfMoveCamera();
 	void mfSwoopCamera();
 	BOOL mfIsAtCameraPosition();
-#if defined(SCENE_EDITOR)
-	
-	void mfWriteData (FILE *);
-#endif
 	BOOL mfReadData	(char * /* cpBuffer */ );
 	
 protected:
@@ -146,16 +142,4 @@ inline BOOL CAMERA_DATA::mfReadData (char * cpBuffer)
 											&fr)) ? TRUE : FALSE);
 }
 
-#if defined(SCENE_EDITOR)
-/* ========================================================================
-   Function    - mfWriteData
-   Description - Write the data back to the scene file.
-   Returns     - 
-   ======================================================================== */
-inline void CAMERA_DATA::mfWriteData (FILE *fp) 
-{
-	fprintf(fp,"%d\t%d\t%d\t%d\t%d\t%d\n", fx, fy, fz, fa, fp, 0);
-}
-
-#endif
 #endif // _CAMRDATA_HXX

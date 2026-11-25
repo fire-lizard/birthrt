@@ -345,10 +345,6 @@ public:				// Public for the dialog editor
 	inline AIFUNC GetAIFuncIndex() const;
 	
 	inline void mfGetContactPoint(POINT_3D * const) const;
-#if defined(SCENE_EDITOR)
-	inline BOOL mfShouldSaveToSceneFile();
-	void mfWriteSceneData(FILE * const fp);
-#endif
 
 	inline void mfInitVals();
 	inline LONG mfReadRestOfSceneData(FILE * const fp);
@@ -653,7 +649,7 @@ inline CAvatar::AISTATUS CAvatar::DoAI(CAvatar::AISTATUS st)
 	return (Status);
 }
 
-// This routine provide access for dlg_edit
+// Which AI function this avatar runs.
 inline CAvatar::AIFUNC CAvatar::GetAIFuncIndex() const
 {
 	return AIFuncIndex;
@@ -909,13 +905,6 @@ inline LONG CAvatar::mfReadRestOfSceneData(FILE * const fp)
 	}
 	return Result;
 }
-#if defined(SCENE_EDITOR)
-// Test to see if this avatar will be saved in the scene file.
-inline BOOL CAvatar::mfShouldSaveToSceneFile()
-{
-	return ((attrib.RuntimeCreated == FALSE) ? TRUE : FALSE);
-}
-#endif
 
 /* ========================================================================
    Function    - AvatarHdlToId

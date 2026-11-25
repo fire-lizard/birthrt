@@ -44,9 +44,6 @@ class SCN_SECTOR {
 public:
 	void mfInitVals();
 	void mfCreateSector(char * cpBuffer);
-#if defined(SCENE_EDITOR)
-	void mfWriteSectorData(FILE * /* fp */);
-#endif
 	LONG mfGetId();
 	char *mfGetSceneName();
 	
@@ -93,18 +90,6 @@ inline void SCN_SECTOR::mfCreateSector(char * cpBuffer)
 		fId = fERROR;
 	}
 }
-
-/* ========================================================================
-   Function    - mfWriteSectorData
-   Description - Write the Sector Scene file data.
-   Returns     - 
-   ======================================================================== */
-#if defined(SCENE_EDITOR)
-inline void SCN_SECTOR::mfWriteSectorData(FILE * fp) 
-{
-	fprintf(fp, "%ld\t%s\n", fId, fscInfo.mfGetSceneName());
-}
-#endif
 
 /* ========================================================================
    Function    - mfGetId

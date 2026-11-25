@@ -22,23 +22,6 @@
    inline member functions
    ----------------------------------------------------------------- */
 
-#if defined(SCENE_EDITOR)
-void FOLLOW_PATH_DATA::mfWriteData(FILE * fp)
-{
-	fprintf(fp, "%d\n", PathCount);
-	if (PathCount > 0)
-	{
-		LONG i;
-		PTR_PATH_PTS pPathPt = (PTR_PATH_PTS) BLKPTR(hPath);
-		
-		for (i = 0 ; i < PathCount; i++)
-		{
-			pPathPt[i].mfWriteData(fp);
-		}
-	}
-}
-
-#endif
 LONG FOLLOW_PATH_DATA::mfReadData(FILE *fp)
 {
 	char cpBuffer[80];

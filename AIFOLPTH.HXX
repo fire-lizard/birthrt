@@ -33,11 +33,6 @@
 class FOLLOW_PATH_DATA
 {
 public:
-#if defined(SCENE_EDITOR)
-	// Write to Scene File
-	void mfWriteData(FILE * fp);
-	
-#endif
 	// Read from Scene File
 	LONG mfReadData(FILE *fp);
 	

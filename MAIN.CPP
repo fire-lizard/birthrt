@@ -64,19 +64,6 @@
 extern HWND hwndApp;
 #endif
 
-#if defined (SCENE_EDITOR)
-#include "DLG_EDIT.H"			// SetEditmode: the scene editor's E key
-#endif
-
-#if defined (_EDIT) || defined (_WADBUILDERS)
-extern "C" {
-void TextureLightTest (LONG arg1, LONG arg2);
-void EditToggleSpeed (LONG arg1, LONG arg2);
-void EditDebugFunction (LONG arg1, LONG arg2);
-}
-void SysForceCursor (void);	// C++ linkage, like the other callers (GAMEMAP.CPP etc.)
-#endif
-
 /* ------------------------------------------------------------------------
 	Defines and Compile Flags
 	------------------------------------------------------------------------ */
@@ -372,10 +359,6 @@ void MainLoop(void)
 	static UCHAR	cMemDebugTimer = 0;
 #endif
 
-#if defined (_EDIT)
-	static BOOL fShowMessage = TRUE;                // [d9-16-96 JPC]
-#endif
-
 	//this will do anything machine specific you want done
 	//before a frame like clearing the screen or filling
 	//key_status arrays....
@@ -469,22 +452,8 @@ void MainLoop(void)
 			
 			// High-res and low-res are no longer different here.
 			ScreenCopy(0, margin_left, margin_top, render_width, render_height, SC_DEFAULT_RES);
-#if defined (_WADBUILDERS)
-			SysHideCursor ();
-			SysForceCursor ();				// [d4-07-97 JPC]
-#endif
 		}
 
-#if defined (_EDIT)
-// [d9-16-96 JPC]
-		if (fShowMessage)
-		{
-			char szTemp[128];
-			sprintf (szTemp, "WAD Builders Edition, %s, %s", __DATE__, __TIME__);
-			MessageBox (NULL, szTemp, "Special Version", MB_OK);
-			fShowMessage = FALSE;
-		}
-#endif
 		run_timers();
 
 		// update running sounds by distance(volume) and pan
@@ -518,12 +487,10 @@ void MainLoop(void)
 		if (bShowWadSize)
 			ShowWadSize();
 
-#if !defined (_EDIT)
 		if (SCENE_MGR::mfIsScenePaused())
 		{
 			print_textf(render_width/4, 20, 31, STRMGR_GetStr(STR_PAUSE));
 		}
-#endif
 	}       // if in domain turn else..
 
 	// Show frames per second
@@ -669,7 +636,6 @@ void GameMain(void)
 	OpenResFile_("wave.res");
 	OpenResFile_("INTRO.RES");
 
-#if !defined (_EDIT) && !defined (SCENE_EDITOR)
 //=================================
 	clear_key_status(0);
 	if (!JustLoadWad)
@@ -686,7 +652,6 @@ void GameMain(void)
 			return;
 	}
 //=================================
-#endif
 
 	// preload a song from CD
 	ucWhichTrack = 100;
@@ -713,7 +678,7 @@ void GameMain(void)
 	
 	/* function keys */
 
-#if defined(_DEBUG) && !defined(_EDIT)
+#if defined(_DEBUG)
    //  Moved this out of the way of DD and Chat dlj 9-26-96
 	add_key(KEY_F6, print_point, 0, 0);
 #endif
@@ -779,10 +744,6 @@ void GameMain(void)
 void CPPQuitSys(LONG, LONG)
 {
 
-#if defined (_WADBUILDERS)
-   QuitSys (0, 0);                     // skip confiming dialog
-#else
-
 	if ( mouse_button == 2 )
    {
    	SystemHelp( STR_MAIN1_HELP_QUIT_TITLE,
@@ -810,7 +771,6 @@ void CPPQuitSys(LONG, LONG)
 			
 		ShowMenu(D_QUESTION3);
 	}
-#endif
 }
 
 /* ========================================================================
@@ -878,7 +838,7 @@ void AddGameKeys(void)
 	The letter keys
 	----------------------------------------------------------------- */
 
-#if defined(_DEBUG) && !defined(_EDIT)
+#if defined(_DEBUG)
 	add_key(KEY_T, PlayCredits,0,0);
 	add_key(KEY_Y, PlayFinale,0,0);
 	add_key(KEY_1, PlayGorgon,1,0);
@@ -889,32 +849,14 @@ void AddGameKeys(void)
 #endif
 	
 	// GWP Remove cheat keys
-#if defined (_EDIT) || defined (_WADBUILDERS)
-	{
-		extern BOOL fVeryFirstTime;
-
-		add_key(KEY_C, ToggleVal, 0, (REGARG)&fClimb);
-      add_key(KEY_G, DumpScreen, 0, 0);            // dump screen buffer to .pcx
-      add_key(KEY_F8, TextureLightTest, 0, 0);     // brighten things
-      fVeryFirstTime = FALSE;                      // allow main menu to come up
-	}
-#endif
-
-#if defined (SCENE_EDITOR)
-	add_key(KEY_E, (PFVLL)SetEditmode, 0, 0);		// scene editor: edit mode on/off
-#endif
 
 #if _LAN && defined(_DEBUG)
 	add_key(KEY_E,ShowAllAnimations, 0, 0);
 #endif
 
-#ifdef _JPC
-	add_key(KEY_E,  EditToggleSpeed,  0, 0);        // [d7-23-96 JPC]
-#endif
-
 	add_key(KEY_P, ToggleVal, 0, (REGARG)&fPosition);
 
-#if defined( _DEBUG) || defined(_EDIT)
+#if defined( _DEBUG)
 	add_key(KEY_W, toggle_ShowWadSize,0, 0);
 #endif
 
@@ -947,12 +889,6 @@ void AddGameKeys(void)
 	// Add Global Keys
 
 	AddGlobalKeys();
-
-#ifdef _EDIT
-	add_key(KEY_F7, EditDebugFunction, 0, 0);        // [d7-01-96 JPC]
-	add_key(KEY_F8, EditDebugFunction, 1, 0);        // [d7-02-96 JPC]
-	add_key(KEY_F9, EditDebugFunction, 2, 0);        // [d7-01-96 JPC]
-#endif
 
 }
 

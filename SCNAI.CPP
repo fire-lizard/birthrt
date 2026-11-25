@@ -114,11 +114,6 @@ SCENE_AI::PFVS SCENE_AI::sfpSceneTable[SCENE_AI::MAX_SCENES][SCENE_AI::SCENE_MAX
    ======================================================================== */
 void SCENE_AI::mfScenePause (SCENE &rScene)
 {
-#if defined(SCENE_EDITOR)
-	// All the avatars have to stop moving so we can edit them!
-	//if (bEditMode)
-	{
-#endif
 
 	for(LONG i = 0; i < MAX_AVATARS; i++ )
 	{
@@ -133,9 +128,6 @@ void SCENE_AI::mfScenePause (SCENE &rScene)
 	    }
 	}
 
-#if defined(SCENE_EDITOR)
-	}
-#endif
 }
 
 /* ========================================================================

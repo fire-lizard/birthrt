@@ -44,9 +44,6 @@ class EXIT_POINT {
 public:
 	
 	void mfCreateExitPoint(char * cpBuffer);
-#if defined(SCENE_EDITOR)
-	void mfWriteExitPointData(FILE * fp);
-#endif
 	LONG mfGetId();
 	char *mfGetSceneName();
 	void mfInitVals();
@@ -76,18 +73,6 @@ inline void EXIT_POINT::mfCreateExitPoint(char * cpBuffer)
 	fExitInfo.mfCreateSector(cpBuffer);
 }
 
-/* ========================================================================
-   Function    - mfWriteExitPointData
-   Description - Write the data to the scene file.
-   Returns     - 
-   ======================================================================== */
-#if defined(SCENE_EDITOR)
-inline void EXIT_POINT::mfWriteExitPointData(FILE * fp) 
-{
-	fExitInfo.mfWriteSectorData(fp);
-}
-
-#endif
 /* ========================================================================
    Function    - mfGetId
    Description - Get this exit id.

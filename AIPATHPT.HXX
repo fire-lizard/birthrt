@@ -23,11 +23,6 @@
 class PATH_PT
 {
 public:
-#if defined(SCENE_EDITOR)
-	// Write to Scene File
-	void mfWriteData(FILE * fp);
-	
-#endif
 	// Read from Scene File
 	LONG mfReadData(FILE *fp);
 	
@@ -41,13 +36,6 @@ public:
    inline member functions
    ----------------------------------------------------------------- */
 
-#if defined(SCENE_EDITOR)
-inline void PATH_PT::mfWriteData(FILE * fp)
-{
-	fprintf(fp, "%d %d %d %d\n", X, Y, Z, A);
-}
-
-#endif
 inline LONG PATH_PT::mfReadData(FILE *fp)
 {
 	char cpBuffer[80];
