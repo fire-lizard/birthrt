@@ -383,7 +383,7 @@ void AdvPrepPaint (LONG MenuCombo, LONG )
 		}
 		else
 		{
-			sprintf(buffer, "Monster");
+			strcpy(buffer, STRMGR_ExeText("Monster"));
 		}
 			
 		sprintf(textbuf, "^F02%s ^F01(%s)", buff, buffer);

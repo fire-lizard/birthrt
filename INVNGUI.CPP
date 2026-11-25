@@ -535,25 +535,11 @@ void InventoryGUI::mfPaintListBoxLine(LONG Lines,ObjectList & Ol,LONG MenuId) co
 			{
 				SPELL_INFO::TYPE spellindex = (SPELL_INFO::TYPE) ItemTypes[(*itor)->mfType()].mfGetExtendedData();
 				SPELL_INFO::SPELL_ITEM spell = SPELL_INFO::mfGetSpell(spellindex);
-#ifdef _FOREIGNVER
-	#ifdef _GERMANVER
+				// Wizard, Mage, Zauberer
 				sprintf(NameBuf,"^F03%s (%c%d)",
 					GAME_TTYPE::mfGetDescription(ItemTypes[(*itor)->mfType()].mfGameType()),
-					(spell.Type == SPELL_INFO::PRIEST)? 'P':'Z',
+					(spell.Type == SPELL_INFO::PRIEST)? 'P':(char)LangPick('W', 'M', 'Z'),
 					spell.Level);
-	#else
-	// french
-				sprintf(NameBuf,"^F03%s (%c%d)",
-					GAME_TTYPE::mfGetDescription(ItemTypes[(*itor)->mfType()].mfGameType()),
-					(spell.Type == SPELL_INFO::PRIEST)? 'P':'M',
-					spell.Level);
-	#endif
-#else
-				sprintf(NameBuf,"^F03%s (%c%d)",
-					GAME_TTYPE::mfGetDescription(ItemTypes[(*itor)->mfType()].mfGameType()),
-					(spell.Type == SPELL_INFO::PRIEST)? 'P':'W',
-					spell.Level);
-#endif
 				//auto-font-reduce until it fits!
 				while (gtext_width(NameBuf)>TextW && NameBuf[3]!='0')
 				{

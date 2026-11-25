@@ -2871,11 +2871,7 @@ DiplomacyRestart:
 				// selections with adjustments
 				if (iSelectedHolding[i][3] && (i==3 || i==6 || i==9 || i==10))
 				{
-					#ifdef _FOREIGNVER
-						print_textf(x+200, y+3, DKBROWN, STRMGR_GetStr(STR_ACTNMENU_SPACES_GB_FMT),(i==3)?STRMGR_GetStr(STR_ACTNMENU_REQUEST):(i==6)?STRMGR_GetStr(STR_ACTNMENU_DEMAND):STRMGR_GetStr(STR_ACTNMENU_OFFER));
-					#else
-						print_textf(x+220, y+3, DKBROWN, STRMGR_GetStr(STR_ACTNMENU_SPACES_GB_FMT),(i==3)?STRMGR_GetStr(STR_ACTNMENU_REQUEST):(i==6)?STRMGR_GetStr(STR_ACTNMENU_DEMAND):STRMGR_GetStr(STR_ACTNMENU_OFFER));
-					#endif
+						print_textf(x+LangPick(220,200,200), y+3, DKBROWN, STRMGR_GetStr(STR_ACTNMENU_SPACES_GB_FMT),(i==3)?STRMGR_GetStr(STR_ACTNMENU_REQUEST):(i==6)?STRMGR_GetStr(STR_ACTNMENU_DEMAND):STRMGR_GetStr(STR_ACTNMENU_OFFER));
 					if (i==3 || i==6)
 					{
 						if (i==3) theirCurGold = (realm[iSelectedRealm].mfGetTreasury()/10) - iSelectedHolding[6][0];
@@ -3119,9 +3115,7 @@ DiplomacyRestart:
 			}
 			else if(fAllowRollButton || fAllowDoneButton)
 			{
-				#ifdef _FOREIGNVER
-					y+=10;
-				#endif
+				y+=LangPick(0,10,10);
 				crease(x, y, 310, 1);
 				y+=2;
 				
@@ -4925,26 +4919,15 @@ void PaintCreateHolding (LONG x, LONG y, LONG h)
 
 	if (iSelectedRealm)	// different instructions depending on context
 	{
-		#ifdef _FOREIGNVER
-		y = startY+h-90;
+		// French and German: B1 runs to a third line
+		y = startY+h-LangPick(80,90,90);
 		print_textf(x, y, DKBROWN, STRMGR_GetStr(STR_ACTNMENU_TOTAL_GB_COST_FMT), GoldBar);
 		y+=13;
 		print_textf(x+63, y, DKBROWN, STRMGR_GetStr(STR_ACTNMENU_REGENCY_FMT), RegencePoint);
 		y+=15;
 		print_textf(x, y, DKBROWN, STRMGR_GetStr(STR_ACTNMENU_SELECT_REALM_B1));
-		y+=30;					   
+		y+=LangPick(20,30,30);
 		print_textf(x, y, DKBROWN, STRMGR_GetStr(STR_ACTNMENU_SELECT_REALM_B2));
-
-		#else
-		y = startY+h-80;
-		print_textf(x, y, DKBROWN, STRMGR_GetStr(STR_ACTNMENU_TOTAL_GB_COST_FMT), GoldBar);
-		y+=13;
-		print_textf(x+63, y, DKBROWN, STRMGR_GetStr(STR_ACTNMENU_REGENCY_FMT), RegencePoint);
-		y+=15;
-		print_textf(x, y, DKBROWN, STRMGR_GetStr(STR_ACTNMENU_SELECT_REALM_B1));
-		y+=20;					   
-		print_textf(x, y, DKBROWN, STRMGR_GetStr(STR_ACTNMENU_SELECT_REALM_B2));
-		#endif
 	}
 	else
 		print_textf(startX, startY+h-45, DKBROWN, STRMGR_GetStr(STR_ACTNMENU_SELECT_REALM_B3));
@@ -5225,10 +5208,10 @@ void PaintContest (LONG x, LONG y, LONG h)
 						if (places[tmpIndex].Realm < LAND_REALM_COUNT)
 						{
 							DrawShield(x+58, y, (REALM::REALM_TYPE)places[tmpIndex].Realm);
-							print_textf(x+72, y, DKBROWN, "^F01%s", strupr(n));
+							print_textf(x+72, y, DKBROWN, "^F01%s", STRMGR_Upper(n));
 						}
 						else
-							print_textf(x+60, y, DKBROWN, "^F01%s", strupr(n));
+							print_textf(x+60, y, DKBROWN, "^F01%s", STRMGR_Upper(n));
 						y+=16;
 						// print prev, next buttons if provinces are more than 8		
 						if(DoPageProvince(&startProvCount1, provCount1, 8, counter1, x, y))
@@ -6085,7 +6068,7 @@ void PaintRealmSpell(LONG x, LONG y, LONG h)
 	// display selected spell
 	if (iSelectedOneHolding != 99)	// iSelectedOneHolding starts as 99
 	{
-		print_textf(x, y, DKBROWN, "^F00SPELL");
+		print_textf(x, y, DKBROWN, STRMGR_ExeText("^F00SPELL"));
 		y += 15;
 
 		item = iSelectedOneHolding;

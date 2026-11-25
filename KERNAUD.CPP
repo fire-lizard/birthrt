@@ -119,8 +119,8 @@ static BOOL KA_ParseWave (const UBYTE * img, ULONG cbImg,
 	return fFmt && fData && pwfx->wFormatTag == WAVE_FORMAT_PCM && *pcbData > 0;
 }
 
-// Locate the WAV image for <id>: loose file first, then the resource manager.
-static BOOL KA_Acquire (KA_SAMPLE * s, int id)
+// Read <prefix><dir><id>.WAV from the first of the loose sound folders that has it.
+static BOOL KA_ReadLoose (KA_SAMPLE * s, const char * pszPrefix, int id)
 {
 	/* The installer scatters the effects over these by id range - see the
 	   *SOURCEDRIVE:\WAVE00\ entries in SIERRA.INF - and the ranges are not
@@ -134,16 +134,12 @@ static BOOL KA_Acquire (KA_SAMPLE * s, int id)
 	char	szName[64];
 	int		i;
 
-	s->hRes  = (SHORT)fERROR;
-	s->pFile = NULL;
-	s->cbFile = 0;
-
 	for (i = 0; i < (int)(sizeof(apszDirs) / sizeof(apszDirs[0])); i++)
 	{
 		FILE *	f;
 		long	cb;
 
-		sprintf(szName, "%s%d.WAV", apszDirs[i], id);
+		sprintf(szName, "%s%s%d.WAV", pszPrefix, apszDirs[i], id);
 		f = fopen(szName, "rb");
 		if (f == NULL)
 			continue;
@@ -165,8 +161,36 @@ static BOOL KA_Acquire (KA_SAMPLE * s, int id)
 		}
 		fclose(f);
 	}
+	return FALSE;
+}
+
+// Locate the WAV image for <id>: loose file first, then the resource manager.
+static BOOL KA_Acquire (KA_SAMPLE * s, int id)
+{
+	char const * const	pszOverlay = SoundOverlay();
+	char			szName[16];
+
+	s->hRes  = (SHORT)fERROR;
+	s->pFile = NULL;
+	s->cbFile = 0;
 
 	sprintf(szName, "%d.WAV", id);
+
+	/* Another sound language: its own loose files, then its WAVE.RES (FOPEN.C
+	   opens the overlay's), and only then the game folder's loose files.
+	   Those are English, and must not drown out a voice the language's
+	   WAVE.RES has; the ones it really shares were dropped from its folder
+	   as duplicates, so they are found here. */
+	if (pszOverlay != NULL)
+	{
+		if (KA_ReadLoose(s, pszOverlay, id))
+			return TRUE;
+		s->hRes = GetResourceStd(szName, FALSE);
+		return s->hRes >= 0 || KA_ReadLoose(s, "", id);
+	}
+
+	if (KA_ReadLoose(s, "", id))
+		return TRUE;
 	s->hRes = GetResourceStd(szName, FALSE);
 	return s->hRes >= 0;
 }

@@ -127,19 +127,9 @@ HANDLE hHeap;
 
 LONG cx, cy;
 static char szClassName[] = "Birthright";
-	#ifdef _FRENCHVER
-	static  char  szAppName[]= "Birthright - Le Pacte des Ténèbres";
-	#else
-		#ifdef _GERMANVER
-		static  char  szAppName[]= "Birthright - Die Dunkle Allianz";
-		#else
-			#ifdef _RUSVER
-			static  char  szAppName[]= "Право на жизнь - Союз Горгон";
-			#else
-				static  char  szAppName[] = "Birthright - The Gorgon's Alliance";
-			#endif
-		#endif
-	#endif
+// The translated titles (French, German, Russkiy Proekt) follow the text
+// language, set once it is known: GAMEOPT.CPP ReadOptionSettings.
+static char szAppName[] = "Birthright - The Gorgon's Alliance";
 
 // ABC removed minimize box per RC 7/18/97
 static LONG lStyle = WS_SYSMENU|WS_POPUP|WS_CAPTION;
@@ -257,7 +247,7 @@ BOOL AppInit( HINSTANCE hInst, HINSTANCE hPrev, LPSTR szCmdLine, int sw )
 
     //---- Is there another instance of BirthRight running
     HWND hwndTemp = FindWindow(szClassName, // address of class name
-                               szAppName);	// address of window name
+                               NULL);		// any title: it follows the text language
 
     if ( hwndTemp != NULL )
     {

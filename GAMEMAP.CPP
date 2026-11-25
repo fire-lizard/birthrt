@@ -1371,7 +1371,7 @@ RestartFindBounds:
 	{
 		init_gfont(19);
 		sprintf(n,"%s",(_realm==REALM::GORGONSCROWN)?STRMGR_GetStr(STR_GM_GORGONS_CROWN):realm[_realm].mfGetName());
-		strupr(n);
+		STRMGR_Upper(n);
 		ts = (dx * 60L) / (LONG)gtext_width(n);	// use 60% of the avail width
 		ts += 20;	// 10% boost
 
@@ -6493,7 +6493,7 @@ void RealmNames (LONG clipped_x, LONG clipped_y)
 		{
 			sprintf(n,"%s",(j==REALM::GORGONSCROWN)?STRMGR_GetStr(STR_GM_GORGONS_CROWN):realm[j].mfGetName());
 			if (j==REALM::MIERES) sprintf(n,"%s",STRMGR_GetStr(STR_RLM_NAME_MIERES));
-			strupr(n);
+			STRMGR_Upper(n);
 			x_icon = (((realm[j].mfGetNameX()-clipped_x) * FULL_SCALE) / map_scale);
 			y_icon = (((realm[j].mfGetNameY()-clipped_y) * FULL_SCALE) / map_scale);
 			temp = (FULL_SCALE*realm[j].mfGetTitleSize())/icon_scale;
@@ -7951,15 +7951,10 @@ DoSpecial:
 			SetPurge(hRealmSelectBox);
 			hRealmSelectBox = fERROR;
 
-			#if defined (_GERMANVER)
-			print_textf(cxText-170,cyText-10,BLACK,STRMGR_GetStr(STR_GM_FMTD_REALM_SEL));
-			print_textf(cxText-123,cyText+20,BLACK,STRMGR_GetStr(STR_GM_CLICK_FOR_CHOICES));
-			print_textf(cxText-123,cyText+32,BLACK,STRMGR_GetStr(STR_GM_TO_SELECT_REGENT));
-			#else
-			print_textf(cxText-140,cyText-10,BLACK,STRMGR_GetStr(STR_GM_FMTD_REALM_SEL));
-			print_textf(cxText-90,cyText+20,BLACK,STRMGR_GetStr(STR_GM_CLICK_FOR_CHOICES));
-			print_textf(cxText-90,cyText+32,BLACK,STRMGR_GetStr(STR_GM_TO_SELECT_REGENT));
-			#endif
+			// the German lines are longer
+			print_textf(cxText-LangPick(140,140,170),cyText-10,BLACK,STRMGR_GetStr(STR_GM_FMTD_REALM_SEL));
+			print_textf(cxText-LangPick(90,90,123),cyText+20,BLACK,STRMGR_GetStr(STR_GM_CLICK_FOR_CHOICES));
+			print_textf(cxText-LangPick(90,90,123),cyText+32,BLACK,STRMGR_GetStr(STR_GM_TO_SELECT_REGENT));
 		}
 
 		// ========================================================

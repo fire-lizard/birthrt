@@ -58,6 +58,74 @@ static void CloseOldestFile ();
 static FILE * FileInQueue (CSTRPTR pszFile, CSTRPTR pszAccess);
 static SHORT DiskInQueue (CSTRPTR pszFile);
 
+/* ------------------------------------------------------------------------
+   Languages (see FOPEN.H). Set once at startup from gameopt.dat: the RES
+   files and the string table are read once, so a language cannot change
+   under a running game.
+   ------------------------------------------------------------------------ */
+static char const * const gszLanguageFolder[LANGUAGE_COUNT] = {
+	NULL, "FRENCH\\", "GERMAN\\", "RUSSIAN1\\", "RUSSIAN2\\"
+};
+static char const * gszTextOverlay  = NULL;
+static char const * gszSoundOverlay = NULL;
+static LONG gTextLanguage = LANGUAGE_ENGLISH;
+
+void SetDataLanguages (LONG TextLang, LONG SoundLang)
+{
+	gTextLanguage   = (TextLang > 0 && TextLang < LANGUAGE_COUNT) ? TextLang : LANGUAGE_ENGLISH;
+	gszTextOverlay  = gszLanguageFolder[gTextLanguage];
+	gszSoundOverlay = (SoundLang > 0 && SoundLang < LANGUAGE_RUSSIAN2) ? gszLanguageFolder[SoundLang] : NULL;
+}
+
+LONG TextLanguage (void)
+{
+	return gTextLanguage;
+}
+
+LONG LangPick (LONG English, LONG French, LONG German)
+{
+	return (gTextLanguage == LANGUAGE_FRENCH) ? French : (gTextLanguage == LANGUAGE_GERMAN) ? German : English;
+}
+
+char const * SoundOverlay (void)
+{
+	return gszSoundOverlay;
+}
+
+/* PlatResolvePath for reading game data: when the chosen language's overlay
+   has the file, read that one instead. RESFILES\WAVE.RES follows the sound
+   language, everything else the text language; saved games are the
+   player's own and never redirected. (Loose sounds are KERNAUD.CPP's.)
+   Nor are starting inventories (SCENES\*.INV): they hold no text, and the
+   only overlay that has them, RUSSIAN2, carries an older game's item lists. */
+static void ResolveDataPath (char * pszResolved, CSTRPTR pszFile, unsigned long len)
+{
+	CSTRPTR	pszRel = pszFile;
+	char const *	pszOverlay;
+	size_t	cch;
+
+	if (pszRel[0] == '.' && (pszRel[1] == '\\' || pszRel[1] == '/'))	// InstallPath
+		pszRel += 2;
+	cch = strlen(pszRel);
+
+	pszOverlay = (stricmp(pszRel, "RESFILES\\WAVE.RES") == 0) ? gszSoundOverlay : gszTextOverlay;
+
+	if (pszOverlay != NULL && cch >= 2 &&
+	    pszRel[0] != '\\' && pszRel[0] != '/' && pszRel[1] != ':' &&	// not absolute
+	    strnicmp(pszRel, "savegame", 8) != 0 &&
+	    !(cch > 4 && stricmp(pszRel + cch - 4, ".INV") == 0))
+	{
+		char	chOverlay[_MAX_PATH];
+
+		sprintf(chOverlay, "%s%.*s", pszOverlay, (int)(sizeof(chOverlay) - 16), pszRel);
+		PlatResolvePath(pszResolved, chOverlay, len);
+		if (access(pszResolved, F_OK) == 0)
+			return;
+	}
+
+	PlatResolvePath(pszResolved, pszFile, len);
+}
+
 void CheckHandles ()
 {
 // Call at startup to figure out how many file handles we can have.
@@ -108,8 +176,11 @@ FILE * FileOpen(
 	/* Every path the game passes is Win32-shaped and of arbitrary case.
 	   Resolve it here, before the open-file queue is consulted, so the
 	   queue, access() and fopen() all agree on one spelling.
-	   No-op on Windows. */
-	PlatResolvePath(chResolved, pszFile, sizeof(chResolved));
+	   No-op on Windows - apart from a language overlay, which only reads see. */
+	if (strpbrk(pszAccess, "wa+") == NULL)
+		ResolveDataPath(chResolved, pszFile, sizeof(chResolved));
+	else
+		PlatResolvePath(chResolved, pszFile, sizeof(chResolved));
 	pszFile = chResolved;
 
 //top:
@@ -150,7 +221,7 @@ SHORT DiskOpen(
 	SHORT	iFile = -1;
 	char	chResolved[_MAX_PATH];
 
-	PlatResolvePath(chResolved, pszFile, sizeof(chResolved));
+	ResolveDataPath(chResolved, pszFile, sizeof(chResolved));	// read-only open
 	pszFile = chResolved;
 
 	if ((iFile = DiskInQueue (pszFile)) != -1)
@@ -188,16 +259,17 @@ LONG FileAccess(
 {
 	LONG iFile = -1;
 	char	chResolved[_MAX_PATH];
+	char	chData[_MAX_PATH];
 
 	PlatResolvePath(chResolved, pszFile, sizeof(chResolved));
-	pszFile = chResolved;
+	ResolveDataPath(chData, pszFile, sizeof(chData));
 
 	// Check resource files, then local drive.
-	if (ResourceFileAccess (pszFile) == 0)
+	if (ResourceFileAccess (chResolved) == 0)
 	{
 		iFile = 0;
 	}
-	else if( ( access( pszFile, ( F_OK ) ) ) == 0 )
+	else if( ( access( chData, ( F_OK ) ) ) == 0 )
 	{
 		iFile = 0;
 	}

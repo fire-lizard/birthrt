@@ -50,60 +50,26 @@ enum {
 #define QUESTION_BTN2	3
 #define QUESTION_BTN3	4
 
-#if defined (_GERMANVER)
-	#define D_KEY_ESC			KEY_ESC
-	#define D_KEY_YES			KEY_J
-	#define D_KEY_NO			KEY_N
-	#define D_KEY_OK			KEY_O
-	#define D_KEY_RETRY		KEY_W
-	#define D_KEY_CANCEL		KEY_A
-	#define D_KEY_BACK 		KEY_Z
-	#define D_KEY_CREDITS	KEY_M
-	#define D_KEY_NEVER		KEY_N
-	#define D_KEY_UNDO1		KEY_U
-	#define D_KEY_ROLL1		KEY_R
-	#define D_KEY_DONE1		KEY_F
-	#define D_KEY_EXIT		KEY_A
-	#define D_KEY_MORE		KEY_M
-	#define D_KEY_NEXT		KEY_DOWNRIGHT
-	#define D_KEY_PREV		KEY_UPRIGHT
-#else
-#if defined (_FRENCHVER)
-	#define D_KEY_ESC			KEY_ESC
-	#define D_KEY_YES			KEY_O
-	#define D_KEY_NO			KEY_N
-	#define D_KEY_OK			KEY_O
-	#define D_KEY_RETRY		KEY_R
-	#define D_KEY_CANCEL		KEY_A
-	#define D_KEY_BACK 		KEY_R
-	#define D_KEY_CREDITS	KEY_I
-	#define D_KEY_NEVER		KEY_J
-	#define D_KEY_UNDO1		KEY_U
-	#define D_KEY_ROLL1		KEY_R
-	#define D_KEY_DONE1		KEY_F
-	#define D_KEY_EXIT		KEY_Q
-	#define D_KEY_MORE		KEY_S
-	#define D_KEY_NEXT		KEY_DOWNRIGHT
-	#define D_KEY_PREV		KEY_UPRIGHT
-#else
-	#define D_KEY_ESC			KEY_ESC
-	#define D_KEY_YES			KEY_Y
-	#define D_KEY_NO			KEY_N
-	#define D_KEY_OK			KEY_O
-	#define D_KEY_RETRY		KEY_R
-	#define D_KEY_CANCEL		KEY_C
-	#define D_KEY_BACK 		KEY_B
-	#define D_KEY_CREDITS	KEY_R
-	#define D_KEY_NEVER		KEY_N
-	#define D_KEY_UNDO1		KEY_U
-	#define D_KEY_ROLL1		KEY_R
-	#define D_KEY_DONE1		KEY_D
-	#define D_KEY_EXIT		KEY_E
-	#define D_KEY_MORE		KEY_M
-	#define D_KEY_NEXT		KEY_DOWNRIGHT
-	#define D_KEY_PREV		KEY_UPRIGHT
-#endif // french
-#endif // english
+/* Dialog hotkeys. The French and German releases were their own builds
+   with their own (the letters their translated labels highlight); they
+   follow the text language now - LangPick(English, French, German), FOPEN.H.
+   The Russian releases used the English build. */
+#define D_KEY_ESC		KEY_ESC
+#define D_KEY_YES		LangPick(KEY_Y, KEY_O, KEY_J)
+#define D_KEY_NO		KEY_N
+#define D_KEY_OK		KEY_O
+#define D_KEY_RETRY		LangPick(KEY_R, KEY_R, KEY_W)
+#define D_KEY_CANCEL		LangPick(KEY_C, KEY_A, KEY_A)
+#define D_KEY_BACK		LangPick(KEY_B, KEY_R, KEY_Z)
+#define D_KEY_CREDITS		LangPick(KEY_R, KEY_I, KEY_M)
+#define D_KEY_NEVER		LangPick(KEY_N, KEY_J, KEY_N)
+#define D_KEY_UNDO1		KEY_U
+#define D_KEY_ROLL1		KEY_R
+#define D_KEY_DONE1		LangPick(KEY_D, KEY_F, KEY_F)
+#define D_KEY_EXIT		LangPick(KEY_E, KEY_Q, KEY_A)
+#define D_KEY_MORE		LangPick(KEY_M, KEY_S, KEY_M)
+#define D_KEY_NEXT		KEY_DOWNRIGHT
+#define D_KEY_PREV		KEY_UPRIGHT
 
 /* ------------------------------------------------------------------------
    Macros

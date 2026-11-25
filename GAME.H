@@ -193,6 +193,8 @@ enum {
 int PaintInputField(LONG, char *, LONG, LONG, BOOL, LONG, char, char );
 void PaintHelp (LONG MenuCombo, LONG );
 void MainMenuClick (LONG MenuCombo, LONG ButtonVal);
+void ApplyTextLanguageKeys (void);	// French/German hotkeys, once the text language is known
+void LoadMapNames (void);			// province/place names of the text language (PLACES.CPP)
 void PaintMainMenu (LONG MenuCombo, LONG );
 void PaintAttributes (LONG MenuCombo, LONG );
 void PaintLoyaltyTable (LONG MenuCombo, LONG );

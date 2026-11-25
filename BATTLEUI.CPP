@@ -1727,11 +1727,7 @@ void BattleStatusPaint(LONG MenuCombo)
 				buffer, AwayColor );
 			
 		}
-		#if defined(_FOREIGNVER)
-		init_gfont(FONT_SANS_8PT);
-		#else
-		init_gfont(FONT_SANS_12PT);
-		#endif
+		init_gfont((SHORT)LangPick(FONT_SANS_12PT, FONT_SANS_8PT, FONT_SANS_8PT));	// longer realm names
 		
 		// his realm
 		sprintf(buffer,"%s", realm[units[SCENE_MGR::AwayIndex].Realm].mfGetName());
@@ -1783,11 +1779,7 @@ void BattleStatusPaint(LONG MenuCombo)
 				buffer, HomeColor );
 		}
 		
-		#if defined(_FOREIGNVER)
-		init_gfont(FONT_SANS_8PT);
-		#else
-		init_gfont(FONT_SANS_12PT);
-		#endif
+		init_gfont((SHORT)LangPick(FONT_SANS_12PT, FONT_SANS_8PT, FONT_SANS_8PT));	// longer realm names
 		
 		// my realm
 		sprintf(buffer,"%s", realm[units[SCENE_MGR::HomeIndex].Realm].mfGetName());
@@ -4505,9 +4497,7 @@ void PaintBattleWin (LONG MenuCombo, LONG )
 			sprintf(buffer, temp,
 				temp2,
 				STRMGR_GetStr(BTLUI_COLLAPSE));
-			#ifdef _FOREIGNVER
-				Y += 13;
-			#endif
+			Y += LangPick(0, 13, 13);		// the French and German text takes two lines
 		}
 		else
 		{

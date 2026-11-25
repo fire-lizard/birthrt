@@ -51,6 +51,7 @@
 #include "CHARSEL.HXX"
 #include "DOSHELP.HXX"
 #include "COLORS.H"
+#include "GAMEKEY.HXX"
 
 #ifdef _WINDOWS
 #include "WINSYS/DDRAWPRO.H"
@@ -211,6 +212,84 @@ MENU Menus[MAX_MENUS] = {
 	{MultiJoin, MultiJoinSize},
 	{MultiCreate, MultiCreateSize},
 };
+
+/* ------------------------------------------------------------------------
+   The French and German releases were their own builds, with copies of the
+   menu tables above that differed only in these hotkeys (the keys their
+   translated labels highlight). ApplyTextLanguageKeys puts them in place
+   for that text language, once at startup; the Russian releases used the
+   English build. Trailing comment: the English key.
+   ------------------------------------------------------------------------ */
+typedef struct {
+	BUTTON *	pTable;
+	LONG		cButtons;
+	LONG		Id;
+	LONG		KeyFrench;
+	LONG		KeyGerman;
+} LANG_KEY_ROW;
+#define LANG_KEY(table, id, fr, de)	{ table, sizeof(table) / sizeof(BUTTON), id, fr, de }
+
+static const LANG_KEY_ROW LangKeys[] = {
+	LANG_KEY(MainMenu,           1,                     KEY_P,  KEY_Z),	// KEY_G
+	LANG_KEY(MainMenu,           3,                     KEY_C,  KEY_L),	// KEY_L
+	LANG_KEY(MainMenu,           8,                     KEY_Q,  KEY_V),	// KEY_Q
+	LANG_KEY(OptionMenu,         3,                     KEY_D,  KEY_V),	// KEY_D
+	LANG_KEY(AvatarAttributes,   2,                     KEY_A,  KEY_M),	// KEY_M
+	LANG_KEY(AvatarAttributes,   4,                     KEY_O,  KEY_F),	// KEY_D
+	LANG_KEY(AvatarAttributes2,  2,                     KEY_A,  KEY_M),	// KEY_M
+	LANG_KEY(AvatarAttributes2,  4,                     KEY_O,  KEY_F),	// KEY_D
+	LANG_KEY(AvatarInventory,    INV_BUT_DONE,          KEY_O,  KEY_F),	// KEY_D
+	LANG_KEY(ResurrectionScreen, RESURRECT_BUT_CANCL,   KEY_A,  KEY_A),	// KEY_C
+	LANG_KEY(BtlControl,         BTL_EXIT_ID,           KEY_T,  KEY_K),	// KEY_T
+	LANG_KEY(BtlControl,         BTL_VIEW_ID,           KEY_V,  KEY_A),	// KEY_V
+	LANG_KEY(Victory,            1,                     KEY_O,  KEY_F),	// KEY_D
+	LANG_KEY(Defeat,             1,                     KEY_O,  KEY_F),	// KEY_D
+	LANG_KEY(MultiEnvironment,   10,                    KEY_A,  KEY_A),	// KEY_C
+	LANG_KEY(MultiEnvironment,   11,                    KEY_O,  KEY_F),	// KEY_D
+	LANG_KEY(MultiHost,          14,                    KEY_O,  KEY_F),	// KEY_D
+	LANG_KEY(DiplomacyAction,    2,                     KEY_R,  KEY_W),	// KEY_G
+	LANG_KEY(DiplomacyAction,    4,                     KEY_P,  KEY_V),	// KEY_I
+	LANG_KEY(BattleMagicPrep,    1,                     KEY_O,  KEY_F),	// KEY_D
+	LANG_KEY(BattleCommand,      333,                   KEY_O,  KEY_J),	// KEY_Y
+	LANG_KEY(AdvPrep,            BA_RESET,              KEY_A,  KEY_A),	// KEY_C
+	LANG_KEY(GameSelMenu,        2,                     KEY_R,  KEY_K),	// KEY_Q
+	LANG_KEY(GameSelMenu,        3,                     KEY_P,  KEY_T),	// KEY_T
+	LANG_KEY(GameSelMenu,        4,                     KEY_C,  KEY_V),	// KEY_P
+	LANG_KEY(GameSelMenu,        5,                     KEY_V,  KEY_B),	// KEY_A
+	LANG_KEY(GameSelMenu,        6,                     KEY_B,  KEY_S),	// KEY_B
+	LANG_KEY(GameSelMenu,        9,                     KEY_A,  KEY_A),	// KEY_C
+	LANG_KEY(GameCmplxMenu,      2,                     KEY_B,  KEY_E),	// KEY_B
+	LANG_KEY(GameCmplxMenu,      3,                     KEY_V,  KEY_F),	// KEY_A
+	LANG_KEY(GameCmplxMenu,      4,                     KEY_E,  KEY_X),	// KEY_E
+	LANG_KEY(GameCmplxMenu,      9,                     KEY_A,  KEY_A),	// KEY_C
+	LANG_KEY(SystemLargeHelp,    SYSHELP_DONE,          KEY_O,  KEY_F),	// KEY_D
+	LANG_KEY(SystemMedHelp,      SYSHELP_DONE,          KEY_O,  KEY_F),	// KEY_D
+	LANG_KEY(SystemSmallHelp,    SYSHELP_DONE,          KEY_O,  KEY_F),	// KEY_D
+	LANG_KEY(TutorialMenuWide,   TUTORIAL_MENU_DONE,    KEY_O,  KEY_F),	// KEY_D
+	LANG_KEY(TutorialMenuMed,    TUTORIAL_MENU_DONE,    KEY_O,  KEY_F),	// KEY_D
+};
+
+void ApplyTextLanguageKeys (void)
+{
+	LONG const	Lang = TextLanguage();
+	size_t		i;
+	LONG		b;
+
+	if (Lang != LANGUAGE_FRENCH && Lang != LANGUAGE_GERMAN)
+		return;
+
+	for (i = 0; i < sizeof(LangKeys) / sizeof(LangKeys[0]); i++)
+		for (b = 0; b < LangKeys[i].cButtons; b++)
+			if (LangKeys[i].pTable[b].Id == LangKeys[i].Id)
+			{
+				LangKeys[i].pTable[b].Key = (Lang == LANGUAGE_FRENCH) ? LangKeys[i].KeyFrench : LangKeys[i].KeyGerman;
+				break;
+			}
+
+	// The game's own keys (GAMEKEY.CPP): the French build left a battle with Q, not E.
+	if (Lang == LANGUAGE_FRENCH)
+		GAME_KEYS::mfSetKey(GAME_KEYS::COMBAT_RETURN_TO_MAP, KEY_Q);
+}
 
 SHORT hTroopBitm = fERROR;	// used by battle cards
 SHORT iTroopRealm = fERROR;	// used by battle cards
@@ -2337,27 +2416,27 @@ void Sinners(LONG, LONG)
 	
 	init_gfont(FONT_TITL_16PT);
 	
-   print_textf(50,25,31,"^W540 Special thanks to the Early Hours Crew."
+   print_textf(50,25,31,STRMGR_ExeText("^W540 Special thanks to the Early Hours Crew."
    "  The place is a mess.  Candles, both ends burnt, lying everywhere."
    "  Coffee rings on every copy of the manual.  Sometimes we were having"
    " a great time, other times we were at each others throats."
-   "  In the end we have produced one ^C125K^C000ick ^C125B^C000utt game!.");
+   "  In the end we have produced one ^C125K^C000ick ^C125B^C000utt game!."));
 	
 	init_gfont(FONT_TITL_20PT);
-	print_textf(320,162,28,"^c^NMike Branham");
-	print_textf(320,190,28,"^c^NMona Branham");
-	print_textf(320,218,28,"^c^NRobert Clardy");
-	print_textf(320,246,28,"^c^NAlan Clark");
-	print_textf(320,274,28,"^c^NJim Edwards");
-	print_textf(320,302,28,"^c^NGreg Hightower");
-	print_textf(320,330,28,"^c^NDavid Jackson");
-	print_textf(320,358,28,"^c^NKirt Lemons");
-	print_textf(320,386,28,"^c^NGary Powell");		
-	print_textf(320,414,28,"^c^NDonald Tsang");
-	print_textf(320,442,28,"^c^NCraig Utterback");
+	print_textf(320,162,28,STRMGR_ExeText("^c^NMike Branham"));
+	print_textf(320,190,28,STRMGR_ExeText("^c^NMona Branham"));
+	print_textf(320,218,28,STRMGR_ExeText("^c^NRobert Clardy"));
+	print_textf(320,246,28,STRMGR_ExeText("^c^NAlan Clark"));
+	print_textf(320,274,28,STRMGR_ExeText("^c^NJim Edwards"));
+	print_textf(320,302,28,STRMGR_ExeText("^c^NGreg Hightower"));
+	print_textf(320,330,28,STRMGR_ExeText("^c^NDavid Jackson"));
+	print_textf(320,358,28,STRMGR_ExeText("^c^NKirt Lemons"));
+	print_textf(320,386,28,STRMGR_ExeText("^c^NGary Powell"));		
+	print_textf(320,414,28,STRMGR_ExeText("^c^NDonald Tsang"));
+	print_textf(320,442,28,STRMGR_ExeText("^c^NCraig Utterback"));
 	
 	init_gfont(FONT_TITL_8PT);
-	print_textf(320,460,31,"^cPress any key or mouse button to continue.");
+	print_textf(320,460,31,STRMGR_ExeText("^cPress any key or mouse button to continue."));
 	
 	SysShowCursor();
 	

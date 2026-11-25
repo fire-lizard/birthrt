@@ -38,7 +38,8 @@
    Defines
    ------------------------------------------------------------------------ */
 #define OPTIONSAVEFILE "gameopt.dat"
-#define OPTIONVERSION 0x00003102	// 3102: selected_screen_size is a resolution index now
+#define OPTIONVERSION 0x00003103	// 3103: text and sound language appended
+#define OPTIONVERSION_3102 0x00003102	// 3102: selected_screen_size is a resolution index now
 
 #define MODE_MASK		0x00FF
 #define MODE_CHANGED	0x0100
@@ -68,6 +69,15 @@ static BOOL		combat_firstperson_view = FALSE;
 BOOL			mundane_descriptions = TRUE;
 static BOOL		new_mundane = TRUE;
 static LONG		newControlMode = 1;
+
+// Text and sound language (GAME_LANGUAGE, FOPEN.H). The data files are read once,
+// so a change takes effect at the next start; running_* are this session's.
+static LONG		text_language = LANGUAGE_ENGLISH;
+static LONG		sound_language = LANGUAGE_ENGLISH;
+static LONG		old_text_language = LANGUAGE_ENGLISH;		// for cancel
+static LONG		old_sound_language = LANGUAGE_ENGLISH;
+static LONG		running_text_language = LANGUAGE_ENGLISH;
+static LONG		running_sound_language = LANGUAGE_ENGLISH;
 
 // "Screen Size" is a real window resolution: the 640x480 game buffer is
 // stretch-blitted to this client size (see SetGameResolution in MACHINE.C).
@@ -102,6 +112,7 @@ extern BOOL fAIAutoRes;
    Internal Prototypes
    ------------------------------------------------------------------------ */
 void WriteOptionSettings(void);
+static void SetLanguageWindowTitle (void);
 
 /* ------------------------------------------------------------------------
    Extern Prototypes
@@ -263,6 +274,22 @@ void OptAdjLevel(LONG which, LONG what)
 				newControlMode = 0;
 			break;
 
+		case OPT_ADJ_TEXT_LANG:
+			text_language += what;
+			if (text_language > LANGUAGE_RUSSIAN2)
+				text_language = LANGUAGE_RUSSIAN2;
+			if (text_language < LANGUAGE_ENGLISH)
+				text_language = LANGUAGE_ENGLISH;
+			break;
+
+		case OPT_ADJ_SOUND_LANG:					// Russkiy Proekt is text only
+			sound_language += what;
+			if (sound_language > LANGUAGE_RUSSIAN1)
+				sound_language = LANGUAGE_RUSSIAN1;
+			if (sound_language < LANGUAGE_ENGLISH)
+				sound_language = LANGUAGE_ENGLISH;
+			break;
+
         default:
             break;
     }
@@ -305,6 +332,8 @@ void OpenOptions   (LONG, LONG)
 		battle_difficulty = (DIFFICULTY)(3-DifficultyLevel);       /* ditto */
    
 		old_screen_size = selected_screen_size;	// for cancel
+		old_text_language = text_language;
+		old_sound_language = sound_language;
 
 		combat_firstperson_view = COMBAT_INITIAL_VIEWPT::mfIsModeFirstPerson();
    
@@ -366,6 +395,8 @@ void OptionCancel  (LONG, LONG)
     SetGlobalVolume(oldsfxvol);
     sfxvol = oldsfxvol;
     selected_screen_size = old_screen_size;
+    text_language = old_text_language;
+    sound_language = old_sound_language;
 
 	if (plusmin[0]!=fERROR) SetPurge(plusmin[0]);
 	if (plusmin[1]!=fERROR) SetPurge(plusmin[1]);
@@ -467,6 +498,8 @@ void WriteOptionSettings(void)
 	fwrite(sitecount, sizeof(SHORT), MAX_SITES, fp);
 	fwrite(&screen_mode, sizeof(SHORT), 1, fp);
 	fwrite(&mundane_descriptions, sizeof(BOOL), 1, fp);
+	fwrite(&text_language, sizeof(LONG), 1, fp);
+	fwrite(&sound_language, sizeof(LONG), 1, fp);
 	fclose(fp);
 }
 
@@ -486,7 +519,7 @@ void ReadOptionSettings(void)
 	}
 	
 	fread(&ver, sizeof(ULONG), 1, fp);
-	if (ver != OPTIONVERSION)
+	if (ver != OPTIONVERSION && ver != OPTIONVERSION_3102)	// 3102: same, minus the languages
 	{
 		fclose(fp);
 		remove(OPTIONSAVEFILE);
@@ -516,11 +549,54 @@ void ReadOptionSettings(void)
 		fread(&screen_mode, sizeof(SHORT), 1, fp);
 		fread(&mundane_descriptions, sizeof(BOOL), 1, fp);
 		new_mundane = mundane_descriptions;
+		if (ver == OPTIONVERSION)
+		{
+			fread(&text_language, sizeof(LONG), 1, fp);
+			fread(&sound_language, sizeof(LONG), 1, fp);
+		}
 		fclose(fp);
 	}
-	
+
+	// Only the first read picks the languages: by any later one the data
+	// files have been opened. Before UpdateOptionSettings first shows the
+	// window, so it shows up with its title.
+	static BOOL fLanguagesSet = FALSE;
+	if (!fLanguagesSet)
+	{
+		OptAdjLevel(OPT_ADJ_TEXT_LANG, 0);		// into range
+		OptAdjLevel(OPT_ADJ_SOUND_LANG, 0);
+		running_text_language = text_language;
+		running_sound_language = sound_language;
+		SetDataLanguages(text_language, sound_language);
+		ApplyTextLanguageKeys();
+		STRMGR_LoadExeText();
+		LoadMapNames();
+		SetLanguageWindowTitle();
+		fLanguagesSet = TRUE;
+	}
+
 	UpdateOptionSettings();
 	return;
+}
+
+// The French, German and Russkiy Proekt releases' window titles. The window
+// is ANSI, so DefWindowProcW sets the Unicode caption.
+static void SetLanguageWindowTitle (void)
+{
+#if defined(_WIN32)
+	static const wchar_t * const apszTitle[LANGUAGE_COUNT] = {
+		NULL,
+		L"Birthright - Le Pacte des Ténèbres",
+		L"Birthright - Die Dunkle Allianz",
+		NULL,			// Fargus: its title is not known
+		L"Право на жизнь - "
+		L"Союз Горгон",
+	};
+	wchar_t const * const pszTitle = apszTitle[TextLanguage()];
+
+	if (pszTitle != NULL)
+		DefWindowProcW(hwndApp, WM_SETTEXT, 0, (LPARAM)pszTitle);
+#endif
 }
 
 void OptionDo      (LONG, LONG)
@@ -817,6 +893,25 @@ void PaintOptionMenu (LONG MenuCombo, LONG LoadSave)
 		print_textf(menu_x+324 - gtext_width(buffer), menu_y+110, 173, "%s", buffer);
 
 		PaintOptionAdj(menu_x, menu_y, 0, OPT_ADJ_SCREEN_SIZE);
+
+		// The language names are too long to share a row with a label, so
+		// each language takes two: the label, then the value and [-][+].
+		{
+			char * pszLang;
+
+			print_textf(menu_x+164, menu_y+130, 173, "%s", STRMGR_GetStr(STR_OPT_TEXT_LANG));
+			pszLang = STRMGR_GetStr(STR_OPT_LANG_ENGLISH + text_language);
+			print_textf(menu_x+324 - gtext_width(pszLang), menu_y+150, 173, "%s", pszLang);
+			PaintOptionAdj(menu_x, menu_y, 2, OPT_ADJ_TEXT_LANG);
+
+			print_textf(menu_x+164, menu_y+170, 173, "%s", STRMGR_GetStr(STR_OPT_SOUND_LANG));
+			pszLang = STRMGR_GetStr(STR_OPT_LANG_ENGLISH + sound_language);
+			print_textf(menu_x+324 - gtext_width(pszLang), menu_y+190, 173, "%s", pszLang);
+			PaintOptionAdj(menu_x, menu_y, 4, OPT_ADJ_SOUND_LANG);
+
+			if (text_language != running_text_language || sound_language != running_sound_language)
+				print_textf(menu_x+164, menu_y+210, 31, "%s", STRMGR_GetStr(STR_OPT_LANG_RESTART));
+		}
 
 	    break;
 	

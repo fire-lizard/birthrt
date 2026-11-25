@@ -1896,11 +1896,7 @@ void PaintLoadSaveMenu (LONG MenuCombo, LONG)
 	    sprintf(buffer, "^N%s", STRMGR_GetStr(STR_LOAD_TITLE));
 	    num_buttons = LoadMenuSize - 1;  /* don't count button 0 */
 	}
-	#if defined(_FOREIGNVER)
-	print_textf(menu_x + 14, menu_y + 23, 0, buffer);
-	#else
-	print_textf(menu_x + 25, menu_y + 23, 0, buffer);
-	#endif
+	print_textf(menu_x + LangPick(25, 14, 14), menu_y + 23, 0, buffer);
 	
 	// set up the buttons
 	init_gfont(FONT_SANS_8PT);
@@ -1969,16 +1965,10 @@ void PaintLoadSaveMenu (LONG MenuCombo, LONG)
         if (i + first_displayed >= num_games)
             break;
 
-#ifdef _FOREIGNVER
-	#ifdef _FRENCHVER
-			sprintf(buffer, "%s %s", saved_games[i+first_displayed], (ScenInfo[i+first_displayed].IsScenario)?"Sc�nario":" ");
-	#endif
-	#ifdef _GERMANVER
-			sprintf(buffer, "%s %s", saved_games[i+first_displayed], (ScenInfo[i+first_displayed].IsScenario)?"Szenario":" ");
-	#endif
-#else
-			sprintf(buffer, "%s %s", saved_games[i+first_displayed], (ScenInfo[i+first_displayed].IsScenario)?"SCENARIO":" ");
-#endif
+		// in the font's Windows-1252: \xE9 is e-acute
+		char const * const pszScenario = (TextLanguage() == LANGUAGE_FRENCH) ? "Sc\xE9nario" :
+		                                 (TextLanguage() == LANGUAGE_GERMAN) ? "Szenario" : "SCENARIO";
+		sprintf(buffer, "%s %s", saved_games[i+first_displayed], (ScenInfo[i+first_displayed].IsScenario)?pszScenario:" ");
         if ((i+first_displayed) == highlighted_choice)
             gprint_text(menu_x + 48, menu_y + 113 + i*20, buffer, 31);
         else

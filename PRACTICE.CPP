@@ -2591,7 +2591,7 @@ void BuildAdvPaint (LONG MenuCombo, LONG )
 		}
 		else
 		{
-			sprintf(buffer, "Monster");
+			strcpy(buffer, STRMGR_ExeText("Monster"));
 		}
 			
 		sprintf(textbuf, "^F02%s ^F01(%s)", buff, buffer);
@@ -2820,7 +2820,7 @@ void BuildAdvDone (LONG MenuCombo, LONG )
 		
 		if (count == 0)	// no one selected
 		{
-			SystemHelp("No Party Members Selected", "You haven't selected any party members for this adventure.  Click the box to the right of their name to include them. If everyone is greyed out, press the restart button.", NULL, 0);
+			SystemHelp(STRMGR_ExeText("No Party Members Selected"), STRMGR_ExeText("You haven't selected any party members for this adventure.  Click the box to the right of their name to include them. If everyone is greyed out, press the restart button."), NULL, 0);
 			return;
 		}
 		

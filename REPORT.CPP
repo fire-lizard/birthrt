@@ -2267,7 +2267,7 @@ static void PaintProvinceTable (LONG x, LONG y, LONG w, LONG h)
 	// put yourself first
 	DrawShield (x+3, y+30, HomeRealm);
 	sprintf(szRealm, realm[HomeRealm].mfGetName());
-	print_textf(x+15, y+30, DKBROWN, "^F02%s", strupr(szRealm));
+	print_textf(x+15, y+30, DKBROWN, "^F02%s", STRMGR_Upper(szRealm));
 	print_textf(x+117, y+30, DKBROWN, "%d", sMyScore);
 
 	DrawPointsBar(HomeRealm, scaleWidth, x, y);
@@ -2286,7 +2286,7 @@ static void PaintProvinceTable (LONG x, LONG y, LONG w, LONG h)
 		// print the names down the side with the graph
 		DrawShield (x+3, y+(i*20), rCountScores[i].realm);
 		sprintf(szRealm, realm[rCountScores[i].realm].mfGetName());
-		print_textf(x+15, y+(i*20), DKBROWN, "%s", strupr(szRealm));
+		print_textf(x+15, y+(i*20), DKBROWN, "%s", STRMGR_Upper(szRealm));
 		print_textf(x+117, y+(i*20), DKBROWN, "%d", rCountScores[i].count);
 
 		DrawPointsBar(rCountScores[i].realm, scaleWidth, x, y-30+(i*20));
@@ -2330,7 +2330,7 @@ static void PaintUnitsTable (LONG x, LONG y, LONG w, LONG h)
 	// put yourself first
 	DrawShield (x+3, y+30, HomeRealm);
 	sprintf(szRealm, realm[HomeRealm].mfGetName());
-	print_textf(x+15, y+30, DKBROWN, "^F02%s", strupr(szRealm));
+	print_textf(x+15, y+30, DKBROWN, "^F02%s", STRMGR_Upper(szRealm));
 	print_textf(x+117, y+30, DKBROWN, "%d", sMyUnits);
 
 	// cap the bar at 200 units
@@ -2347,7 +2347,7 @@ static void PaintUnitsTable (LONG x, LONG y, LONG w, LONG h)
 		// print the names down the side with the graph
 		DrawShield (x+3, y+50+(i*20), rCountUnits[i].realm);
 		sprintf(szRealm, realm[rCountUnits[i].realm].mfGetName());
-		print_textf(x+15, y+50+(i*20), DKBROWN, "%s", strupr(szRealm));
+		print_textf(x+15, y+50+(i*20), DKBROWN, "%s", STRMGR_Upper(szRealm));
 		print_textf(x+117, y+50+(i*20), DKBROWN, "%d", rCountUnits[i].count);
 
 		// cap the bar at 200 units
@@ -2383,7 +2383,7 @@ static int PrintAllies(REALM::REALM_TYPE iRealm, LONG x, LONG y, LONG endy, LONG
 			{
 				DrawShield (x+18+(column*CWIDTH), y, (REALM::REALM_TYPE)k);
 				sprintf(szRealm, realm[k].mfGetName());
-				print_textf(x+30+(column*CWIDTH), y, DKPURPLE, "^F02%s", strupr(szRealm));
+				print_textf(x+30+(column*CWIDTH), y, DKPURPLE, "^F02%s", STRMGR_Upper(szRealm));
 				y += 10;
 
 				if(y > endy)
@@ -2407,7 +2407,7 @@ static int PrintAllies(REALM::REALM_TYPE iRealm, LONG x, LONG y, LONG endy, LONG
 			{
 				DrawShield (x+18+(column*CWIDTH), y, (REALM::REALM_TYPE)k);
 				sprintf(szRealm, realm[k].mfGetName());
-				print_textf(x+30+(column*CWIDTH), y, BLUE, "^F02%s", strupr(szRealm));
+				print_textf(x+30+(column*CWIDTH), y, BLUE, "^F02%s", STRMGR_Upper(szRealm));
 				y += 10;
 
 				if(y > endy)
@@ -2431,7 +2431,7 @@ static int PrintAllies(REALM::REALM_TYPE iRealm, LONG x, LONG y, LONG endy, LONG
 			{
 				DrawShield (x+18+(column*CWIDTH), y, (REALM::REALM_TYPE)k);
 				sprintf(szRealm, realm[k].mfGetName());
-				print_textf(x+30+(column*CWIDTH), y, MDGREEN, "^F02%s", strupr(szRealm));
+				print_textf(x+30+(column*CWIDTH), y, MDGREEN, "^F02%s", STRMGR_Upper(szRealm));
 				y += 10;
 
 				if(y > endy)
@@ -2468,7 +2468,7 @@ static SHORT ShowAtWar(REALM::REALM_TYPE me, BOOL hasBeenShown[], LONG x, LONG y
 				DrawShield (x+3, y, me);
 				sprintf(szRealm, realm[me].mfGetName());
 				color = ReactionAndStatusColor(HomeRealm, me);
-				print_textf(x+15, y, color, "^F03%s", strupr(szRealm));
+				print_textf(x+15, y, color, "^F03%s", STRMGR_Upper(szRealm));
 				print_textf(x + CWIDTH - 16, y+9, DKBROWN, "^F10^c%s", STRMGR_GetStr(STR_VERSUS));
 				
 				hasBeenShown[me] = TRUE;
@@ -2476,7 +2476,7 @@ static SHORT ShowAtWar(REALM::REALM_TYPE me, BOOL hasBeenShown[], LONG x, LONG y
 			DrawShield (x+3+CWIDTH, y, (REALM::REALM_TYPE)testRealm);
 			sprintf(szRealm, realm[testRealm].mfGetName());
 			color = ReactionAndStatusColor(HomeRealm, testRealm);
-			print_textf(x+15+CWIDTH, y, color, "^F03%s", strupr(szRealm));
+			print_textf(x+15+CWIDTH, y, color, "^F03%s", STRMGR_Upper(szRealm));
 			y += 15;
 			count++;
 			
@@ -2604,7 +2604,7 @@ static void PaintAllianceReport(LONG x, LONG y, LONG w, LONG h)
 	// put yourself first
 	DrawShield (x+3, y, HomeRealm);
 	sprintf(szRealm, realm[HomeRealm].mfGetName());
-	print_textf(x+15, y, DKBROWN, "^F03%s", strupr(szRealm));
+	print_textf(x+15, y, DKBROWN, "^F03%s", STRMGR_Upper(szRealm));
 
 	y += 15;
 
@@ -2667,7 +2667,7 @@ static void PaintAllianceReport(LONG x, LONG y, LONG w, LONG h)
 
 			DrawShield (x+3+(column*CWIDTH), y, allies[i].realm);
 			sprintf(szRealm, realm[allies[i].realm].mfGetName());
-			print_textf(x+15+(column*CWIDTH), y, DKBROWN, "^F03%s", strupr(szRealm));
+			print_textf(x+15+(column*CWIDTH), y, DKBROWN, "^F03%s", STRMGR_Upper(szRealm));
 
 			y += 15;
 			if(y > (startY+h-30))
@@ -2756,7 +2756,7 @@ static void PaintInvestitureReport(LONG x, LONG y, LONG w, LONG h)
 
 				DrawShield (x+8+(column*CWIDTH), y, sortProvCount[i].realm);
 				sprintf(szRealm, realm[sortProvCount[i].realm].mfGetName());
-				print_textf(x+20+(column*CWIDTH), y, DKBROWN, "^F02%s", strupr(szRealm));
+				print_textf(x+20+(column*CWIDTH), y, DKBROWN, "^F02%s", STRMGR_Upper(szRealm));
 				print_textf(x+20+100+(column*CWIDTH), y, DKBROWN, "^F02+ %d", sortProvCount[i].count);
 				y += 10;
 
@@ -2784,7 +2784,7 @@ static void PaintInvestitureReport(LONG x, LONG y, LONG w, LONG h)
 
 				DrawShield (x-32+(column*CWIDTH), y, investProvCount[i].realm);
 				sprintf(szRealm, realm[investProvCount[i].realm].mfGetName());
-				print_textf(x-20+(column*CWIDTH), y, DKBROWN, "^F02%s", strupr(szRealm));
+				print_textf(x-20+(column*CWIDTH), y, DKBROWN, "^F02%s", STRMGR_Upper(szRealm));
 				print_textf(x-20+100+(column*CWIDTH), y, DKBROWN, "^F02%s",STRMGR_GetStr(STR_DESTROYED));
 				y += 10;
 
@@ -2812,7 +2812,7 @@ static void PaintInvestitureReport(LONG x, LONG y, LONG w, LONG h)
 
 				DrawShield (x-32+(column*CWIDTH), y, sortProvCount[i].realm);
 				sprintf(szRealm, realm[sortProvCount[i].realm].mfGetName());
-				print_textf(x-20+(column*CWIDTH), y, DKBROWN, "^F02%s", strupr(szRealm));
+				print_textf(x-20+(column*CWIDTH), y, DKBROWN, "^F02%s", STRMGR_Upper(szRealm));
 				print_textf(x-20+100+(column*CWIDTH), y, DKBROWN, "^F02- %d", abs(sortProvCount[i].count));
 				y += 10;
 

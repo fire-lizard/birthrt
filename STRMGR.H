@@ -29,6 +29,9 @@ extern "C" {
 
 void STRMGR_InitStrMgr(void);
 CSTRPTR STRMGR_GetStr(LONG);
+char * STRMGR_Upper(char *);	// strupr for displayed game text
+void STRMGR_LoadExeText(void);
+CSTRPTR STRMGR_ExeText(CSTRPTR);	// text a translation wrote into its exe
 SHORT LoadSTR (
 	CSTRPTR szFileName,
 	BOOL /* fSetPal */,

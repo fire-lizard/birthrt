@@ -2,6 +2,8 @@
 #include <string.h>
 
 #include "PLACES.HXX"
+#include "GAMEMAP.HXX"		/* province[] */
+#include "STRMGR.H"
 
 #include "SYSTEM.H"
 #include "REALM.HXX"
@@ -1175,6 +1177,34 @@ DEFINE_VECTOR_DATA(CSTRPTR,place_names) = {
 };
 
 DEFINE_VECTOR_CLASS(CSTRPTR, place_names);
+
+/* ========================================================================
+   Function    - LoadMapNames
+   Description - The Russian releases translated the province and place
+                 names above by patching the exe. Their names come from the
+                 text language's EXETEXT.TXT (STRMGR_LoadExeText, run first):
+                 key P<n> for province[n], L<n> for place_names[n].
+   Returns     -
+   ======================================================================== */
+void LoadMapNames (void)
+{
+	char	szKey[8];
+	CSTRPTR	pName;
+	int		n;
+
+	for (n = 1; n < PROVINCE_COUNT; n++)
+	{
+		sprintf(szKey, "P%03d", n);
+		if ((pName = STRMGR_ExeText(szKey)) != szKey)
+			province[n].name = pName;
+	}
+	for (n = 0; n < (int)(sizeof(place_names) / sizeof(place_names[0])); n++)
+	{
+		sprintf(szKey, "L%03d", n);
+		if ((pName = STRMGR_ExeText(szKey)) != szKey)
+			place_names[n] = pName;
+	}
+}
 
 /* ========================================================================
    Function    - SetRelicFound
