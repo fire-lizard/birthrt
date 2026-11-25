@@ -28,7 +28,6 @@
 #include "COMBDATA.HXX"
 #include "COMBOPTS.HXX"
 #include "COMBTARG.HXX"
-#include "CONTEXT.HXX"
 #include "GAME.H"
 #include "GAMEMAP.HXX"
 #include "GAMEKEY.HXX"
@@ -1132,7 +1131,7 @@ void CombatShowStatusKey(LONG  menuid, LONG BottomMenuFlag)
 	{
 		// Display help dialog on right click
 		mouse_click = 0;
-		SystemHelp(COMBAT_STR_HELP_STATUS_TITLE, COMBAT_STR_HELP_STATUS, H_Character_Status, 0, 0);
+		SystemHelp(COMBAT_STR_HELP_STATUS_TITLE, COMBAT_STR_HELP_STATUS, 0, 0);
 	}
 	else if ((mouse_click == 1 && mouse_button == 1) || mouse_click == 0)
 	{
@@ -1187,7 +1186,7 @@ void CombatShowInventoryKey(LONG , LONG )
 	{
 		// Display help dialog on right click
 		mouse_click = 0;
-		SystemHelp(COMBAT_STR_HELP_INVENTORY_TITLE, COMBAT_STR_HELP_INVENTORY, H_Character_Inventory, 0, 0);
+		SystemHelp(COMBAT_STR_HELP_INVENTORY_TITLE, COMBAT_STR_HELP_INVENTORY, 0, 0);
 	}
 	else if ((mouse_click == 1 && mouse_button == 1) || mouse_click == 0)
 	{
@@ -1830,7 +1829,7 @@ void CombatDefendKey(LONG menuid, LONG )
 	{
 		// Display help dialog on right click
 		mouse_click = 0;
-		SystemHelp(COMBAT_STR_HELP_DEFEND_TITLE, COMBAT_STR_HELP_DEFEND, H_Attack_Defend_Mode,0,0);
+		SystemHelp(COMBAT_STR_HELP_DEFEND_TITLE, COMBAT_STR_HELP_DEFEND,0,0);
 	}
 	else if ((mouse_click == 1 && mouse_button == 1) || mouse_click == 0)
 	{
@@ -1893,7 +1892,7 @@ void CombatFallbackKey(LONG menuid, LONG )
 	{
 		// Display help dialog on right click
 		mouse_click = 0;
-		SystemHelp(COMBAT_STR_HELP_FALLBACK_TITLE, COMBAT_STR_HELP_FALLBACK, -1, 0,0);
+		SystemHelp(COMBAT_STR_HELP_FALLBACK_TITLE, COMBAT_STR_HELP_FALLBACK, 0,0);
 	}
 	else if ((mouse_click == 1 && mouse_button == 1) || mouse_click == 0)
 	{
@@ -1985,7 +1984,7 @@ void CombatSpellKey(
 	{
 		// Display help dialog on right click
 		mouse_click = 0;
-		SystemHelp(COMBAT_STR_HELP_SPELLBOX_TITLE, COMBAT_STR_HELP_SPELLBOX, H_Adventure_Hot_Boxes, 0, 0);
+		SystemHelp(COMBAT_STR_HELP_SPELLBOX_TITLE, COMBAT_STR_HELP_SPELLBOX, 0, 0);
 	}
 	else // if ((mouse_click == 1 && mouse_button == 1) || mouse_click == 0)
 	{
@@ -2151,7 +2150,7 @@ void CombatReturnToMap(LONG , LONG)
 	{
 		// Display help dialog on right click
 		mouse_click = 0;
-		SystemHelp(COMBAT_STR_HELP_EXIT_TITLE, COMBAT_STR_HELP_EXIT,H_Exit_Adventure_Button, 0, 0);
+		SystemHelp(COMBAT_STR_HELP_EXIT_TITLE, COMBAT_STR_HELP_EXIT, 0, 0);
 	}
 	else if ((mouse_click == 1 && mouse_button == 1) || mouse_click == 0)
 	{
@@ -2276,7 +2275,7 @@ void CombatRetreatKey(LONG , LONG )
 	{
 		// Display help dialog on right click
 		mouse_click = 0;
-		SystemHelp(COMBAT_STR_HELP_RETREAT_TITLE, COMBAT_STR_HELP_RETREAT, H_Party_Retreat,0, 0);
+		SystemHelp(COMBAT_STR_HELP_RETREAT_TITLE, COMBAT_STR_HELP_RETREAT,0, 0);
 	}
 	else if ((mouse_click == 1 && mouse_button == 1) || mouse_click == 0)
 	{
@@ -2395,7 +2394,7 @@ void CombatHighAttackKey(LONG menuid, LONG SwingFast)
 	{
 		// Display help dialog on right click
 		mouse_click = 0;
-		SystemHelp(COMBAT_STR_HELP_ATTACK_TITLE, COMBAT_STR_HELP_ATTACK1,H_Attack_Defend_Mode, 0,0);
+		SystemHelp(COMBAT_STR_HELP_ATTACK_TITLE, COMBAT_STR_HELP_ATTACK1, 0,0);
 	}
 	else if ((mouse_click == 1 && mouse_button == 1) || mouse_click == 0)
 	{
@@ -2480,7 +2479,7 @@ void CombatLowAttackKey(LONG menuid, LONG SwingFast)
 	{
 		// Display help dialog on right click
 		mouse_click = 0;
-		SystemHelp(COMBAT_STR_HELP_ATTACK_TITLE, COMBAT_STR_HELP_ATTACK2, H_Attack_Defend_Mode, 0, 0);
+		SystemHelp(COMBAT_STR_HELP_ATTACK_TITLE, COMBAT_STR_HELP_ATTACK2, 0, 0);
 	}
 	else if ((mouse_click == 1 && mouse_button == 1) || mouse_click == 0)
 	{
@@ -2574,7 +2573,7 @@ void CombatTurnDoneKey(LONG /* unused */, LONG /* unused */ )
 	{
 		// Display help dialog on right click
 		mouse_click = 0;
-		SystemHelp(COMBAT_STR_HELP_DONE_TITLE, COMBAT_STR_HELP_DONE, H_Adventure_Done_Button,0,0);
+		SystemHelp(COMBAT_STR_HELP_DONE_TITLE, COMBAT_STR_HELP_DONE,0,0);
 	}
 	else if ((mouse_click == 1 && mouse_button == 1) || mouse_click == 0)
 	{
@@ -2668,7 +2667,7 @@ void CombatHaltKey(LONG /* unused */, LONG /* unused */)
 		                             "seconds after the last attack.";
 
 		mouse_click = 0;
-		SystemHelp(HaltHelpTitle, HaltHelpText, H_Adventure_Done_Button, 0, 0);
+		SystemHelp(HaltHelpTitle, HaltHelpText, 0, 0);
 	}
 	else if ((mouse_click == 1 && mouse_button == 1) || mouse_click == 0)
 	{
@@ -2727,7 +2726,7 @@ void CombatNewLeaderKey(LONG , LONG /* unused */)
 	{
 		// Display help dialog on right click
 		mouse_click = 0;
-		SystemHelp(COMBAT_STR_HELP_LEADER_TITLE, COMBAT_STR_HELP_LEADER, H_Change_Leader,0,0);
+		SystemHelp(COMBAT_STR_HELP_LEADER_TITLE, COMBAT_STR_HELP_LEADER,0,0);
 	}
 	else if ((mouse_click == 1 && mouse_button == 1) || mouse_click == 0)
 	{
@@ -2837,7 +2836,7 @@ void CombatToggleMapKey(LONG , LONG )
 	{
 		// Display help dialog on right click
 		mouse_click = 0;
-		SystemHelp(COMBAT_STR_HELP_MAP_TITLE, COMBAT_STR_HELP_MAP, H_Adventure_Map, 0, 0);
+		SystemHelp(COMBAT_STR_HELP_MAP_TITLE, COMBAT_STR_HELP_MAP, 0, 0);
 	}
 	else if ((mouse_click == 1 && mouse_button == 1) || mouse_click == 0)
 	{
@@ -2872,7 +2871,7 @@ void CombatToggleViewKey(LONG , LONG )
 	{
 		// Display help dialog on right click
 		mouse_click = 0;
-		SystemHelp(COMBAT_STR_HELP_VIEW_TITLE, COMBAT_STR_HELP_VIEW, H_Change_View, 0, 0);
+		SystemHelp(COMBAT_STR_HELP_VIEW_TITLE, COMBAT_STR_HELP_VIEW, 0, 0);
 	}
 	else if ((mouse_click == 1 && mouse_button == 1) || mouse_click == 0)
 	{

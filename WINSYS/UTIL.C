@@ -99,7 +99,7 @@ void fatal_error(const char *format, ...)
 	}
 
 	// Full-screen DirectDraw would hide the box, so drop to normal mode
-	// first, as the help menu does before WinHelp.
+	// first.
 	if ( sDrawMode == iDDRAW )
 		DDSetCooperative ( FALSE );
 	MessageBox (NULL, texbuffer, "FATAL ERROR", MB_OK | MB_ICONERROR | MB_TOPMOST | MB_SETFOREGROUND);

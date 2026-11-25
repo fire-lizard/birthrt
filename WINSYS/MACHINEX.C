@@ -600,7 +600,6 @@ int WINAPI WinMain( HINSTANCE hInstExe, HINSTANCE hInstPrev, LPSTR szCmdLine, in
 #pragma off (unreferenced)
 void quit_sys(LONG arg)
 {
-	// WinHelp(hwndApp, "BIRTHRT.HLP", HELP_QUIT, 0);
 	// StopRedBook();
 	// TurnOffAllSounds();
 	// ShutDownSoundSystem();

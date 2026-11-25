@@ -30,7 +30,6 @@
 #include "COLORS.H"
 #include "CHARSEL.HXX"
 #include "PLAYSTAT.HXX"
-#include "CONTEXT.HXX"
 #include "PANEL.H"
 #include "RANDOM.H"
 #include "REGENTS.HXX"
@@ -1242,7 +1241,7 @@ void ShowMultiPlayerMenu(LONG, LONG)
 	if ( mouse_button == 2 )
 	{
 		SystemHelp( STR_MAIN1_HELP_MULTI_TITLE,
-		STR_MAIN1_HELP_MULTI_TEXT, H_Multiplayer, 0, 0 );
+		STR_MAIN1_HELP_MULTI_TEXT, 0, 0 );
 	}
 	else //---- We need help
 	{

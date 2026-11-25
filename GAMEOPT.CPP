@@ -33,7 +33,6 @@
 #include "BATTLEUI.HXX"
 #include "MARGIN.HXX"
 #include "MULTIMAP.HXX"
-#include "CONTEXT.HXX"
 
 /* ------------------------------------------------------------------------
    Defines
@@ -275,7 +274,7 @@ void OpenOptions   (LONG, LONG)
 	if ( mouse_button == 2 )
 	{
 		SystemHelp( STR_MAIN1_HELP_OPTIONS_TITLE, 
-					STR_MAIN1_HELP_OPTIONS_TEXT, H_Options, 0, 0 );
+					STR_MAIN1_HELP_OPTIONS_TEXT, 0, 0 );
 	}
     else //---- We need help
 	{

@@ -845,7 +845,6 @@ BUTTON SystemLargeHelp[] = {
 {SYSHELP_TITLE,   BUTTON_REGION,0,               0,-1,                0,"",                 0,"", 15, 10,326, 20,NO_KEY,NULL,0, -1},
 {SYSHELP_TEXTBODY,BUTTON_REGION,0,               0,-1,                0,"",                 0,"", 15, 35,326,300,NO_KEY,NULL,0, -1},
 {SYSHELP_DONE,    BUTTON_BITMAP,0,               0,STR_HELP_DONE,    BTN_LABEL_COLOR,"UI\\hlpbtnaa.pcx",31,"UI\\hlpbtnab.pcx", 40,339,100, 28,KEY_F ,HideSubMenuWithClick, D_SYSHELP_LARGE, -1},
-{SYSHELP_MOREINFO,BUTTON_BITMAP,0,               0,STR_HELP_MOREINFO,BTN_LABEL_COLOR,"UI\\hlpbtnaa.pcx",31,"UI\\hlpbtnab.pcx",224,339,100, 28,KEY_M ,NULL,0, -1},
 };
 LONG SystemLargeHelpSize = sizeof(SystemLargeHelp) / sizeof(BUTTON);
 
@@ -854,7 +853,6 @@ BUTTON SystemMedHelp[] = {
 {SYSHELP_TITLE,   BUTTON_REGION,0,               0,-1,                0,"",                0,"", 15, 10,326, 20,NO_KEY,NULL,0, -1},
 {SYSHELP_TEXTBODY,BUTTON_REGION,0,               0,-1,                0,"",                0,"", 15, 35,326,115,NO_KEY,NULL,0, -1},
 {SYSHELP_DONE,    BUTTON_BITMAP,0,               0,STR_HELP_DONE,    BTN_LABEL_COLOR,"UI\\hlpbtnaa.pcx",31,"UI\\hlpbtnab.pcx", 40,155,100, 28,KEY_F ,HideSubMenuWithClick, D_SYSHELP_MED, -1},
-{SYSHELP_MOREINFO,BUTTON_BITMAP,0,               0,STR_HELP_MOREINFO,BTN_LABEL_COLOR,"UI\\hlpbtnaa.pcx",31,"UI\\hlpbtnab.pcx",224,155,100, 28,KEY_M ,NULL,0, -1},
 };
 LONG SystemMedHelpSize = sizeof(SystemMedHelp) / sizeof(BUTTON);
 
@@ -863,7 +861,6 @@ BUTTON SystemSmallHelp[] = {
 {SYSHELP_TITLE,   BUTTON_REGION,0,               0,-1,                0,"",                 0,"", 15,  8,326, 20,NO_KEY,NULL,0, -1},
 {SYSHELP_TEXTBODY,BUTTON_REGION,0,               0,-1,                0,"",                 0,"", 15, 35,326, 48,NO_KEY,NULL,0, -1},
 {SYSHELP_DONE,    BUTTON_BITMAP,0,               0,STR_HELP_DONE,    BTN_LABEL_COLOR,"UI\\hlpbtnaa.pcx",31,"UI\\hlpbtnab.pcx", 40, 79,100, 28,KEY_F ,HideSubMenuWithClick, D_SYSHELP_SMALL, -1},
-{SYSHELP_MOREINFO,BUTTON_BITMAP,0,               0,STR_HELP_MOREINFO,BTN_LABEL_COLOR,"UI\\hlpbtnaa.pcx",31,"UI\\hlpbtnab.pcx",224, 79,100, 28,KEY_M ,NULL,0, -1},
 };
 LONG SystemSmallHelpSize = sizeof(SystemSmallHelp) / sizeof(BUTTON);
 
@@ -1622,7 +1619,6 @@ BUTTON SystemLargeHelp[] = {
 {SYSHELP_TITLE,   BUTTON_REGION,0,               0,-1,                0,"",                 0,"", 15, 10,326, 20,NO_KEY,NULL,0, -1},
 {SYSHELP_TEXTBODY,BUTTON_REGION,0,               0,-1,                0,"",                 0,"", 15, 35,326,300,NO_KEY,NULL,0, -1},
 {SYSHELP_DONE,    BUTTON_BITMAP,0,               0,STR_HELP_DONE,    BTN_LABEL_COLOR,"UI\\hlpbtnaa.pcx",31,"UI\\hlpbtnab.pcx", 40,339,100, 28,KEY_O ,HideSubMenuWithClick, D_SYSHELP_LARGE, -1},
-{SYSHELP_MOREINFO,BUTTON_BITMAP,0,               0,STR_HELP_MOREINFO,BTN_LABEL_COLOR,"UI\\hlpbtnaa.pcx",31,"UI\\hlpbtnab.pcx",224,339,100, 28,KEY_I ,NULL,0, -1},
 };
 LONG SystemLargeHelpSize = sizeof(SystemLargeHelp) / sizeof(BUTTON);
 
@@ -1631,7 +1627,6 @@ BUTTON SystemMedHelp[] = {
 {SYSHELP_TITLE,   BUTTON_REGION,0,               0,-1,                0,"",                0,"", 15, 10,326, 20,NO_KEY,NULL,0, -1},
 {SYSHELP_TEXTBODY,BUTTON_REGION,0,               0,-1,                0,"",                0,"", 15, 35,326,115,NO_KEY,NULL,0, -1},
 {SYSHELP_DONE,    BUTTON_BITMAP,0,               0,STR_HELP_DONE,    BTN_LABEL_COLOR,"UI\\hlpbtnaa.pcx",31,"UI\\hlpbtnab.pcx", 40,155,100, 28,KEY_O ,HideSubMenuWithClick, D_SYSHELP_MED, -1},
-{SYSHELP_MOREINFO,BUTTON_BITMAP,0,               0,STR_HELP_MOREINFO,BTN_LABEL_COLOR,"UI\\hlpbtnaa.pcx",31,"UI\\hlpbtnab.pcx",224,155,100, 28,KEY_I ,NULL,0, -1},
 };
 LONG SystemMedHelpSize = sizeof(SystemMedHelp) / sizeof(BUTTON);
 
@@ -1640,7 +1635,6 @@ BUTTON SystemSmallHelp[] = {
 {SYSHELP_TITLE,   BUTTON_REGION,0,               0,-1,                0,"",                 0,"", 15,  8,326, 20,NO_KEY,NULL,0, -1},
 {SYSHELP_TEXTBODY,BUTTON_REGION,0,               0,-1,                0,"",                 0,"", 15, 35,326, 48,NO_KEY,NULL,0, -1},
 {SYSHELP_DONE,    BUTTON_BITMAP,0,               0,STR_HELP_DONE,    BTN_LABEL_COLOR,"UI\\hlpbtnaa.pcx",31,"UI\\hlpbtnab.pcx", 40, 79,100, 28,KEY_O ,HideSubMenuWithClick, D_SYSHELP_SMALL, -1},
-{SYSHELP_MOREINFO,BUTTON_BITMAP,0,               0,STR_HELP_MOREINFO,BTN_LABEL_COLOR,"UI\\hlpbtnaa.pcx",31,"UI\\hlpbtnab.pcx",224, 79,100, 28,KEY_I ,NULL,0, -1},
 };
 LONG SystemSmallHelpSize = sizeof(SystemSmallHelp) / sizeof(BUTTON);
 
@@ -2398,7 +2392,6 @@ BUTTON SystemLargeHelp[] = {
 {SYSHELP_TITLE,   BUTTON_REGION,0,               0,-1,                0,"",                 0,"", 15, 10,326, 20,NO_KEY,NULL,0, -1},
 {SYSHELP_TEXTBODY,BUTTON_REGION,0,               0,-1,                0,"",                 0,"", 15, 35,326,300,NO_KEY,NULL,0, -1},
 {SYSHELP_DONE,    BUTTON_BITMAP,0,               0,STR_HELP_DONE,    BTN_LABEL_COLOR,"UI\\hlpbtnaa.pcx",31,"UI\\hlpbtnab.pcx", 40,339,100, 28,KEY_D ,HideSubMenuWithClick, D_SYSHELP_LARGE, -1},
-{SYSHELP_MOREINFO,BUTTON_BITMAP,0,               0,STR_HELP_MOREINFO,BTN_LABEL_COLOR,"UI\\hlpbtnaa.pcx",31,"UI\\hlpbtnab.pcx",224,339,100, 28,KEY_M ,NULL,0, -1},
 };
 LONG SystemLargeHelpSize = sizeof(SystemLargeHelp) / sizeof(BUTTON);
 
@@ -2407,7 +2400,6 @@ BUTTON SystemMedHelp[] = {
 {SYSHELP_TITLE,   BUTTON_REGION,0,               0,-1,                0,"",                0,"", 15, 10,326, 20,NO_KEY,NULL,0, -1},
 {SYSHELP_TEXTBODY,BUTTON_REGION,0,               0,-1,                0,"",                0,"", 15, 35,326,115,NO_KEY,NULL,0, -1},
 {SYSHELP_DONE,    BUTTON_BITMAP,0,               0,STR_HELP_DONE,    BTN_LABEL_COLOR,"UI\\hlpbtnaa.pcx",31,"UI\\hlpbtnab.pcx", 40,155,100, 28,KEY_D ,HideSubMenuWithClick, D_SYSHELP_MED, -1},
-{SYSHELP_MOREINFO,BUTTON_BITMAP,0,               0,STR_HELP_MOREINFO,BTN_LABEL_COLOR,"UI\\hlpbtnaa.pcx",31,"UI\\hlpbtnab.pcx",224,155,100, 28,KEY_M ,NULL,0, -1},
 };
 LONG SystemMedHelpSize = sizeof(SystemMedHelp) / sizeof(BUTTON);
 
@@ -2416,7 +2408,6 @@ BUTTON SystemSmallHelp[] = {
 {SYSHELP_TITLE,   BUTTON_REGION,0,               0,-1,                0,"",                 0,"", 15,  8,326, 20,NO_KEY,NULL,0, -1},
 {SYSHELP_TEXTBODY,BUTTON_REGION,0,               0,-1,                0,"",                 0,"", 15, 35,326, 48,NO_KEY,NULL,0, -1},
 {SYSHELP_DONE,    BUTTON_BITMAP,0,               0,STR_HELP_DONE,    BTN_LABEL_COLOR,"UI\\hlpbtnaa.pcx",31,"UI\\hlpbtnab.pcx", 40, 79,100, 28,KEY_D ,HideSubMenuWithClick, D_SYSHELP_SMALL, -1},
-{SYSHELP_MOREINFO,BUTTON_BITMAP,0,               0,STR_HELP_MOREINFO,BTN_LABEL_COLOR,"UI\\hlpbtnaa.pcx",31,"UI\\hlpbtnab.pcx",224, 79,100, 28,KEY_M ,NULL,0, -1},
 };
 LONG SystemSmallHelpSize = sizeof(SystemSmallHelp) / sizeof(BUTTON);
 

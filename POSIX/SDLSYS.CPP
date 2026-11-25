@@ -299,11 +299,6 @@ int InvalidateRect(HWND /*hwnd*/, const RECT * /*rc*/, int /*erase*/)
 	return TRUE;
 }
 
-int WinHelp(HWND, const char *, unsigned, unsigned long)
-{
-	return FALSE;						/* no WinHelp on this platform */
-}
-
 /* ========================================================================
    Timing and errors (WINSYS/UTIL.C)
    ======================================================================== */

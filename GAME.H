@@ -175,7 +175,6 @@ enum {
 	SYSHELP_TEXTBODY,
 	SYSHELP_COMMENT, 
 	SYSHELP_DONE,    
-	SYSHELP_MOREINFO,
 };
 
 #define SYSHELP_LARGE_BOX	0x00000001
@@ -193,8 +192,6 @@ enum {
    ------------------------------------------------------------------------ */
 int PaintInputField(LONG, char *, LONG, LONG, BOOL, LONG, char, char );
 void PaintHelp (LONG MenuCombo, LONG );
-void PaintHelpScreen (LONG MenuCombo, LONG );
-void DoneHelpMenu (LONG, LONG);
 void MainMenuClick (LONG MenuCombo, LONG ButtonVal);
 void PaintMainMenu (LONG MenuCombo, LONG );
 void PaintAttributes (LONG MenuCombo, LONG );
@@ -285,8 +282,8 @@ void DefeatScreen(PFVLL NewPaintProc, PFVLL NewDoneProc);
 
 void ShowAllAnimations(LONG, LONG);
 
-void SystemHelp( int, int, LONG, PFVLL, LONG );
-void SystemHelp( CHAR *, CHAR *, LONG, PFVLL, LONG );
+void SystemHelp( int, int, PFVLL, LONG );
+void SystemHelp( CHAR *, CHAR *, PFVLL, LONG );
 
 #if defined(__cplusplus)
 #endif
@@ -319,7 +316,6 @@ void OptionRadio1  (LONG, LONG);
 
 /* main.cpp */
 void CPPQuitSys(LONG, LONG);
-void UpdateHighlight(LONG, LONG);
 
 /* chat stuff */
 void PaintChatInput(LONG, LONG);

@@ -43,7 +43,6 @@
 #include "STRMGR.H"
 #include "MULTIUI.HXX"
 #include "REPORT.HXX"
-#include "CONTEXT.HXX"
 #include "PANEL.H"
 #include "REQUEST.H"
 #include "PLACES.HXX"
@@ -999,7 +998,7 @@ void LoadGame(LONG, LONG)
 	if ( mouse_button == 2 ) //---- We need help
 	{
 		SystemHelp( STR_MAIN1_HELP_LOAD_TITLE,
-					STR_MAIN1_HELP_LOAD_TEXT, H_Load_Saved_Game, 0, 0 );
+					STR_MAIN1_HELP_LOAD_TEXT, 0, 0 );
 	}
 	else
 	{
@@ -1094,7 +1093,7 @@ void SaveGame(LONG, LONG)
 	if ( mouse_button == 2 )
 	{
 		SystemHelp( STR_MAIN1_HELP_SAVE_TITLE,
-					STR_MAIN1_HELP_SAVE_TEXT, H_Save_Current_Game, 0, 0 );
+					STR_MAIN1_HELP_SAVE_TEXT, 0, 0 );
 	}
 	else //---- We need help
 	{

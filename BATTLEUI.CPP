@@ -48,7 +48,6 @@
 #include "SNDVOX.HXX"
 #include "INVNGUI.HXX"
 #include "VECTOR.HXX"
-#include "CONTEXT.HXX"
 #include "DESCRIBE.HXX"
 #include "GAMEMAP.HXX"
 
@@ -782,7 +781,7 @@ void BattleCameraHighView(LONG, LONG)
 	   ----------------------------------------------------------------- */
 	if(mouse_button == 2)
 	{
-		SystemHelp(STR_BTLUI_HELP_COMMANDVIEW_TITLE,STR_BTLUI_HELP_COMMANDVIEW_TEXT, H_Command_View, NULL, 0);
+		SystemHelp(STR_BTLUI_HELP_COMMANDVIEW_TITLE,STR_BTLUI_HELP_COMMANDVIEW_TEXT, NULL, 0);
 	}
 	else
 	{
@@ -949,7 +948,7 @@ void BattleControlGrid(LONG MenuCombo, LONG DataCombo)
 			else
 			{
 				// else just give help on the control grid
-				SystemHelp(STR_BTLUI_HELP_CONTROL_GRID_TITLE,STR_BTLUI_HELP_CONTROL_GRID_TEXT, H_Battlefield_Grid_Interface, NULL, 0);
+				SystemHelp(STR_BTLUI_HELP_CONTROL_GRID_TITLE,STR_BTLUI_HELP_CONTROL_GRID_TEXT, NULL, 0);
 			}
 		}
 	}
@@ -1337,19 +1336,19 @@ void BattleReservesGrid(LONG MenuCombo, LONG unused)
 		switch(sBattleMode)
 		{
 		case BTLUI_MODE_STATUS:
-			SystemHelp(STR_BTLUI_HELP_STATUS_TITLE,STR_BTLUI_HELP_STATUS_TEXT, H_Battle_Status, NULL, 0);
+			SystemHelp(STR_BTLUI_HELP_STATUS_TITLE,STR_BTLUI_HELP_STATUS_TEXT, NULL, 0);
 			return;
 			
 		case BTLUI_MODE_UNITINFO:
-			SystemHelp(STR_BTLUI_HELP_UNITINFO_TITLE,STR_BTLUI_HELP_UNITINFO_TEXT, H_Unit_Types_and_Strengths, NULL, 0);
+			SystemHelp(STR_BTLUI_HELP_UNITINFO_TITLE,STR_BTLUI_HELP_UNITINFO_TEXT, NULL, 0);
 			return;
 		
 		case BTLUI_MODE_MAGIC:
-			SystemHelp(STR_BTLUI_HELP_SEL_MAGIC_TITLE,STR_BTLUI_HELP_SEL_MAGIC_TEXT,-1, NULL, 0);
+			SystemHelp(STR_BTLUI_HELP_SEL_MAGIC_TITLE,STR_BTLUI_HELP_SEL_MAGIC_TEXT, NULL, 0);
 			return;
 			
 		case BTLUI_MODE_MISSILE:
-			SystemHelp(STR_BTLUI_HELP_SEL_MISSILE_TITLE,STR_BTLUI_HELP_SEL_MISSILE_TEXT,-1, NULL, 0);
+			SystemHelp(STR_BTLUI_HELP_SEL_MISSILE_TITLE,STR_BTLUI_HELP_SEL_MISSILE_TEXT, NULL, 0);
 			return;
 			
 		case BTLUI_MODE_RESERVES:
@@ -1359,7 +1358,7 @@ void BattleReservesGrid(LONG MenuCombo, LONG unused)
 			
 			//GEHelse
 			{
-				SystemHelp(STR_BTLUI_HELP_RESERVES_TITLE,STR_BTLUI_HELP_RESERVES_TEXT, H_Reserves, NULL, 0);
+				SystemHelp(STR_BTLUI_HELP_RESERVES_TITLE,STR_BTLUI_HELP_RESERVES_TEXT, NULL, 0);
 			}
 		}
 	}
@@ -3217,7 +3216,7 @@ void BattleReservesMode( LONG, LONG )
 	   ----------------------------------------------------------------- */
 	if(mouse_button == 2)
 	{
-		SystemHelp(STR_BTLUI_HELP_RESERVES_TITLE,STR_BTLUI_HELP_RESERVES_TEXT, H_Reserves, NULL, 0);
+		SystemHelp(STR_BTLUI_HELP_RESERVES_TITLE,STR_BTLUI_HELP_RESERVES_TEXT, NULL, 0);
 	}
 	else	// change to reserves mode
 	{
@@ -3238,7 +3237,7 @@ void BattleStatusMode( LONG, LONG )
 	   ----------------------------------------------------------------- */
 	if(mouse_button == 2)
 	{
-		SystemHelp(STR_BTLUI_HELP_STATUS_TITLE,STR_BTLUI_HELP_STATUS_TEXT, H_Battle_Status, NULL, 0);
+		SystemHelp(STR_BTLUI_HELP_STATUS_TITLE,STR_BTLUI_HELP_STATUS_TEXT, NULL, 0);
 	}
 	else	// change to reserves mode
 	{
@@ -4567,7 +4566,7 @@ void BattleRetreat(LONG, LONG)
 	   ----------------------------------------------------------------- */
 	if(mouse_button == 2)
 	{
-		SystemHelp(STR_BTLUI_HELP_RETREAT_TITLE,STR_BTLUI_HELP_RETREAT_TEXT, H_Retreat, NULL, 0);
+		SystemHelp(STR_BTLUI_HELP_RETREAT_TITLE,STR_BTLUI_HELP_RETREAT_TEXT, NULL, 0);
 	}
 	else
 	{

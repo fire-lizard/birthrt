@@ -3349,7 +3349,6 @@ void DoAction (LONG iAction, LONG)
 		SystemHelp(
 			buffer,
 			Action[iAction].mfGetVerbose(),
-			Action[iAction].mfGetMoreInfo(),
 			NULL, 0);
 		// stay here until we clear the message box
 		if (sMenusUp > 0)
@@ -9113,7 +9112,7 @@ void WithdrawLosingUnit (BOOL fSend)
 			
 			// or else just kill him, but tell the user he vanished
 			// into thin are never to be seen again "I'll be back!"
-			SystemHelp(" ",STRMGR_GetStr(STR_GM_GORGON_BE_BACK), -1, NULL, 0);
+			SystemHelp(" ",STRMGR_GetStr(STR_GM_GORGON_BE_BACK), NULL, 0);
 			// stay here until we clear the message box
 			if (sMenusUp > 0)
 			{
@@ -9140,7 +9139,7 @@ void WithdrawLosingUnit (BOOL fSend)
 				STRMGR_GetStr((((REALM::REALM_TYPE)SCENE_MGR::VictorRealm==REALM::MONSTERS)?STR_NPC_OF:STR_NPC_FROM)),
 				cpLosingRealmName);
 				
-			SystemHelp(" ", buffer, -1, NULL, 0);
+			SystemHelp(" ", buffer, NULL, 0);
 			// stay here until we clear the message box
 			if (sMenusUp > 0)
 			{

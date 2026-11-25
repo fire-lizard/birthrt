@@ -53,7 +53,6 @@
 #include "THINGS.H"
 #include "MULTIUI.HXX"
 #include "MARGIN.HXX"
-#include "CONTEXT.HXX"
 #include "UNITS.HXX"
 #include "PLACES.HXX"
 #include "TASK.H"
@@ -745,7 +744,7 @@ void CPPQuitSys(LONG, LONG)
 	if ( mouse_button == 2 )
    {
    	SystemHelp( STR_MAIN1_HELP_QUIT_TITLE,
-                   STR_MAIN1_HELP_QUIT_TEXT, H_Quit, 0, 0 );
+                   STR_MAIN1_HELP_QUIT_TEXT, 0, 0 );
 	}
 	else
 	{
@@ -882,7 +881,7 @@ void AddGameKeys(void)
 		The Function keys
 	----------------------------------------------------------------- */
 
-	add_key(GAME_KEYS::mfGetKey(GAME_KEYS::HELP_MENU),ShowSubMenu,D_HELP, 0);
+	add_key(GAME_KEYS::mfGetKey(GAME_KEYS::HELP_MENU),ShowHelpMenu, 0, 0);
 
 	// Add Global Keys
 

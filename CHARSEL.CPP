@@ -51,7 +51,6 @@
 #include "strenum.h"
 #include "STRMGR.H"
 #include "UNITS.HXX"
-#include "CONTEXT.HXX"
 #include "PROVTAX.H"
 #include "PLACES.HXX"
 
@@ -528,7 +527,7 @@ void DomainNewGame (LONG, LONG lMultiFlag )
 	if ( mouse_button == 2 )
 	{
 		SystemHelp( STR_MAIN1_HELP_NEW_TITLE,
-					STR_MAIN1_HELP_NEW_TEXT, H_Begin_New_Game, 0, 0 );
+					STR_MAIN1_HELP_NEW_TEXT, 0, 0 );
 
 	}
 	else //---- We need help

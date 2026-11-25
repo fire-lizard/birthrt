@@ -186,10 +186,6 @@ typedef long		HRESULT;
 #define access(p, m)	plat_access_path((p), (m))
 #define mkdir(p)	plat_mkdir_path(p)
 
-/* Win32 odds and ends the core still references. */
-#define HELP_CONTENTS	0x0003
-#define HELP_CONTEXT	0x0001
-
 #ifndef O_BINARY
 #define O_BINARY	0
 #endif
@@ -224,7 +220,6 @@ extern "C" {
 /* -- the Win32 calls the portable core still makes ----------------------- */
 #define SW_HIDE		0
 #define SW_SHOW		5
-#define HELP_QUIT	0x0002
 
 void	Sleep(unsigned long ms);
 unsigned long GetTickCount(void);
@@ -242,7 +237,6 @@ int		InvalidateRect(HWND hwnd, const RECT *rc, int erase);
 int		GetWindowRect(HWND hwnd, RECT *rc);
 int		GetClientRect(HWND hwnd, RECT *rc);
 short	GetAsyncKeyState(int vk);
-int		WinHelp(HWND hwnd, const char *help, unsigned cmd, unsigned long data);
 unsigned int waveOutGetNumDevs(void);
 int		ShowCursor(int show);
 int		AllocConsole(void);

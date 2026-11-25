@@ -26,26 +26,22 @@
 
 class ACTIONS {
 public:
-	inline ACTIONS(LONG /* NewTitle */, LONG /* NewVerbose */, LONG /* NewMoreInfo */);
+	inline ACTIONS(LONG /* NewTitle */, LONG /* NewVerbose */);
 	inline char * mfGetTitle() const;
 	inline char * mfGetVerbose() const;
-	inline LONG   const mfGetMoreInfo() const;
 protected:
 private:
 	LONG		const title;
 	LONG		const verbose;
-	LONG		const more_info;
 };
 typedef ACTIONS *ACTIONS_PTR;
 extern DECL_VECTOR_CLASS(ACTIONS const,Action);
 
 inline ACTIONS::ACTIONS(
 	LONG NewTitle,
-    LONG NewVerbose,
-    LONG NewMoreInfo) :
+    LONG NewVerbose) :
   title(NewTitle),
-  verbose(NewVerbose),
-  more_info(NewMoreInfo)
+  verbose(NewVerbose)
 {
 }
 
@@ -57,11 +53,6 @@ inline char * ACTIONS::mfGetTitle() const
 inline char *   ACTIONS::mfGetVerbose() const
 {
 	return STRMGR_GetStr(verbose);
-}
-
-inline LONG   const ACTIONS::mfGetMoreInfo() const
-{
-	return more_info;
 }
 
 #endif // _ACTIONS_HXX

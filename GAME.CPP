@@ -49,7 +49,6 @@
 #include "SNDVOX.HXX"
 #include "LOADSAVE.HXX"
 #include "CHARSEL.HXX"
-#include "CONTEXT.HXX"
 #include "DOSHELP.HXX"
 #include "COLORS.H"
 
@@ -65,22 +64,10 @@
    Defines and Compile Flags
    ------------------------------------------------------------------------ */
 
-#define FONT_TITL_40PT  13
 #define STR_GAMEICON "UI\\GAMEICON.PCX"
 #define STR_SHDWICON "UI\\SHDWICON.PCX"
 
 #define STATUS_FRAMES_PER_SEC	2
-
-typedef enum {
-	REALM_KEYS = 2,
-	RULES,
-	GAMEPLAY,
-	ADVENTURE_KEYS,
-	BATTLE_KEYS,
-	REALM_TUTORIAL,
-	ADVENTURE_TUTORIAL,
-	BATTLE_TUTORIAL,
-} HELP_TOPICS;
 
 /* ------------------------------------------------------------------------
    Macros
@@ -155,7 +142,6 @@ BOOL fStartMultiGame = FALSE;
 #include "GAMEMENU.H"
 
 MENU Menus[MAX_MENUS] = {
-	{Help, HelpSize},
 	{DomainAction, DomainActionSize},
 	{ReportMenu, ReportMenuSize},
 	{MainMenu, MainMenuSize},
@@ -230,15 +216,12 @@ SHORT hTroopBitm = fERROR;	// used by battle cards
 SHORT iTroopRealm = fERROR;	// used by battle cards
 SHORT iTroopType = fERROR;	// used by battle cards
 
-SHORT iHelpHighlight = 2;
-
 BOOL fShowProgressBar = FALSE;
 static LONG gLoadingPercent = 0;
 
 static REALM::REALM_TYPE Realm = REALM::NO_COUNTRY;
 
 static SHORT iAnim;
-static SHORT iAbortSlideShow;
 
 struct{
 	char buffer[80];
@@ -252,64 +235,19 @@ void GoToBattleScene(LONG, LONG);
 
 LONG cheated = 0;
 
-// put here for now as JOHNC had game.cpp checked out
-extern SHORT iHelpHighlight;
-
+// The Help button and F1 open the quick keys page: it was the only entry
+// left on the Help menu once the WinHelp ones were removed.
 void ShowHelpMenu ( LONG, LONG )
 {
    if ( mouse_button == 2 )
    {
    	SystemHelp( STR_MAIN1_HELP_HELP_TITLE,
-                   STR_MAIN1_HELP_HELP_TEXT, H_Help, 0, 0 );
+                   STR_MAIN1_HELP_HELP_TEXT, 0, 0 );
    }
    else
    {
-   	ShowSubMenu(0, D_HELP);
+   	InitDOSHelp(H_TOPIC_QUICK_KEYS, 0);
    }
-}
-
-void DoneHelpMenu(LONG , LONG)
-{
-	iAbortSlideShow = FALSE;
-	CHAR	chFileName[80];
-
-	switch(iHelpHighlight)
-	{
-		case	REALM_KEYS:
-			InitDOSHelp(H_TOPIC_QUICK_KEYS, 0);
-			break;
-
-		case	RULES:
-
-	#ifdef _FOREIGNVER
-			InitDOSHelp(H_TOPIC_ATLAS, 0);
-			break;
-	#endif
-
-           //---- Put us in normal mode  ( well as normal as possible... )
-			if (sDrawMode == iDDRAW)
-              DDSetCooperative ( FALSE );
-
-			sprintf(chFileName, "%s%s", InstallPath, "BIRTHRT.HLP");
-
-			WinHelp(hwndApp, chFileName, HELP_CONTENTS, 0);
-			break;
-
-		case	GAMEPLAY:
-	#ifdef _FOREIGNVER
-			InitDOSHelp(H_TOPIC_RULES, 0);
-			break;
-	#endif
-           //---- Put us in normal mode  ( well as normal as possible... )
-			if (sDrawMode == iDDRAW)
-              DDSetCooperative ( FALSE );
-
-			sprintf(chFileName, "%s%s", InstallPath, "GAMEPLAY.HLP");
-
-			WinHelp(hwndApp, chFileName, HELP_CONTENTS, 0);
-			break;
-	}
-
 }
 
 /* =======================================================================
@@ -505,7 +443,7 @@ void MainMenuClick (LONG MenuCombo, LONG ButtonVal)
 #endif
 		break;
 	case 7:
-		ShowHelpMenu(0,D_HELP);
+		ShowHelpMenu(0,0);
 		break;
 	case 8:
 		CPPQuitSys(0,0);
@@ -702,33 +640,10 @@ void SetStatusRealm(REALM::REALM_TYPE realm)
 	Realm = realm;
 }
 
-//this table correlates to the ordering of the help strings in the string table.
-static LONG StatusContextHelpTopics[]={
-H_Class,
-H_Level,
-H_Bloodline,
-H_Alignment,
-H_Strength,
-H_Intelligence,
-H_Dexterity,
-H_Wisdom,
-H_Constitution,
-H_Charisma,
-H_THACO,
-H_Experience,
-H_Armor_Class,
-H_Hit_Points,
-H_Hit_Points,
-H_Armor_Class,
-H_Weapon,
-H_Gold,
-};
-
 void ShowStatusContextHelp(LONG MC,LONG HelpStr)
 {
-	static GAME_STRING FirstStatusHelpStr=STR_STATUS_HELP_CLASS;
 	if (mouse_button==2)
-		SystemHelp(STR_PLAIN_STATUS,HelpStr,StatusContextHelpTopics[HelpStr-FirstStatusHelpStr],NULL,0);
+		SystemHelp(STR_PLAIN_STATUS,HelpStr,NULL,0);
 }	
 
 /* ========================================================================
@@ -1051,7 +966,7 @@ void BackToGame(LONG, LONG)
    if ( mouse_button == 2 )
    {
    	SystemHelp( STR_MAIN1_HELP_RETURN_TITLE,
-                   STR_MAIN1_HELP_RETURN_TEXT, H_Return_to_Game, 0, 0 );
+                   STR_MAIN1_HELP_RETURN_TEXT, 0, 0 );
 
    }
    else //---- We need help
@@ -2344,51 +2259,10 @@ void StatusFromInventory(LONG MenuCombo, LONG)
 
 }
 
-void DoneHelpMenu(LONG, LONG);
-void UpdateHighlight(LONG MenuCombo, LONG val)
-{
-	SHORT	MenuId, ButtonId;
-	SPLIT_LONG(MenuCombo, MenuId, ButtonId);
-	
-	// click the button
-	SetButtonHilight(MenuId, ButtonId, TRUE);
-	fUpdatePanels = TRUE;
-	RunPanels();
-	RunMenus();
-	update_screen();
-	TickDelay(4);
-	SetButtonHilight(MenuId, ButtonId, FALSE);
-	fUpdatePanels = TRUE;
-	RunPanels();
-	RunMenus();
-	update_screen();
-	
-	iHelpHighlight = val;
-	DoneHelpMenu(0, 0);
-}
-
 void DoneHelpKeys(LONG arg, LONG arg1)
 {
 	HideSubMenuWithClick(0, D_HELPKEYS);
 	RunMenus();
-
-	if(arg1 == 0)
-		ShowSubMenu(0, D_HELP);
-}
-
-void PaintHelpScreen(LONG MenuCombo, LONG)
-{
-	LONG mx, my;
-	char buffer[40];
-	LONG	MenuId, ButtonId;
-
-	SPLIT_LONG(MenuCombo, MenuId, ButtonId);
-
-	// print the title
-	GetButtonPosition( MenuId, 0, &mx, &my );
-	init_gfont(FONT_TITL_40PT);
-    sprintf(buffer, "^N%s", STRMGR_GetStr(STR_HELP_TITLE));
-	print_textf(mx + 25 + 48, my + 23, 0, buffer);
 }
 
 /* ========================================================================
@@ -2582,34 +2456,6 @@ void BowToPlayer(LONG MenuCombo, LONG)
 }
 
 /* ========================================================================
-   Function    - GetMoreInfo
-   Description - Called when more help is asked for
-   Returns     -
-   ======================================================================== */
-void GetMoreInfo( LONG MenuCombo, LONG Context )
-{
-	CHAR chFileName[80];
-
-	#ifdef _FOREIGNVER
-		LONG    MenuId, ButtonId;
-		SPLIT_LONG(MenuCombo, MenuId, ButtonId);
-		HideSubMenuWithClick(0, MenuId );
-		RunMenus();
-		InitDOSHelp(H_TOPIC_RULES, Context);
-		return;
-	#endif
-
-   //---- Put us in normal mode  ( well as normal as possible... )
-   if (sDrawMode == iDDRAW)
-       DDSetCooperative ( FALSE );
-
-	sprintf(chFileName, "%s%s", InstallPath, "GAMEPLAY.HLP");
-
-	WinHelp( hwndApp, chFileName, HELP_CONTEXT, Context );
-
-}
-
-/* ========================================================================
    Function    - SystemHelp
    Description - system help dialog using a strmgr text index
    Returns     -
@@ -2617,7 +2463,6 @@ void GetMoreInfo( LONG MenuCombo, LONG Context )
 void SystemHelp(
 	int TitleIndex,
 	int TextIndex,
-	LONG MoreInfoTag,
 	PFVLL PaintProc = NULL,
 	LONG MenuControl = 0
 )
@@ -2635,7 +2480,7 @@ void SystemHelp(
 	if (TextIndex != -1)
 		strncpy(&Text[0], STRMGR_GetStr(TextIndex), sizeof(Text));
 	
-	SystemHelp( &Title[0], &Text[0], MoreInfoTag, PaintProc, MenuControl);
+	SystemHelp( &Title[0], &Text[0], PaintProc, MenuControl);
 }
 
 /* ========================================================================
@@ -2646,7 +2491,6 @@ void SystemHelp(
 void SystemHelp(
 	CHAR *Title,
 	CHAR *TextBody,
-	LONG MoreInfoTag,
 	PFVLL PaintProc = 0,
 	LONG MenuControl = 0
 )
@@ -2707,47 +2551,15 @@ void SystemHelp(
 	if (MenuControl & SYSHELP_SMALL_BOX)
 		DialogName = (SHORT)D_SYSHELP_SMALL;
 	
-	if (MoreInfoTag != -1)
-	{
-		// make done button visible
-		ClearButtonFlag(DialogName, SYSHELP_DONE, D_INVISIBLE);
-		activate_region(SYSHELP_DONE, TRUE);
-		// move the done button left
-		GetButtonSize(DialogName, SYSHELP_DIALOG, &w, &h);
-		GetButtonSize(DialogName, SYSHELP_DONE, &bw, &bh);
-		w = (w / 3) - (bw / 2);
-		h = (h - bh) - 5;
-		SetButtonPosition(DialogName, SYSHELP_DONE, w, h);
-		
-		// hook up moreinfo stuff and make button visible
-		ClearButtonFlag(DialogName, SYSHELP_MOREINFO, D_INVISIBLE);
-		activate_region(SYSHELP_MOREINFO, TRUE);
-		SetButtonValue(DialogName, SYSHELP_MOREINFO, MoreInfoTag);
-		SetButtonProc(DialogName, SYSHELP_MOREINFO, GetMoreInfo, MoreInfoTag, D_KEY_MORE );
-		// move the moreinfo button right
-		GetButtonSize(DialogName, SYSHELP_DIALOG, &w, &h);
-		GetButtonSize(DialogName, SYSHELP_MOREINFO, &bw, &bh);
-		w = (2*(w / 3)) - (bw / 2);
-		h = (h - bh) - 5;
-		SetButtonPosition(DialogName, SYSHELP_MOREINFO, w, h);
-	}
-	else
-	{
-		// make done button visible
-		ClearButtonFlag(DialogName, SYSHELP_DONE, D_INVISIBLE);
-		activate_region(SYSHELP_DONE, TRUE);
-		// center the done button
-		GetButtonSize(DialogName, SYSHELP_DIALOG, &w, &h);
-		GetButtonSize(DialogName, SYSHELP_DONE, &bw, &bh);
-		w = (w / 2) - (bw / 2);
-		h = (h - bh) - 5;
-		SetButtonPosition(DialogName, SYSHELP_DONE, w, h);
-		
-		// more info button disabled and invisible
-		SetButtonFlag(DialogName, SYSHELP_MOREINFO, D_INVISIBLE);
-		SetButtonValue(DialogName, SYSHELP_MOREINFO, -1);
-		activate_region(SYSHELP_MOREINFO, FALSE);
-	}
+	// make done button visible
+	ClearButtonFlag(DialogName, SYSHELP_DONE, D_INVISIBLE);
+	activate_region(SYSHELP_DONE, TRUE);
+	// center the done button
+	GetButtonSize(DialogName, SYSHELP_DIALOG, &w, &h);
+	GetButtonSize(DialogName, SYSHELP_DONE, &bw, &bh);
+	w = (w / 2) - (bw / 2);
+	h = (h - bh) - 5;
+	SetButtonPosition(DialogName, SYSHELP_DONE, w, h);
 	
 	if (PaintProc != 0)
 		SysHelpProc = PaintProc;

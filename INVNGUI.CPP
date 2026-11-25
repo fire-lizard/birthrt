@@ -25,7 +25,6 @@
 
 #include "AVATAR.HXX"
 #include "CHARSEL.HXX"
-#include "CONTEXT.HXX"
 #include "HANDLE.HXX"
 #include "GAME.H"
 #include "GAMEMAP.HXX"
@@ -92,7 +91,7 @@ void InventoryGUI::mfClearSpellBox(LONG,LONG b)
 {
 	if (mouse_button==2)
 	{
-		SystemHelp(STR_INVN_BUTN_HOTBOXES,STR_INVN_HELP_HOTBOX1+b,H_Hot_Boxes,NULL,0);
+		SystemHelp(STR_INVN_BUTN_HOTBOXES,STR_INVN_HELP_HOTBOX1+b,NULL,0);
 		return;
 	}
 
@@ -993,7 +992,7 @@ void InventoryGUI::mfUseHighlightedObject(LONG a,LONG)
 {
 	if (mouse_button==2)
 	{
-		SystemHelp(STR_INVN_BUTN_USE_BUTTON,STR_INVN_HELP_USE_BUTTON,H_Use_Button,NULL,0);
+		SystemHelp(STR_INVN_BUTN_USE_BUTTON,STR_INVN_HELP_USE_BUTTON,NULL,0);
 		return;
 	}
 
@@ -1042,14 +1041,6 @@ void InventoryGUI::mfUseHighlightedObject(LONG a,LONG)
 	itor.mfActivateCurrent();
 }
 
-static LONG CtxtHlpCats[]=	
-{	
-	H_Items_Button,
-	H_Magic_Items_Button,
-	H_Spells_Button,
-	H_Realm_Spells,
-	H_Blood_Abilities_Button,
-};
 									
 void InventoryGUI::mfChangeCurrCat(LONG MenuCombo,LONG c)
 {
@@ -1057,9 +1048,9 @@ void InventoryGUI::mfChangeCurrCat(LONG MenuCombo,LONG c)
 	if (mouse_button==2)
 	{
 		if (c==IC_SPELL && fPreparingSpells)
-			SystemHelp(STR_INVN_BUTN_SPELLS_BUTTON,STR_INVN_HELP_SPELLS_BUTTON_PREP,H_Spells_Button,NULL,0);
+			SystemHelp(STR_INVN_BUTN_SPELLS_BUTTON,STR_INVN_HELP_SPELLS_BUTTON_PREP,NULL,0);
 						
-		SystemHelp(STR_INVN_BUTN_ITEMS_BUTTON+c,STR_INVN_HELP_ITEMS_BUTTON+c,CtxtHlpCats[c],NULL,0);
+		SystemHelp(STR_INVN_BUTN_ITEMS_BUTTON+c,STR_INVN_HELP_ITEMS_BUTTON+c,NULL,0);
 		return;
 	}
 
@@ -1087,7 +1078,7 @@ void StaticInventoryGUI::mfDropItem(LONG a,LONG)
 
 	if (mouse_button==2)
 	{
-		SystemHelp(STR_INVN_BUTN_DROP_BUTTON,STR_INVN_HELP_DROP_BUTTON,H_Drop_Button,NULL,0);
+		SystemHelp(STR_INVN_BUTN_DROP_BUTTON,STR_INVN_HELP_DROP_BUTTON,NULL,0);
 		return;
 	}
 
@@ -1161,7 +1152,7 @@ void StaticInventoryGUI::mfGiveItem(LONG a,LONG)
 {
 	if (mouse_button==2)
 	{
-		SystemHelp(STR_INVN_BUTN_GIVE_BUTTON,STR_INVN_HELP_GIVE_BUTTON,H_Give_Button,NULL,0);
+		SystemHelp(STR_INVN_BUTN_GIVE_BUTTON,STR_INVN_HELP_GIVE_BUTTON,NULL,0);
 		return;
 	}
 

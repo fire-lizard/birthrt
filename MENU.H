@@ -26,7 +26,6 @@
 	// NOTE: this has to be the same as the MENU array in game.c
 	// !!!!!! keep it up to date !!!!!!
 enum {
-	D_HELP,
 	D_DACTN,
 	D_DRPRT,
 	D_MAINMENU,

@@ -744,7 +744,7 @@ void BuildListSel (LONG MenuCombo, LONG )
 	   ----------------------------------------------------------------- */
 	if(mouse_button == 2)
 	{
-		SystemHelp(STR_BB_HELP_LISTSEL_TITLE, STR_BB_HELP_LISTSEL_TEXT, -1, NULL, 0);
+		SystemHelp(STR_BB_HELP_LISTSEL_TITLE, STR_BB_HELP_LISTSEL_TEXT, NULL, 0);
 	}
 	else
 	{
@@ -807,7 +807,7 @@ void BuildListAdd (LONG MenuCombo, LONG )
 	   ----------------------------------------------------------------- */
 	if(mouse_button == 2)
 	{
-		SystemHelp(STR_BB_HELP_LISTADD_TITLE, STR_BB_HELP_LISTADD_TEXT, -1, NULL, 0);
+		SystemHelp(STR_BB_HELP_LISTADD_TITLE, STR_BB_HELP_LISTADD_TEXT, NULL, 0);
 	}
 	else
 	{
@@ -874,7 +874,7 @@ void BuildListRemove (LONG MenuCombo, LONG )
 	   ----------------------------------------------------------------- */
 	if(mouse_button == 2)
 	{
-		SystemHelp(STR_BB_HELP_LISTREM_TITLE, STR_BB_HELP_LISTREM_TEXT, -1, NULL, 0);
+		SystemHelp(STR_BB_HELP_LISTREM_TITLE, STR_BB_HELP_LISTREM_TEXT, NULL, 0);
 	}
 	else
 	{
@@ -922,7 +922,7 @@ void BuildUnitSel (LONG ButtonId, LONG )
 	   ----------------------------------------------------------------- */
 	if(mouse_button == 2)
 	{
-		SystemHelp(STR_BB_HELP_UNITSEL_TITLE, STR_BB_HELP_UNITSEL_TEXT, -1, NULL, 0);
+		SystemHelp(STR_BB_HELP_UNITSEL_TITLE, STR_BB_HELP_UNITSEL_TEXT, NULL, 0);
 	}
 	else
 	{
@@ -960,7 +960,7 @@ void BuildTerrainSel (LONG MenuCombo, LONG WhichTerrain)
 	   ----------------------------------------------------------------- */
 	if(mouse_button == 2)
 	{
-		SystemHelp(STR_BB_HELP_TERRSEL_TITLE, STR_BB_HELP_TERRSEL_TEXT, -1, NULL, 0);
+		SystemHelp(STR_BB_HELP_TERRSEL_TITLE, STR_BB_HELP_TERRSEL_TEXT, NULL, 0);
 	}
 	else
 	{
@@ -1006,7 +1006,7 @@ void BuildArmyRestart (LONG MenuCombo, LONG )
 	   ----------------------------------------------------------------- */
 	if(mouse_button == 2)
 	{
-		SystemHelp(STR_BB_HELP_RESTART_TITLE,STR_BB_HELP_RESTART_TEXT, -1, NULL, 0);
+		SystemHelp(STR_BB_HELP_RESTART_TITLE,STR_BB_HELP_RESTART_TEXT, NULL, 0);
 	}
 	else
 	{
@@ -1109,7 +1109,7 @@ void BuildArmyReload (LONG MenuCombo, LONG )
 	   ----------------------------------------------------------------- */
 	if(mouse_button == 2)
 	{
-		SystemHelp(STR_BB_HELP_RELOAD_TITLE, STR_BB_HELP_RELOAD_TEXT, -1, NULL, 0);
+		SystemHelp(STR_BB_HELP_RELOAD_TITLE, STR_BB_HELP_RELOAD_TEXT, NULL, 0);
 	}
 	else
 	{
@@ -1154,7 +1154,7 @@ void BuildDisplayToggle(LONG MenuCombo, LONG)
 	   ----------------------------------------------------------------- */
 	if(mouse_button == 2)
 	{
-		SystemHelp(STR_BB_HELP_DISPTOGGLE_TITLE, STR_BB_HELP_DISPTOGGLE_TEXT, -1, NULL, 0);
+		SystemHelp(STR_BB_HELP_DISPTOGGLE_TITLE, STR_BB_HELP_DISPTOGGLE_TEXT, NULL, 0);
 	}
 	else
 	{
@@ -1221,9 +1221,9 @@ void BuildArmyDone (LONG MenuCombo, LONG )
 	if(mouse_button == 2)
 	{
 		if (ButtonId == BB_PRACTICE)
-			SystemHelp(STR_BB_HELP_PRACTICE_DONE_TITLE, STR_BB_HELP_PRACTICE_DONE_TEXT, -1, NULL, 0);
+			SystemHelp(STR_BB_HELP_PRACTICE_DONE_TITLE, STR_BB_HELP_PRACTICE_DONE_TEXT, NULL, 0);
 		else
-			SystemHelp(STR_BB_HELP_FIGHT_DONE_TITLE, STR_BB_HELP_FIGHT_DONE_TEXT, -1, NULL, 0);
+			SystemHelp(STR_BB_HELP_FIGHT_DONE_TITLE, STR_BB_HELP_FIGHT_DONE_TEXT, NULL, 0);
 	}
 	else
 	{
@@ -2695,7 +2695,7 @@ void BuildAdvDone (LONG MenuCombo, LONG )
 	   ----------------------------------------------------------------- */
 	if(mouse_button == 2)
 	{
-		SystemHelp(STR_BA_HELP_DONE_TITLE, STR_BA_HELP_DONE_TITLE, -1, NULL, 0);
+		SystemHelp(STR_BA_HELP_DONE_TITLE, STR_BA_HELP_DONE_TITLE, NULL, 0);
 	}
 	else
 	{
@@ -2820,7 +2820,7 @@ void BuildAdvDone (LONG MenuCombo, LONG )
 		
 		if (count == 0)	// no one selected
 		{
-			SystemHelp("No Party Members Selected", "You haven't selected any party members for this adventure.  Click the box to the right of their name to include them. If everyone is greyed out, press the restart button.", -1, NULL, 0);
+			SystemHelp("No Party Members Selected", "You haven't selected any party members for this adventure.  Click the box to the right of their name to include them. If everyone is greyed out, press the restart button.", NULL, 0);
 			return;
 		}
 		
@@ -2925,7 +2925,7 @@ void BuildAdvRestart (LONG MenuCombo, LONG )
 	   ----------------------------------------------------------------- */
 	if(mouse_button == 2)
 	{
-		SystemHelp(STR_BA_HELP_RESTART_TITLE, STR_BA_HELP_RESTART_TEXT, -1, NULL, 0);
+		SystemHelp(STR_BA_HELP_RESTART_TITLE, STR_BA_HELP_RESTART_TEXT, NULL, 0);
 	}
 	else
 	{
